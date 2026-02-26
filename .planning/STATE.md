@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-02-26)
 ## Current Position
 
 Phase: 1 of 4 (Foundation and Risk Validation)
-Plan: 1 of 4 in current phase
+Plan: 3 of 4 in current phase
 Status: Executing
-Last activity: 2026-02-26 — Completed 01-01-PLAN.md (Flask skeleton + supplier CRUD)
+Last activity: 2026-02-26 — Completed 01-03-PLAN.md (Prom.ua catalog import)
 
-Progress: [██░░░░░░░░] 6%
+Progress: [█████░░░░░] 19%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 1
-- Average duration: 5 min
-- Total execution time: 0.08 hours
+- Total plans completed: 2
+- Average duration: 4 min
+- Total execution time: 0.13 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 1 | 1 | 5 min | 5 min |
+| 1 | 2 | 8 min | 4 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (5 min)
-- Trend: Starting
+- Last 5 plans: 01-01 (5 min), 01-03 (3 min)
+- Trend: Accelerating
 
 *Updated after each plan completion*
 
@@ -49,6 +49,9 @@ Recent decisions affecting current work:
 - [01-01]: Used hatchling build backend with explicit packages=['app'] for uv compatibility
 - [01-01]: Model imports placed before db.create_all() using from-import to avoid name shadowing
 - [01-01]: Catalog blueprint placeholder created early to prevent import errors in create_app
+- [01-03]: Chardet for encoding detection with cp1251 fallback covers prom.ua CSV edge cases
+- [01-03]: Price stored as integer cents (float*100) to avoid floating point issues
+- [01-03]: Upsert matches on external_id unique column, updates all fields on re-import
 
 ### Pending Todos
 
@@ -63,5 +66,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-26
-Stopped at: Completed 01-01-PLAN.md (Flask skeleton + supplier CRUD). Next: 01-02-PLAN.md
+Stopped at: Completed 01-03-PLAN.md (Prom.ua catalog import). Next: 01-04-PLAN.md
 Resume file: None

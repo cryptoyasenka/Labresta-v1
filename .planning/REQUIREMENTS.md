@@ -23,8 +23,8 @@
 
 ### Catalog (Каталог prom.ua)
 
-- [ ] **CATLG-01**: Адмін може завантажити CSV-експорт з prom.ua через UI
-- [ ] **CATLG-02**: Система парсить і зберігає товари (ID, назва, бренд, модель, артикул)
+- [x] **CATLG-01**: Адмін може завантажити CSV-експорт з prom.ua через UI
+- [x] **CATLG-02**: Система парсить і зберігає товари (ID, назва, бренд, модель, артикул)
 
 ### Matching (Матчинг товарів)
 
@@ -102,8 +102,8 @@
 | SUPP-05 | Phase 2 | Pending |
 | SUPP-06 | Phase 2 | Pending |
 | SUPP-07 | Phase 2 | Pending |
-| CATLG-01 | Phase 1 | Pending |
-| CATLG-02 | Phase 1 | Pending |
+| CATLG-01 | Phase 1 | Complete |
+| CATLG-02 | Phase 1 | Complete |
 | MATCH-01 | Phase 2 | Pending |
 | MATCH-02 | Phase 4 | Pending |
 | MATCH-03 | Phase 2 | Pending |
