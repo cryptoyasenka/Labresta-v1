@@ -90,47 +90,45 @@
 
 ## Traceability
 
-Заповнюється під час створення roadmap.
-
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUTH-01 | — | Pending |
-| AUTH-02 | — | Pending |
-| AUTH-03 | — | Pending |
-| SUPP-01 | — | Pending |
-| SUPP-02 | — | Pending |
-| SUPP-03 | — | Pending |
-| SUPP-04 | — | Pending |
-| SUPP-05 | — | Pending |
-| SUPP-06 | — | Pending |
-| SUPP-07 | — | Pending |
-| CATLG-01 | — | Pending |
-| CATLG-02 | — | Pending |
-| MATCH-01 | — | Pending |
-| MATCH-02 | — | Pending |
-| MATCH-03 | — | Pending |
-| MATCH-04 | — | Pending |
-| MATCH-05 | — | Pending |
-| MATCH-06 | — | Pending |
-| PRICE-01 | — | Pending |
-| PRICE-02 | — | Pending |
-| PRICE-03 | — | Pending |
-| PRICE-04 | — | Pending |
-| FEED-01 | — | Pending |
-| FEED-02 | — | Pending |
-| FEED-03 | — | Pending |
-| FEED-04 | — | Pending |
-| DASH-01 | — | Pending |
-| DASH-02 | — | Pending |
-| DASH-03 | — | Pending |
-| DASH-04 | — | Pending |
-| DASH-05 | — | Pending |
+| AUTH-01 | Phase 4 | Pending |
+| AUTH-02 | Phase 4 | Pending |
+| AUTH-03 | Phase 1 | Pending |
+| SUPP-01 | Phase 1 | Pending |
+| SUPP-02 | Phase 1 | Pending |
+| SUPP-03 | Phase 1 | Pending |
+| SUPP-04 | Phase 1 | Pending |
+| SUPP-05 | Phase 2 | Pending |
+| SUPP-06 | Phase 2 | Pending |
+| SUPP-07 | Phase 2 | Pending |
+| CATLG-01 | Phase 1 | Pending |
+| CATLG-02 | Phase 1 | Pending |
+| MATCH-01 | Phase 2 | Pending |
+| MATCH-02 | Phase 4 | Pending |
+| MATCH-03 | Phase 2 | Pending |
+| MATCH-04 | Phase 4 | Pending |
+| MATCH-05 | Phase 4 | Pending |
+| MATCH-06 | Phase 2 | Pending |
+| PRICE-01 | Phase 3 | Pending |
+| PRICE-02 | Phase 3 | Pending |
+| PRICE-03 | Phase 3 | Pending |
+| PRICE-04 | Phase 3 | Pending |
+| FEED-01 | Phase 3 | Pending |
+| FEED-02 | Phase 3 | Pending |
+| FEED-03 | Phase 3 | Pending |
+| FEED-04 | Phase 3 | Pending |
+| DASH-01 | Phase 4 | Pending |
+| DASH-02 | Phase 4 | Pending |
+| DASH-03 | Phase 4 | Pending |
+| DASH-04 | Phase 4 | Pending |
+| DASH-05 | Phase 4 | Pending |
 
 **Coverage:**
 - v1 requirements: 31 total
-- Mapped to phases: 0
-- Unmapped: 31 ⚠️
+- Mapped to phases: 31
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-26*
-*Last updated: 2026-02-26 after initial definition*
+*Last updated: 2026-02-26 after roadmap creation*
