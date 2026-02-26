@@ -16,6 +16,8 @@
             <th>Feed URL</th>
             <th>Discount %</th>
             <th>Status</th>
+            <th>Last Fetched</th>
+            <th>Fetch Status</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -33,11 +35,30 @@
                 {% endif %}
             </td>
             <td>
+                {% if supplier.last_fetched_at %}
+                    {{ supplier.last_fetched_at.strftime('%Y-%m-%d %H:%M') }}
+                {% else %}
+                    <span class="text-muted">Never</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if supplier.last_fetch_status == 'success' %}
+                    <span class="badge bg-success">Success</span>
+                {% elif supplier.last_fetch_status == 'error' %}
+                    <span class="badge bg-danger" title="{{ supplier.last_fetch_error or '' }}">Error</span>
+                {% else %}
+                    <span class="text-muted">-</span>
+                {% endif %}
+            </td>
+            <td>
                 <a href="{{ url_for('suppliers.supplier_edit', supplier_id=supplier.id) }}" class="btn btn-sm btn-outline-primary">Edit</a>
                 <form method="POST" action="{{ url_for('suppliers.supplier_toggle', supplier_id=supplier.id) }}" class="d-inline">
                     <button type="submit" class="btn btn-sm btn-outline-{{ 'warning' if supplier.is_enabled else 'success' }}">
                         {{ 'Disable' if supplier.is_enabled else 'Enable' }}
                     </button>
+                </form>
+                <form method="POST" action="{{ url_for('suppliers.supplier_fetch', supplier_id=supplier.id) }}" class="d-inline">
+                    <button type="submit" class="btn btn-sm btn-outline-info">Fetch Feed</button>
                 </form>
             </td>
         </tr>
