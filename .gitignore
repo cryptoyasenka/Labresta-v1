@@ -1,3 +1,22 @@
 claude-acc1.bat
 claude-acc2.bat
 claude-acc3.bat
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+dist/
+*.egg-info/
+
+# Flask instance folder (SQLite DB)
+instance/
+
+# Environment
+.env
+
+# Ruff
+.ruff_cache/
+
+# uv
+.venv/
