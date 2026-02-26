@@ -18,6 +18,8 @@ from app.models.catalog import PromProduct
 # Column alias mapping: prom.ua export headers (Ukrainian + Russian) -> internal field names
 COLUMN_ALIASES = {
     # external_id
+    "унікальний_ідентифікатор": "external_id",
+    "уникальный_идентификатор": "external_id",
     "ідентифікатор_товару": "external_id",
     "идентификатор_товара": "external_id",
     # name
@@ -56,13 +58,17 @@ def map_headers(raw_headers: list[str]) -> dict[int, str]:
         ValueError: If 'external_id' or 'name' column is not found.
     """
     mapping = {}
+    mapped_fields = set()
     for idx, header in enumerate(raw_headers):
         normalized = normalize_header(header)
         if normalized in COLUMN_ALIASES:
-            mapping[idx] = COLUMN_ALIASES[normalized]
+            field = COLUMN_ALIASES[normalized]
+            # First column wins — skip duplicates for the same field
+            if field not in mapped_fields:
+                mapping[idx] = field
+                mapped_fields.add(field)
 
     # Validate required columns
-    mapped_fields = set(mapping.values())
     missing = []
     if "external_id" not in mapped_fields:
         missing.append("external_id")
