@@ -40,7 +40,7 @@ def supplier_add():
         )
         db.session.add(supplier)
         db.session.commit()
-        flash(f"Supplier '{supplier.name}' added successfully.", "success")
+        flash(f"Поставщик '{supplier.name}' добавлен.", "success")
         return redirect(url_for("suppliers.supplier_list"))
 
     return render_template("suppliers/form.html", supplier=None, form_data=None, errors=None)
@@ -50,7 +50,7 @@ def supplier_add():
 def supplier_edit(supplier_id):
     supplier = db.session.get(Supplier, supplier_id)
     if not supplier:
-        flash("Supplier not found.", "error")
+        flash("Поставщик не найден.", "error")
         return redirect(url_for("suppliers.supplier_list"))
 
     if request.method == "POST":
@@ -67,7 +67,7 @@ def supplier_edit(supplier_id):
         supplier.feed_url = request.form["feed_url"].strip()
         supplier.discount_percent = float(request.form.get("discount_percent", 0))
         db.session.commit()
-        flash(f"Supplier '{supplier.name}' updated successfully.", "success")
+        flash(f"Поставщик '{supplier.name}' обновлён.", "success")
         return redirect(url_for("suppliers.supplier_list"))
 
     return render_template("suppliers/form.html", supplier=supplier, form_data=None, errors=None)
@@ -77,13 +77,13 @@ def supplier_edit(supplier_id):
 def supplier_toggle(supplier_id):
     supplier = db.session.get(Supplier, supplier_id)
     if not supplier:
-        flash("Supplier not found.", "error")
+        flash("Поставщик не найден.", "error")
         return redirect(url_for("suppliers.supplier_list"))
 
     supplier.is_enabled = not supplier.is_enabled
     db.session.commit()
-    status = "enabled" if supplier.is_enabled else "disabled"
-    flash(f"Supplier '{supplier.name}' {status}.", "success")
+    status = "включён" if supplier.is_enabled else "выключен"
+    flash(f"Поставщик '{supplier.name}' {status}.", "success")
     return redirect(url_for("suppliers.supplier_list"))
 
 
@@ -91,7 +91,7 @@ def supplier_toggle(supplier_id):
 def supplier_fetch(supplier_id):
     supplier = db.session.get(Supplier, supplier_id)
     if not supplier:
-        flash("Supplier not found.", "error")
+        flash("Поставщик не найден.", "error")
         return redirect(url_for("suppliers.supplier_list"))
 
     try:
@@ -99,13 +99,13 @@ def supplier_fetch(supplier_id):
         products = parse_supplier_feed(raw_bytes, supplier.id)
         result = save_supplier_products(products)
         flash(
-            f"Feed fetched: {result['total']} products "
-            f"({result['created']} new, {result['updated']} updated).",
+            f"Фид загружен: {result['total']} товаров "
+            f"({result['created']} новых, {result['updated']} обновлено).",
             "success",
         )
     except Exception as e:
         logger.exception("Feed fetch failed for supplier %s", supplier.name)
-        flash(f"Feed fetch failed: {e}", "error")
+        flash(f"Ошибка загрузки фида: {e}", "error")
 
     return redirect(url_for("suppliers.supplier_list"))
 
@@ -114,16 +114,16 @@ def _validate_supplier_form(form):
     """Validate supplier form data. Returns dict of field -> error message, or empty dict."""
     errors = {}
     if not form.get("name", "").strip():
-        errors["name"] = "Name is required."
+        errors["name"] = "Название обязательно."
     if not form.get("feed_url", "").strip():
-        errors["feed_url"] = "Feed URL is required."
+        errors["feed_url"] = "URL фида обязателен."
 
     discount = form.get("discount_percent", "0")
     try:
         val = float(discount)
         if val < 0 or val > 100:
-            errors["discount_percent"] = "Discount must be between 0 and 100."
+            errors["discount_percent"] = "Скидка должна быть от 0 до 100."
     except (ValueError, TypeError):
-        errors["discount_percent"] = "Discount must be a number."
+        errors["discount_percent"] = "Скидка должна быть числом."
 
     return errors

@@ -1,24 +1,24 @@
 {% extends "base.html" %}
 
-{% block title %}Suppliers - LabResta Sync{% endblock %}
+{% block title %}Поставщики - LabResta Sync{% endblock %}
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h1>Suppliers</h1>
-    <a href="{{ url_for('suppliers.supplier_add') }}" class="btn btn-success">Add Supplier</a>
+    <h1>Поставщики</h1>
+    <a href="{{ url_for('suppliers.supplier_add') }}" class="btn btn-success">Добавить поставщика</a>
 </div>
 
 {% if suppliers %}
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>Name</th>
-            <th>Feed URL</th>
-            <th>Discount %</th>
-            <th>Status</th>
-            <th>Last Fetched</th>
-            <th>Fetch Status</th>
-            <th>Actions</th>
+            <th>Название</th>
+            <th>URL фида</th>
+            <th>Скидка %</th>
+            <th>Статус</th>
+            <th>Последняя загрузка</th>
+            <th>Результат</th>
+            <th>Действия</th>
         </tr>
     </thead>
     <tbody>
@@ -29,36 +29,36 @@
             <td>{{ supplier.discount_percent }}%</td>
             <td>
                 {% if supplier.is_enabled %}
-                    <span class="badge bg-success">Enabled</span>
+                    <span class="badge bg-success">Активен</span>
                 {% else %}
-                    <span class="badge bg-secondary">Disabled</span>
+                    <span class="badge bg-secondary">Выключен</span>
                 {% endif %}
             </td>
             <td>
                 {% if supplier.last_fetched_at %}
                     {{ supplier.last_fetched_at.strftime('%Y-%m-%d %H:%M') }}
                 {% else %}
-                    <span class="text-muted">Never</span>
+                    <span class="text-muted">Никогда</span>
                 {% endif %}
             </td>
             <td>
                 {% if supplier.last_fetch_status == 'success' %}
-                    <span class="badge bg-success">Success</span>
+                    <span class="badge bg-success">Успешно</span>
                 {% elif supplier.last_fetch_status == 'error' %}
-                    <span class="badge bg-danger" title="{{ supplier.last_fetch_error or '' }}">Error</span>
+                    <span class="badge bg-danger" title="{{ supplier.last_fetch_error or '' }}">Ошибка</span>
                 {% else %}
-                    <span class="text-muted">-</span>
+                    <span class="text-muted">—</span>
                 {% endif %}
             </td>
             <td>
-                <a href="{{ url_for('suppliers.supplier_edit', supplier_id=supplier.id) }}" class="btn btn-sm btn-outline-primary">Edit</a>
+                <a href="{{ url_for('suppliers.supplier_edit', supplier_id=supplier.id) }}" class="btn btn-sm btn-outline-primary">Изменить</a>
                 <form method="POST" action="{{ url_for('suppliers.supplier_toggle', supplier_id=supplier.id) }}" class="d-inline">
                     <button type="submit" class="btn btn-sm btn-outline-{{ 'warning' if supplier.is_enabled else 'success' }}">
-                        {{ 'Disable' if supplier.is_enabled else 'Enable' }}
+                        {{ 'Выключить' if supplier.is_enabled else 'Включить' }}
                     </button>
                 </form>
                 <form method="POST" action="{{ url_for('suppliers.supplier_fetch', supplier_id=supplier.id) }}" class="d-inline">
-                    <button type="submit" class="btn btn-sm btn-outline-info">Fetch Feed</button>
+                    <button type="submit" class="btn btn-sm btn-outline-info">Загрузить фид</button>
                 </form>
             </td>
         </tr>
@@ -67,8 +67,8 @@
 </table>
 {% else %}
 <div class="text-center py-5">
-    <p class="text-muted fs-5">No suppliers yet.</p>
-    <a href="{{ url_for('suppliers.supplier_add') }}" class="btn btn-success">Add Your First Supplier</a>
+    <p class="text-muted fs-5">Поставщиков пока нет.</p>
+    <a href="{{ url_for('suppliers.supplier_add') }}" class="btn btn-success">Добавить первого поставщика</a>
 </div>
 {% endif %}
 {% endblock %}

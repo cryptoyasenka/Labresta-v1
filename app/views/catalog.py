@@ -71,18 +71,18 @@ def catalog_import_form():
 def catalog_import_upload():
     """Handle file upload, parse, and upsert products."""
     if "file" not in request.files:
-        flash("No file selected.", "danger")
+        flash("Файл не выбран.", "danger")
         return redirect(url_for("catalog.catalog_import_form"))
 
     file = request.files["file"]
 
     if file.filename == "" or file.filename is None:
-        flash("No file selected.", "danger")
+        flash("Файл не выбран.", "danger")
         return redirect(url_for("catalog.catalog_import_form"))
 
     if not _allowed_file(file.filename):
         flash(
-            "Unsupported file format. Please upload a .csv, .xls, or .xlsx file.",
+            "Неподдерживаемый формат файла. Загрузите .csv, .xls или .xlsx файл.",
             "danger",
         )
         return redirect(url_for("catalog.catalog_import_form"))
@@ -100,19 +100,19 @@ def catalog_import_upload():
         result = save_catalog_products(products)
 
         flash(
-            f"Imported {result['total']} products "
-            f"({result['created']} new, {result['updated']} updated, "
-            f"{result['skipped']} skipped).",
+            f"Импортировано {result['total']} товаров "
+            f"({result['created']} новых, {result['updated']} обновлено, "
+            f"{result['skipped']} пропущено).",
             "success",
         )
         return redirect(url_for("catalog.catalog_list"))
 
     except ValueError as e:
-        flash(f"Import error: {e}", "danger")
+        flash(f"Ошибка импорта: {e}", "danger")
         return redirect(url_for("catalog.catalog_import_form"))
 
     except Exception as e:
-        flash(f"Unexpected error: {e}", "danger")
+        flash(f"Непредвиденная ошибка: {e}", "danger")
         return redirect(url_for("catalog.catalog_import_form"))
 
     finally:

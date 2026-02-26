@@ -1,27 +1,27 @@
 {% extends "base.html" %}
 
-{% block title %}LabResta Sync - Home{% endblock %}
+{% block title %}LabResta Sync - Главная{% endblock %}
 
 {% block content %}
 <h1>LabResta Sync</h1>
-<p class="lead">Automated price and availability sync from supplier feeds to prom.ua.</p>
+<p class="lead">Автоматическая синхронизация цен и наличия из фидов поставщиков на prom.ua.</p>
 
 <div class="row mt-4">
     <div class="col-md-6 mb-3">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Suppliers</h5>
-                <p class="card-text">Manage supplier feeds, set discount percentages, enable or disable syncing.</p>
-                <a href="{{ url_for('suppliers.supplier_list') }}" class="btn btn-primary">Manage Suppliers</a>
+                <h5 class="card-title">Поставщики</h5>
+                <p class="card-text">Управление фидами поставщиков, настройка скидок, включение/выключение синхронизации.</p>
+                <a href="{{ url_for('suppliers.supplier_list') }}" class="btn btn-primary">Управление поставщиками</a>
             </div>
         </div>
     </div>
     <div class="col-md-6 mb-3">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Import Catalog</h5>
-                <p class="card-text">Upload your prom.ua catalog export (CSV or XLS) to import products.</p>
-                <a href="{{ url_for('catalog.catalog_index') }}" class="btn btn-secondary">Import Catalog</a>
+                <h5 class="card-title">Каталог</h5>
+                <p class="card-text">Загрузите экспорт каталога prom.ua (CSV или XLS) для импорта товаров.</p>
+                <a href="{{ url_for('catalog.catalog_index') }}" class="btn btn-secondary">Импорт каталога</a>
             </div>
         </div>
     </div>
