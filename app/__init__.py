@@ -2,7 +2,7 @@ import os
 
 from flask import Flask
 
-from app.extensions import db
+from app.extensions import configure_sqlite_wal, db
 
 
 def create_app(config_name="default"):
@@ -19,6 +19,7 @@ def create_app(config_name="default"):
 
     # Init extensions
     db.init_app(app)
+    configure_sqlite_wal(app)
 
     # Register blueprints
     from app.views.main import main_bp
@@ -30,7 +31,7 @@ def create_app(config_name="default"):
     app.register_blueprint(catalog_bp, url_prefix="/catalog")
 
     # Ensure all models are registered with SQLAlchemy before create_all
-    from app.models import Supplier, PromProduct, SupplierProduct  # noqa: F401
+    from app.models import Supplier, PromProduct, SupplierProduct, ProductMatch, SyncRun  # noqa: F401
 
     # Create tables on first run
     with app.app_context():

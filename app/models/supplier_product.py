@@ -16,6 +16,7 @@ class SupplierProduct(db.Model):
     price_cents = db.Column(db.Integer, nullable=True)  # retail price in cents
     currency = db.Column(db.String(10), default="EUR")
     available = db.Column(db.Boolean, default=True)
+    needs_review = db.Column(db.Boolean, default=False)
     last_seen_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     supplier = db.relationship("Supplier", backref="products")
