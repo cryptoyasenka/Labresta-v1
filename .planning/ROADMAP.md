@@ -41,7 +41,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Running the sync manually (via CLI or script) produces fuzzy match candidates ranked by confidence score in the database
   4. Confirmed matches (supplier_id to prom_product_id) persist across sync runs and are not re-matched on subsequent syncs
   5. A product absent from the MARESTO feed for 2 consecutive syncs is flagged as "needs review" in the database with availability set to unavailable
-**Plans**: TBD
+**Plans**: 4 plans
+- [ ] 02-01-PLAN.md — Database schema (ProductMatch, SyncRun models), WAL mode, Telegram notifier
+- [ ] 02-02-PLAN.md — Sync pipeline with retry, disappeared detection, Flask CLI
+- [ ] 02-03-PLAN.md — Fuzzy matching engine with brand blocking, benchmark
+- [ ] 02-04-PLAN.md — APScheduler setup, matcher integration, end-to-end verification
 
 ### Phase 3: Pricing Engine and YML Output
 **Goal**: Confirmed matches produce a correctly priced, publicly accessible YML feed that prom.ua can poll automatically — and only matched products are included in the output.
@@ -75,6 +79,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation and Risk Validation | 0/TBD | Not started | - |
-| 2. Feed Ingestion and Matching Engine | 0/TBD | Not started | - |
+| 2. Feed Ingestion and Matching Engine | 0/4 | Not started | - |
 | 3. Pricing Engine and YML Output | 0/TBD | Not started | - |
 | 4. Management UI and Authentication | 0/TBD | Not started | - |
