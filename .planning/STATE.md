@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-02-26)
 ## Current Position
 
 Phase: 2 of 4 (Feed Ingestion and Matching Engine)
-Plan: 2 of 4 in current phase
+Plan: 3 of 4 in current phase
 Status: Executing
-Last activity: 2026-02-27 — Completed 02-01-PLAN.md (Database foundation and notifications)
+Last activity: 2026-02-27 — Completed 02-02-PLAN.md (Sync pipeline and CLI)
 
-Progress: [██████░░░░] 31%
+Progress: [███████░░░] 38%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3
+- Total plans completed: 4
 - Average duration: 4 min
-- Total execution time: 0.2 hours
+- Total execution time: 0.25 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1 | 2 | 8 min | 4 min |
-| 2 | 1 | 4 min | 4 min |
+| 2 | 2 | 7 min | 3.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (5 min), 01-03 (3 min), 02-01 (4 min)
+- Last 5 plans: 01-01 (5 min), 01-03 (3 min), 02-01 (4 min), 02-02 (3 min)
 - Trend: Stable
 
 *Updated after each plan completion*
@@ -56,6 +56,10 @@ Recent decisions affecting current work:
 - [02-01]: WAL mode via configure_sqlite_wal() called after db.init_app() for engine availability
 - [02-01]: Telegram notifier reads env vars directly for APScheduler thread compatibility
 - [02-01]: Telegram notifications only on permanent failure (all retries exhausted)
+- [02-02]: tenacity @retry wraps existing fetch_feed, keeping original function unchanged
+- [02-02]: Reappeared products stay needs_review=True — log-only visibility, no auto-restore
+- [02-02]: 50% sanity guard prevents mass false-positive flagging from broken feeds
+- [02-02]: 9-hour threshold for disappearance (2 sync intervals of 4h + 1h buffer)
 
 ### Pending Todos
 
@@ -70,5 +74,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-27
-Stopped at: Completed 02-01-PLAN.md (Database foundation and notifications)
-Resume file: .planning/phases/02-feed-ingestion-and-matching-engine/02-01-SUMMARY.md
+Stopped at: Completed 02-02-PLAN.md (Sync pipeline and CLI)
+Resume file: .planning/phases/02-feed-ingestion-and-matching-engine/02-02-SUMMARY.md
