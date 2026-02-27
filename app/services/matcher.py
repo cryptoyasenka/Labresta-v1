@@ -28,6 +28,7 @@ CONFIDENCE_MEDIUM = 60.0  # 60-80% = Medium confidence
 # Below 60% = Low (filtered out by SCORE_CUTOFF, never stored)
 
 BRAND_MATCH_THRESHOLD = 80  # Fuzzy brand match threshold for blocking
+MAX_PRICE_RATIO = 3.0  # Reject candidates where price differs by more than 3x
 
 
 def normalize_text(text: str) -> str:
@@ -60,6 +61,7 @@ def find_match_candidates(
     prom_products: list[dict],
     score_cutoff: float = SCORE_CUTOFF,
     limit: int = MATCH_LIMIT,
+    supplier_price_cents: int | None = None,
 ) -> list[dict]:
     """Find top match candidates for a supplier product against prom catalog.
 
@@ -124,6 +126,27 @@ def find_match_candidates(
             }
         )
 
+    # Step 5: Price plausibility gate — reject implausible price ratios
+    if supplier_price_cents and supplier_price_cents > 0:
+        plausible = []
+        for candidate in output:
+            # Find prom product price from the original list
+            prom_price = None
+            for p in candidates_pool:
+                if p["id"] == candidate["prom_product_id"]:
+                    prom_price = p.get("price")
+                    break
+            if prom_price and prom_price > 0:
+                ratio = max(supplier_price_cents / prom_price, prom_price / supplier_price_cents)
+                if ratio > MAX_PRICE_RATIO:
+                    logger.debug(
+                        "Price plausibility rejected: supplier=%d vs prom=%d (ratio=%.1fx) for prom_id=%d",
+                        supplier_price_cents, prom_price, ratio, candidate["prom_product_id"],
+                    )
+                    continue
+            plausible.append(candidate)
+        output = plausible
+
     return output
 
 
@@ -160,7 +183,7 @@ def run_matching_for_supplier(supplier_id: int) -> int:
     # Step 3: Load all prom products
     prom_all = db.session.execute(select(PromProduct)).scalars().all()
     prom_list = [
-        {"id": p.id, "name": p.name, "brand": p.brand} for p in prom_all
+        {"id": p.id, "name": p.name, "brand": p.brand, "price": p.price} for p in prom_all
     ]
 
     if not unmatched_products or not prom_list:
@@ -173,7 +196,10 @@ def run_matching_for_supplier(supplier_id: int) -> int:
     # Step 4: Match each unmatched product
     total_candidates = 0
     for sp in unmatched_products:
-        candidates = find_match_candidates(sp.name, sp.brand, prom_list)
+        candidates = find_match_candidates(
+            sp.name, sp.brand, prom_list,
+            supplier_price_cents=sp.price_cents,
+        )
         for c in candidates:
             # Check if pair already exists (avoid duplicates)
             existing = db.session.execute(
