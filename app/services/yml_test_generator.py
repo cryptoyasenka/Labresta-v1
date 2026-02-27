@@ -43,6 +43,8 @@ def generate_test_yml(product_ids: list[str], output_path: str) -> str:
             offers, "offer", id=str(p.external_id), available="true"
         )
         etree.SubElement(offer, "name").text = p.name
+        if p.page_url:
+            etree.SubElement(offer, "url").text = p.page_url
         # Price stored as integer cents -> convert to float string
         price_val = p.price / 100.0 if p.price else 0.0
         etree.SubElement(offer, "price").text = f"{price_val:.2f}"

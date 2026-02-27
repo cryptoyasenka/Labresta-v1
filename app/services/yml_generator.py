@@ -90,6 +90,8 @@ def regenerate_yml_feed() -> dict:
             available=avail_str,
         )
         etree.SubElement(offer, "name").text = pp.name
+        if pp.page_url:
+            etree.SubElement(offer, "url").text = pp.page_url
         etree.SubElement(offer, "price").text = str(price_eur)
         etree.SubElement(offer, "currencyId").text = "EUR"
 
