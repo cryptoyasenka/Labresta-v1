@@ -57,9 +57,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. The generated YML contains only products with confirmed matches — products without matches do not appear in the feed
   4. Per-product discount overrides take priority over the supplier-level discount when both are set
   5. The YML structure is compatible with both prom.ua and Horoshop import (fields: name, price, availability, article number)
-**Plans**: 2 plans
+**Plans**: 4 plans
 - [ ] 03-01-PLAN.md — Pricing engine TDD (integer-cent math, per-product discount, mathematical rounding)
 - [ ] 03-02-PLAN.md — YML generator, public feed endpoint, sync pipeline wiring
+- [ ] 03-03-PLAN.md — [GAP CLOSURE] Add product page URL to catalog import and YML feed
+- [ ] 03-04-PLAN.md — [GAP CLOSURE] Add price plausibility gate to fuzzy matcher
 
 ### Phase 4: Management UI and Authentication
 **Goal**: An operator can log in, review and confirm fuzzy match candidates through a web UI, manage suppliers, monitor sync health from a dashboard, and browse logs — without touching the database directly.
@@ -82,5 +84,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Foundation and Risk Validation | 0/TBD | Not started | - |
 | 2. Feed Ingestion and Matching Engine | 0/4 | Not started | - |
-| 3. Pricing Engine and YML Output | 0/TBD | Not started | - |
+| 3. Pricing Engine and YML Output | 2/4 | In progress | - |
 | 4. Management UI and Authentication | 0/TBD | Not started | - |
