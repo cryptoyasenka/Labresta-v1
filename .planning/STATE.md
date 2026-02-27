@@ -2,26 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: unknown
-last_updated: "2026-02-27T22:06:51.141Z"
-progress:
-  total_phases: 3
-  completed_phases: 2
-  total_plans: 10
-  completed_plans: 9
----
-
----
-gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: milestone
 status: in-progress
-last_updated: "2026-02-28T00:01:00Z"
+last_updated: "2026-02-28T00:27:00Z"
 progress:
   total_phases: 4
   completed_phases: 3
-  total_plans: 10
-  completed_plans: 9
+  total_plans: 12
+  completed_plans: 11
 ---
 
 # Project State
@@ -31,21 +18,21 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-26)
 
 **Core value:** Ціни і наявність на prom.ua завжди актуальні — без ручної роботи щодня.
-**Current focus:** Phase 3 complete — ready for Phase 4 (Management UI)
+**Current focus:** Phase 3 gap closure plans in progress
 
 ## Current Position
 
-Phase: 3 of 4 (Pricing Engine and YML Output) -- COMPLETE
-Plan: 2 of 2 in current phase (03-02 complete)
+Phase: 3 of 4 (Pricing Engine and YML Output) -- Gap Closure COMPLETE
+Plan: 4 of 4 in current phase (03-04 complete)
 Status: Phase 3 Complete
-Last activity: 2026-02-28 — Completed 03-02-PLAN.md (YML feed generator and pipeline wiring)
+Last activity: 2026-02-28 — Completed 03-04-PLAN.md (Matcher price gate)
 
-Progress: [██████████████████] 90%
+Progress: [██████████████████] 92%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 8
+- Total plans completed: 11
 - Average duration: 4 min
 - Total execution time: 0.5 hours
 
@@ -55,10 +42,10 @@ Progress: [██████████████████] 90%
 |-------|-------|-------|----------|
 | 1 | 2 | 8 min | 4 min |
 | 2 | 4 | 18 min | 4.5 min |
-| 3 | 2 | 4 min | 2 min |
+| 3 | 4 | 7 min | 1.8 min |
 
 **Recent Trend:**
-- Last 5 plans: 02-02 (3 min), 02-03 (5 min), 02-04 (6 min), 03-01 (2 min), 03-02 (2 min)
+- Last 5 plans: 02-04 (6 min), 03-01 (2 min), 03-02 (2 min), 03-03 (1 min), 03-04 (2 min)
 - Trend: Stable
 
 *Updated after each plan completion*
@@ -98,6 +85,11 @@ Recent decisions affecting current work:
 - [03-02]: offer id uses prom_product.external_id so prom.ua updates correct product
 - [03-02]: Product name from prom catalog (not supplier) to preserve existing store names
 - [03-02]: Lazy import of regenerate_yml_feed in sync pipeline to avoid circular imports
+- [03-03]: Conditional url emission -- only when page_url populated, graceful for pre-migration products
+- [03-03]: Ukrainian/Russian header aliases for prom.ua product page URL column
+- [03-04]: MAX_PRICE_RATIO = 3.0 -- generous for discounts, catches absurd mismatches like 7.9x
+- [03-04]: Post-filter price gate after fuzzy scoring, not pre-filter
+- [03-04]: Graceful skip when price is None or zero -- no data means no rejection
 
 ### Pending Todos
 
@@ -112,5 +104,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-28
-Stopped at: Completed 03-02-PLAN.md (YML feed generator and pipeline wiring) -- Phase 3 COMPLETE
-Resume file: .planning/phases/03-pricing-engine-and-yml-output/03-02-SUMMARY.md
+Stopped at: Completed 03-04-PLAN.md (Matcher price gate) -- Phase 3 Gap Closure COMPLETE
+Resume file: .planning/phases/03-pricing-engine-and-yml-output/03-04-SUMMARY.md
