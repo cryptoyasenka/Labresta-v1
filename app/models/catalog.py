@@ -14,6 +14,7 @@ class PromProduct(db.Model):
     article = db.Column(db.String(255), nullable=True)  # Kod_tovaru
     price = db.Column(db.Integer, nullable=True)  # cents (integer)
     currency = db.Column(db.String(10), default="EUR")
+    page_url = db.Column(db.String(500), nullable=True)
     imported_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     __table_args__ = (

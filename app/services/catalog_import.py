@@ -36,6 +36,9 @@ COLUMN_ALIASES = {
     # brand / manufacturer
     "виробник": "brand",
     "производитель": "brand",
+    # page_url
+    "посилання_на_сторінку_товару": "page_url",
+    "ссылка_на_страницу_товара": "page_url",
 }
 
 
@@ -248,6 +251,7 @@ def save_catalog_products(products: list[dict]) -> dict:
         currency = product.get("currency", "").strip() or None
         article = product.get("article", "").strip() or None
         brand = product.get("brand", "").strip() or None
+        page_url = product.get("page_url", "").strip() or None
 
         # Check if product already exists
         existing = db.session.execute(
@@ -260,6 +264,7 @@ def save_catalog_products(products: list[dict]) -> dict:
             existing.article = article
             existing.price = price
             existing.currency = currency
+            existing.page_url = page_url
             existing.imported_at = datetime.now(timezone.utc)
             updated += 1
         else:
@@ -270,6 +275,7 @@ def save_catalog_products(products: list[dict]) -> dict:
                 article=article,
                 price=price,
                 currency=currency,
+                page_url=page_url,
             )
             db.session.add(new_product)
             created += 1
