@@ -5,33 +5,33 @@
 See: .planning/PROJECT.md (updated 2026-02-26)
 
 **Core value:** Ціни і наявність на prom.ua завжди актуальні — без ручної роботи щодня.
-**Current focus:** Phase 2 — Feed Ingestion and Matching Engine
+**Current focus:** Phase 2 complete — ready for Phase 3
 
 ## Current Position
 
-Phase: 2 of 4 (Feed Ingestion and Matching Engine)
-Plan: 4 of 4 in current phase
-Status: Executing
-Last activity: 2026-02-27 — Completed 02-03-PLAN.md (Fuzzy matching engine)
+Phase: 2 of 4 (Feed Ingestion and Matching Engine) -- COMPLETE
+Plan: 4 of 4 in current phase (all done)
+Status: Phase Complete
+Last activity: 2026-02-27 — Completed 02-04-PLAN.md (Scheduler and pipeline integration)
 
-Progress: [████████░░] 46%
+Progress: [██████████] 54%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 5
+- Total plans completed: 6
 - Average duration: 4 min
-- Total execution time: 0.33 hours
+- Total execution time: 0.4 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1 | 2 | 8 min | 4 min |
-| 2 | 3 | 12 min | 4 min |
+| 2 | 4 | 18 min | 4.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (5 min), 01-03 (3 min), 02-01 (4 min), 02-02 (3 min), 02-03 (5 min)
+- Last 5 plans: 01-03 (3 min), 02-01 (4 min), 02-02 (3 min), 02-03 (5 min), 02-04 (6 min)
 - Trend: Stable
 
 *Updated after each plan completion*
@@ -63,6 +63,9 @@ Recent decisions affecting current work:
 - [02-03]: WRatio scorer chosen over plain ratio for token reordering and partial match support
 - [02-03]: Brand matching uses fuzz.ratio > 80 threshold for fuzzy brand comparison
 - [02-03]: Benchmark: 3 MARESTO vs 6101 prom.ua — 100% hit rate, avg 85.5%, 60% cutoff validated
+- [02-04]: Flask-APScheduler over plain APScheduler for automatic app context in scheduled jobs
+- [02-04]: MemoryJobStore sufficient for MVP — job re-registered on each startup
+- [02-04]: misfire_grace_time=900 (15 min) for deployment tolerance
 
 ### Pending Todos
 
@@ -77,5 +80,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-27
-Stopped at: Completed 02-03-PLAN.md (Fuzzy matching engine)
-Resume file: .planning/phases/02-feed-ingestion-and-matching-engine/02-03-SUMMARY.md
+Stopped at: Completed 02-04-PLAN.md (Scheduler and pipeline integration) — Phase 2 complete
+Resume file: .planning/phases/02-feed-ingestion-and-matching-engine/02-04-SUMMARY.md
