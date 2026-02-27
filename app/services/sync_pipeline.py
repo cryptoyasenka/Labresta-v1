@@ -76,17 +76,17 @@ def _sync_single_supplier(supplier: Supplier) -> str:
 
     try:
         # Stage 1: Fetch
-        logger.info("Stage 1/4: Fetching feed from %s", supplier.feed_url)
+        logger.info("Stage 1/6: Fetching feed from %s", supplier.feed_url)
         raw_bytes = fetch_feed_with_retry(supplier.feed_url)
 
         # Stage 2: Parse
-        logger.info("Stage 2/4: Parsing feed")
+        logger.info("Stage 2/6: Parsing feed")
         products = parse_supplier_feed(raw_bytes, supplier.id)
         sync_run.products_fetched = len(products)
         logger.info("Parsed %d products from feed", len(products))
 
         # Stage 3: Save
-        logger.info("Stage 3/4: Saving products")
+        logger.info("Stage 3/6: Saving products")
         result = save_supplier_products(products)
         sync_run.products_created = result["created"]
         sync_run.products_updated = result["updated"]
@@ -100,17 +100,29 @@ def _sync_single_supplier(supplier: Supplier) -> str:
         _handle_reappeared_products(supplier.id)
 
         # Stage 4: Detect disappeared
-        logger.info("Stage 4/5: Detecting disappeared products")
+        logger.info("Stage 4/6: Detecting disappeared products")
         disappeared_count = _detect_disappeared(supplier, len(products), sync_run)
         logger.info("Disappeared products flagged: %d", disappeared_count)
 
         # Stage 5: Run fuzzy matching for new/unmatched products
-        logger.info("Stage 5/5: Running fuzzy matching")
+        logger.info("Stage 5/6: Running fuzzy matching")
         from app.services.matcher import run_matching_for_supplier
 
         candidates = run_matching_for_supplier(supplier.id)
         sync_run.match_candidates_generated = candidates
         logger.info("Match candidates generated: %d", candidates)
+
+        # Stage 6: Regenerate YML feed (only runs if all prior stages succeeded)
+        logger.info("Stage 6/6: Regenerating YML feed")
+        from app.services.yml_generator import regenerate_yml_feed
+
+        yml_result = regenerate_yml_feed()
+        logger.info(
+            "YML feed regenerated: %d offers (%d available, %d unavailable)",
+            yml_result["total"],
+            yml_result["available"],
+            yml_result["unavailable"],
+        )
 
         sync_run.status = "success"
         return "success"
