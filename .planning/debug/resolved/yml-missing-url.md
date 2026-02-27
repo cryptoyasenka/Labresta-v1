@@ -1,5 +1,5 @@
 ---
-status: diagnosed
+status: resolved
 trigger: "Investigate why the YML feed offers don't have a <url> element"
 created: 2026-02-28T00:00:00Z
 updated: 2026-02-28T00:00:00Z

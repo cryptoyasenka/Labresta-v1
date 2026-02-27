@@ -1,5 +1,5 @@
 ---
-status: investigating
+status: resolved
 trigger: "Fuzzy matcher matched supplier oven 'Піч конвекційна Unox XFT133 з парозволоженням' to prom baking tray 'Противень (деко) Unox TG935' instead of the actual oven"
 created: 2026-02-28T00:00:00Z
 updated: 2026-02-28T00:00:00Z

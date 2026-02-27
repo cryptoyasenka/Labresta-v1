@@ -1,9 +1,9 @@
 ---
-status: diagnosed
+status: resolved
 phase: 03-pricing-engine-and-yml-output
 source: 03-01-SUMMARY.md, 03-02-SUMMARY.md
 started: 2026-02-28T12:00:00Z
-updated: 2026-02-28T12:30:00Z
+updated: 2026-02-28T14:00:00Z
 ---
 
 ## Current Test
@@ -51,7 +51,7 @@ skipped: 0
 ## Gaps
 
 - truth: "Each offer in YML feed contains <url> element"
-  status: failed
+  status: resolved
   reason: "User reported: offer не содержит элемент <url> — есть только name, price, currencyId и available"
   severity: minor
   test: 3
@@ -70,7 +70,7 @@ skipped: 0
   debug_session: ".planning/debug/yml-missing-url.md"
 
 - truth: "Product prices in YML feed match expected pricing from supplier catalog"
-  status: failed
+  status: resolved
   reason: "User reported: Цена в фиде 108 EUR вместо ~1070 EUR. Сматчен не тот товар поставщика (Противень Unox TG935 за 135 EUR вместо печи Unox XFT133 за 1073 EUR). Проблема матчинга фазы 2."
   severity: major
   test: 4
