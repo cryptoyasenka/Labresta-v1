@@ -30,6 +30,11 @@ def create_app(config_name="default"):
     app.register_blueprint(suppliers_bp, url_prefix="/suppliers")
     app.register_blueprint(catalog_bp, url_prefix="/catalog")
 
+    # Register CLI commands
+    from app.cli import sync_command
+
+    app.cli.add_command(sync_command)
+
     # Ensure all models are registered with SQLAlchemy before create_all
     from app.models import Supplier, PromProduct, SupplierProduct, ProductMatch, SyncRun  # noqa: F401
 
