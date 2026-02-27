@@ -18,6 +18,9 @@ from app.models.supplier_product import SupplierProduct
 logger = logging.getLogger(__name__)
 
 # --- Confidence thresholds (per user decisions from CONTEXT.md) ---
+# Benchmark (2026-02-27, 3 MARESTO products vs 6101 prom.ua catalog):
+#   100% products found candidates, avg top-1 score 85.5%, all high-confidence.
+#   60% cutoff validated as reasonable for Cyrillic product names with WRatio.
 SCORE_CUTOFF = 60.0  # User decision: 60% minimum threshold
 MATCH_LIMIT = 3  # User decision: top-3 candidates per product
 CONFIDENCE_HIGH = 80.0  # >80% = High confidence
