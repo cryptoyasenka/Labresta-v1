@@ -44,10 +44,10 @@
 
 ### Feed (Вихідний YML)
 
-- [ ] **FEED-01**: Система генерує YML-файл, сумісний з prom.ua і Хорошоп (поля: назва, ціна, наявність, артикул)
-- [ ] **FEED-02**: YML-файл доступний за публічним URL на хостингу (prom.ua підтягує автоматично)
-- [ ] **FEED-03**: YML оновлює тільки заматчені товари — решта каталогу не чіпається
-- [ ] **FEED-04**: Формат YML не прив'язаний до prom.ua — сумісний з Хорошопом для майбутнього переїзду
+- [x] **FEED-01**: Система генерує YML-файл, сумісний з prom.ua і Хорошоп (поля: назва, ціна, наявність, артикул)
+- [x] **FEED-02**: YML-файл доступний за публічним URL на хостингу (prom.ua підтягує автоматично)
+- [x] **FEED-03**: YML оновлює тільки заматчені товари — решта каталогу не чіпається
+- [x] **FEED-04**: Формат YML не прив'язаний до prom.ua — сумісний з Хорошопом для майбутнього переїзду
 
 ### Dashboard & Logs
 
@@ -114,10 +114,10 @@
 | PRICE-02 | Phase 3 | Complete |
 | PRICE-03 | Phase 3 | Complete |
 | PRICE-04 | Phase 3 | Complete |
-| FEED-01 | Phase 3 | Pending |
-| FEED-02 | Phase 3 | Pending |
-| FEED-03 | Phase 3 | Pending |
-| FEED-04 | Phase 3 | Pending |
+| FEED-01 | Phase 3 | Complete |
+| FEED-02 | Phase 3 | Complete |
+| FEED-03 | Phase 3 | Complete |
+| FEED-04 | Phase 3 | Complete |
 | DASH-01 | Phase 4 | Pending |
 | DASH-02 | Phase 4 | Pending |
 | DASH-03 | Phase 4 | Pending |
