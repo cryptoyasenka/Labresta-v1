@@ -30,6 +30,11 @@ def create_app(config_name="default"):
     app.register_blueprint(suppliers_bp, url_prefix="/suppliers")
     app.register_blueprint(catalog_bp, url_prefix="/catalog")
 
+    # Initialize scheduler (before CLI, after blueprints)
+    from app.scheduler import init_scheduler
+
+    init_scheduler(app)
+
     # Register CLI commands
     from app.cli import sync_command
 

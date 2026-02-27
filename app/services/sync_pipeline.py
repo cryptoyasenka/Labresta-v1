@@ -100,9 +100,17 @@ def _sync_single_supplier(supplier: Supplier) -> str:
         _handle_reappeared_products(supplier.id)
 
         # Stage 4: Detect disappeared
-        logger.info("Stage 4/4: Detecting disappeared products")
+        logger.info("Stage 4/5: Detecting disappeared products")
         disappeared_count = _detect_disappeared(supplier, len(products), sync_run)
         logger.info("Disappeared products flagged: %d", disappeared_count)
+
+        # Stage 5: Run fuzzy matching for new/unmatched products
+        logger.info("Stage 5/5: Running fuzzy matching")
+        from app.services.matcher import run_matching_for_supplier
+
+        candidates = run_matching_for_supplier(supplier.id)
+        sync_run.match_candidates_generated = candidates
+        logger.info("Match candidates generated: %d", candidates)
 
         sync_run.status = "success"
         return "success"
