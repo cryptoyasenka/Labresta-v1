@@ -1,5 +1,5 @@
 ---
-status: complete
+status: diagnosed
 phase: 03-pricing-engine-and-yml-output
 source: 03-01-SUMMARY.md, 03-02-SUMMARY.md
 started: 2026-02-28T12:00:00Z
@@ -55,17 +55,29 @@ skipped: 0
   reason: "User reported: offer не содержит элемент <url> — есть только name, price, currencyId и available"
   severity: minor
   test: 3
-  root_cause: ""
-  artifacts: []
-  missing: []
-  debug_session: ""
+  root_cause: "Design omission — RESEARCH.md and PLAN.md template omitted <url> from offer. PromProduct model has no page_url column. Catalog import discards URL column from xlsx."
+  artifacts:
+    - path: "app/services/yml_generator.py"
+      issue: "No <url> element in offer building (lines 86-98)"
+    - path: "app/models/catalog.py"
+      issue: "PromProduct has no page_url column"
+    - path: "app/services/catalog_import.py"
+      issue: "No URL field mapped in COLUMN_ALIASES"
+  missing:
+    - "Add page_url column to PromProduct model"
+    - "Add URL alias mapping in catalog_import.py"
+    - "Add <url> element to yml_generator.py offer"
+  debug_session: ".planning/debug/yml-missing-url.md"
 
 - truth: "Product prices in YML feed match expected pricing from supplier catalog"
   status: failed
   reason: "User reported: Цена в фиде 108 EUR вместо ~1070 EUR. Сматчен не тот товар поставщика (Противень Unox TG935 за 135 EUR вместо печи Unox XFT133 за 1073 EUR). Проблема матчинга фазы 2."
   severity: major
   test: 4
-  root_cause: ""
-  artifacts: []
-  missing: []
-  debug_session: ""
+  root_cause: "Matcher uses fuzz.WRatio which finds shared tokens (Unox, XFT133). Accessory tray mentions XFT133 as compatibility, scoring high. No price plausibility check — 8x price ratio not caught."
+  artifacts:
+    - path: "app/services/matcher.py"
+      issue: "No price plausibility gate in find_match_candidates()"
+  missing:
+    - "Add price plausibility check — reject candidates where price ratio > 2x"
+  debug_session: ".planning/debug/wrong-product-match.md"
