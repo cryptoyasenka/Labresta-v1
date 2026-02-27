@@ -17,3 +17,7 @@ class DefaultConfig:
     FTP_USER = os.environ.get("FTP_USER", "")
     FTP_PASS = os.environ.get("FTP_PASS", "")
     FTP_REMOTE_PATH = os.environ.get("FTP_REMOTE_PATH", "")
+
+    # YML feed output
+    YML_OUTPUT_DIR = os.path.join(basedir, "instance", "feeds")
+    YML_FILENAME = "labresta-feed.yml"

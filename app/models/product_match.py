@@ -30,6 +30,9 @@ class ProductMatch(db.Model):
     )
     confirmed_at = db.Column(db.DateTime, nullable=True)
     confirmed_by = db.Column(db.String(100), nullable=True)  # Phase 4 username
+    discount_percent = db.Column(
+        db.Float, nullable=True
+    )  # Per-product override; NULL = use supplier default
 
     supplier_product = db.relationship("SupplierProduct")
     prom_product = db.relationship("PromProduct")
