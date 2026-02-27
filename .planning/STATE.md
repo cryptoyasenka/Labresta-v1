@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-02-26)
 ## Current Position
 
 Phase: 2 of 4 (Feed Ingestion and Matching Engine)
-Plan: 3 of 4 in current phase
+Plan: 4 of 4 in current phase
 Status: Executing
-Last activity: 2026-02-27 — Completed 02-02-PLAN.md (Sync pipeline and CLI)
+Last activity: 2026-02-27 — Completed 02-03-PLAN.md (Fuzzy matching engine)
 
-Progress: [███████░░░] 38%
+Progress: [████████░░] 46%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4
+- Total plans completed: 5
 - Average duration: 4 min
-- Total execution time: 0.25 hours
+- Total execution time: 0.33 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1 | 2 | 8 min | 4 min |
-| 2 | 2 | 7 min | 3.5 min |
+| 2 | 3 | 12 min | 4 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (5 min), 01-03 (3 min), 02-01 (4 min), 02-02 (3 min)
+- Last 5 plans: 01-01 (5 min), 01-03 (3 min), 02-01 (4 min), 02-02 (3 min), 02-03 (5 min)
 - Trend: Stable
 
 *Updated after each plan completion*
@@ -60,6 +60,9 @@ Recent decisions affecting current work:
 - [02-02]: Reappeared products stay needs_review=True — log-only visibility, no auto-restore
 - [02-02]: 50% sanity guard prevents mass false-positive flagging from broken feeds
 - [02-02]: 9-hour threshold for disappearance (2 sync intervals of 4h + 1h buffer)
+- [02-03]: WRatio scorer chosen over plain ratio for token reordering and partial match support
+- [02-03]: Brand matching uses fuzz.ratio > 80 threshold for fuzzy brand comparison
+- [02-03]: Benchmark: 3 MARESTO vs 6101 prom.ua — 100% hit rate, avg 85.5%, 60% cutoff validated
 
 ### Pending Todos
 
@@ -69,10 +72,10 @@ None yet.
 
 - [Phase 1] prom.ua import mode behavior with partial feed is unverified — must test with 3-product subset YML before Phase 3 builds YML generator
 - [Phase 1] MARESTO feed encoding (UTF-8 vs cp1251) unknown — fetch live URL before writing parser
-- [Phase 2] Fuzzy match false-positive rate on real Ukrainian Cyrillic product names is unknown — benchmark against actual MARESTO + prom.ua name pairs before integrating into live pipeline
+- ~~[Phase 2] Fuzzy match false-positive rate on real Ukrainian Cyrillic product names is unknown~~ RESOLVED in 02-03: benchmark showed 100% hit rate, avg 85.5% score on real data (small sample of 3, fuller validation recommended)
 
 ## Session Continuity
 
 Last session: 2026-02-27
-Stopped at: Completed 02-02-PLAN.md (Sync pipeline and CLI)
-Resume file: .planning/phases/02-feed-ingestion-and-matching-engine/02-02-SUMMARY.md
+Stopped at: Completed 02-03-PLAN.md (Fuzzy matching engine)
+Resume file: .planning/phases/02-feed-ingestion-and-matching-engine/02-03-SUMMARY.md
