@@ -25,10 +25,12 @@ def create_app(config_name="default"):
     from app.views.main import main_bp
     from app.views.suppliers import suppliers_bp
     from app.views.catalog import catalog_bp
+    from app.views.feed import feed_bp
 
     app.register_blueprint(main_bp)
     app.register_blueprint(suppliers_bp, url_prefix="/suppliers")
     app.register_blueprint(catalog_bp, url_prefix="/catalog")
+    app.register_blueprint(feed_bp)
 
     # Initialize scheduler (before CLI, after blueprints)
     from app.scheduler import init_scheduler
