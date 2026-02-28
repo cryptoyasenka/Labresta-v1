@@ -1,0 +1,378 @@
+{% extends "base.html" %}
+
+{% block title %}Панель управления — LabResta Sync{% endblock %}
+
+{% block head %}
+<style>
+    .widget-card .card-body { text-align: center; }
+    .widget-card .stat-number { font-size: 2.2rem; font-weight: 700; line-height: 1.2; }
+    .widget-card .stat-label { font-size: 0.85rem; color: #6c757d; }
+    .status-badge { font-size: 0.75rem; }
+    .journal-error { max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .event-time { font-size: 0.8rem; color: #6c757d; }
+    #syncProgressSection { transition: all 0.3s ease; }
+    .progress-stats { font-size: 0.85rem; }
+    .progress-stats dt { font-weight: 500; }
+    .widget-toggle-menu { min-width: 220px; }
+    .widget-toggle-menu .form-check { padding: 0.25rem 1rem 0.25rem 2.5rem; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0">Панель управления</h4>
+    <div class="dropdown">
+        <button class="btn btn-sm btn-outline-secondary" type="button" id="widgetSettingsBtn"
+                data-bs-toggle="dropdown" aria-expanded="false" title="Настроить виджеты">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"/>
+                <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.892 3.434-.901 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.892-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319z"/>
+            </svg>
+            Настроить виджеты
+        </button>
+        <ul class="dropdown-menu widget-toggle-menu" id="widgetToggleMenu">
+            <li>
+                <div class="form-check">
+                    <input class="form-check-input widget-toggle" type="checkbox" id="toggle-lastSync" data-widget="lastSync" checked>
+                    <label class="form-check-label" for="toggle-lastSync">Последний синк</label>
+                </div>
+            </li>
+            <li>
+                <div class="form-check">
+                    <input class="form-check-input widget-toggle" type="checkbox" id="toggle-matched" data-widget="matched" checked>
+                    <label class="form-check-label" for="toggle-matched">Заматчено</label>
+                </div>
+            </li>
+            <li>
+                <div class="form-check">
+                    <input class="form-check-input widget-toggle" type="checkbox" id="toggle-unmatched" data-widget="unmatched" checked>
+                    <label class="form-check-label" for="toggle-unmatched">Не заматчено</label>
+                </div>
+            </li>
+            <li>
+                <div class="form-check">
+                    <input class="form-check-input widget-toggle" type="checkbox" id="toggle-pendingReview" data-widget="pendingReview" checked>
+                    <label class="form-check-label" for="toggle-pendingReview">Ожидают ревью</label>
+                </div>
+            </li>
+            <li>
+                <div class="form-check">
+                    <input class="form-check-input widget-toggle" type="checkbox" id="toggle-errors" data-widget="errors" checked>
+                    <label class="form-check-label" for="toggle-errors">Ошибки</label>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- Widget Cards -->
+<div class="row g-3 mb-4" id="widgetRow">
+    <div class="col-lg col-md-4 col-sm-6" data-widget-id="lastSync">
+        <div class="card widget-card h-100">
+            <div class="card-body">
+                <div class="stat-number" id="statLastSync">
+                    {% if stats.last_sync_status == 'success' %}
+                        <span class="text-success">OK</span>
+                    {% elif stats.last_sync_status == 'error' %}
+                        <span class="text-danger">ERR</span>
+                    {% elif stats.last_sync_status == 'running' %}
+                        <span class="text-primary">
+                            <div class="spinner-border spinner-border-sm" role="status"></div>
+                        </span>
+                    {% else %}
+                        <span class="text-muted">--</span>
+                    {% endif %}
+                </div>
+                <div class="stat-label">Последний синк</div>
+                <div class="event-time" id="statLastSyncTime">
+                    {{ stats.last_sync_time[:16] if stats.last_sync_time else 'N/A' }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg col-md-4 col-sm-6" data-widget-id="matched">
+        <div class="card widget-card h-100">
+            <div class="card-body">
+                <div class="stat-number text-success" id="statMatched">{{ stats.matched_count }}</div>
+                <div class="stat-label">Заматчено</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg col-md-4 col-sm-6" data-widget-id="unmatched">
+        <div class="card widget-card h-100">
+            <div class="card-body">
+                <div class="stat-number text-warning" id="statUnmatched">{{ stats.unmatched_count }}</div>
+                <div class="stat-label">Не заматчено</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg col-md-4 col-sm-6" data-widget-id="pendingReview">
+        <div class="card widget-card h-100">
+            <div class="card-body">
+                <a href="{{ url_for('matches.review') }}" class="text-decoration-none">
+                    <div class="stat-number text-info" id="statPending">{{ stats.pending_review }}</div>
+                    <div class="stat-label">Ожидают ревью</div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg col-md-4 col-sm-6" data-widget-id="errors">
+        <div class="card widget-card h-100">
+            <div class="card-body">
+                <div class="stat-number {% if stats.errors|length > 0 %}text-danger{% else %}text-muted{% endif %}" id="statErrors">
+                    {{ stats.errors|length }}
+                </div>
+                <div class="stat-label">Ошибки</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Action Row -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="d-flex align-items-center gap-3 flex-wrap">
+            <button type="button" class="btn btn-primary" id="triggerSyncBtn"
+                    {% if stats.sync_running %}disabled{% endif %}>
+                {% if stats.sync_running %}
+                    <span class="spinner-border spinner-border-sm me-1" role="status"></span>
+                    Синхронизация...
+                {% else %}
+                    Запустить синхронизацию
+                {% endif %}
+            </button>
+            <button type="button" class="btn btn-outline-secondary" id="refreshBtn">
+                Обновить данные
+            </button>
+            <span class="text-muted ms-auto" id="countdown">
+                {% if stats.next_sync_seconds is not none %}
+                    Следующий автосинк через: <span id="countdownValue">--</span>
+                {% else %}
+                    Автосинк: расписание не настроено
+                {% endif %}
+            </span>
+        </div>
+    </div>
+</div>
+
+<!-- Sync Progress (hidden by default) -->
+<div class="row mb-4 d-none" id="syncProgressSection">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title mb-3">Прогресс синхронизации</h6>
+                <div class="progress mb-3" style="height: 24px;">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated"
+                         role="progressbar" id="syncProgressBar" style="width: 0%">0%</div>
+                </div>
+                <div class="row progress-stats" id="syncProgressStats">
+                    <div class="col-md-3">
+                        <dl class="mb-0">
+                            <dt>Получено от поставщика</dt>
+                            <dd id="progressFetched">--</dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-3">
+                        <dl class="mb-0">
+                            <dt>Обработано в выгрузку</dt>
+                            <dd id="progressProcessed">--</dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-3">
+                        <dl class="mb-0">
+                            <dt>Ненайденные матчи</dt>
+                            <dd id="progressUnmatched">--</dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-3">
+                        <dl class="mb-0">
+                            <dt>Текущий этап</dt>
+                            <dd id="progressStage">--</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Sync Settings Collapsible -->
+<div class="accordion mb-4" id="syncSettingsAccordion">
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#syncSettingsPanel">
+                Настройки синхронизации
+            </button>
+        </h2>
+        <div id="syncSettingsPanel" class="accordion-collapse collapse">
+            <div class="accordion-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <dl>
+                            <dt>Интервал автосинка</dt>
+                            <dd>4 часа</dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-3">
+                        <dl>
+                            <dt>Порог конфиденса (High)</dt>
+                            <dd>80</dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-3">
+                        <dl>
+                            <dt>Порог конфиденса (Medium)</dt>
+                            <dd>60</dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-3">
+                        <dl>
+                            <dt>Макс. ценовой коэффициент</dt>
+                            <dd>3.0</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Trend Charts -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span>Динамика матчей</span>
+                <select class="form-select form-select-sm" style="width: auto;" id="chartPeriodSelect">
+                    <option value="7">7 дней</option>
+                    <option value="14" selected>14 дней</option>
+                    <option value="30">30 дней</option>
+                    <option value="90">90 дней</option>
+                </select>
+            </div>
+            <div class="card-body">
+                <canvas id="matchesChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">Активность синхронизации</div>
+            <div class="card-body">
+                <canvas id="syncsChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Sync Journal -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h6 class="mb-0">Журнал синхронизации</h6>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-sm table-hover mb-0" id="journalTable">
+                <thead class="table-light">
+                    <tr>
+                        <th>Поставщик</th>
+                        <th>Начало</th>
+                        <th>Завершение</th>
+                        <th>Статус</th>
+                        <th>Получено</th>
+                        <th>Создано</th>
+                        <th>Обновлено</th>
+                        <th>Исчезло</th>
+                        <th>Матчи</th>
+                        <th>Ошибка</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in journal %}
+                    <tr>
+                        <td>{{ entry.supplier }}</td>
+                        <td>{{ entry.started_at[:16] }}</td>
+                        <td>{{ entry.completed_at[:16] if entry.completed_at else '--' }}</td>
+                        <td>
+                            {% if entry.status == 'success' %}
+                                <span class="badge bg-success">success</span>
+                            {% elif entry.status == 'error' %}
+                                <span class="badge bg-danger">error</span>
+                            {% elif entry.status == 'running' %}
+                                <span class="badge bg-primary">running</span>
+                            {% else %}
+                                <span class="badge bg-secondary">{{ entry.status }}</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ entry.products_fetched }}</td>
+                        <td>{{ entry.products_created }}</td>
+                        <td>{{ entry.products_updated }}</td>
+                        <td>{{ entry.products_disappeared }}</td>
+                        <td>{{ entry.match_candidates }}</td>
+                        <td>
+                            {% if entry.error_message %}
+                                <span class="journal-error" title="{{ entry.error_message }}">{{ entry.error_message }}</span>
+                            {% else %}
+                                --
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="10" class="text-center text-muted py-3">Нет записей синхронизации</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Event Feed -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h6 class="mb-0">Последние события</h6>
+    </div>
+    <ul class="list-group list-group-flush" id="eventFeed">
+        {% for entry in journal[:10] %}
+        <li class="list-group-item d-flex align-items-center gap-2">
+            {% if entry.status == 'success' %}
+                <span class="text-success">&#10003;</span>
+            {% elif entry.status == 'error' %}
+                <span class="text-danger">&#10007;</span>
+            {% else %}
+                <span class="text-primary">&#8635;</span>
+            {% endif %}
+            <span>
+                {{ entry.supplier }}:
+                {% if entry.status == 'success' %}
+                    синхронизация завершена ({{ entry.products_fetched }} получено, {{ entry.match_candidates }} матчей)
+                {% elif entry.status == 'error' %}
+                    ошибка синхронизации
+                {% else %}
+                    синхронизация запущена
+                {% endif %}
+            </span>
+            <span class="event-time ms-auto" data-timestamp="{{ entry.started_at }}">
+                {{ entry.started_at[:16] }}
+            </span>
+        </li>
+        {% else %}
+        <li class="list-group-item text-center text-muted">Нет событий</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<script src="{{ url_for('static', filename='js/dashboard-charts.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+<script>
+    // Initialize countdown with server-side value
+    {% if stats.next_sync_seconds is not none %}
+    window._initialCountdownSeconds = {{ stats.next_sync_seconds }};
+    {% endif %}
+</script>
+{% endblock %}
