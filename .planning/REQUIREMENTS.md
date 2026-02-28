@@ -65,22 +65,22 @@ Deferred to future release. Tracked but not in current roadmap.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| EXCEL-01 | — | Pending |
-| EXCEL-02 | — | Pending |
-| EXCEL-03 | — | Pending |
-| EXCEL-04 | — | Pending |
-| MTCH-01 | — | Pending |
-| PRC-01 | — | Pending |
-| UX-01 | — | Pending |
-| UX-02 | — | Pending |
-| CLEAN-01 | — | Pending |
-| CLEAN-02 | — | Pending |
+| EXCEL-01 | Phase 6 | Pending |
+| EXCEL-02 | Phase 6 | Pending |
+| EXCEL-03 | Phase 6 | Pending |
+| EXCEL-04 | Phase 6 | Pending |
+| MTCH-01 | Phase 7 | Pending |
+| PRC-01 | Phase 7 | Pending |
+| UX-01 | Phase 5 | Pending |
+| UX-02 | Phase 5 | Pending |
+| CLEAN-01 | Phase 5 | Pending |
+| CLEAN-02 | Phase 5 | Pending |
 
 **Coverage:**
 - v1.1 requirements: 10 total
-- Mapped to phases: 0
-- Unmapped: 10 ⚠️
+- Mapped to phases: 10
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-01*
-*Last updated: 2026-03-01 after initial definition*
+*Last updated: 2026-03-01 after roadmap creation*
