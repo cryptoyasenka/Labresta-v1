@@ -1,0 +1,246 @@
+{% extends "base.html" %}
+
+{% block title %}Уведомления - LabResta Sync{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Уведомления</h2>
+    <div class="d-flex gap-2">
+        <!-- Global Telegram toggle -->
+        <form method="post" action="{{ url_for('settings.toggle_telegram') }}" class="d-inline">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            {% set any_tg = rules | selectattr('telegram_enabled') | list | length > 0 %}
+            <button type="submit" class="btn btn-{{ 'success' if any_tg else 'outline-secondary' }} btn-sm">
+                Telegram: {{ 'Включены' if any_tg else 'Отключены' }}
+            </button>
+        </form>
+        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createRuleModal">
+            Создать правило
+        </button>
+    </div>
+</div>
+
+<!-- Rules table -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h5 class="mb-0">Правила уведомлений</h5>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover table-sm align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Название</th>
+                        <th>Тип</th>
+                        <th>Критерий</th>
+                        <th class="text-center">Telegram</th>
+                        <th class="text-center">UI</th>
+                        <th class="text-center">Активно</th>
+                        <th>Создал</th>
+                        <th>Дата</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for rule in rules %}
+                    <tr class="{{ 'table-secondary' if not rule.is_active }}">
+                        <td>{{ rule.name }}</td>
+                        <td>
+                            {% if rule.criteria_type == 'keyword' %}
+                                <span class="badge bg-info">Ключевые слова</span>
+                            {% elif rule.criteria_type == 'brand' %}
+                                <span class="badge bg-primary">Бренд</span>
+                            {% elif rule.criteria_type == 'price_range' %}
+                                <span class="badge bg-warning text-dark">Ценовой диапазон</span>
+                            {% elif rule.criteria_type == 'category' %}
+                                <span class="badge bg-secondary">Категория</span>
+                            {% endif %}
+                        </td>
+                        <td><code>{{ rule.criteria_value }}</code></td>
+                        <td class="text-center">
+                            {% if rule.telegram_enabled %}
+                                <span class="badge bg-success">Вкл</span>
+                            {% else %}
+                                <span class="badge bg-danger">Выкл</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            {% if rule.ui_enabled %}
+                                <span class="badge bg-success">Вкл</span>
+                            {% else %}
+                                <span class="badge bg-danger">Выкл</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            {% if rule.is_active %}
+                                <span class="badge bg-success">Да</span>
+                            {% else %}
+                                <span class="badge bg-danger">Нет</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ rule.created_by }}</td>
+                        <td class="text-nowrap small">{{ rule.created_at.strftime('%d.%m.%Y') if rule.created_at else '-' }}</td>
+                        <td class="text-nowrap">
+                            <button class="btn btn-outline-primary btn-sm"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#editRuleModal{{ rule.id }}">Изменить</button>
+                            {% if rule.is_active %}
+                            <form method="post" action="{{ url_for('settings.notification_rule_delete', rule_id=rule.id) }}" class="d-inline">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit" class="btn btn-outline-danger btn-sm"
+                                        onclick="return confirmAction('Деактивировать правило {{ rule.name }}?')">Удалить</button>
+                            </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                    <!-- Edit Rule Modal -->
+                    <div class="modal fade" id="editRuleModal{{ rule.id }}" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form method="post" action="{{ url_for('settings.notification_rule_edit', rule_id=rule.id) }}">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Редактировать правило</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label class="form-label">Название правила</label>
+                                            <input type="text" name="name" class="form-control" value="{{ rule.name }}" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Тип критерия</label>
+                                            <select name="criteria_type" class="form-select">
+                                                <option value="keyword" {% if rule.criteria_type == 'keyword' %}selected{% endif %}>Ключевые слова</option>
+                                                <option value="brand" {% if rule.criteria_type == 'brand' %}selected{% endif %}>Бренд</option>
+                                                <option value="price_range" {% if rule.criteria_type == 'price_range' %}selected{% endif %}>Ценовой диапазон</option>
+                                                <option value="category" {% if rule.criteria_type == 'category' %}selected{% endif %}>Категория</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Значение</label>
+                                            <input type="text" name="criteria_value" class="form-control" value="{{ rule.criteria_value }}" required>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input type="checkbox" name="telegram_enabled" class="form-check-input" id="editTelegram{{ rule.id }}"
+                                                   {% if rule.telegram_enabled %}checked{% endif %}>
+                                            <label class="form-check-label" for="editTelegram{{ rule.id }}">Telegram</label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input type="checkbox" name="ui_enabled" class="form-check-input" id="editUI{{ rule.id }}"
+                                                   {% if rule.ui_enabled %}checked{% endif %}>
+                                            <label class="form-check-label" for="editUI{{ rule.id }}">UI</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" name="is_active" class="form-check-input" id="editActive{{ rule.id }}"
+                                                   {% if rule.is_active %}checked{% endif %}>
+                                            <label class="form-check-label" for="editActive{{ rule.id }}">Активно</label>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if not rules %}
+        <div class="text-center text-muted py-4">
+            <p>Нет правил уведомлений. Создайте первое правило.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Recent notifications -->
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Последние уведомления</h5>
+        <button class="btn btn-outline-secondary btn-sm" id="markAllReadBtn" style="display:none">
+            Отметить прочитанными
+        </button>
+    </div>
+    <div class="card-body p-0">
+        <div class="list-group list-group-flush" id="notificationsList">
+            {% for n in recent_notifications %}
+            <div class="list-group-item {{ '' if n.is_read else 'list-group-item-light' }}" data-notification-id="{{ n.id }}">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        {% if not n.is_read %}
+                        <span class="badge bg-primary me-1">Новое</span>
+                        {% endif %}
+                        {{ n.message }}
+                    </div>
+                    <small class="text-muted text-nowrap ms-2">{{ n.created_at.strftime('%d.%m.%Y %H:%M') if n.created_at else '' }}</small>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if not recent_notifications %}
+        <div class="text-center text-muted py-4">
+            <p>Нет уведомлений</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Create Rule Modal -->
+<div class="modal fade" id="createRuleModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" action="{{ url_for('settings.notification_rule_create') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="modal-header">
+                    <h5 class="modal-title">Создать правило уведомлений</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Название правила</label>
+                        <input type="text" name="name" class="form-control" placeholder="Например: Новые кофемашины" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Тип критерия</label>
+                        <select name="criteria_type" class="form-select" id="criteriaTypeSelect">
+                            <option value="keyword">Ключевые слова</option>
+                            <option value="brand">Бренд</option>
+                            <option value="price_range">Ценовой диапазон</option>
+                            <option value="category">Категория</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Значение</label>
+                        <input type="text" name="criteria_value" class="form-control" id="criteriaValueInput"
+                               placeholder="espresso, latte, кофе" required>
+                        <div class="form-text" id="criteriaHint">Через запятую для нескольких слов</div>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input type="checkbox" name="telegram_enabled" class="form-check-input" id="createTelegram" checked>
+                        <label class="form-check-label" for="createTelegram">Telegram</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" name="ui_enabled" class="form-check-input" id="createUI" checked>
+                        <label class="form-check-label" for="createUI">UI</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Создать</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
+{% endblock %}

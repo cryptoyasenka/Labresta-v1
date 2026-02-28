@@ -1,13 +1,19 @@
-"""Settings blueprint: user management CRUD and sync configuration."""
+"""Settings blueprint: user management CRUD, sync config, and notifications."""
 
 from functools import wraps
 
-from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
+from flask import Blueprint, abort, flash, jsonify, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 from sqlalchemy import select
 
 from app.extensions import db
+from app.models.notification_rule import NotificationRule, Notification
 from app.models.user import User
+from app.services.notification_service import (
+    get_recent_notifications,
+    get_unread_notifications,
+    mark_notifications_read,
+)
 
 settings_bp = Blueprint("settings", __name__)
 
@@ -206,3 +212,165 @@ def sync_settings():
         suppliers=suppliers,
         config=config,
     )
+
+
+# --- Notification Settings ---
+
+
+@settings_bp.route("/notifications")
+@login_required
+@admin_required
+def notifications():
+    """Notification rules management page."""
+    rules = db.session.execute(
+        select(NotificationRule).order_by(NotificationRule.created_at.desc())
+    ).scalars().all()
+    recent = get_recent_notifications(limit=20)
+    return render_template(
+        "settings/notifications.html",
+        rules=rules,
+        recent_notifications=recent,
+    )
+
+
+@settings_bp.route("/notifications/create", methods=["POST"])
+@login_required
+@admin_required
+def notification_rule_create():
+    """Create a new notification rule."""
+    name = request.form.get("name", "").strip()
+    criteria_type = request.form.get("criteria_type", "").strip()
+    criteria_value = request.form.get("criteria_value", "").strip()
+    telegram_enabled = request.form.get("telegram_enabled") == "on"
+    ui_enabled = request.form.get("ui_enabled") == "on"
+
+    # Validation
+    if not name or not criteria_type or not criteria_value:
+        flash("Все поля обязательны", "danger")
+        return redirect(url_for("settings.notifications"))
+
+    valid_types = ("keyword", "brand", "price_range", "category")
+    if criteria_type not in valid_types:
+        flash(f"Недопустимый тип критерия: {criteria_type}", "danger")
+        return redirect(url_for("settings.notifications"))
+
+    rule = NotificationRule(
+        name=name,
+        criteria_type=criteria_type,
+        criteria_value=criteria_value,
+        telegram_enabled=telegram_enabled,
+        ui_enabled=ui_enabled,
+        created_by=current_user.name,
+    )
+    db.session.add(rule)
+    db.session.commit()
+
+    flash(f"Правило \"{name}\" создано", "success")
+    return redirect(url_for("settings.notifications"))
+
+
+@settings_bp.route("/notifications/<int:rule_id>/edit", methods=["POST"])
+@login_required
+@admin_required
+def notification_rule_edit(rule_id):
+    """Edit an existing notification rule."""
+    rule = db.session.get(NotificationRule, rule_id)
+    if not rule:
+        abort(404)
+
+    name = request.form.get("name", "").strip()
+    criteria_type = request.form.get("criteria_type", "").strip()
+    criteria_value = request.form.get("criteria_value", "").strip()
+    telegram_enabled = request.form.get("telegram_enabled") == "on"
+    ui_enabled = request.form.get("ui_enabled") == "on"
+    is_active = request.form.get("is_active") == "on"
+
+    if not name or not criteria_type or not criteria_value:
+        flash("Все поля обязательны", "danger")
+        return redirect(url_for("settings.notifications"))
+
+    valid_types = ("keyword", "brand", "price_range", "category")
+    if criteria_type not in valid_types:
+        flash(f"Недопустимый тип критерия: {criteria_type}", "danger")
+        return redirect(url_for("settings.notifications"))
+
+    rule.name = name
+    rule.criteria_type = criteria_type
+    rule.criteria_value = criteria_value
+    rule.telegram_enabled = telegram_enabled
+    rule.ui_enabled = ui_enabled
+    rule.is_active = is_active
+    db.session.commit()
+
+    flash(f"Правило \"{name}\" обновлено", "success")
+    return redirect(url_for("settings.notifications"))
+
+
+@settings_bp.route("/notifications/<int:rule_id>/delete", methods=["POST"])
+@login_required
+@admin_required
+def notification_rule_delete(rule_id):
+    """Soft-delete a notification rule (set is_active=False)."""
+    rule = db.session.get(NotificationRule, rule_id)
+    if not rule:
+        abort(404)
+
+    rule.is_active = False
+    db.session.commit()
+
+    flash(f"Правило \"{rule.name}\" деактивировано", "success")
+    return redirect(url_for("settings.notifications"))
+
+
+@settings_bp.route("/notifications/toggle-telegram", methods=["POST"])
+@login_required
+@admin_required
+def toggle_telegram():
+    """Toggle Telegram notifications globally for all active rules."""
+    # Get current state: if any rule has telegram on, turn all off; else turn all on
+    active_rules = db.session.execute(
+        select(NotificationRule).where(NotificationRule.is_active == True)  # noqa: E712
+    ).scalars().all()
+
+    any_enabled = any(r.telegram_enabled for r in active_rules)
+    new_state = not any_enabled
+
+    for rule in active_rules:
+        rule.telegram_enabled = new_state
+    db.session.commit()
+
+    status = "включены" if new_state else "отключены"
+    flash(f"Telegram-уведомления {status}", "success")
+    return redirect(url_for("settings.notifications"))
+
+
+# --- Notification API endpoints ---
+
+
+@settings_bp.route("/api/notifications/unread")
+@login_required
+def api_notifications_unread():
+    """JSON endpoint for navbar notification badge polling."""
+    notifications = get_unread_notifications(limit=10)
+    return jsonify([
+        {
+            "id": n.id,
+            "message": n.message,
+            "created_at": n.created_at.strftime("%d.%m.%Y %H:%M") if n.created_at else "",
+            "is_read": n.is_read,
+        }
+        for n in notifications
+    ])
+
+
+@settings_bp.route("/api/notifications/mark-read", methods=["POST"])
+@login_required
+def api_notifications_mark_read():
+    """Mark notifications as read."""
+    data = request.get_json(silent=True) or {}
+    ids = data.get("ids", [])
+    if not ids:
+        return jsonify({"error": "No IDs provided"}), 400
+
+    count = mark_notifications_read(ids)
+    return jsonify({"marked": count})
