@@ -30,15 +30,15 @@
 **Depends on**: Phase 4 (v1.0 complete)
 **Requirements**: CLEAN-01, CLEAN-02, UX-01, UX-02
 **Success Criteria** (what must be TRUE):
-  1. Files `ftp_upload.py` and `yml_test_generator.py` no longer exist in the codebase
+  1. Files `yml_test_generator.py` and `generate_test_yml.py` no longer exist in the codebase (ftp_upload.py intentionally kept per user decision)
   2. Notification badge counter updates on every page (not just the notifications page)
   3. Operator-role user can click the notification bell and see their notifications without a 403 error
   4. Admin-role user still sees the full notification management page as before
-**Plans**: TBD
+**Plans**: 2 plans (Wave 1 — parallel)
 
 Plans:
-- [ ] 05-01: TBD
-- [ ] 05-02: TBD
+- [ ] 05-01-PLAN.md — Dead code cleanup, global badge polling, notification dropdown
+- [ ] 05-02-PLAN.md — Operator notification page access with role-based rendering
 
 ### Phase 6: Excel Supplier Support
 **Goal**: Operators can add Excel/Google Sheets suppliers and sync their product data through the same pipeline as YML suppliers
@@ -82,7 +82,7 @@ Phases execute in numeric order: 5 → 6 → 7
 | 2. Feed Ingestion and Matching Engine | v1.0 | 4/4 | Complete | 2026-02-27 |
 | 3. Pricing Engine and YML Output | v1.0 | 4/4 | Complete | 2026-02-28 |
 | 4. Management UI and Authentication | v1.0 | 7/7 | Complete | 2026-02-28 |
-| 5. Cleanup and UX Fixes | v1.1 | 0/? | Not started | - |
+| 5. Cleanup and UX Fixes | v1.1 | 0/2 | Planned | - |
 | 6. Excel Supplier Support | v1.1 | 0/? | Not started | - |
 | 7. Matching and Pricing Enhancements | v1.1 | 0/? | Not started | - |
 
