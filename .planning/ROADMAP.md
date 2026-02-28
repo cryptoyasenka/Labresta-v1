@@ -73,7 +73,13 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. The dashboard displays last sync time, count of matched products, count of unmatched products, count flagged for review, and any active errors — without navigating away
   4. The admin can trigger a manual sync from the dashboard with one click and see the updated status afterward
   5. The admin can see all supplier products with current prices, and separately see all prom.ua catalog products with no confirmed match
-**Plans**: TBD
+**Plans**: 6 plans
+- [ ] 04-01-PLAN.md — Auth foundation: User model, Flask-Login, CSRF, login/logout, create-admin CLI, base template
+- [ ] 04-02-PLAN.md — Match review table: filtering, sorting, pagination, confirm/reject, bulk actions
+- [ ] 04-03-PLAN.md — Dashboard: widget cards, manual sync trigger, sync journal, auto-refresh polling
+- [ ] 04-04-PLAN.md — Product lists: supplier products, unmatched prom.ua, unmatched supplier products
+- [ ] 04-05-PLAN.md — Advanced match features: manual match modal, match rules, CSV/XLSX export, diff highlighting
+- [ ] 04-06-PLAN.md — Logs section, user management CRUD, sync settings
 
 ## Progress
 
@@ -85,4 +91,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | 1. Foundation and Risk Validation | 0/TBD | Not started | - |
 | 2. Feed Ingestion and Matching Engine | 0/4 | Not started | - |
 | 3. Pricing Engine and YML Output | 2/4 | In progress | - |
-| 4. Management UI and Authentication | 0/TBD | Not started | - |
+| 4. Management UI and Authentication | 0/6 | Not started | - |
