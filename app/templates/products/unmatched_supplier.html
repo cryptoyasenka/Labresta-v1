@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% from "products/_pagination.html" import render_pagination, sort_header %}
+
+{% block title %}Товары поставщика без матча - LabResta Sync{% endblock %}
+
+{% set filter_params = {
+    'supplier_id': supplier_id or '',
+    'brand': brand,
+    'search': search,
+    'per_page': per_page,
+} %}
+{% set page_params = {
+    'supplier_id': supplier_id or '',
+    'brand': brand,
+    'search': search,
+    'per_page': per_page,
+    'sort': sort,
+    'order': order,
+} %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Товары поставщика без матча</h2>
+    <span class="text-muted">Всего: {{ total }} товаров</span>
+</div>
+
+<p class="text-muted mb-3">Товары от поставщика с известным брендом, которых нет в вашем магазине. Рассмотрите возможность добавить их.</p>
+
+{# Filter bar #}
+<form method="GET" action="{{ url_for('products.unmatched_supplier') }}" class="row g-2 mb-3 align-items-end">
+    <div class="col-auto">
+        <label class="form-label small mb-0">Поставщик</label>
+        <select name="supplier_id" class="form-select form-select-sm">
+            <option value="">Все</option>
+            {% for s in suppliers %}
+            <option value="{{ s.id }}" {% if supplier_id == s.id %}selected{% endif %}>{{ s.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-auto">
+        <label class="form-label small mb-0">Бренд</label>
+        <select name="brand" class="form-select form-select-sm">
+            <option value="">Все</option>
+            {% for b in brands %}
+            <option value="{{ b }}" {% if brand == b %}selected{% endif %}>{{ b }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-auto">
+        <label class="form-label small mb-0">Показывать</label>
+        <select name="per_page" class="form-select form-select-sm">
+            {% for pp in [25, 50, 100] %}
+            <option value="{{ pp }}" {% if per_page == pp %}selected{% endif %}>{{ pp }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col">
+        <label class="form-label small mb-0">Поиск</label>
+        <div class="input-group input-group-sm">
+            <input type="text" class="form-control" name="search" value="{{ search }}" placeholder="Название товара...">
+            <button type="submit" class="btn btn-outline-secondary">Найти</button>
+            {% if search or supplier_id or brand %}
+            <a href="{{ url_for('products.unmatched_supplier') }}" class="btn btn-outline-danger">Сбросить</a>
+            {% endif %}
+        </div>
+    </div>
+</form>
+
+{% if products %}
+<div class="table-responsive">
+    <table class="table table-striped table-hover table-sm">
+        <thead class="table-dark">
+            <tr>
+                <th>Поставщик</th>
+                <th>{{ sort_header('Название', 'name', sort, order, 'products.unmatched_supplier', filter_params) }}</th>
+                <th>{{ sort_header('Бренд', 'brand', sort, order, 'products.unmatched_supplier', filter_params) }}</th>
+                <th>{{ sort_header('Модель', 'model', sort, order, 'products.unmatched_supplier', filter_params) }}</th>
+                <th>{{ sort_header('Артикул', 'article', sort, order, 'products.unmatched_supplier', filter_params) }}</th>
+                <th>{{ sort_header('Цена', 'price', sort, order, 'products.unmatched_supplier', filter_params) }}</th>
+                <th>Наличие</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <td>{{ product.supplier.name if product.supplier else '-' }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.brand or '-' }}</td>
+                <td>{{ product.model or '-' }}</td>
+                <td>{{ product.article or '-' }}</td>
+                <td>
+                    {% if product.price_cents is not none %}
+                        {{ "%.2f"|format(product.price_cents / 100) }} {{ product.currency }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td>
+                    {% if product.available %}
+                    <span class="badge bg-success">В наличии</span>
+                    {% else %}
+                    <span class="badge bg-danger">Нет в наличии</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{{ render_pagination(page, total_pages, 'products.unmatched_supplier', page_params) }}
+
+{% else %}
+<div class="text-center py-5">
+    <p class="text-muted fs-5">
+        {% if search %}
+            По запросу "{{ search }}" ничего не найдено.
+        {% else %}
+            Все товары поставщиков имеют подтверждённый матч.
+        {% endif %}
+    </p>
+</div>
+{% endif %}
+{% endblock %}
