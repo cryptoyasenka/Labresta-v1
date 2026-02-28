@@ -96,6 +96,22 @@ def _sync_single_supplier(supplier: Supplier) -> str:
             result["updated"],
         )
 
+        # Notify about new products matching notification rules
+        if result["created"] > 0:
+            try:
+                from app.services.notification_service import check_and_notify
+
+                # Fetch newly created products (last N created for this supplier)
+                new_prods = db.session.execute(
+                    select(SupplierProduct)
+                    .where(SupplierProduct.supplier_id == supplier.id)
+                    .order_by(SupplierProduct.id.desc())
+                    .limit(result["created"])
+                ).scalars().all()
+                check_and_notify(new_prods)
+            except Exception as notify_err:
+                logger.warning("Notification check failed: %s", notify_err)
+
         # Check for reappeared products (after save updates last_seen_at)
         _handle_reappeared_products(supplier.id)
 

@@ -82,8 +82,15 @@ def create_app(config_name="default"):
                 ).scalar()
                 or 0
             )
-            return {"pending_review_count": count}
-        return {"pending_review_count": 0}
+            # Unread notification count for navbar bell
+            from app.services.notification_service import get_unread_count
+
+            unread_count = get_unread_count()
+            return {
+                "pending_review_count": count,
+                "unread_notification_count": unread_count,
+            }
+        return {"pending_review_count": 0, "unread_notification_count": 0}
 
     # Ensure all models are registered with SQLAlchemy before create_all
     from app.models import (  # noqa: F401
@@ -94,6 +101,8 @@ def create_app(config_name="default"):
         SyncRun,
         User,
         MatchRule,
+        NotificationRule,
+        Notification,
     )
 
     # Create tables on first run
