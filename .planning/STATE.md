@@ -23,18 +23,18 @@ See: .planning/PROJECT.md (updated 2026-02-26)
 ## Current Position
 
 Phase: 4 of 4 (Management UI and Authentication)
-Plan: 6 of 7 in current phase (04-05 complete)
+Plan: 7 of 7 in current phase (04-06 complete)
 Status: In Progress
-Last activity: 2026-02-28 — Completed 04-05-PLAN.md (Advanced Match Features)
+Last activity: 2026-02-28 — Completed 04-06-PLAN.md (Logs & Settings)
 
-Progress: [██████████████████░] 94%
+Progress: [███████████████████░] 97%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 16
+- Total plans completed: 17
 - Average duration: 4 min
-- Total execution time: 0.8 hours
+- Total execution time: 0.9 hours
 
 **By Phase:**
 
@@ -43,10 +43,10 @@ Progress: [██████████████████░] 94%
 | 1 | 2 | 8 min | 4 min |
 | 2 | 4 | 18 min | 4.5 min |
 | 3 | 4 | 7 min | 1.8 min |
-| 4 | 5 | 21 min | 4.2 min |
+| 4 | 6 | 25 min | 4.2 min |
 
 **Recent Trend:**
-- Last 5 plans: 04-01 (4 min), 04-02 (3 min), 04-04 (4 min), 04-03 (5 min), 04-05 (5 min)
+- Last 5 plans: 04-02 (3 min), 04-04 (4 min), 04-03 (5 min), 04-05 (5 min), 04-06 (4 min)
 - Trend: Stable
 
 *Updated after each plan completion*
@@ -107,6 +107,9 @@ Recent decisions affecting current work:
 - [04-05]: Character-level diff for name comparison (simple, no LCS needed for MVP)
 - [04-05]: UTF-8 BOM in CSV for Excel Cyrillic compatibility
 - [04-05]: Split.js horizontal panels with 70/30 default ratio
+- [04-06]: Sync settings display-only for MVP -- editing requires app restart
+- [04-06]: admin_required decorator in settings.py for reusable admin-only route protection
+- [04-06]: Last-admin protection prevents demotion when only 1 active admin exists
 
 ### Pending Todos
 
@@ -121,5 +124,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-28
-Stopped at: Completed 04-05-PLAN.md (Advanced Match Features)
-Resume file: .planning/phases/04-management-ui-and-authentication/04-05-SUMMARY.md
+Stopped at: Completed 04-06-PLAN.md (Logs & Settings)
+Resume file: .planning/phases/04-management-ui-and-authentication/04-06-SUMMARY.md
