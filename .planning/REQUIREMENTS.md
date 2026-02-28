@@ -7,8 +7,8 @@
 
 ### Authentication
 
-- [ ] **AUTH-01**: Адмін може увійти в систему за логіном та паролем
-- [ ] **AUTH-02**: Система підтримує 2-3 окремих акаунти (різні логіни)
+- [x] **AUTH-01**: Адмін може увійти в систему за логіном та паролем
+- [x] **AUTH-02**: Система підтримує 2-3 окремих акаунти (різні логіни)
 - [ ] **AUTH-03**: Публічний URL YML-фіду доступний без авторизації (для prom.ua та Хорошопу)
 
 ### Supplier (Постачальники)
@@ -92,8 +92,8 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUTH-01 | Phase 4 | Pending |
-| AUTH-02 | Phase 4 | Pending |
+| AUTH-01 | Phase 4 | Complete |
+| AUTH-02 | Phase 4 | Complete |
 | AUTH-03 | Phase 1 | Pending |
 | SUPP-01 | Phase 1 | Complete |
 | SUPP-02 | Phase 1 | Complete |
