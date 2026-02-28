@@ -51,10 +51,10 @@
 
 ### Dashboard & Logs
 
-- [ ] **DASH-01**: Dashboard відображає статус синхронізації: коли запускалось, скільки оновлено, помилки
-- [ ] **DASH-02**: Dashboard показує лічильники: заматчено / незаматчено / знятих з продажу
-- [ ] **DASH-03**: Адмін може запустити ручну синхронізацію з dashboard
-- [ ] **DASH-04**: Журнал синхронізацій: коли, скільки змінилось (ціни, наявність)
+- [x] **DASH-01**: Dashboard відображає статус синхронізації: коли запускалось, скільки оновлено, помилки
+- [x] **DASH-02**: Dashboard показує лічильники: заматчено / незаматчено / знятих з продажу
+- [x] **DASH-03**: Адмін може запустити ручну синхронізацію з dashboard
+- [x] **DASH-04**: Журнал синхронізацій: коли, скільки змінилось (ціни, наявність)
 - [x] **DASH-05**: Адмін може переглядати всі товари постачальника з поточними цінами та наявністю
 
 ## v2 Requirements
@@ -118,10 +118,10 @@
 | FEED-02 | Phase 3 | Complete |
 | FEED-03 | Phase 3 | Complete |
 | FEED-04 | Phase 3 | Complete |
-| DASH-01 | Phase 4 | Pending |
-| DASH-02 | Phase 4 | Pending |
-| DASH-03 | Phase 4 | Pending |
-| DASH-04 | Phase 4 | Pending |
+| DASH-01 | Phase 4 | Complete |
+| DASH-02 | Phase 4 | Complete |
+| DASH-03 | Phase 4 | Complete |
+| DASH-04 | Phase 4 | Complete |
 | DASH-05 | Phase 4 | Complete |
 
 **Coverage:**
