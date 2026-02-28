@@ -23,10 +23,10 @@
                 {% if current_user.is_authenticated %}
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Панель</a>
+                        <a class="nav-link" href="{{ url_for('dashboard.index') }}">Панель</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{{ url_for('matches.review') }}">
                             Совпадения
                             {% if pending_review_count %}
                             <span class="badge bg-danger">{{ pending_review_count }}</span>
@@ -38,8 +38,11 @@
                             Товары
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Товары поставщиков</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('products.supplier_list') }}">Товары поставщиков</a></li>
                             <li><a class="dropdown-item" href="{{ url_for('catalog.catalog_list') }}">Каталог Prom</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ url_for('products.unmatched_catalog') }}">Каталог без матча</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('products.unmatched_supplier') }}">Поставщик без матча</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">

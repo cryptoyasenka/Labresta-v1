@@ -18,6 +18,9 @@ class SupplierProduct(db.Model):
     available = db.Column(db.Boolean, default=True)
     needs_review = db.Column(db.Boolean, default=False)
     last_seen_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+    last_modified_at = db.Column(db.DateTime, nullable=True)
+    price_forced = db.Column(db.Boolean, default=False, server_default="0")
+    is_deleted = db.Column(db.Boolean, default=False, server_default="0")
 
     supplier = db.relationship("Supplier", backref="products")
 

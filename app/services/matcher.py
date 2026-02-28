@@ -150,6 +150,66 @@ def find_match_candidates(
     return output
 
 
+def find_match_for_product(
+    supplier_product,
+    exclude_prom_ids: list[int] | None = None,
+) -> ProductMatch | None:
+    """Find the best match candidate for a single supplier product.
+
+    Used by the match review UI when a match is rejected and the system
+    needs to find an alternative candidate.
+
+    Args:
+        supplier_product: SupplierProduct instance to match.
+        exclude_prom_ids: List of prom product IDs to exclude (e.g., rejected ones).
+
+    Returns:
+        A new ProductMatch instance (not yet added to session) or None.
+    """
+    prom_all = db.session.execute(select(PromProduct)).scalars().all()
+
+    exclude_set = set(exclude_prom_ids or [])
+    prom_list = [
+        {"id": p.id, "name": p.name, "brand": p.brand, "price": p.price}
+        for p in prom_all
+        if p.id not in exclude_set
+    ]
+
+    if not prom_list:
+        return None
+
+    candidates = find_match_candidates(
+        supplier_product.name,
+        supplier_product.brand,
+        prom_list,
+        supplier_price_cents=supplier_product.price_cents,
+        limit=1,
+    )
+
+    if not candidates:
+        return None
+
+    best = candidates[0]
+
+    # Check if this pair already exists
+    existing = db.session.execute(
+        select(ProductMatch).where(
+            ProductMatch.supplier_product_id == supplier_product.id,
+            ProductMatch.prom_product_id == best["prom_product_id"],
+        )
+    ).scalar_one_or_none()
+
+    if existing:
+        return None
+
+    return ProductMatch(
+        supplier_product_id=supplier_product.id,
+        prom_product_id=best["prom_product_id"],
+        score=best["score"],
+        status="candidate",
+    )
+
+
 def run_matching_for_supplier(supplier_id: int) -> int:
     """Run fuzzy matching for all unmatched products of a supplier.
 

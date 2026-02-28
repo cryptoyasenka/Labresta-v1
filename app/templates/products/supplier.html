@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+{% from "products/_pagination.html" import render_pagination, sort_header %}
+
+{% block title %}Товары поставщика - LabResta Sync{% endblock %}
+
+{% set filter_params = {
+    'supplier_id': supplier_id or '',
+    'available': available,
+    'needs_review': needs_review,
+    'search': search,
+    'per_page': per_page,
+} %}
+{% set page_params = {
+    'supplier_id': supplier_id or '',
+    'available': available,
+    'needs_review': needs_review,
+    'search': search,
+    'per_page': per_page,
+    'sort': sort,
+    'order': order,
+} %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Товары поставщика</h2>
+    <span class="text-muted">Всего: {{ total }} товаров</span>
+</div>
+
+{# Filter bar #}
+<form method="GET" action="{{ url_for('products.supplier_list') }}" class="row g-2 mb-3 align-items-end">
+    <div class="col-auto">
+        <label class="form-label small mb-0">Поставщик</label>
+        <select name="supplier_id" class="form-select form-select-sm">
+            <option value="">Все</option>
+            {% for s in suppliers %}
+            <option value="{{ s.id }}" {% if supplier_id == s.id %}selected{% endif %}>{{ s.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-auto">
+        <label class="form-label small mb-0">Наличие</label>
+        <select name="available" class="form-select form-select-sm">
+            <option value="all" {% if available == 'all' %}selected{% endif %}>Все</option>
+            <option value="yes" {% if available == 'yes' %}selected{% endif %}>В наличии</option>
+            <option value="no" {% if available == 'no' %}selected{% endif %}>Нет в наличии</option>
+        </select>
+    </div>
+    <div class="col-auto">
+        <label class="form-label small mb-0">Ревью</label>
+        <select name="needs_review" class="form-select form-select-sm">
+            <option value="all" {% if needs_review == 'all' %}selected{% endif %}>Все</option>
+            <option value="yes" {% if needs_review == 'yes' %}selected{% endif %}>Требует ревью</option>
+            <option value="no" {% if needs_review == 'no' %}selected{% endif %}>Без ревью</option>
+        </select>
+    </div>
+    <div class="col-auto">
+        <label class="form-label small mb-0">Показывать</label>
+        <select name="per_page" class="form-select form-select-sm">
+            {% for pp in [25, 50, 100] %}
+            <option value="{{ pp }}" {% if per_page == pp %}selected{% endif %}>{{ pp }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col">
+        <label class="form-label small mb-0">Поиск</label>
+        <div class="input-group input-group-sm">
+            <input type="text" class="form-control" name="search" value="{{ search }}" placeholder="Название товара...">
+            <button type="submit" class="btn btn-outline-secondary">Найти</button>
+            {% if search or supplier_id or available != 'all' or needs_review != 'all' %}
+            <a href="{{ url_for('products.supplier_list') }}" class="btn btn-outline-danger">Сбросить</a>
+            {% endif %}
+        </div>
+    </div>
+</form>
+
+{% if products %}
+<div class="table-responsive">
+    <table class="table table-striped table-hover table-sm">
+        <thead class="table-dark">
+            <tr>
+                <th>{{ sort_header('Поставщик', 'name', sort, order, 'products.supplier_list', filter_params) }}</th>
+                <th>{{ sort_header('Название', 'name', sort, order, 'products.supplier_list', filter_params) }}</th>
+                <th>{{ sort_header('Бренд', 'brand', sort, order, 'products.supplier_list', filter_params) }}</th>
+                <th>{{ sort_header('Модель', 'model', sort, order, 'products.supplier_list', filter_params) }}</th>
+                <th>{{ sort_header('Артикул', 'article', sort, order, 'products.supplier_list', filter_params) }}</th>
+                <th>{{ sort_header('Цена', 'price', sort, order, 'products.supplier_list', filter_params) }}</th>
+                <th>Наличие</th>
+                <th>Статус</th>
+                <th>{{ sort_header('Обновлено', 'last_seen_at', sort, order, 'products.supplier_list', filter_params) }}</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr id="product-row-{{ product.id }}" {% if product.is_deleted %}class="table-secondary"{% endif %}>
+                <td>{{ product.supplier.name if product.supplier else '-' }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.brand or '-' }}</td>
+                <td>{{ product.model or '-' }}</td>
+                <td>{{ product.article or '-' }}</td>
+                <td>
+                    {% if product.price_cents is not none %}
+                        {{ "%.2f"|format(product.price_cents / 100) }} {{ product.currency }}
+                    {% else %}
+                        -
+                    {% endif %}
+                    {% if product.price_forced %}
+                    <span class="badge bg-info">Принудительная</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if product.available %}
+                    <span class="badge bg-success">В наличии</span>
+                    {% else %}
+                    <span class="badge bg-danger">Нет в наличии</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if product.needs_review %}
+                    <span class="badge bg-warning text-dark">Ревью</span>
+                    {% endif %}
+                    {% if product.last_modified_at %}
+                    <span class="badge bg-warning text-dark" title="Обновлено: {{ product.last_modified_at.strftime('%d.%m.%Y %H:%M') }}">Изменен</span>
+                    {% endif %}
+                    {% if product.is_deleted %}
+                    <span class="badge bg-secondary">Удален</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if product.last_seen_at %}
+                        {{ product.last_seen_at.strftime('%d.%m.%Y %H:%M') }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td class="text-nowrap">
+                    {% if not product.is_deleted %}
+                    {% if product.available %}
+                    <button class="btn btn-outline-warning btn-sm" onclick="markUnavailable({{ product.id }})" title="Отметить как отсутствующий">
+                        Нет в наличии
+                    </button>
+                    {% else %}
+                    <button class="btn btn-outline-success btn-sm" onclick="markAvailable({{ product.id }})" title="Отметить как в наличии">
+                        В наличии
+                    </button>
+                    {% endif %}
+                    <button class="btn btn-outline-primary btn-sm" onclick="showForcePrice({{ product.id }}, {{ product.price_cents or 0 }})" title="Установить цену">
+                        Цена
+                    </button>
+                    <button class="btn btn-outline-danger btn-sm" onclick="deleteProduct({{ product.id }})" title="Удалить товар">
+                        Удалить
+                    </button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{{ render_pagination(page, total_pages, 'products.supplier_list', page_params) }}
+
+{# Force price modal #}
+<div class="modal fade" id="forcePriceModal" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Установить цену</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="forcePriceProductId">
+                <div class="mb-3">
+                    <label class="form-label">Цена (UAH)</label>
+                    <input type="number" class="form-control" id="forcePriceValue" step="0.01" min="0">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-primary" onclick="submitForcePrice()">Сохранить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
+<div class="text-center py-5">
+    <p class="text-muted fs-5">
+        {% if search %}
+            По запросу "{{ search }}" ничего не найдено.
+        {% else %}
+            Товары поставщиков не найдены.
+        {% endif %}
+    </p>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/products.js') }}"></script>
+{% endblock %}
