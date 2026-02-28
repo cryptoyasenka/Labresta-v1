@@ -1,8 +1,14 @@
 # Feature Research
 
-**Domain:** Supplier XML/YML feed sync tool for Ukrainian marketplaces (prom.ua / Horoshop)
-**Researched:** 2026-02-26
-**Confidence:** MEDIUM (network access unavailable; findings based on training data + project context analysis; key claims flagged)
+**Domain:** Excel/Google Sheets supplier feed support + tech debt cleanup for existing price sync app
+**Researched:** 2026-03-01
+**Confidence:** HIGH (based on full codebase read + domain knowledge of openpyxl patterns and existing code contracts)
+
+---
+
+> **Scope note:** This file covers v1.1 ONLY. v1.0 features are fully shipped and not repeated here.
+> The five v1.1 work items are: Excel parser, MatchRule auto-apply, per-product discount UI,
+> notification bell fix (operators), dead code removal.
 
 ---
 
@@ -10,140 +16,200 @@
 
 ### Table Stakes (Users Expect These)
 
-Features the operator of a sync tool assumes exist. Missing these = tool is not usable.
+Features expected in any production-quality Excel supplier integration. Missing these = the Excel
+parser is not usable or produces silent incorrect results.
 
 | Feature | Why Expected | Complexity | Notes |
 |---------|--------------|------------|-------|
-| YML feed ingestion from URL | Core function — supplier feed must be fetched by URL | LOW | HTTP GET + XML parse. prom.ua suppliers publish standard Yandex YML format. Confidence: HIGH |
-| Scheduled feed refresh | Prices change daily; stale data defeats the purpose | LOW | Cron or interval-based scheduler. prom.ua re-imports every 4h, so refresh must be at most 4h | Confidence: HIGH |
-| Generated YML output at stable URL | prom.ua reads YML from a URL on a schedule — this IS the integration mechanism | MEDIUM | Must be publicly accessible, stable URL. Confidence: HIGH |
-| Price field in output YML | prom.ua import maps "price" field — required for price sync | LOW | Direct from supplier after markup calculation. Confidence: HIGH |
-| Availability / stock field in output | prom.ua maps "available" field — required for in/out-of-stock sync | LOW | Map supplier availability signal to prom.ua's boolean "available". Confidence: HIGH |
-| Product matching UI | 6,100+ products, no article codes — operator must review and confirm matches | HIGH | Most complex part of the system. See differentiators for fuzzy-match assist. Confidence: HIGH |
-| Confirmed mapping persistence | Matches must survive feed refresh cycles | LOW | DB table: supplier_product_id ↔ store_product_id. Confidence: HIGH |
-| Supplier management (CRUD) | Multiple suppliers with different URLs, discount rules | LOW | Simple admin form: URL, name, discount %, enabled toggle. Confidence: HIGH |
-| Per-supplier discount/markup rule | Each supplier has different wholesale margin to apply | LOW | final_price = supplier_price * (1 - discount%). Confidence: HIGH |
-| Sync status dashboard | Operator needs to verify the tool is running correctly | MEDIUM | Last sync time, match counts, error count, output feed freshness. Confidence: HIGH |
-| Error visibility / basic logging | Feed fetch failures, parse errors must be visible — not silent | MEDIUM | Structured log per sync run: timestamp, supplier, items processed, errors. Confidence: HIGH |
-| Handling of discontinued products | Items in prom.ua store but absent from supplier feed — must not silently zero out | MEDIUM | Configurable behavior: keep last known, mark unavailable, or flag for review. Confidence: HIGH |
+| Read .xlsx files | Google Sheets exports .xlsx by default; openpyxl already in stack (`export_service.py`) | LOW | `openpyxl.load_workbook(file_bytes, read_only=True)` — read-only mode is critical for performance on large sheets |
+| Header row auto-detection | Supplier sheets do not use row 1 consistently; many have logo/title rows above data | MEDIUM | Scan first 10 rows for a row where the majority of cells look like column labels (non-numeric strings). Fall back to row 1. |
+| Column mapping by keyword | Ukrainian/Russian suppliers label columns inconsistently: "Назва", "Наименование", "Товар", "Ціна", "Вартість" | MEDIUM | Fuzzy-match column headers against known keyword sets for name, price, availability. Flag unmapped required columns as parse error. |
+| Name column extraction (required) | Every supplier product must have a name — the primary key for fuzzy matching | LOW | Required column. Parse error if absent. Maps to `SupplierProduct.name`. |
+| Price column extraction (required) | Price is the core sync data | LOW | Required column. Must handle: float strings ("1234.56"), comma decimals ("1 234,56"), currency symbols stripped. Convert to integer cents. |
+| Availability column extraction (optional) | Some sheets have in-stock column; many do not | LOW | Optional. If absent, default all rows to `available=True`. Boolean detection: "+" / "є" / "yes" / "1" / "в наявності" → True. Empty / "0" / "немає" → False. |
+| Skip empty rows | Excel sheets often have blank rows between sections | LOW | Skip rows where name cell is blank or whitespace only. |
+| Synthetic external_id generation | Excel rows have no `offer id` equivalent (unlike YML `<offer id="...">`) | MEDIUM | Generate deterministic external_id from row content: `sha256(supplier_id + name + brand)[:16]`. This ensures upsert stability across re-imports without requiring article column. |
+| Google Sheets export URL support | Next supplier provides Google Sheets link; must convert to download URL | MEDIUM | Detect `docs.google.com/spreadsheets` URL → transform to `/export?format=xlsx`. Existing `fetch_feed_with_retry` handles the actual HTTP fetch. |
+| Parse error reporting | Silent parse failures leave supplier with stale/missing data | LOW | Return structured error list: which rows failed and why. Show in flash message and SyncRun log. |
+| Feed type detection on Supplier model | System must know whether to call `parse_supplier_feed` (YML) or future `parse_excel_feed` (Excel) | LOW | Add `feed_type` column to `Supplier` model: `"yml"` (default) or `"excel"`. Supplier add/edit form gets a type selector. |
 
 ---
 
 ### Differentiators (Competitive Advantage)
 
-Features that distinguish this tool from a naive cron+script approach or generic feed tools. Aligned with the core challenge: fuzzy matching at scale.
+Features that make Excel parsing robust beyond the minimum viable. Not required for v1.1 to ship,
+but the ones most likely to be needed within the first real Excel supplier sync cycle.
 
 | Feature | Value Proposition | Complexity | Notes |
 |---------|-------------------|------------|-------|
-| Fuzzy match candidate suggestions | Brand + model extraction from freeform names; ranks likely matches rather than dumping raw lists | HIGH | Core IP of this tool. Levenshtein / token-based similarity on normalized names. Without this, operator manually reviews 6,100 rows. Confidence: MEDIUM (algorithm design is custom) |
-| Normalized name tokens for matching | Pre-process supplier names and store names into comparable tokens (strip stopwords, normalize Cyrillic/Latin, extract brand + model number) | HIGH | Key to reducing false-positive matches. "стол холодильний 3 двері" vs "холодильний стол трьохдверний" → same brand+model extracted. Confidence: HIGH |
-| Confidence score display per match | Show operator how confident the auto-match is (high/medium/low) before confirming | MEDIUM | Threshold-based auto-confirm for HIGH confidence matches; manual review queue for MEDIUM/LOW | Confidence: MEDIUM |
-| Bulk match confirmation | Review and confirm/reject multiple candidate matches in one session | MEDIUM | Table with checkboxes + batch confirm/reject. Saves hours vs row-by-row. Confidence: HIGH |
-| "Changed since last sync" log | Show operator exactly which prices/availability changed in last run | MEDIUM | Diff against previous snapshot. Reduces anxiety: "did it actually update?" | Confidence: HIGH |
-| Unmapped product queue | Dedicated view: supplier items with no confirmed match, sorted by similarity score | MEDIUM | Operator can prioritize which unmatched items to resolve first. Confidence: HIGH |
-| Manual override mapping | Operator can force-link any supplier item to any store product, bypassing fuzzy logic | LOW | Critical escape hatch — needed when names differ too much. Confidence: HIGH |
-| Per-supplier field mapping config | Each supplier's YML may use different field names or conventions | MEDIUM | Config: which XPath/field is "price", "availability", "brand", "model". Rozetka vs prom.ua supplier feeds differ. Confidence: MEDIUM |
-| Feed output field selection | Control which fields go into the output YML (price only? price + availability? + name?) | LOW | prom.ua import lets you choose which fields to update; tool should match that. Confidence: HIGH |
-| Staleness alerting | Notify if a supplier feed hasn't refreshed in N hours (supplier-side outage) | LOW | Simple threshold check: if last_fetched_at > threshold, flag in dashboard. Confidence: HIGH |
+| Per-supplier column mapping config | Different suppliers use different column names — store the mapping after first setup so re-syncs don't re-detect | MEDIUM | Store as JSON on `Supplier` model: `column_map = {"name": "Назва", "price": "Ціна без ПДВ", "available": null}`. UI shows detected + confirmed mapping. |
+| Brand column extraction | If sheet has a brand column, populate `SupplierProduct.brand` for better fuzzy match blocking | LOW | Optional. If present, maps to `SupplierProduct.brand`. If absent, brand stays NULL (matcher falls back to no-brand-filter mode — already supported). |
+| Article/SKU column extraction | If sheet has article/SKU, store it for potential exact-match override later | LOW | Optional. Maps to `SupplierProduct.article`. No current consumer, but costs nothing to capture. |
+| Multi-sheet workbook support | Some suppliers put products on Sheet 2 or use multiple sheets | MEDIUM | Default: first sheet. Config option to specify sheet name or index. |
+| Price "without VAT" handling | Ukrainian B2B suppliers often provide ex-VAT prices; retail price = price * 1.2 | MEDIUM | Optional per-supplier VAT flag. If `include_vat=True`, multiply price by 1.2 before storing. Stored in cents before multiplication. |
 
 ---
 
 ### Anti-Features (Commonly Requested, Often Problematic)
 
-Features that seem natural to request but create disproportionate complexity or risk for v1.
-
 | Feature | Why Requested | Why Problematic | Alternative |
 |---------|---------------|-----------------|-------------|
-| Auto-add new supplier products to prom.ua catalog | "Why not import everything automatically?" | Creates unreviewed products in live store; product data quality (descriptions, categories, images) requires human judgment; prom.ua has moderation. PROJECT.md explicitly excludes this. | Keep new products in "unmatched" queue; operator adds to store manually then matches |
-| Direct prom.ua API writes (price updates via API) | Faster than waiting 4h for YML re-import | API coupling locks tool to prom.ua; breaks Horoshop migration goal; API has rate limits and auth complexity; YML approach is explicitly chosen. | YML file output — platform-agnostic, explicitly chosen in PROJECT.md |
-| Real-time price sync (sub-minute) | "I want instant price updates" | Supplier feeds don't update in real-time; prom.ua re-imports on 4h cycle anyway; polling faster than 1h is waste and may hit supplier rate limits | 1-4h schedule is sufficient for the use case |
-| Auto-resolve fuzzy match conflicts | "Let AI decide uncertain matches automatically" | False positives at scale corrupt live product data; a 95%-confident wrong match updates wrong product's price | Always require human confirmation for medium/low confidence; only auto-confirm HIGH confidence |
-| Multi-store / multi-account support | Seems like natural growth path | Adds multi-tenancy complexity (data isolation, auth, billing) before core is validated; this is a single-store internal tool | Single-store only for v1; if needed, run separate instances |
-| Historical price analytics / charts | "Show me price trends" | Data warehousing, charting library, retention policy — none of this adds sync value | Keep a simple change log (what changed in last N syncs); full analytics is a separate product |
-| Automatic image sync from supplier | Suppliers have images in YML | Image handling (download, store, serve, dedup) is a separate complexity domain; prom.ua has its own image hosting | Sync price + availability only; images managed manually |
-| Bulk product rename / description sync | Supplier names might be "better" | Overwrites carefully curated store product data; catastrophic if wrong | Only sync price and availability; name/description edits are manual |
+| Auto-detect sheet structure with LLM/AI | "Just figure out which columns are name and price" | Adds external API dependency, latency, cost; fails on edge cases silently; keyword matching works for 95% of real supplier sheets | Keyword-based column detection with per-supplier override config |
+| Support .xls (old Excel format) | Some older suppliers use .xls | xlrd library needed (not in stack); security concerns (xlrd had CVEs); Google Sheets exports as .xlsx anyway | Tell supplier to export as .xlsx or use Google Sheets link. Document explicitly. |
+| CSV support | "Supplier gives CSV" | Encoding hell (cp1251 vs utf-8, semicolon vs comma delimiters) on top of Excel parsing complexity | Defer to v1.2; focus on .xlsx which Google Sheets handles well |
+| Real-time sheet polling | "Check for changes every 5 minutes" | Google Sheets rate limits; prom.ua re-imports every 4h anyway; existing scheduler is 4h | Same 4h schedule as YML suppliers. No change needed. |
+| Automatic column mapping with no review | Map detected columns without showing operator what was found | Silent misconfiguration produces wrong prices in live store | Always show detected mapping to operator on first sync; require confirmation before storing |
+
+---
+
+### MatchRule Auto-Apply
+
+This is a standalone tech debt item, not Excel-specific.
+
+**Current state:** `MatchRule` rows are created when operator checks "remember" during manual match
+(`matches.py:manual_match`). The rule stores `(supplier_product_name_pattern, supplier_brand,
+prom_product_id)`. But `run_matching_for_supplier` in `matcher.py` never consults the rules table.
+Rules are stored and displayed in the rules UI but produce no behavior.
+
+**Expected behavior in any matching system with a rules engine:** Rules are checked before fuzzy
+matching. A product whose name matches a rule is auto-confirmed (bypassing the candidate queue),
+not just offered as a candidate.
+
+| Behavior | Why Expected | Complexity | Notes |
+|----------|--------------|------------|-------|
+| Rule lookup before fuzzy matching | If an exact rule exists, the match is known — no need to queue for review | LOW | In `run_matching_for_supplier`: for each unmatched SupplierProduct, check `MatchRule` where `supplier_product_name_pattern == sp.name` and `supplier_brand == sp.brand` (or brand is NULL). If found and `is_active=True`, create `ProductMatch` with `status="manual"` (auto-confirmed), skip fuzzy step for that product. |
+| Rule match creates confirmed ProductMatch | Auto-applied rules produce production-ready matches, not candidates | LOW | Same `status="manual"` as a human-confirmed manual match — goes directly into YML output on next regeneration. |
+| Rule match does not overwrite existing confirmed match | If product already has a confirmed/manual match, rule is skipped | LOW | Matches already excluded by the `matched_ids` query at the top of `run_matching_for_supplier`. No extra logic needed. |
+| Rule match logged | Operator should be able to see how many matches came from rules vs fuzzy | LOW | Log line: "Rule applied: supplier_product.name -> prom_product_id=%d". Count separately from fuzzy candidates in SyncRun or log output. |
+
+**Implementation location:** `app/services/matcher.py` — `run_matching_for_supplier`. Add rule
+lookup loop before the existing fuzzy matching loop. Requires `select(MatchRule).where(...)` query.
+
+---
+
+### Per-Product Discount UI
+
+**Current state:** `ProductMatch.discount_percent` column exists in DB and is respected by the
+pricing engine (`pricing.py` presumably checks it). But no UI writes it — the field is always NULL,
+so the supplier default always applies.
+
+| Feature | Why Expected | Complexity | Notes |
+|---------|--------------|------------|-------|
+| Discount field in match review UI | Per-product discount is already modeled; the UI just needs an input | LOW | Add inline editable discount field to the match review table row (or match detail). AJAX POST to a new endpoint. |
+| Per-product discount endpoint | Write `ProductMatch.discount_percent` | LOW | `PATCH /matches/<id>/discount` — accepts `{"discount_percent": float or null}`. NULL clears the override, restoring supplier default. |
+| Discount display in match list | Operator needs to see current effective discount at a glance | LOW | Show "15% (supplier default)" or "22% (override)" in the match row. |
+| Discount validation | Prevent nonsense values | LOW | 0.0 to 99.9 range. Reject negative or > 100. |
+
+**Dependency:** Check that `pricing.py` already reads `ProductMatch.discount_percent` and falls back
+to `Supplier.discount_percent` when NULL. If not, that's a pricing bug that must be fixed alongside
+the UI.
+
+---
+
+### Notification Bell Fix (Operators Get 403)
+
+**Root cause (confirmed from code):**
+
+1. `base.html` renders the bell icon for ALL authenticated users and links it to
+   `url_for('settings.notifications')`.
+2. `settings.notifications` has `@admin_required` decorator, which aborts with 403 for operators.
+3. `notifications.js` is not in `base.html`'s global script block — it's only loaded on pages that
+   explicitly include it in `{% block scripts %}`. The badge polling (`updateNavbarBadge()`) only
+   runs on those pages.
+
+| Fix | What Changes | Complexity | Notes |
+|-----|--------------|------------|-------|
+| Operator-accessible notification view | Create `/settings/my-notifications` route without `@admin_required`; operators see only their unread notifications, not rule management | LOW | New route in `settings.py`. Renders a simplified template (no rule CRUD). Bell links to this for operators, to full notifications page for admins. |
+| notifications.js globally loaded | Move `notifications.js` include into `base.html` (below `common.js`) | LOW | Badge polling currently only works on pages that load notifications.js. Must be global for the bell to update on all pages. |
+| Bell link adapts to role | `base.html` navbar: `href="{{ url_for('settings.my_notifications') if not current_user.is_admin else url_for('settings.notifications') }}"` | LOW | Single template change. |
+
+---
+
+### Dead Code Removal
+
+| File | Why Dead | Risk to Remove | Notes |
+|------|----------|----------------|-------|
+| `app/services/ftp_upload.py` | FTP upload was an early approach for publishing YML. Replaced by serving directly from Flask (`/feed/yml`). No imports anywhere in codebase. | ZERO | Delete file. No tests reference it. Grep confirms no callers. |
+| `app/services/yml_test_generator.py` | Test utility for generating a sample YML with selected products. Never called from production code or CLI. No tests reference it. | ZERO | Delete file. Uses `db.session.query` (legacy style) — another reason to remove rather than maintain. |
 
 ---
 
 ## Feature Dependencies
 
 ```
-[Supplier Management (CRUD)]
-    └──required by──> [Feed Ingestion Scheduler]
-                          └──required by──> [Price Calculation Engine]
-                                                └──required by──> [YML Output Generator]
-                                                                      └──required by──> [prom.ua auto-import]
+[Supplier.feed_type column (migration)]
+    └──required by──> [Excel parser dispatch in sync_pipeline.py]
+                          └──required by──> [parse_excel_feed() service]
+                                                └──requires──> [column mapping config]
+                                                └──requires──> [synthetic external_id generation]
 
-[Feed Ingestion Scheduler]
-    └──required by──> [Sync Log / Change Diff]
+[Google Sheets URL detection]
+    └──feeds into──> [fetch_feed_with_retry() — existing, no change]
+                          └──feeds into──> [parse_excel_feed()]
 
-[Store Product Catalog (imported/cached from prom.ua export)]
-    └──required by──> [Fuzzy Match Candidate Engine]
-                          └──required by──> [Matching UI]
-                                                └──required by──> [Confirmed Mapping Store]
-                                                                      └──required by──> [YML Output Generator]
+[MatchRule auto-apply in run_matching_for_supplier]
+    └──depends on──> [MatchRule model — existing, no change]
+    └──produces──> [ProductMatch with status="manual" — existing status, no change]
 
-[Confirmed Mapping Store]
-    └──required by──> [Unmapped Product Queue]
-    └──required by──> [Discontinued Product Handler]
+[ProductMatch.discount_percent UI]
+    └──depends on──> [ProductMatch.discount_percent column — existing, no change]
+    └──depends on──> [pricing.py reading discount_percent — must verify]
 
-[Fuzzy Match Candidate Engine]
-    └──enhances──> [Manual Override Mapping]
+[notifications.js global load in base.html]
+    └──required by──> [bell badge polling on all pages]
 
-[Sync Log]
-    └──enhances──> [Staleness Alerting]
-    └──enhances──> [Dashboard]
+[operator notification route]
+    └──depends on──> [notification_service.get_unread_notifications() — existing, no change]
 ```
 
 ### Dependency Notes
 
-- **YML Output requires Confirmed Mapping Store:** The output feed can only include products with a confirmed supplier↔store link. Without mappings, there's nothing to output.
-- **Fuzzy Match Engine requires Store Catalog:** Matching candidates against prom.ua products requires a local copy of the store's product list (name, brand, model). This is a one-time import (from prom.ua export CSV or API) that must happen before any matching work begins.
-- **Scheduler requires Supplier Management:** You cannot run scheduled fetches until at least one supplier with a valid URL is configured.
-- **Change Diff requires previous snapshot:** The "changed since last sync" log requires storing the previous sync's price/availability values to compute a diff.
-- **YML Output requires Price Calculation Engine:** Raw supplier prices must be transformed by the per-supplier discount rule before output.
-- **Manual Override enhances Fuzzy Match:** The override is the fallback when the fuzzy engine produces no acceptable candidates; both feed the same Confirmed Mapping Store.
+- **Excel parser requires `feed_type` migration first:** The `Supplier` model needs a `feed_type`
+  column before the parser dispatch can work. This is a one-line Alembic migration (or `db.create_all` if using auto-create). Must be Phase 1 of the Excel work.
+
+- **MatchRule auto-apply has no external dependencies:** The `MatchRule` model, the `run_matching_for_supplier` function, and the `ProductMatch` statuses are all already in place. This is purely adding a query + loop to `matcher.py`. Lowest-risk change in v1.1.
+
+- **Discount UI depends on pricing engine behavior:** Before adding the UI, verify that
+  `pricing.py` applies `ProductMatch.discount_percent` when non-NULL and falls back to
+  `Supplier.discount_percent` when NULL. If this is already working (likely, given the column was
+  added with intent), the UI is trivial. If not, the pricing logic must be fixed first.
+
+- **Notification bell fix has two independent parts:** Loading `notifications.js` globally and
+  creating the operator route are independent changes. Either can ship first.
+
+- **Dead code removal has zero dependencies:** Delete and done. No ordering constraint.
 
 ---
 
 ## MVP Definition
 
-### Launch With (v1)
+### Launch With (v1.1)
 
-Minimum required to replace the current manual process and validate the core value proposition.
+All five items are the v1.1 MVP. None are optional — they are the explicit goal of the milestone.
 
-- [ ] **Supplier CRUD** — Add/edit/disable suppliers with URL and discount %. Required before anything else.
-- [ ] **Feed ingestion + YML parse** — Fetch supplier YML, extract product id, name, price, availability. Core pipe.
-- [ ] **Scheduled fetch** — Cron at 1h or 2h interval. Without this it's manual-only.
-- [ ] **Store catalog import** — One-time import of prom.ua product list (CSV or manual paste) to enable matching. The fuzzy engine needs something to match against.
-- [ ] **Fuzzy match candidates** — Auto-propose match candidates from store catalog for each supplier product (brand + model token similarity). The key differentiator — without this, mapping 150 products is tedious; with 5 suppliers it's impossible.
-- [ ] **Matching UI: review + confirm/reject** — Web UI to review candidates, confirm or reject, manual override. The operator's primary daily-use screen.
-- [ ] **Confirmed mapping store** — DB table persisting supplier_item ↔ store_product links.
-- [ ] **Price calculation engine** — Apply per-supplier discount to supplier price.
-- [ ] **YML output generation** — Produce valid prom.ua-compatible YML at a stable URL.
-- [ ] **Sync log (basic)** — Last sync time, count of matched/unmatched, fetch errors. Minimum dashboard needed to know if it's working.
-- [ ] **Discontinued product handler** — When a supplier item disappears from feed: mark as unavailable in output YML (not silently remove). Prevents ghost listings.
+- [x] **Excel parser** (`parse_excel_feed` service, `Supplier.feed_type` column, Google Sheets URL
+      transform, column mapping, synthetic external_id). MEDIUM complexity overall.
+- [x] **MatchRule auto-apply** (add rule lookup to `run_matching_for_supplier`). LOW complexity.
+- [x] **Per-product discount UI** (AJAX endpoint + inline input in match review). LOW complexity.
+- [x] **Notification bell operator fix** (operator route + global JS load). LOW complexity.
+- [x] **Dead code removal** (`ftp_upload.py`, `yml_test_generator.py`). ZERO complexity.
 
-### Add After Validation (v1.x)
+### Add After Validation (v1.1+)
 
-Once the core sync → match → output loop is proven with MARESTO:
+These arise naturally after the first real Excel supplier is connected:
 
-- [ ] **Second supplier onboarding** — Validates that per-supplier config generalizes. Add once first supplier is fully matched.
-- [ ] **Change diff log** — "What changed in last sync" view. Add when operator asks "did it actually update prices?"
-- [ ] **Bulk match confirmation** — Add once the per-row review becomes tedious at scale (second supplier).
-- [ ] **Confidence score display** — Add when operator wants to know which matches to trust vs verify.
-- [ ] **Staleness alerting** — Add when supplier feeds have been unreliable.
-- [ ] **Per-supplier field mapping config** — Add when second supplier has a different YML structure.
+- [ ] **Per-supplier column mapping config (stored JSON)** — Add after first Excel supplier is
+      synced and the detected mapping is confirmed correct. Then store it so next sync doesn't
+      re-detect.
+- [ ] **VAT toggle per supplier** — Add when a supplier provides ex-VAT prices and the operator
+      notices prices are wrong.
+- [ ] **Multi-sheet config** — Add when a supplier's data is on Sheet 2.
 
 ### Future Consideration (v2+)
 
-Defer until product-market fit with current single store:
-
-- [ ] **Horoshop output format** — YML is compatible now; Horoshop-specific fields (if any differ) only when migration is imminent.
-- [ ] **Email / webhook alerts on sync errors** — Nice-to-have; dashboard check is sufficient initially.
-- [ ] **Price floor / ceiling rules** — Per-product price guards to prevent margin-destroying updates. Only needed when pricing strategy becomes complex.
-- [ ] **Multi-supplier conflict resolution** — When two suppliers match the same store product, which price wins? Only needed with 3+ active suppliers on overlapping SKUs.
-- [ ] **Audit trail / price history** — Full history of every price change per product. Storage cost vs value tradeoff; add when requested.
+- [ ] **CSV support** — Encoding complexity. Defer until a supplier explicitly cannot provide XLSX.
+- [ ] **Article-based exact matching** — If future suppliers reliably provide article codes, build
+      a fast-path that bypasses fuzzy matching entirely.
 
 ---
 
@@ -151,81 +217,141 @@ Defer until product-market fit with current single store:
 
 | Feature | User Value | Implementation Cost | Priority |
 |---------|------------|---------------------|----------|
-| Feed ingestion + YML parse | HIGH | LOW | P1 |
-| Store catalog import (one-time) | HIGH | LOW | P1 |
-| Supplier CRUD | HIGH | LOW | P1 |
-| Scheduled fetch | HIGH | LOW | P1 |
-| Price calculation (discount rule) | HIGH | LOW | P1 |
-| YML output at stable URL | HIGH | LOW | P1 |
-| Confirmed mapping store | HIGH | LOW | P1 |
-| Fuzzy match candidate engine | HIGH | HIGH | P1 |
-| Matching UI (review + confirm) | HIGH | MEDIUM | P1 |
-| Discontinued product handler | HIGH | LOW | P1 |
-| Sync log / dashboard (basic) | MEDIUM | MEDIUM | P1 |
-| Change diff log | MEDIUM | MEDIUM | P2 |
-| Bulk match confirmation | MEDIUM | LOW | P2 |
-| Confidence score display | MEDIUM | LOW | P2 |
-| Staleness alerting | MEDIUM | LOW | P2 |
-| Per-supplier field mapping config | MEDIUM | MEDIUM | P2 |
-| Manual override mapping | HIGH | LOW | P1 — technically simple, high value as escape hatch |
-| Unmapped product queue view | MEDIUM | LOW | P2 |
-| Price floor / ceiling rules | MEDIUM | MEDIUM | P3 |
-| Multi-supplier conflict resolution | MEDIUM | MEDIUM | P3 |
-| Audit trail / price history | LOW | HIGH | P3 |
-| Horoshop-specific output | LOW | LOW | P3 |
+| Excel parser (core: name + price + avail) | HIGH | MEDIUM | P1 |
+| `Supplier.feed_type` DB column | HIGH | LOW | P1 (prereq for parser) |
+| Google Sheets URL transform | HIGH | LOW | P1 (needed for real supplier) |
+| Synthetic external_id generation | HIGH | LOW | P1 (parser correctness) |
+| MatchRule auto-apply | HIGH | LOW | P1 |
+| Per-product discount UI | MEDIUM | LOW | P1 |
+| Notification bell operator access | MEDIUM | LOW | P1 |
+| `notifications.js` global load | LOW | LOW | P1 (2-line change) |
+| Dead code removal | LOW | LOW | P1 (no-risk cleanup) |
+| Per-supplier column map config (stored) | MEDIUM | MEDIUM | P2 |
+| Brand column extraction | MEDIUM | LOW | P2 |
+| VAT toggle per supplier | MEDIUM | LOW | P2 |
+| Multi-sheet support | LOW | LOW | P2 |
+| CSV support | LOW | HIGH | P3 |
 
 **Priority key:**
-- P1: Must have for launch
-- P2: Should have, add when possible
-- P3: Nice to have, future consideration
+- P1: Must have for v1.1 launch
+- P2: Add when first Excel supplier reveals the need
+- P3: Future milestone
 
 ---
 
-## Competitor Feature Analysis
+## Implementation Contracts
 
-Direct competitors in the Ukrainian market are not well-documented in public sources (most are bespoke scripts or freelance projects). Analysis is based on generic supplier sync tools and prom.ua ecosystem patterns.
+These are the precise integration points between v1.1 features and existing v1.0 code. Critical for
+roadmap phase planning.
 
-| Feature | Generic feed sync tools (e.g., WooCommerce plugins) | Bespoke prom.ua scripts (common approach) | Our Approach |
-|---------|------------------------------------------------------|-------------------------------------------|--------------|
-| Fuzzy product matching | Usually exact ID match only — useless without article codes | Manual CSV mapping tables maintained by hand | Fuzzy name matching + UI — eliminates manual CSV hell |
-| Per-supplier discount rules | Usually global markup only | Hardcoded per-supplier in code | Config UI per supplier — no code changes needed |
-| Web UI for mapping management | Some have it | Almost never — direct DB edits | Full UI — required given 150+ items per supplier |
-| Discontinued product handling | Rarely handled explicitly | Silent removal or crashes | Explicit handler: mark unavailable, flag in UI |
-| Output format flexibility | WooCommerce-centric | prom.ua hardcoded | YML standard → works for prom.ua and Horoshop |
-| Change visibility | Often none | None | Change diff log in v1.x |
-| Multi-supplier at different discount rates | Usually complex config | Copy-paste scripts per supplier | Supplier CRUD with per-supplier discount |
+### Excel Parser → Existing Code Interface
 
-**Confidence: LOW** — No direct competitor research was possible (network access denied). Analysis based on training data knowledge of WooCommerce feed sync ecosystem and general Ukrainian marketplace tooling patterns.
+The parser must return the same `list[dict]` format as `parse_supplier_feed` so that
+`save_supplier_products` (unchanged) can consume it:
 
----
+```python
+# Required output format (matches existing save_supplier_products contract)
+{
+    "external_id": str,       # synthetic: sha256(f"{supplier_id}:{name}:{brand}")[:16]
+    "name": str,              # required, non-empty
+    "brand": str | None,      # from brand column if present, else None
+    "model": str | None,      # from model column if present, else None
+    "article": str | None,    # from article column if present, else None
+    "price_cents": int | None, # required; int((float(raw_price)) * 100)
+    "currency": str,          # hardcoded "EUR" for now (Ukrainian B2B default)
+    "available": bool,        # True if column absent, else parsed boolean
+    "supplier_id": int,       # passed in, not from sheet
+}
+```
 
-## Key Observations for Roadmap
+### Sync Pipeline → Parser Dispatch
 
-1. **The fuzzy matching engine is the entire value of this project.** Everything else (feed ingestion, YML output, scheduler) is commodity plumbing that could be scripted in an afternoon. The matching UI and algorithm are what make this worth building vs a cron script.
+In `sync_pipeline.py`, `_sync_single_supplier` currently calls:
+```python
+products = parse_supplier_feed(raw_bytes, supplier.id)
+```
 
-2. **Store catalog import is a hidden prerequisite.** Before any matching can happen, the system needs a local copy of prom.ua's 6,100 products. This is a one-time bootstrapping step that must come before matching UI development. Source: prom.ua CSV export. Not complex, but must be in Phase 1.
+V1.1 change:
+```python
+if supplier.feed_type == "excel":
+    from app.services.excel_parser import parse_excel_feed
+    products = parse_excel_feed(raw_bytes, supplier.id)
+else:
+    products = parse_supplier_feed(raw_bytes, supplier.id)  # unchanged
+```
 
-3. **The MVP is small.** One supplier (MARESTO, ~150 items) × one operator = the entire initial load. Match 150 items once, let it sync. The system doesn't need to be robust until you add the second supplier.
+`raw_bytes` is already fetched by `fetch_feed_with_retry` — no change to the fetch layer. The Excel
+parser receives bytes (not a file path) and calls `openpyxl.load_workbook(io.BytesIO(raw_bytes), read_only=True)`.
 
-4. **Multi-supplier introduces the hard problems.** Same store product matched from two suppliers: which price? What if supplier B has it cheaper? Conflict resolution is a v2 problem deliberately deferred.
+### MatchRule Auto-Apply → matcher.py Insertion Point
 
-5. **prom.ua's 4h re-import cycle is a natural constraint.** There is no user value in syncing more often than every hour. The scheduler should be configurable (1h default, 4h max recommended) but not obsessively fast.
+In `run_matching_for_supplier`, after Step 3 (load prom products), before Step 4 (match each):
 
-6. **Discontinued product handling must be in v1.** If a supplier removes an item from their feed and the system silently stops updating availability, the prom.ua listing stays "in stock" indefinitely. This is a business problem (false sales) not a nice-to-have.
+```python
+# NEW: Step 3.5 — Apply remembered match rules first
+from app.models.match_rule import MatchRule
+active_rules = db.session.execute(
+    select(MatchRule).where(MatchRule.is_active == True)
+).scalars().all()
+rule_map = {
+    (r.supplier_product_name_pattern, r.supplier_brand): r.prom_product_id
+    for r in active_rules
+}
+
+rule_matched_ids = set()
+for sp in unmatched_products:
+    key = (sp.name, sp.brand)
+    if key in rule_map:
+        prom_id = rule_map[key]
+        existing = db.session.execute(
+            select(ProductMatch).where(
+                ProductMatch.supplier_product_id == sp.id,
+                ProductMatch.prom_product_id == prom_id,
+            )
+        ).scalar_one_or_none()
+        if existing is None:
+            match = ProductMatch(
+                supplier_product_id=sp.id,
+                prom_product_id=prom_id,
+                score=100.0,
+                status="manual",
+                confirmed_at=datetime.now(timezone.utc),
+                confirmed_by="rule_engine",
+            )
+            db.session.add(match)
+            total_candidates += 1  # or separate counter
+        rule_matched_ids.add(sp.id)
+
+# Existing Step 4 — only for products not handled by rules
+for sp in unmatched_products:
+    if sp.id in rule_matched_ids:
+        continue
+    # ... existing fuzzy matching loop unchanged
+```
 
 ---
 
 ## Sources
 
-- Project context: `C:/Projects/labresta-sync/.planning/PROJECT.md` (authoritative — defines scope, constraints, requirements) — Confidence: HIGH
-- prom.ua YML import format: Based on training data knowledge of Yandex Market Language (YML) standard and prom.ua's documented support for it — Confidence: MEDIUM (unverified in this session, network access denied)
-- Horoshop YML compatibility: Based on training data — Horoshop uses the same YML/Yandex dialect as prom.ua for feed import — Confidence: MEDIUM (unverified)
-- Fuzzy matching algorithm patterns: Training data (Levenshtein distance, token-set ratio, string normalization for Ukrainian/Cyrillic product names) — Confidence: MEDIUM
-- Competitor feature analysis: Training data + inference from WooCommerce/OpenCart ecosystem — Confidence: LOW (no direct competitor research possible)
-- Ukrainian marketplace ecosystem (prom.ua import behavior, 4h cycle): Training data — Confidence: MEDIUM
-
-**Note:** All external research (WebSearch, WebFetch, Bash/Brave Search) was denied in this environment. Findings rely on training data and project context analysis. Claims that could shift with live research are marked with their confidence level. Recommend verifying prom.ua YML field specifications against live prom.ua documentation before implementation.
+- Codebase analysis: `app/services/feed_parser.py`, `app/services/matcher.py`,
+  `app/models/match_rule.py`, `app/models/product_match.py`, `app/models/supplier.py`,
+  `app/services/sync_pipeline.py`, `app/services/export_service.py` (openpyxl usage confirmed),
+  `app/views/matches.py`, `app/views/settings.py`, `app/static/js/notifications.js`,
+  `app/templates/base.html` — Confidence: HIGH (read directly from codebase)
+- openpyxl `load_workbook(read_only=True)` pattern: confirmed in existing `export_service.py`
+  which uses `openpyxl.Workbook()` for write — Confidence: HIGH
+- Google Sheets export URL pattern: `docs.google.com/spreadsheets/d/{id}/export?format=xlsx` —
+  standard Google Sheets public export URL — Confidence: HIGH
+- `Supplier.feed_type` gap: confirmed absent from `app/models/supplier.py` — Confidence: HIGH
+- `MatchRule` not queried in `matcher.py`: confirmed by reading `run_matching_for_supplier` in
+  full — Confidence: HIGH
+- `ProductMatch.discount_percent` has no UI endpoint: confirmed by reading all routes in
+  `app/views/matches.py` — no discount PATCH endpoint exists — Confidence: HIGH
+- Notification 403 for operators: confirmed from `settings.py` `@admin_required` on
+  `notifications()` + `base.html` bell linking to that route for all users — Confidence: HIGH
+- Dead code confirmed unimported: `ftp_upload.py` and `yml_test_generator.py` have no import
+  statements referencing them in any other file — Confidence: HIGH
 
 ---
-*Feature research for: Supplier XML/YML sync tool — prom.ua / Horoshop (LabResta Sync)*
-*Researched: 2026-02-26*
+*Feature research for: v1.1 Excel supplier support + tech debt cleanup (LabResta Sync)*
+*Researched: 2026-03-01*

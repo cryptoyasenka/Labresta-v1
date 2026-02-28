@@ -1,524 +1,540 @@
 # Architecture Research
 
-**Domain:** Supplier price feed sync / marketplace price automation
-**Researched:** 2026-02-26
-**Confidence:** MEDIUM (training knowledge + project requirements analysis; no external sources reachable)
+**Domain:** Excel/Google Sheets supplier feed integration into existing YML price-sync pipeline
+**Researched:** 2026-03-01
+**Confidence:** HIGH (all findings from direct codebase inspection + verified openpyxl/Google Sheets docs)
 
-## Standard Architecture
+---
 
-### System Overview
-
-```
-┌──────────────────────────────────────────────────────────────────────┐
-│                        EXTERNAL SOURCES                              │
-│  ┌─────────────────┐   ┌─────────────────┐   ┌──────────────────┐   │
-│  │ MARESTO YML URL │   │ Supplier 2 URL  │   │ Supplier N URL   │   │
-│  └────────┬────────┘   └────────┬────────┘   └────────┬─────────┘   │
-└───────────┼────────────────────┼────────────────────┼──────────────┘
-            │  HTTP fetch (scheduled every 4h)        │
-            ▼                    ▼                    ▼
-┌──────────────────────────────────────────────────────────────────────┐
-│                       INGESTION LAYER                                │
-│  ┌────────────────────────────────────────────────────────────────┐  │
-│  │  Feed Fetcher & Parser                                         │  │
-│  │  - HTTP GET with timeout/retry                                 │  │
-│  │  - XML/YML parse → internal product schema                    │  │
-│  │  - Schema validation (price, availability, brand, model)      │  │
-│  └──────────────────────────────┬─────────────────────────────────┘  │
-└─────────────────────────────────┼────────────────────────────────────┘
-                                  │ normalized SupplierProduct[]
-                                  ▼
-┌──────────────────────────────────────────────────────────────────────┐
-│                       MATCHING LAYER                                 │
-│  ┌────────────────────────────────────────────────────────────────┐  │
-│  │  Fuzzy Match Engine                                            │  │
-│  │  - candidate lookup by brand (exact) + model (fuzzy)          │  │
-│  │  - confidence score 0.0–1.0                                   │  │
-│  │  - auto-confirm above threshold (e.g. 0.9)                    │  │
-│  │  - queue for human review below threshold                     │  │
-│  └──────────────────────────────┬─────────────────────────────────┘  │
-│                                  │                                   │
-│  ┌────────────────────────────────────────────────────────────────┐  │
-│  │  Mapping Store (DB)                                            │  │
-│  │  - confirmed: supplier_product_id ↔ prom_product_id           │  │
-│  │  - rejected: explicitly ignored pairs                         │  │
-│  │  - pending: awaiting human review                             │  │
-│  └──────────────────────────────┬─────────────────────────────────┘  │
-└─────────────────────────────────┼────────────────────────────────────┘
-                                  │ matched pairs (supplier + prom product)
-                                  ▼
-┌──────────────────────────────────────────────────────────────────────┐
-│                       PROCESSING LAYER                               │
-│  ┌────────────────────────────────────────────────────────────────┐  │
-│  │  Pricing Engine                                                │  │
-│  │  - load supplier discount config (% per supplier)             │  │
-│  │  - final_price = supplier_retail × (1 − discount%)            │  │
-│  │  - round to sensible precision (2 decimals, EUR)              │  │
-│  └──────────────────────────────┬─────────────────────────────────┘  │
-└─────────────────────────────────┼────────────────────────────────────┘
-                                  │ priced product updates
-                                  ▼
-┌──────────────────────────────────────────────────────────────────────┐
-│                       OUTPUT LAYER                                   │
-│  ┌────────────────────────────────────────────────────────────────┐  │
-│  │  YML Feed Generator                                            │  │
-│  │  - load base prom.ua catalog snapshot                         │  │
-│  │  - overlay matched product updates (price, availability)      │  │
-│  │  - emit prom.ua-compatible YML to /public/feed.yml            │  │
-│  └──────────────────────────────┬─────────────────────────────────┘  │
-└─────────────────────────────────┼────────────────────────────────────┘
-                                  │ static file served over HTTP
-                                  ▼
-┌──────────────────────────────────────────────────────────────────────┐
-│                       CONSUMER                                       │
-│  prom.ua auto-import (polls /public/feed.yml every 4h)              │
-└──────────────────────────────────────────────────────────────────────┘
-
-MANAGEMENT PLANE (parallel, not in sync hot path)
-┌──────────────────────────────────────────────────────────────────────┐
-│                       WEB UI                                         │
-│  ┌─────────────────┐  ┌──────────────────┐  ┌───────────────────┐   │
-│  │    Dashboard    │  │ Supplier Manager  │  │  Match Reviewer   │   │
-│  │  sync status    │  │  URL, discount%  │  │  confirm/reject   │   │
-│  │  match counts   │  │  enable/disable  │  │  manual override  │   │
-│  └─────────────────┘  └──────────────────┘  └───────────────────┘   │
-│  ┌─────────────────────────────────────────────────────────────────┐ │
-│  │  Sync Log Viewer — timestamp, changes (price diffs, avail)    │ │
-│  └─────────────────────────────────────────────────────────────────┘ │
-└──────────────────────────────────────────────────────────────────────┘
-
-SCHEDULER (cron / setInterval / cron job on hosting)
-  → triggers Feed Fetcher every 4 hours
-  → triggers YML Generator after fetch+match completes
-```
-
-### Component Responsibilities
-
-| Component | Responsibility | Typical Implementation |
-|-----------|----------------|------------------------|
-| Feed Fetcher | HTTP GET supplier URL, download XML/YML blob | Node.js `fetch` or `axios` with timeout |
-| Feed Parser | Parse XML/YML → internal SupplierProduct schema | `fast-xml-parser` or `xml2js` |
-| Schema Normalizer | Map supplier-specific field names to internal fields | Thin adapter per supplier |
-| Fuzzy Match Engine | Score supplier products against prom catalog products | `fuse.js` or custom Levenshtein on brand+model tokens |
-| Mapping Store | Persist confirmed/rejected/pending match pairs | SQLite table: `product_mappings` |
-| Pricing Engine | Apply per-supplier discount formula | Pure function, config-driven |
-| YML Feed Generator | Build prom.ua-compatible YML from matched + priced data | Template or XML builder |
-| Scheduler | Run sync pipeline on cadence | `node-cron` or OS cron + HTTP trigger endpoint |
-| Web API | REST endpoints for UI and scheduler trigger | Express or Fastify |
-| Web UI | Browser interface for management | React + Tanstack Query, or server-rendered |
-| Database | Persist all state: suppliers, mappings, catalog snapshot, logs | SQLite (shared hosting) or Postgres |
-| Static File Server | Serve generated feed.yml at public URL | Hosting's Apache/nginx, or Express static |
-
-## Recommended Project Structure
+## Current System Overview
 
 ```
-src/
-├── ingestion/              # Feed fetching and parsing
-│   ├── fetcher.ts          # HTTP fetch with retry/timeout
-│   ├── parser.ts           # XML/YML → internal schema
-│   └── adapters/           # Per-supplier field name mappings
-│       └── maresto.ts      # MARESTO-specific normalization
-├── matching/               # Fuzzy matching engine
-│   ├── engine.ts           # Core fuzzy match logic
-│   ├── scorer.ts           # Confidence scoring
-│   └── normalizer.ts       # Text normalization (lowercase, strip punctuation)
-├── pricing/                # Pricing rule application
-│   └── engine.ts           # discount % → final price calculation
-├── output/                 # YML feed generation
-│   ├── generator.ts        # Assemble output YML
-│   └── schema.ts           # prom.ua YML field definitions
-├── scheduler/              # Sync orchestration
-│   └── pipeline.ts         # Orchestrates fetch → match → price → generate
-├── db/                     # Database layer
-│   ├── schema.ts           # Table definitions
-│   ├── migrations/         # Schema migrations
-│   └── repos/              # Repository functions per entity
-│       ├── suppliers.ts
-│       ├── mappings.ts
-│       ├── catalog.ts
-│       └── sync-log.ts
-├── api/                    # REST API (management plane)
-│   ├── routes/
-│   │   ├── suppliers.ts    # CRUD supplier configs
-│   │   ├── mappings.ts     # Review/confirm/reject matches
-│   │   ├── sync.ts         # Trigger sync, fetch logs
-│   │   └── feed.ts         # Serve generated YML (or redirect to static)
-│   └── server.ts
-├── ui/                     # Web UI (if bundled)
-│   ├── pages/
-│   └── components/
-└── shared/
-    ├── types.ts            # Shared domain types
-    └── config.ts           # Environment config loader
+┌─────────────────────────────────────────────────────────────────────┐
+│                          Web UI (Flask Blueprints)                   │
+│  suppliers_bp   matches_bp   products_bp   dashboard_bp   feed_bp   │
+└──────────────────────────┬──────────────────────────────────────────┘
+                           │
+┌──────────────────────────▼──────────────────────────────────────────┐
+│                       sync_pipeline.py                               │
+│   Stage 1: fetch_feed_with_retry(url) → raw_bytes                   │
+│   Stage 2: parse_supplier_feed(raw_bytes, supplier_id) → [dicts]    │
+│   Stage 3: save_supplier_products([dicts]) → stats                  │
+│   Stage 4: _detect_disappeared()                                    │
+│   Stage 5: run_matching_for_supplier(supplier_id)                   │
+│   Stage 6: regenerate_yml_feed()                                    │
+└──────────────────────────┬──────────────────────────────────────────┘
+                           │
+┌──────────────────────────▼──────────────────────────────────────────┐
+│              Services Layer                                          │
+│  feed_fetcher.py   feed_parser.py   matcher.py   yml_generator.py   │
+│  pricing.py        export_service.py catalog_import.py              │
+└──────────────────────────┬──────────────────────────────────────────┘
+                           │
+┌──────────────────────────▼──────────────────────────────────────────┐
+│                        SQLite (WAL mode)                             │
+│  suppliers  supplier_products  product_matches  match_rules          │
+│  prom_products  sync_runs  users  notification_rules  notifications  │
+└─────────────────────────────────────────────────────────────────────┘
 ```
 
-### Structure Rationale
+---
 
-- **ingestion/:** Isolated so each supplier can have its own adapter without touching matching logic
-- **matching/:** Self-contained; testable independently with fixture data
-- **pricing/:** Pure functions only — easy to test, easy to swap formulas
-- **output/:** Knows only prom.ua YML format; receives already-priced data
-- **scheduler/:** Thin orchestrator — calls ingestion → matching → pricing → output in order
-- **db/repos/:** Repository pattern keeps SQL out of business logic
-- **api/:** Management plane entirely separate from sync pipeline — sync can run headlessly
+## Component Responsibilities
+
+| Component | Responsibility | Notes |
+|-----------|----------------|-------|
+| `feed_fetcher.py` | HTTP download, retry logic, returns `bytes` | Knows nothing about format |
+| `feed_parser.py` | YML/XML parse + `save_supplier_products()` upsert | YML-specific, tightly coupled |
+| `sync_pipeline.py` | Orchestrates stages 1-6 for each supplier | Currently hardcoded to `parse_supplier_feed()` |
+| `matcher.py` | Fuzzy match + brand blocking + price gate | Reads `MatchRule` table — never queries it |
+| `catalog_import.py` | Parses prom.ua CSV/XLSX uploads | Has working openpyxl pattern to reference |
+| `Supplier` model | `feed_url`, `discount_percent`, `is_enabled` | Missing `feed_type` discriminator column |
+| `MatchRule` model | Stored patterns linking supplier name to prom product | Written on manual match, never read by matcher |
+| `ProductMatch` model | Match pairs with `status`, `score`, `discount_percent` | `discount_percent` has no UI to set it |
+
+---
+
+## What Needs to Change for Excel Support
+
+### Decision: Separate `excel_parser.py`, not extension of `feed_parser.py`
+
+`feed_parser.py` is YML-specific at every level — it calls `etree.fromstring()`, iterates `<offer>` elements, extracts `<vendor>`, `<model>`, `<vendorCode>`, `<currencyId>`. Excel has no such structure. Adding Excel logic would turn `feed_parser.py` into a branching module that does two unrelated things.
+
+`catalog_import.py` proves a separate file works. It contains a working openpyxl pattern (`parse_xlsx` with `read_only=True`, `iter_rows`, header mapping) that is the direct template for Excel supplier parsing. Copy the pattern, adapt for supplier field names.
+
+**Output contract is identical:** both parsers must return `list[dict]` with keys `{external_id, name, brand, model, article, price_cents, currency, available, supplier_id}`. `save_supplier_products()` already accepts this contract and does not need to change.
+
+---
+
+## Data Flow: Excel Path vs YML Path
+
+### YML Path (current, unchanged)
+
+```
+Supplier.feed_url (XML URL)
+    |
+    v
+fetch_feed_with_retry(url) --> raw_bytes (bytes)
+    |
+    v
+parse_supplier_feed(raw_bytes, supplier_id) --> [product dicts]
+    |
+    v
+save_supplier_products([dicts]) --> stats
+    |
+    v
+[stages 4-6 unchanged]
+```
+
+### Excel/Google Sheets Path (new)
+
+```
+Supplier.feed_url (XLSX URL or Google Sheets export URL)
+    |
+    v
+fetch_feed_with_retry(url) --> raw_bytes (bytes)        [NO CHANGE]
+    |
+    v
+parse_excel_feed(raw_bytes, supplier_id) --> [product dicts]  [NEW]
+    |
+    v
+save_supplier_products([dicts]) --> stats               [NO CHANGE]
+    |
+    v
+[stages 4-6 unchanged]                                  [NO CHANGE]
+```
+
+### Google Sheets Export URL Format
+
+Google Sheets can serve XLSX directly via:
+
+```
+https://docs.google.com/spreadsheets/d/{SPREADSHEET_ID}/export?format=xlsx
+```
+
+This URL returns binary XLSX content over HTTPS. `fetch_feed_with_retry` downloads it as `response.content` (bytes). No special handling needed — the function already returns raw bytes, not decoded text.
+
+`openpyxl.load_workbook(filename=BytesIO(raw_bytes), read_only=True)` accepts bytes wrapped in `BytesIO`. This is a documented, confirmed pattern from openpyxl official docs.
+
+---
+
+## New and Modified Files
+
+### NEW: `app/services/excel_parser.py`
+
+Parses an XLSX byte stream into the same `list[dict]` format that `save_supplier_products()` expects.
+
+```python
+"""Excel/XLSX supplier feed parser.
+
+Parses XLSX byte content (from HTTP or Google Sheets export) into
+SupplierProduct dicts compatible with save_supplier_products().
+"""
+
+import io
+from openpyxl import load_workbook
+
+# Column name aliases: supplier Excel headers -> internal field names
+# Covers Ukrainian, Russian, and English variants
+COLUMN_ALIASES = {
+    "назва": "name", "название": "name", "name": "name",
+    "ціна": "price", "цена": "price", "price": "price",
+    "бренд": "brand", "brand": "brand", "виробник": "brand",
+    "модель": "model", "model": "model",
+    "артикул": "article", "article": "article",
+    "наявність": "available", "наличие": "available", "available": "available",
+    "id": "external_id", "код": "external_id", "sku": "external_id",
+}
+
+def parse_excel_feed(raw_bytes: bytes, supplier_id: int) -> list[dict]:
+    """Parse XLSX bytes into supplier product dicts.
+
+    Args:
+        raw_bytes: Raw XLSX file content (from fetch_feed_with_retry).
+        supplier_id: ID of the supplier.
+
+    Returns:
+        List of dicts compatible with save_supplier_products():
+        {external_id, name, brand, model, article,
+         price_cents, currency, available, supplier_id}
+    """
+    wb = load_workbook(filename=io.BytesIO(raw_bytes), read_only=True, data_only=True)
+    ws = wb[wb.sheetnames[0]]
+    rows = ws.iter_rows(values_only=True)
+
+    try:
+        raw_headers = [
+            str(h).strip().lower() if h is not None else ""
+            for h in next(rows)
+        ]
+    except StopIteration:
+        wb.close()
+        return []
+
+    col_map = {}  # col_index -> field_name
+    for idx, header in enumerate(raw_headers):
+        field = COLUMN_ALIASES.get(header)
+        if field and field not in col_map.values():
+            col_map[idx] = field
+
+    products = []
+    for row_num, row in enumerate(rows, start=2):
+        if not row or all(v is None or str(v).strip() == "" for v in row):
+            continue
+
+        row_data = {}
+        for idx, field in col_map.items():
+            val = row[idx] if idx < len(row) else None
+            row_data[field] = str(val).strip() if val is not None else ""
+
+        name = row_data.get("name", "")
+        if not name:
+            continue  # name is required
+
+        # external_id: use provided value or synthesize from row number
+        external_id = row_data.get("external_id") or f"row_{row_num}"
+
+        # price: parse to cents; handle comma decimal separator
+        price_cents = None
+        price_str = row_data.get("price", "")
+        if price_str:
+            try:
+                price_cents = int(float(price_str.replace(",", ".")) * 100)
+            except (ValueError, TypeError):
+                pass
+
+        # available: empty = True (product listed = available by default)
+        avail_str = row_data.get("available", "").lower()
+        available = avail_str not in ("false", "0", "нет", "немає", "no")
+
+        products.append({
+            "external_id": external_id,
+            "name": name,
+            "brand": row_data.get("brand") or None,
+            "model": row_data.get("model") or None,
+            "article": row_data.get("article") or None,
+            "price_cents": price_cents,
+            "currency": "EUR",
+            "available": available,
+            "supplier_id": supplier_id,
+        })
+
+    wb.close()
+    return products
+```
+
+Key design choices:
+- `data_only=True` ensures cell values are returned, not Excel formulas.
+- `row_num`-based fallback `external_id` gives stable keys across re-syncs for ordered supplier sheets without ID columns.
+- Comma decimal separator normalized via `.replace(",", ".")` — common in Ukrainian/European Excel exports.
+- Available column: empty string resolves to True (product listed = available), consistent with YML parser's `available` attribute default of `"true"`.
+
+---
+
+### MODIFIED: `app/models/supplier.py` — Add `feed_type` column
+
+```python
+feed_type = db.Column(
+    db.String(20),
+    nullable=False,
+    default="yml",
+    server_default="yml",
+)
+# Values: "yml" | "excel"
+```
+
+There is no Alembic migration system — the project uses `db.create_all()` on startup. `db.create_all()` does NOT alter existing tables, so the column must be added manually for existing databases:
+
+```sql
+ALTER TABLE suppliers ADD COLUMN feed_type VARCHAR(20) NOT NULL DEFAULT 'yml';
+```
+
+Add this as a one-time CLI migration command in `app/cli.py`, or run manually in production after deploy.
+
+---
+
+### MODIFIED: `app/services/sync_pipeline.py` — Route to correct parser
+
+Single change in `_sync_single_supplier()`, Stage 2. All other stages are format-agnostic and require no changes:
+
+```python
+# Stage 2: Parse
+logger.info("Stage 2/6: Parsing feed")
+if supplier.feed_type == "excel":
+    from app.services.excel_parser import parse_excel_feed
+    products = parse_excel_feed(raw_bytes, supplier.id)
+else:
+    products = parse_supplier_feed(raw_bytes, supplier.id)
+```
+
+No other changes to `sync_pipeline.py`. Stages 3-6 (save, disappear detection, matching, YML) are all format-agnostic.
+
+---
+
+### MODIFIED: `app/views/suppliers.py` — Add `feed_type` to form handling
+
+The supplier add/edit form needs a `feed_type` selector (dropdown: YML / Excel). Validation must accept `"yml"` and `"excel"`. The quick-fetch button (`supplier_fetch` route) needs identical parser routing to the pipeline:
+
+```python
+# In supplier_add and supplier_edit POST handlers:
+supplier.feed_type = request.form.get("feed_type", "yml")
+
+# In supplier_fetch route:
+if supplier.feed_type == "excel":
+    from app.services.excel_parser import parse_excel_feed
+    products = parse_excel_feed(raw_bytes, supplier.id)
+else:
+    products = parse_supplier_feed(raw_bytes, supplier.id)
+```
+
+The supplier form template (`suppliers/form.html`) needs a `<select>` for `feed_type` with options `yml` and `excel`.
+
+---
+
+### MODIFIED: `app/services/matcher.py` — Integrate MatchRule into `run_matching_for_supplier`
+
+`MatchRule` is written (in `matches.py` `manual_match()`) but never queried. The model has:
+- `supplier_product_name_pattern` — exact name string (stored from `supplier_product.name`)
+- `supplier_brand` — optional brand filter
+- `prom_product_id` — the forced match target
+- `is_active` — soft delete flag
+
+Integration point: Before fuzzy matching each unmatched supplier product, check if an active `MatchRule` exists whose `supplier_product_name_pattern` matches the product name (case-insensitive exact match, since it was stored from an exact name).
+
+```python
+# In run_matching_for_supplier(), before the product loop:
+
+from app.models.match_rule import MatchRule
+from datetime import datetime, timezone
+
+# Load all active rules once (avoids N+1 queries)
+rules = db.session.execute(
+    select(MatchRule).where(MatchRule.is_active == True)
+).scalars().all()
+rule_lookup = {r.supplier_product_name_pattern.lower(): r for r in rules}
+
+# In the for sp in unmatched_products: loop, before find_match_candidates():
+
+rule = rule_lookup.get(sp.name.lower())
+
+# Brand gate: if rule specifies a brand, it must roughly match
+if rule and rule.supplier_brand and sp.brand:
+    if fuzz.ratio(rule.supplier_brand.lower(), sp.brand.lower()) < BRAND_MATCH_THRESHOLD:
+        rule = None  # Brand mismatch, fall through to fuzzy
+
+if rule:
+    existing = db.session.execute(
+        select(ProductMatch).where(
+            ProductMatch.supplier_product_id == sp.id,
+            ProductMatch.prom_product_id == rule.prom_product_id,
+        )
+    ).scalar_one_or_none()
+    if existing is None:
+        match = ProductMatch(
+            supplier_product_id=sp.id,
+            prom_product_id=rule.prom_product_id,
+            score=100.0,
+            status="confirmed",          # Human-verified fact, skip review queue
+            confirmed_by="system:match_rule",
+            confirmed_at=datetime.now(timezone.utc),
+        )
+        db.session.add(match)
+        total_candidates += 1
+    continue  # Skip fuzzy for this product
+
+# ... existing fuzzy matching code follows unchanged ...
+```
+
+Key decisions for MatchRule integration:
+- Load rules once before the loop — avoids N+1 queries.
+- Status is `"confirmed"`, not `"candidate"` — a remembered rule is a human-verified fact; it must not go back to the review queue.
+- Brand gate reuses existing `BRAND_MATCH_THRESHOLD` constant — consistent with the fuzzy blocking logic already in the module.
+- If brand doesn't match, fall through to fuzzy rather than hard-skip — the rule is name-based; brand is an optional safety filter.
+
+---
+
+### MODIFIED: `app/views/products.py` + template — UI for `ProductMatch.discount_percent`
+
+`ProductMatch.discount_percent` is a nullable Float that overrides supplier-level discount. The pricing engine (`pricing.py` `get_effective_discount()`) already consumes it correctly. Only the write path is missing.
+
+Integration: In the supplier product list or match review page, add an inline edit field for `discount_percent` on confirmed/manual matches. No service logic changes needed — just a POST endpoint that sets `match.discount_percent = float(value)` and commits.
+
+---
+
+### TECH DEBT REMOVALS
+
+**`app/services/ftp_upload.py`** — Delete. Not imported anywhere, not registered anywhere. Zero-risk `git rm`.
+
+**`app/services/yml_test_generator.py`** — Delete. Dead code per v1.0 audit. `git rm`.
+
+**`notifications.js` global loading** — Currently only loaded on `/settings/notifications` page via `{% block scripts %}`. The `updateNavbarBadge()` function polls `/settings/api/notifications/unread` every 30 seconds — needed on every page for the navbar bell. Move the `<script>` tag for `notifications.js` into `base.html` after `common.js`. The `DOMContentLoaded` listener guards against missing DOM elements (checks `if (typeSelect)`, `if (notifList)`) — safe to run on pages that don't have those elements.
+
+**Operator notification bell 403** — The bell in `base.html` links unconditionally to `url_for('settings.notifications')`. The settings blueprint has an admin guard, giving operators a 403. Fix: add `{% if current_user.is_admin %}` guard around the bell's `href` to route operators to a dedicated read-only notifications page, or remove the admin guard from the notifications list view (read is safe for operators).
+
+---
+
+## Recommended Project Structure Changes
+
+```
+app/
+|-- services/
+|   |-- feed_fetcher.py         unchanged
+|   |-- feed_parser.py          unchanged (YML only)
+|   |-- excel_parser.py         NEW: XLSX bytes -> list[dict]
+|   |-- sync_pipeline.py        MODIFIED: feed_type routing in Stage 2
+|   |-- matcher.py              MODIFIED: MatchRule integration in run_matching_for_supplier
+|   |-- catalog_import.py       unchanged
+|   |-- export_service.py       unchanged
+|   |-- pricing.py              unchanged
+|   |-- yml_generator.py        unchanged
+|   |-- notification_service.py unchanged
+|   |-- telegram_notifier.py    unchanged
+|   |-- ftp_upload.py           DELETE
+|   `-- yml_test_generator.py   DELETE
+|-- models/
+|   `-- supplier.py             MODIFIED: add feed_type column
+|-- views/
+|   |-- suppliers.py            MODIFIED: feed_type form field + parser routing
+|   `-- products.py             MODIFIED: discount_percent UI endpoint
+|-- templates/
+|   |-- base.html               MODIFIED: global notifications.js, bell operator guard
+|   `-- suppliers/
+|       `-- form.html           MODIFIED: feed_type selector dropdown
+`-- static/js/
+    `-- notifications.js        unchanged (content only, loading location changes)
+```
+
+---
 
 ## Architectural Patterns
 
-### Pattern 1: Pipeline (Linear ETL)
+### Pattern 1: Parser Contract (explicit dispatch over class hierarchy)
 
-**What:** Each sync run flows strictly through stages: Fetch → Parse → Match → Price → Generate. Each stage receives input, produces output, passes to next stage.
+All parsers return identical `list[dict]` with the same keys. `save_supplier_products()` is the single consumer. The pipeline dispatches to the right parser via `supplier.feed_type`.
 
-**When to use:** Always for the sync hot path. Data moves in one direction; stages are decoupled.
+A class hierarchy (`FeedParser` ABC with `YMLParser` and `ExcelParser` subclasses) would be over-engineering for two formats. A single `if supplier.feed_type == "excel":` branch in `_sync_single_supplier()` is readable and explicit. If a third format appears (e.g., CSV supplier feed), the pattern remains: add `excel_parser.py`-style file, extend the `if/elif` in the pipeline.
 
-**Trade-offs:** Simple, testable, debuggable. Each stage can be tested with fixtures. No partial-update complexity.
+### Pattern 2: Rule-First, Fuzzy-Fallback Matching
 
-**Example:**
-```typescript
-// scheduler/pipeline.ts
-export async function runSyncPipeline(supplierId: string) {
-  const rawFeed = await fetchFeed(supplier.url);
-  const products = parseFeed(rawFeed, supplier.adapter);
-  const matched = await applyMappings(products, supplierId);
-  const priced = applyPricing(matched, supplier.discountPercent);
-  await generateYmlFeed(priced);
-  await logSyncRun(supplierId, { matched: matched.length, timestamp: new Date() });
-}
-```
+In `run_matching_for_supplier`, check `MatchRule` lookup first. If a rule matches, create a `confirmed` match and skip fuzzy. If no rule matches, fall through to the existing fuzzy pipeline.
 
-### Pattern 2: Adapter per Supplier
+This order is mandatory: rules are human-verified certainties. Running fuzzy matching on a product that has a rule wastes CPU and may generate candidate entries that then need to be reviewed — defeating the purpose of the rule entirely.
 
-**What:** Each supplier gets a thin adapter that maps their field names/formats to the internal `SupplierProduct` type. The rest of the pipeline is supplier-agnostic.
+Lookup strategy: normalize to lowercase before building the dict and before each lookup. Avoids case mismatches between stored rule names and incoming feed names.
 
-**When to use:** From day 1 — even MARESTO alone warrants an adapter so the parser is not hardcoded to one schema.
+### Pattern 3: Bytes-First Feed Download
 
-**Trade-offs:** Small overhead per supplier added. Prevents the parser from becoming a god function with `if (supplier === 'maresto') ...` branches.
+`fetch_feed_with_retry()` always returns `bytes`, never `str`. Both the XML parser (lxml) and the XLSX parser (openpyxl via `BytesIO`) accept bytes natively. No format-specific download path needed.
 
-**Example:**
-```typescript
-// ingestion/adapters/maresto.ts
-export function adaptMaresto(raw: any): SupplierProduct {
-  return {
-    supplierId: raw.id,
-    brand: raw.vendor,          // MARESTO calls it "vendor"
-    model: raw.model,
-    retailPrice: parseFloat(raw.price),
-    available: raw.available === 'true',
-    currency: raw.currencyId ?? 'EUR',
-  };
-}
-```
+This works for Google Sheets because `https://docs.google.com/spreadsheets/d/{ID}/export?format=xlsx` returns binary XLSX over HTTPS. `requests.get(...).content` captures it correctly. The existing fetch function handles this without modification.
 
-### Pattern 3: Three-State Mapping (confirmed / pending / rejected)
-
-**What:** Every supplier-to-catalog pairing exists in one of three states. Only `confirmed` mappings make it into the output YML. `pending` flows to the UI review queue. `rejected` is remembered so the matcher doesn't re-suggest it.
-
-**When to use:** Essential from the first sync. Without it, every re-sync would re-propose already-reviewed matches.
-
-**Trade-offs:** Requires DB; adds UI surface area. The alternative (no persistent state) means human review work is never saved — unacceptable.
-
-**Example:**
-```typescript
-type MappingState = 'confirmed' | 'pending' | 'rejected';
-
-interface ProductMapping {
-  id: number;
-  supplierProductId: string;
-  supplierId: string;
-  promProductId: string;
-  state: MappingState;
-  confidence: number;       // 0.0–1.0 from fuzzy engine
-  confirmedAt?: Date;
-  confirmedBy?: string;     // 'auto' | 'user'
-}
-```
-
-### Pattern 4: Confidence-Threshold Auto-Confirm
-
-**What:** Fuzzy matches above a high threshold (e.g. 0.92) are auto-confirmed without human review. Matches between a low threshold (e.g. 0.6) and the high are queued for human review. Below the low threshold are discarded.
-
-**When to use:** Necessary to avoid drowning the user in 150 review decisions on first sync with MARESTO alone — at 5+ suppliers this becomes 500+ decisions.
-
-**Trade-offs:** Risk of false auto-confirms. Mitigate by making the high threshold conservative (0.90–0.95) and logging every auto-confirm for audit.
-
-## Data Flow
-
-### Sync Pipeline Flow (scheduled, every 4h)
-
-```
-[Scheduler trigger]
-       |
-       v
-[Feed Fetcher] --- HTTP GET ---> [Supplier URL]
-       |                              |
-       |         raw XML/YML body     |
-       | <----------------------------+
-       |
-       v
-[Feed Parser + Adapter]
-       |
-       | SupplierProduct[] (normalized)
-       v
-[Mapping Store lookup]
-       |
-       +-- Already confirmed? --> [Pricing Engine] --> [YML Generator]
-       |
-       +-- Not seen before? -----> [Fuzzy Match Engine]
-                                         |
-                              confidence score
-                                         |
-                    +--------------------+--------------------+
-                    |                                         |
-               >= threshold                           < threshold
-                    |                                         |
-             auto-confirm                          queue as 'pending'
-             save to DB                            save to DB
-                    |
-                    v
-             [Pricing Engine]
-                    |
-                    v
-             [YML Generator]
-                    |
-             write /public/feed.yml
-                    |
-                    v
-             [Sync Log] — append run record
-```
-
-### Human Review Flow (on-demand via UI)
-
-```
-[User opens Match Reviewer in browser]
-       |
-       v
-[API: GET /mappings?state=pending]
-       |
-       | pending MappingProposal[]
-       v
-[User confirms / rejects / overrides prom_product_id]
-       |
-       v
-[API: PATCH /mappings/:id]
-       |
-       | update state in DB
-       v
-[Next sync run picks up confirmed mappings normally]
-```
-
-### Output Generation Flow
-
-```
-[Confirmed + priced product updates]
-       |
-       v
-[Load prom.ua catalog snapshot from DB]
-       |
-       v
-[Overlay: for each matched product,
-  replace price and availability
-  with supplier-derived values]
-       |
-       v
-[Serialize to YML]
-  <yml version="2">
-    <shop>
-      <offers>
-        <offer id="...">
-          <price>1234.50</price>
-          <currencyId>EUR</currencyId>
-          <available>true</available>
-          ...
-        </offer>
-      </offers>
-    </shop>
-  </yml>
-       |
-       v
-[Write to /public/feed.yml atomically]
-  (write to feed.yml.tmp, then rename)
-```
-
-### Key Data Flows
-
-1. **Supplier → Catalog:** Unidirectional. Supplier data updates catalog records. Catalog data is never pushed back to supplier.
-2. **Mapping confirmation:** Bidirectional between UI and DB. Human decisions persist in DB; sync reads DB state.
-3. **Feed delivery:** Pull-only. prom.ua polls the static file. We never push to prom.ua.
-4. **Catalog snapshot:** Load once from prom.ua export CSV/YML at setup. Updated manually when products are added/removed from the store.
-
-## Fuzzy Matching Component — Detailed
-
-This is the highest-complexity component in the system. It deserves its own breakdown.
-
-### Matching Strategy
-
-```
-Input: SupplierProduct { brand, model }
-       PromProduct[] { name, brand, model? }
-
-Step 1: Pre-filter by brand
-  - Normalize brand strings (lowercase, strip punctuation, common aliases)
-  - Exact brand match reduces candidate set from 6100 to ~50-200
-
-Step 2: Fuzzy match model within brand group
-  - Normalize model strings (lowercase, strip extra words like "3-door")
-  - Compute similarity score (Levenshtein ratio or token set ratio)
-  - Rank candidates by score
-
-Step 3: Threshold decision
-  - score >= 0.92 → auto-confirm
-  - score 0.60–0.91 → queue for review (show top 3 candidates)
-  - score < 0.60 → discard (no reasonable match)
-```
-
-### Normalization is Critical
-
-Text normalization before matching prevents false negatives:
-
-```typescript
-function normalizeForMatching(s: string): string {
-  return s
-    .toLowerCase()
-    .replace(/[-_]/g, ' ')           // hyphens and underscores to spaces
-    .replace(/\d+-door/g, '')        // remove "3-door", "4-door" variants
-    .replace(/\s+/g, ' ')            // collapse whitespace
-    .trim();
-}
-// "Холодильний стол трьохдверний" → "холодильний стол трьохдверний"
-// "стол холодильний 3 двері" → "стол холодильний 3 двері"
-// (token set matching handles word order differences)
-```
-
-### Recommended Library: fuse.js
-
-Token-set or partial-ratio strategies (as in `fuse.js` or `rapidfuzz`) handle:
-- Word order differences ("холодильний стол" vs "стол холодильний")
-- Minor spelling variants
-- Extra/missing words
-
-fuse.js is lightweight (works in Node.js, no native deps), well-maintained, and directly supports threshold configuration.
-
-**Confidence:** MEDIUM (fuse.js is well-known; suitability for Ukrainian text confirmed by algorithm analysis — no native-dependency issues for Cyrillic text)
-
-## Scaling Considerations
-
-This is an internal tool for one store with 6,100 products and 5+ suppliers. Scaling to millions of users is not relevant. The relevant scaling axis is catalog size and supplier count.
-
-| Scale | Architecture Adjustments |
-|-------|--------------------------|
-| 1 supplier, 150 products | Current design is sufficient. SQLite, single process. |
-| 5 suppliers, ~750 products | Still fine. Add adapter per supplier. Run pipeline sequentially per supplier. |
-| 20+ suppliers, 5000+ supplier products | Consider queuing pipeline per supplier (run one at a time, not parallel) to avoid memory spikes and DB write contention. |
-| Catalog grows to 50k+ products | Fuzzy matching on 50k candidates per supplier product becomes slow. Add indexed brand lookup to cut candidate set first. This is already in the recommended strategy above. |
-
-### Scaling Priorities
-
-1. **First bottleneck:** Fuzzy matching against large unfiltered candidate set. Fix: pre-filter by brand before running Levenshtein. Already designed this way.
-2. **Second bottleneck:** YML file generation for 6100 products. Fix: generate incrementally or cache unchanged products. At 6100 products this is unlikely to be slow even naively.
-3. **Third bottleneck:** Concurrent sync runs stepping on each other. Fix: simple mutex / lock file prevents concurrent runs. A scheduler with job state tracking prevents double-triggering.
-
-## Anti-Patterns
-
-### Anti-Pattern 1: Monolithic Parser with Per-Supplier Branches
-
-**What people do:** Write one large parser with `if (supplierName === 'maresto') { ... } else if (...) { ... }` inside.
-
-**Why it's wrong:** Every new supplier requires editing the parser. Hard to test individual suppliers. Grows to hundreds of lines of conditionals.
-
-**Do this instead:** Adapter pattern — one adapter file per supplier, all conforming to the same interface. Parser calls `adapter.normalize(rawProduct)`.
-
-### Anti-Pattern 2: Re-Running Fuzzy Match on Every Sync
-
-**What people do:** Every sync discards all mappings and re-runs fuzzy match from scratch.
-
-**Why it's wrong:** All human review decisions are lost on every sync. Users must re-confirm the same matches every 4 hours. Unusable.
-
-**Do this instead:** Persist confirmed and rejected mappings in DB. On each sync, only run fuzzy match on new supplier products (no existing mapping). Confirmed mappings go directly to pricing step.
-
-### Anti-Pattern 3: Overwriting the Entire Output YML
-
-**What people do:** Regenerate the entire catalog YML from scratch each sync, replacing all 6100 products.
-
-**Why it's wrong:** prom.ua interprets a full re-upload as "these are ALL my products" and may deactivate products not in the feed. Also, products not covered by any supplier get wiped.
-
-**Do this instead:** Build the output YML as a patch — only include matched products (the ones the sync manages). prom.ua's selective import (import only price/availability fields, not product existence) handles this correctly. Document clearly which fields the import is configured to update.
-
-### Anti-Pattern 4: Storing Supplier Raw XML in the Database
-
-**What people do:** Dump the raw XML blob into a database column for "auditability."
-
-**Why it's wrong:** Bloats the database. Raw supplier data is transient — the normalized form is what matters for the system.
-
-**Do this instead:** Log the fetch timestamp and product count per sync run. Store only the normalized, processed data. If raw XML audit is needed, write it to a rotating log file, not the DB.
-
-### Anti-Pattern 5: No Atomic File Write for the Output Feed
-
-**What people do:** Open `feed.yml`, truncate, write new content. If process crashes mid-write, prom.ua downloads a corrupted partial file.
-
-**Why it's wrong:** prom.ua polling at the exact moment of write gets a broken XML document, causing import failure.
-
-**Do this instead:** Write to `feed.yml.tmp`, then `rename()` (atomic on POSIX filesystems). prom.ua always sees either the old complete file or the new complete file.
+---
 
 ## Integration Points
+
+### Internal Boundaries
+
+| Boundary | Communication | Change Required |
+|----------|---------------|-----------------|
+| `feed_fetcher` to `sync_pipeline` | `bytes` return value | None |
+| `sync_pipeline` to `excel_parser` | `(bytes, supplier_id)` call | New dispatch branch |
+| `excel_parser` to `save_supplier_products` | `list[dict]` contract | Must match exact keys |
+| `sync_pipeline` to `matcher` | `run_matching_for_supplier(supplier_id)` | Unchanged call |
+| `matcher` to `MatchRule` table | SQLAlchemy query | Currently missing — add before product loop |
+| `matches.py` to `MatchRule` table | SQLAlchemy write on manual match | Already works correctly |
+| `base.html` to `notifications.js` | `<script>` tag location | Move from block to base |
 
 ### External Services
 
 | Service | Integration Pattern | Notes |
 |---------|---------------------|-------|
-| MARESTO YML feed | HTTP GET on schedule | URL: https://mrst.com.ua/include/price.xml — check robots.txt; add User-Agent header |
-| prom.ua auto-import | Static file served at public URL | prom.ua polls every 4h; configure import to update only price + availability fields |
-| Shared hosting | FTP deploy or SSH + cron | Cron job or node-cron inside the app process |
+| Google Sheets | HTTP GET to `export?format=xlsx` URL | Returns raw XLSX bytes; sheet must be publicly accessible |
+| Supplier XLSX files | HTTP GET to direct file URL | Same pattern as above |
 
-### Internal Boundaries
+---
 
-| Boundary | Communication | Notes |
-|----------|---------------|-------|
-| Scheduler → Pipeline | Direct function call (same process) | No queue needed at this scale |
-| Pipeline → DB | Repository functions (typed wrappers over SQL) | Never raw SQL in pipeline code |
-| API → DB | Same repositories as pipeline uses | Shared schema, separate entry points |
-| API → Pipeline | Synchronous HTTP endpoint `POST /sync/trigger` | Returns immediately; runs pipeline async |
-| UI → API | REST + JSON | No WebSockets needed; polling for sync status is fine |
+## Build Order (dependency-ordered)
 
-## Build Order Implications
+1. **Delete dead code** (`ftp_upload.py`, `yml_test_generator.py`) — no dependencies, zero risk. Do first to reduce noise in subsequent diffs.
 
-The component dependencies dictate this build sequence:
+2. **Fix `notifications.js` global load + bell operator guard** — pure template change, no model or service dependencies. Do early so operators work normally while Excel work proceeds.
 
-```
-1. DB schema + migrations
-        ↓
-2. Feed Fetcher + MARESTO Adapter + Parser
-        ↓ (can test with fixture XML)
-3. Mapping Store (DB repos: suppliers, mappings, catalog)
-        ↓
-4. Fuzzy Match Engine
-        ↓ (can test independently with fixture catalog)
-5. Pricing Engine
-        ↓ (pure function, simplest component)
-6. YML Feed Generator
-        ↓
-7. Sync Pipeline (orchestrates 2–6)
-        ↓
-8. Scheduler
-        ↓
-9. Web API (exposes management endpoints)
-        ↓
-10. Web UI (consumes API)
-```
+3. **Add `Supplier.feed_type` column** — model change required before view and pipeline changes. Add to model with `server_default="yml"` and run `ALTER TABLE` migration for existing databases. Must be done before supplier form UI.
 
-**Rationale:** Each component in the list depends only on components above it. This means:
-- After step 6, you have a working headless sync tool — testable end-to-end with a script
-- Steps 7–8 make it automated
-- Steps 9–10 make it manageable without editing config files
-- The UI is last because the pipeline must work correctly first; don't build UI for a broken sync
+4. **Create `excel_parser.py`** — standalone new file, depends only on openpyxl (already in requirements) and the `list[dict]` output contract. No dependencies on column or UI changes. Write tests against a fixture XLSX file.
+
+5. **Modify `suppliers.py` + supplier form template** — depends on `feed_type` column (step 3) and `excel_parser.py` (step 4). Both the add/edit form and the quick-fetch button need the parser routing.
+
+6. **Modify `sync_pipeline.py`** — depends on `excel_parser.py` (step 4) and `feed_type` column (step 3). This is the automated scheduled sync path.
+
+7. **Integrate `MatchRule` into `matcher.py`** — depends only on existing `MatchRule` model, no new migrations. Independent of the Excel work. Can be done in parallel with steps 4-6.
+
+8. **UI for `ProductMatch.discount_percent`** — UI-only, depends on no new services. Can be done at any point.
+
+Suggested phase grouping:
+- Phase A (tech debt): steps 1, 2
+- Phase B (Excel pipeline): steps 3, 4, 5, 6
+- Phase C (matching + pricing UX): steps 7, 8
+
+---
+
+## Anti-Patterns to Avoid
+
+### Anti-Pattern 1: Extending `feed_parser.py` with Excel branching
+
+**What people do:** Add `if raw_bytes[:4] == b"PK\x03\x04":` (XLSX magic bytes) to `parse_supplier_feed()` and branch internally.
+
+**Why it's wrong:** The function is named `parse_supplier_feed`, its docstring says "YML/XML", its internals use lxml throughout. Adding openpyxl imports and a branching code path conflates two different parsing strategies in one function. It also makes both paths harder to test in isolation.
+
+**Do this instead:** Separate `excel_parser.py` with its own function. Dispatch in `sync_pipeline.py` at the `supplier.feed_type` level — one line of routing code, two separate parsers.
+
+### Anti-Pattern 2: Downloading XLSX to disk before parsing
+
+**What people do:** Save `raw_bytes` to a temp file path, then call `load_workbook(temp_path)`.
+
+**Why it's wrong:** Unnecessary disk I/O. `catalog_import.py` uses a file path because the user upload goes to disk first as a side effect of the upload. For feed sync, the bytes are already in memory from the HTTP response.
+
+**Do this instead:** `load_workbook(filename=io.BytesIO(raw_bytes), read_only=True, data_only=True)` directly in `parse_excel_feed`. No temp file needed.
+
+### Anti-Pattern 3: Creating rule-matched products as `"candidate"` status
+
+**What people do:** Rule-matched products get `status="candidate"` and go to the human review queue.
+
+**Why it's wrong:** The point of a `MatchRule` is that a human already verified this match once and said "remember this." Sending it back to the review queue forces the operator to confirm it again every sync cycle — the rule is useless.
+
+**Do this instead:** `status="confirmed"`, `confirmed_by="system:match_rule"`, `confirmed_at=now`. This ensures the product goes directly to the YML feed on the next sync.
+
+### Anti-Pattern 4: Querying `MatchRule` inside the product loop (N+1)
+
+**What people do:** Inside `for sp in unmatched_products:`, query `MatchRule` once per product.
+
+**Why it's wrong:** 50 unmatched products = 50 rule queries. For 150 products this is minor but still unnecessary. The pattern also makes the relationship between rules and products harder to follow.
+
+**Do this instead:** Load all active rules once before the loop, build a normalized-name dict, do O(1) dict lookup per product.
+
+---
+
+## Scaling Considerations
+
+This is a small-data system: approximately 150 supplier products, approximately 6100 prom.ua products. Scaling is not a current concern. For reference:
+
+| Concern | Current Scale | If supplier grows to 1000+ products |
+|---------|---------------|--------------------------------------|
+| Excel parse time | Negligible (under 1s for 150 rows) | Still fast — openpyxl `read_only` handles 10k+ rows without issue |
+| MatchRule lookup | O(rules) dict build once before loop | O(1) per product after dict build — scales fine |
+| Fuzzy matching | ~150 x 6100 with brand blocking | Brand blocking reduces to ~50-200 per product — acceptable to ~5000 supplier products |
+| SQLite WAL | Adequate for single-process Flask | Remains adequate — no concurrent write pressure from Excel path |
+
+---
 
 ## Sources
 
-- Project requirements: `C:/Projects/labresta-sync/.planning/PROJECT.md` (HIGH confidence — direct requirements)
-- ETL pipeline patterns: training knowledge, industry standard (MEDIUM confidence)
-- Fuzzy matching strategies: training knowledge on fuse.js and text similarity algorithms (MEDIUM confidence)
-- prom.ua YML import behavior: project context / requirements (MEDIUM confidence — verify prom.ua docs on field-selective import)
-- Atomic file write pattern: POSIX rename(2) standard, well-established (HIGH confidence)
-- Adapter pattern: Gang of Four, industry standard (HIGH confidence)
+- Direct codebase inspection: `app/services/feed_parser.py`, `sync_pipeline.py`, `matcher.py`, `catalog_import.py`, `feed_fetcher.py`
+- Direct model inspection: `Supplier`, `MatchRule`, `ProductMatch`, `SupplierProduct`
+- openpyxl `load_workbook` from `BytesIO`: confirmed pattern from [openpyxl official docs](https://openpyxl.readthedocs.io/en/stable/api/openpyxl.reader.excel.html) and [Snyk openpyxl advisor](https://snyk.io/advisor/python/openpyxl/functions/openpyxl.load_workbook)
+- Google Sheets XLSX export URL format: `https://docs.google.com/spreadsheets/d/{ID}/export?format=xlsx` confirmed from [Highview Apps guide](https://www.highviewapps.com/blog/how-to-create-a-csv-or-excel-direct-download-link-in-google-sheets/) and [spreadsheet.dev](https://spreadsheet.dev/comprehensive-guide-export-google-sheets-to-pdf-excel-csv-apps-script)
 
 ---
-*Architecture research for: Supplier XML/YML price feed sync system (LabResta Sync)*
-*Researched: 2026-02-26*
+
+*Architecture research for: LabResta Sync v1.1 — Excel supplier feed integration + tech debt*
+*Researched: 2026-03-01*
