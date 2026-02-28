@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 
 from dotenv import load_dotenv
 
@@ -11,6 +12,12 @@ class DefaultConfig:
     SECRET_KEY = os.environ.get("SECRET_KEY", "dev-key-change-me")
     SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "instance", "labresta.db")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+    # Session / remember-me
+    REMEMBER_COOKIE_DURATION = timedelta(days=365)
+    REMEMBER_COOKIE_HTTPONLY = True
+    PERMANENT_SESSION_LIFETIME = timedelta(days=365)
+    SESSION_COOKIE_SAMESITE = "Lax"
 
     # FTP settings (used in Plan 04)
     FTP_HOST = os.environ.get("FTP_HOST", "")

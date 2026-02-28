@@ -16,6 +16,8 @@ dependencies = [
     "tenacity>=8.0",
     "rapidfuzz>=3.0",
     "flask-apscheduler>=1.13.1",
+    "flask-login>=0.6",
+    "flask-wtf>=1.2",
 ]
 
 [project.optional-dependencies]
