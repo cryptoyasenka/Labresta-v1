@@ -1,6 +1,7 @@
 import logging
 
 from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask_login import login_required
 from sqlalchemy import select
 
 from app.extensions import db
@@ -14,6 +15,7 @@ suppliers_bp = Blueprint("suppliers", __name__)
 
 
 @suppliers_bp.route("/")
+@login_required
 def supplier_list():
     suppliers = db.session.execute(
         select(Supplier).order_by(Supplier.name)
@@ -22,6 +24,7 @@ def supplier_list():
 
 
 @suppliers_bp.route("/add", methods=["GET", "POST"])
+@login_required
 def supplier_add():
     if request.method == "POST":
         errors = _validate_supplier_form(request.form)
@@ -47,6 +50,7 @@ def supplier_add():
 
 
 @suppliers_bp.route("/<int:supplier_id>/edit", methods=["GET", "POST"])
+@login_required
 def supplier_edit(supplier_id):
     supplier = db.session.get(Supplier, supplier_id)
     if not supplier:
@@ -74,6 +78,7 @@ def supplier_edit(supplier_id):
 
 
 @suppliers_bp.route("/<int:supplier_id>/toggle", methods=["POST"])
+@login_required
 def supplier_toggle(supplier_id):
     supplier = db.session.get(Supplier, supplier_id)
     if not supplier:
@@ -88,6 +93,7 @@ def supplier_toggle(supplier_id):
 
 
 @suppliers_bp.route("/<int:supplier_id>/fetch", methods=["POST"])
+@login_required
 def supplier_fetch(supplier_id):
     supplier = db.session.get(Supplier, supplier_id)
     if not supplier:

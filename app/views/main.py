@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template
+from flask_login import login_required
 
 from app.extensions import db
 from app.models.catalog import PromProduct
@@ -8,6 +9,7 @@ main_bp = Blueprint("main", __name__)
 
 
 @main_bp.route("/")
+@login_required
 def index():
     total_suppliers = db.session.query(Supplier).count()
     enabled_suppliers = db.session.query(Supplier).filter_by(is_enabled=True).count()

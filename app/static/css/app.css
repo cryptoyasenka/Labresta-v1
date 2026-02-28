@@ -1,0 +1,49 @@
+/* LabResta Sync — spacious clean style overrides */
+
+body {
+    font-size: 16px;
+}
+
+.container-fluid {
+    padding: 1.5rem 2rem;
+}
+
+/* Spacious tables */
+td, th {
+    padding: 0.75rem 1rem;
+}
+
+/* Clean navbar */
+.navbar {
+    padding: 0.75rem 1rem;
+}
+
+.navbar-brand {
+    font-size: 1.25rem;
+}
+
+/* Confidence level badges */
+.badge-high {
+    background-color: #198754;
+}
+
+.badge-medium {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.badge-low {
+    background-color: #dc3545;
+}
+
+/* Cards */
+.card {
+    border-radius: 0.5rem;
+}
+
+/* Responsive full-width content */
+@media (min-width: 1200px) {
+    .container-fluid {
+        max-width: 100%;
+    }
+}

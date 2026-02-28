@@ -11,6 +11,7 @@ from flask import (
     request,
     url_for,
 )
+from flask_login import login_required
 from sqlalchemy import func
 
 from app.extensions import db
@@ -27,6 +28,7 @@ def _allowed_file(filename: str) -> bool:
 
 
 @catalog_bp.route("/")
+@login_required
 def catalog_list():
     """List imported products with search and pagination."""
     page = request.args.get("page", 1, type=int)
@@ -62,12 +64,14 @@ def catalog_list():
 
 
 @catalog_bp.route("/import", methods=["GET"])
+@login_required
 def catalog_import_form():
     """Show the file upload form."""
     return render_template("catalog/import.html")
 
 
 @catalog_bp.route("/import", methods=["POST"])
+@login_required
 def catalog_import_upload():
     """Handle file upload, parse, and upsert products."""
     if "file" not in request.files:
