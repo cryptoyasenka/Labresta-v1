@@ -101,8 +101,9 @@ def save_supplier_products(products: list[dict]) -> dict:
                 existing.brand = p["brand"]
                 existing.model = p["model"]
                 existing.article = p["article"]
-                existing.price_cents = p["price_cents"]
-                existing.currency = p["currency"]
+                if not existing.price_forced:
+                    existing.price_cents = p["price_cents"]
+                    existing.currency = p["currency"]
                 existing.available = p["available"]
                 existing.last_seen_at = now
                 updated += 1

@@ -15,6 +15,7 @@ from app.services.telegram_notifier import (
     notify_disappeared_products,
     notify_sync_failure,
 )
+from app.views.dashboard import SyncProgress
 
 logger = logging.getLogger(__name__)
 
@@ -77,6 +78,7 @@ def _sync_single_supplier(supplier: Supplier) -> str:
     try:
         # Stage 1: Fetch
         logger.info("Stage 1/6: Fetching feed from %s", supplier.feed_url)
+        SyncProgress.update("fetching", 0)
         raw_bytes = fetch_feed_with_retry(supplier.feed_url)
 
         # Stage 2: Parse
@@ -84,6 +86,7 @@ def _sync_single_supplier(supplier: Supplier) -> str:
         products = parse_supplier_feed(raw_bytes, supplier.id)
         sync_run.products_fetched = len(products)
         logger.info("Parsed %d products from feed", len(products))
+        SyncProgress.update("parsing", len(products), len(products))
 
         # Stage 3: Save
         logger.info("Stage 3/6: Saving products")
@@ -94,6 +97,10 @@ def _sync_single_supplier(supplier: Supplier) -> str:
             "Saved: %d created, %d updated",
             result["created"],
             result["updated"],
+        )
+        SyncProgress.update(
+            "saving", result["total"], result["total"],
+            created=result["created"], updated=result["updated"],
         )
 
         # Notify about new products matching notification rules
@@ -127,6 +134,7 @@ def _sync_single_supplier(supplier: Supplier) -> str:
         candidates = run_matching_for_supplier(supplier.id)
         sync_run.match_candidates_generated = candidates
         logger.info("Match candidates generated: %d", candidates)
+        SyncProgress.update("matching", candidates, candidates)
 
         # Stage 6: Regenerate YML feed (only runs if all prior stages succeeded)
         logger.info("Stage 6/6: Regenerating YML feed")
@@ -139,6 +147,7 @@ def _sync_single_supplier(supplier: Supplier) -> str:
             yml_result["available"],
             yml_result["unavailable"],
         )
+        SyncProgress.update("yml_generation", yml_result["total"], yml_result["total"])
 
         sync_run.status = "success"
         return "success"
