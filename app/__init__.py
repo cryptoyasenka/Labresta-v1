@@ -35,6 +35,7 @@ def create_app(config_name="default"):
     from app.views.catalog import catalog_bp
     from app.views.dashboard import dashboard_bp
     from app.views.feed import feed_bp
+    from app.views.logs import logs_bp
     from app.views.main import main_bp
     from app.views.matches import matches_bp
     from app.views.products import products_bp
@@ -48,6 +49,7 @@ def create_app(config_name="default"):
     app.register_blueprint(matches_bp, url_prefix="/matches")
     app.register_blueprint(products_bp, url_prefix="/products")
     app.register_blueprint(dashboard_bp, url_prefix="/dashboard")
+    app.register_blueprint(logs_bp, url_prefix="/logs")
 
     # Initialize scheduler (before CLI, after blueprints)
     from app.scheduler import init_scheduler
@@ -89,6 +91,7 @@ def create_app(config_name="default"):
         ProductMatch,
         SyncRun,
         User,
+        MatchRule,
     )
 
     # Create tables on first run

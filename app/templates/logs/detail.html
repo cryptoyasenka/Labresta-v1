@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}Синхронизация #{{ run.id }} - LabResta Sync{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>
+        Синхронизация #{{ run.id }}
+        {% if run.status == 'success' %}
+            <span class="badge bg-success">Успешно</span>
+        {% elif run.status == 'error' %}
+            <span class="badge bg-danger">Ошибка</span>
+        {% elif run.status == 'running' %}
+            <span class="badge bg-warning text-dark">В процессе</span>
+        {% else %}
+            <span class="badge bg-secondary">{{ run.status }}</span>
+        {% endif %}
+    </h2>
+    <a href="{{ url_for('logs.index') }}" class="btn btn-outline-secondary btn-sm">Назад к журналу</a>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-3">
+            <div class="card-header">Общая информация</div>
+            <div class="card-body">
+                <table class="table table-sm mb-0">
+                    <tr>
+                        <th class="text-muted" style="width: 40%">Поставщик</th>
+                        <td>{{ run.supplier.name if run.supplier else 'Unknown' }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-muted">Начало</th>
+                        <td>{{ run.started_at.strftime('%d.%m.%Y %H:%M:%S') if run.started_at else '-' }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-muted">Завершение</th>
+                        <td>{{ run.completed_at.strftime('%d.%m.%Y %H:%M:%S') if run.completed_at else '-' }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-muted">Длительность</th>
+                        <td>
+                            {% if run.completed_at and run.started_at %}
+                                {% set delta = (run.completed_at - run.started_at).total_seconds() %}
+                                {% if delta < 60 %}
+                                    {{ '%.0f'|format(delta) }} сек
+                                {% elif delta < 3600 %}
+                                    {{ '%.0f'|format(delta // 60) }} мин {{ '%.0f'|format(delta % 60) }} сек
+                                {% else %}
+                                    {{ '%.0f'|format(delta // 3600) }} ч {{ '%.0f'|format((delta % 3600) // 60) }} мин
+                                {% endif %}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card mb-3">
+            <div class="card-header">Результаты</div>
+            <div class="card-body">
+                <table class="table table-sm mb-0">
+                    <tr>
+                        <th class="text-muted" style="width: 40%">Получено товаров</th>
+                        <td>{{ run.products_fetched or 0 }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-muted">Создано</th>
+                        <td>{{ run.products_created or 0 }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-muted">Обновлено</th>
+                        <td>{{ run.products_updated or 0 }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-muted">Исчезло</th>
+                        <td>{{ run.products_disappeared or 0 }}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-muted">Матчей сгенерировано</th>
+                        <td>{{ run.match_candidates_generated or 0 }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if run.error_message %}
+<div class="card border-danger mb-3">
+    <div class="card-header text-danger">Сообщение об ошибке</div>
+    <div class="card-body">
+        <pre class="mb-0 text-wrap">{{ run.error_message }}</pre>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

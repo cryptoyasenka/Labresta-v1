@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+
+{% block title %}Журнал синхронизаций - LabResta Sync{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Журнал синхронизаций</h2>
+    <div class="text-muted">
+        Всего синков: <strong>{{ total }}</strong>,
+        Успешных: <span class="text-success fw-bold">{{ success_count }}</span>,
+        Ошибок: <span class="text-danger fw-bold">{{ error_count }}</span>
+    </div>
+</div>
+
+<!-- Filter bar -->
+<form method="get" class="row g-2 mb-4 align-items-end">
+    <div class="col-auto">
+        <label class="form-label small">Поставщик</label>
+        <select name="supplier_id" class="form-select form-select-sm">
+            <option value="">Все</option>
+            {% for s in suppliers %}
+            <option value="{{ s.id }}" {% if supplier_id == s.id %}selected{% endif %}>{{ s.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-auto">
+        <label class="form-label small">Статус</label>
+        <select name="status" class="form-select form-select-sm">
+            <option value="all" {% if status == 'all' %}selected{% endif %}>Все</option>
+            <option value="success" {% if status == 'success' %}selected{% endif %}>Успешно</option>
+            <option value="error" {% if status == 'error' %}selected{% endif %}>Ошибка</option>
+            <option value="running" {% if status == 'running' %}selected{% endif %}>В процессе</option>
+        </select>
+    </div>
+    <div class="col-auto">
+        <label class="form-label small">С даты</label>
+        <input type="date" name="date_from" class="form-control form-control-sm" value="{{ date_from }}">
+    </div>
+    <div class="col-auto">
+        <label class="form-label small">По дату</label>
+        <input type="date" name="date_to" class="form-control form-control-sm" value="{{ date_to }}">
+    </div>
+    <div class="col-auto">
+        <label class="form-label small">На странице</label>
+        <select name="per_page" class="form-select form-select-sm">
+            {% for pp in [25, 50, 100] %}
+            <option value="{{ pp }}" {% if per_page == pp %}selected{% endif %}>{{ pp }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary btn-sm">Фильтр</button>
+        <a href="{{ url_for('logs.index') }}" class="btn btn-outline-secondary btn-sm">Сброс</a>
+    </div>
+</form>
+
+{% if runs %}
+<div class="table-responsive">
+    <table class="table table-hover table-sm align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Поставщик</th>
+                <th>Начало</th>
+                <th>Длительность</th>
+                <th>Статус</th>
+                <th class="text-end">Получено</th>
+                <th class="text-end">Создано</th>
+                <th class="text-end">Обновлено</th>
+                <th class="text-end">Исчезло</th>
+                <th class="text-end">Матчи</th>
+                <th>Ошибка</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for run in runs %}
+            <tr>
+                <td>
+                    <a href="{{ url_for('logs.detail', sync_run_id=run.id) }}" class="text-decoration-none">
+                        {{ run.supplier.name if run.supplier else 'Unknown' }}
+                    </a>
+                </td>
+                <td class="text-nowrap small">
+                    {{ run.started_at.strftime('%d.%m.%Y %H:%M') if run.started_at else '-' }}
+                </td>
+                <td class="text-nowrap small">
+                    {% if run.completed_at and run.started_at %}
+                        {% set delta = (run.completed_at - run.started_at).total_seconds() %}
+                        {% if delta < 60 %}
+                            {{ '%.0f'|format(delta) }} сек
+                        {% elif delta < 3600 %}
+                            {{ '%.0f'|format(delta // 60) }} мин {{ '%.0f'|format(delta % 60) }} сек
+                        {% else %}
+                            {{ '%.0f'|format(delta // 3600) }} ч {{ '%.0f'|format((delta % 3600) // 60) }} мин
+                        {% endif %}
+                    {% elif run.status == 'running' %}
+                        <span class="text-warning">...</span>
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td>
+                    {% if run.status == 'success' %}
+                        <span class="badge bg-success">Успешно</span>
+                    {% elif run.status == 'error' %}
+                        <span class="badge bg-danger">Ошибка</span>
+                    {% elif run.status == 'running' %}
+                        <span class="badge bg-warning text-dark">В процессе</span>
+                    {% else %}
+                        <span class="badge bg-secondary">{{ run.status }}</span>
+                    {% endif %}
+                </td>
+                <td class="text-end">{{ run.products_fetched or 0 }}</td>
+                <td class="text-end">{{ run.products_created or 0 }}</td>
+                <td class="text-end">{{ run.products_updated or 0 }}</td>
+                <td class="text-end">{{ run.products_disappeared or 0 }}</td>
+                <td class="text-end">{{ run.match_candidates_generated or 0 }}</td>
+                <td>
+                    {% if run.error_message %}
+                        <span class="text-danger small" data-bs-toggle="tooltip" title="{{ run.error_message }}">
+                            {{ run.error_message[:80] }}{% if run.error_message|length > 80 %}...{% endif %}
+                        </span>
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Pagination -->
+{% if total_pages > 1 %}
+<nav>
+    <ul class="pagination pagination-sm justify-content-center">
+        <li class="page-item {% if page <= 1 %}disabled{% endif %}">
+            <a class="page-link" href="{{ url_for('logs.index', page=page-1, per_page=per_page, supplier_id=supplier_id or '', status=status, date_from=date_from, date_to=date_to) }}">Назад</a>
+        </li>
+        {% for p in range(1, total_pages + 1) %}
+            {% if p == page %}
+            <li class="page-item active"><span class="page-link">{{ p }}</span></li>
+            {% elif p <= 3 or p >= total_pages - 2 or (p >= page - 2 and p <= page + 2) %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('logs.index', page=p, per_page=per_page, supplier_id=supplier_id or '', status=status, date_from=date_from, date_to=date_to) }}">{{ p }}</a>
+            </li>
+            {% elif p == 4 or p == total_pages - 3 %}
+            <li class="page-item disabled"><span class="page-link">...</span></li>
+            {% endif %}
+        {% endfor %}
+        <li class="page-item {% if page >= total_pages %}disabled{% endif %}">
+            <a class="page-link" href="{{ url_for('logs.index', page=page+1, per_page=per_page, supplier_id=supplier_id or '', status=status, date_from=date_from, date_to=date_to) }}">Вперёд</a>
+        </li>
+    </ul>
+</nav>
+{% endif %}
+
+{% else %}
+<div class="text-center text-muted py-5">
+    <h5>Синхронизации ещё не выполнялись</h5>
+    <p>Запустите синхронизацию на <a href="{{ url_for('dashboard.index') }}">панели управления</a>.</p>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Initialize tooltips
+document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => new bootstrap.Tooltip(el));
+</script>
+{% endblock %}
