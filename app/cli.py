@@ -1,4 +1,4 @@
-"""Flask CLI commands for manual sync pipeline execution."""
+"""Flask CLI commands for manual sync pipeline execution and admin management."""
 
 import click
 from flask.cli import with_appcontext
@@ -30,3 +30,36 @@ def sync_command(supplier_id, verbose):
 
     run_full_sync(supplier_id)
     click.echo("Sync complete.")
+
+
+@click.command("create-admin")
+@click.option("--email", prompt="Admin email")
+@click.option("--password", prompt=True, hide_input=True, confirmation_prompt=True)
+@click.option("--name", prompt="Admin name")
+@with_appcontext
+def create_admin_command(email, password, name):
+    """Create an admin user for the management UI.
+
+    Examples:
+        uv run flask create-admin --email admin@example.com --password secret --name Admin
+    """
+    from app.extensions import db
+    from app.models.user import User
+
+    existing = db.session.execute(
+        db.select(User).where(User.email == email.strip().lower())
+    ).scalar_one_or_none()
+
+    if existing:
+        click.echo(f"Error: user with email '{email}' already exists.")
+        raise SystemExit(1)
+
+    user = User(
+        email=email.strip().lower(),
+        name=name.strip(),
+        role="admin",
+    )
+    user.set_password(password)
+    db.session.add(user)
+    db.session.commit()
+    click.echo(f"Admin user '{user.name}' ({user.email}) created successfully.")
