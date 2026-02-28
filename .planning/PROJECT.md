@@ -2,7 +2,7 @@
 
 ## What This Is
 
-Веб-застосунок для автоматичної синхронізації цін і наявності товарів з XML-фідів постачальників на prom.ua (магазин LabResta). Система підтягує фіди постачальників за розкладом (кожні 4 год), знаходить відповідності товарів нечітким пошуком, застосовує правила знижок і генерує YML-файл, який prom.ua та Хорошоп підтягують автоматично. Веб-інтерфейс для оператора: матчинг, dashboard, логи, сповіщення.
+Веб-застосунок для автоматичної синхронізації цін і наявності товарів з фідів постачальників (YML, Excel/Google Sheets) на prom.ua (магазин LabResta). Система підтягує фіди постачальників за розкладом (кожні 4 год), знаходить відповідності товарів нечітким пошуком, застосовує правила знижок і генерує YML-файл, який prom.ua та Хорошоп підтягують автоматично. Веб-інтерфейс для оператора: матчинг, dashboard, логи, сповіщення.
 
 ## Core Value
 
@@ -46,10 +46,16 @@
 
 ### Active
 
-- [ ] Виправити перезапис price_forced при синхронізації
-- [ ] Підключити MatchRule до автоматичного матчингу при синхронізації
-- [ ] Додати другого постачальника з власними правилами
-- [ ] Email-сповіщення при помилці синхронізації (NOTF-01)
+## Current Milestone: v1.1 Tech Debt + Excel Suppliers
+
+**Goal:** Закрити техдолг з аудиту v1.0 і додати підтримку постачальників з Excel-фідами (Google Sheets).
+
+**Target features:**
+- Підтримка Excel/Google Sheets як джерела даних постачальника (назва + ціна + наявність)
+- MatchRule → підключити до автоматичного матчингу
+- UI для індивідуальної знижки на товар (discount_percent)
+- Виправлення UX: колокольчик для операторів, глобальний notifications.js
+- Очищення мертвого коду (ftp_upload.py, yml_test_generator.py)
 
 ### Out of Scope
 
@@ -57,12 +63,13 @@
 - Прямий API prom.ua — YML достатньо і платформонезалежний
 - Мобільний застосунок — тільки веб, PWA не потрібен
 - Offline mode — система серверна
+- Email-сповіщення — Telegram достатньо (deferred)
 
 ## Context
 
 **Shipped v1.0:** 9,016 LOC (Python + HTML + JS + CSS)
-**Tech stack:** Flask 3.1, SQLAlchemy, SQLite (WAL), APScheduler, lxml, rapidfuzz, chardet, Chart.js
-**Масштаб:** 6,100+ товарів prom.ua, старт з MARESTO (~150 товарів)
+**Tech stack:** Flask 3.1, SQLAlchemy, SQLite (WAL), APScheduler, lxml, rapidfuzz, chardet, openpyxl, Chart.js
+**Масштаб:** 6,100+ товарів prom.ua, старт з MARESTO (~150 товарів YML), наступний постачальник — Excel/Google Sheets
 **Тести:** 21 automated (14 pricing + 7 price gate), 12 human verification items pending
 **Інфра:** Розгортання на хостингу, YML раздається через `/feed/yml`
 
@@ -88,5 +95,7 @@
 | Price plausibility gate (3x ratio) | Запобігає абсурдним матчам | ✓ Good — зловив 7.9x mismatch в UAT |
 | chardet + cp1251 fallback | Покриває prom.ua CSV і supplier XML | ✓ Good — обидва формати парсяться |
 
+| Excel/Google Sheets парсер (openpyxl) | Деякі постачальники дають Excel замість YML | — Pending |
+
 ---
-*Last updated: 2026-02-28 after v1.0 milestone*
+*Last updated: 2026-03-01 after v1.1 milestone start*
