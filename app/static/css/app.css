@@ -41,6 +41,52 @@ td, th {
     border-radius: 0.5rem;
 }
 
+/* Split.js resizable panels */
+.split-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.gutter {
+    background-color: #e9ecef;
+    cursor: col-resize;
+    flex-shrink: 0;
+}
+
+.gutter:hover {
+    background-color: #dee2e6;
+}
+
+#matchTablePanel {
+    overflow-x: auto;
+    min-width: 0;
+}
+
+#matchDetailPanel {
+    overflow-y: auto;
+    min-width: 0;
+    border-left: 1px solid #dee2e6;
+    background-color: #fafafa;
+}
+
+.detail-panel-content {
+    font-size: 0.9rem;
+}
+
+/* Diff highlighting */
+mark {
+    background-color: #fff3cd;
+    padding: 0;
+    border-radius: 2px;
+}
+
+/* Active diff toggle button */
+#diffToggleBtn.active {
+    background-color: #0dcaf0;
+    border-color: #0dcaf0;
+    color: #000;
+}
+
 /* Responsive full-width content */
 @media (min-width: 1200px) {
     .container-fluid {

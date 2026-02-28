@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Настройки синхронизации - LabResta Sync{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Настройки синхронизации</h2>
+
+<div class="row">
+    <!-- Sync interval settings -->
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">Расписание синхронизации</div>
+            <div class="card-body">
+                <table class="table table-sm mb-0">
+                    <tr>
+                        <th class="text-muted" style="width: 50%">Интервал синхронизации</th>
+                        <td>{{ config.sync_interval_hours }} ч</td>
+                    </tr>
+                    <tr>
+                        <th class="text-muted">Допуск пропуска (misfire grace)</th>
+                        <td>{{ (config.misfire_grace_time / 60)|int }} мин</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Matching thresholds -->
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">Пороги совпадений</div>
+            <div class="card-body">
+                <table class="table table-sm mb-0">
+                    <tr>
+                        <th class="text-muted" style="width: 50%">Высокая уверенность</th>
+                        <td>{{ config.confidence_high }}%</td>
+                    </tr>
+                    <tr>
+                        <th class="text-muted">Средняя уверенность</th>
+                        <td>{{ config.confidence_medium }}%</td>
+                    </tr>
+                    <tr>
+                        <th class="text-muted">Порог отсечения (cutoff)</th>
+                        <td>{{ config.score_cutoff }}%</td>
+                    </tr>
+                    <tr>
+                        <th class="text-muted">Макс. соотношение цен</th>
+                        <td>{{ config.max_price_ratio }}x</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Per-supplier status -->
+<div class="card mb-4">
+    <div class="card-header">Статус поставщиков</div>
+    <div class="card-body">
+        {% if suppliers %}
+        <div class="table-responsive">
+            <table class="table table-sm mb-0 align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Поставщик</th>
+                        <th>Последняя загрузка</th>
+                        <th>Статус</th>
+                        <th>URL фида</th>
+                        <th>Активен</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for s in suppliers %}
+                    <tr>
+                        <td>{{ s.name }}</td>
+                        <td class="text-nowrap small">
+                            {% if s.last_fetched_at %}
+                                {{ s.last_fetched_at.strftime('%d.%m.%Y %H:%M') }}
+                            {% else %}
+                                <span class="text-muted">Не загружался</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if s.last_fetch_status == 'success' %}
+                                <span class="badge bg-success">OK</span>
+                            {% elif s.last_fetch_status == 'error' %}
+                                <span class="badge bg-danger">Ошибка</span>
+                            {% else %}
+                                <span class="badge bg-secondary">-</span>
+                            {% endif %}
+                        </td>
+                        <td class="small text-break" style="max-width: 300px;">
+                            {{ s.feed_url[:80] }}{% if s.feed_url|length > 80 %}...{% endif %}
+                        </td>
+                        <td>
+                            {% if s.is_enabled %}
+                                <span class="badge bg-success">Да</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Нет</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-muted mb-0">Поставщики не настроены</p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="alert alert-info">
+    Для изменения параметров отредактируйте конфигурацию и перезапустите приложение.
+</div>
+{% endblock %}

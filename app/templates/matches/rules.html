@@ -1,0 +1,223 @@
+{% extends "base.html" %}
+
+{% block title %}Правила матчинга — LabResta Sync{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0">Правила матчинга</h4>
+    <a href="{{ url_for('matches.review') }}" class="btn btn-sm btn-outline-secondary">Назад к матчингу</a>
+</div>
+
+<p class="text-muted mb-3">
+    Запомненные правила автоматически применяются при следующей синхронизации.
+    Если товар поставщика совпадает по названию и бренду, он будет сопоставлен с указанным товаром каталога.
+</p>
+
+{% if rules %}
+<div class="table-responsive">
+<table class="table table-hover table-sm align-middle" id="rulesTable">
+    <thead class="table-light">
+        <tr>
+            <th>Товар поставщика (паттерн)</th>
+            <th>Бренд</th>
+            <th>Товар каталога</th>
+            <th>Создал</th>
+            <th>Дата</th>
+            <th>Заметка</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for rule in rules %}
+        <tr data-rule-id="{{ rule.id }}">
+            <td>{{ rule.supplier_product_name_pattern }}</td>
+            <td>{{ rule.supplier_brand or '&mdash;' }}</td>
+            <td>{{ rule.prom_product.name if rule.prom_product else '&mdash;' }}</td>
+            <td>{{ rule.created_by }}</td>
+            <td>
+                <small class="text-muted">{{ rule.created_at.strftime('%d.%m.%Y %H:%M') if rule.created_at else '&mdash;' }}</small>
+            </td>
+            <td>
+                <span class="rule-note" data-rule-id="{{ rule.id }}">{{ rule.note or '' }}</span>
+                <button class="btn btn-sm btn-link p-0 ms-1 edit-note-btn" data-rule-id="{{ rule.id }}" title="Редактировать заметку">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                    </svg>
+                </button>
+            </td>
+            <td>
+                <button class="btn btn-sm btn-outline-danger delete-rule-btn" data-rule-id="{{ rule.id }}">
+                    Удалить
+                </button>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+
+<!-- Pagination -->
+{% if pagination.pages > 1 %}
+<div class="d-flex justify-content-between align-items-center mt-3">
+    <small class="text-muted">
+        Показано {{ ((pagination.page - 1) * pagination.per_page) + 1 }}-{{ [pagination.page * pagination.per_page, pagination.total]|min }}
+        из {{ pagination.total }}
+    </small>
+    <nav>
+        <ul class="pagination pagination-sm mb-0">
+            {% if pagination.has_prev %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('matches.rules', page=1) }}">&#171;</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('matches.rules', page=pagination.prev_num) }}">&#8249;</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled"><span class="page-link">&#171;</span></li>
+            <li class="page-item disabled"><span class="page-link">&#8249;</span></li>
+            {% endif %}
+
+            {% for p in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+                {% if p %}
+                <li class="page-item {{ 'active' if p == pagination.page }}">
+                    <a class="page-link" href="{{ url_for('matches.rules', page=p) }}">{{ p }}</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled"><span class="page-link">&hellip;</span></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if pagination.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('matches.rules', page=pagination.next_num) }}">&#8250;</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('matches.rules', page=pagination.pages) }}">&#187;</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled"><span class="page-link">&#8250;</span></li>
+            <li class="page-item disabled"><span class="page-link">&#187;</span></li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+{% endif %}
+
+{% else %}
+<div class="text-center text-muted py-4">
+    <p>Нет сохраненных правил матчинга.</p>
+    <p>Правила создаются при ручном сопоставлении с включенной опцией "Запомнить на будущее".</p>
+</div>
+{% endif %}
+
+<!-- Edit Note Modal -->
+<div class="modal fade" id="editNoteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Редактировать заметку</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <textarea class="form-control" id="editNoteText" rows="3" placeholder="Заметка к правилу..."></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-primary" id="saveNoteBtn">Сохранить</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function() {
+    'use strict';
+
+    var editNoteModal = null;
+    var editingRuleId = null;
+    var editNoteModalEl = document.getElementById('editNoteModal');
+    if (editNoteModalEl) {
+        editNoteModal = new bootstrap.Modal(editNoteModalEl);
+    }
+
+    // Delete rule
+    document.addEventListener('click', function(e) {
+        var btn = e.target.closest('.delete-rule-btn');
+        if (!btn) return;
+
+        var ruleId = btn.getAttribute('data-rule-id');
+        if (!confirmAction('Удалить это правило матчинга?')) return;
+
+        btn.disabled = true;
+        fetchWithCSRF('/matches/rules/' + ruleId + '/delete', { method: 'POST' })
+            .then(function(resp) {
+                if (!resp.ok) throw new Error('HTTP ' + resp.status);
+                return resp.json();
+            })
+            .then(function(data) {
+                if (data.status === 'ok') {
+                    var row = btn.closest('tr');
+                    if (row) row.remove();
+                } else {
+                    throw new Error(data.message || 'Unknown error');
+                }
+            })
+            .catch(function(err) {
+                alert('Ошибка: ' + err.message);
+                btn.disabled = false;
+            });
+    });
+
+    // Edit note - open modal
+    document.addEventListener('click', function(e) {
+        var btn = e.target.closest('.edit-note-btn');
+        if (!btn) return;
+
+        editingRuleId = btn.getAttribute('data-rule-id');
+        var noteSpan = document.querySelector('.rule-note[data-rule-id="' + editingRuleId + '"]');
+        var noteText = document.getElementById('editNoteText');
+        if (noteText && noteSpan) {
+            noteText.value = noteSpan.textContent.trim();
+        }
+        if (editNoteModal) editNoteModal.show();
+    });
+
+    // Save note
+    var saveNoteBtn = document.getElementById('saveNoteBtn');
+    if (saveNoteBtn) {
+        saveNoteBtn.addEventListener('click', function() {
+            if (!editingRuleId) return;
+            var noteText = document.getElementById('editNoteText');
+            var newNote = noteText ? noteText.value.trim() : '';
+
+            saveNoteBtn.disabled = true;
+            fetchWithCSRF('/matches/rules/' + editingRuleId + '/edit', {
+                method: 'POST',
+                body: JSON.stringify({ note: newNote })
+            })
+                .then(function(resp) {
+                    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+                    return resp.json();
+                })
+                .then(function(data) {
+                    if (data.status === 'ok') {
+                        var noteSpan = document.querySelector('.rule-note[data-rule-id="' + editingRuleId + '"]');
+                        if (noteSpan) noteSpan.textContent = newNote;
+                        if (editNoteModal) editNoteModal.hide();
+                    } else {
+                        throw new Error(data.message || 'Unknown error');
+                    }
+                })
+                .catch(function(err) {
+                    alert('Ошибка: ' + err.message);
+                })
+                .finally(function() {
+                    saveNoteBtn.disabled = false;
+                });
+        });
+    }
+})();
+</script>
+{% endblock %}

@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+{% block title %}Управление пользователями - LabResta Sync{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Управление пользователями</h2>
+    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createUserModal">
+        Создать пользователя
+    </button>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-hover table-sm align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Имя</th>
+                <th>Email</th>
+                <th>Роль</th>
+                <th>Активен</th>
+                <th>Последний вход</th>
+                <th class="text-end">Обработано матчей</th>
+                <th>Создан</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                    {% if user.role == 'admin' %}
+                        <span class="badge bg-primary">Администратор</span>
+                    {% else %}
+                        <span class="badge bg-secondary">Оператор</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if user.is_active %}
+                        <span class="badge bg-success">Активен</span>
+                    {% else %}
+                        <span class="badge bg-danger">Неактивен</span>
+                    {% endif %}
+                </td>
+                <td class="text-nowrap small">
+                    {% if user.last_login_at %}
+                        {{ user.last_login_at.strftime('%d.%m.%Y %H:%M') }}
+                    {% else %}
+                        <span class="text-muted">Не входил</span>
+                    {% endif %}
+                </td>
+                <td class="text-end">{{ user.matches_processed or 0 }}</td>
+                <td class="text-nowrap small">{{ user.created_at.strftime('%d.%m.%Y') if user.created_at else '-' }}</td>
+                <td class="text-nowrap">
+                    <button class="btn btn-outline-primary btn-sm"
+                            data-bs-toggle="modal"
+                            data-bs-target="#editUserModal{{ user.id }}">Изменить</button>
+                    <button class="btn btn-outline-secondary btn-sm"
+                            data-bs-toggle="modal"
+                            data-bs-target="#passwordModal{{ user.id }}">Пароль</button>
+                    {% if user.id != current_user.id %}
+                    <form method="post" action="{{ url_for('settings.user_toggle', user_id=user.id) }}" class="d-inline">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="btn btn-{{ 'outline-danger' if user.is_active else 'outline-success' }} btn-sm">
+                            {{ 'Деактивировать' if user.is_active else 'Активировать' }}
+                        </button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+
+            <!-- Edit User Modal -->
+            <div class="modal fade" id="editUserModal{{ user.id }}" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form method="post" action="{{ url_for('settings.user_edit', user_id=user.id) }}">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Редактировать пользователя</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label class="form-label">Имя</label>
+                                    <input type="text" name="name" class="form-control" value="{{ user.name }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" name="email" class="form-control" value="{{ user.email }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Роль</label>
+                                    <select name="role" class="form-select">
+                                        <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Администратор</option>
+                                        <option value="operator" {% if user.role == 'operator' %}selected{% endif %}>Оператор</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                                <button type="submit" class="btn btn-primary">Сохранить</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Change Password Modal -->
+            <div class="modal fade" id="passwordModal{{ user.id }}" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form method="post" action="{{ url_for('settings.user_password', user_id=user.id) }}">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Сменить пароль: {{ user.name }}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label class="form-label">Новый пароль</label>
+                                    <input type="password" name="password" class="form-control" minlength="8" required>
+                                    <div class="form-text">Минимум 8 символов</div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                                <button type="submit" class="btn btn-primary">Сменить пароль</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% if not users %}
+<div class="text-center text-muted py-5">
+    <h5>Нет пользователей</h5>
+</div>
+{% endif %}
+
+<!-- Create User Modal -->
+<div class="modal fade" id="createUserModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" action="{{ url_for('settings.user_create') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="modal-header">
+                    <h5 class="modal-title">Создать пользователя</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" name="email" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Имя</label>
+                        <input type="text" name="name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Пароль</label>
+                        <input type="password" name="password" class="form-control" minlength="8" required>
+                        <div class="form-text">Минимум 8 символов</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Роль</label>
+                        <select name="role" class="form-select">
+                            <option value="operator">Оператор</option>
+                            <option value="admin">Администратор</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Создать</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -39,6 +39,7 @@ def create_app(config_name="default"):
     from app.views.main import main_bp
     from app.views.matches import matches_bp
     from app.views.products import products_bp
+    from app.views.settings import settings_bp
     from app.views.suppliers import suppliers_bp
 
     app.register_blueprint(main_bp)
@@ -50,6 +51,7 @@ def create_app(config_name="default"):
     app.register_blueprint(products_bp, url_prefix="/products")
     app.register_blueprint(dashboard_bp, url_prefix="/dashboard")
     app.register_blueprint(logs_bp, url_prefix="/logs")
+    app.register_blueprint(settings_bp, url_prefix="/settings")
 
     # Initialize scheduler (before CLI, after blueprints)
     from app.scheduler import init_scheduler
