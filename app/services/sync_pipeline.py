@@ -1,6 +1,9 @@
 """Sync pipeline orchestrator — fetch, parse, save, detect disappeared products."""
 
+import json
 import logging
+import os
+import tempfile
 from datetime import datetime, timedelta, timezone
 
 from sqlalchemy import func, select
@@ -9,6 +12,12 @@ from app.extensions import db
 from app.models.supplier import Supplier
 from app.models.supplier_product import SupplierProduct
 from app.models.sync_run import SyncRun
+from app.services.excel_parser import (
+    convert_google_sheets_url,
+    is_google_sheets_url,
+    parse_excel_products,
+    validate_xlsx_response,
+)
 from app.services.feed_fetcher import fetch_feed_with_retry
 from app.services.feed_parser import parse_supplier_feed, save_supplier_products
 from app.services.telegram_notifier import (
@@ -75,15 +84,64 @@ def _sync_single_supplier(supplier: Supplier) -> str:
     db.session.add(sync_run)
     db.session.commit()
 
+    tmp_path = None
     try:
+        is_excel = is_google_sheets_url(supplier.feed_url or "")
+
         # Stage 1: Fetch
-        logger.info("Stage 1/6: Fetching feed from %s", supplier.feed_url)
-        SyncProgress.update("fetching", 0)
-        raw_bytes = fetch_feed_with_retry(supplier.feed_url)
+        if is_excel:
+            # Check column_mapping before fetching — skip gracefully if not configured
+            if not supplier.column_mapping:
+                msg = (
+                    "Маппинг колонок не настроен для поставщика '%s'. "
+                    "Настройте через страницу поставщика." % supplier.name
+                )
+                logger.warning(msg)
+                raise ValueError(msg)
+
+            download_url = convert_google_sheets_url(supplier.feed_url)
+            logger.info("Stage 1/6: Fetching Excel feed from %s", download_url)
+            SyncProgress.update("fetching", 0)
+            raw_bytes = fetch_feed_with_retry(download_url)
+        elif not supplier.feed_url:
+            # File-upload-only supplier without feed_url — skip scheduled sync
+            msg = (
+                "Поставщик '%s' не имеет URL фида. "
+                "Загрузите файл вручную через страницу поставщика." % supplier.name
+            )
+            logger.warning(msg)
+            raise ValueError(msg)
+        else:
+            logger.info("Stage 1/6: Fetching feed from %s", supplier.feed_url)
+            SyncProgress.update("fetching", 0)
+            raw_bytes = fetch_feed_with_retry(supplier.feed_url)
 
         # Stage 2: Parse
         logger.info("Stage 2/6: Parsing feed")
-        products = parse_supplier_feed(raw_bytes, supplier.id)
+        if is_excel:
+            validate_xlsx_response(raw_bytes)
+            fd, tmp_path = tempfile.mkstemp(suffix=".xlsx")
+            os.close(fd)
+            with open(tmp_path, "wb") as f:
+                f.write(raw_bytes)
+
+            mapping = json.loads(supplier.column_mapping)
+            products, errors = parse_excel_products(
+                tmp_path, mapping["columns"], mapping["header_row"], supplier.id
+            )
+
+            for err in errors:
+                logger.warning("Excel parse: %s", err)
+
+            # Sanity check: >50% error rate aborts sync
+            if len(errors) > len(products):
+                raise ValueError(
+                    "Слишком много ошибок парсинга (%d ошибок, %d товаров). "
+                    "Проверьте маппинг колонок." % (len(errors), len(products))
+                )
+        else:
+            products = parse_supplier_feed(raw_bytes, supplier.id)
+
         sync_run.products_fetched = len(products)
         logger.info("Parsed %d products from feed", len(products))
         SyncProgress.update("parsing", len(products), len(products))
@@ -160,6 +218,11 @@ def _sync_single_supplier(supplier: Supplier) -> str:
         return "error"
 
     finally:
+        if tmp_path and os.path.exists(tmp_path):
+            try:
+                os.unlink(tmp_path)
+            except OSError:
+                pass
         sync_run.completed_at = datetime.now(timezone.utc)
         db.session.commit()
 
