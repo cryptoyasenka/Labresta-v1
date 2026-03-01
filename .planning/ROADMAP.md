@@ -19,8 +19,8 @@
 
 ### v1.1 Tech Debt + Excel Suppliers
 
-- [ ] **Phase 5: Cleanup and UX Fixes** - Remove dead code, fix notification bell for operators, load notifications.js globally
-- [ ] **Phase 6: Excel Supplier Support** - Add Excel/Google Sheets as supplier feed type with parsing and sync pipeline integration
+- [x] **Phase 5: Cleanup and UX Fixes** - Remove dead code, fix notification bell for operators, load notifications.js globally
+- [x] **Phase 6: Excel Supplier Support** - Add Excel/Google Sheets as supplier feed type with parsing and sync pipeline integration
 - [ ] **Phase 7: Matching and Pricing Enhancements** - Activate MatchRule auto-apply during sync, add per-product discount UI
 
 ## Phase Details
@@ -37,8 +37,8 @@
 **Plans**: 2 plans (Wave 1 — parallel)
 
 Plans:
-- [ ] 05-01-PLAN.md — Dead code cleanup, global badge polling, notification dropdown
-- [ ] 05-02-PLAN.md — Operator notification page access with role-based rendering
+- [x] 05-01-PLAN.md — Dead code cleanup, global badge polling, notification dropdown
+- [x] 05-02-PLAN.md — Operator notification page access with role-based rendering
 
 ### Phase 6: Excel Supplier Support
 **Goal**: Operators can add Excel/Google Sheets suppliers and sync their product data through the same pipeline as YML suppliers
@@ -53,8 +53,8 @@ Plans:
 **Plans**: 2 plans (Wave 1: 06-01, Wave 2: 06-02)
 
 Plans:
-- [ ] 06-01-PLAN.md — Excel parser service with TDD (URL detection, column auto-detection, product parsing) + Supplier model column_mapping
-- [ ] 06-02-PLAN.md — Sync pipeline Excel branching + supplier UI (file upload, mapping preview/confirm, list badges)
+- [x] 06-01-PLAN.md — Excel parser service with TDD (URL detection, column auto-detection, product parsing) + Supplier model column_mapping
+- [x] 06-02-PLAN.md — Sync pipeline Excel branching + supplier UI (file upload, mapping preview/confirm, list badges)
 
 ### Phase 7: Matching and Pricing Enhancements
 **Goal**: Matching rules produce automatic confirmed matches during sync, and operators can set per-product discount overrides through the UI
@@ -82,8 +82,8 @@ Phases execute in numeric order: 5 → 6 → 7
 | 2. Feed Ingestion and Matching Engine | v1.0 | 4/4 | Complete | 2026-02-27 |
 | 3. Pricing Engine and YML Output | v1.0 | 4/4 | Complete | 2026-02-28 |
 | 4. Management UI and Authentication | v1.0 | 7/7 | Complete | 2026-02-28 |
-| 5. Cleanup and UX Fixes | v1.1 | 0/2 | Planned | - |
-| 6. Excel Supplier Support | v1.1 | 0/2 | Planned | - |
+| 5. Cleanup and UX Fixes | v1.1 | 2/2 | Complete | 2026-03-01 |
+| 6. Excel Supplier Support | v1.1 | 2/2 | Complete | 2026-03-01 |
 | 7. Matching and Pricing Enhancements | v1.1 | 0/? | Not started | - |
 
 ---
