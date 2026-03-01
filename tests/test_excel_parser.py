@@ -216,7 +216,8 @@ class TestParseExcelProducts:
         assert products[0]["supplier_id"] == 1
         assert products[0]["currency"] == "UAH"
 
-    def test_skip_no_brand(self, tmp_path):
+    def test_include_no_brand(self, tmp_path):
+        """Rows without brand are included with name-based external_id."""
         xlsx = tmp_path / "no_brand.xlsx"
         _create_xlsx(
             xlsx,
@@ -229,10 +230,14 @@ class TestParseExcelProducts:
         products, errors = parse_excel_products(
             str(xlsx), {0: "name", 1: "brand", 2: "model", 3: "price"}, header_row=0, supplier_id=1
         )
-        assert len(products) == 1
-        assert products[0]["brand"] == "Apach"
+        assert len(products) == 2
+        assert products[0]["brand"] == ""
+        assert products[0]["external_id"] == "category header"
+        assert products[1]["brand"] == "Apach"
+        assert products[1]["external_id"] == "apach|ape-42"
 
-    def test_skip_no_model(self, tmp_path):
+    def test_include_no_model(self, tmp_path):
+        """Rows without model are included with name-based external_id."""
         xlsx = tmp_path / "no_model.xlsx"
         _create_xlsx(
             xlsx,
@@ -245,8 +250,9 @@ class TestParseExcelProducts:
         products, errors = parse_excel_products(
             str(xlsx), {0: "name", 1: "brand", 2: "model", 3: "price"}, header_row=0, supplier_id=1
         )
-        assert len(products) == 1
-        assert products[0]["model"] == "APE-42"
+        assert len(products) == 2
+        assert products[0]["external_id"] == "brand divider"
+        assert products[1]["external_id"] == "apach|ape-42"
 
     def test_skip_duplicate_brand_model(self, tmp_path, caplog):
         xlsx = tmp_path / "dup.xlsx"
