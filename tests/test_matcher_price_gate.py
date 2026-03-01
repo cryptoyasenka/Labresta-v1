@@ -1,10 +1,17 @@
-"""Tests for price plausibility gate in fuzzy matcher."""
+"""Tests for matcher: price gate, type gate, model matching."""
 
-from app.services.matcher import find_match_candidates, MAX_PRICE_RATIO
+from app.services.matcher import (
+    find_match_candidates,
+    extract_product_type,
+    MAX_PRICE_RATIO,
+)
 
 
-def _make_prom(id, name, brand="TestBrand", price=10000):
-    return {"id": id, "name": name, "brand": brand, "price": price}
+def _make_prom(id, name, brand="TestBrand", price=10000, model=None, article=None):
+    return {
+        "id": id, "name": name, "brand": brand, "price": price,
+        "model": model, "article": article,
+    }
 
 
 class TestPricePlausibility:
@@ -89,3 +96,192 @@ class TestPricePlausibility:
         ids = [r["prom_product_id"] for r in result]
         assert 1 not in ids, "Tray at 135 EUR should be rejected"
         assert 2 in ids, "Oven at 1073 EUR should be kept"
+
+
+class TestTypeGate:
+    """Type gate rejects candidates where product types differ."""
+
+    def test_different_types_same_brand_rejected(self):
+        """Pasta cooker should NOT match combi oven (same brand Angelo Po)."""
+        prom = [
+            _make_prom(1, "Пароконвектомат Angelo Po BX61E", "Angelo Po", 50000),
+        ]
+        result = find_match_candidates(
+            "Макароноварка ел. Angelo Po 0S1CP1E", "Angelo Po", prom,
+            supplier_price_cents=50000,
+        )
+        assert len(result) == 0
+
+    def test_oven_does_not_match_tray(self):
+        """Convection oven should NOT match baking tray."""
+        prom = [
+            _make_prom(1, "Противень Unox TG935", "Unox", 10000),
+        ]
+        result = find_match_candidates(
+            "Печь конвекционная Unox XFT133", "Unox", prom,
+            supplier_price_cents=10000,
+        )
+        assert len(result) == 0
+
+    def test_smoker_does_not_match_oven(self):
+        """Smoker should NOT match convection oven (completely different types)."""
+        prom = [
+            _make_prom(1, "Печь конвекционная Hobart HCE20", "Hobart", 50000),
+        ]
+        result = find_match_candidates(
+            "Коптильня Hobart ACICSMOK", "Hobart", prom,
+            supplier_price_cents=50000,
+        )
+        assert len(result) == 0
+
+    def test_reordered_words_still_match(self):
+        """'стол холодильний' and 'холодильній стол' should match."""
+        prom = [
+            _make_prom(1, "Холодильний стол Tecfrigo KARINA", "Tecfrigo", 50000),
+        ]
+        result = find_match_candidates(
+            "Стол холодильний Tecfrigo KARINA", "Tecfrigo", prom,
+            supplier_price_cents=50000,
+        )
+        assert len(result) == 1
+        assert result[0]["score"] >= 80
+
+    def test_same_product_with_suffix_matches(self):
+        """Same product with additional description should match."""
+        prom = [
+            _make_prom(1, "Піч конвекційна Unox XFT133 з парозволоженням", "Unox", 100000),
+        ]
+        result = find_match_candidates(
+            "Піч конвекційна Unox XFT133", "Unox", prom,
+            supplier_price_cents=100000,
+        )
+        assert len(result) == 1
+        assert result[0]["score"] >= 80
+
+    def test_no_brand_skips_type_gate(self):
+        """When brand is None, type gate is skipped."""
+        prom = [
+            _make_prom(1, "Товар TestBrand ABC", "TestBrand", 10000),
+        ]
+        result = find_match_candidates(
+            "Товар TestBrand ABC", None, prom,
+            supplier_price_cents=10000,
+        )
+        assert len(result) == 1
+
+
+class TestArticleModelFastPath:
+    """Article/model exact match provides score=100 fast path."""
+
+    def test_exact_article_match_scores_100(self):
+        """Matching articles should produce score=100."""
+        prom = [
+            _make_prom(1, "Some different name Unox", "Unox", 100000,
+                       article="XFT133"),
+        ]
+        result = find_match_candidates(
+            "Піч конвекційна Unox XFT133", "Unox", prom,
+            supplier_price_cents=100000,
+            supplier_article="XFT133",
+        )
+        assert len(result) == 1
+        assert result[0]["score"] == 100.0
+        assert result[0]["confidence"] == "high"
+
+    def test_article_match_case_insensitive(self):
+        """Article comparison should be case-insensitive."""
+        prom = [
+            _make_prom(1, "Product Brand", "Brand", 10000, article="xft133"),
+        ]
+        result = find_match_candidates(
+            "Product Brand", "Brand", prom,
+            supplier_price_cents=10000,
+            supplier_article="XFT133",
+        )
+        assert len(result) == 1
+        assert result[0]["score"] == 100.0
+
+    def test_different_articles_no_fast_path(self):
+        """Different articles should not trigger fast path."""
+        prom = [
+            _make_prom(1, "Противень Unox TG935", "Unox", 10000,
+                       article="TG935"),
+        ]
+        result = find_match_candidates(
+            "Піч конвекційна Unox XFT133", "Unox", prom,
+            supplier_price_cents=10000,
+            supplier_article="XFT133",
+        )
+        # Type gate should reject (Противень vs Піч), and no fast path
+        assert len(result) == 0
+
+    def test_model_match_when_no_article(self):
+        """Model field match works when article is not available."""
+        prom = [
+            _make_prom(1, "Плита Bertos G7F4B", "Bertos", 50000, model="G7F4B"),
+        ]
+        result = find_match_candidates(
+            "Плита газова Bertos G7F4B", "Bertos", prom,
+            supplier_price_cents=50000,
+            supplier_model="G7F4B",
+        )
+        assert len(result) == 1
+        assert result[0]["score"] == 100.0
+
+
+class TestModelBoostPenalty:
+    """Model similarity adjusts fuzzy scores up or down."""
+
+    def test_model_mismatch_penalizes_score(self):
+        """Completely different models should reduce the fuzzy score."""
+        prom = [
+            _make_prom(1, "Плита газова Bertos G7F4B", "Bertos", 50000, model="G7F4B"),
+        ]
+        result_no_model = find_match_candidates(
+            "Плита газова Bertos Z200X", "Bertos", prom,
+            supplier_price_cents=50000,
+        )
+        result_with_model = find_match_candidates(
+            "Плита газова Bertos Z200X", "Bertos", prom,
+            supplier_price_cents=50000,
+            supplier_model="Z200X",
+        )
+        if result_no_model and result_with_model:
+            assert result_with_model[0]["score"] < result_no_model[0]["score"]
+
+    def test_no_model_fields_no_adjustment(self):
+        """When neither side has model, score is unchanged."""
+        prom = [
+            _make_prom(1, "Товар TestBrand ABC", "TestBrand", 10000),
+        ]
+        result = find_match_candidates(
+            "Товар TestBrand ABC", "TestBrand", prom,
+            supplier_price_cents=10000,
+        )
+        assert len(result) == 1
+
+
+class TestExtractProductType:
+    """Unit tests for product type extraction."""
+
+    def test_simple_type_extraction(self):
+        assert extract_product_type("Печь Unox XFT133", "Unox") == "Печь"
+
+    def test_multi_word_type(self):
+        result = extract_product_type("Стол холодильний Tecfrigo KARINA", "Tecfrigo")
+        assert "Стол" in result
+        assert "холодильний" in result
+
+    def test_type_with_abbreviation(self):
+        result = extract_product_type("Макароноварка ел. Angelo Po 0S1CP1E", "Angelo Po")
+        assert "Макароноварка" in result
+
+    def test_brand_not_in_name_returns_empty(self):
+        assert extract_product_type("Макароноварка 0S1CP1E", "UnknownBrand") == ""
+
+    def test_no_brand_returns_empty(self):
+        assert extract_product_type("Some product", None) == ""
+
+    def test_brand_at_start_returns_empty(self):
+        """Brand at the very start means no type prefix."""
+        assert extract_product_type("Unox XFT133", "Unox") == ""

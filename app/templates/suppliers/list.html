@@ -91,6 +91,11 @@
                 </form>
                 <a href="{{ url_for('suppliers.supplier_mapping_preview', supplier_id=supplier.id) }}"
                    class="btn btn-sm btn-warning">Настроить колонки</a>
+                <form method="POST" action="{{ url_for('suppliers.supplier_delete', supplier_id=supplier.id) }}" class="d-inline"
+                      onsubmit="return confirm('Удалить поставщика «{{ supplier.name }}» и все его товары, совпадения и историю?')">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn btn-sm btn-outline-danger">Удалить</button>
+                </form>
             </td>
         </tr>
         {% endfor %}

@@ -16,7 +16,11 @@ from flask_login import login_required
 from sqlalchemy import select
 
 from app.extensions import db
+from app.models.notification_rule import Notification
+from app.models.product_match import ProductMatch
 from app.models.supplier import Supplier
+from app.models.supplier_product import SupplierProduct
+from app.models.sync_run import SyncRun
 from app.services.excel_parser import (
     convert_google_sheets_url,
     get_preview_data,
@@ -146,6 +150,57 @@ def supplier_toggle(supplier_id):
     db.session.commit()
     status = "включён" if supplier.is_enabled else "выключен"
     flash(f"Поставщик '{supplier.name}' {status}.", "success")
+    return redirect(url_for("suppliers.supplier_list"))
+
+
+@suppliers_bp.route("/<int:supplier_id>/delete", methods=["POST"])
+@login_required
+def supplier_delete(supplier_id):
+    supplier = db.session.get(Supplier, supplier_id)
+    if not supplier:
+        flash("Поставщик не найден.", "error")
+        return redirect(url_for("suppliers.supplier_list"))
+
+    name = supplier.name
+
+    # Get supplier product IDs for cascading deletes
+    sp_ids = [
+        row[0]
+        for row in db.session.execute(
+            select(SupplierProduct.id).where(SupplierProduct.supplier_id == supplier_id)
+        ).all()
+    ]
+
+    if sp_ids:
+        # Delete notifications linked to these supplier products
+        db.session.execute(
+            Notification.__table__.delete().where(
+                Notification.supplier_product_id.in_(sp_ids)
+            )
+        )
+        # Delete matches linked to these supplier products
+        db.session.execute(
+            ProductMatch.__table__.delete().where(
+                ProductMatch.supplier_product_id.in_(sp_ids)
+            )
+        )
+        # Delete supplier products
+        db.session.execute(
+            SupplierProduct.__table__.delete().where(
+                SupplierProduct.supplier_id == supplier_id
+            )
+        )
+
+    # Delete sync runs
+    db.session.execute(
+        SyncRun.__table__.delete().where(SyncRun.supplier_id == supplier_id)
+    )
+
+    # Delete supplier
+    db.session.delete(supplier)
+    db.session.commit()
+
+    flash(f"Поставщик '{name}' и все связанные данные удалены.", "success")
     return redirect(url_for("suppliers.supplier_list"))
 
 
