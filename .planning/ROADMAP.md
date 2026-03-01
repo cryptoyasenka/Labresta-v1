@@ -50,11 +50,11 @@ Plans:
   3. System parses Excel file and extracts product name, price, and availability into SupplierProduct records
   4. Excel-sourced supplier products appear in the matching queue and sync pipeline identically to YML-sourced products
   5. Parse errors (missing required columns, unparseable prices) are reported to the operator via flash messages and sync logs
-**Plans**: TBD
+**Plans**: 2 plans (Wave 1: 06-01, Wave 2: 06-02)
 
 Plans:
-- [ ] 06-01: TBD
-- [ ] 06-02: TBD
+- [ ] 06-01-PLAN.md — Excel parser service with TDD (URL detection, column auto-detection, product parsing) + Supplier model column_mapping
+- [ ] 06-02-PLAN.md — Sync pipeline Excel branching + supplier UI (file upload, mapping preview/confirm, list badges)
 
 ### Phase 7: Matching and Pricing Enhancements
 **Goal**: Matching rules produce automatic confirmed matches during sync, and operators can set per-product discount overrides through the UI
@@ -83,7 +83,7 @@ Phases execute in numeric order: 5 → 6 → 7
 | 3. Pricing Engine and YML Output | v1.0 | 4/4 | Complete | 2026-02-28 |
 | 4. Management UI and Authentication | v1.0 | 7/7 | Complete | 2026-02-28 |
 | 5. Cleanup and UX Fixes | v1.1 | 0/2 | Planned | - |
-| 6. Excel Supplier Support | v1.1 | 0/? | Not started | - |
+| 6. Excel Supplier Support | v1.1 | 0/2 | Planned | - |
 | 7. Matching and Pricing Enhancements | v1.1 | 0/? | Not started | - |
 
 ---
