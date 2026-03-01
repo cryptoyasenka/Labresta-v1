@@ -69,27 +69,28 @@
             <td>
                 <a href="{{ url_for('suppliers.supplier_edit', supplier_id=supplier.id) }}" class="btn btn-sm btn-outline-primary">Изменить</a>
                 <form method="POST" action="{{ url_for('suppliers.supplier_toggle', supplier_id=supplier.id) }}" class="d-inline">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <button type="submit" class="btn btn-sm btn-outline-{{ 'warning' if supplier.is_enabled else 'success' }}">
                         {{ 'Выключить' if supplier.is_enabled else 'Включить' }}
                     </button>
                 </form>
                 {% if supplier.feed_url %}
                 <form method="POST" action="{{ url_for('suppliers.supplier_fetch', supplier_id=supplier.id) }}" class="d-inline">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <button type="submit" class="btn btn-sm btn-outline-info">Загрузить фид</button>
                 </form>
                 {% endif %}
                 <form method="POST" action="{{ url_for('suppliers.supplier_upload', supplier_id=supplier.id) }}"
                       enctype="multipart/form-data" class="d-inline">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <input type="file" name="file" accept=".xlsx" class="d-none" id="file-{{ supplier.id }}"
                            onchange="this.form.submit()">
                     <label for="file-{{ supplier.id }}" class="btn btn-sm btn-outline-secondary" role="button">
                         Загрузить файл
                     </label>
                 </form>
-                {% if supplier.column_mapping is none and supplier.feed_url and 'docs.google.com/spreadsheets' in supplier.feed_url %}
-                    <a href="{{ url_for('suppliers.supplier_mapping_preview', supplier_id=supplier.id) }}"
-                       class="btn btn-sm btn-warning">Настроить колонки</a>
-                {% endif %}
+                <a href="{{ url_for('suppliers.supplier_mapping_preview', supplier_id=supplier.id) }}"
+                   class="btn btn-sm btn-warning">Настроить колонки</a>
             </td>
         </tr>
         {% endfor %}

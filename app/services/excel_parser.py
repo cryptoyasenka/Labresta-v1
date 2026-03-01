@@ -200,12 +200,15 @@ def parse_excel_products(
         brand = values.get("brand", "").strip()
         model_val = values.get("model", "").strip()
 
-        # Skip rows without brand or model (category headers)
-        if not brand or not model_val:
+        name = values.get("name", "").strip()
+        if not name:
             continue
 
-        # Stable external_id from brand+model
-        ext_id = f"{brand.lower()}|{model_val.lower()}"
+        # Stable external_id: prefer brand+model, fallback to name
+        if brand and model_val:
+            ext_id = f"{brand.lower()}|{model_val.lower()}"
+        else:
+            ext_id = name.lower()
 
         # Skip duplicates
         if ext_id in seen_ids:
@@ -248,11 +251,6 @@ def parse_excel_products(
         # Unparseable price => mark unavailable
         if price_error:
             available = False
-
-        name = values.get("name", "").strip()
-        if not name:
-            errors.append(f"Row {row_idx + 1}: empty name")
-            continue
 
         products.append(
             {
@@ -308,6 +306,12 @@ def get_preview_data(file_path: str, max_rows: int = 10) -> dict:
         headers = all_rows[header_row]
         data_start = header_row + 1
         data_rows = all_rows[data_start : data_start + max_rows]
+    elif all_rows:
+        # No header detected — show first row as column labels
+        # and remaining rows as preview so user can map manually
+        max_cols = max(len(r) for r in all_rows) if all_rows else 0
+        headers = [f"Колонка {i + 1}" for i in range(max_cols)]
+        data_rows = all_rows[:max_rows]
     else:
         headers = []
         data_rows = []

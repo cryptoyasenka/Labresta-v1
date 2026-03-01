@@ -9,10 +9,12 @@
 </p>
 
 <form method="POST" action="{{ url_for('suppliers.supplier_mapping_confirm', supplier_id=supplier.id) }}" id="mappingForm">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <input type="hidden" name="header_row" value="{{ preview_data.header_row if preview_data.header_row is not none else 0 }}">
 
     <div class="alert alert-info" id="validationAlert">
-        <strong>Обязательные колонки:</strong> <span id="missingFields">Название, Бренд, Модель, Цена</span>
+        <strong>Обязательные колонки:</strong> <span id="missingFields">Название, Цена</span>
+        <br><small class="text-muted">Бренд и Модель — необязательные (могут быть в названии)</small>
     </div>
 
     <div class="table-responsive">
@@ -67,11 +69,9 @@
 {% block scripts %}
 <script>
 (function() {
-    var REQUIRED = ['name', 'brand', 'model', 'price'];
+    var REQUIRED = ['name', 'price'];
     var REQUIRED_LABELS = {
         'name': 'Название',
-        'brand': 'Бренд',
-        'model': 'Модель',
         'price': 'Цена'
     };
     var selects = document.querySelectorAll('.mapping-select');

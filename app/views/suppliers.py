@@ -34,12 +34,12 @@ suppliers_bp = Blueprint("suppliers", __name__)
 
 # Field choices for column mapping dropdowns
 FIELD_CHOICES = [
+    ("skip", "— Пропустить —"),
     ("name", "Название"),
     ("brand", "Бренд"),
     ("model", "Модель"),
     ("price", "Цена"),
     ("available", "Наявність"),
-    ("skip", "Пропустить"),
 ]
 
 
@@ -266,7 +266,8 @@ def supplier_mapping_preview(supplier_id):
     preview_key = f"excel_preview_{supplier_id}"
     preview_data = session.get(preview_key)
 
-    if not preview_data:
+    # Re-download if no data or data has empty headers (stale session)
+    if not preview_data or not preview_data.get("all_headers"):
         # Try to re-download for Google Sheets suppliers
         if supplier.feed_url and is_google_sheets_url(supplier.feed_url):
             try:
@@ -281,7 +282,6 @@ def supplier_mapping_preview(supplier_id):
 
                 preview_data = get_preview_data(tmp_path)
                 session[f"excel_temp_{supplier_id}"] = tmp_path
-                session[preview_key] = preview_data
             except Exception as e:
                 logger.exception("Failed to download for mapping preview")
                 flash(f"Не удалось загрузить файл для предпросмотра: {e}", "error")
@@ -318,14 +318,11 @@ def supplier_mapping_confirm(supplier_id):
 
     # Validate required fields are assigned
     assigned_fields = set(columns.values())
-    # REQUIRED_FIELDS minus "available" (optional)
-    mapping_required = {"name", "brand", "model", "price"}
+    mapping_required = {"name", "price"}
     missing = mapping_required - assigned_fields
     if missing:
         missing_names = {
             "name": "Название",
-            "brand": "Бренд",
-            "model": "Модель",
             "price": "Цена",
         }
         missing_labels = [missing_names.get(f, f) for f in missing]
