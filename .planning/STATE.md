@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Tech Debt + Excel Suppliers
-status: ready_to_plan
-last_updated: "2026-03-01T14:00:00Z"
+status: executing
+last_updated: "2026-03-01T00:02:28Z"
 progress:
   total_phases: 3
   completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
+  total_plans: 2
+  completed_plans: 1
 ---
 
 # Project State
@@ -23,11 +23,11 @@ See: .planning/PROJECT.md (updated 2026-03-01)
 ## Current Position
 
 Phase: 5 of 7 (Cleanup and UX Fixes) — first phase of v1.1
-Plan: —
-Status: Ready to plan
-Last activity: 2026-03-01 — Roadmap created for v1.1 (3 phases, 10 requirements)
+Plan: 2 of 2
+Status: Executing
+Last activity: 2026-03-01 — Completed 05-02-PLAN.md (operator notification access)
 
-Progress: [░░░░░░░░░░░░░░░░░░░░] 0%
+Progress: [██████████░░░░░░░░░░] 50% (1/2 plans in Phase 5)
 
 ## Performance Metrics
 
@@ -41,7 +41,7 @@ Progress: [░░░░░░░░░░░░░░░░░░░░] 0%
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | v1.0 Phases 1-4 | 18 | ~7.5h | ~25 min |
-| v1.1 Phase 5+ | — | — | — |
+| v1.1 Phase 5 Plan 02 | 1 | 2 min | 2 min |
 
 *Updated after each plan completion*
 
@@ -50,7 +50,9 @@ Progress: [░░░░░░░░░░░░░░░░░░░░] 0%
 ### Decisions
 
 All v1.0 decisions archived in PROJECT.md Key Decisions table with outcomes.
-No new v1.1 decisions yet.
+
+- **05-02:** Removed @admin_required from notifications() route; use current_user.is_admin in function body for role-based template selection
+- **05-02:** Operator template reuses notifications.js for mark-all-read without code duplication
 
 ### Pending Todos
 
@@ -63,5 +65,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-03-01
-Stopped at: Roadmap created for v1.1 milestone
+Stopped at: Completed 05-02-PLAN.md (operator notification access)
 Resume file: None

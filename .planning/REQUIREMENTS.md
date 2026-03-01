@@ -25,7 +25,7 @@ Requirements for milestone v1.1 — Tech Debt + Excel Suppliers.
 ### UX / Notifications
 
 - [ ] **UX-01**: notifications.js завантажується глобально на всіх сторінках (badge polling працює скрізь)
-- [ ] **UX-02**: Оператори (роль operator) бачать колокольчик і мають доступ до своїх сповіщень без помилки 403
+- [x] **UX-02**: Оператори (роль operator) бачать колокольчик і мають доступ до своїх сповіщень без помилки 403
 
 ### Code Cleanup
 
@@ -72,7 +72,7 @@ Deferred to future release. Tracked but not in current roadmap.
 | MTCH-01 | Phase 7 | Pending |
 | PRC-01 | Phase 7 | Pending |
 | UX-01 | Phase 5 | Pending |
-| UX-02 | Phase 5 | Pending |
+| UX-02 | Phase 5 | Complete |
 | CLEAN-01 | Phase 5 | Pending |
 | CLEAN-02 | Phase 5 | Pending |
 
