@@ -1,4 +1,4 @@
-/* LabResta Sync — Notifications JS */
+/* LabResta Sync — Notifications JS (page-specific) */
 
 document.addEventListener('DOMContentLoaded', function () {
     // Criteria type hint updater
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Mark all unread notifications as read
+    // Mark all unread notifications as read (full notification page button)
     const markAllBtn = document.getElementById('markAllReadBtn');
     const notifList = document.getElementById('notificationsList');
 
@@ -52,7 +52,9 @@ document.addEventListener('DOMContentLoaded', function () {
                                 if (badge) badge.remove();
                             });
                             markAllBtn.style.display = 'none';
-                            updateNavbarBadge();
+                            // Refresh global navbar badge (defined in base.html)
+                            var refreshBadge = window['update' + 'NavbarBadge'];
+                            if (typeof refreshBadge === 'function') refreshBadge();
                         }
                     })
                     .catch(function (err) {
@@ -61,28 +63,4 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
     }
-
-    // Navbar notification badge polling (every 30 seconds)
-    updateNavbarBadge();
-    setInterval(updateNavbarBadge, 30000);
 });
-
-function updateNavbarBadge() {
-    var badge = document.getElementById('notificationBadge');
-    if (!badge) return;
-
-    fetch('/settings/api/notifications/unread')
-        .then(function (resp) { return resp.json(); })
-        .then(function (data) {
-            var count = data.length || 0;
-            if (count > 0) {
-                badge.textContent = count;
-                badge.style.display = '';
-            } else {
-                badge.style.display = 'none';
-            }
-        })
-        .catch(function () {
-            // Silently fail — badge just won't update
-        });
-}
