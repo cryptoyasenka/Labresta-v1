@@ -21,11 +21,14 @@
         <label for="feed_url" class="form-label">URL фида</label>
         <input type="url" class="form-control {% if errors and errors.feed_url %}is-invalid{% endif %}"
                id="feed_url" name="feed_url"
-               value="{{ supplier.feed_url if supplier else (form_data.feed_url if form_data else '') }}"
-               required>
+               value="{{ supplier.feed_url if supplier else (form_data.feed_url if form_data else '') }}">
         {% if errors and errors.feed_url %}
             <div class="invalid-feedback">{{ errors.feed_url }}</div>
         {% endif %}
+        <small class="form-text text-muted">
+            YML/XML фид или ссылка на Google Sheets (публичный доступ).
+            Для Google Sheets: Файл &rarr; Поделиться &rarr; Все у кого есть ссылка.
+        </small>
     </div>
 
     <div class="mb-3">
@@ -46,4 +49,8 @@
         <a href="{{ url_for('suppliers.supplier_list') }}" class="btn btn-outline-secondary">Отмена</a>
     </div>
 </form>
+
+<p class="text-muted mt-3" style="max-width: 600px;">
+    <small>Для загрузки файла Excel используйте кнопку "Загрузить файл" на странице поставщика после создания.</small>
+</p>
 {% endblock %}

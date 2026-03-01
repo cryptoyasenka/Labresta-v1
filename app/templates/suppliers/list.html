@@ -13,6 +13,7 @@
     <thead>
         <tr>
             <th>Название</th>
+            <th>Тип</th>
             <th>URL фида</th>
             <th>Скидка %</th>
             <th>Статус</th>
@@ -25,7 +26,22 @@
         {% for supplier in suppliers %}
         <tr>
             <td>{{ supplier.name }}</td>
-            <td title="{{ supplier.feed_url }}">{{ supplier.feed_url[:50] }}{% if supplier.feed_url|length > 50 %}...{% endif %}</td>
+            <td>
+                {% if supplier.feed_url and 'docs.google.com/spreadsheets' in supplier.feed_url %}
+                    <span class="badge bg-success">Excel</span>
+                {% elif supplier.feed_url %}
+                    <span class="badge bg-primary">YML</span>
+                {% else %}
+                    <span class="badge bg-secondary">Файл</span>
+                {% endif %}
+            </td>
+            <td title="{{ supplier.feed_url or '' }}">
+                {% if supplier.feed_url %}
+                    {{ supplier.feed_url[:50] }}{% if supplier.feed_url|length > 50 %}...{% endif %}
+                {% else %}
+                    <span class="text-muted">---</span>
+                {% endif %}
+            </td>
             <td>{{ supplier.discount_percent }}%</td>
             <td>
                 {% if supplier.is_enabled %}
@@ -47,7 +63,7 @@
                 {% elif supplier.last_fetch_status == 'error' %}
                     <span class="badge bg-danger" title="{{ supplier.last_fetch_error or '' }}">Ошибка</span>
                 {% else %}
-                    <span class="text-muted">—</span>
+                    <span class="text-muted">---</span>
                 {% endif %}
             </td>
             <td>
@@ -57,9 +73,23 @@
                         {{ 'Выключить' if supplier.is_enabled else 'Включить' }}
                     </button>
                 </form>
+                {% if supplier.feed_url %}
                 <form method="POST" action="{{ url_for('suppliers.supplier_fetch', supplier_id=supplier.id) }}" class="d-inline">
                     <button type="submit" class="btn btn-sm btn-outline-info">Загрузить фид</button>
                 </form>
+                {% endif %}
+                <form method="POST" action="{{ url_for('suppliers.supplier_upload', supplier_id=supplier.id) }}"
+                      enctype="multipart/form-data" class="d-inline">
+                    <input type="file" name="file" accept=".xlsx" class="d-none" id="file-{{ supplier.id }}"
+                           onchange="this.form.submit()">
+                    <label for="file-{{ supplier.id }}" class="btn btn-sm btn-outline-secondary" role="button">
+                        Загрузить файл
+                    </label>
+                </form>
+                {% if supplier.column_mapping is none and supplier.feed_url and 'docs.google.com/spreadsheets' in supplier.feed_url %}
+                    <a href="{{ url_for('suppliers.supplier_mapping_preview', supplier_id=supplier.id) }}"
+                       class="btn btn-sm btn-warning">Настроить колонки</a>
+                {% endif %}
             </td>
         </tr>
         {% endfor %}

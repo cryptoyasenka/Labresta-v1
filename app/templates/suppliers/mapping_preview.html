@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block title %}Настройка колонок - {{ supplier.name }} - LabResta Sync{% endblock %}
+
+{% block content %}
+<h1>Настройка колонок — {{ supplier.name }}</h1>
+<p class="text-muted">
+    Проверьте и настройте маппинг колонок. Для каждой колонки выберите тип данных из выпадающего списка.
+</p>
+
+<form method="POST" action="{{ url_for('suppliers.supplier_mapping_confirm', supplier_id=supplier.id) }}" id="mappingForm">
+    <input type="hidden" name="header_row" value="{{ preview_data.header_row if preview_data.header_row is not none else 0 }}">
+
+    <div class="alert alert-info" id="validationAlert">
+        <strong>Обязательные колонки:</strong> <span id="missingFields">Название, Бренд, Модель, Цена</span>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr class="table-light">
+                    {% for header in preview_data.all_headers %}
+                    <th class="text-center" id="header-{{ loop.index0 }}">
+                        <div class="mb-1 fw-normal text-muted small">{{ header }}</div>
+                        <select name="col_{{ loop.index0 }}" class="form-select form-select-sm mapping-select"
+                                data-col="{{ loop.index0 }}">
+                            {% for value, label in field_choices %}
+                            <option value="{{ value }}"
+                                {% if preview_data.detected_mapping and loop.index0|string in preview_data.detected_mapping and preview_data.detected_mapping[loop.index0|string] == value %}
+                                    selected
+                                {% elif preview_data.detected_mapping and loop.index0 in preview_data.detected_mapping and preview_data.detected_mapping[loop.index0] == value %}
+                                    selected
+                                {% endif %}
+                            >{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                    </th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in preview_data.preview_rows %}
+                <tr>
+                    {% for cell in row %}
+                    <td>{{ cell }}</td>
+                    {% endfor %}
+                    {# Pad if row is shorter than headers #}
+                    {% for _ in range(preview_data.all_headers|length - row|length) %}
+                    <td></td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="d-flex gap-2 mt-3">
+        <button type="submit" class="btn btn-primary" id="confirmBtn" disabled>
+            Подтвердить и импортировать
+        </button>
+        <a href="{{ url_for('suppliers.supplier_list') }}" class="btn btn-outline-secondary">Отмена</a>
+    </div>
+</form>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function() {
+    var REQUIRED = ['name', 'brand', 'model', 'price'];
+    var REQUIRED_LABELS = {
+        'name': 'Название',
+        'brand': 'Бренд',
+        'model': 'Модель',
+        'price': 'Цена'
+    };
+    var selects = document.querySelectorAll('.mapping-select');
+    var confirmBtn = document.getElementById('confirmBtn');
+    var missingSpan = document.getElementById('missingFields');
+    var validationAlert = document.getElementById('validationAlert');
+
+    function getAssignments() {
+        var assignments = {};
+        selects.forEach(function(sel) {
+            if (sel.value !== 'skip') {
+                assignments[sel.getAttribute('data-col')] = sel.value;
+            }
+        });
+        return assignments;
+    }
+
+    function validateMapping() {
+        var assignments = getAssignments();
+        var assignedFields = Object.values(assignments);
+
+        // Check for missing required fields
+        var missing = REQUIRED.filter(function(f) {
+            return assignedFields.indexOf(f) === -1;
+        });
+
+        // Update UI
+        if (missing.length > 0) {
+            var labels = missing.map(function(f) { return REQUIRED_LABELS[f] || f; });
+            missingSpan.textContent = labels.join(', ');
+            validationAlert.className = 'alert alert-warning';
+            confirmBtn.disabled = true;
+        } else {
+            missingSpan.textContent = 'Все обязательные колонки назначены';
+            validationAlert.className = 'alert alert-success';
+            confirmBtn.disabled = false;
+        }
+
+        // Highlight assigned columns
+        selects.forEach(function(sel) {
+            var th = document.getElementById('header-' + sel.getAttribute('data-col'));
+            if (th) {
+                if (sel.value !== 'skip') {
+                    th.style.backgroundColor = '#e8f5e9';
+                } else {
+                    th.style.backgroundColor = '';
+                }
+            }
+        });
+    }
+
+    // Prevent duplicate assignments
+    selects.forEach(function(sel) {
+        sel.addEventListener('change', function() {
+            var selectedValue = this.value;
+            var currentCol = this.getAttribute('data-col');
+
+            if (selectedValue !== 'skip') {
+                // Clear same field from other columns
+                selects.forEach(function(other) {
+                    if (other.getAttribute('data-col') !== currentCol && other.value === selectedValue) {
+                        other.value = 'skip';
+                    }
+                });
+            }
+
+            validateMapping();
+        });
+    });
+
+    // Initial validation on page load
+    validateMapping();
+})();
+</script>
+{% endblock %}
