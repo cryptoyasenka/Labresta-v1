@@ -65,11 +65,11 @@ Plans:
   2. Rule-applied matches appear as confirmed in the match list (same status as manually confirmed matches)
   3. Operator can set or clear an individual discount percentage on any confirmed match through the matches UI
   4. Per-product discount override takes priority over the supplier default discount in price calculation and YML output
-**Plans**: TBD
+**Plans**: 2 plans (Wave 1: 07-01, Wave 2: 07-02)
 
 Plans:
-- [ ] 07-01: TBD
-- [ ] 07-02: TBD
+- [ ] 07-01-PLAN.md — MatchRule auto-apply in sync pipeline with TDD (rule_matcher.py + pipeline integration + review.html rule indicator)
+- [ ] 07-02-PLAN.md — Per-product discount UI (AJAX endpoint, discount column, detail panel input with live price preview)
 
 ## Progress
 
@@ -84,7 +84,7 @@ Phases execute in numeric order: 5 → 6 → 7
 | 4. Management UI and Authentication | v1.0 | 7/7 | Complete | 2026-02-28 |
 | 5. Cleanup and UX Fixes | v1.1 | 2/2 | Complete | 2026-03-01 |
 | 6. Excel Supplier Support | v1.1 | 2/2 | Complete | 2026-03-01 |
-| 7. Matching and Pricing Enhancements | v1.1 | 0/? | Not started | - |
+| 7. Matching and Pricing Enhancements | v1.1 | 0/2 | Planned | - |
 
 ---
 *Full v1.0 details: milestones/v1.0-ROADMAP.md*
