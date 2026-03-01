@@ -219,16 +219,21 @@ def sync_settings():
 
 @settings_bp.route("/notifications")
 @login_required
-@admin_required
 def notifications():
-    """Notification rules management page."""
-    rules = db.session.execute(
-        select(NotificationRule).order_by(NotificationRule.created_at.desc())
-    ).scalars().all()
-    recent = get_recent_notifications(limit=20)
+    """Notification page: full management for admin, list-only for operator."""
+    recent = get_recent_notifications(limit=50)
+    if current_user.is_admin:
+        rules = db.session.execute(
+            select(NotificationRule).order_by(NotificationRule.created_at.desc())
+        ).scalars().all()
+        return render_template(
+            "settings/notifications.html",
+            rules=rules,
+            recent_notifications=recent,
+        )
+    # Operator: simplified view — notification list only, no rule management
     return render_template(
-        "settings/notifications.html",
-        rules=rules,
+        "settings/notifications_operator.html",
         recent_notifications=recent,
     )
 
