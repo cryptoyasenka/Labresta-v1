@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Tech Debt + Excel Suppliers
 status: executing
-last_updated: "2026-03-01T00:02:28Z"
+last_updated: "2026-03-01T00:04:01Z"
 progress:
   total_phases: 3
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 2
-  completed_plans: 1
+  completed_plans: 2
 ---
 
 # Project State
@@ -23,11 +23,11 @@ See: .planning/PROJECT.md (updated 2026-03-01)
 ## Current Position
 
 Phase: 5 of 7 (Cleanup and UX Fixes) — first phase of v1.1
-Plan: 2 of 2
-Status: Executing
-Last activity: 2026-03-01 — Completed 05-02-PLAN.md (operator notification access)
+Plan: 2 of 2 (all complete)
+Status: Phase 5 complete
+Last activity: 2026-03-01 — Completed 05-01-PLAN.md (dead code removal + notification dropdown)
 
-Progress: [██████████░░░░░░░░░░] 50% (1/2 plans in Phase 5)
+Progress: [████████████████████] 100% (2/2 plans in Phase 5)
 
 ## Performance Metrics
 
@@ -42,6 +42,7 @@ Progress: [██████████░░░░░░░░░░] 50% (1/
 |-------|-------|-------|----------|
 | v1.0 Phases 1-4 | 18 | ~7.5h | ~25 min |
 | v1.1 Phase 5 Plan 02 | 1 | 2 min | 2 min |
+| v1.1 Phase 5 Plan 01 | 1 | 3 min | 3 min |
 
 *Updated after each plan completion*
 
@@ -53,6 +54,8 @@ All v1.0 decisions archived in PROJECT.md Key Decisions table with outcomes.
 
 - **05-02:** Removed @admin_required from notifications() route; use current_user.is_admin in function body for role-based template selection
 - **05-02:** Operator template reuses notifications.js for mark-all-read without code duplication
+- **05-01:** Inline JS in base.html for global badge polling instead of separate file (avoids script load order issues)
+- **05-01:** Badge text node update preserves dismiss button child element
 
 ### Pending Todos
 
@@ -65,5 +68,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-03-01
-Stopped at: Completed 05-02-PLAN.md (operator notification access)
+Stopped at: Completed 05-01-PLAN.md (dead code removal + notification dropdown) — Phase 5 complete
 Resume file: None
