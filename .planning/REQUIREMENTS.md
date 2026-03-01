@@ -10,9 +10,9 @@ Requirements for milestone v1.1 — Tech Debt + Excel Suppliers.
 ### Excel/Google Sheets
 
 - [ ] **EXCEL-01**: Оператор може додати постачальника з типом "Excel" і вказати URL Google Sheets або завантажити файл
-- [ ] **EXCEL-02**: Система скачує Excel-файл за публічним URL Google Sheets (автоконвертація URL в /export?format=xlsx)
-- [ ] **EXCEL-03**: Система парсить Excel: витягує назву, ціну, наявність з колонок аркуша
-- [ ] **EXCEL-04**: Парсер Excel використовує ту саму модель SupplierProduct, що й YML-парсер (save_supplier_products сумісність)
+- [x] **EXCEL-02**: Система скачує Excel-файл за публічним URL Google Sheets (автоконвертація URL в /export?format=xlsx)
+- [x] **EXCEL-03**: Система парсить Excel: витягує назву, ціну, наявність з колонок аркуша
+- [x] **EXCEL-04**: Парсер Excel використовує ту саму модель SupplierProduct, що й YML-парсер (save_supplier_products сумісність)
 
 ### Matching
 
@@ -66,9 +66,9 @@ Deferred to future release. Tracked but not in current roadmap.
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | EXCEL-01 | Phase 6 | Pending |
-| EXCEL-02 | Phase 6 | Pending |
-| EXCEL-03 | Phase 6 | Pending |
-| EXCEL-04 | Phase 6 | Pending |
+| EXCEL-02 | Phase 6 | Complete |
+| EXCEL-03 | Phase 6 | Complete |
+| EXCEL-04 | Phase 6 | Complete |
 | MTCH-01 | Phase 7 | Pending |
 | PRC-01 | Phase 7 | Pending |
 | UX-01 | Phase 5 | Complete |
