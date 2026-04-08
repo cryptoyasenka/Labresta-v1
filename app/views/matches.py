@@ -1,14 +1,15 @@
-"""Match review blueprint: list, filter, sort, paginate, confirm/reject matches."""
+"""Match review blueprint: list, filter, sort, paginate, confirm/reject, manual match, rules CRUD, export."""
 
 from datetime import datetime, timezone
 
-from flask import Blueprint, jsonify, render_template, request
+from flask import Blueprint, Response, jsonify, render_template, request, send_file
 from flask_login import current_user, login_required
 from sqlalchemy import asc, desc
 from sqlalchemy.orm import joinedload
 
 from app.extensions import db
 from app.models.catalog import PromProduct
+from app.models.match_rule import MatchRule
 from app.models.product_match import ProductMatch
 from app.models.supplier_product import SupplierProduct
 from app.services.matcher import CONFIDENCE_HIGH, CONFIDENCE_MEDIUM, find_match_for_product
@@ -16,34 +17,26 @@ from app.services.matcher import CONFIDENCE_HIGH, CONFIDENCE_MEDIUM, find_match_
 matches_bp = Blueprint("matches", __name__)
 
 
-@matches_bp.route("/")
-@login_required
-def review():
-    """Main match review page with filtering, sorting, and pagination."""
-    # Parse query params
+def _build_match_query():
+    """Build filtered/sorted match query from request args. Returns (query, filters_dict)."""
     status = request.args.get("status", "all")
     confidence = request.args.get("confidence", "all")
     search = request.args.get("search", "").strip()
     sort_col = request.args.get("sort", "score")
     order = request.args.get("order", "asc")
-    page = request.args.get("page", 1, type=int)
     per_page = request.args.get("per_page", 25, type=int)
 
-    # Validate per_page
     if per_page not in (25, 50, 100):
         per_page = 25
 
-    # Build query
     query = ProductMatch.query.options(
         joinedload(ProductMatch.supplier_product),
         joinedload(ProductMatch.prom_product),
     )
 
-    # Apply status filter
     if status and status != "all":
         query = query.filter(ProductMatch.status == status)
 
-    # Apply confidence filter
     if confidence and confidence != "all":
         if confidence == "high":
             query = query.filter(ProductMatch.score >= CONFIDENCE_HIGH)
@@ -55,7 +48,6 @@ def review():
         elif confidence == "low":
             query = query.filter(ProductMatch.score < CONFIDENCE_MEDIUM)
 
-    # Apply search filter (requires join)
     if search:
         search_term = f"%{search}%"
         query = query.join(
@@ -69,7 +61,6 @@ def review():
             )
         )
 
-    # Apply sorting
     sort_map = {
         "score": ProductMatch.score,
         "status": ProductMatch.status,
@@ -79,21 +70,30 @@ def review():
     sort_func = asc if order == "asc" else desc
     query = query.order_by(sort_func(sort_column))
 
-    # Paginate
-    pagination = db.paginate(query, page=page, per_page=per_page)
+    filters = {
+        "status": status,
+        "confidence": confidence,
+        "search": search,
+        "sort": sort_col,
+        "order": order,
+        "per_page": per_page,
+    }
+    return query, filters
+
+
+@matches_bp.route("/")
+@login_required
+def review():
+    """Main match review page with filtering, sorting, and pagination."""
+    query, filters = _build_match_query()
+    page = request.args.get("page", 1, type=int)
+    pagination = db.paginate(query, page=page, per_page=filters["per_page"])
 
     return render_template(
         "matches/review.html",
         matches=pagination.items,
         pagination=pagination,
-        filters={
-            "status": status,
-            "confidence": confidence,
-            "search": search,
-            "sort": sort_col,
-            "order": order,
-            "per_page": per_page,
-        },
+        filters=filters,
         confidence_high=CONFIDENCE_HIGH,
         confidence_medium=CONFIDENCE_MEDIUM,
     )
@@ -123,11 +123,9 @@ def reject_match(match_id):
     supplier_product = match.supplier_product
     rejected_prom_id = match.prom_product_id
 
-    # Delete the rejected match
     db.session.delete(match)
     db.session.flush()
 
-    # Attempt to find alternative candidate
     new_match = find_match_for_product(
         supplier_product, exclude_prom_ids=[rejected_prom_id]
     )
@@ -189,3 +187,190 @@ def bulk_action():
     db.session.commit()
 
     return jsonify({"status": "ok", "processed": processed})
+
+
+# ========== Catalog search for manual match modal ==========
+
+
+@matches_bp.route("/search-catalog")
+@login_required
+def search_catalog():
+    """AJAX endpoint for catalog product search (used in manual match modal)."""
+    q = request.args.get("q", "").strip()
+    if len(q) < 2:
+        return jsonify([])
+
+    search_term = f"%{q}%"
+    products = (
+        PromProduct.query.filter(
+            db.or_(
+                PromProduct.name.ilike(search_term),
+                PromProduct.article.ilike(search_term),
+            )
+        )
+        .limit(20)
+        .all()
+    )
+
+    results = []
+    for p in products:
+        results.append({
+            "id": p.id,
+            "name": p.name,
+            "brand": p.brand or "",
+            "model": p.model or "",
+            "article": p.article or "",
+            "price": f"{p.price / 100:.2f}" if p.price else "",
+        })
+
+    return jsonify(results)
+
+
+# ========== Manual match ==========
+
+
+@matches_bp.route("/manual", methods=["POST"])
+@login_required
+def manual_match():
+    """Create a manual match between supplier product and catalog product."""
+    data = request.get_json()
+    if not data:
+        return jsonify({"status": "error", "message": "No data provided"}), 400
+
+    supplier_product_id = data.get("supplier_product_id")
+    prom_product_id = data.get("prom_product_id")
+    remember = data.get("remember", False)
+
+    if not supplier_product_id or not prom_product_id:
+        return jsonify({"status": "error", "message": "Missing product IDs"}), 400
+
+    supplier_product = db.get_or_404(SupplierProduct, supplier_product_id)
+    prom_product = db.get_or_404(PromProduct, prom_product_id)
+
+    # Delete any existing match for this supplier product
+    existing = ProductMatch.query.filter_by(
+        supplier_product_id=supplier_product_id
+    ).first()
+    if existing:
+        db.session.delete(existing)
+        db.session.flush()
+
+    # Create manual match
+    new_match = ProductMatch(
+        supplier_product_id=supplier_product_id,
+        prom_product_id=prom_product_id,
+        score=100.0,
+        status="manual",
+        confirmed_at=datetime.now(timezone.utc),
+        confirmed_by=current_user.name,
+    )
+    db.session.add(new_match)
+    db.session.flush()
+
+    # Optionally create a remembered rule
+    if remember:
+        rule = MatchRule(
+            supplier_product_name_pattern=supplier_product.name,
+            supplier_brand=supplier_product.brand,
+            prom_product_id=prom_product_id,
+            created_by=current_user.name,
+        )
+        db.session.add(rule)
+
+    current_user.matches_processed += 1
+    db.session.commit()
+
+    return jsonify({"status": "ok", "match_id": new_match.id})
+
+
+# ========== Match rules CRUD ==========
+
+
+@matches_bp.route("/rules")
+@login_required
+def rules():
+    """Match rules management page."""
+    page = request.args.get("page", 1, type=int)
+    query = (
+        MatchRule.query.filter_by(is_active=True)
+        .options(joinedload(MatchRule.prom_product))
+        .order_by(MatchRule.created_at.desc())
+    )
+    pagination = db.paginate(query, page=page, per_page=25)
+
+    return render_template(
+        "matches/rules.html",
+        rules=pagination.items,
+        pagination=pagination,
+    )
+
+
+@matches_bp.route("/rules/<int:rule_id>/delete", methods=["POST"])
+@login_required
+def delete_rule(rule_id):
+    """Soft-delete a match rule."""
+    rule = db.get_or_404(MatchRule, rule_id)
+    rule.is_active = False
+    db.session.commit()
+
+    return jsonify({"status": "ok"})
+
+
+@matches_bp.route("/rules/<int:rule_id>/edit", methods=["POST"])
+@login_required
+def edit_rule(rule_id):
+    """Edit a match rule (note, prom_product_id)."""
+    rule = db.get_or_404(MatchRule, rule_id)
+    data = request.get_json()
+    if not data:
+        return jsonify({"status": "error", "message": "No data provided"}), 400
+
+    if "note" in data:
+        rule.note = data["note"]
+    if "prom_product_id" in data:
+        prom_product = db.get_or_404(PromProduct, data["prom_product_id"])
+        rule.prom_product_id = prom_product.id
+    if "is_active" in data:
+        rule.is_active = bool(data["is_active"])
+
+    db.session.commit()
+
+    return jsonify({"status": "ok"})
+
+
+# ========== Export endpoints ==========
+
+
+@matches_bp.route("/export/csv")
+@login_required
+def export_csv():
+    """Download matches as CSV with current filters applied."""
+    from app.services.export_service import export_matches_csv
+
+    query, _filters = _build_match_query()
+    matches = query.all()
+    output = export_matches_csv(matches)
+
+    return Response(
+        output.getvalue(),
+        mimetype="text/csv; charset=utf-8-sig",
+        headers={"Content-Disposition": "attachment; filename=matches.csv"},
+    )
+
+
+@matches_bp.route("/export/xlsx")
+@login_required
+def export_xlsx():
+    """Download matches as XLSX with current filters applied."""
+    from app.services.export_service import export_matches_xlsx
+
+    query, _filters = _build_match_query()
+    matches = query.all()
+    buf = export_matches_xlsx(matches)
+
+    return send_file(
+        buf,
+        as_attachment=True,
+        download_name="matches.xlsx",
+        mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    )
