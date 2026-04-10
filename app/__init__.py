@@ -17,6 +17,19 @@ def create_app(config_name="default"):
     else:
         app.config.from_object(f"app.config.{config_name}")
 
+    # SAFETY: refuse to bind a test app to the production DB.
+    # Overriding SQLALCHEMY_DATABASE_URI after db.init_app() has no effect —
+    # the engine is already bound. Tests that forget to pass an in-memory URI
+    # before create_app() would silently wipe instance/labresta.db on cleanup.
+    if os.environ.get("TESTING") == "1" or app.config.get("TESTING"):
+        uri = app.config.get("SQLALCHEMY_DATABASE_URI", "")
+        if ":memory:" not in uri and "labresta.db" in uri:
+            raise RuntimeError(
+                f"Refusing to bind test app to production DB: {uri}. "
+                "Set SQLALCHEMY_DATABASE_URI to 'sqlite:///:memory:' in the "
+                "config BEFORE calling create_app()."
+            )
+
     # Init extensions
     db.init_app(app)
     configure_sqlite_wal(app)

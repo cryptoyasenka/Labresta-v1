@@ -65,6 +65,12 @@ def db(app):
 
 
 @pytest.fixture()
+def session(db):
+    """Alias for tests that take a `session` parameter instead of `db`."""
+    yield db.session
+
+
+@pytest.fixture()
 def client(app, db):
     """Test client with authenticated user via FlaskLoginClient."""
     from app.models.user import User

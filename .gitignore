@@ -12,6 +12,9 @@ dist/
 # Flask instance folder (SQLite DB)
 instance/
 
+# Local DB backups
+backups/
+
 # Environment
 .env
 

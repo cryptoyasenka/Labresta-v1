@@ -1,44 +1,12 @@
 """Tests for rule_matcher: apply_match_rules auto-confirms products via MatchRule entries."""
 
-import pytest
 from datetime import datetime, timezone
 
-from app import create_app
-from app.extensions import db
 from app.models.supplier import Supplier
 from app.models.supplier_product import SupplierProduct
 from app.models.catalog import PromProduct
 from app.models.match_rule import MatchRule
 from app.models.product_match import ProductMatch
-
-
-@pytest.fixture(scope="module")
-def app():
-    """Create a test Flask app with in-memory SQLite (module-scoped to avoid scheduler conflicts)."""
-    import os
-    os.environ["TESTING"] = "1"
-    app = create_app("DefaultConfig")
-    app.config.update({
-        "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
-        "TESTING": True,
-        "WTF_CSRF_ENABLED": False,
-    })
-    with app.app_context():
-        db.create_all()
-        yield app
-
-
-@pytest.fixture(autouse=True)
-def session(app):
-    """Provide a clean DB session for each test."""
-    with app.app_context():
-        # Clean all tables before each test
-        db.session.rollback()
-        for table in reversed(db.metadata.sorted_tables):
-            db.session.execute(table.delete())
-        db.session.commit()
-        yield db.session
-        db.session.rollback()
 
 
 def _make_supplier(session, name="TestSupplier"):
