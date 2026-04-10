@@ -248,6 +248,10 @@
         var promPrice = row.getAttribute('data-prom-price') || '-';
         var score = row.getAttribute('data-score') || '-';
         var status = row.getAttribute('data-status') || '-';
+        var matchId = row.getAttribute('data-match-id');
+        var discountPercent = row.getAttribute('data-discount-percent') || '';
+        var supplierDefault = row.getAttribute('data-supplier-default-discount') || '0';
+        var confirmedBy = row.getAttribute('data-confirmed-by') || '';
 
         // Highlight selected row
         if (matchTable) {
@@ -257,7 +261,7 @@
         }
         row.classList.add('table-active');
 
-        detailContent.innerHTML =
+        var html =
             '<h6 class="border-bottom pb-2 mb-3">Детали матча</h6>' +
             '<div class="mb-3">' +
             '  <h6 class="text-muted mb-1">Товар поставщика</h6>' +
@@ -277,6 +281,34 @@
             '  <p class="mb-0">Статус: <span class="badge ' + (statusClasses[status] || 'bg-secondary') + '">' +
             (statusLabels[status] || status) + '</span></p>' +
             '</div>';
+
+        // Rule indicator
+        if (confirmedBy.indexOf('rule:') === 0) {
+            html += '<div class="mb-3"><span class="badge bg-warning bg-opacity-25 text-dark border">&#9889; Авто-подтверждено правилом</span></div>';
+        }
+
+        // Discount section for confirmed/manual matches
+        if (status === 'confirmed' || status === 'manual') {
+            html += '<div class="mb-3">' +
+                '<h6 class="text-muted mb-1">Скидка (%)</h6>' +
+                '<div class="input-group input-group-sm">' +
+                '  <input type="number" id="discountInput" class="form-control" ' +
+                '    min="0" max="100" step="0.1" value="' + escapeHtml(discountPercent) + '" ' +
+                '    placeholder="' + escapeHtml(supplierDefault) + '%" data-match-id="' + matchId + '">' +
+                '  <span class="input-group-text">%</span>' +
+                '  <button class="btn btn-outline-secondary" id="clearDiscountBtn" type="button">Сбросить</button>' +
+                '</div>' +
+                '<div id="discountWarning" class="mt-1 small text-warning d-none"></div>' +
+                '<div id="pricePreview" class="mt-1 small text-muted"></div>' +
+                '</div>';
+        }
+
+        detailContent.innerHTML = html;
+
+        // Show initial price preview if discount input is present
+        if (status === 'confirmed' || status === 'manual') {
+            updatePricePreview(discountPercent);
+        }
     }
 
     function escapeHtml(str) {
@@ -284,6 +316,122 @@
         div.textContent = str;
         return div.innerHTML;
     }
+
+    // ========== Discount management ==========
+
+    var discountSaveTimer = null;
+
+    document.addEventListener('input', function(e) {
+        if (e.target.id !== 'discountInput') return;
+        var val = e.target.value.trim();
+
+        // Show warning for unusual values
+        var warningEl = document.getElementById('discountWarning');
+        if (warningEl) {
+            if (val !== '' && (parseFloat(val) > 50 || parseFloat(val) === 0)) {
+                warningEl.textContent = parseFloat(val) > 50
+                    ? 'Внимание: скидка больше 50%'
+                    : 'Внимание: скидка равна 0%';
+                warningEl.classList.remove('d-none');
+            } else {
+                warningEl.classList.add('d-none');
+            }
+        }
+
+        // Live price preview
+        updatePricePreview(val);
+
+        // Debounced save (500ms)
+        if (discountSaveTimer) clearTimeout(discountSaveTimer);
+        discountSaveTimer = setTimeout(function() {
+            saveDiscount(e.target.getAttribute('data-match-id'), val);
+        }, 500);
+    });
+
+    function updatePricePreview(discountVal) {
+        var previewEl = document.getElementById('pricePreview');
+        if (!previewEl) return;
+
+        var activeRow = matchTable ? matchTable.querySelector('tr.table-active') : null;
+        if (!activeRow) return;
+
+        var priceStr = activeRow.getAttribute('data-supplier-price');
+        var currency = activeRow.getAttribute('data-supplier-currency') || 'EUR';
+        var supplierDefault = activeRow.getAttribute('data-supplier-default-discount') || '0';
+
+        if (!priceStr) {
+            previewEl.textContent = '';
+            return;
+        }
+
+        var price = parseFloat(priceStr);
+        var discount = discountVal !== '' ? parseFloat(discountVal) : parseFloat(supplierDefault);
+
+        if (isNaN(price) || isNaN(discount)) {
+            previewEl.textContent = '';
+            return;
+        }
+
+        var calcPrice = price * (1 - discount / 100);
+        previewEl.textContent = 'Расч. цена: ' + calcPrice.toFixed(2) + ' ' + currency +
+            (discountVal === '' ? ' (скидка поставщика ' + supplierDefault + '%)' : '');
+    }
+
+    function saveDiscount(matchId, val) {
+        if (!matchId) return;
+        var discountPercent = val !== '' ? parseFloat(val) : null;
+
+        // Validate range
+        if (discountPercent !== null && (discountPercent < 0 || discountPercent > 100)) return;
+
+        var input = document.getElementById('discountInput');
+        if (input) input.disabled = true;
+
+        fetchWithCSRF('/matches/' + matchId + '/discount', {
+            method: 'POST',
+            body: JSON.stringify({ discount_percent: discountPercent })
+        })
+        .then(function(resp) {
+            if (!resp.ok) throw new Error('HTTP ' + resp.status);
+            return resp.json();
+        })
+        .then(function(data) {
+            if (data.status === 'ok') {
+                // Update the data attribute on the row
+                var row = matchTable ? matchTable.querySelector('tr[data-match-id="' + matchId + '"]') : null;
+                if (row) {
+                    row.setAttribute('data-discount-percent', data.discount_percent !== null ? data.discount_percent : '');
+                }
+            } else {
+                showAlert('Ошибка: ' + (data.message || 'Unknown error'), 'danger');
+            }
+        })
+        .catch(function(err) {
+            showAlert('Ошибка сохранения скидки: ' + err.message, 'danger');
+        })
+        .finally(function() {
+            if (input) input.disabled = false;
+        });
+    }
+
+    document.addEventListener('click', function(e) {
+        if (e.target.id !== 'clearDiscountBtn') return;
+        var input = document.getElementById('discountInput');
+        if (!input) return;
+        input.value = '';
+        var matchId = input.getAttribute('data-match-id');
+
+        // Update preview
+        updatePricePreview('');
+
+        // Clear warning
+        var warningEl = document.getElementById('discountWarning');
+        if (warningEl) warningEl.classList.add('d-none');
+
+        // Save immediately (null = clear override)
+        if (discountSaveTimer) clearTimeout(discountSaveTimer);
+        saveDiscount(matchId, '');
+    });
 
     // ========== Diff highlighting ==========
 
