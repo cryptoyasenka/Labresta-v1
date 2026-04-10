@@ -12,9 +12,11 @@ from app.models.match_rule import MatchRule
 from app.models.product_match import ProductMatch
 
 
-@pytest.fixture()
+@pytest.fixture(scope="module")
 def app():
-    """Create a test Flask app with in-memory SQLite."""
+    """Create a test Flask app with in-memory SQLite (module-scoped to avoid scheduler conflicts)."""
+    import os
+    os.environ["TESTING"] = "1"
     app = create_app("DefaultConfig")
     app.config.update({
         "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
@@ -24,15 +26,19 @@ def app():
     with app.app_context():
         db.create_all()
         yield app
-        db.session.remove()
-        db.drop_all()
 
 
-@pytest.fixture()
+@pytest.fixture(autouse=True)
 def session(app):
-    """Provide a DB session within app context."""
+    """Provide a clean DB session for each test."""
     with app.app_context():
+        # Clean all tables before each test
+        db.session.rollback()
+        for table in reversed(db.metadata.sorted_tables):
+            db.session.execute(table.delete())
+        db.session.commit()
         yield db.session
+        db.session.rollback()
 
 
 def _make_supplier(session, name="TestSupplier"):
