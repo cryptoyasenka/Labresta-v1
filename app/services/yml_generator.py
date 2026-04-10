@@ -95,9 +95,10 @@ def regenerate_yml_feed() -> dict:
         etree.SubElement(offer, "price").text = str(price_eur)
         etree.SubElement(offer, "currencyId").text = "EUR"
 
-        # Only include vendorCode if article is present
-        if sp.article:
-            etree.SubElement(offer, "vendorCode").text = sp.article
+        # Horoshop matches existing products by artikul; its YML import can be
+        # configured to read either `offer id=` or `<vendorCode>`. We populate
+        # both with external_id (= Horoshop artikul) so either setting works.
+        etree.SubElement(offer, "vendorCode").text = str(pp.external_id)
 
         if is_available:
             available_count += 1
