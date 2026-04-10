@@ -20,7 +20,7 @@ Requirements for milestone v1.1 — Tech Debt + Excel Suppliers.
 
 ### Pricing
 
-- [ ] **PRC-01**: Оператор може задати індивідуальну знижку (discount_percent) для конкретного товару через UI матчів
+- [x] **PRC-01**: Оператор може задати індивідуальну знижку (discount_percent) для конкретного товару через UI матчів
 
 ### UX / Notifications
 
@@ -70,7 +70,7 @@ Deferred to future release. Tracked but not in current roadmap.
 | EXCEL-03 | Phase 6 | Complete |
 | EXCEL-04 | Phase 6 | Complete |
 | MTCH-01 | Phase 7 | Pending |
-| PRC-01 | Phase 7 | Pending |
+| PRC-01 | Phase 7 | Complete |
 | UX-01 | Phase 5 | Complete |
 | UX-02 | Phase 5 | Complete |
 | CLEAN-01 | Phase 5 | Complete |

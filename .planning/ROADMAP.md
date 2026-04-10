@@ -68,8 +68,8 @@ Plans:
 **Plans**: 2 plans (Wave 1: 07-01, Wave 2: 07-02)
 
 Plans:
-- [ ] 07-01-PLAN.md — MatchRule auto-apply in sync pipeline with TDD (rule_matcher.py + pipeline integration + review.html rule indicator)
-- [ ] 07-02-PLAN.md — Per-product discount UI (AJAX endpoint, discount column, detail panel input with live price preview)
+- [x] 07-01-PLAN.md — MatchRule auto-apply in sync pipeline with TDD (rule_matcher.py + pipeline integration + review.html rule indicator)
+- [x] 07-02-PLAN.md — Per-product discount UI (AJAX endpoint, discount column, detail panel input with live price preview)
 
 ## Progress
 
