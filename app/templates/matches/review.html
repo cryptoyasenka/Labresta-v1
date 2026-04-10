@@ -129,7 +129,8 @@
                     data-prom-brand="{{ match.prom_product.brand or '' }}"
                     data-prom-price="{{ '%.2f'|format(match.prom_product.price / 100) if match.prom_product.price else '' }}"
                     data-score="{{ '%.0f'|format(match.score) }}"
-                    data-status="{{ match.status }}">
+                    data-status="{{ match.status }}"
+                    data-confirmed-by="{{ match.confirmed_by or '' }}">
                     <td><input type="checkbox" class="form-check-input row-checkbox" value="{{ match.id }}"></td>
                     <td class="supplier-name-cell">{{ match.supplier_product.name }}</td>
                     <td class="prom-name-cell">{{ match.prom_product.name }}</td>
@@ -172,6 +173,9 @@
                             {% elif match.status == 'manual' %}Ручной
                             {% endif %}
                         </span>
+                        {% if match.confirmed_by and match.confirmed_by.startswith('rule:') %}
+                        <span class="badge bg-warning bg-opacity-25 text-dark border ms-1" title="Авто-подтверждено правилом">&#9889; Правило</span>
+                        {% endif %}
                     </td>
                     <td>
                         <small class="text-muted">{{ match.created_at.strftime('%d.%m.%Y') if match.created_at else '&mdash;' }}</small>

@@ -100,7 +100,7 @@ def _sync_single_supplier(supplier: Supplier) -> str:
                 raise ValueError(msg)
 
             download_url = convert_google_sheets_url(supplier.feed_url)
-            logger.info("Stage 1/6: Fetching Excel feed from %s", download_url)
+            logger.info("Stage 1/7: Fetching Excel feed from %s", download_url)
             SyncProgress.update("fetching", 0)
             raw_bytes = fetch_feed_with_retry(download_url)
         elif not supplier.feed_url:
@@ -112,12 +112,12 @@ def _sync_single_supplier(supplier: Supplier) -> str:
             logger.warning(msg)
             raise ValueError(msg)
         else:
-            logger.info("Stage 1/6: Fetching feed from %s", supplier.feed_url)
+            logger.info("Stage 1/7: Fetching feed from %s", supplier.feed_url)
             SyncProgress.update("fetching", 0)
             raw_bytes = fetch_feed_with_retry(supplier.feed_url)
 
         # Stage 2: Parse
-        logger.info("Stage 2/6: Parsing feed")
+        logger.info("Stage 2/7: Parsing feed")
         if is_excel:
             validate_xlsx_response(raw_bytes)
             fd, tmp_path = tempfile.mkstemp(suffix=".xlsx")
@@ -147,7 +147,7 @@ def _sync_single_supplier(supplier: Supplier) -> str:
         SyncProgress.update("parsing", len(products), len(products))
 
         # Stage 3: Save
-        logger.info("Stage 3/6: Saving products")
+        logger.info("Stage 3/7: Saving products")
         result = save_supplier_products(products)
         sync_run.products_created = result["created"]
         sync_run.products_updated = result["updated"]
@@ -181,12 +181,18 @@ def _sync_single_supplier(supplier: Supplier) -> str:
         _handle_reappeared_products(supplier.id)
 
         # Stage 4: Detect disappeared
-        logger.info("Stage 4/6: Detecting disappeared products")
+        logger.info("Stage 4/7: Detecting disappeared products")
         disappeared_count = _detect_disappeared(supplier, len(products), sync_run)
         logger.info("Disappeared products flagged: %d", disappeared_count)
 
-        # Stage 5: Run fuzzy matching for new/unmatched products
-        logger.info("Stage 5/6: Running fuzzy matching")
+        # Stage 5: Apply match rules (before fuzzy matching)
+        logger.info("Stage 5/7: Applying match rules")
+        from app.services.rule_matcher import apply_match_rules
+        rules_applied = apply_match_rules(supplier.id)
+        logger.info("Match rules applied: %d auto-confirmed", rules_applied)
+
+        # Stage 6: Run fuzzy matching for new/unmatched products
+        logger.info("Stage 6/7: Running fuzzy matching")
         from app.services.matcher import run_matching_for_supplier
 
         candidates = run_matching_for_supplier(supplier.id)
@@ -194,8 +200,8 @@ def _sync_single_supplier(supplier: Supplier) -> str:
         logger.info("Match candidates generated: %d", candidates)
         SyncProgress.update("matching", candidates, candidates)
 
-        # Stage 6: Regenerate YML feed (only runs if all prior stages succeeded)
-        logger.info("Stage 6/6: Regenerating YML feed")
+        # Stage 7: Regenerate YML feed (only runs if all prior stages succeeded)
+        logger.info("Stage 7/7: Regenerating YML feed")
         from app.services.yml_generator import regenerate_yml_feed
 
         yml_result = regenerate_yml_feed()
