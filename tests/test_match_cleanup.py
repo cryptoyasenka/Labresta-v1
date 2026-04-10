@@ -117,6 +117,47 @@ class TestBulkConfirmCleansUp:
         assert remaining[0].status == "confirmed"
 
 
+class TestConfirmAndUpdateName:
+    """Confirm + update should update catalog product name from supplier."""
+
+    def test_confirm_update_changes_name(self, client, db):
+        """POST /matches/<id>/confirm-update should update catalog name."""
+        supplier, sp, proms = _seed_products(db.session)
+        # Supplier has different name than catalog
+        sp.name = "Тестовый товар V2"
+        proms[0].name = "Тестовый товар V1"
+        proms[0].name_ru = "Тестовый товар V1"
+        matches = _create_candidates(db.session, sp, proms)
+        db.session.commit()
+
+        target_id = matches[0].id
+        resp = client.post(f"/matches/{target_id}/confirm-update")
+
+        assert resp.status_code == 200
+        data = resp.get_json()
+        assert data["new_status"] == "confirmed"
+        assert data["name_updated"] is True
+        assert data["new_name"] == "Тестовый товар V2"
+
+        # Verify catalog product name updated
+        updated = PromProduct.query.get(proms[0].id)
+        assert updated.name == "Тестовый товар V2"
+
+    def test_confirm_update_applies_diff_to_ru_name(self, client, db):
+        """RU name should get the same token replacement as UA."""
+        supplier, sp, proms = _seed_products(db.session)
+        sp.name = "Апарат GEMM BCB05E"
+        proms[0].name = "Апарат GEMM BCB05"
+        proms[0].name_ru = "Аппарат GEMM BCB05"
+        matches = _create_candidates(db.session, sp, proms)
+        db.session.commit()
+
+        resp = client.post(f"/matches/{matches[0].id}/confirm-update")
+        data = resp.get_json()
+
+        assert data["name_ru"] == "Аппарат GEMM BCB05E"
+
+
 class TestManualMatchCleansUp:
     """Manual match should remove all prior candidates for the supplier product."""
 

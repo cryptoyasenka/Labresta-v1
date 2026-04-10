@@ -7,6 +7,9 @@ from flask_login import current_user, login_required
 from sqlalchemy import asc, desc
 from sqlalchemy.orm import joinedload
 
+import json
+import re
+
 from app.extensions import db
 from app.models.catalog import PromProduct
 from app.models.match_rule import MatchRule
@@ -132,6 +135,124 @@ def confirm_match(match_id):
     db.session.commit()
 
     return jsonify({"status": "ok", "new_status": "confirmed", "candidates_removed": cleaned})
+
+
+@matches_bp.route("/<int:match_id>/confirm-update", methods=["POST"])
+@login_required
+def confirm_and_update(match_id):
+    """Confirm match and update catalog product name from supplier.
+
+    Updates the UA name. For RU name, replaces the model number
+    portion if the change is just a model/article number difference.
+    """
+    match = db.get_or_404(ProductMatch, match_id)
+    supplier_product = match.supplier_product
+    prom_product = match.prom_product
+
+    old_name_ua = prom_product.name
+    new_name_ua = supplier_product.name
+
+    # Update UA name
+    prom_product.name = new_name_ua
+
+    # Try to update RU name: replace the changed part
+    if prom_product.name_ru and old_name_ua != new_name_ua:
+        prom_product.name_ru = _apply_name_diff(old_name_ua, new_name_ua, prom_product.name_ru)
+
+    # Confirm the match
+    match.status = "confirmed"
+    match.confirmed_at = datetime.now(timezone.utc)
+    match.confirmed_by = current_user.name
+    match.name_synced = True
+    current_user.matches_processed += 1
+    cleaned = _cleanup_other_candidates(match.supplier_product_id, match.id)
+    db.session.commit()
+
+    return jsonify({
+        "status": "ok",
+        "new_status": "confirmed",
+        "candidates_removed": cleaned,
+        "name_updated": True,
+        "old_name": old_name_ua,
+        "new_name": new_name_ua,
+        "name_ru": prom_product.name_ru,
+    })
+
+
+@matches_bp.route("/<int:match_id>/details")
+@login_required
+def match_details(match_id):
+    """AJAX endpoint returning detailed comparison data for a match."""
+    match = db.get_or_404(ProductMatch, match_id)
+    sp = match.supplier_product
+    pp = match.prom_product
+
+    sp_images = json.loads(sp.images) if sp.images else []
+    pp_images = json.loads(pp.images) if pp.images else []
+    sp_params = json.loads(sp.params) if sp.params else {}
+
+    return jsonify({
+        "supplier": {
+            "name": sp.name,
+            "brand": sp.brand,
+            "model": sp.model,
+            "article": sp.article,
+            "description": sp.description,
+            "image_url": sp.image_url,
+            "images": sp_images,
+            "params": sp_params,
+        },
+        "catalog": {
+            "name": pp.name,
+            "name_ru": pp.name_ru,
+            "brand": pp.brand,
+            "model": pp.model,
+            "article": pp.article,
+            "description_ua": pp.description_ua,
+            "description_ru": pp.description_ru,
+            "image_url": pp.image_url,
+            "images": pp_images,
+            "page_url": pp.page_url,
+        },
+        "match": {
+            "id": match.id,
+            "score": match.score,
+            "status": match.status,
+            "name_synced": match.name_synced,
+        },
+    })
+
+
+def _apply_name_diff(old_ua: str, new_ua: str, old_ru: str) -> str:
+    """Apply the UA name change to the RU name by replacing the changed tokens.
+
+    Works best when the difference is a model/article number change,
+    e.g. "GEMM BCB05" -> "GEMM BCB05E" should also update RU version.
+    """
+    old_tokens = old_ua.split()
+    new_tokens = new_ua.split()
+
+    # Find tokens that changed
+    replacements = {}
+    max_len = max(len(old_tokens), len(new_tokens))
+    for i in range(min(len(old_tokens), len(new_tokens))):
+        if old_tokens[i] != new_tokens[i]:
+            replacements[old_tokens[i]] = new_tokens[i]
+
+    # If new name has extra tokens at the end, append them
+    if len(new_tokens) > len(old_tokens):
+        extra = " ".join(new_tokens[len(old_tokens):])
+        result = old_ru
+        for old_tok, new_tok in replacements.items():
+            result = result.replace(old_tok, new_tok)
+        return result + " " + extra
+
+    # Apply replacements to RU name
+    result = old_ru
+    for old_tok, new_tok in replacements.items():
+        result = result.replace(old_tok, new_tok)
+
+    return result
 
 
 @matches_bp.route("/<int:match_id>/reject", methods=["POST"])

@@ -8,13 +8,18 @@ class PromProduct(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     external_id = db.Column(db.String(255), unique=True, nullable=False)  # Identifier_tovaru
-    name = db.Column(db.String(500), nullable=False)  # Nazva_pozytsii
+    name = db.Column(db.String(500), nullable=False)  # Название (UA)
+    name_ru = db.Column(db.String(500), nullable=True)  # Название (RU)
     brand = db.Column(db.String(200), nullable=True)
     model = db.Column(db.String(200), nullable=True)
     article = db.Column(db.String(255), nullable=True)  # Kod_tovaru
     price = db.Column(db.Integer, nullable=True)  # cents (integer)
     currency = db.Column(db.String(10), default="EUR")
     page_url = db.Column(db.String(500), nullable=True)
+    image_url = db.Column(db.String(500), nullable=True)  # Main photo
+    images = db.Column(db.Text, nullable=True)  # Gallery URLs, JSON array
+    description_ua = db.Column(db.Text, nullable=True)
+    description_ru = db.Column(db.Text, nullable=True)
     imported_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     __table_args__ = (

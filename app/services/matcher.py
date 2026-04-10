@@ -73,6 +73,42 @@ def normalize_model(value: str | None) -> str:
     return value.strip().lower()
 
 
+def extract_model_from_name(name: str, brand: str | None) -> str:
+    """Extract model/article number from product name — first token after the brand.
+
+    Only returns tokens that contain at least one digit (model numbers, article codes).
+    Ignores descriptive suffixes like "з пароувлажнювачем".
+
+    Example: "Диск для овощерезки Robot Coupe 28054" with brand "Robot Coupe"
+             → "28054"
+             "Піч конвекційна Unox XFT133 з пароувлажнювачем" with brand "Unox"
+             → "xft133"
+    """
+    if not name or not brand or not brand.strip():
+        return ""
+
+    name_lower = name.lower()
+    brand_lower = brand.strip().lower()
+
+    idx = name_lower.find(brand_lower)
+    if idx < 0:
+        return ""
+
+    after_brand = name[idx + len(brand):].strip()
+    # Remove leading punctuation/noise
+    after_brand = re.sub(r"^[\s.,:;()\-]+", "", after_brand).strip()
+
+    if not after_brand:
+        return ""
+
+    # Take only the first token that contains a digit (model/article number)
+    for token in after_brand.split():
+        if re.search(r"\d", token):
+            return token.lower()
+
+    return ""
+
+
 def extract_product_type(name: str, brand: str | None) -> str:
     """Extract product type from name — words before the brand.
 
@@ -163,7 +199,12 @@ def find_match_candidates(
     sup_model = normalize_model(supplier_model)
     sup_article = normalize_model(supplier_article)
 
-    if sup_model or sup_article:
+    # Also try extracting model from name when fields are empty
+    sup_name_model_for_fast = ""
+    if not sup_model and not sup_article and brand_was_matched and supplier_brand:
+        sup_name_model_for_fast = extract_model_from_name(supplier_product_name, supplier_brand)
+
+    if sup_model or sup_article or sup_name_model_for_fast:
         for p in candidates_pool:
             prom_article = normalize_model(p.get("article"))
             prom_model = normalize_model(p.get("model"))
@@ -174,6 +215,13 @@ def find_match_candidates(
                     matched = True
             if not matched and sup_model and prom_model:
                 if fuzz.ratio(sup_model, prom_model) >= MODEL_MATCH_THRESHOLD:
+                    matched = True
+
+            # Fallback: compare model numbers extracted from names
+            if not matched and sup_name_model_for_fast:
+                prom_brand = p.get("brand") or supplier_brand
+                prom_name_model = extract_model_from_name(p["name"], prom_brand)
+                if prom_name_model and sup_name_model_for_fast == prom_name_model:
                     matched = True
 
             if matched and p["id"] not in fast_match_ids:
@@ -281,6 +329,39 @@ def find_match_candidates(
                         0.0, round(candidate["score"] - MODEL_MISMATCH_PENALTY, 2)
                     )
                 candidate["confidence"] = get_confidence_label(candidate["score"])
+
+    # Step 4.7: Name-based model penalty — when article/model fields are empty,
+    # extract model numbers from product names and penalize mismatches.
+    # Catches cases like "Robot Coupe 28004" matching "Robot Coupe 28054" at 97%.
+    if brand_was_matched and supplier_brand:
+        sup_name_model = extract_model_from_name(supplier_product_name, supplier_brand)
+        if sup_name_model:
+            name_model_filtered = []
+            for candidate in fuzzy_output:
+                prom_name_full = candidate["prom_name"]
+                prom_brand_for_model = supplier_brand  # same brand due to blocking
+                for p in candidates_pool:
+                    if p["id"] == candidate["prom_product_id"]:
+                        prom_brand_for_model = p.get("brand") or supplier_brand
+                        prom_name_full = p["name"]
+                        break
+
+                prom_name_model = extract_model_from_name(prom_name_full, prom_brand_for_model)
+                if prom_name_model and sup_name_model != prom_name_model:
+                    # Both have a model in the name but they differ — heavy penalty
+                    model_sim = fuzz.ratio(sup_name_model, prom_name_model)
+                    if model_sim < MODEL_MATCH_THRESHOLD:
+                        candidate["score"] = max(
+                            0.0, round(candidate["score"] - MODEL_MISMATCH_PENALTY, 2)
+                        )
+                        candidate["confidence"] = get_confidence_label(candidate["score"])
+                        logger.debug(
+                            "Name-model penalty: '%s' vs '%s' (sim=%d) score now=%.1f for prom_id=%d",
+                            sup_name_model, prom_name_model, model_sim,
+                            candidate["score"], candidate["prom_product_id"],
+                        )
+                name_model_filtered.append(candidate)
+            fuzzy_output = name_model_filtered
 
     # Merge fast-path + fuzzy, sort by score
     output = fast_matches + fuzzy_output

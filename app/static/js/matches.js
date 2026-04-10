@@ -130,6 +130,22 @@
                 return;
             }
 
+            // Handle details button
+            if (e.target.closest('.details-btn')) {
+                e.stopPropagation();
+                var detailsBtn = e.target.closest('.details-btn');
+                openDetailsModal(detailsBtn.getAttribute('data-id'));
+                return;
+            }
+
+            // Handle confirm + update button
+            if (e.target.closest('.confirm-update-btn')) {
+                e.stopPropagation();
+                var cuBtn = e.target.closest('.confirm-update-btn');
+                handleConfirmUpdate(cuBtn);
+                return;
+            }
+
             var btn = e.target.closest('.confirm-btn, .reject-btn');
             if (!btn) {
                 // Click on row (not on buttons) -- show detail panel
@@ -152,7 +168,7 @@
             btn.disabled = true;
             var row = btn.closest('tr');
             if (row) {
-                row.querySelectorAll('.confirm-btn, .reject-btn').forEach(function (b) {
+                row.querySelectorAll('.confirm-btn, .reject-btn, .confirm-update-btn').forEach(function (b) {
                     b.disabled = true;
                 });
             }
@@ -178,12 +194,171 @@
                 .catch(function (err) {
                     showAlert('Ошибка: ' + err.message, 'danger');
                     if (row) {
-                        row.querySelectorAll('.confirm-btn, .reject-btn').forEach(function (b) {
+                        row.querySelectorAll('.confirm-btn, .reject-btn, .confirm-update-btn').forEach(function (b) {
                             b.disabled = false;
                         });
                     }
                 });
         });
+    }
+
+    // ========== Confirm + Update Name ==========
+
+    function handleConfirmUpdate(btn) {
+        var matchId = btn.getAttribute('data-id');
+        var row = btn.closest('tr');
+        var supplierName = row ? row.getAttribute('data-supplier-name') : '';
+        var promName = row ? row.getAttribute('data-prom-name') : '';
+
+        if (!confirmAction('Подтвердить матч и обновить название каталога?\n\nБыло: ' + promName + '\nСтанет: ' + supplierName)) return;
+
+        btn.disabled = true;
+        if (row) {
+            row.querySelectorAll('.confirm-btn, .reject-btn, .confirm-update-btn').forEach(function (b) {
+                b.disabled = true;
+            });
+        }
+
+        fetchWithCSRF('/matches/' + matchId + '/confirm-update', { method: 'POST' })
+            .then(function (resp) {
+                if (!resp.ok) throw new Error('HTTP ' + resp.status);
+                return resp.json();
+            })
+            .then(function (data) {
+                if (data.status === 'ok') {
+                    updateRowStatus(matchId, data.new_status);
+                    // Update the catalog name cell in the table
+                    if (row) {
+                        var promCell = row.querySelector('.prom-name-cell');
+                        if (promCell) promCell.textContent = data.new_name;
+                        row.setAttribute('data-prom-name', data.new_name);
+                    }
+                    var msg = 'Матч подтвержден, название обновлено';
+                    if (data.name_ru) msg += ' (RU: ' + data.name_ru + ')';
+                    showAlert(msg, 'success');
+                } else {
+                    throw new Error(data.message || 'Unknown error');
+                }
+            })
+            .catch(function (err) {
+                showAlert('Ошибка: ' + err.message, 'danger');
+                if (row) {
+                    row.querySelectorAll('.confirm-btn, .reject-btn, .confirm-update-btn').forEach(function (b) {
+                        b.disabled = false;
+                    });
+                }
+            });
+    }
+
+    // ========== Details Comparison Modal ==========
+
+    var detailsModal = null;
+    var detailsModalEl = document.getElementById('detailsModal');
+    if (detailsModalEl) {
+        detailsModal = new bootstrap.Modal(detailsModalEl);
+    }
+
+    function openDetailsModal(matchId) {
+        if (!detailsModal) return;
+
+        var body = document.getElementById('detailsModalBody');
+        body.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary"></div><p class="mt-2 text-muted">Загрузка...</p></div>';
+        detailsModal.show();
+
+        fetch('/matches/' + matchId + '/details')
+            .then(function (resp) {
+                if (!resp.ok) throw new Error('HTTP ' + resp.status);
+                return resp.json();
+            })
+            .then(function (data) {
+                renderDetailsModal(body, data);
+            })
+            .catch(function (err) {
+                body.innerHTML = '<div class="alert alert-danger">Ошибка загрузки: ' + escapeHtml(err.message) + '</div>';
+            });
+    }
+
+    function renderDetailsModal(container, data) {
+        var sp = data.supplier;
+        var pp = data.catalog;
+        var match = data.match;
+
+        var html = '<div class="row">';
+
+        // --- Names comparison ---
+        html += '<div class="col-12 mb-3">';
+        html += '<h6>Названия</h6>';
+        html += '<table class="table table-sm table-bordered">';
+        html += '<thead><tr><th width="20%"></th><th width="40%">Поставщик</th><th width="40%">Каталог Horoshop</th></tr></thead>';
+        html += '<tbody>';
+        html += '<tr><td><strong>UA</strong></td><td>' + escapeHtml(sp.name || '-') + '</td>';
+        html += '<td' + (sp.name !== pp.name ? ' class="table-warning"' : '') + '>' + escapeHtml(pp.name || '-') + '</td></tr>';
+        html += '<tr><td><strong>RU</strong></td><td class="text-muted">-</td>';
+        html += '<td>' + escapeHtml(pp.name_ru || '-') + '</td></tr>';
+        html += '</tbody></table></div>';
+
+        // --- Photos ---
+        html += '<div class="col-12 mb-3">';
+        html += '<h6>Фото</h6>';
+        html += '<div class="row">';
+        html += '<div class="col-6">';
+        html += '<p class="text-muted small mb-1">Поставщик (' + (sp.images ? sp.images.length : 0) + ' фото)</p>';
+        if (sp.images && sp.images.length > 0) {
+            sp.images.forEach(function (url) {
+                html += '<a href="' + escapeHtml(url) + '" target="_blank"><img src="' + escapeHtml(url) + '" class="img-thumbnail me-1 mb-1" style="max-height:100px;max-width:100px;" onerror="this.style.display=\'none\'"></a>';
+            });
+        } else {
+            html += '<span class="text-muted">Нет фото</span>';
+        }
+        html += '</div>';
+        html += '<div class="col-6">';
+        html += '<p class="text-muted small mb-1">Каталог (' + (pp.images ? pp.images.length : 0) + ' фото)</p>';
+        if (pp.image_url) {
+            html += '<a href="' + escapeHtml(pp.image_url) + '" target="_blank"><img src="' + escapeHtml(pp.image_url) + '" class="img-thumbnail me-1 mb-1" style="max-height:100px;max-width:100px;" onerror="this.style.display=\'none\'"></a>';
+        }
+        if (!pp.image_url && (!pp.images || pp.images.length === 0)) {
+            html += '<span class="text-muted">Нет фото</span>';
+        }
+        html += '</div></div></div>';
+
+        // --- Characteristics ---
+        html += '<div class="col-12 mb-3">';
+        html += '<h6>Характеристики поставщика</h6>';
+        if (sp.params && Object.keys(sp.params).length > 0) {
+            html += '<table class="table table-sm table-bordered"><thead><tr><th>Параметр</th><th>Значение</th></tr></thead><tbody>';
+            Object.keys(sp.params).forEach(function (key) {
+                html += '<tr><td>' + escapeHtml(key) + '</td><td>' + escapeHtml(sp.params[key]) + '</td></tr>';
+            });
+            html += '</tbody></table>';
+        } else {
+            html += '<p class="text-muted">Нет характеристик в фиде поставщика</p>';
+        }
+        html += '</div>';
+
+        // --- Description ---
+        if (sp.description || pp.description_ua) {
+            html += '<div class="col-12 mb-3">';
+            html += '<h6>Описание</h6>';
+            html += '<div class="row">';
+            html += '<div class="col-6"><p class="text-muted small mb-1">Поставщик</p>';
+            html += '<div class="border rounded p-2 small" style="max-height:200px;overflow:auto;">' + (sp.description || '<span class="text-muted">Нет</span>') + '</div></div>';
+            html += '<div class="col-6"><p class="text-muted small mb-1">Каталог (UA)</p>';
+            html += '<div class="border rounded p-2 small" style="max-height:200px;overflow:auto;">' + (pp.description_ua || '<span class="text-muted">Нет</span>') + '</div></div>';
+            html += '</div></div>';
+        }
+
+        // --- Match info ---
+        html += '<div class="col-12">';
+        html += '<div class="d-flex gap-2 align-items-center">';
+        html += '<span class="badge ' + (statusClasses[match.status] || 'bg-secondary') + '">' + (statusLabels[match.status] || match.status) + '</span>';
+        html += '<span>Конфиденс: <strong>' + match.score.toFixed(0) + '%</strong></span>';
+        if (match.name_synced) {
+            html += '<span class="badge bg-info">Название обновлено</span>';
+        }
+        html += '</div></div>';
+
+        html += '</div>';
+        container.innerHTML = html;
     }
 
     // ========== Bulk actions ==========

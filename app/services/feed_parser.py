@@ -1,5 +1,6 @@
 """YML/XML feed parser with encoding detection for supplier product feeds."""
 
+import json
 from datetime import datetime, timezone
 
 import chardet
@@ -49,6 +50,22 @@ def parse_supplier_feed(raw_bytes: bytes, supplier_id: int) -> list[dict]:
             except (ValueError, TypeError):
                 pass
 
+        # Extract pictures
+        pictures = [pic.text.strip() for pic in offer.findall("picture")
+                    if pic.text and pic.text.strip()]
+        image_url = pictures[0] if pictures else None
+
+        # Extract description
+        description = _text(offer, "description")
+
+        # Extract params (characteristics)
+        params = {}
+        for param in offer.findall("param"):
+            param_name = param.get("name")
+            param_value = param.text.strip() if param.text else ""
+            if param_name and param_value:
+                params[param_name] = param_value
+
         products.append({
             "external_id": external_id,
             "name": name,
@@ -59,6 +76,10 @@ def parse_supplier_feed(raw_bytes: bytes, supplier_id: int) -> list[dict]:
             "currency": _text(offer, "currencyId") or "EUR",
             "available": available,
             "supplier_id": supplier_id,
+            "description": description,
+            "image_url": image_url,
+            "images": json.dumps(pictures) if pictures else None,
+            "params": json.dumps(params, ensure_ascii=False) if params else None,
         })
 
     return products
@@ -106,6 +127,10 @@ def save_supplier_products(products: list[dict]) -> dict:
                     existing.currency = p["currency"]
                 existing.available = p["available"]
                 existing.last_seen_at = now
+                existing.description = p.get("description")
+                existing.image_url = p.get("image_url")
+                existing.images = p.get("images")
+                existing.params = p.get("params")
                 updated += 1
             else:
                 new_product = SupplierProduct(
@@ -119,6 +144,10 @@ def save_supplier_products(products: list[dict]) -> dict:
                     currency=p["currency"],
                     available=p["available"],
                     last_seen_at=now,
+                    description=p.get("description"),
+                    image_url=p.get("image_url"),
+                    images=p.get("images"),
+                    params=p.get("params"),
                 )
                 db.session.add(new_product)
                 created += 1

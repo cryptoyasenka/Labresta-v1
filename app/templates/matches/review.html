@@ -201,10 +201,20 @@
                         <button class="btn btn-sm btn-outline-success confirm-btn" data-id="{{ match.id }}">
                             Подтвердить
                         </button>
+                        {% if match.supplier_product.name != match.prom_product.name %}
+                        <button class="btn btn-sm btn-success confirm-update-btn" data-id="{{ match.id }}"
+                                title="Подтвердить и обновить название каталога по поставщику">
+                            Підтвердити + оновити
+                        </button>
+                        {% endif %}
                         <button class="btn btn-sm btn-outline-danger reject-btn" data-id="{{ match.id }}">
                             Отклонить
                         </button>
                         {% endif %}
+                        <button class="btn btn-sm btn-outline-info details-btn" data-id="{{ match.id }}"
+                                title="Сравнить детали: фото, характеристики">
+                            Детали
+                        </button>
                         <button class="btn btn-sm btn-outline-primary manual-match-btn"
                                 data-supplier-id="{{ match.supplier_product.id }}"
                                 data-supplier-name="{{ match.supplier_product.name }}"
@@ -360,6 +370,27 @@
 
 <input type="hidden" id="selectedSupplierProductId" value="">
 <input type="hidden" id="selectedPromProductId" value="">
+
+<!-- Details Comparison Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Сравнение деталей</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="detailsModalBody">
+                <div class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <p class="mt-2 text-muted">Загрузка...</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block scripts %}

@@ -21,6 +21,10 @@ class SupplierProduct(db.Model):
     last_modified_at = db.Column(db.DateTime, nullable=True)
     price_forced = db.Column(db.Boolean, default=False, server_default="0")
     is_deleted = db.Column(db.Boolean, default=False, server_default="0")
+    description = db.Column(db.Text, nullable=True)
+    image_url = db.Column(db.String(500), nullable=True)  # Main picture from feed
+    images = db.Column(db.Text, nullable=True)  # All picture URLs, JSON array
+    params = db.Column(db.Text, nullable=True)  # Characteristics from feed, JSON object
 
     supplier = db.relationship("Supplier", backref="products")
 

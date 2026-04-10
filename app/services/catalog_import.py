@@ -24,12 +24,20 @@ COLUMN_ALIASES = {
     "название (ua)": "name",
     "назва модифікації (ua)": "name",
     "название модификации (ua)": "name",
+    "назва (ru)": "name_ru",
+    "название (ru)": "name_ru",
     "бренд": "brand",
     "ціна": "price",
     "цена": "price",
     "валюта": "currency",
     "посилання": "page_url",
     "ссылка": "page_url",
+    "фото": "image_url",
+    "галерея": "images",
+    "описание товара (ua)": "description_ua",
+    "опис товару (ua)": "description_ua",
+    "описание товара (ru)": "description_ru",
+    "опис товару (ru)": "description_ru",
     # --- Prom.ua export headers ---
     "унікальний_ідентифікатор": "external_id",
     "уникальный_идентификатор": "external_id",
@@ -256,6 +264,11 @@ def save_catalog_products(products: list[dict]) -> dict:
         article = product.get("article", "").strip() or None
         brand = product.get("brand", "").strip() or None
         page_url = product.get("page_url", "").strip() or None
+        name_ru = product.get("name_ru", "").strip() or None
+        image_url = product.get("image_url", "").strip() or None
+        images = product.get("images", "").strip() or None
+        description_ua = product.get("description_ua", "").strip() or None
+        description_ru = product.get("description_ru", "").strip() or None
 
         # Check if product already exists
         existing = db.session.execute(
@@ -264,22 +277,32 @@ def save_catalog_products(products: list[dict]) -> dict:
 
         if existing:
             existing.name = name
+            existing.name_ru = name_ru
             existing.brand = brand
             existing.article = article
             existing.price = price
             existing.currency = currency
             existing.page_url = page_url
+            existing.image_url = image_url
+            existing.images = images
+            existing.description_ua = description_ua
+            existing.description_ru = description_ru
             existing.imported_at = datetime.now(timezone.utc)
             updated += 1
         else:
             new_product = PromProduct(
                 external_id=ext_id,
                 name=name,
+                name_ru=name_ru,
                 brand=brand,
                 article=article,
                 price=price,
                 currency=currency,
                 page_url=page_url,
+                image_url=image_url,
+                images=images,
+                description_ua=description_ua,
+                description_ru=description_ru,
             )
             db.session.add(new_product)
             created += 1

@@ -33,6 +33,7 @@ class ProductMatch(db.Model):
     discount_percent = db.Column(
         db.Float, nullable=True
     )  # Per-product override; NULL = use supplier default
+    name_synced = db.Column(db.Boolean, default=False, server_default="0")  # Name updated from supplier
 
     supplier_product = db.relationship("SupplierProduct")
     prom_product = db.relationship("PromProduct")
