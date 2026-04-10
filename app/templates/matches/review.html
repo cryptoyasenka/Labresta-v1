@@ -111,6 +111,7 @@
                     <th>Каталог prom.ua</th>
                     <th>Цена поставщика</th>
                     <th>Расч. цена prom.ua</th>
+                    <th>Скидка</th>
                     {{ sort_header('score', 'Конфиденс') }}
                     {{ sort_header('status', 'Статус') }}
                     {{ sort_header('created_at', 'Создан') }}
@@ -130,7 +131,9 @@
                     data-prom-price="{{ '%.2f'|format(match.prom_product.price / 100) if match.prom_product.price else '' }}"
                     data-score="{{ '%.0f'|format(match.score) }}"
                     data-status="{{ match.status }}"
-                    data-confirmed-by="{{ match.confirmed_by or '' }}">
+                    data-confirmed-by="{{ match.confirmed_by or '' }}"
+                    data-discount-percent="{{ match.discount_percent if match.discount_percent is not none else '' }}"
+                    data-supplier-default-discount="{{ match.supplier_product.supplier.discount_percent }}">
                     <td><input type="checkbox" class="form-check-input row-checkbox" value="{{ match.id }}"></td>
                     <td class="supplier-name-cell">{{ match.supplier_product.name }}</td>
                     <td class="prom-name-cell">{{ match.prom_product.name }}</td>
@@ -142,12 +145,25 @@
                         {% endif %}
                     </td>
                     <td>
-                        {% if match.supplier_product.price_cents is not none and match.discount_percent is not none %}
-                            {{ "%.2f"|format(match.supplier_product.price_cents / 100 * (1 - match.discount_percent / 100)) }} {{ match.supplier_product.currency }}
+                        {% set eff_discount = match.discount_percent if match.discount_percent is not none
+                           else match.supplier_product.supplier.discount_percent %}
+                        {% if match.supplier_product.price_cents is not none and eff_discount is not none and eff_discount > 0 %}
+                            {{ "%.2f"|format(match.supplier_product.price_cents / 100 * (1 - eff_discount / 100)) }} {{ match.supplier_product.currency }}
                         {% elif match.supplier_product.price_cents is not none %}
                             {{ "%.2f"|format(match.supplier_product.price_cents / 100) }} {{ match.supplier_product.currency }}
                         {% else %}
                             &mdash;
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% set eff_discount = match.discount_percent if match.discount_percent is not none
+                           else match.supplier_product.supplier.discount_percent %}
+                        {% if match.discount_percent is not none %}
+                            <strong>{{ "%.1f"|format(match.discount_percent) }}%</strong>
+                        {% elif match.supplier_product.supplier.discount_percent %}
+                            <span class="text-muted">{{ "%.1f"|format(match.supplier_product.supplier.discount_percent) }}%</span>
+                        {% else %}
+                            <span class="text-muted">&mdash;</span>
                         {% endif %}
                     </td>
                     <td>
@@ -201,7 +217,7 @@
                 </tr>
                 {% else %}
                 <tr>
-                    <td colspan="9" class="text-center text-muted py-4">
+                    <td colspan="10" class="text-center text-muted py-4">
                         Нет матчей для отображения. Попробуйте изменить фильтры или запустить процесс сопоставления.
                     </td>
                 </tr>

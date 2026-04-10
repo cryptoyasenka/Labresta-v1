@@ -30,7 +30,7 @@ def _build_match_query():
         per_page = 25
 
     query = ProductMatch.query.options(
-        joinedload(ProductMatch.supplier_product),
+        joinedload(ProductMatch.supplier_product).joinedload(SupplierProduct.supplier),
         joinedload(ProductMatch.prom_product),
     )
 
@@ -141,6 +141,39 @@ def reject_match(match_id):
         "status": "ok",
         "new_status": "rejected",
         "new_candidate_id": new_candidate_id,
+    })
+
+
+@matches_bp.route("/<int:match_id>/discount", methods=["POST"])
+@login_required
+def set_discount(match_id):
+    """AJAX endpoint to set or clear per-product discount override."""
+    match = db.get_or_404(ProductMatch, match_id)
+
+    # Only allow discount on confirmed/manual matches
+    if match.status not in ("confirmed", "manual"):
+        return jsonify({"status": "error", "message": "Скидка доступна только для подтвержденных матчей"}), 400
+
+    data = request.get_json()
+    if not data:
+        return jsonify({"status": "error", "message": "No data provided"}), 400
+
+    discount = data.get("discount_percent")
+
+    if discount is not None:
+        try:
+            discount = float(discount)
+        except (TypeError, ValueError):
+            return jsonify({"status": "error", "message": "Некорректное значение скидки"}), 400
+        if not (0 <= discount <= 100):
+            return jsonify({"status": "error", "message": "Скидка должна быть от 0 до 100%"}), 400
+
+    match.discount_percent = discount  # None clears the override
+    db.session.commit()
+
+    return jsonify({
+        "status": "ok",
+        "discount_percent": match.discount_percent,
     })
 
 
