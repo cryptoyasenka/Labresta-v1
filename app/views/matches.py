@@ -17,6 +17,25 @@ from app.services.matcher import CONFIDENCE_HIGH, CONFIDENCE_MEDIUM, find_match_
 matches_bp = Blueprint("matches", __name__)
 
 
+def _cleanup_other_candidates(supplier_product_id: int, keep_match_id: int) -> int:
+    """Delete all candidate matches for a supplier product except the confirmed one.
+
+    Called after confirming/manual-matching to remove orphaned candidates
+    so they don't clutter the review UI or get re-processed.
+
+    Returns count of deleted candidates.
+    """
+    orphans = ProductMatch.query.filter(
+        ProductMatch.supplier_product_id == supplier_product_id,
+        ProductMatch.id != keep_match_id,
+        ProductMatch.status == "candidate",
+    ).all()
+    count = len(orphans)
+    for m in orphans:
+        db.session.delete(m)
+    return count
+
+
 def _build_match_query():
     """Build filtered/sorted match query from request args. Returns (query, filters_dict)."""
     status = request.args.get("status", "all")
@@ -109,9 +128,10 @@ def confirm_match(match_id):
     match.confirmed_at = datetime.now(timezone.utc)
     match.confirmed_by = current_user.name
     current_user.matches_processed += 1
+    cleaned = _cleanup_other_candidates(match.supplier_product_id, match.id)
     db.session.commit()
 
-    return jsonify({"status": "ok", "new_status": "confirmed"})
+    return jsonify({"status": "ok", "new_status": "confirmed", "candidates_removed": cleaned})
 
 
 @matches_bp.route("/<int:match_id>/reject", methods=["POST"])
@@ -203,6 +223,7 @@ def bulk_action():
             match.confirmed_at = datetime.now(timezone.utc)
             match.confirmed_by = current_user.name
             current_user.matches_processed += 1
+            _cleanup_other_candidates(match.supplier_product_id, match.id)
             processed += 1
         elif action == "reject":
             supplier_product = match.supplier_product
@@ -280,13 +301,12 @@ def manual_match():
     supplier_product = db.get_or_404(SupplierProduct, supplier_product_id)
     prom_product = db.get_or_404(PromProduct, prom_product_id)
 
-    # Delete any existing match for this supplier product
-    existing = ProductMatch.query.filter_by(
-        supplier_product_id=supplier_product_id
-    ).first()
-    if existing:
-        db.session.delete(existing)
-        db.session.flush()
+    # Delete all existing candidate matches for this supplier product
+    ProductMatch.query.filter(
+        ProductMatch.supplier_product_id == supplier_product_id,
+        ProductMatch.status == "candidate",
+    ).delete()
+    db.session.flush()
 
     # Create manual match
     new_match = ProductMatch(

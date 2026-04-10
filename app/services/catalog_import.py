@@ -1,7 +1,7 @@
 """
-Prom.ua catalog CSV/XLS import service.
+Catalog CSV/XLS/XLSX import service.
 
-Parses export files from prom.ua admin panel (Ukrainian and Russian column variants),
+Parses export files from Horoshop or prom.ua admin panels,
 normalizes headers, and upserts products into the PromProduct table.
 """
 
@@ -15,28 +15,32 @@ import openpyxl
 from app.extensions import db
 from app.models.catalog import PromProduct
 
-# Column alias mapping: prom.ua export headers (Ukrainian + Russian) -> internal field names
+# Column alias mapping: export headers -> internal field names
+# Supports both Horoshop and prom.ua formats
 COLUMN_ALIASES = {
-    # external_id
+    # --- Horoshop export headers ---
+    "артикул": "external_id",
+    "назва (ua)": "name",
+    "название (ua)": "name",
+    "назва модифікації (ua)": "name",
+    "название модификации (ua)": "name",
+    "бренд": "brand",
+    "ціна": "price",
+    "цена": "price",
+    "валюта": "currency",
+    "посилання": "page_url",
+    "ссылка": "page_url",
+    # --- Prom.ua export headers ---
     "унікальний_ідентифікатор": "external_id",
     "уникальный_идентификатор": "external_id",
     "ідентифікатор_товару": "external_id",
     "идентификатор_товара": "external_id",
-    # name
     "назва_позиції": "name",
     "название_позиции": "name",
-    # article
     "код_товару": "article",
     "код_товара": "article",
-    # price
-    "ціна": "price",
-    "цена": "price",
-    # currency
-    "валюта": "currency",
-    # brand / manufacturer
     "виробник": "brand",
     "производитель": "brand",
-    # page_url
     "посилання_на_сторінку_товару": "page_url",
     "ссылка_на_страницу_товара": "page_url",
 }

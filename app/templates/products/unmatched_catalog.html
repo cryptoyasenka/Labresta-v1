@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% from "products/_pagination.html" import render_pagination, sort_header %}
 
-{% block title %}Товары prom.ua без матча - LabResta Sync{% endblock %}
+{% block title %}Товары Horoshop без матча - LabResta Sync{% endblock %}
 
 {% set filter_params = {
     'brand': brand,
@@ -18,11 +18,11 @@
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>Товары prom.ua без матча</h2>
+    <h2>Товары Horoshop без матча</h2>
     <span class="text-muted">Всего: {{ total }} товаров</span>
 </div>
 
-<p class="text-muted mb-3">Товары из каталога prom.ua, для которых не найден подтверждённый матч с товаром поставщика.</p>
+<p class="text-muted mb-3">Товары из каталога Horoshop, для которых не найден подтверждённый матч с товаром поставщика.</p>
 
 {# Filter bar #}
 <form method="GET" action="{{ url_for('products.unmatched_catalog') }}" class="row g-2 mb-3 align-items-end">
@@ -84,7 +84,7 @@
                 </td>
                 <td>
                     {% if product.page_url %}
-                    <a href="{{ product.page_url }}" target="_blank" rel="noopener" class="btn btn-outline-secondary btn-sm">prom.ua</a>
+                    <a href="{{ product.page_url }}" target="_blank" rel="noopener" class="btn btn-outline-secondary btn-sm">Horoshop</a>
                     {% else %}
                     -
                     {% endif %}
@@ -103,7 +103,7 @@
         {% if search %}
             По запросу "{{ search }}" ничего не найдено.
         {% else %}
-            Все товары prom.ua имеют подтверждённый матч.
+            Все товары Horoshop имеют подтверждённый матч.
         {% endif %}
     </p>
 </div>
