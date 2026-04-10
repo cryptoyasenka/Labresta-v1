@@ -260,6 +260,54 @@ class TestModelBoostPenalty:
         )
         assert len(result) == 1
 
+    def test_snack_model_differ_by_one_digit_rejected(self):
+        """SNACK2100TN-FC vs SNACK3100TN-FC must NOT cross-match (MARESTO regression)."""
+        prom = [
+            _make_prom(1, "Стіл холодильний Forcold G-SNACK2100TN-FC", "Forcold", 164100),
+        ]
+        result = find_match_candidates(
+            "Стіл холодильний Forcold G-SNACK3100TN-FC", "Forcold", prom,
+            supplier_price_cents=191300,
+        )
+        assert len(result) == 0
+
+    def test_snack_identical_still_matches(self):
+        """Same SNACK model on both sides must still match at 100."""
+        prom = [
+            _make_prom(1, "Стіл холодильний Forcold G-SNACK2100TN-FC", "Forcold", 164100),
+        ]
+        result = find_match_candidates(
+            "Стіл холодильний Forcold G-SNACK2100TN-FC", "Forcold", prom,
+            supplier_price_cents=164100,
+        )
+        assert len(result) == 1
+        assert result[0]["score"] == 100.0
+
+    def test_article_hyphen_normalized(self):
+        """Articles with hyphens/spaces normalize to same identifier."""
+        prom = [
+            _make_prom(1, "Product Brand", "Brand", 10000, article="XFT-133"),
+        ]
+        result = find_match_candidates(
+            "Product Brand", "Brand", prom,
+            supplier_price_cents=10000,
+            supplier_article="XFT133",
+        )
+        assert len(result) == 1
+        assert result[0]["score"] == 100.0
+
+    def test_article_one_char_differ_rejected(self):
+        """Articles differing by one character must not fast-path match."""
+        prom = [
+            _make_prom(1, "Product Brand", "Brand", 10000, article="XFT133"),
+        ]
+        result = find_match_candidates(
+            "Product Brand", "Brand", prom,
+            supplier_price_cents=10000,
+            supplier_article="XFT134",
+        )
+        assert len(result) == 0
+
 
 class TestExtractProductType:
     """Unit tests for product type extraction."""

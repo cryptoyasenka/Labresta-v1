@@ -32,10 +32,12 @@ BRAND_MATCH_THRESHOLD = 80  # Fuzzy brand match threshold for blocking
 MAX_PRICE_RATIO = 3.0  # Reject candidates where price differs by more than 3x
 
 # --- Model / article matching ---
-MODEL_MATCH_THRESHOLD = 90  # Article/model >=90% similar for fast-path (score=100)
-MODEL_BOOST_POINTS = 10.0  # Bonus points when model/article matches (>=80%)
-MODEL_MISMATCH_PENALTY = 15.0  # Penalty when both have model but they differ
-MODEL_BOOST_THRESHOLD = 80  # Minimum similarity for model boost
+# Model codes are precise identifiers — treat them literally, not fuzzy.
+# "XFT133" vs "XFT134" differ by ONE character (fuzz.ratio=91) but are
+# completely different products. A loose threshold caused false 98% matches
+# between SNACK2100TN-FC and SNACK3100TN-FC in MARESTO → Horoshop.
+MODEL_BOOST_POINTS = 10.0  # Bonus points when model/article matches (after normalize)
+MODEL_BOOST_THRESHOLD = 80  # Legacy: kept for reference, not used for strict compare
 
 # --- Product type gate ---
 TYPE_MATCH_THRESHOLD = 50  # Minimum type similarity to keep candidate
@@ -67,22 +69,30 @@ def get_confidence_label(score: float) -> str:
 
 
 def normalize_model(value: str | None) -> str:
-    """Normalize a model/article string for comparison."""
+    """Normalize a model/article string for strict literal comparison.
+
+    Lowercases, strips whitespace, and removes all non-alphanumeric characters
+    so that "XFT-133" == "xft133" == "XFT 133" but "XFT133" != "XFT134".
+    """
     if not value or not value.strip():
         return ""
-    return value.strip().lower()
+    return re.sub(r"[^a-z0-9]", "", value.strip().lower())
 
 
 def extract_model_from_name(name: str, brand: str | None) -> str:
-    """Extract model/article number from product name — first token after the brand.
+    """Extract model/article number from product name — first usable token after brand.
 
-    Only returns tokens that contain at least one digit (model numbers, article codes).
-    Ignores descriptive suffixes like "з пароувлажнювачем".
+    Looks for a token that's a plausible model identifier: contains at least one
+    digit AND is either ≥3 chars long OR contains a letter. This excludes generic
+    tokens like "2", "40", "65" (sizes, capacities, quantities) while keeping
+    real article codes like "28054" and alphanumeric codes like "R2", "XFT133".
 
     Example: "Диск для овощерезки Robot Coupe 28054" with brand "Robot Coupe"
              → "28054"
-             "Піч конвекційна Unox XFT133 з пароувлажнювачем" with brand "Unox"
+             "Piч конвекційна Unox XFT133" with brand "Unox"
              → "xft133"
+             "Mясорубка Sirman Sirio 2 Cromato" with brand "Sirman"
+             → "" (rejects "2" as too generic)
     """
     if not name or not brand or not brand.strip():
         return ""
@@ -101,9 +111,12 @@ def extract_model_from_name(name: str, brand: str | None) -> str:
     if not after_brand:
         return ""
 
-    # Take only the first token that contains a digit (model/article number)
+    # Take the first token that's a plausible model code
     for token in after_brand.split():
-        if re.search(r"\d", token):
+        if not re.search(r"\d", token):
+            continue
+        has_letter = bool(re.search(r"[a-zа-яёіїєґ]", token.lower()))
+        if len(token) >= 3 or has_letter:
             return token.lower()
 
     return ""
@@ -205,23 +218,25 @@ def find_match_candidates(
         sup_name_model_for_fast = extract_model_from_name(supplier_product_name, supplier_brand)
 
     if sup_model or sup_article or sup_name_model_for_fast:
+        sup_name_model_for_fast_norm = normalize_model(sup_name_model_for_fast)
         for p in candidates_pool:
             prom_article = normalize_model(p.get("article"))
             prom_model = normalize_model(p.get("model"))
 
+            # Strict equality after normalize — "XFT133" != "XFT134"
             matched = False
-            if sup_article and prom_article:
-                if fuzz.ratio(sup_article, prom_article) >= MODEL_MATCH_THRESHOLD:
-                    matched = True
-            if not matched and sup_model and prom_model:
-                if fuzz.ratio(sup_model, prom_model) >= MODEL_MATCH_THRESHOLD:
-                    matched = True
+            if sup_article and prom_article and sup_article == prom_article:
+                matched = True
+            if not matched and sup_model and prom_model and sup_model == prom_model:
+                matched = True
 
-            # Fallback: compare model numbers extracted from names
-            if not matched and sup_name_model_for_fast:
+            # Fallback: compare model numbers extracted from names (also strict)
+            if not matched and sup_name_model_for_fast_norm:
                 prom_brand = p.get("brand") or supplier_brand
-                prom_name_model = extract_model_from_name(p["name"], prom_brand)
-                if prom_name_model and sup_name_model_for_fast == prom_name_model:
+                prom_name_model = normalize_model(
+                    extract_model_from_name(p["name"], prom_brand)
+                )
+                if prom_name_model and sup_name_model_for_fast_norm == prom_name_model:
                     matched = True
 
             if matched and p["id"] not in fast_match_ids:
@@ -298,8 +313,11 @@ def find_match_candidates(
                 type_filtered.append(candidate)
             fuzzy_output = type_filtered
 
-    # Step 4.6: Model boost/penalty — adjust score based on model similarity
+    # Step 4.6: Model field gate — when both sides have the same field (article
+    # or model) populated, require exact literal equality. Mismatch = reject.
+    # Match = small score boost.
     if sup_model or sup_article:
+        kept = []
         for candidate in fuzzy_output:
             prom_model = ""
             prom_article = ""
@@ -309,34 +327,41 @@ def find_match_candidates(
                     prom_article = normalize_model(p.get("article"))
                     break
 
-            # Check article first, then model
-            best_ratio = 0.0
             has_both = False
+            exact = False
             if sup_article and prom_article:
                 has_both = True
-                best_ratio = fuzz.ratio(sup_article, prom_article)
+                exact = sup_article == prom_article
             elif sup_model and prom_model:
                 has_both = True
-                best_ratio = fuzz.ratio(sup_model, prom_model)
+                exact = sup_model == prom_model
 
-            if has_both:
-                if best_ratio >= MODEL_BOOST_THRESHOLD:
-                    candidate["score"] = min(
-                        100.0, round(candidate["score"] + MODEL_BOOST_POINTS, 2)
-                    )
-                else:
-                    candidate["score"] = max(
-                        0.0, round(candidate["score"] - MODEL_MISMATCH_PENALTY, 2)
-                    )
+            if has_both and not exact:
+                logger.debug(
+                    "Model field mismatch rejected: sup='%s' vs prom='%s' for prom_id=%d",
+                    sup_article or sup_model, prom_article or prom_model,
+                    candidate["prom_product_id"],
+                )
+                continue
+            if has_both and exact:
+                candidate["score"] = min(
+                    100.0, round(candidate["score"] + MODEL_BOOST_POINTS, 2)
+                )
                 candidate["confidence"] = get_confidence_label(candidate["score"])
+            kept.append(candidate)
+        fuzzy_output = kept
 
-    # Step 4.7: Name-based model penalty — when article/model fields are empty,
-    # extract model numbers from product names and penalize mismatches.
-    # Catches cases like "Robot Coupe 28004" matching "Robot Coupe 28054" at 97%.
+    # Step 4.7: Name-based model gate — when article/model fields are empty,
+    # extract model numbers from product names. If both have extracted models
+    # and they don't match after strict normalize, reject the candidate.
+    # Catches SNACK2100TN-FC vs SNACK3100TN-FC (fuzz.ratio=93%, looks similar
+    # but clearly different products).
     if brand_was_matched and supplier_brand:
-        sup_name_model = extract_model_from_name(supplier_product_name, supplier_brand)
+        sup_name_model = normalize_model(
+            extract_model_from_name(supplier_product_name, supplier_brand)
+        )
         if sup_name_model:
-            name_model_filtered = []
+            kept = []
             for candidate in fuzzy_output:
                 prom_name_full = candidate["prom_name"]
                 prom_brand_for_model = supplier_brand  # same brand due to blocking
@@ -346,22 +371,18 @@ def find_match_candidates(
                         prom_name_full = p["name"]
                         break
 
-                prom_name_model = extract_model_from_name(prom_name_full, prom_brand_for_model)
+                prom_name_model = normalize_model(
+                    extract_model_from_name(prom_name_full, prom_brand_for_model)
+                )
                 if prom_name_model and sup_name_model != prom_name_model:
-                    # Both have a model in the name but they differ — heavy penalty
-                    model_sim = fuzz.ratio(sup_name_model, prom_name_model)
-                    if model_sim < MODEL_MATCH_THRESHOLD:
-                        candidate["score"] = max(
-                            0.0, round(candidate["score"] - MODEL_MISMATCH_PENALTY, 2)
-                        )
-                        candidate["confidence"] = get_confidence_label(candidate["score"])
-                        logger.debug(
-                            "Name-model penalty: '%s' vs '%s' (sim=%d) score now=%.1f for prom_id=%d",
-                            sup_name_model, prom_name_model, model_sim,
-                            candidate["score"], candidate["prom_product_id"],
-                        )
-                name_model_filtered.append(candidate)
-            fuzzy_output = name_model_filtered
+                    logger.debug(
+                        "Name-model mismatch rejected: '%s' vs '%s' for prom_id=%d",
+                        sup_name_model, prom_name_model,
+                        candidate["prom_product_id"],
+                    )
+                    continue
+                kept.append(candidate)
+            fuzzy_output = kept
 
     # Merge fast-path + fuzzy, sort by score
     output = fast_matches + fuzzy_output
