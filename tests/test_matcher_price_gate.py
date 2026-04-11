@@ -386,6 +386,54 @@ class TestBrandNotInCatalog:
         assert len(result) == 1
 
 
+class TestVoltageVariantGate:
+    """Same model with different voltage is a different SKU — must reject."""
+
+    def test_220_vs_380_rejected(self):
+        """М'ясорубка TC12U (220) must NOT match TC12U (380)."""
+        prom = [
+            _make_prom(1, "М'ясорубка Everest TC12U (380), 1/2 унгер", "Everest", 50000),
+        ]
+        result = find_match_candidates(
+            "М'ясорубка Everest TC12U (220)", "Everest", prom,
+            supplier_price_cents=50000,
+        )
+        assert len(result) == 0
+
+    def test_220_with_v_suffix_rejected(self):
+        """'(220)' vs '(380 В)' must reject (V suffix optional)."""
+        prom = [
+            _make_prom(1, "Тісторозкатка Fimar SI320 (380 В)", "Fimar", 50000),
+        ]
+        result = find_match_candidates(
+            "Тісторозкатка ел. Fimar SI320 (220)", "Fimar", prom,
+            supplier_price_cents=50000,
+        )
+        assert len(result) == 0
+
+    def test_same_voltage_still_matches(self):
+        """Same voltage on both sides must still match."""
+        prom = [
+            _make_prom(1, "Картоплечистка Fimar PPN10 (220 В)", "Fimar", 50000),
+        ]
+        result = find_match_candidates(
+            "Картоплечистка Fimar PPN10 (220)", "Fimar", prom,
+            supplier_price_cents=50000,
+        )
+        assert len(result) == 1
+
+    def test_voltage_on_one_side_only_kept(self):
+        """If only one side has voltage info, don't reject (no evidence to reject)."""
+        prom = [
+            _make_prom(1, "Фритюрниця Bartscher A162412E", "Bartscher", 50000),
+        ]
+        result = find_match_candidates(
+            "Фритюрниця ел. наст. Bartscher A162412E (220)", "Bartscher", prom,
+            supplier_price_cents=50000,
+        )
+        assert len(result) == 1
+
+
 class TestBrandWhitespaceVariants:
     """Brand variants differing only by whitespace/punctuation must still gate correctly."""
 

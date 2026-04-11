@@ -43,6 +43,13 @@ MODEL_BOOST_THRESHOLD = 80  # Legacy: kept for reference, not used for strict co
 TYPE_MATCH_THRESHOLD = 50  # Minimum type similarity to keep candidate
 MIN_TYPE_LENGTH = 2  # Minimum chars for extracted type to be usable
 
+# --- Voltage variant gate ---
+# "(220)", "(220 В)", "(380 В)" etc. mark single-phase vs three-phase SKUs.
+# Same model number with different voltage is a DIFFERENT product in the
+# store (different wiring, different price). If both sides carry a voltage
+# tag and they differ, reject the candidate.
+VOLTAGE_RE = re.compile(r"\((\d{3})\s*(?:В|B|V)?\)", re.IGNORECASE)
+
 
 def normalize_text(text: str) -> str:
     """Apply NFC unicode normalization to handle Cyrillic edge cases.
@@ -409,6 +416,30 @@ def find_match_candidates(
                     continue
                 kept.append(candidate)
             fuzzy_output = kept
+
+    # Step 4.8: Voltage variant gate — applies to BOTH fast-path and fuzzy.
+    # Same model with (220) vs (380) = different SKU in the store.
+    sup_voltages = set(VOLTAGE_RE.findall(supplier_product_name))
+
+    def _voltage_ok(candidate) -> bool:
+        if not sup_voltages:
+            return True
+        prom_name_full = candidate["prom_name"]
+        for p in candidates_pool:
+            if p["id"] == candidate["prom_product_id"]:
+                prom_name_full = p["name"]
+                break
+        prom_voltages = set(VOLTAGE_RE.findall(prom_name_full))
+        if prom_voltages and not (sup_voltages & prom_voltages):
+            logger.debug(
+                "Voltage variant rejected: sup=%s vs prom=%s for prom_id=%d",
+                sup_voltages, prom_voltages, candidate["prom_product_id"],
+            )
+            return False
+        return True
+
+    fast_matches = [c for c in fast_matches if _voltage_ok(c)]
+    fuzzy_output = [c for c in fuzzy_output if _voltage_ok(c)]
 
     # Merge fast-path + fuzzy, sort by score
     output = fast_matches + fuzzy_output
