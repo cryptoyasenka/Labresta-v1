@@ -87,6 +87,10 @@ def extract_model_from_name(name: str, brand: str | None) -> str:
     tokens like "2", "40", "65" (sizes, capacities, quantities) while keeping
     real article codes like "28054" and alphanumeric codes like "R2", "XFT133".
 
+    Brand matching is whitespace/punctuation-insensitive so that
+    "Restoitalia" in a product name is found when the catalog stores the
+    brand as "RESTO ITALIA" (or vice versa).
+
     Example: "Диск для овощерезки Robot Coupe 28054" with brand "Robot Coupe"
              → "28054"
              "Piч конвекційна Unox XFT133" with brand "Unox"
@@ -97,14 +101,27 @@ def extract_model_from_name(name: str, brand: str | None) -> str:
     if not name or not brand or not brand.strip():
         return ""
 
-    name_lower = name.lower()
-    brand_lower = brand.strip().lower()
-
-    idx = name_lower.find(brand_lower)
-    if idx < 0:
+    brand_norm = normalize_model(brand)
+    if not brand_norm:
         return ""
 
-    after_brand = name[idx + len(brand):].strip()
+    # Walk the name and find where the normalized brand ends, ignoring
+    # whitespace/punctuation differences between the brand token in the name
+    # and the stored brand string.
+    after_idx = -1
+    buf = []
+    for i, ch in enumerate(name):
+        if ch.isalnum():
+            buf.append(ch.lower())
+            joined = "".join(buf)
+            if joined.endswith(brand_norm):
+                after_idx = i + 1
+                break
+
+    if after_idx < 0:
+        return ""
+
+    after_brand = name[after_idx:].strip()
     # Remove leading punctuation/noise
     after_brand = re.sub(r"^[\s.,:;()\-]+", "", after_brand).strip()
 
@@ -185,6 +202,10 @@ def find_match_candidates(
         return []
 
     # Step 1: Brand-based blocking
+    # When supplier has a brand, it MUST exist in the catalog. If we don't
+    # stock that brand, no product in the catalog can be a valid match —
+    # falling back to the full pool produces word-overlap junk ("Плита X"
+    # matching "Плита Y" from an unrelated brand). Return empty instead.
     candidates_pool = prom_products
     brand_was_matched = False
     if supplier_brand and supplier_brand.strip():
@@ -198,7 +219,12 @@ def find_match_candidates(
         if brand_filtered:
             candidates_pool = brand_filtered
             brand_was_matched = True
-        # If brand not found in catalog, fall back to all prom_products
+        else:
+            logger.debug(
+                "Supplier brand %r not found in catalog — skipping product",
+                supplier_brand,
+            )
+            return []
 
     # Step 2: Build choices dict — {prom_id: normalized_name}
     choices = {p["id"]: normalize_text(p["name"]) for p in candidates_pool}

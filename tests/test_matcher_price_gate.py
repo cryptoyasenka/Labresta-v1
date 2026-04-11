@@ -2,6 +2,7 @@
 
 from app.services.matcher import (
     find_match_candidates,
+    extract_model_from_name,
     extract_product_type,
     MAX_PRICE_RATIO,
 )
@@ -333,3 +334,95 @@ class TestExtractProductType:
     def test_brand_at_start_returns_empty(self):
         """Brand at the very start means no type prefix."""
         assert extract_product_type("Unox XFT133", "Unox") == ""
+
+
+class TestBrandNotInCatalog:
+    """Supplier brand absent from catalog → no matches (no fallback to full pool)."""
+
+    def test_brand_not_in_catalog_returns_empty(self):
+        """Hobart supplier product must NOT cross-match Helia Smoker product."""
+        prom = [
+            _make_prom(1, "Коптильня HELIA SMOKER HELIA 24", "Helia Smoker", 92300),
+        ]
+        result = find_match_candidates(
+            "Коптильня Hobart ACICSMOK", "Hobart", prom,
+            supplier_price_cents=92300,
+        )
+        assert len(result) == 0
+
+    def test_electrolux_does_not_match_apach(self):
+        """Electrolux supplier product must NOT match APACH plita."""
+        prom = [
+            _make_prom(1, "Плита APACH APRES-77T", "Apach", 304800),
+            _make_prom(2, "Плита електрична TATRA TER.87", "Tatra", 304800),
+        ]
+        result = find_match_candidates(
+            "Плита електрична Electrolux E7HOED2000", "Electrolux", prom,
+            supplier_price_cents=304800,
+        )
+        assert len(result) == 0
+
+    def test_fm_industrial_does_not_match_rational(self):
+        """FM Industrial vs Rational — different brands, no cross-match."""
+        prom = [
+            _make_prom(1, "Ополіскувач RATIONAL (10 л.)", "Rational", 17200),
+        ]
+        result = find_match_candidates(
+            "Ополіскувач FM Industrial 870H09", "FM Industrial", prom,
+            supplier_price_cents=10600,
+        )
+        assert len(result) == 0
+
+    def test_no_supplier_brand_still_falls_back(self):
+        """When supplier has no brand at all, fallback to full pool still works."""
+        prom = [
+            _make_prom(1, "Товар Brand ABC", "Brand", 10000),
+        ]
+        result = find_match_candidates(
+            "Товар Brand ABC", None, prom,
+            supplier_price_cents=10000,
+        )
+        # Still matches because supplier has no brand to check against catalog
+        assert len(result) == 1
+
+
+class TestBrandWhitespaceVariants:
+    """Brand variants differing only by whitespace/punctuation must still gate correctly."""
+
+    def test_restoitalia_model_extracted_with_space_variant(self):
+        """'RESTO ITALIA' brand must find 'Restoitalia' in name and extract model."""
+        assert extract_model_from_name(
+            "Тістоміс Restoitalia SK402VTW, 41 літр", "RESTO ITALIA"
+        ) == "sk402vtw,"
+
+    def test_restoitalia_different_models_rejected(self):
+        """SK10MOTW vs SK402VTW must be rejected even when brand has whitespace variant."""
+        prom = [
+            _make_prom(
+                1,
+                "Тістоміс Restoitalia SK402VTW, 41 літр, 2 швидкості",
+                "RESTO ITALIA",
+                149300,
+            ),
+        ]
+        result = find_match_candidates(
+            "Тістоміс Restoitalia SK10MOTW", "Restoitalia", prom,
+            supplier_price_cents=117200,
+        )
+        assert len(result) == 0
+
+    def test_restoitalia_identical_model_still_matches(self):
+        """Same SK402VTW on both sides must still match despite brand whitespace diff."""
+        prom = [
+            _make_prom(
+                1,
+                "Тістоміс Restoitalia SK402VTW, 41 літр, 2 швидкості",
+                "RESTO ITALIA",
+                149300,
+            ),
+        ]
+        result = find_match_candidates(
+            "Тістоміс Restoitalia SK402VTW", "Restoitalia", prom,
+            supplier_price_cents=149300,
+        )
+        assert len(result) == 1
