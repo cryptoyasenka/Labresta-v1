@@ -110,6 +110,7 @@
                     <th>Поставщик</th>
                     <th>Каталог Horoshop</th>
                     <th>Цена поставщика</th>
+                    <th>Цена в Horoshop</th>
                     <th>Расч. цена Horoshop</th>
                     <th>Скидка</th>
                     {{ sort_header('score', 'Конфиденс') }}
@@ -140,6 +141,13 @@
                     <td>
                         {% if match.supplier_product.price_cents is not none %}
                             {{ "%.2f"|format(match.supplier_product.price_cents / 100) }} {{ match.supplier_product.currency }}
+                        {% else %}
+                            &mdash;
+                        {% endif %}
+                    </td>
+                    <td class="text-muted">
+                        {% if match.prom_product.price %}
+                            {{ "%.2f"|format(match.prom_product.price / 100) }} {{ match.prom_product.currency or 'EUR' }}
                         {% else %}
                             &mdash;
                         {% endif %}
@@ -227,7 +235,7 @@
                 </tr>
                 {% else %}
                 <tr>
-                    <td colspan="10" class="text-center text-muted py-4">
+                    <td colspan="11" class="text-center text-muted py-4">
                         Нет матчей для отображения. Попробуйте изменить фильтры или запустить процесс сопоставления.
                     </td>
                 </tr>
