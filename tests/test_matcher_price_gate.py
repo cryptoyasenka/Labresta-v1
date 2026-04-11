@@ -4,6 +4,9 @@ from app.services.matcher import (
     find_match_candidates,
     extract_model_from_name,
     extract_product_type,
+    extract_voltages,
+    meaningful_tokens,
+    after_brand_remainder,
     MAX_PRICE_RATIO,
 )
 
@@ -474,3 +477,184 @@ class TestBrandWhitespaceVariants:
             supplier_price_cents=149300,
         )
         assert len(result) == 1
+
+
+class TestExtendedVoltageGate:
+    """Voltage gate recognizes '380 В' inside multi-value parens and bare form."""
+
+    def test_voltage_inside_multi_value_parens(self):
+        """'(13 кг/год, 380 В)' vs '(13 кг/год, 220 В)' must be rejected."""
+        prom = [
+            _make_prom(
+                1,
+                "Прес макаронний Fimar PF40E з ножем (13 кг/год, 220 В)",
+                "Fimar",
+                254500,
+            ),
+        ]
+        result = find_match_candidates(
+            "Машина для макароних виробів Fimar PF40E з ножем (13 кг/год, 380 В)",
+            "Fimar", prom,
+            supplier_price_cents=281600,
+        )
+        assert len(result) == 0
+
+    def test_bare_voltage_without_parens(self):
+        """'Fimar XYZ 380 В' vs 'Fimar XYZ 220 В' rejected."""
+        prom = [
+            _make_prom(1, "Прес Fimar XYZ 220 В 8 кг/год", "Fimar", 100000),
+        ]
+        result = find_match_candidates(
+            "Прес Fimar XYZ 380 В 8 кг/год", "Fimar", prom,
+            supplier_price_cents=100000,
+        )
+        assert len(result) == 0
+
+    def test_canonical_voltage_set(self):
+        """Only 220/230/380/400 treated as voltages — 100/500 ignored (could be dimensions)."""
+        assert extract_voltages("Something (100)") == set()
+        assert extract_voltages("Something (500)") == set()
+        assert extract_voltages("Something (220)") == {"220"}
+        assert extract_voltages("380 В") == {"380"}
+        assert extract_voltages("230 В, нерж") == {"230"}
+
+    def test_dimension_numbers_not_confused_with_voltage(self):
+        """'300 мм' is NOT a voltage — no 'В' letter."""
+        assert extract_voltages("диск 300 мм") == set()
+
+
+class TestAfterBrandContainmentGate:
+    """Subset-containment gate rejects cross-variant false positives."""
+
+    def test_brema_abs_vs_inox_rejected(self):
+        """CB184AHC ABS must not match CB184AHC INOX — material variant."""
+        prom = [
+            _make_prom(
+                1, "Льодогенератор Brema CB184AHC INOX, корпус нерж 21 кг/добу",
+                "Brema", 100800,
+            ),
+            _make_prom(
+                2, "Льодогенератор Brema CB184AHC ABS, корпус пластик 21 кг/добу",
+                "Brema", 94000,
+            ),
+        ]
+        result = find_match_candidates(
+            "Льодогенератор Brema CB184AHC ABS", "Brema", prom,
+            supplier_price_cents=94000,
+        )
+        ids = {r["prom_product_id"] for r in result}
+        assert 2 in ids
+        assert 1 not in ids
+
+    def test_cl30_bistro_vs_bistro_plus6_rejected(self):
+        """CL30 Bistro must not match CL30 BISTRO+6 дисків — variant suffix."""
+        prom = [
+            _make_prom(1, "Овочерізка Robot Coupe CL30 BISTRO", "Robot Coupe", 120700),
+            _make_prom(2, "Овочерізка Robot Coupe CL30 BISTRO+6 дисків", "Robot Coupe", 148800),
+        ]
+        result = find_match_candidates(
+            "Овочерізка ел. Robot Coupe CL30 Bistro", "Robot Coupe", prom,
+            supplier_price_cents=120700,
+        )
+        ids = {r["prom_product_id"] for r in result}
+        assert 1 in ids
+        assert 2 not in ids
+
+    def test_star_plus_40_vs_60_rejected(self):
+        """STAR PLUS 40 must not match STAR PLUS 60 — size digit differ."""
+        prom = [
+            _make_prom(1, "Тістоміс LP Group STAR PLUS 40 (65 л)", "LP Group", 823100),
+            _make_prom(2, "Тестомес LP Group STAR PLUS 60 (80 л)", "LP Group", 848700),
+        ]
+        result = find_match_candidates(
+            "Тістоміс LP Group STAR PLUS 40", "LP Group", prom,
+            supplier_price_cents=860200,
+        )
+        ids = {r["prom_product_id"] for r in result}
+        assert 1 in ids
+        assert 2 not in ids
+
+    def test_entry_max_8_vs_4_rejected(self):
+        """Entry Max 8 must not match Entry Max 4 even when voltage tag is identical."""
+        prom = [
+            _make_prom(1, "Піч для піци Pizza Group Entry Max 4 (380)", "Pizza Group", 114200),
+            _make_prom(2, "Піч для піци Pizza Group Entry Max 8 (380В)", "Pizza Group", 189700),
+        ]
+        result = find_match_candidates(
+            "Піч для піци Pizza Group Entry Max 8 (380)", "Pizza Group", prom,
+            supplier_price_cents=199500,
+        )
+        ids = {r["prom_product_id"] for r in result}
+        assert 2 in ids
+        assert 1 not in ids
+
+    def test_reednee_white_vs_black_rejected(self):
+        """REEDNEE RT78B white must not match REEDNEE RT78B black."""
+        prom = [
+            _make_prom(1, "Шафа холодильна REEDNEE RT78B white", "REEDNEE", 36400),
+            _make_prom(2, "Шафа холодильна REEDNEE RT78B black", "REEDNEE", 36400),
+        ]
+        result = find_match_candidates(
+            "Шафа-вітрина холодильна REEDNEE RT78B white", "REEDNEE", prom,
+            supplier_price_cents=33500,
+        )
+        ids = {r["prom_product_id"] for r in result}
+        assert 1 in ids
+        assert 2 not in ids
+
+    def test_supplier_with_extras_matches_base_prom(self):
+        """'LP Group VIS60 + решітка + ЭПУ' should still match base PROM 'LP Group VIS60'.
+
+        Bidirectional rule: PROM tokens are subset of SUP tokens — accessories added on
+        supplier side shouldn't prevent matching to the base catalog entry.
+        """
+        prom = [
+            _make_prom(1, "Тістоміс LP Group VIS60", "LP Group", 940500),
+        ]
+        result = find_match_candidates(
+            "Тістоміс LP Group VIS60 + решітка з нерж. сталі + ЭПУ",
+            "LP Group", prom,
+            supplier_price_cents=1011300,
+        )
+        assert any(r["prom_product_id"] == 1 for r in result)
+
+    def test_synonym_prefix_type_does_not_block(self):
+        """'Міксер погружний' vs 'Міксер заглибний' differ before brand (type synonyms).
+
+        Containment gate operates on after-brand remainder only, so type-word synonyms
+        (погружний/заглибний/занурювальний) must not cause rejection.
+        """
+        prom = [
+            _make_prom(
+                1, "Міксер заглибний Robot Coupe CMP250 Combi", "Robot Coupe", 86400,
+            ),
+        ]
+        result = find_match_candidates(
+            "Міксер погружний Robot Coupe CMP250 Combi", "Robot Coupe", prom,
+            supplier_price_cents=98100,
+        )
+        assert len(result) == 1
+
+    def test_voltage_tags_ignored_by_containment(self):
+        """Containment gate ignores voltage-number tokens (handled by voltage gate).
+
+        Supplier 'Fimar GR8D (220)' should still match PROM 'Fimar GR8D' even though
+        '220' is absent from the PROM side.
+        """
+        prom = [
+            _make_prom(1, "Сиротертка Fimar GR8D", "Fimar", 45800),
+        ]
+        result = find_match_candidates(
+            "Сиротерка Fimar GR8D (220)", "Fimar", prom,
+            supplier_price_cents=45800,
+        )
+        assert len(result) == 1
+
+    def test_meaningful_tokens_drops_stopwords_and_voltage(self):
+        """'STAR PLUS 40 (380 В)' → {'star','plus','40'}."""
+        assert meaningful_tokens("STAR PLUS 40 (380 В)") == {"star", "plus", "40"}
+
+    def test_after_brand_remainder_handles_whitespace_brand(self):
+        """'RESTO ITALIA' stored brand finds 'Restoitalia' in the name."""
+        name = "Тістоміс Restoitalia SK402VTW"
+        assert "SK402VTW" in after_brand_remainder(name, "RESTO ITALIA")

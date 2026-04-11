@@ -44,11 +44,31 @@ TYPE_MATCH_THRESHOLD = 50  # Minimum type similarity to keep candidate
 MIN_TYPE_LENGTH = 2  # Minimum chars for extracted type to be usable
 
 # --- Voltage variant gate ---
-# "(220)", "(220 В)", "(380 В)" etc. mark single-phase vs three-phase SKUs.
-# Same model number with different voltage is a DIFFERENT product in the
-# store (different wiring, different price). If both sides carry a voltage
-# tag and they differ, reject the candidate.
-VOLTAGE_RE = re.compile(r"\((\d{3})\s*(?:В|B|V)?\)", re.IGNORECASE)
+# "(220)", "(220 В)", "(380 В)", "380 В", "13 кг/год, 380 В" etc. mark
+# single-phase vs three-phase SKUs. Same model number with different voltage
+# is a DIFFERENT product in the store. Restricted to standard EU mains voltages
+# (220, 230, 380, 400) to avoid confusing model/dimension numbers with voltages.
+VOLTAGE_TAGS = frozenset({"220", "230", "380", "400"})
+VOLTAGE_RE = re.compile(
+    r"(?:\((\d{3})(?:\s*[ВBV])?\s*\)|(?<!\d)(\d{3})\s*[ВBV]\b)",
+    re.IGNORECASE | re.UNICODE,
+)
+
+
+def extract_voltages(name: str) -> set[str]:
+    """Extract canonical voltage tags ({'220','230','380','400'}) from a name.
+
+    Matches three forms: '(220)', '(220 В)' and bare '220 В' / '380В' in any
+    context (including inside multi-value parentheses like '(13 кг/год, 380 В)').
+    """
+    if not name:
+        return set()
+    vs = set()
+    for m in VOLTAGE_RE.finditer(name):
+        v = m.group(1) or m.group(2)
+        if v in VOLTAGE_TAGS:
+            vs.add(v)
+    return vs
 
 
 def normalize_text(text: str) -> str:
@@ -135,8 +155,15 @@ def extract_model_from_name(name: str, brand: str | None) -> str:
     if not after_brand:
         return ""
 
+    # Strip parenthesized qualifiers before scanning for model tokens —
+    # "(380)", "(220 В)", "(на базі)" are voltage/feature tags, not model codes.
+    # Without this, "RESTO 4 (380)" would return "(380)" as the model when the
+    # real model digit ("4") is filtered out for being too generic, producing
+    # a false equivalence with "RESTO 44 (380)".
+    after_brand_scan = re.sub(r"\([^)]*\)", " ", after_brand)
+
     # Take the first token that's a plausible model code
-    for token in after_brand.split():
+    for token in after_brand_scan.split():
         if not re.search(r"\d", token):
             continue
         has_letter = bool(re.search(r"[a-zа-яёіїєґ]", token.lower()))
@@ -144,6 +171,72 @@ def extract_model_from_name(name: str, brand: str | None) -> str:
             return token.lower()
 
     return ""
+
+
+def after_brand_remainder(name: str, brand: str | None) -> str:
+    """Return the portion of `name` after the first occurrence of `brand`.
+
+    Brand matching is whitespace/punctuation-insensitive (walks alphanumerics
+    only), so 'Restoitalia' in name matches brand 'RESTO ITALIA'. Returns
+    full name unchanged if the brand cannot be located — callers then compare
+    full-name tokens, which is still useful.
+    """
+    if not name:
+        return ""
+    if not brand or not brand.strip():
+        return name
+    brand_norm = normalize_model(brand)
+    if not brand_norm:
+        return name
+    buf = []
+    for i, ch in enumerate(name):
+        if ch.isalnum():
+            buf.append(ch.lower())
+            if "".join(buf).endswith(brand_norm):
+                return name[i + 1:].strip()
+    return name
+
+
+# NB: '+' and '-' are intentionally NOT token separators.
+#   '+' in EU catalog names typically marks a variant/bundle suffix
+#      ("BISTRO+6 дисків", "F8+8"), not a general separator.
+#   '-' is usually part of SKU codes ("EFT-60/2", "75PE-C", "iVario 2-XS") —
+#      splitting on it would merge false positives and lose tokens.
+# Keeping both inside tokens makes containment comparisons treat them as
+# distinct from the base token (e.g. "bistro" vs "bistro6", "eft60" matches
+# "eft60" regardless of supplier's hyphen style).
+_TOKEN_SPLIT_RE = re.compile(r"[\s.,:;()/]+", re.UNICODE)
+_TOKEN_STRIP_RE = re.compile(r"[^a-z0-9а-яёіїєґ]", re.UNICODE)
+_PAREN_CONTENT_RE = re.compile(r"\([^)]*\)")
+
+
+def meaningful_tokens(text: str) -> set[str]:
+    """Tokenize text into comparable normalized tokens.
+
+    Parenthesized content is stripped before splitting: parens in catalog
+    names usually hold either article/SKU codes ('(WZ9ENRA.0021988)'),
+    quantity markers ('(набір 100 шт.)'), voltage tags ('(380 В)'), or
+    minor spelling variants ('(саладета)' vs '(саладетта)') — none of which
+    should drive a containment mismatch.
+
+    Digits of any length are kept ('4' distinguishes 'RESTO 4' from 'RESTO 44').
+    Letter tokens require length >= 2 (drops prepositions like 'з', 'в', 'i').
+    Standard mains voltage numbers (220/230/380/400) are excluded — they're
+    handled by the dedicated voltage gate, not by token containment.
+    """
+    if not text:
+        return set()
+    cleaned = _PAREN_CONTENT_RE.sub(" ", text.lower())
+    out = set()
+    for raw in _TOKEN_SPLIT_RE.split(cleaned):
+        tok = _TOKEN_STRIP_RE.sub("", raw)
+        if not tok:
+            continue
+        if tok.isdigit():
+            out.add(tok)
+        elif len(tok) >= 2:
+            out.add(tok)
+    return out - VOLTAGE_TAGS
 
 
 def extract_product_type(name: str, brand: str | None) -> str:
@@ -419,7 +512,7 @@ def find_match_candidates(
 
     # Step 4.8: Voltage variant gate — applies to BOTH fast-path and fuzzy.
     # Same model with (220) vs (380) = different SKU in the store.
-    sup_voltages = set(VOLTAGE_RE.findall(supplier_product_name))
+    sup_voltages = extract_voltages(supplier_product_name)
 
     def _voltage_ok(candidate) -> bool:
         if not sup_voltages:
@@ -429,7 +522,7 @@ def find_match_candidates(
             if p["id"] == candidate["prom_product_id"]:
                 prom_name_full = p["name"]
                 break
-        prom_voltages = set(VOLTAGE_RE.findall(prom_name_full))
+        prom_voltages = extract_voltages(prom_name_full)
         if prom_voltages and not (sup_voltages & prom_voltages):
             logger.debug(
                 "Voltage variant rejected: sup=%s vs prom=%s for prom_id=%d",
@@ -440,6 +533,48 @@ def find_match_candidates(
 
     fast_matches = [c for c in fast_matches if _voltage_ok(c)]
     fuzzy_output = [c for c in fuzzy_output if _voltage_ok(c)]
+
+    # Step 4.9: After-brand token-containment gate.
+    # Within the same brand, false positives arise when the model code matches
+    # fuzzily but the NON-model tokens (variant markers like ABS/INOX/BISTRO+6,
+    # size digits like 40/60, descriptive suffixes like "з важелем") differ.
+    # Rule: one side's after-brand tokens must be a subset of the other's.
+    # Bidirectional so that supplier names carrying extra accessories
+    # ("VIS60 + решітка + ЭПУ") still match the base PROM product "VIS60".
+    if brand_was_matched and supplier_brand:
+        sup_after_tokens = meaningful_tokens(
+            after_brand_remainder(supplier_product_name, supplier_brand)
+        )
+        if sup_after_tokens:
+            contained = []
+            for candidate in fast_matches + fuzzy_output:
+                prom_name_full = candidate["prom_name"]
+                prom_brand_for_tokens = supplier_brand
+                for p in candidates_pool:
+                    if p["id"] == candidate["prom_product_id"]:
+                        prom_brand_for_tokens = p.get("brand") or supplier_brand
+                        prom_name_full = p["name"]
+                        break
+                prom_after_tokens = meaningful_tokens(
+                    after_brand_remainder(prom_name_full, prom_brand_for_tokens)
+                )
+                if not prom_after_tokens:
+                    contained.append(candidate)
+                    continue
+                if sup_after_tokens.issubset(prom_after_tokens) or prom_after_tokens.issubset(
+                    sup_after_tokens
+                ):
+                    contained.append(candidate)
+                else:
+                    logger.debug(
+                        "Containment rejected: sup=%s prom=%s diff=%s for prom_id=%d",
+                        sup_after_tokens, prom_after_tokens,
+                        sup_after_tokens ^ prom_after_tokens,
+                        candidate["prom_product_id"],
+                    )
+            fast_ids = {c["prom_product_id"] for c in fast_matches}
+            fast_matches = [c for c in contained if c["prom_product_id"] in fast_ids]
+            fuzzy_output = [c for c in contained if c["prom_product_id"] not in fast_ids]
 
     # Merge fast-path + fuzzy, sort by score
     output = fast_matches + fuzzy_output
