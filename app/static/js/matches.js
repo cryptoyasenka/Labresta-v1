@@ -146,6 +146,14 @@
                 return;
             }
 
+            // Handle unconfirm button (revert confirmed → candidate)
+            if (e.target.closest('.unconfirm-btn')) {
+                e.stopPropagation();
+                var uBtn = e.target.closest('.unconfirm-btn');
+                handleUnconfirm(uBtn);
+                return;
+            }
+
             var btn = e.target.closest('.confirm-btn, .reject-btn');
             if (!btn) {
                 // Click on row (not on buttons) -- show detail panel
@@ -250,6 +258,34 @@
             });
     }
 
+    // ========== Unconfirm (revert confirmed → candidate) ==========
+
+    function handleUnconfirm(btn) {
+        var matchId = btn.getAttribute('data-id');
+        if (!confirmAction('Вернуть матч в статус кандидата?\n\nЕсли хотите выбрать другой товар каталога, потом нажмите «Сопоставить вручную».')) return;
+
+        btn.disabled = true;
+
+        fetchWithCSRF('/matches/' + matchId + '/unconfirm', { method: 'POST' })
+            .then(function (resp) {
+                if (!resp.ok) throw new Error('HTTP ' + resp.status);
+                return resp.json();
+            })
+            .then(function (data) {
+                if (data.status === 'ok') {
+                    showAlert('Подтверждение отменено', 'warning');
+                    // Reload to restore candidate action buttons
+                    setTimeout(function () { window.location.reload(); }, 600);
+                } else {
+                    throw new Error(data.message || 'Unknown error');
+                }
+            })
+            .catch(function (err) {
+                showAlert('Ошибка: ' + err.message, 'danger');
+                btn.disabled = false;
+            });
+    }
+
     // ========== Details Comparison Modal ==========
 
     var detailsModal = null;
@@ -283,18 +319,22 @@
         var pp = data.catalog;
         var match = data.match;
 
-        var html = '<div class="row">';
+        var html = '<div class="row" data-match-id="' + match.id + '">';
 
-        // --- Names comparison ---
+        // --- Names comparison (editable on catalog side) ---
         html += '<div class="col-12 mb-3">';
-        html += '<h6>Названия</h6>';
+        html += '<h6>Названия <small class="text-muted">(поля каталога можно редактировать)</small></h6>';
         html += '<table class="table table-sm table-bordered">';
         html += '<thead><tr><th width="20%"></th><th width="40%">Поставщик</th><th width="40%">Каталог Horoshop</th></tr></thead>';
         html += '<tbody>';
-        html += '<tr><td><strong>UA</strong></td><td>' + escapeHtml(sp.name || '-') + '</td>';
-        html += '<td' + (sp.name !== pp.name ? ' class="table-warning"' : '') + '>' + escapeHtml(pp.name || '-') + '</td></tr>';
-        html += '<tr><td><strong>RU</strong></td><td class="text-muted">-</td>';
-        html += '<td>' + escapeHtml(pp.name_ru || '-') + '</td></tr>';
+        html += '<tr><td><strong>UA</strong></td>';
+        html += '<td>' + escapeHtml(sp.name || '-') + '</td>';
+        html += '<td' + (sp.name !== pp.name ? ' class="table-warning"' : '') + '>';
+        html += '<textarea class="form-control form-control-sm prom-edit-field" rows="2" data-field="name">' + escapeHtml(pp.name || '') + '</textarea>';
+        html += '</td></tr>';
+        html += '<tr><td><strong>RU</strong></td>';
+        html += '<td class="text-muted">—</td>';
+        html += '<td><textarea class="form-control form-control-sm prom-edit-field" rows="2" data-field="name_ru">' + escapeHtml(pp.name_ru || '') + '</textarea></td></tr>';
         html += '</tbody></table></div>';
 
         // --- Photos ---
@@ -335,17 +375,22 @@
         }
         html += '</div>';
 
-        // --- Description ---
-        if (sp.description || pp.description_ua) {
-            html += '<div class="col-12 mb-3">';
-            html += '<h6>Описание</h6>';
-            html += '<div class="row">';
-            html += '<div class="col-6"><p class="text-muted small mb-1">Поставщик</p>';
-            html += '<div class="border rounded p-2 small" style="max-height:200px;overflow:auto;">' + (sp.description || '<span class="text-muted">Нет</span>') + '</div></div>';
-            html += '<div class="col-6"><p class="text-muted small mb-1">Каталог (UA)</p>';
-            html += '<div class="border rounded p-2 small" style="max-height:200px;overflow:auto;">' + (pp.description_ua || '<span class="text-muted">Нет</span>') + '</div></div>';
-            html += '</div></div>';
-        }
+        // --- Description (editable on catalog side) ---
+        html += '<div class="col-12 mb-3">';
+        html += '<h6>Описание <small class="text-muted">(каталог Horoshop — можно редактировать)</small></h6>';
+        html += '<div class="row">';
+        html += '<div class="col-6"><p class="text-muted small mb-1">Поставщик (только чтение)</p>';
+        html += '<div class="border rounded p-2 small" style="max-height:200px;overflow:auto;">' + (sp.description || '<span class="text-muted">Нет</span>') + '</div></div>';
+        html += '<div class="col-6"><p class="text-muted small mb-1">Каталог UA</p>';
+        html += '<textarea class="form-control form-control-sm prom-edit-field" rows="6" data-field="description_ua" placeholder="HTML описания (UA)">' + escapeHtml(pp.description_ua || '') + '</textarea>';
+        html += '</div>';
+        html += '</div>';
+        html += '<div class="row mt-2">';
+        html += '<div class="col-6"></div>';
+        html += '<div class="col-6"><p class="text-muted small mb-1">Каталог RU</p>';
+        html += '<textarea class="form-control form-control-sm prom-edit-field" rows="4" data-field="description_ru" placeholder="HTML описания (RU)">' + escapeHtml(pp.description_ru || '') + '</textarea>';
+        html += '</div>';
+        html += '</div></div>';
 
         // --- Match info ---
         html += '<div class="col-12">';
@@ -359,6 +404,94 @@
 
         html += '</div>';
         container.innerHTML = html;
+
+        // Reset the save status indicator whenever a new match is loaded
+        var statusEl = document.getElementById('detailsModalSaveStatus');
+        if (statusEl) statusEl.textContent = '';
+        var saveBtn = document.getElementById('detailsModalSaveBtn');
+        if (saveBtn) saveBtn.disabled = false;
+    }
+
+    // ========== Details modal save (edit catalog fields) ==========
+
+    var detailsSaveBtn = document.getElementById('detailsModalSaveBtn');
+    if (detailsSaveBtn) {
+        detailsSaveBtn.addEventListener('click', function () {
+            var body = document.getElementById('detailsModalBody');
+            if (!body) return;
+            var wrapper = body.querySelector('[data-match-id]');
+            if (!wrapper) return;
+            var matchId = wrapper.getAttribute('data-match-id');
+            if (!matchId) return;
+
+            var payload = {};
+            wrapper.querySelectorAll('.prom-edit-field').forEach(function (el) {
+                var field = el.getAttribute('data-field');
+                if (field) payload[field] = el.value;
+            });
+
+            if (!payload.name || !payload.name.trim()) {
+                showDetailsStatus('Название UA не может быть пустым', 'danger');
+                return;
+            }
+
+            detailsSaveBtn.disabled = true;
+            showDetailsStatus('Сохранение...', 'muted');
+
+            fetchWithCSRF('/matches/' + matchId + '/update-prom', {
+                method: 'POST',
+                body: JSON.stringify(payload)
+            })
+                .then(function (resp) {
+                    if (!resp.ok) {
+                        return resp.json().then(function (data) {
+                            throw new Error(data.message || 'HTTP ' + resp.status);
+                        }).catch(function () {
+                            throw new Error('HTTP ' + resp.status);
+                        });
+                    }
+                    return resp.json();
+                })
+                .then(function (data) {
+                    if (data.status !== 'ok') {
+                        throw new Error(data.message || 'Unknown error');
+                    }
+                    var updatedCount = data.updated ? Object.keys(data.updated).length : 0;
+                    if (updatedCount === 0) {
+                        showDetailsStatus('Нет изменений', 'muted');
+                    } else {
+                        showDetailsStatus('✓ Сохранено (' + updatedCount + ' полей)', 'success');
+                    }
+
+                    // Reflect the new UA name in the row of the match table so
+                    // the operator immediately sees the fix without a reload.
+                    if (data.updated && 'name' in data.updated && matchTable) {
+                        var row = matchTable.querySelector('tr[data-match-id="' + matchId + '"]');
+                        if (row) {
+                            var promCell = row.querySelector('.prom-name-cell');
+                            if (promCell) promCell.textContent = data.updated.name;
+                            row.setAttribute('data-prom-name', data.updated.name);
+                        }
+                    }
+                })
+                .catch(function (err) {
+                    showDetailsStatus('Ошибка: ' + err.message, 'danger');
+                })
+                .finally(function () {
+                    detailsSaveBtn.disabled = false;
+                });
+        });
+    }
+
+    function showDetailsStatus(message, kind) {
+        var el = document.getElementById('detailsModalSaveStatus');
+        if (!el) return;
+        el.textContent = message;
+        el.className = 'me-auto small ' + (
+            kind === 'success' ? 'text-success' :
+            kind === 'danger' ? 'text-danger' :
+            'text-muted'
+        );
     }
 
     // ========== Bulk actions ==========
@@ -718,11 +851,27 @@
         document.getElementById('catalogSearchPlaceholder').style.display = '';
         document.getElementById('selectedProductAlert').classList.add('d-none');
         document.getElementById('selectedPromProductId').value = '';
-        document.getElementById('submitManualMatch').disabled = true;
+        var submitBtnEl = document.getElementById('submitManualMatch');
+        submitBtnEl.disabled = true;
+        submitBtnEl.textContent = 'Сопоставить';
         document.getElementById('rememberMatchCheck').checked = false;
         selectedPromProductId = null;
 
+        // Clear any leftover feedback from a previous open
+        var fbEl = document.getElementById('manualMatchFeedback');
+        if (fbEl) {
+            fbEl.className = 'alert d-none mb-0';
+            fbEl.textContent = '';
+        }
+
         if (manualMatchModal) manualMatchModal.show();
+    }
+
+    function showManualMatchFeedback(message, kind) {
+        var el = document.getElementById('manualMatchFeedback');
+        if (!el) return;
+        el.textContent = message;
+        el.className = 'alert mb-0 alert-' + (kind || 'info');
     }
 
     // Catalog search with debounce
@@ -831,9 +980,14 @@
             var promProductId = document.getElementById('selectedPromProductId').value;
             var remember = document.getElementById('rememberMatchCheck').checked;
 
-            if (!supplierProductId || !promProductId) return;
+            if (!supplierProductId || !promProductId) {
+                showManualMatchFeedback('Сначала выберите товар каталога из списка', 'warning');
+                return;
+            }
 
             submitBtn.disabled = true;
+            submitBtn.textContent = 'Сохранение...';
+            showManualMatchFeedback('Отправка запроса...', 'info');
 
             fetchWithCSRF('/matches/manual', {
                 method: 'POST',
@@ -844,24 +998,37 @@
                 })
             })
                 .then(function (resp) {
-                    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+                    if (!resp.ok) {
+                        return resp.json().then(function (data) {
+                            throw new Error(data.message || 'HTTP ' + resp.status);
+                        }).catch(function () {
+                            throw new Error('HTTP ' + resp.status);
+                        });
+                    }
                     return resp.json();
                 })
                 .then(function (data) {
-                    if (data.status === 'ok') {
-                        if (manualMatchModal) manualMatchModal.hide();
-                        showAlert('Ручной матч создан' + (remember ? '. Правило сохранено.' : ''), 'success');
-                        // Reload to reflect changes
-                        setTimeout(function () {
-                            window.location.reload();
-                        }, 1000);
-                    } else {
+                    if (data.status !== 'ok') {
                         throw new Error(data.message || 'Unknown error');
                     }
+                    submitBtn.textContent = '✓ Сохранено';
+                    showManualMatchFeedback(
+                        '✓ Ручной матч создан' + (remember ? '. Правило сохранено.' : '') + '. Страница обновится...',
+                        'success'
+                    );
+                    // Give the user enough time to read the success banner before
+                    // we reload. Previously we reloaded 1s after hiding the modal,
+                    // but the container-level alert was hidden behind the backdrop,
+                    // so the user saw nothing. Now the banner lives inside the
+                    // modal body and stays visible for the full delay.
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 1500);
                 })
                 .catch(function (err) {
-                    showAlert('Ошибка: ' + err.message, 'danger');
                     submitBtn.disabled = false;
+                    submitBtn.textContent = 'Сопоставить';
+                    showManualMatchFeedback('Ошибка: ' + err.message, 'danger');
                 });
         });
     }

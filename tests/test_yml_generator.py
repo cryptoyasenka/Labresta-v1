@@ -26,7 +26,16 @@ def yml_output_dir(app):
         app.config["YML_FILENAME"] = old_name
 
 
-def _seed_confirmed_match(session, *, external_id, name, price_cents):
+def _seed_confirmed_match(
+    session,
+    *,
+    external_id,
+    name,
+    price_cents,
+    name_ru=None,
+    description_ua=None,
+    description_ru=None,
+):
     """Create a Supplier + PromProduct + SupplierProduct + confirmed match."""
     supplier = Supplier(
         name="TestSupplier",
@@ -40,9 +49,12 @@ def _seed_confirmed_match(session, *, external_id, name, price_cents):
     pp = PromProduct(
         external_id=external_id,
         name=name,
+        name_ru=name_ru,
         brand="TestBrand",
         price=price_cents,
         page_url=f"https://labresta.com.ua/{external_id}/",
+        description_ua=description_ua,
+        description_ru=description_ru,
     )
     session.add(pp)
     session.flush()
@@ -132,3 +144,80 @@ class TestYmlGenerator:
         assert offer.findtext("name") is not None
         assert offer.findtext("price") is not None
         assert offer.findtext("currencyId") == "EUR"
+
+
+class TestYmlDescriptionPropagation:
+    """Catalog edits (name_ru, description_ua, description_ru) must land in YML
+    so Horoshop updates them on next import."""
+
+    def test_name_ru_written_when_present(self, session, yml_output_dir):
+        _seed_confirmed_match(
+            session, external_id="n1",
+            name="Кавомашина TestModel",
+            name_ru="Кофемашина TestModel",
+            price_cents=50000,
+        )
+        result = regenerate_yml_feed()
+        tree = etree.parse(result["path"])
+        offer = tree.find(".//offer")
+        assert offer.findtext("name") == "Кавомашина TestModel"
+        assert offer.findtext("name_ru") == "Кофемашина TestModel"
+
+    def test_name_ru_absent_when_null(self, session, yml_output_dir):
+        _seed_confirmed_match(
+            session, external_id="n2",
+            name="Плита UA only", name_ru=None, price_cents=50000,
+        )
+        result = regenerate_yml_feed()
+        tree = etree.parse(result["path"])
+        offer = tree.find(".//offer")
+        assert offer.find("name_ru") is None
+
+    def test_description_ua_written_with_cdata(self, session, yml_output_dir):
+        """Description must round-trip through YML as raw HTML (CDATA wrapped)."""
+        html_body = "<p>Потужна <b>кавомашина</b></p><ul><li>пункт</li></ul>"
+        _seed_confirmed_match(
+            session, external_id="d1",
+            name="Кавомашина ProX", price_cents=100000,
+            description_ua=html_body,
+        )
+        result = regenerate_yml_feed()
+        # Parse XML then verify element text is preserved verbatim
+        tree = etree.parse(result["path"])
+        offer = tree.find(".//offer")
+        desc = offer.find("description")
+        assert desc is not None
+        assert desc.text == html_body
+
+        # Also verify CDATA wrapping is present in raw bytes so Horoshop
+        # sees HTML, not escaped entities.
+        with open(result["path"], "rb") as f:
+            raw = f.read().decode("utf-8")
+        assert "<![CDATA[" in raw
+        assert html_body in raw  # unescaped
+
+    def test_description_ru_written_with_cdata(self, session, yml_output_dir):
+        _seed_confirmed_match(
+            session, external_id="d2",
+            name="Плита BigChef",
+            price_cents=200000,
+            description_ru="<p>Большая <em>плита</em></p>",
+        )
+        result = regenerate_yml_feed()
+        tree = etree.parse(result["path"])
+        offer = tree.find(".//offer")
+        desc_ru = offer.find("description_ru")
+        assert desc_ru is not None
+        assert desc_ru.text == "<p>Большая <em>плита</em></p>"
+
+    def test_descriptions_absent_when_null(self, session, yml_output_dir):
+        """If nothing to write, description tags should not appear at all."""
+        _seed_confirmed_match(
+            session, external_id="d3",
+            name="Пустышка", price_cents=1000,
+        )
+        result = regenerate_yml_feed()
+        tree = etree.parse(result["path"])
+        offer = tree.find(".//offer")
+        assert offer.find("description") is None
+        assert offer.find("description_ru") is None

@@ -90,6 +90,8 @@ def regenerate_yml_feed() -> dict:
             available=avail_str,
         )
         etree.SubElement(offer, "name").text = pp.name
+        if pp.name_ru:
+            etree.SubElement(offer, "name_ru").text = pp.name_ru
         if pp.page_url:
             etree.SubElement(offer, "url").text = pp.page_url
         etree.SubElement(offer, "price").text = str(price_eur)
@@ -99,6 +101,18 @@ def regenerate_yml_feed() -> dict:
         # configured to read either `offer id=` or `<vendorCode>`. We populate
         # both with external_id (= Horoshop artikul) so either setting works.
         etree.SubElement(offer, "vendorCode").text = str(pp.external_id)
+
+        # Description — wrap in CDATA so HTML markup in the body survives.
+        # Horoshop import reads <description> and updates the catalog entry's
+        # description when "обновлять существующие" is enabled. Write UA and RU
+        # as separate tags (<description> = UA, <description_ru> = RU) mirroring
+        # the name / name_ru convention above.
+        if pp.description_ua:
+            desc_el = etree.SubElement(offer, "description")
+            desc_el.text = etree.CDATA(pp.description_ua)
+        if pp.description_ru:
+            desc_ru_el = etree.SubElement(offer, "description_ru")
+            desc_ru_el.text = etree.CDATA(pp.description_ru)
 
         if is_available:
             available_count += 1

@@ -285,6 +285,94 @@ def reject_match(match_id):
     })
 
 
+@matches_bp.route("/<int:match_id>/unconfirm", methods=["POST"])
+@login_required
+def unconfirm_match(match_id):
+    """Revert a confirmed/manual match back to candidate status.
+
+    Used when an operator confirmed a match by mistake. Note: sibling
+    candidates were deleted by _cleanup_other_candidates on the original
+    confirm, so after unconfirming, this match becomes the only candidate
+    for its supplier product. If the operator wants a different match,
+    they should use 'Сопоставить вручную' to pick another catalog entry.
+    """
+    match = db.get_or_404(ProductMatch, match_id)
+
+    if match.status not in ("confirmed", "manual"):
+        return jsonify({
+            "status": "error",
+            "message": "Отменить можно только подтвержденный или ручной матч",
+        }), 400
+
+    match.status = "candidate"
+    match.confirmed_at = None
+    match.confirmed_by = None
+    match.name_synced = False
+    if current_user.matches_processed and current_user.matches_processed > 0:
+        current_user.matches_processed -= 1
+    db.session.commit()
+
+    return jsonify({"status": "ok", "new_status": "candidate"})
+
+
+@matches_bp.route("/<int:match_id>/update-prom", methods=["POST"])
+@login_required
+def update_prom_fields(match_id):
+    """Manually update catalog product fields (name UA/RU, description UA/RU).
+
+    Used from the details modal when the operator spots a typo or wants to
+    improve the Horoshop catalog entry. Only updates fields that are present
+    in the request body AND non-null — empty strings clear the field.
+    Changes go into prom_product and will be pushed to Horoshop on the next
+    YML feed regeneration (name + description are written into the feed).
+    """
+    match = db.get_or_404(ProductMatch, match_id)
+    pp = match.prom_product
+
+    data = request.get_json(silent=True) or {}
+    updated = {}
+
+    if "name" in data:
+        new_val = (data["name"] or "").strip()
+        if not new_val:
+            return jsonify({"status": "error", "message": "Название UA не может быть пустым"}), 400
+        if len(new_val) > 500:
+            return jsonify({"status": "error", "message": "Название UA превышает 500 символов"}), 400
+        if new_val != pp.name:
+            pp.name = new_val
+            updated["name"] = new_val
+
+    if "name_ru" in data:
+        new_val = (data["name_ru"] or "").strip() or None
+        if new_val and len(new_val) > 500:
+            return jsonify({"status": "error", "message": "Название RU превышает 500 символов"}), 400
+        if new_val != pp.name_ru:
+            pp.name_ru = new_val
+            updated["name_ru"] = new_val
+
+    if "description_ua" in data:
+        new_val = (data["description_ua"] or "").strip() or None
+        if new_val != pp.description_ua:
+            pp.description_ua = new_val
+            updated["description_ua"] = new_val
+
+    if "description_ru" in data:
+        new_val = (data["description_ru"] or "").strip() or None
+        if new_val != pp.description_ru:
+            pp.description_ru = new_val
+            updated["description_ru"] = new_val
+
+    if updated:
+        match.name_synced = True
+        db.session.commit()
+
+    return jsonify({
+        "status": "ok",
+        "updated": updated,
+        "prom_id": pp.id,
+    })
+
+
 @matches_bp.route("/<int:match_id>/discount", methods=["POST"])
 @login_required
 def set_discount(match_id):

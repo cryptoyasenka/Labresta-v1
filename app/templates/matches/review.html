@@ -219,6 +219,12 @@
                             Отклонить
                         </button>
                         {% endif %}
+                        {% if match.status == 'confirmed' %}
+                        <button class="btn btn-sm btn-outline-warning unconfirm-btn" data-id="{{ match.id }}"
+                                title="Вернуть матч в статус кандидата (если подтвердили по ошибке)">
+                            Отменить матч
+                        </button>
+                        {% endif %}
                         <button class="btn btn-sm btn-outline-info details-btn" data-id="{{ match.id }}"
                                 title="Сравнить детали: фото, характеристики">
                             Детали
@@ -365,9 +371,13 @@
                         Запомнить на будущее (создать правило автоматического сопоставления)
                     </label>
                 </div>
+
+                <!-- Inline feedback (success / error). Rendered inside the modal so it's
+                     visible above the backdrop, unlike global container alerts. -->
+                <div id="manualMatchFeedback" class="alert d-none mb-0" role="alert"></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="manualMatchCancelBtn">Отмена</button>
                 <button type="button" class="btn btn-primary" id="submitManualMatch" disabled>
                     Сопоставить
                 </button>
@@ -394,7 +404,11 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <span id="detailsModalSaveStatus" class="text-muted small me-auto"></span>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-primary" id="detailsModalSaveBtn">
+                    Сохранить изменения
+                </button>
             </div>
         </div>
     </div>
