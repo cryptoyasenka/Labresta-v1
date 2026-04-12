@@ -832,18 +832,30 @@
         manualMatchModal = new bootstrap.Modal(manualMatchModalEl);
     }
 
+    var currentSupplierAvailable = false;
+
     function openManualMatchModal(btn) {
         var supplierId = btn.getAttribute('data-supplier-id');
         var supplierName = btn.getAttribute('data-supplier-name');
         var supplierBrand = btn.getAttribute('data-supplier-brand');
         var supplierPrice = btn.getAttribute('data-supplier-price');
         var supplierCurrency = btn.getAttribute('data-supplier-currency') || 'EUR';
+        currentSupplierAvailable = btn.getAttribute('data-supplier-available') === 'true';
 
         document.getElementById('selectedSupplierProductId').value = supplierId;
         document.getElementById('modalSupplierName').textContent = supplierName;
         document.getElementById('modalSupplierBrand').textContent = supplierBrand || '-';
         document.getElementById('modalSupplierPrice').textContent =
             supplierPrice ? (supplierPrice + ' ' + supplierCurrency) : '-';
+
+        var availEl = document.getElementById('modalSupplierAvailability');
+        if (availEl) {
+            if (currentSupplierAvailable) {
+                availEl.innerHTML = '<span class="badge bg-success">В наличии</span>';
+            } else {
+                availEl.innerHTML = '<span class="badge bg-secondary">Нет в наличии</span>';
+            }
+        }
 
         // Reset modal state
         document.getElementById('catalogSearchInput').value = '';
@@ -904,7 +916,17 @@
                 var placeholder = document.getElementById('catalogSearchPlaceholder');
 
                 if (!products.length) {
-                    list.innerHTML = '<p class="text-muted text-center p-2">Ничего не найдено</p>';
+                    var notFoundHtml = '<div class="text-center p-3">' +
+                        '<p class="text-muted mb-2">Товар не найден в каталоге Horoshop</p>';
+                    if (currentSupplierAvailable) {
+                        notFoundHtml += '<button type="button" class="btn btn-sm btn-outline-warning" id="markForCatalogBtn">' +
+                            'Позначити для додавання в каталог</button>' +
+                            '<p class="text-muted small mt-1">Товар в наличии у поставщика, но отсутствует в Horoshop</p>';
+                    } else {
+                        notFoundHtml += '<p class="text-muted small">Товар не в наличии у поставщика</p>';
+                    }
+                    notFoundHtml += '</div>';
+                    list.innerHTML = notFoundHtml;
                     placeholder.style.display = 'none';
                     return;
                 }
@@ -931,6 +953,33 @@
                     '<p class="text-danger text-center p-2">Ошибка поиска: ' + err.message + '</p>';
             });
     }
+
+    // Mark supplier product for catalog addition
+    document.addEventListener('click', function (e) {
+        if (!e.target.matches('#markForCatalogBtn')) return;
+        var spId = document.getElementById('selectedSupplierProductId').value;
+        if (!spId) return;
+        e.target.disabled = true;
+        e.target.textContent = 'Збереження...';
+
+        fetchWithCSRF('/matches/mark-new/' + spId, { method: 'POST' })
+            .then(function (resp) {
+                if (!resp.ok) {
+                    return resp.json().then(function (d) { throw new Error(d.message || 'HTTP ' + resp.status); });
+                }
+                return resp.json();
+            })
+            .then(function (data) {
+                showManualMatchFeedback('Товар позначено для додавання в каталог', 'success');
+                e.target.textContent = 'Позначено';
+                setTimeout(function () { window.location.reload(); }, 1500);
+            })
+            .catch(function (err) {
+                e.target.disabled = false;
+                e.target.textContent = 'Позначити для додавання в каталог';
+                showManualMatchFeedback('Помилка: ' + err.message, 'danger');
+            });
+    });
 
     // Select catalog product from results
     document.addEventListener('click', function (e) {

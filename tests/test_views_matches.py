@@ -1,6 +1,8 @@
-"""Integration tests for /matches endpoints added in session 3:
+"""Integration tests for /matches endpoints:
 - /matches/<id>/unconfirm — revert confirmed/manual back to candidate
 - /matches/<id>/update-prom — inline edit of catalog name/description fields
+- /matches/mark-new/<sp_id> — mark supplier product for catalog addition
+- /matches/unmark-new/<sp_id> — remove the mark
 """
 
 from datetime import datetime, timezone
@@ -220,3 +222,104 @@ class TestUpdatePromFieldsEndpoint:
 
         refreshed = db.session.get(ProductMatch, mid)
         assert refreshed.name_synced is False
+
+
+class TestMarkForCatalogEndpoint:
+    def test_marks_available_product(self, client, db):
+        match, sp, _ = _seed_confirmed_match(db.session, status="candidate")
+        sp_id = sp.id
+        assert sp.available is True
+
+        resp = client.post(f"/matches/mark-new/{sp_id}")
+        assert resp.status_code == 200
+        data = resp.get_json()
+        assert data["status"] == "ok"
+
+        refreshed_sp = db.session.get(SupplierProduct, sp_id)
+        assert refreshed_sp.needs_catalog_add is True
+
+        refreshed_match = db.session.get(ProductMatch, match.id)
+        assert refreshed_match.status == "rejected"
+
+    def test_rejects_unavailable_product(self, client, db):
+        match, sp, _ = _seed_confirmed_match(db.session, status="candidate")
+        sp.available = False
+        db.session.commit()
+        sp_id = sp.id
+
+        resp = client.post(f"/matches/mark-new/{sp_id}")
+        assert resp.status_code == 400
+
+        refreshed_sp = db.session.get(SupplierProduct, sp_id)
+        assert refreshed_sp.needs_catalog_add is False
+
+    def test_missing_product_returns_404(self, client, db):
+        resp = client.post("/matches/mark-new/99999")
+        assert resp.status_code == 404
+
+    def test_unmark_clears_flag(self, client, db):
+        _, sp, _ = _seed_confirmed_match(db.session, status="candidate")
+        sp.needs_catalog_add = True
+        db.session.commit()
+        sp_id = sp.id
+
+        resp = client.post(f"/matches/unmark-new/{sp_id}")
+        assert resp.status_code == 200
+
+        refreshed = db.session.get(SupplierProduct, sp_id)
+        assert refreshed.needs_catalog_add is False
+
+
+class TestApplyNameDiff:
+    """Unit tests for _apply_name_diff — safe RU name update from UA diff."""
+
+    def test_model_code_updated_in_ru(self):
+        from app.views.matches import _apply_name_diff
+
+        old_ua = "М'ясорубка Fama FTS137"
+        new_ua = "М'ясорубка Fama FTS137UTE"
+        old_ru = "Мясорубка Fama FTS137"
+        result = _apply_name_diff(old_ua, new_ua, old_ru)
+        assert result == "Мясорубка Fama FTS137UTE"
+
+    def test_cyrillic_words_not_replaced(self):
+        """Cyrillic tokens must never be transplanted into RU — UA and RU
+        use different words (пакунок vs упаковка, пакети vs пакеты)."""
+        from app.views.matches import _apply_name_diff
+
+        old_ua = "Пакети гофровані Lavezzini 200x400 (паковання 100 шт.)"
+        new_ua = "Пакет Lavezzini Gofer 200x400 ( пакунок 100 шт.)"
+        old_ru = "Пакеты гофрированные Lavezzini 200x400 (упаковка 100 шт.)"
+        result = _apply_name_diff(old_ua, new_ua, old_ru)
+        # Cyrillic words must stay untouched in RU
+        assert "Lavezzini" in result
+        assert "упаковка" in result
+        assert "пакунок" not in result
+        assert "Пакет " not in result  # UA word form must not replace RU
+
+    def test_size_token_updated(self):
+        from app.views.matches import _apply_name_diff
+
+        old_ua = "Слайсер RGV Lusso 200x300"
+        new_ua = "Слайсер RGV Lusso 250x350"
+        old_ru = "Слайсер RGV Lusso 200x300"
+        result = _apply_name_diff(old_ua, new_ua, old_ru)
+        assert "250x350" in result
+        assert "200x300" not in result
+
+    def test_no_changes_returns_original(self):
+        from app.views.matches import _apply_name_diff
+
+        name = "Фритюрниця Kogast EFT7"
+        ru = "Фритюрница Kogast EFT7"
+        result = _apply_name_diff(name, name, ru)
+        assert result == ru
+
+    def test_voltage_number_updated(self):
+        from app.views.matches import _apply_name_diff
+
+        old_ua = "Прес Fimar PF25E (220)"
+        new_ua = "Прес Fimar PF25E (380)"
+        old_ru = "Пресс Fimar PF25E (220)"
+        result = _apply_name_diff(old_ua, new_ua, old_ru)
+        assert "(380)" in result

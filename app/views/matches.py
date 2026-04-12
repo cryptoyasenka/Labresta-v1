@@ -223,31 +223,55 @@ def match_details(match_id):
     })
 
 
-def _apply_name_diff(old_ua: str, new_ua: str, old_ru: str) -> str:
-    """Apply the UA name change to the RU name by replacing the changed tokens.
+def _is_model_token(token: str) -> bool:
+    """Return True if token looks like a model/article/size (safe to replace in RU).
 
-    Works best when the difference is a model/article number change,
-    e.g. "GEMM BCB05" -> "GEMM BCB05E" should also update RU version.
+    Safe tokens: latin letters, digits, sizes like 200x400, codes like FTS137UTE,
+    parenthesized numbers like (220). Unsafe: Cyrillic words — they differ between
+    UA and RU and must not be transplanted.
+    """
+    import re
+    clean = token.strip("(),.:;")
+    if not clean:
+        return False
+    # Pure digits or digit patterns (220, 100)
+    if re.fullmatch(r"\d+", clean):
+        return True
+    # Size patterns: 200x400, 150x350
+    if re.fullmatch(r"\d+x\d+", clean, re.IGNORECASE):
+        return True
+    # Latin model codes: FTS137UTE, BCB05, SHE50075 (at least one letter + one digit)
+    if re.fullmatch(r"[A-Za-z0-9/+._-]+", clean):
+        has_letter = any(c.isalpha() for c in clean)
+        has_digit = any(c.isdigit() for c in clean)
+        if has_letter and has_digit:
+            return True
+    return False
+
+
+def _apply_name_diff(old_ua: str, new_ua: str, old_ru: str) -> str:
+    """Apply the UA name change to the RU name, but only for model/article tokens.
+
+    Only replaces tokens that look like model numbers, article codes, or sizes
+    (latin+digits). Cyrillic words are never touched because UA and RU use
+    different vocabulary for the same meaning (e.g. пакунок vs упаковка).
     """
     old_tokens = old_ua.split()
     new_tokens = new_ua.split()
 
-    # Find tokens that changed
+    # Find tokens that changed AND both old and new are model-like.
+    # Both sides must be model tokens to avoid positional misalignment
+    # (e.g. when word count differs, "100" can align with "пакунок").
     replacements = {}
-    max_len = max(len(old_tokens), len(new_tokens))
     for i in range(min(len(old_tokens), len(new_tokens))):
-        if old_tokens[i] != new_tokens[i]:
+        if (old_tokens[i] != new_tokens[i]
+                and _is_model_token(old_tokens[i])
+                and _is_model_token(new_tokens[i])):
             replacements[old_tokens[i]] = new_tokens[i]
 
-    # If new name has extra tokens at the end, append them
-    if len(new_tokens) > len(old_tokens):
-        extra = " ".join(new_tokens[len(old_tokens):])
-        result = old_ru
-        for old_tok, new_tok in replacements.items():
-            result = result.replace(old_tok, new_tok)
-        return result + " " + extra
+    if not replacements:
+        return old_ru
 
-    # Apply replacements to RU name
     result = old_ru
     for old_tok, new_tok in replacements.items():
         result = result.replace(old_tok, new_tok)
@@ -494,6 +518,53 @@ def search_catalog():
 
 
 # ========== Manual match ==========
+
+
+@matches_bp.route("/mark-new/<int:sp_id>", methods=["POST"])
+@login_required
+def mark_for_catalog(sp_id):
+    """Mark a supplier product as needing addition to the Horoshop catalog.
+
+    Used when the manual-match search returns zero results — the product
+    exists at the supplier but has no catalog counterpart. Rejects any
+    existing candidate matches for this supplier product so they don't
+    clutter the review queue.
+    """
+    sp = db.get_or_404(SupplierProduct, sp_id)
+
+    if not sp.available:
+        return jsonify({
+            "status": "error",
+            "message": "Товар не в наличии у поставщика",
+        }), 400
+
+    sp.needs_catalog_add = True
+
+    # Reject remaining candidate matches — they're all wrong
+    candidates = ProductMatch.query.filter(
+        ProductMatch.supplier_product_id == sp_id,
+        ProductMatch.status == "candidate",
+    ).all()
+    for m in candidates:
+        m.status = "rejected"
+        m.confirmed_by = "mark-new"
+
+    db.session.commit()
+
+    return jsonify({
+        "status": "ok",
+        "rejected_count": len(candidates),
+    })
+
+
+@matches_bp.route("/unmark-new/<int:sp_id>", methods=["POST"])
+@login_required
+def unmark_for_catalog(sp_id):
+    """Remove the 'needs catalog add' flag from a supplier product."""
+    sp = db.get_or_404(SupplierProduct, sp_id)
+    sp.needs_catalog_add = False
+    db.session.commit()
+    return jsonify({"status": "ok"})
 
 
 @matches_bp.route("/manual", methods=["POST"])

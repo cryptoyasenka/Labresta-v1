@@ -65,8 +65,9 @@
         Отклонить выбранные
     </button>
     <span class="mx-2 text-muted">|</span>
-    <button type="button" class="btn btn-sm btn-outline-info" id="diffToggleBtn">
-        Показать различия
+    <button type="button" class="btn btn-sm btn-outline-info" id="diffToggleBtn"
+            title="Подсветить отличия между названием поставщика и каталога Horoshop">
+        Різниця в назвах
     </button>
     <span class="mx-2 text-muted">|</span>
     <a href="{{ url_for('matches.export_csv', status=filters.status, confidence=filters.confidence, search=filters.search, sort=filters.sort, order=filters.order) }}"
@@ -108,6 +109,7 @@
                     </th>
                     {% endmacro %}
                     <th>Поставщик</th>
+                    <th>Склад</th>
                     <th>Каталог Horoshop</th>
                     <th>Цена поставщика</th>
                     <th>Цена в Horoshop</th>
@@ -134,9 +136,17 @@
                     data-status="{{ match.status }}"
                     data-confirmed-by="{{ match.confirmed_by or '' }}"
                     data-discount-percent="{{ match.discount_percent if match.discount_percent is not none else '' }}"
+                    data-supplier-available="{{ 'true' if match.supplier_product.available else 'false' }}"
                     data-supplier-default-discount="{{ match.supplier_product.supplier.discount_percent }}">
                     <td><input type="checkbox" class="form-check-input row-checkbox" value="{{ match.id }}"></td>
                     <td class="supplier-name-cell">{{ match.supplier_product.name }}</td>
+                    <td class="text-center">
+                        {% if match.supplier_product.available %}
+                            <span class="badge bg-success" title="В наличии">&#10003;</span>
+                        {% else %}
+                            <span class="badge bg-secondary" title="Нет в наличии">&mdash;</span>
+                        {% endif %}
+                    </td>
                     <td class="prom-name-cell">{{ match.prom_product.name }}</td>
                     <td>
                         {% if match.supplier_product.price_cents is not none %}
@@ -234,14 +244,15 @@
                                 data-supplier-name="{{ match.supplier_product.name }}"
                                 data-supplier-brand="{{ match.supplier_product.brand or '' }}"
                                 data-supplier-price="{{ '%.2f'|format(match.supplier_product.price_cents / 100) if match.supplier_product.price_cents is not none else '' }}"
-                                data-supplier-currency="{{ match.supplier_product.currency or 'EUR' }}">
+                                data-supplier-currency="{{ match.supplier_product.currency or 'EUR' }}"
+                                data-supplier-available="{{ 'true' if match.supplier_product.available else 'false' }}">
                             Сопоставить вручную
                         </button>
                     </td>
                 </tr>
                 {% else %}
                 <tr>
-                    <td colspan="11" class="text-center text-muted py-4">
+                    <td colspan="12" class="text-center text-muted py-4">
                         Нет матчей для отображения. Попробуйте изменить фильтры или запустить процесс сопоставления.
                     </td>
                 </tr>
@@ -337,7 +348,8 @@
                         <p class="mb-1"><strong id="modalSupplierName"></strong></p>
                         <small class="text-muted">
                             Бренд: <span id="modalSupplierBrand">-</span> |
-                            Цена: <span id="modalSupplierPrice">-</span>
+                            Цена: <span id="modalSupplierPrice">-</span> |
+                            <span id="modalSupplierAvailability"></span>
                         </small>
                     </div>
                 </div>
