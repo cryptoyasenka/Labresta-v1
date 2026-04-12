@@ -307,7 +307,11 @@ def unconfirm_match(match_id):
     match.status = "candidate"
     match.confirmed_at = None
     match.confirmed_by = None
-    match.name_synced = False
+    # NOTE: do NOT clear name_synced here. It tracks whether the catalog
+    # product name was updated from the supplier, which is a mutation on
+    # prom_product and is NOT rolled back by this endpoint. Clearing the
+    # flag would leave the DB inconsistent (PromProduct has the new name
+    # but the match says it wasn't synced).
     if current_user.matches_processed and current_user.matches_processed > 0:
         current_user.matches_processed -= 1
     db.session.commit()

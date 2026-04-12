@@ -73,7 +73,23 @@ class TestUnconfirmEndpoint:
         assert refreshed.status == "candidate"
         assert refreshed.confirmed_at is None
         assert refreshed.confirmed_by is None
-        assert refreshed.name_synced is False
+
+    def test_unconfirm_preserves_name_synced(self, client, db):
+        """Unconfirm must NOT clear name_synced — the PromProduct.name change
+        survives unconfirm, so the flag should too, otherwise the DB ends up
+        inconsistent (catalog has new name, match says it wasn't synced).
+        """
+        match, _, _ = _seed_confirmed_match(db.session, status="confirmed")
+        match.name_synced = True
+        db.session.commit()
+        mid = match.id
+
+        resp = client.post(f"/matches/{mid}/unconfirm")
+        assert resp.status_code == 200
+
+        refreshed = db.session.get(ProductMatch, mid)
+        assert refreshed.status == "candidate"
+        assert refreshed.name_synced is True
 
     def test_manual_match_reverts_to_candidate(self, client, db):
         match, _, _ = _seed_confirmed_match(db.session, status="manual")
