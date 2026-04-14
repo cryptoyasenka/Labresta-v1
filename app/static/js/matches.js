@@ -190,13 +190,22 @@
                 })
                 .then(function (data) {
                     if (data.status === 'ok') {
-                        updateRowStatus(matchId, data.new_status);
-                        showAlert(
-                            isConfirm
-                                ? 'Матч подтвержден'
-                                : 'Матч отклонен' + (data.new_candidate_id ? '. Найден новый кандидат.' : ''),
-                            isConfirm ? 'success' : 'warning'
-                        );
+                        if (!isConfirm && row) {
+                            // Reject deletes the match on the server.
+                            // Drop the row so it doesn't linger under the candidate filter.
+                            row.parentNode && row.parentNode.removeChild(row);
+                            selectedIds.delete(parseInt(matchId, 10));
+                            updateBulkBar();
+                            showAlert(
+                                'Матч отклонен' + (data.new_candidate_id
+                                    ? '. Найден новый кандидат — обновите страницу.'
+                                    : '.'),
+                                'warning'
+                            );
+                        } else {
+                            updateRowStatus(matchId, data.new_status);
+                            showAlert('Матч подтвержден', 'success');
+                        }
                     } else {
                         throw new Error(data.message || 'Unknown error');
                     }
