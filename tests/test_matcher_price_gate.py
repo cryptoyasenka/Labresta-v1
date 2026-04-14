@@ -237,7 +237,8 @@ class TestTypeGate:
         assert result[0]["score"] >= 80
 
     def test_no_brand_skips_type_gate(self):
-        """When brand is None, type gate is skipped."""
+        """When supplier brand is None, only match against no-brand catalog entries."""
+        # Same-name pp but with a brand → must be excluded under new cross-brand policy
         prom = [
             _make_prom(1, "Товар TestBrand ABC", "TestBrand", 10000),
         ]
@@ -245,7 +246,7 @@ class TestTypeGate:
             "Товар TestBrand ABC", None, prom,
             supplier_price_cents=10000,
         )
-        assert len(result) == 1
+        assert len(result) == 0
 
 
 class TestArticleModelFastPath:
@@ -450,17 +451,20 @@ class TestBrandNotInCatalog:
         )
         assert len(result) == 0
 
-    def test_no_supplier_brand_still_falls_back(self):
-        """When supplier has no brand at all, fallback to full pool still works."""
+    def test_no_supplier_brand_requires_no_brand_catalog(self):
+        """When supplier brand is missing, only no-brand catalog entries are eligible."""
+        # A pp with brand is excluded (can't verify cross-brand); a no-brand pp
+        # with identical name and high score passes.
         prom = [
             _make_prom(1, "Товар Brand ABC", "Brand", 10000),
+            _make_prom(2, "Товар Brand ABC", None, 10000),
         ]
         result = find_match_candidates(
             "Товар Brand ABC", None, prom,
             supplier_price_cents=10000,
         )
-        # Still matches because supplier has no brand to check against catalog
         assert len(result) == 1
+        assert result[0]["prom_product_id"] == 2
 
 
 class TestVoltageVariantGate:

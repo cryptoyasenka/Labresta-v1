@@ -329,9 +329,13 @@ def find_match_candidates(
     # stock that brand, no product in the catalog can be a valid match —
     # falling back to the full pool produces word-overlap junk ("Плита X"
     # matching "Плита Y" from an unrelated brand). Return empty instead.
+    # When supplier brand is missing (MARESTO skipped <vendor>), we require
+    # catalog brand to also be missing — cross-brand matching with unknown
+    # supplier brand produces nonsense (Термометр GLKG10 vs Гриль GGM).
     candidates_pool = prom_products
     brand_was_matched = False
-    if supplier_brand and supplier_brand.strip():
+    sup_brand_present = bool(supplier_brand and supplier_brand.strip())
+    if sup_brand_present:
         brand_lower = supplier_brand.strip().lower()
         brand_filtered = [
             p
@@ -348,6 +352,14 @@ def find_match_candidates(
                 supplier_brand,
             )
             return []
+    else:
+        # Both-None policy: only compare against pp rows also missing a brand,
+        # and tighten the score cutoff (full-catalog fuzzy is too noisy without
+        # brand anchor).
+        candidates_pool = [p for p in prom_products if not (p.get("brand") and p["brand"].strip())]
+        if not candidates_pool:
+            return []
+        score_cutoff = max(score_cutoff, CONFIDENCE_HIGH)
 
     # Step 2: Build choices dict — {prom_id: normalized_name}
     choices = {p["id"]: normalize_text(p["name"]) for p in candidates_pool}
@@ -620,10 +632,15 @@ def find_match_candidates(
     # Rule: one side's after-brand tokens must be a subset of the other's.
     # Bidirectional so that supplier names carrying extra accessories
     # ("VIS60 + решітка + ЭПУ") still match the base PROM product "VIS60".
-    if brand_was_matched and supplier_brand:
-        sup_after_tokens = meaningful_tokens(
-            after_brand_remainder(supplier_product_name, supplier_brand)
-        )
+    run_containment = (brand_was_matched and supplier_brand) or not sup_brand_present
+    if run_containment:
+        if sup_brand_present:
+            sup_after_tokens = meaningful_tokens(
+                after_brand_remainder(supplier_product_name, supplier_brand)
+            )
+        else:
+            # No brand to strip — compare full-name meaningful tokens.
+            sup_after_tokens = meaningful_tokens(supplier_product_name)
         if sup_after_tokens:
             contained = []
             for candidate in fast_matches + fuzzy_output:
