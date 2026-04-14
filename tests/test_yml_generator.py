@@ -35,6 +35,7 @@ def _seed_confirmed_match(
     name_ru=None,
     description_ua=None,
     description_ru=None,
+    status="confirmed",
 ):
     """Create a Supplier + PromProduct + SupplierProduct + confirmed match."""
     supplier = Supplier(
@@ -75,7 +76,7 @@ def _seed_confirmed_match(
         supplier_product_id=sp.id,
         prom_product_id=pp.id,
         score=100.0,
-        status="confirmed",
+        status=status,
         confirmed_by="test",
     )
     session.add(match)
@@ -93,6 +94,18 @@ class TestYmlGenerator:
         assert result["total"] == 1
         assert result["available"] == 1
         assert os.path.exists(result["path"])
+
+    def test_includes_manual_matches(self, session, yml_output_dir):
+        """Manual matches must appear in the feed alongside confirmed ones."""
+        _seed_confirmed_match(
+            session, external_id="111", name="Продукт A", price_cents=10000,
+        )
+        _seed_confirmed_match(
+            session, external_id="222", name="Продукт B", price_cents=20000,
+            status="manual",
+        )
+        result = regenerate_yml_feed()
+        assert result["total"] == 2
 
     def test_vendorcode_equals_external_id(self, session, yml_output_dir):
         """Horoshop matches by artikul; vendorCode must hold external_id."""

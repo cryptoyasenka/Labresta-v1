@@ -37,7 +37,7 @@ def regenerate_yml_feed() -> dict:
     # Query confirmed matches with all related data
     stmt = (
         select(ProductMatch)
-        .where(ProductMatch.status == "confirmed")
+        .where(ProductMatch.status.in_(["confirmed", "manual"]))
         .options(
             joinedload(ProductMatch.supplier_product).joinedload(
                 SupplierProduct.supplier
