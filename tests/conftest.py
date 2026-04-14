@@ -14,7 +14,13 @@ def app():
     from flask import Flask
     from app.extensions import configure_sqlite_wal, csrf, db, login_manager
 
-    flask_app = Flask(__name__, instance_relative_config=True)
+    import os
+    app_dir = os.path.join(os.path.dirname(__file__), '..', 'app')
+    flask_app = Flask(
+        __name__,
+        instance_relative_config=True,
+        template_folder=os.path.join(app_dir, 'templates'),
+    )
     os.makedirs(flask_app.instance_path, exist_ok=True)
 
     flask_app.config.update({
@@ -37,9 +43,29 @@ def app():
         from app.models.user import User
         return db.session.get(User, int(user_id))
 
-    # Register blueprints needed for tests
+    # Register all blueprints needed for tests (base.html references several endpoints)
+    from app.views.main import main_bp
     from app.views.matches import matches_bp
+    from app.views.audit import audit_bp
+    from app.views.catalog import catalog_bp
+    from app.views.dashboard import dashboard_bp
+    from app.views.feed import feed_bp
+    from app.views.logs import logs_bp
+    from app.views.products import products_bp
+    from app.views.settings import settings_bp
+    from app.views.suppliers import suppliers_bp
+    from app.views.auth import auth_bp
+    flask_app.register_blueprint(main_bp)
     flask_app.register_blueprint(matches_bp, url_prefix="/matches")
+    flask_app.register_blueprint(audit_bp, url_prefix="/audit")
+    flask_app.register_blueprint(catalog_bp, url_prefix="/catalog")
+    flask_app.register_blueprint(dashboard_bp, url_prefix="/dashboard")
+    flask_app.register_blueprint(feed_bp)
+    flask_app.register_blueprint(logs_bp, url_prefix="/logs")
+    flask_app.register_blueprint(products_bp, url_prefix="/products")
+    flask_app.register_blueprint(settings_bp, url_prefix="/settings")
+    flask_app.register_blueprint(suppliers_bp, url_prefix="/suppliers")
+    flask_app.register_blueprint(auth_bp, url_prefix="/auth")
 
     # Import all models
     from app.models import (  # noqa: F401

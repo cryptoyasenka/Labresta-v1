@@ -52,6 +52,7 @@ def create_app(config_name="default"):
     from app.views.main import main_bp
     from app.views.matches import matches_bp
     from app.views.products import products_bp
+    from app.views.audit import audit_bp
     from app.views.settings import settings_bp
     from app.views.suppliers import suppliers_bp
 
@@ -64,6 +65,7 @@ def create_app(config_name="default"):
     app.register_blueprint(products_bp, url_prefix="/products")
     app.register_blueprint(dashboard_bp, url_prefix="/dashboard")
     app.register_blueprint(logs_bp, url_prefix="/logs")
+    app.register_blueprint(audit_bp, url_prefix="/audit")
     app.register_blueprint(settings_bp, url_prefix="/settings")
 
     # Initialize scheduler (before CLI, after blueprints)
@@ -117,6 +119,7 @@ def create_app(config_name="default"):
         NotificationRule,
         Notification,
     )
+    from app.models.audit_log import AuditLog  # noqa: F401
 
     # Create tables on first run
     with app.app_context():

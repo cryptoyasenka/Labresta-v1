@@ -241,8 +241,11 @@
                         if (promCell) promCell.textContent = data.new_name;
                         row.setAttribute('data-prom-name', data.new_name);
                     }
-                    var msg = 'Матч подтвержден, название обновлено';
-                    if (data.name_ru) msg += ' (RU: ' + data.name_ru + ')';
+                    // Build diff message showing old → new name
+                    var msg = '<strong>Матч підтверджено + назву оновлено</strong><br>';
+                    msg += '<span class="text-decoration-line-through text-danger">' + escapeHtml(data.old_name) + '</span><br>';
+                    msg += '<span class="text-success">' + escapeHtml(data.new_name) + '</span>';
+                    if (data.name_ru) msg += '<br><small class="text-muted">RU: ' + escapeHtml(data.name_ru) + '</small>';
                     showAlert(msg, 'success');
                 } else {
                     throw new Error(data.message || 'Unknown error');

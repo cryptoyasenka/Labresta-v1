@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block title %}Журнал дій — LabResta Sync{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Журнал дій оператора</h2>
+    <div class="text-muted">
+        Всього записів: <strong>{{ total }}</strong>
+    </div>
+</div>
+
+<!-- Filter bar -->
+<form method="get" class="row g-2 mb-4 align-items-end">
+    <div class="col-auto">
+        <label class="form-label small">Дія</label>
+        <select name="action" class="form-select form-select-sm">
+            <option value="all" {% if action_filter == 'all' %}selected{% endif %}>Всі</option>
+            {% for key, label in action_labels.items() %}
+            <option value="{{ key }}" {% if action_filter == key %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-auto">
+        <label class="form-label small">Оператор</label>
+        <select name="user" class="form-select form-select-sm">
+            <option value="all" {% if user_filter == 'all' %}selected{% endif %}>Всі</option>
+            {% for u in users %}
+            <option value="{{ u }}" {% if user_filter == u %}selected{% endif %}>{{ u }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-auto">
+        <label class="form-label small">З дати</label>
+        <input type="date" name="date_from" class="form-control form-control-sm" value="{{ date_from }}">
+    </div>
+    <div class="col-auto">
+        <label class="form-label small">По дату</label>
+        <input type="date" name="date_to" class="form-control form-control-sm" value="{{ date_to }}">
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary btn-sm">Фільтр</button>
+        <a href="{{ url_for('audit.index') }}" class="btn btn-outline-secondary btn-sm">Скинути</a>
+    </div>
+</form>
+
+{% if entries %}
+<div class="table-responsive">
+    <table class="table table-hover table-sm align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Час</th>
+                <th>Оператор</th>
+                <th>Дія</th>
+                <th>Match ID</th>
+                <th>Деталі</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in entries %}
+            <tr>
+                <td class="text-nowrap small">
+                    {{ entry.timestamp.strftime('%d.%m.%Y %H:%M:%S') if entry.timestamp else '-' }}
+                </td>
+                <td>{{ entry.user_name or '—' }}</td>
+                <td>
+                    {% set label = action_labels.get(entry.action, entry.action) %}
+                    {% if entry.action in ('confirm', 'confirm_update', 'manual_match', 'bulk_confirm') %}
+                        <span class="badge bg-success">{{ label }}</span>
+                    {% elif entry.action in ('reject', 'bulk_reject') %}
+                        <span class="badge bg-danger">{{ label }}</span>
+                    {% elif entry.action == 'unconfirm' %}
+                        <span class="badge bg-warning text-dark">{{ label }}</span>
+                    {% elif entry.action in ('update_prom',) %}
+                        <span class="badge bg-info text-dark">{{ label }}</span>
+                    {% elif entry.action in ('mark_new', 'unmark_new') %}
+                        <span class="badge bg-primary">{{ label }}</span>
+                    {% elif entry.action == 'set_discount' %}
+                        <span class="badge bg-secondary">{{ label }}</span>
+                    {% else %}
+                        <span class="badge bg-secondary">{{ label }}</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if entry.match_id %}
+                        <code>#{{ entry.match_id }}</code>
+                    {% elif entry.supplier_product_id %}
+                        <span class="text-muted small">SP#{{ entry.supplier_product_id }}</span>
+                    {% else %}
+                        —
+                    {% endif %}
+                </td>
+                <td class="small">
+                    {% if entry.details %}
+                        {% set d = json_module.loads(entry.details) %}
+                        {% if entry.action == 'confirm_update' %}
+                            <span class="text-muted">{{ d.get('old_name', '')[:40] }}</span>
+                            → <strong>{{ d.get('new_name', '')[:40] }}</strong>
+                        {% elif entry.action == 'manual_match' %}
+                            {{ d.get('supplier_name', '')[:30] }} ↔ {{ d.get('prom_name', '')[:30] }}
+                        {% elif entry.action == 'update_prom' %}
+                            {% for field in d.get('updated_fields', {}).keys() %}
+                                <span class="badge bg-light text-dark border">{{ field }}</span>
+                            {% endfor %}
+                        {% elif entry.action == 'set_discount' %}
+                            {{ d.get('old_discount', '—') }}% → {{ d.get('new_discount', '—') }}%
+                        {% elif entry.action in ('bulk_confirm', 'bulk_reject') %}
+                            {{ d.get('processed', 0) }} шт.
+                        {% elif entry.action == 'mark_new' %}
+                            {{ d.get('supplier_name', '')[:40] }}
+                        {% elif entry.action == 'confirm' %}
+                            score: {{ d.get('score', '') }}
+                        {% elif entry.action == 'reject' %}
+                            {% if d.get('new_candidate_id') %}
+                                новий кандидат: #{{ d.get('new_candidate_id') }}
+                            {% else %}
+                                без заміни
+                            {% endif %}
+                        {% elif entry.action == 'unconfirm' %}
+                            було: {{ d.get('old_status', '') }}
+                        {% else %}
+                            {{ entry.details[:60] }}
+                        {% endif %}
+                    {% else %}
+                        —
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Pagination -->
+{% if total_pages > 1 %}
+<nav>
+    <ul class="pagination pagination-sm justify-content-center">
+        <li class="page-item {% if page <= 1 %}disabled{% endif %}">
+            <a class="page-link" href="{{ url_for('audit.index', page=page-1, per_page=per_page, action=action_filter, user=user_filter, date_from=date_from, date_to=date_to) }}">Назад</a>
+        </li>
+        {% for p in range(1, total_pages + 1) %}
+            {% if p == page %}
+            <li class="page-item active"><span class="page-link">{{ p }}</span></li>
+            {% elif p <= 3 or p >= total_pages - 2 or (p >= page - 2 and p <= page + 2) %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('audit.index', page=p, per_page=per_page, action=action_filter, user=user_filter, date_from=date_from, date_to=date_to) }}">{{ p }}</a>
+            </li>
+            {% elif p == 4 or p == total_pages - 3 %}
+            <li class="page-item disabled"><span class="page-link">...</span></li>
+            {% endif %}
+        {% endfor %}
+        <li class="page-item {% if page >= total_pages %}disabled{% endif %}">
+            <a class="page-link" href="{{ url_for('audit.index', page=page+1, per_page=per_page, action=action_filter, user=user_filter, date_from=date_from, date_to=date_to) }}">Вперед</a>
+        </li>
+    </ul>
+</nav>
+{% endif %}
+
+{% else %}
+<div class="text-center text-muted py-5">
+    <h5>Записів поки немає</h5>
+    <p>Журнал почне заповнюватися після дій на сторінці <a href="{{ url_for('matches.review') }}">Сопоставлення</a>.</p>
+</div>
+{% endif %}
+{% endblock %}

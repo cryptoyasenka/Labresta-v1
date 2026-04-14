@@ -15,6 +15,7 @@ from app.models.catalog import PromProduct
 from app.models.match_rule import MatchRule
 from app.models.product_match import ProductMatch
 from app.models.supplier_product import SupplierProduct
+from app.services.audit_service import log_action
 from app.services.matcher import CONFIDENCE_HIGH, CONFIDENCE_MEDIUM, find_match_for_product
 
 matches_bp = Blueprint("matches", __name__)
@@ -43,6 +44,7 @@ def _build_match_query():
     """Build filtered/sorted match query from request args. Returns (query, filters_dict)."""
     status = request.args.get("status", "all")
     confidence = request.args.get("confidence", "all")
+    availability = request.args.get("availability", "all")
     search = request.args.get("search", "").strip()
     sort_col = request.args.get("sort", "score")
     order = request.args.get("order", "asc")
@@ -70,6 +72,12 @@ def _build_match_query():
         elif confidence == "low":
             query = query.filter(ProductMatch.score < CONFIDENCE_MEDIUM)
 
+    if availability and availability != "all":
+        if availability == "available":
+            query = query.filter(ProductMatch.supplier_product.has(SupplierProduct.available == True))  # noqa: E712
+        elif availability == "unavailable":
+            query = query.filter(ProductMatch.supplier_product.has(SupplierProduct.available == False))  # noqa: E712
+
     if search:
         search_term = f"%{search}%"
         query = query.join(
@@ -95,6 +103,7 @@ def _build_match_query():
     filters = {
         "status": status,
         "confidence": confidence,
+        "availability": availability,
         "search": search,
         "sort": sort_col,
         "order": order,
@@ -132,6 +141,10 @@ def confirm_match(match_id):
     match.confirmed_by = current_user.name
     current_user.matches_processed += 1
     cleaned = _cleanup_other_candidates(match.supplier_product_id, match.id)
+    log_action("confirm", match_id=match.id,
+               supplier_product_id=match.supplier_product_id,
+               prom_product_id=match.prom_product_id,
+               details={"score": match.score, "candidates_removed": cleaned})
     db.session.commit()
 
     return jsonify({"status": "ok", "new_status": "confirmed", "candidates_removed": cleaned})
@@ -166,6 +179,11 @@ def confirm_and_update(match_id):
     match.name_synced = True
     current_user.matches_processed += 1
     cleaned = _cleanup_other_candidates(match.supplier_product_id, match.id)
+    log_action("confirm_update", match_id=match.id,
+               supplier_product_id=match.supplier_product_id,
+               prom_product_id=match.prom_product_id,
+               details={"old_name": old_name_ua, "new_name": new_name_ua,
+                         "name_ru": prom_product.name_ru})
     db.session.commit()
 
     return jsonify({
@@ -287,6 +305,8 @@ def reject_match(match_id):
 
     supplier_product = match.supplier_product
     rejected_prom_id = match.prom_product_id
+    rejected_match_id = match.id
+    rejected_sp_id = match.supplier_product_id
 
     db.session.delete(match)
     db.session.flush()
@@ -300,6 +320,10 @@ def reject_match(match_id):
         db.session.flush()
         new_candidate_id = new_match.id
 
+    log_action("reject", match_id=rejected_match_id,
+               supplier_product_id=rejected_sp_id,
+               prom_product_id=rejected_prom_id,
+               details={"new_candidate_id": new_candidate_id})
     db.session.commit()
 
     return jsonify({
@@ -328,6 +352,7 @@ def unconfirm_match(match_id):
             "message": "Отменить можно только подтвержденный или ручной матч",
         }), 400
 
+    old_status = match.status
     match.status = "candidate"
     match.confirmed_at = None
     match.confirmed_by = None
@@ -338,6 +363,10 @@ def unconfirm_match(match_id):
     # but the match says it wasn't synced).
     if current_user.matches_processed and current_user.matches_processed > 0:
         current_user.matches_processed -= 1
+    log_action("unconfirm", match_id=match.id,
+               supplier_product_id=match.supplier_product_id,
+               prom_product_id=match.prom_product_id,
+               details={"old_status": old_status})
     db.session.commit()
 
     return jsonify({"status": "ok", "new_status": "candidate"})
@@ -392,6 +421,10 @@ def update_prom_fields(match_id):
 
     if updated:
         match.name_synced = True
+        log_action("update_prom", match_id=match.id,
+                   supplier_product_id=match.supplier_product_id,
+                   prom_product_id=pp.id,
+                   details={"updated_fields": updated})
         db.session.commit()
 
     return jsonify({
@@ -425,7 +458,12 @@ def set_discount(match_id):
         if not (0 <= discount <= 100):
             return jsonify({"status": "error", "message": "Скидка должна быть от 0 до 100%"}), 400
 
+    old_discount = match.discount_percent
     match.discount_percent = discount  # None clears the override
+    log_action("set_discount", match_id=match.id,
+               supplier_product_id=match.supplier_product_id,
+               prom_product_id=match.prom_product_id,
+               details={"old_discount": old_discount, "new_discount": discount})
     db.session.commit()
 
     return jsonify({
@@ -475,6 +513,8 @@ def bulk_action():
                 db.session.add(new_match)
             processed += 1
 
+    log_action(f"bulk_{action}",
+               details={"match_ids": ids, "processed": processed})
     db.session.commit()
 
     return jsonify({"status": "ok", "processed": processed})
@@ -549,6 +589,8 @@ def mark_for_catalog(sp_id):
         m.status = "rejected"
         m.confirmed_by = "mark-new"
 
+    log_action("mark_new", supplier_product_id=sp_id,
+               details={"supplier_name": sp.name, "rejected_count": len(candidates)})
     db.session.commit()
 
     return jsonify({
@@ -563,6 +605,8 @@ def unmark_for_catalog(sp_id):
     """Remove the 'needs catalog add' flag from a supplier product."""
     sp = db.get_or_404(SupplierProduct, sp_id)
     sp.needs_catalog_add = False
+    log_action("unmark_new", supplier_product_id=sp_id,
+               details={"supplier_name": sp.name})
     db.session.commit()
     return jsonify({"status": "ok"})
 
@@ -615,6 +659,12 @@ def manual_match():
         db.session.add(rule)
 
     current_user.matches_processed += 1
+    log_action("manual_match", match_id=new_match.id,
+               supplier_product_id=supplier_product_id,
+               prom_product_id=prom_product_id,
+               details={"supplier_name": supplier_product.name,
+                         "prom_name": prom_product.name,
+                         "remember": remember})
     db.session.commit()
 
     return jsonify({"status": "ok", "match_id": new_match.id})

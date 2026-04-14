@@ -7,3 +7,4 @@ from app.models.sync_run import SyncRun  # noqa: F401
 from app.models.user import User  # noqa: F401
 from app.models.match_rule import MatchRule  # noqa: F401
 from app.models.notification_rule import NotificationRule, Notification  # noqa: F401
+from app.models.audit_log import AuditLog  # noqa: F401
