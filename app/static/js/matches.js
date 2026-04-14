@@ -185,8 +185,12 @@
 
             fetchWithCSRF('/matches/' + matchId + '/' + action, { method: 'POST' })
                 .then(function (resp) {
-                    if (!resp.ok) throw new Error('HTTP ' + resp.status);
-                    return resp.json();
+                    // Always parse JSON — the server returns an explanatory
+                    // body on 4xx too (e.g. 409 prom_already_claimed).
+                    return resp.json().then(function (data) {
+                        data.__status = resp.status;
+                        return data;
+                    });
                 })
                 .then(function (data) {
                     if (data.status === 'ok') {
@@ -207,7 +211,7 @@
                             showAlert('Матч подтвержден', 'success');
                         }
                     } else {
-                        throw new Error(data.message || 'Unknown error');
+                        throw new Error(data.message || ('HTTP ' + (data.__status || '?')));
                     }
                 })
                 .catch(function (err) {
@@ -240,8 +244,10 @@
 
         fetchWithCSRF('/matches/' + matchId + '/confirm-update', { method: 'POST' })
             .then(function (resp) {
-                if (!resp.ok) throw new Error('HTTP ' + resp.status);
-                return resp.json();
+                return resp.json().then(function (data) {
+                    data.__status = resp.status;
+                    return data;
+                });
             })
             .then(function (data) {
                 if (data.status === 'ok') {
@@ -541,14 +547,26 @@
             body: JSON.stringify({ action: action, ids: ids })
         })
             .then(function (resp) {
-                if (!resp.ok) throw new Error('HTTP ' + resp.status);
-                return resp.json();
+                return resp.json().then(function (data) {
+                    data.__status = resp.status;
+                    return data;
+                });
             })
             .then(function (data) {
                 if (data.status === 'ok') {
-                    window.location.reload();
+                    if (data.skipped_claimed && data.skipped_claimed.length > 0) {
+                        showAlert(
+                            'Применено: ' + data.processed +
+                            '. Пропущено из-за занятого каталожного товара: ' +
+                            data.skipped_claimed.length + '. Страница обновится.',
+                            'warning'
+                        );
+                        setTimeout(function () { window.location.reload(); }, 2500);
+                    } else {
+                        window.location.reload();
+                    }
                 } else {
-                    throw new Error(data.message || 'Unknown error');
+                    throw new Error(data.message || ('HTTP ' + (data.__status || '?')));
                 }
             })
             .catch(function (err) {
