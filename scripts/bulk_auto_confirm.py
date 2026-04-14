@@ -189,6 +189,16 @@ def classify_multi(candidates: list[ProductMatch]) -> tuple[ProductMatch, list[P
     return winner, losers
 
 
+def _claimed_pp_ids() -> set[int]:
+    return set(
+        db.session.execute(
+            select(ProductMatch.prom_product_id)
+            .where(ProductMatch.status.in_(["confirmed", "manual"]))
+            .distinct()
+        ).scalars().all()
+    )
+
+
 def run(apply: bool) -> None:
     app = create_app()
     with app.app_context():
@@ -196,23 +206,37 @@ def run(apply: bool) -> None:
         print(f"Single-candidate matches: {len(singles)}")
         print(f"Multi-candidate supplier products: {len(multis_by_sp)}")
 
+        claimed = _claimed_pp_ids()
+
         confirm_buckets: dict[str, list[int]] = {}
         reject_ids: list[int] = []
+        skipped_claimed = 0
 
         for m in singles:
+            if m.prom_product_id in claimed:
+                skipped_claimed += 1
+                continue
             rule = classify_single(m)
             if rule:
                 confirm_buckets.setdefault(rule, []).append(m.id)
+                claimed.add(m.prom_product_id)
 
         r3_confirms: list[int] = []
         for sp_id, cands in multis_by_sp.items():
             result = classify_multi(cands)
             if result:
                 winner, losers = result
+                if winner.prom_product_id in claimed:
+                    skipped_claimed += 1
+                    continue
                 r3_confirms.append(winner.id)
+                claimed.add(winner.prom_product_id)
                 reject_ids.extend(l.id for l in losers)
         if r3_confirms:
             confirm_buckets["R3:multi-winner-tokens-equal"] = r3_confirms
+
+        if skipped_claimed:
+            print(f"  Skipped {skipped_claimed} candidate(s): pp already claimed")
 
         # R4: reject candidates that duplicate a confirmed exact-tokens match
         r4_rejects = _find_r4_bundle_sibling_candidates()

@@ -360,3 +360,95 @@ class TestApplyNameDiff:
         old_ru = "Пресс Fimar PF25E (220)"
         result = _apply_name_diff(old_ua, new_ua, old_ru)
         assert "(380)" in result
+
+
+# ===== 1 pp ↔ 1 confirmed/manual supplier match invariant =====
+
+
+def _seed_second_sp_and_candidate(session, pp, *, brand="TestBrand", name="Кавомашина Test 220 Extra"):
+    supplier = pp.__table__  # dummy — not used
+    sp2 = SupplierProduct(
+        supplier_id=1,  # reuse seeded supplier
+        external_id="SP2",
+        name=name,
+        brand=brand,
+        price_cents=55000,
+        available=True,
+        needs_review=False,
+    )
+    session.add(sp2)
+    session.flush()
+    cand = ProductMatch(
+        supplier_product_id=sp2.id,
+        prom_product_id=pp.id,
+        score=90.0,
+        status="candidate",
+    )
+    session.add(cand)
+    session.commit()
+    return sp2, cand
+
+
+class TestPpClaimInvariant:
+    def test_confirm_second_match_on_claimed_pp_returns_409(self, client, db):
+        _, _, pp = _seed_confirmed_match(db.session, status="confirmed")
+        _, cand = _seed_second_sp_and_candidate(db.session, pp)
+        resp = client.post(f"/matches/{cand.id}/confirm")
+        assert resp.status_code == 409
+        body = resp.get_json()
+        assert body["code"] == "prom_already_claimed"
+        # Candidate must remain candidate
+        db.session.refresh(cand)
+        assert cand.status == "candidate"
+
+    def test_confirm_update_on_claimed_pp_returns_409(self, client, db):
+        _, _, pp = _seed_confirmed_match(db.session, status="confirmed")
+        _, cand = _seed_second_sp_and_candidate(db.session, pp)
+        resp = client.post(f"/matches/{cand.id}/confirm-update")
+        assert resp.status_code == 409
+        db.session.refresh(cand)
+        assert cand.status == "candidate"
+
+    def test_manual_match_on_claimed_pp_returns_409(self, client, db):
+        m, _, pp = _seed_confirmed_match(db.session, status="confirmed")
+        sp2 = SupplierProduct(
+            supplier_id=1,
+            external_id="SP3",
+            name="Other sp",
+            brand="Other",
+            price_cents=40000,
+            available=True,
+            needs_review=False,
+        )
+        db.session.add(sp2)
+        db.session.commit()
+        resp = client.post(
+            "/matches/manual",
+            json={"supplier_product_id": sp2.id, "prom_product_id": pp.id},
+        )
+        assert resp.status_code == 409
+        body = resp.get_json()
+        assert body.get("code") == "prom_already_claimed"
+
+    def test_bulk_confirm_skips_claimed_pp(self, client, db):
+        _, _, pp = _seed_confirmed_match(db.session, status="confirmed")
+        _, cand = _seed_second_sp_and_candidate(db.session, pp)
+        resp = client.post(
+            "/matches/bulk-action",
+            json={"action": "confirm", "ids": [cand.id]},
+        )
+        assert resp.status_code == 200
+        body = resp.get_json()
+        assert body["processed"] == 0
+        assert len(body["skipped_claimed"]) == 1
+        db.session.refresh(cand)
+        assert cand.status == "candidate"
+
+    def test_confirming_self_still_works(self, client, db):
+        """An already-confirmed match re-POSTed to /confirm doesn't flag itself."""
+        m, _, _ = _seed_confirmed_match(db.session, status="confirmed")
+        # Manually revert to candidate to simulate a re-confirm attempt
+        m.status = "candidate"
+        db.session.commit()
+        resp = client.post(f"/matches/{m.id}/confirm")
+        assert resp.status_code == 200

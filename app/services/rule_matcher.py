@@ -44,6 +44,16 @@ def apply_match_rules(supplier_id: int) -> int:
     )
     confirmed_ids = set(db.session.execute(confirmed_ids_query).scalars().all())
 
+    # Set of prom_product_ids already claimed by a confirmed/manual match
+    # (enforces 1 pp ↔ 1 active supplier match invariant).
+    claimed_pp_ids = set(
+        db.session.execute(
+            select(ProductMatch.prom_product_id)
+            .where(ProductMatch.status.in_(["confirmed", "manual"]))
+            .distinct()
+        ).scalars().all()
+    )
+
     # 3. Get eligible supplier products (not already confirmed/manual).
     # Include unavailable — match stays valid when stock returns.
     eligible_products = db.session.execute(
@@ -76,6 +86,27 @@ def apply_match_rules(supplier_id: int) -> int:
                 )
                 continue
 
+            # Skip if the prom product is already claimed by a DIFFERENT sp —
+            # enforces 1:1 invariant. Leave the pair as a candidate so the
+            # operator sees the collision and can unconfirm the other side.
+            if rule.prom_product_id in claimed_pp_ids:
+                existing_for_pair = ProductMatch.query.filter_by(
+                    supplier_product_id=sp.id,
+                    prom_product_id=rule.prom_product_id,
+                ).first()
+                if existing_for_pair is None:
+                    db.session.add(ProductMatch(
+                        supplier_product_id=sp.id,
+                        prom_product_id=rule.prom_product_id,
+                        score=100.0,
+                        status="candidate",
+                    ))
+                logger.info(
+                    "Rule id=%d: pp#%d already claimed, leaving sp#%d as candidate",
+                    rule.id, rule.prom_product_id, sp.id,
+                )
+                break
+
             # Check for existing match with same pair
             existing = ProductMatch.query.filter_by(
                 supplier_product_id=sp.id,
@@ -95,6 +126,7 @@ def apply_match_rules(supplier_id: int) -> int:
                     existing.score = 100.0
                     existing.confirmed_by = f"rule:{rule.id}"
                     existing.confirmed_at = datetime.now(timezone.utc)
+                    claimed_pp_ids.add(rule.prom_product_id)
                     count += 1
                     break  # This product is matched, move to next product
             else:
@@ -108,6 +140,7 @@ def apply_match_rules(supplier_id: int) -> int:
                     confirmed_at=datetime.now(timezone.utc),
                 )
                 db.session.add(new_match)
+                claimed_pp_ids.add(rule.prom_product_id)
                 count += 1
                 break  # This product is matched, move to next product
 

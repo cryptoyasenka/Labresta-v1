@@ -21,6 +21,36 @@ from app.services.matcher import CONFIDENCE_HIGH, CONFIDENCE_MEDIUM, find_match_
 matches_bp = Blueprint("matches", __name__)
 
 
+def _pp_already_claimed(prom_product_id: int, exclude_match_id: int | None = None) -> ProductMatch | None:
+    """Return existing confirmed/manual match on this pp, or None.
+
+    Enforces the 1:1 invariant (one pp ↔ one active supplier match).
+    Pass exclude_match_id when the caller is the match being confirmed
+    itself (so we don't flag the match against itself).
+    """
+    q = ProductMatch.query.filter(
+        ProductMatch.prom_product_id == prom_product_id,
+        ProductMatch.status.in_(("confirmed", "manual")),
+    )
+    if exclude_match_id is not None:
+        q = q.filter(ProductMatch.id != exclude_match_id)
+    return q.first()
+
+
+def _pp_claim_error(existing: ProductMatch) -> tuple:
+    sp = existing.supplier_product
+    sp_name = sp.name if sp else f"sp#{existing.supplier_product_id}"
+    return jsonify({
+        "status": "error",
+        "code": "prom_already_claimed",
+        "message": (
+            f"Этот каталожный товар уже подтверждён с поставщика «{sp_name}» "
+            f"(match #{existing.id}). Сначала отмените тот матч."
+        ),
+        "existing_match_id": existing.id,
+    }), 409
+
+
 def _cleanup_other_candidates(supplier_product_id: int, keep_match_id: int) -> int:
     """Delete all candidate matches for a supplier product except the confirmed one.
 
@@ -136,6 +166,10 @@ def confirm_match(match_id):
     """AJAX endpoint to confirm a match."""
     match = db.get_or_404(ProductMatch, match_id)
 
+    existing = _pp_already_claimed(match.prom_product_id, exclude_match_id=match.id)
+    if existing:
+        return _pp_claim_error(existing)
+
     match.status = "confirmed"
     match.confirmed_at = datetime.now(timezone.utc)
     match.confirmed_by = current_user.name
@@ -159,6 +193,10 @@ def confirm_and_update(match_id):
     portion if the change is just a model/article number difference.
     """
     match = db.get_or_404(ProductMatch, match_id)
+    existing = _pp_already_claimed(match.prom_product_id, exclude_match_id=match.id)
+    if existing:
+        return _pp_claim_error(existing)
+
     supplier_product = match.supplier_product
     prom_product = match.prom_product
 
@@ -492,9 +530,18 @@ def bulk_action():
 
     matches = ProductMatch.query.filter(ProductMatch.id.in_(ids)).all()
     processed = 0
+    skipped_claimed: list[dict] = []
 
     for match in matches:
         if action == "confirm":
+            existing = _pp_already_claimed(match.prom_product_id, exclude_match_id=match.id)
+            if existing:
+                skipped_claimed.append({
+                    "match_id": match.id,
+                    "prom_product_id": match.prom_product_id,
+                    "existing_match_id": existing.id,
+                })
+                continue
             match.status = "confirmed"
             match.confirmed_at = datetime.now(timezone.utc)
             match.confirmed_by = current_user.name
@@ -527,10 +574,15 @@ def bulk_action():
             processed += 1
 
     log_action(f"bulk_{action}",
-               details={"match_ids": ids, "processed": processed})
+               details={"match_ids": ids, "processed": processed,
+                        "skipped_claimed": [s["match_id"] for s in skipped_claimed]})
     db.session.commit()
 
-    return jsonify({"status": "ok", "processed": processed})
+    return jsonify({
+        "status": "ok",
+        "processed": processed,
+        "skipped_claimed": skipped_claimed,
+    })
 
 
 # ========== Catalog search for manual match modal ==========
@@ -641,6 +693,17 @@ def manual_match():
 
     supplier_product = db.get_or_404(SupplierProduct, supplier_product_id)
     prom_product = db.get_or_404(PromProduct, prom_product_id)
+
+    # Enforce 1 pp ↔ 1 active supplier match: if this pp is already claimed
+    # by a DIFFERENT supplier product, refuse. The operator must first
+    # unconfirm the existing match.
+    existing_on_pp = ProductMatch.query.filter(
+        ProductMatch.prom_product_id == prom_product_id,
+        ProductMatch.supplier_product_id != supplier_product_id,
+        ProductMatch.status.in_(("confirmed", "manual")),
+    ).first()
+    if existing_on_pp:
+        return _pp_claim_error(existing_on_pp)
 
     # If this exact (supplier, prom) pair already has a non-candidate match,
     # treat it as "already matched" — clean up dangling candidates for the
