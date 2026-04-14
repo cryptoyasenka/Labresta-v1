@@ -106,6 +106,29 @@ def normalize_model(value: str | None) -> str:
     return re.sub(r"[^a-z0-9]", "", value.strip().lower())
 
 
+_PAREN_CODE_RE = re.compile(r"\(([A-Za-z0-9.\-_/]{6,})\)")
+
+
+def extract_article_codes(name: str) -> list[str]:
+    """Extract article-like codes from a supplier name.
+
+    Looks for parenthesized alphanumeric tokens that are long (≥6 chars) and
+    contain at least one digit — these almost always denote manufacturer SKUs
+    embedded by the supplier (e.g. "Rational iVario Pro 2-S (WY9ENRA.0011923)"
+    → "WY9ENRA.0011923"). The pattern intentionally ignores short parenthetical
+    notes like "(220)", "(тефлон)", "(3035)" — those are variant markers, not
+    full article codes.
+    """
+    if not name:
+        return []
+    out = []
+    for m in _PAREN_CODE_RE.finditer(name):
+        tok = m.group(1)
+        if any(c.isdigit() for c in tok) and any(c.isalpha() for c in tok):
+            out.append(tok)
+    return out
+
+
 def extract_model_from_name(name: str, brand: str | None) -> str:
     """Extract model/article number from product name — first usable token after brand.
 
@@ -498,6 +521,40 @@ def find_match_candidates(
                 candidate["confidence"] = get_confidence_label(candidate["score"])
             kept.append(candidate)
         fuzzy_output = kept
+
+    # Step 4.7: Display-article mismatch gate.
+    # When the supplier name embeds a manufacturer article code in parentheses
+    # (e.g. "Rational iVario Pro 2-S (WY9ENRA.0011923)") AND the catalog has a
+    # display_article filled in, they MUST match after normalization — otherwise
+    # these are different SKUs of the same product family (voltage/capacity/
+    # generation variants). Catches cases where fuzzy name score hits 100%
+    # because the base description is identical.
+    sup_paren_codes = [normalize_model(c) for c in extract_article_codes(supplier_product_name)]
+    sup_paren_codes = [c for c in sup_paren_codes if c]
+    if sup_paren_codes:
+        kept = []
+        for candidate in fast_matches + fuzzy_output:
+            prom_display = ""
+            prom_article_norm = ""
+            for p in candidates_pool:
+                if p["id"] == candidate["prom_product_id"]:
+                    prom_display = normalize_model(p.get("display_article"))
+                    prom_article_norm = normalize_model(p.get("article"))
+                    break
+            prom_codes = {c for c in (prom_display, prom_article_norm) if c}
+            if not prom_codes:
+                kept.append(candidate)
+                continue
+            if any(sc in prom_codes for sc in sup_paren_codes):
+                kept.append(candidate)
+            else:
+                logger.debug(
+                    "Paren-code mismatch rejected: sup=%s vs prom=%s for prom_id=%d",
+                    sup_paren_codes, prom_codes, candidate["prom_product_id"],
+                )
+        fast_ids = {c["prom_product_id"] for c in fast_matches}
+        fast_matches = [c for c in kept if c["prom_product_id"] in fast_ids]
+        fuzzy_output = [c for c in kept if c["prom_product_id"] not in fast_ids]
 
     # Step 4.7: Name-based model gate — when article/model fields are empty,
     # extract model numbers from product names. If both have extracted models

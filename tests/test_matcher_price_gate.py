@@ -48,6 +48,36 @@ class TestDisplayArticleFastPath:
         assert len(result) == 1
         assert result[0]["score"] == 100.0
 
+    def test_paren_code_mismatch_rejects_despite_fuzzy_100(self):
+        # Supplier has article in parens WY9ENRA.0011923; catalog display_article
+        # WY9ENRA.0002427 — different SKUs. Must reject even though names are
+        # near-identical (fuzz would score ~100).
+        prom = [
+            _make_prom(
+                1, "Rational iVario Pro 2-S сковорода багатофункціональна", "Rational",
+                price=1947000, display_article="WY9ENRA.0002427"
+            ),
+        ]
+        result = find_match_candidates(
+            "Сковорода багатофункціональна Rational iVario Pro 2-S (WY9ENRA.0011923)",
+            "Rational", prom, supplier_price_cents=2259800,
+        )
+        assert len(result) == 0
+
+    def test_paren_code_match_keeps_candidate(self):
+        # Supplier parenthesized code matches catalog display_article → keep.
+        prom = [
+            _make_prom(
+                1, "Rational iVario Pro 2-S", "Rational",
+                price=1947000, display_article="WY9ENRA.0002427"
+            ),
+        ]
+        result = find_match_candidates(
+            "Сковорода Rational iVario Pro 2-S (WY9ENRA.0002427)",
+            "Rational", prom, supplier_price_cents=1947000,
+        )
+        assert len(result) == 1
+
     def test_short_display_article_is_not_substring_matched(self):
         # display_article shorter than 4 chars must not trigger substring
         # fast-path to avoid trivial collisions.
