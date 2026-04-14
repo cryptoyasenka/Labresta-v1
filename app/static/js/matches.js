@@ -1063,6 +1063,17 @@
                 })
             })
                 .then(function (resp) {
+                    if (resp.status === 409) {
+                        return resp.json().then(function (data) {
+                            showManualMatchFeedback(
+                                (data.message || 'Товар уже сопоставлен') + ' Страница обновится...',
+                                'warning'
+                            );
+                            submitBtn.textContent = 'Уже сопоставлено';
+                            setTimeout(function () { window.location.reload(); }, 2000);
+                            return { status: '__handled__' };
+                        });
+                    }
                     if (!resp.ok) {
                         return resp.json().then(function (data) {
                             throw new Error(data.message || 'HTTP ' + resp.status);
@@ -1073,6 +1084,7 @@
                     return resp.json();
                 })
                 .then(function (data) {
+                    if (data.status === '__handled__') return;
                     if (data.status !== 'ok') {
                         throw new Error(data.message || 'Unknown error');
                     }

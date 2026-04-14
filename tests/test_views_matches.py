@@ -270,6 +270,43 @@ class TestMarkForCatalogEndpoint:
         assert refreshed.needs_catalog_add is False
 
 
+class TestManualMatchEndpoint:
+    """POST /matches/manual — must not hit UNIQUE constraint when the
+    (supplier, prom) pair is already confirmed elsewhere."""
+
+    def test_duplicate_pair_returns_409(self, client, db):
+        # Seed one confirmed match for a (sp, pp) pair, then try to manual-match
+        # the same pair again — must return 409, not 500.
+        match, sp, pp = _seed_confirmed_match(db.session, status="confirmed")
+
+        # Seed a lingering candidate for the same supplier_product pointing to
+        # a DIFFERENT catalog entry, simulating stale queue state.
+        other_pp = PromProduct(external_id="PP_OTHER", name="Other", brand="TestBrand")
+        db.session.add(other_pp)
+        db.session.flush()
+        dangling = ProductMatch(
+            supplier_product_id=sp.id, prom_product_id=other_pp.id,
+            score=80.0, status="candidate",
+        )
+        db.session.add(dangling)
+        db.session.commit()
+        sp_id, pp_id, match_id, dangling_id = sp.id, pp.id, match.id, dangling.id
+
+        resp = client.post(
+            "/matches/manual",
+            json={"supplier_product_id": sp_id, "prom_product_id": pp_id},
+        )
+        assert resp.status_code == 409
+        data = resp.get_json()
+        assert data["status"] == "already_matched"
+        assert data["match_id"] == match_id
+
+        db.session.expire_all()
+        assert db.session.get(ProductMatch, dangling_id) is None
+        refreshed = db.session.get(ProductMatch, match_id)
+        assert refreshed.status == "confirmed"
+
+
 class TestApplyNameDiff:
     """Unit tests for _apply_name_diff — safe RU name update from UA diff."""
 

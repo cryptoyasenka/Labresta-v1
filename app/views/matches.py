@@ -630,6 +630,31 @@ def manual_match():
     supplier_product = db.get_or_404(SupplierProduct, supplier_product_id)
     prom_product = db.get_or_404(PromProduct, prom_product_id)
 
+    # If this exact (supplier, prom) pair already has a non-candidate match,
+    # treat it as "already matched" — clean up dangling candidates for the
+    # same supplier product so the operator's queue refreshes cleanly, but
+    # don't try to insert a duplicate (would hit UNIQUE constraint).
+    existing_pair = ProductMatch.query.filter(
+        ProductMatch.supplier_product_id == supplier_product_id,
+        ProductMatch.prom_product_id == prom_product_id,
+        ProductMatch.status.in_(["confirmed", "manual"]),
+    ).first()
+    if existing_pair:
+        cleaned = ProductMatch.query.filter(
+            ProductMatch.supplier_product_id == supplier_product_id,
+            ProductMatch.status == "candidate",
+        ).delete()
+        db.session.commit()
+        return jsonify({
+            "status": "already_matched",
+            "message": (
+                f"Товар уже сопоставлен с этим каталожным товаром "
+                f"(матч #{existing_pair.id}, статус={existing_pair.status}). "
+                f"Очищено лишних кандидатов: {cleaned}."
+            ),
+            "match_id": existing_pair.id,
+        }), 409
+
     # Delete all existing candidate matches for this supplier product
     ProductMatch.query.filter(
         ProductMatch.supplier_product_id == supplier_product_id,
