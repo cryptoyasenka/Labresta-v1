@@ -226,6 +226,7 @@ def match_details(match_id):
             "brand": pp.brand,
             "model": pp.model,
             "article": pp.article,
+            "display_article": pp.display_article,
             "description_ua": pp.description_ua,
             "description_ru": pp.description_ru,
             "image_url": pp.image_url,

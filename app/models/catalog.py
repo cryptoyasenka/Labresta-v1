@@ -13,6 +13,7 @@ class PromProduct(db.Model):
     brand = db.Column(db.String(200), nullable=True)
     model = db.Column(db.String(200), nullable=True)
     article = db.Column(db.String(255), nullable=True)  # Kod_tovaru
+    display_article = db.Column(db.String(255), nullable=True)  # "Артикул для відображення на сайті" (manufacturer SKU shown on the product page, e.g. Sirman 60SN002)
     price = db.Column(db.Integer, nullable=True)  # cents (integer)
     currency = db.Column(db.String(10), default="EUR")
     page_url = db.Column(db.String(500), nullable=True)
@@ -25,4 +26,5 @@ class PromProduct(db.Model):
     __table_args__ = (
         db.Index("ix_prom_products_brand", "brand"),
         db.Index("ix_prom_products_name", "name"),
+        db.Index("ix_prom_products_display_article", "display_article"),
     )

@@ -120,6 +120,7 @@
                     <th>Поставщик</th>
                     <th>Склад</th>
                     <th>Каталог Horoshop</th>
+                    <th title="Артикул виробника з картки товару на сайті">Арт. виробника</th>
                     <th>Цена поставщика</th>
                     <th>Цена в Horoshop</th>
                     <th>Расч. цена Horoshop</th>
@@ -158,6 +159,13 @@
                         {% endif %}
                     </td>
                     <td class="prom-name-cell">{{ match.prom_product.name }}</td>
+                    <td class="small font-monospace prom-display-article-cell">
+                        {% if match.prom_product.display_article %}
+                            {{ match.prom_product.display_article }}
+                        {% else %}
+                            <span class="text-muted">&mdash;</span>
+                        {% endif %}
+                    </td>
                     <td>
                         {% if match.supplier_product.price_cents is not none %}
                             {{ "%.2f"|format(match.supplier_product.price_cents / 100) }} {{ match.supplier_product.currency }}

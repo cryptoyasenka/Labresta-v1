@@ -344,6 +344,9 @@
         html += '<tr><td><strong>RU</strong></td>';
         html += '<td class="text-muted">—</td>';
         html += '<td><textarea class="form-control form-control-sm prom-edit-field" rows="2" data-field="name_ru">' + escapeHtml(pp.name_ru || '') + '</textarea></td></tr>';
+        html += '<tr><td><strong>Арт. виробника</strong></td>';
+        html += '<td>' + escapeHtml(sp.article || '—') + '</td>';
+        html += '<td class="font-monospace">' + escapeHtml(pp.display_article || '—') + '</td></tr>';
         html += '</tbody></table></div>';
 
         // --- Photos ---

@@ -20,6 +20,8 @@ from app.models.catalog import PromProduct
 COLUMN_ALIASES = {
     # --- Horoshop export headers ---
     "артикул": "external_id",
+    "артикул для отображения на сайте": "display_article",
+    "артикул для відображення на сайті": "display_article",
     "назва (ua)": "name",
     "название (ua)": "name",
     "назва модифікації (ua)": "name",
@@ -262,6 +264,7 @@ def save_catalog_products(products: list[dict]) -> dict:
 
         currency = product.get("currency", "").strip() or None
         article = product.get("article", "").strip() or None
+        display_article = product.get("display_article", "").strip() or None
         brand = product.get("brand", "").strip() or None
         page_url = product.get("page_url", "").strip() or None
         name_ru = product.get("name_ru", "").strip() or None
@@ -280,6 +283,7 @@ def save_catalog_products(products: list[dict]) -> dict:
             existing.name_ru = name_ru
             existing.brand = brand
             existing.article = article
+            existing.display_article = display_article
             existing.price = price
             existing.currency = currency
             existing.page_url = page_url
@@ -296,6 +300,7 @@ def save_catalog_products(products: list[dict]) -> dict:
                 name_ru=name_ru,
                 brand=brand,
                 article=article,
+                display_article=display_article,
                 price=price,
                 currency=currency,
                 page_url=page_url,

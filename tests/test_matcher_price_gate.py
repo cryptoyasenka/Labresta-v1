@@ -11,11 +11,55 @@ from app.services.matcher import (
 )
 
 
-def _make_prom(id, name, brand="TestBrand", price=10000, model=None, article=None):
+def _make_prom(id, name, brand="TestBrand", price=10000, model=None, article=None,
+               display_article=None):
     return {
         "id": id, "name": name, "brand": brand, "price": price,
-        "model": model, "article": article,
+        "model": model, "article": article, "display_article": display_article,
     }
+
+
+class TestDisplayArticleFastPath:
+    """Manufacturer SKU (display_article) embedded in supplier name → fast-path match."""
+
+    def test_display_article_substring_in_supplier_name_matches(self):
+        prom = [
+            _make_prom(1, "Міксер планетарний Sirman Plutone LT10", "Sirman",
+                       price=4308500, display_article="60SN002"),
+        ]
+        result = find_match_candidates(
+            "Mixer planetary 60SN002 Sirman LT10", "Sirman", prom,
+            supplier_price_cents=4300000,
+        )
+        assert len(result) == 1
+        assert result[0]["score"] == 100.0
+        assert result[0]["confidence"] == "high"
+
+    def test_supplier_article_equals_display_article(self):
+        prom = [
+            _make_prom(1, "Гриль Sirman Mobile PRO", "Sirman",
+                       price=2500000, display_article="30142502"),
+        ]
+        result = find_match_candidates(
+            "Гриль PRO 1/1G", "Sirman", prom,
+            supplier_price_cents=2500000,
+            supplier_article="30142502",
+        )
+        assert len(result) == 1
+        assert result[0]["score"] == 100.0
+
+    def test_short_display_article_is_not_substring_matched(self):
+        # display_article shorter than 4 chars must not trigger substring
+        # fast-path to avoid trivial collisions.
+        prom = [
+            _make_prom(1, "Випадковий товар A1", "Sirman",
+                       price=1000, display_article="A1"),
+        ]
+        result = find_match_candidates(
+            "Зовсім інший товар A1 коробка", "Sirman", prom,
+            supplier_price_cents=1000,
+        )
+        assert all(c["score"] < 100 for c in result)
 
 
 class TestPricePlausibility:

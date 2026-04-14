@@ -343,18 +343,39 @@ def find_match_candidates(
     if not sup_model and not sup_article and brand_was_matched and supplier_brand:
         sup_name_model_for_fast = extract_model_from_name(supplier_product_name, supplier_brand)
 
-    if sup_model or sup_article or sup_name_model_for_fast:
+    # Normalize supplier name once for display_article substring checks.
+    # Horoshop's "Артикул для відображення на сайті" (e.g. Sirman "60SN002") is
+    # often embedded verbatim inside supplier names (Merx, MARESTO), so a
+    # containment check on the normalized forms is a very strong match signal.
+    sup_name_norm = normalize_model(supplier_product_name)
+
+    if sup_model or sup_article or sup_name_model_for_fast or sup_name_norm:
         sup_name_model_for_fast_norm = normalize_model(sup_name_model_for_fast)
         for p in candidates_pool:
             prom_article = normalize_model(p.get("article"))
             prom_model = normalize_model(p.get("model"))
+            prom_display = normalize_model(p.get("display_article"))
 
             # Strict equality after normalize — "XFT133" != "XFT134"
             matched = False
+            display_match = False
             if sup_article and prom_article and sup_article == prom_article:
                 matched = True
             if not matched and sup_model and prom_model and sup_model == prom_model:
                 matched = True
+            # Display article (manufacturer SKU from catalog card) fast-path.
+            # Length >=4 to avoid trivial substring collisions on short codes.
+            # Manufacturer SKUs are unique per product variant — when found,
+            # bypass the after-brand containment gate (which would otherwise
+            # reject "Sirman 60SN002 LT10" vs "Sirman Plutone LT10" because
+            # the descriptor tokens differ).
+            if not matched and prom_display and len(prom_display) >= 4:
+                if sup_article and sup_article == prom_display:
+                    matched = True
+                    display_match = True
+                elif sup_name_norm and prom_display in sup_name_norm:
+                    matched = True
+                    display_match = True
 
             # Fallback: compare model numbers extracted from names (also strict)
             if not matched and sup_name_model_for_fast_norm:
@@ -373,6 +394,7 @@ def find_match_candidates(
                         "score": 100.0,
                         "prom_name": p["name"],
                         "confidence": "high",
+                        "_skip_post_gates": display_match,
                     }
                 )
                 if len(fast_matches) >= limit:
@@ -548,6 +570,11 @@ def find_match_candidates(
         if sup_after_tokens:
             contained = []
             for candidate in fast_matches + fuzzy_output:
+                # display_article fast-matches bypass containment — manufacturer
+                # SKU equality is stronger evidence than name-token similarity.
+                if candidate.get("_skip_post_gates"):
+                    contained.append(candidate)
+                    continue
                 prom_name_full = candidate["prom_name"]
                 prom_brand_for_tokens = supplier_brand
                 for p in candidates_pool:
@@ -604,6 +631,8 @@ def find_match_candidates(
             plausible.append(candidate)
         output = plausible
 
+    for c in output:
+        c.pop("_skip_post_gates", None)
     return output
 
 
@@ -628,7 +657,7 @@ def find_match_for_product(
     exclude_set = set(exclude_prom_ids or [])
     prom_list = [
         {"id": p.id, "name": p.name, "brand": p.brand, "price": p.price,
-         "model": p.model, "article": p.article}
+         "model": p.model, "article": p.article, "display_article": p.display_article}
         for p in prom_all
         if p.id not in exclude_set
     ]
@@ -704,7 +733,7 @@ def run_matching_for_supplier(supplier_id: int) -> int:
     prom_all = db.session.execute(select(PromProduct)).scalars().all()
     prom_list = [
         {"id": p.id, "name": p.name, "brand": p.brand, "price": p.price,
-         "model": p.model, "article": p.article}
+         "model": p.model, "article": p.article, "display_article": p.display_article}
         for p in prom_all
     ]
 
