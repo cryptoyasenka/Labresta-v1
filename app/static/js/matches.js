@@ -237,9 +237,15 @@
                     updateRowStatus(matchId, data.new_status);
                     // Update the catalog name cell in the table
                     if (row) {
-                        var promCell = row.querySelector('.prom-name-cell');
-                        if (promCell) promCell.textContent = data.new_name;
-                        row.setAttribute('data-prom-name', data.new_name);
+                        var promId = row.getAttribute('data-prom-id');
+                        var siblings = promId && matchTable
+                            ? matchTable.querySelectorAll('tr[data-prom-id="' + promId + '"]')
+                            : [row];
+                        siblings.forEach(function (r) {
+                            var promCell = r.querySelector('.prom-name-cell');
+                            if (promCell) promCell.textContent = data.new_name;
+                            r.setAttribute('data-prom-name', data.new_name);
+                        });
                     }
                     // Build diff message showing old → new name
                     var msg = '<strong>Матч підтверджено + назву оновлено</strong><br>';
@@ -469,12 +475,16 @@
                     // Reflect the new UA name in the row of the match table so
                     // the operator immediately sees the fix without a reload.
                     if (data.updated && 'name' in data.updated && matchTable) {
-                        var row = matchTable.querySelector('tr[data-match-id="' + matchId + '"]');
-                        if (row) {
-                            var promCell = row.querySelector('.prom-name-cell');
+                        var currentRow = matchTable.querySelector('tr[data-match-id="' + matchId + '"]');
+                        var promId = currentRow ? currentRow.getAttribute('data-prom-id') : null;
+                        var rowsToUpdate = promId
+                            ? matchTable.querySelectorAll('tr[data-prom-id="' + promId + '"]')
+                            : (currentRow ? [currentRow] : []);
+                        rowsToUpdate.forEach(function (r) {
+                            var promCell = r.querySelector('.prom-name-cell');
                             if (promCell) promCell.textContent = data.updated.name;
-                            row.setAttribute('data-prom-name', data.updated.name);
-                        }
+                            r.setAttribute('data-prom-name', data.updated.name);
+                        });
                     }
                 })
                 .catch(function (err) {

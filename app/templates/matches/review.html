@@ -133,6 +133,7 @@
             <tbody>
                 {% for match in matches %}
                 <tr data-match-id="{{ match.id }}"
+                    data-prom-id="{{ match.prom_product.id }}"
                     data-supplier-id="{{ match.supplier_product.id }}"
                     data-supplier-name="{{ match.supplier_product.name }}"
                     data-supplier-brand="{{ match.supplier_product.brand or '' }}"
