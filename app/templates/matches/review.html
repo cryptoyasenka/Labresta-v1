@@ -247,7 +247,7 @@
                             Отклонить
                         </button>
                         {% endif %}
-                        {% if match.status == 'confirmed' %}
+                        {% if match.status in ('confirmed', 'manual') %}
                         <button class="btn btn-sm btn-outline-warning unconfirm-btn" data-id="{{ match.id }}"
                                 title="Вернуть матч в статус кандидата (если подтвердили по ошибке)">
                             Отменить матч
