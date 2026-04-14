@@ -80,7 +80,7 @@ def regenerate_yml_feed() -> dict:
         if price_valid:
             price_eur = calculate_price_eur(sp.price_cents, effective_discount)
         else:
-            price_eur = 0
+            price_eur = 0.0
 
         avail_str = "true" if is_available else "false"
         offer = etree.SubElement(
@@ -94,7 +94,7 @@ def regenerate_yml_feed() -> dict:
             etree.SubElement(offer, "name_ru").text = pp.name_ru
         if pp.page_url:
             etree.SubElement(offer, "url").text = pp.page_url
-        etree.SubElement(offer, "price").text = str(price_eur)
+        etree.SubElement(offer, "price").text = f"{price_eur:.1f}"
         etree.SubElement(offer, "currencyId").text = "EUR"
 
         # Horoshop matches existing products by artikul; its YML import can be

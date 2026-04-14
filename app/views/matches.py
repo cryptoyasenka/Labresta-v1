@@ -484,7 +484,7 @@ def bulk_action():
     action = data.get("action")
     ids = data.get("ids", [])
 
-    if action not in ("confirm", "reject"):
+    if action not in ("confirm", "reject", "recalc_discount"):
         return jsonify({"status": "error", "message": "Invalid action"}), 400
 
     if not ids:
@@ -512,6 +512,18 @@ def bulk_action():
             )
             if new_match:
                 db.session.add(new_match)
+            processed += 1
+        elif action == "recalc_discount":
+            if match.status not in ("confirmed", "manual"):
+                continue
+            sp = match.supplier_product
+            if not sp or not sp.price_cents or sp.price_cents <= 0:
+                continue
+            rate = (sp.supplier.eur_rate_uah or 51.15) if sp.supplier else 51.15
+            from app.services.pricing import calculate_auto_discount
+            new_d = float(calculate_auto_discount(sp.price_cents, rate))
+            if match.discount_percent != new_d:
+                match.discount_percent = new_d
             processed += 1
 
     log_action(f"bulk_{action}",

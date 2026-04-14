@@ -778,10 +778,11 @@ def run_matching_for_supplier(supplier_id: int) -> int:
         db.session.execute(matched_ids_query).scalars().all()
     )
 
-    # Step 2: Get unmatched, available supplier products
+    # Step 2: Get unmatched supplier products (including unavailable — they may
+    # come back in stock, and we want the catalog match ready in advance).
+    # YML generator keeps unavailable items as available="false" in the feed.
     sp_query = select(SupplierProduct).where(
         SupplierProduct.supplier_id == supplier_id,
-        SupplierProduct.available == True,  # noqa: E712
         SupplierProduct.id.notin_(matched_ids) if matched_ids else True,
     )
     unmatched_products = db.session.execute(sp_query).scalars().all()

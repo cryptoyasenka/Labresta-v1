@@ -44,11 +44,11 @@ def apply_match_rules(supplier_id: int) -> int:
     )
     confirmed_ids = set(db.session.execute(confirmed_ids_query).scalars().all())
 
-    # 3. Get eligible supplier products (available, not already confirmed/manual)
+    # 3. Get eligible supplier products (not already confirmed/manual).
+    # Include unavailable — match stays valid when stock returns.
     eligible_products = db.session.execute(
         select(SupplierProduct).where(
             SupplierProduct.supplier_id == supplier_id,
-            SupplierProduct.available == True,  # noqa: E712
             SupplierProduct.id.not_in(confirmed_ids) if confirmed_ids else True,
         )
     ).scalars().all()

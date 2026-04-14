@@ -10,6 +10,7 @@ class Supplier(db.Model):
     name = db.Column(db.String(200), nullable=False)
     feed_url = db.Column(db.String(500), nullable=True)
     discount_percent = db.Column(db.Float, default=0.0)  # e.g. 15.0 for 15%
+    eur_rate_uah = db.Column(db.Float, default=51.15, server_default="51.15")  # used for min-margin calc
     column_mapping = db.Column(db.Text, nullable=True)  # JSON: {"header_row": int, "columns": {col_idx: field}}
     is_enabled = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))

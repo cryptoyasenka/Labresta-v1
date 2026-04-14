@@ -17,6 +17,7 @@
     var selectedCountEl = document.getElementById('selectedCount');
     var bulkConfirmBtn = document.getElementById('bulkConfirmBtn');
     var bulkRejectBtn = document.getElementById('bulkRejectBtn');
+    var bulkRecalcDiscountBtn = document.getElementById('bulkRecalcDiscountBtn');
     var matchTable = document.getElementById('matchTable');
     var filterForm = document.getElementById('filterForm');
     var diffToggleBtn = document.getElementById('diffToggleBtn');
@@ -45,6 +46,7 @@
         if (selectedCountEl) selectedCountEl.textContent = selectedIds.size;
         if (bulkConfirmBtn) bulkConfirmBtn.disabled = selectedIds.size === 0;
         if (bulkRejectBtn) bulkRejectBtn.disabled = selectedIds.size === 0;
+        if (bulkRecalcDiscountBtn) bulkRecalcDiscountBtn.disabled = selectedIds.size === 0;
     }
 
     if (selectAllCb) {
@@ -514,14 +516,16 @@
 
     function doBulkAction(action) {
         var ids = Array.from(selectedIds);
-        var msg = action === 'confirm'
-            ? 'Подтвердить ' + ids.length + ' матчей?'
-            : 'Отклонить ' + ids.length + ' матчей?';
+        var msg;
+        if (action === 'confirm') msg = 'Подтвердить ' + ids.length + ' матчей?';
+        else if (action === 'reject') msg = 'Отклонить ' + ids.length + ' матчей?';
+        else if (action === 'recalc_discount') msg = 'Пересчитать скидку для ' + ids.length + ' матчей (по формуле мин. маржа 500 грн)?';
 
         if (!confirmAction(msg)) return;
 
         if (bulkConfirmBtn) bulkConfirmBtn.disabled = true;
         if (bulkRejectBtn) bulkRejectBtn.disabled = true;
+        if (bulkRecalcDiscountBtn) bulkRecalcDiscountBtn.disabled = true;
 
         fetchWithCSRF('/matches/bulk-action', {
             method: 'POST',
@@ -554,6 +558,12 @@
     if (bulkRejectBtn) {
         bulkRejectBtn.addEventListener('click', function () {
             doBulkAction('reject');
+        });
+    }
+
+    if (bulkRecalcDiscountBtn) {
+        bulkRecalcDiscountBtn.addEventListener('click', function () {
+            doBulkAction('recalc_discount');
         });
     }
 
