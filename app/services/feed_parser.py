@@ -127,10 +127,20 @@ def save_supplier_products(products: list[dict]) -> dict:
                     existing.currency = p["currency"]
                 existing.available = p["available"]
                 existing.last_seen_at = now
-                existing.description = p.get("description")
-                existing.image_url = p.get("image_url")
-                existing.images = p.get("images")
-                existing.params = p.get("params")
+                # Preserve existing optional fields when the feed omits them —
+                # a partial/broken feed dropping a field should not wipe data.
+                new_description = p.get("description")
+                if new_description:
+                    existing.description = new_description
+                new_image_url = p.get("image_url")
+                if new_image_url:
+                    existing.image_url = new_image_url
+                new_images = p.get("images")
+                if new_images:
+                    existing.images = new_images
+                new_params = p.get("params")
+                if new_params:
+                    existing.params = new_params
                 updated += 1
             else:
                 new_product = SupplierProduct(
