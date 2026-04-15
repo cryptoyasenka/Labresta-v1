@@ -871,3 +871,30 @@ class TestRebindEndpoint:
         )
         assert entry is not None
         assert entry.prom_product_id == match.prom_product_id
+
+
+class TestRebindUIRender:
+    """Phase E UI — review page renders rebind button + modal."""
+
+    def test_rebind_button_on_confirmed_match(self, client, db):
+        _seed_confirmed_match(db.session, status="confirmed")
+        resp = client.get("/matches/?status=confirmed")
+        assert resp.status_code == 200
+        body = resp.data.decode("utf-8")
+        assert "rebind-btn" in body
+        assert "Переподвязать" in body
+        assert 'id="rebindModal"' in body
+
+    def test_rebind_button_on_manual_match(self, client, db):
+        _seed_confirmed_match(db.session, status="manual")
+        resp = client.get("/matches/?status=manual")
+        assert resp.status_code == 200
+        assert "rebind-btn" in resp.data.decode("utf-8")
+
+    def test_no_rebind_button_on_candidate(self, client, db):
+        _seed_confirmed_match(db.session, status="candidate")
+        resp = client.get("/matches/?status=candidate")
+        assert resp.status_code == 200
+        body = resp.data.decode("utf-8")
+        # Modal HTML is always present on the page; the per-row button isn't.
+        assert "rebind-btn" not in body

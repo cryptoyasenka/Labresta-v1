@@ -1409,6 +1409,237 @@
         }, 3000);
     }
 
+    // ========== Rebind modal (Phase E) ==========
+
+    var rebindModal = null;
+    var rebindModalEl = document.getElementById('rebindModal');
+    if (rebindModalEl) {
+        rebindModal = new bootstrap.Modal(rebindModalEl);
+    }
+    var rebindSearchTimer = null;
+
+    function openRebindModal(btn) {
+        var matchId = btn.getAttribute('data-match-id');
+        var oldSpName = btn.getAttribute('data-old-sp-name');
+        var oldSupplier = btn.getAttribute('data-old-supplier');
+        var ppName = btn.getAttribute('data-pp-name');
+        var ppBrand = btn.getAttribute('data-pp-brand') || '';
+
+        document.getElementById('rebindMatchId').value = matchId;
+        document.getElementById('rebindPpBrand').value = ppBrand;
+        document.getElementById('rebindNewSpId').value = '';
+        document.getElementById('rebindPpName').textContent = ppName;
+        document.getElementById('rebindOldSupplier').textContent = oldSupplier || '—';
+        document.getElementById('rebindOldSpName').textContent = oldSpName;
+        document.getElementById('rebindSearchInput').value = '';
+        document.getElementById('rebindResultsList').innerHTML = '';
+        document.getElementById('rebindSearchPlaceholder').style.display = '';
+        document.getElementById('rebindSelectedAlert').classList.add('d-none');
+        document.getElementById('rebindDiff').innerHTML = '';
+        var fb = document.getElementById('rebindFeedback');
+        fb.className = 'alert d-none mb-0';
+        fb.textContent = '';
+        var submit = document.getElementById('submitRebind');
+        submit.disabled = true;
+        submit.textContent = 'Переподвязать';
+
+        if (rebindModal) rebindModal.show();
+    }
+
+    document.addEventListener('click', function (e) {
+        var btn = e.target.closest('.rebind-btn');
+        if (!btn) return;
+        openRebindModal(btn);
+    });
+
+    function showRebindFeedback(msg, kind) {
+        var el = document.getElementById('rebindFeedback');
+        if (!el) return;
+        el.textContent = msg;
+        el.className = 'alert mb-0 alert-' + (kind || 'info');
+    }
+
+    function renderRebindResults(items) {
+        var list = document.getElementById('rebindResultsList');
+        var placeholder = document.getElementById('rebindSearchPlaceholder');
+        var currentMatchId = parseInt(document.getElementById('rebindMatchId').value, 10);
+        var targetPpBrand = (document.getElementById('rebindPpBrand').value || '').toLowerCase();
+
+        if (!items.length) {
+            placeholder.style.display = '';
+            placeholder.textContent = 'Ничего не найдено';
+            list.innerHTML = '';
+            return;
+        }
+        placeholder.style.display = 'none';
+
+        var html = '';
+        items.forEach(function (sp) {
+            var brandMatch = sp.brand && targetPpBrand && sp.brand.toLowerCase() === targetPpBrand;
+            var brandBadge = sp.brand
+                ? '<span class="badge ' + (brandMatch ? 'bg-success' : 'bg-warning text-dark') + ' me-1">' + escapeHtml(sp.brand) + '</span>'
+                : '';
+            var claimLabel = '';
+            if (sp.active_match_id && sp.active_match_id !== currentMatchId) {
+                claimLabel = '<span class="badge bg-danger ms-1" title="Этот товар уже подтверждён на другой каталог — сначала отмените тот матч">уже матч #' + sp.active_match_id + '</span>';
+            }
+            var availBadge = sp.available
+                ? '<span class="badge bg-success-subtle text-success">В наличии</span>'
+                : '<span class="badge bg-secondary-subtle text-muted">Нет</span>';
+
+            html += '<a href="#" class="list-group-item list-group-item-action rebind-result-item" ' +
+                'data-sp-id="' + sp.id + '" ' +
+                'data-sp-name="' + escapeHtml(sp.name) + '" ' +
+                'data-sp-brand="' + escapeHtml(sp.brand) + '" ' +
+                'data-sp-supplier="' + escapeHtml(sp.supplier_name) + '" ' +
+                'data-sp-claimed="' + (sp.active_match_id && sp.active_match_id !== currentMatchId ? '1' : '0') + '">' +
+                '<div class="d-flex justify-content-between align-items-start">' +
+                '  <div class="me-2" style="min-width:0">' +
+                '    <div class="text-truncate"><strong>' + escapeHtml(sp.name) + '</strong></div>' +
+                '    <small class="text-muted">' + brandBadge +
+                     escapeHtml(sp.supplier_name) +
+                     (sp.article ? ' · арт. ' + escapeHtml(sp.article) : '') +
+                     claimLabel +
+                '    </small>' +
+                '  </div>' +
+                '  <div class="text-end small flex-shrink-0">' +
+                '    <div>' + (sp.price_eur ? escapeHtml(sp.price_eur) + ' EUR' : '—') + '</div>' +
+                '    <div>' + availBadge + '</div>' +
+                '  </div>' +
+                '</div>' +
+                '</a>';
+        });
+        list.innerHTML = html;
+    }
+
+    var rebindSearchInput = document.getElementById('rebindSearchInput');
+    if (rebindSearchInput) {
+        rebindSearchInput.addEventListener('input', function () {
+            var q = this.value.trim();
+            if (rebindSearchTimer) clearTimeout(rebindSearchTimer);
+            if (q.length < 2) {
+                document.getElementById('rebindResultsList').innerHTML = '';
+                var ph = document.getElementById('rebindSearchPlaceholder');
+                ph.style.display = '';
+                ph.textContent = 'Введите запрос для поиска товаров поставщиков';
+                return;
+            }
+            rebindSearchTimer = setTimeout(function () {
+                fetch('/matches/search-suppliers?q=' + encodeURIComponent(q))
+                    .then(function (r) {
+                        if (!r.ok) throw new Error('HTTP ' + r.status);
+                        return r.json();
+                    })
+                    .then(renderRebindResults)
+                    .catch(function (err) {
+                        document.getElementById('rebindResultsList').innerHTML =
+                            '<p class="text-danger text-center p-2">Ошибка поиска: ' + err.message + '</p>';
+                    });
+            }, 300);
+        });
+    }
+
+    document.addEventListener('click', function (e) {
+        var item = e.target.closest('.rebind-result-item');
+        if (!item) return;
+        e.preventDefault();
+
+        if (item.getAttribute('data-sp-claimed') === '1') {
+            showRebindFeedback(
+                'Этот товар уже подтверждён на другой каталог. Сначала отмените тот матч в списке.',
+                'warning'
+            );
+            return;
+        }
+
+        var spId = item.getAttribute('data-sp-id');
+        var spName = item.getAttribute('data-sp-name');
+        var spBrand = item.getAttribute('data-sp-brand');
+        var spSupplier = item.getAttribute('data-sp-supplier');
+        var targetBrand = document.getElementById('rebindPpBrand').value || '';
+
+        document.getElementById('rebindNewSpId').value = spId;
+        document.getElementById('rebindSelectedName').textContent = spName + ' (' + spSupplier + ')';
+
+        var diffHtml = '';
+        if (spBrand && targetBrand) {
+            var same = spBrand.toLowerCase() === targetBrand.toLowerCase();
+            diffHtml = 'Бренд поставщика: <strong>' + escapeHtml(spBrand) + '</strong> ' +
+                (same
+                    ? '<span class="badge bg-success">совпадает с каталогом</span>'
+                    : '<span class="badge bg-warning text-dark">отличается от каталога (' + escapeHtml(targetBrand) + ')</span>');
+        } else if (spBrand) {
+            diffHtml = 'Бренд поставщика: <strong>' + escapeHtml(spBrand) + '</strong>';
+        } else {
+            diffHtml = '<span class="text-muted">Бренд поставщика не указан</span>';
+        }
+        document.getElementById('rebindDiff').innerHTML = diffHtml;
+        document.getElementById('rebindSelectedAlert').classList.remove('d-none');
+        document.getElementById('submitRebind').disabled = false;
+
+        var list = document.getElementById('rebindResultsList');
+        list.querySelectorAll('.list-group-item').forEach(function (li) { li.classList.remove('active'); });
+        item.classList.add('active');
+    });
+
+    var rebindClearBtn = document.getElementById('rebindClearSelected');
+    if (rebindClearBtn) {
+        rebindClearBtn.addEventListener('click', function () {
+            document.getElementById('rebindNewSpId').value = '';
+            document.getElementById('rebindSelectedAlert').classList.add('d-none');
+            document.getElementById('submitRebind').disabled = true;
+            var list = document.getElementById('rebindResultsList');
+            if (list) {
+                list.querySelectorAll('.list-group-item').forEach(function (li) { li.classList.remove('active'); });
+            }
+        });
+    }
+
+    var submitRebindBtn = document.getElementById('submitRebind');
+    if (submitRebindBtn) {
+        submitRebindBtn.addEventListener('click', function () {
+            var matchId = document.getElementById('rebindMatchId').value;
+            var newSpId = document.getElementById('rebindNewSpId').value;
+            if (!matchId || !newSpId) {
+                showRebindFeedback('Выберите нового поставщика из списка', 'warning');
+                return;
+            }
+            submitRebindBtn.disabled = true;
+            submitRebindBtn.textContent = 'Сохранение...';
+            showRebindFeedback('Отправка запроса...', 'info');
+
+            fetchWithCSRF('/matches/' + matchId + '/rebind', {
+                method: 'POST',
+                body: JSON.stringify({ new_supplier_product_id: parseInt(newSpId, 10) })
+            })
+                .then(function (resp) {
+                    return resp.json().then(function (data) {
+                        return { ok: resp.ok, status: resp.status, data: data };
+                    });
+                })
+                .then(function (r) {
+                    if (!r.ok) {
+                        submitRebindBtn.disabled = false;
+                        submitRebindBtn.textContent = 'Переподвязать';
+                        showRebindFeedback(r.data.message || ('HTTP ' + r.status), 'danger');
+                        return;
+                    }
+                    submitRebindBtn.textContent = '✓ Сохранено';
+                    showRebindFeedback(
+                        '✓ Переподвязано. Старый матч #' + r.data.old_match_id +
+                        ' → новый матч #' + r.data.new_match_id + '. Страница обновится...',
+                        'success'
+                    );
+                    setTimeout(function () { window.location.reload(); }, 1500);
+                })
+                .catch(function (err) {
+                    submitRebindBtn.disabled = false;
+                    submitRebindBtn.textContent = 'Переподвязать';
+                    showRebindFeedback('Ошибка: ' + err.message, 'danger');
+                });
+        });
+    }
+
     // Save on filter/pagination changes
     if (filterForm) {
         filterForm.addEventListener('change', scheduleSave);

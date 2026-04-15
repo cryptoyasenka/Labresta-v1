@@ -310,6 +310,15 @@
                             Вернуть в фид
                         </button>
                         {% endif %}
+                        <button class="btn btn-sm btn-outline-secondary rebind-btn"
+                                data-match-id="{{ match.id }}"
+                                data-old-sp-name="{{ match.supplier_product.name }}"
+                                data-old-supplier="{{ match.supplier_product.supplier.name if match.supplier_product.supplier else '' }}"
+                                data-pp-name="{{ match.prom_product.name }}"
+                                data-pp-brand="{{ match.prom_product.brand or '' }}"
+                                title="Переподвязать этот товар каталога на другого поставщика">
+                            Переподвязать
+                        </button>
                         {% endif %}
                         <button class="btn btn-sm btn-outline-info details-btn" data-id="{{ match.id }}"
                                 title="Сравнить детали: фото, характеристики">
@@ -491,6 +500,67 @@
      data-supplier-available="{{ 'true' if auto_manual_sp.available else 'false' }}"
      style="display:none"></div>
 {% endif %}
+
+<!-- Rebind Modal (Phase E) -->
+<div class="modal fade" id="rebindModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Переподвязать матч</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card mb-3">
+                    <div class="card-body py-2">
+                        <h6 class="card-title text-muted mb-2">Текущий матч</h6>
+                        <div class="small">
+                            <div><strong>Каталог:</strong> <span id="rebindPpName"></span></div>
+                            <div class="text-muted">
+                                Поставщик: <span id="rebindOldSupplier"></span> —
+                                <span id="rebindOldSpName"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="rebindSearchInput" class="form-label">Новый товар поставщика</label>
+                    <input type="text" class="form-control" id="rebindSearchInput"
+                           placeholder="Поиск по названию / артикулу / external_id / бренду (минимум 2 символа)..."
+                           autocomplete="off">
+                </div>
+
+                <div id="rebindSearchResults" class="mb-3" style="max-height: 320px; overflow-y: auto;">
+                    <p class="text-muted text-center" id="rebindSearchPlaceholder">
+                        Введите запрос для поиска товаров поставщиков
+                    </p>
+                    <div class="list-group" id="rebindResultsList"></div>
+                </div>
+
+                <div class="alert alert-info d-none" id="rebindSelectedAlert">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <strong>Выбран:</strong> <span id="rebindSelectedName"></span>
+                            <div class="small mt-1" id="rebindDiff"></div>
+                        </div>
+                        <button type="button" class="btn-close" id="rebindClearSelected"></button>
+                    </div>
+                </div>
+
+                <div id="rebindFeedback" class="alert d-none mb-0" role="alert"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-primary" id="submitRebind" disabled>
+                    Переподвязать
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="rebindMatchId" value="">
+<input type="hidden" id="rebindPpBrand" value="">
+<input type="hidden" id="rebindNewSpId" value="">
 
 <!-- Details Comparison Modal -->
 <div class="modal fade" id="detailsModal" tabindex="-1">
