@@ -5,6 +5,7 @@
 
 {% set filter_params = {
     'supplier_id': supplier_id or '',
+    'brand': brand,
     'available': available,
     'needs_review': needs_review,
     'match_state': match_state,
@@ -13,6 +14,7 @@
 } %}
 {% set page_params = {
     'supplier_id': supplier_id or '',
+    'brand': brand,
     'available': available,
     'needs_review': needs_review,
     'match_state': match_state,
@@ -36,6 +38,15 @@
             <option value="">Все</option>
             {% for s in suppliers %}
             <option value="{{ s.id }}" {% if supplier_id == s.id %}selected{% endif %}>{{ s.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-auto">
+        <label class="form-label small mb-0">Бренд</label>
+        <select name="brand" class="form-select form-select-sm">
+            <option value="">Все</option>
+            {% for b in brands %}
+            <option value="{{ b }}" {% if brand == b %}selected{% endif %}>{{ b }}</option>
             {% endfor %}
         </select>
     </div>
@@ -79,7 +90,7 @@
         <div class="input-group input-group-sm">
             <input type="text" class="form-control" name="search" value="{{ search }}" placeholder="Название товара...">
             <button type="submit" class="btn btn-outline-secondary">Найти</button>
-            {% if search or supplier_id or available != 'all' or needs_review != 'all' %}
+            {% if search or supplier_id or brand or available != 'all' or needs_review != 'all' %}
             <a href="{{ url_for('products.supplier_list') }}" class="btn btn-outline-danger">Сбросить</a>
             {% endif %}
         </div>

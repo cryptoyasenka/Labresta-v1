@@ -54,6 +54,7 @@ def supplier_list():
     available_filter = request.args.get("available", "all")
     needs_review_filter = request.args.get("needs_review", "all")
     match_filter = request.args.get("match_state", "all")
+    brand_filter = request.args.get("brand", "").strip()
     show_deleted = request.args.get("show_deleted", "false") == "true"
 
     query = select(SupplierProduct)
@@ -64,6 +65,8 @@ def supplier_list():
 
     if supplier_id:
         query = query.where(SupplierProduct.supplier_id == supplier_id)
+    if brand_filter:
+        query = query.where(SupplierProduct.brand == brand_filter)
     if available_filter == "yes":
         query = query.where(SupplierProduct.available == True)  # noqa: E712
     elif available_filter == "no":
@@ -127,6 +130,18 @@ def supplier_list():
         select(Supplier).order_by(Supplier.name)
     ).scalars().all()
 
+    # Distinct brands for dropdown (scoped to selected supplier when provided)
+    brands_q = (
+        select(SupplierProduct.brand)
+        .where(SupplierProduct.brand.isnot(None))
+        .where(SupplierProduct.brand != "")
+    )
+    if supplier_id:
+        brands_q = brands_q.where(SupplierProduct.supplier_id == supplier_id)
+    brands = db.session.execute(
+        brands_q.distinct().order_by(SupplierProduct.brand)
+    ).scalars().all()
+
     # Load matches for displayed SPs (priority: manual > confirmed > candidate > rejected)
     sp_ids = [p.id for p in products]
     matches_by_sp: dict[int, ProductMatch] = {}
@@ -155,6 +170,8 @@ def supplier_list():
         "products/supplier.html",
         products=products,
         suppliers=suppliers,
+        brands=brands,
+        brand=brand_filter,
         matches_by_sp=matches_by_sp,
         pp_by_id=pp_by_id,
         total=total,
