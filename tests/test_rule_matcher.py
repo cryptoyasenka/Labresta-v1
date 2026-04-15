@@ -263,3 +263,49 @@ class TestApplyMatchRules:
 
         assert count == 0
         assert ProductMatch.query.count() == 1
+
+    def test_claimed_pp_in_first_rule_does_not_block_second_rule(self, session):
+        """If the first matching rule targets a claimed pp, remaining rules must still run.
+
+        Regression: the claimed-pp branch used `break` which exited the rule loop,
+        so a second rule (e.g. same name_pattern, different brand filter, different
+        target pp) was never evaluated. With `continue` the second rule can confirm.
+        """
+        from app.services.rule_matcher import apply_match_rules
+
+        supplier = _make_supplier(session)
+
+        pp1 = _make_prom_product(session, "Prom Target 1")
+        pp2 = _make_prom_product(session, "Prom Target 2")
+
+        # pp1 is already claimed by a different supplier product (different name)
+        other_sp = _make_supplier_product(session, supplier, "Other Product", brand="BrandA")
+        session.add(ProductMatch(
+            supplier_product_id=other_sp.id,
+            prom_product_id=pp1.id,
+            score=100.0,
+            status="confirmed",
+            confirmed_by="human",
+            confirmed_at=datetime.now(timezone.utc),
+        ))
+
+        # Target sp — name "Widget Alpha", brand "BrandB"
+        sp = _make_supplier_product(session, supplier, "Widget Alpha", brand="BrandB")
+
+        # Rule 1 matches on name (brand=None → any brand) but targets claimed pp1
+        _make_rule(session, "Widget Alpha", pp1.id, brand=None)
+        # Rule 2 matches on name + brand="BrandB" and targets free pp2
+        _make_rule(session, "Widget Alpha", pp2.id, brand="BrandB")
+        session.commit()
+
+        count = apply_match_rules(supplier.id)
+
+        # Rule 2 must fire even though Rule 1 bailed on a claimed pp
+        assert count == 1
+        confirmed = ProductMatch.query.filter_by(
+            supplier_product_id=sp.id,
+            prom_product_id=pp2.id,
+        ).first()
+        assert confirmed is not None
+        assert confirmed.status == "confirmed"
+        assert confirmed.confirmed_by.startswith("rule:")

@@ -88,7 +88,9 @@ def apply_match_rules(supplier_id: int) -> int:
 
             # Skip if the prom product is already claimed by a DIFFERENT sp —
             # enforces 1:1 invariant. Leave the pair as a candidate so the
-            # operator sees the collision and can unconfirm the other side.
+            # operator sees the collision and can unconfirm the other side,
+            # then continue evaluating remaining rules: another rule with the
+            # same name_pattern but different brand filter may target a free pp.
             if rule.prom_product_id in claimed_pp_ids:
                 existing_for_pair = ProductMatch.query.filter_by(
                     supplier_product_id=sp.id,
@@ -105,7 +107,7 @@ def apply_match_rules(supplier_id: int) -> int:
                     "Rule id=%d: pp#%d already claimed, leaving sp#%d as candidate",
                     rule.id, rule.prom_product_id, sp.id,
                 )
-                break
+                continue
 
             # Check for existing match with same pair
             existing = ProductMatch.query.filter_by(
