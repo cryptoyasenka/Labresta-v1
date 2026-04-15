@@ -1,6 +1,5 @@
-claude-acc1.bat
-claude-acc2.bat
-claude-acc3.bat
+# Claude account-switcher scripts (any variant)
+claude-acc*.bat
 
 # Python
 __pycache__/
@@ -23,3 +22,18 @@ backups/
 
 # uv
 .venv/
+
+# Claude Code local config
+.claude/
+
+# Local reports / audit dumps
+reports/
+
+# Windows redirect artefact
+nul
+
+# Supplier price-list files (live in repo root for convenience, not tracked)
+*.xls
+*.xlsx
+*.XLSX
+*.pdf
