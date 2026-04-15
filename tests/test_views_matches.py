@@ -452,3 +452,72 @@ class TestPpClaimInvariant:
         db.session.commit()
         resp = client.post(f"/matches/{m.id}/confirm")
         assert resp.status_code == 200
+
+
+class TestUnpublishRepublishEndpoints:
+    """Phase C — toggle ProductMatch.published without losing the match row."""
+
+    def test_unpublish_sets_published_false(self, client, db):
+        m, _, _ = _seed_confirmed_match(db.session, status="confirmed")
+        m.published = True
+        m.in_feed = True
+        db.session.commit()
+        mid = m.id
+
+        resp = client.post(f"/matches/{mid}/unpublish")
+        assert resp.status_code == 200
+        body = resp.get_json()
+        assert body["status"] == "ok"
+        assert body["published"] is False
+
+        refreshed = db.session.get(ProductMatch, mid)
+        assert refreshed.published is False
+        assert refreshed.in_feed is False
+        assert refreshed.status == "confirmed"  # match row preserved
+
+    def test_unpublish_idempotent(self, client, db):
+        m, _, _ = _seed_confirmed_match(db.session, status="confirmed")
+        m.published = False
+        db.session.commit()
+
+        resp = client.post(f"/matches/{m.id}/unpublish")
+        assert resp.status_code == 200
+        assert resp.get_json().get("already") is True
+
+    def test_republish_sets_published_true(self, client, db):
+        m, _, _ = _seed_confirmed_match(db.session, status="confirmed")
+        m.published = False
+        db.session.commit()
+
+        resp = client.post(f"/matches/{m.id}/republish")
+        assert resp.status_code == 200
+        assert resp.get_json()["published"] is True
+
+        refreshed = db.session.get(ProductMatch, m.id)
+        assert refreshed.published is True
+
+    def test_unpublish_rejected_match_returns_400(self, client, db):
+        m, _, _ = _seed_confirmed_match(db.session, status="confirmed")
+        m.status = "rejected"
+        db.session.commit()
+        resp = client.post(f"/matches/{m.id}/unpublish")
+        assert resp.status_code == 400
+
+    def test_unpublish_missing_returns_404(self, client, db):
+        resp = client.post("/matches/99999/unpublish")
+        assert resp.status_code == 404
+
+
+class TestRegenerateFeedEndpoint:
+    def test_regenerate_returns_stats(self, client, db, app, tmp_path):
+        _seed_confirmed_match(db.session, status="confirmed")
+        app.config["YML_OUTPUT_DIR"] = str(tmp_path)
+        app.config["YML_FILENAME"] = "regen-test.yml"
+
+        resp = client.post("/matches/regenerate-feed")
+        assert resp.status_code == 200
+        body = resp.get_json()
+        assert body["status"] == "ok"
+        assert body["total"] == 1
+        assert "available" in body
+        assert "path" in body

@@ -88,6 +88,12 @@
         Пересчитать скидку
     </button>
     <span class="mx-2 text-muted">|</span>
+    <button type="button" class="btn btn-sm btn-primary" id="regenerateFeedBtn"
+            title="Пересобрать labresta-feed.yml из текущих подтверждённых матчей (published=True)">
+        Обновить фид
+    </button>
+    <span id="regenerateFeedStatus" class="small text-muted"></span>
+    <span class="mx-2 text-muted">|</span>
     <button type="button" class="btn btn-sm btn-outline-info" id="diffToggleBtn"
             title="Подсветить отличия между названием поставщика и каталога Horoshop">
         Різниця в назвах
@@ -285,6 +291,17 @@
                                 title="Вернуть матч в статус кандидата (если подтвердили по ошибке)">
                             Отменить матч
                         </button>
+                        {% if match.published %}
+                        <button class="btn btn-sm btn-outline-dark unpublish-btn" data-id="{{ match.id }}"
+                                title="Снять с фида (оставить матч в БД, убрать из labresta-feed.yml)">
+                            Снять с фида
+                        </button>
+                        {% else %}
+                        <button class="btn btn-sm btn-dark republish-btn" data-id="{{ match.id }}"
+                                title="Вернуть в фид — на следующем «Обновить фид» попадёт в YML">
+                            Вернуть в фид
+                        </button>
+                        {% endif %}
                         {% endif %}
                         <button class="btn btn-sm btn-outline-info details-btn" data-id="{{ match.id }}"
                                 title="Сравнить детали: фото, характеристики">

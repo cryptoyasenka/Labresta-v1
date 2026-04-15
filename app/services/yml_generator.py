@@ -34,10 +34,15 @@ def regenerate_yml_feed() -> dict:
     Returns:
         Dict with stats: total, available, unavailable, path.
     """
-    # Query confirmed matches with all related data
+    # Query confirmed matches with all related data.
+    # published=False is a per-row unpublish toggle (phase C) — operator can
+    # keep the match row in the DB but exclude it from the feed.
     stmt = (
         select(ProductMatch)
-        .where(ProductMatch.status.in_(["confirmed", "manual"]))
+        .where(
+            ProductMatch.status.in_(["confirmed", "manual"]),
+            ProductMatch.published.is_(True),
+        )
         .options(
             joinedload(ProductMatch.supplier_product).joinedload(
                 SupplierProduct.supplier
@@ -46,6 +51,7 @@ def regenerate_yml_feed() -> dict:
         )
     )
     matches = db.session.execute(stmt).scalars().unique().all()
+    included_match_ids = {m.id for m in matches}
 
     # Build YML XML
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
@@ -148,8 +154,21 @@ def regenerate_yml_feed() -> dict:
             pass
         raise
 
+    # Mark in_feed flag: True for included matches, False for the rest.
+    # One bulk UPDATE per side — avoid per-row session.add.
+    now_utc = datetime.now(timezone.utc)
+    if included_match_ids:
+        db.session.query(ProductMatch).filter(
+            ProductMatch.id.in_(included_match_ids)
+        ).update({"in_feed": True}, synchronize_session=False)
+    db.session.query(ProductMatch).filter(
+        ~ProductMatch.id.in_(included_match_ids) if included_match_ids else db.true()
+    ).update({"in_feed": False}, synchronize_session=False)
+    db.session.commit()
+
     logger.info(
-        "YML feed generated: %d offers (%d available, %d unavailable) -> %s",
+        "YML feed generated at %s: %d offers (%d available, %d unavailable) -> %s",
+        now_utc.isoformat(),
         total,
         available_count,
         unavailable_count,

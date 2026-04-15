@@ -171,6 +171,18 @@
                 return;
             }
 
+            // Handle unpublish / republish (phase C — keep match, toggle feed inclusion)
+            if (e.target.closest('.unpublish-btn')) {
+                e.stopPropagation();
+                handleFeedToggle(e.target.closest('.unpublish-btn'), 'unpublish');
+                return;
+            }
+            if (e.target.closest('.republish-btn')) {
+                e.stopPropagation();
+                handleFeedToggle(e.target.closest('.republish-btn'), 'republish');
+                return;
+            }
+
             var btn = e.target.closest('.confirm-btn, .reject-btn');
             if (!btn) {
                 // Click on row (not on buttons) -- show detail panel
@@ -325,6 +337,88 @@
                 showAlert('Ошибка: ' + err.message, 'danger');
                 btn.disabled = false;
             });
+    }
+
+    // ========== Feed management (phase C) ==========
+
+    function handleFeedToggle(btn, action) {
+        var matchId = btn.getAttribute('data-id');
+        var row = btn.closest('tr[data-match-id]');
+        btn.disabled = true;
+        fetchWithCSRF('/matches/' + matchId + '/' + action, { method: 'POST' })
+            .then(function (resp) {
+                return resp.json().then(function (data) {
+                    if (!resp.ok) throw new Error(data.message || 'HTTP ' + resp.status);
+                    return data;
+                });
+            })
+            .then(function (data) {
+                // Replace button with its counterpart
+                var newBtn = document.createElement('button');
+                if (action === 'unpublish') {
+                    newBtn.className = 'btn btn-sm btn-dark republish-btn';
+                    newBtn.textContent = 'Вернуть в фид';
+                    newBtn.title = 'Вернуть в фид — на следующем «Обновить фид» попадёт в YML';
+                    showAlert('Матч #' + matchId + ' снят с фида. Нажмите «Обновить фид» для пересборки YML.', 'warning');
+                } else {
+                    newBtn.className = 'btn btn-sm btn-outline-dark unpublish-btn';
+                    newBtn.textContent = 'Снять с фида';
+                    newBtn.title = 'Снять с фида (оставить матч в БД, убрать из labresta-feed.yml)';
+                    showAlert('Матч #' + matchId + ' вернётся в фид на следующем «Обновить фид».', 'info');
+                }
+                newBtn.setAttribute('data-id', matchId);
+                btn.parentNode.replaceChild(newBtn, btn);
+
+                // Update «В фиде» cell immediately
+                if (row) {
+                    var feedCell = row.querySelector('.in-feed-cell');
+                    if (feedCell) {
+                        if (action === 'unpublish') {
+                            feedCell.innerHTML = '<span class="badge bg-warning text-dark" title="Снят с фида">&#8856;</span>';
+                            feedCell.setAttribute('title', 'Нет в фиде (снят вручную)');
+                        } else {
+                            feedCell.innerHTML = '<span class="badge bg-secondary">&mdash;</span>';
+                            feedCell.setAttribute('title', 'Нет в фиде — нажмите «Обновить фид»');
+                        }
+                    }
+                }
+            })
+            .catch(function (err) {
+                showAlert('Ошибка: ' + err.message, 'danger');
+                btn.disabled = false;
+            });
+    }
+
+    var regenerateFeedBtn = document.getElementById('regenerateFeedBtn');
+    var regenerateFeedStatus = document.getElementById('regenerateFeedStatus');
+    if (regenerateFeedBtn) {
+        regenerateFeedBtn.addEventListener('click', function () {
+            regenerateFeedBtn.disabled = true;
+            var originalLabel = regenerateFeedBtn.textContent;
+            regenerateFeedBtn.textContent = 'Генерация...';
+            if (regenerateFeedStatus) regenerateFeedStatus.textContent = '';
+
+            fetchWithCSRF('/matches/regenerate-feed', { method: 'POST' })
+                .then(function (resp) {
+                    return resp.json().then(function (data) {
+                        if (!resp.ok) throw new Error(data.message || 'HTTP ' + resp.status);
+                        return data;
+                    });
+                })
+                .then(function (data) {
+                    var msg = 'Фид обновлён: ' + data.total + ' офферов (' +
+                              data.available + ' в наличии, ' + data.unavailable + ' нет)';
+                    if (regenerateFeedStatus) regenerateFeedStatus.textContent = msg;
+                    showAlert(msg, 'success');
+                    // Reload so in_feed column reflects new state.
+                    setTimeout(function () { window.location.reload(); }, 1200);
+                })
+                .catch(function (err) {
+                    showAlert('Ошибка регенерации фида: ' + err.message, 'danger');
+                    regenerateFeedBtn.disabled = false;
+                    regenerateFeedBtn.textContent = originalLabel;
+                });
+        });
     }
 
     // ========== Details Comparison Modal ==========

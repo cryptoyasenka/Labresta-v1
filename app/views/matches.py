@@ -427,6 +427,64 @@ def unconfirm_match(match_id):
     return jsonify({"status": "ok", "new_status": "candidate"})
 
 
+@matches_bp.route("/<int:match_id>/unpublish", methods=["POST"])
+@login_required
+def unpublish_match(match_id):
+    """Remove match from YML feed (published=False) without losing the match."""
+    match = db.get_or_404(ProductMatch, match_id)
+    if match.status not in ("confirmed", "manual"):
+        return jsonify({
+            "status": "error",
+            "message": "Снять с фида можно только подтверждённый или ручной матч",
+        }), 400
+    if not match.published:
+        return jsonify({"status": "ok", "already": True, "published": False})
+    match.published = False
+    match.in_feed = False
+    log_action("unpublish", match_id=match.id,
+               supplier_product_id=match.supplier_product_id,
+               prom_product_id=match.prom_product_id)
+    db.session.commit()
+    return jsonify({"status": "ok", "published": False, "in_feed": False})
+
+
+@matches_bp.route("/<int:match_id>/republish", methods=["POST"])
+@login_required
+def republish_match(match_id):
+    """Return match to YML feed (published=True). in_feed updates on next regen."""
+    match = db.get_or_404(ProductMatch, match_id)
+    if match.status not in ("confirmed", "manual"):
+        return jsonify({
+            "status": "error",
+            "message": "Вернуть в фид можно только подтверждённый или ручной матч",
+        }), 400
+    if match.published:
+        return jsonify({"status": "ok", "already": True, "published": True})
+    match.published = True
+    log_action("republish", match_id=match.id,
+               supplier_product_id=match.supplier_product_id,
+               prom_product_id=match.prom_product_id)
+    db.session.commit()
+    return jsonify({"status": "ok", "published": True})
+
+
+@matches_bp.route("/regenerate-feed", methods=["POST"])
+@login_required
+def regenerate_feed():
+    """Regenerate the YML feed on demand and return stats."""
+    from app.services.yml_generator import regenerate_yml_feed
+    try:
+        result = regenerate_yml_feed()
+    except Exception as exc:  # pragma: no cover — surfaced to UI
+        return jsonify({"status": "error", "message": str(exc)}), 500
+    log_action("regenerate_feed", details={
+        "total": result["total"],
+        "available": result["available"],
+        "unavailable": result["unavailable"],
+    })
+    return jsonify({"status": "ok", **result})
+
+
 @matches_bp.route("/<int:match_id>/update-prom", methods=["POST"])
 @login_required
 def update_prom_fields(match_id):

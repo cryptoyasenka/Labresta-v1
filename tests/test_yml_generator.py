@@ -234,3 +234,32 @@ class TestYmlDescriptionPropagation:
         offer = tree.find(".//offer")
         assert offer.find("description") is None
         assert offer.find("description_ru") is None
+
+
+class TestPublishFlag:
+    """Phase C — published=False excludes match from feed but keeps the row."""
+
+    def test_unpublished_match_excluded_from_feed(self, session, yml_output_dir):
+        m1 = _seed_confirmed_match(
+            session, external_id="p1", name="Включён", price_cents=10000,
+        )
+        m2 = _seed_confirmed_match(
+            session, external_id="p2", name="Выключен", price_cents=10000,
+        )
+        m2.published = False
+        session.commit()
+
+        result = regenerate_yml_feed()
+        assert result["total"] == 1
+
+        tree = etree.parse(result["path"])
+        offer_ids = [o.get("id") for o in tree.findall(".//offer")]
+        assert "p1" in offer_ids
+        assert "p2" not in offer_ids
+
+        # in_feed flag mirrors inclusion
+        session.refresh(m1)
+        session.refresh(m2)
+        assert m1.in_feed is True
+        assert m2.in_feed is False
+        assert m2.published is False  # not mutated
