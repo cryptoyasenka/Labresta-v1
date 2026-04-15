@@ -854,3 +854,67 @@ class TestSizeFractionNotModel:
         assert extract_model_from_name(
             "Диск для овочерізки Robot Coupe 28054", "Robot Coupe"
         ) == "28054"
+
+
+class TestContainmentCrossBrandPosition:
+    """Sub-brand/family tokens may sit before the brand on one side and after
+    on the other. Containment should not treat that positional asymmetry as a
+    real difference."""
+
+    def test_salamandra_before_brand_does_not_block_containment(self):
+        """Real sp#3734 pattern: 'Sirman SALAMANDRA ... I/2' vs catalog
+        'Salamandra SIRMAN ... 1/2' — salamandra is in both full names but
+        appears after brand only on supplier side."""
+        from app.services.matcher import find_match_candidates
+        prom = [{
+            "id": 515,
+            "name": "Гриль Salamandra SIRMAN Mobile PRO 1/2 G",
+            "brand": "Sirman",
+            "price": 138800,
+            "model": "",
+            "article": "",
+            "display_article": "30143502",
+        }]
+        hits = find_match_candidates(
+            "Гриль саламандра електричний Sirman SALAMANDRA MOBILE PRO I/2 G",
+            "Sirman", prom, supplier_price_cents=138800,
+        )
+        assert any(h["prom_product_id"] == 515 for h in hits)
+
+    def test_sibling_size_variant_still_rejected(self):
+        """1/1 G sibling of 1/2 G must still be rejected by containment — size
+        digit '1' vs '2' is a legitimate variant discriminator."""
+        from app.services.matcher import find_match_candidates
+        prom = [{
+            "id": 502,
+            "name": "Гриль Salamandra SIRMAN Mobile PRO 1/1 G",
+            "brand": "Sirman",
+            "price": 138800,
+            "model": "",
+            "article": "",
+            "display_article": "30142502",
+        }]
+        hits = find_match_candidates(
+            "Гриль саламандра електричний Sirman SALAMANDRA MOBILE PRO I/2 G",
+            "Sirman", prom, supplier_price_cents=138800,
+        )
+        assert not any(h["prom_product_id"] == 502 for h in hits), (
+            "1/1 G sibling must still reject vs supplier's 1/2 G"
+        )
+
+    def test_brema_abs_vs_inox_still_rejected(self):
+        """Regression: variant markers (ABS vs INOX) in after-brand must still
+        discriminate even with the positional-asymmetry relaxation."""
+        from app.services.matcher import find_match_candidates
+        prom = [{
+            "id": 1,
+            "name": "Льдогенератор Brema VB150 INOX",
+            "brand": "Brema",
+            "price": 100000,
+            "model": "", "article": "", "display_article": "",
+        }]
+        hits = find_match_candidates(
+            "Льдогенератор Brema VB150 ABS", "Brema", prom,
+            supplier_price_cents=100000,
+        )
+        assert not any(h["prom_product_id"] == 1 for h in hits)

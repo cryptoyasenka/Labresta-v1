@@ -805,15 +805,32 @@ def find_match_candidates(
                 if not prom_after_tokens:
                     contained.append(candidate)
                     continue
-                if _tokens_subset_morph(sup_after_tokens, prom_after_tokens) or (
-                    _tokens_subset_morph(prom_after_tokens, sup_after_tokens)
+                # Sub-brand / family names may sit BEFORE the brand on one side
+                # and AFTER on the other (e.g. catalog "Гриль Salamandra SIRMAN
+                # Mobile PRO 1/2" vs supplier "Sirman SALAMANDRA MOBILE PRO I/2"
+                # — "salamandra" is in both full names but captured after-brand
+                # only on the supplier side). Don't let such positioning
+                # asymmetry create false after-brand differences: drop tokens
+                # from one side's after-brand set that the OTHER side already
+                # has somewhere in its full name.
+                sup_full_tokens = meaningful_tokens(supplier_product_name)
+                prom_full_tokens = meaningful_tokens(prom_name_full)
+                sup_only_pre = sup_full_tokens - sup_after_tokens
+                prom_only_pre = prom_full_tokens - prom_after_tokens
+                sup_after_eff = sup_after_tokens - prom_only_pre
+                prom_after_eff = prom_after_tokens - sup_only_pre
+                if not sup_after_eff or not prom_after_eff:
+                    contained.append(candidate)
+                    continue
+                if _tokens_subset_morph(sup_after_eff, prom_after_eff) or (
+                    _tokens_subset_morph(prom_after_eff, sup_after_eff)
                 ):
                     contained.append(candidate)
                 else:
                     logger.debug(
                         "Containment rejected: sup=%s prom=%s diff=%s for prom_id=%d",
-                        sup_after_tokens, prom_after_tokens,
-                        sup_after_tokens ^ prom_after_tokens,
+                        sup_after_eff, prom_after_eff,
+                        sup_after_eff ^ prom_after_eff,
                         candidate["prom_product_id"],
                     )
             fast_ids = {c["prom_product_id"] for c in fast_matches}
