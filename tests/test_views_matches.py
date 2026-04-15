@@ -547,3 +547,107 @@ class TestRegenerateFeedEndpoint:
         assert body["total"] == 1
         assert "available" in body
         assert "path" in body
+
+
+class TestSyncPricesEndpoint:
+    """Phase D — POST /matches/sync-prices."""
+
+    def _setup(self, app, tmp_path):
+        app.config["YML_OUTPUT_DIR"] = str(tmp_path)
+        app.config["YML_PRICES_FILENAME"] = "test-prices.yml"
+
+    def test_bulk_sync_returns_stats(self, client, db, app, tmp_path):
+        self._setup(app, tmp_path)
+        m, _, _ = _seed_confirmed_match(db.session, status="confirmed")
+
+        resp = client.post("/matches/sync-prices")
+        assert resp.status_code == 200
+        body = resp.get_json()
+        assert body["status"] == "ok"
+        assert body["total"] == 1
+        assert body["skipped"] == 0
+        assert "synced_at" in body
+
+        refreshed = db.session.get(ProductMatch, m.id)
+        assert refreshed.price_synced_at is not None
+
+    def test_subset_sync_via_match_ids(self, client, db, app, tmp_path):
+        self._setup(app, tmp_path)
+        m1, _, _ = _seed_confirmed_match(db.session, status="confirmed")
+        resp = client.post(
+            "/matches/sync-prices",
+            json={"match_ids": [m1.id]},
+        )
+        assert resp.status_code == 200
+        body = resp.get_json()
+        assert body["total"] == 1
+
+    def test_empty_body_treated_as_bulk(self, client, db, app, tmp_path):
+        self._setup(app, tmp_path)
+        _seed_confirmed_match(db.session, status="confirmed")
+        # Plain POST with no body must still succeed as bulk
+        resp = client.post("/matches/sync-prices")
+        assert resp.status_code == 200
+
+
+class TestSyncAvailabilityEndpoint:
+    """Phase D — POST /matches/sync-availability."""
+
+    def _setup(self, app, tmp_path):
+        app.config["YML_OUTPUT_DIR"] = str(tmp_path)
+        app.config["YML_AVAILABILITY_FILENAME"] = "test-avail.yml"
+
+    def test_bulk_sync_returns_stats(self, client, db, app, tmp_path):
+        self._setup(app, tmp_path)
+        m, _, _ = _seed_confirmed_match(db.session, status="confirmed")
+
+        resp = client.post("/matches/sync-availability")
+        assert resp.status_code == 200
+        body = resp.get_json()
+        assert body["status"] == "ok"
+        assert body["total"] == 1
+        assert body["available"] == 1
+        assert body["unavailable"] == 0
+        assert "synced_at" in body
+
+        refreshed = db.session.get(ProductMatch, m.id)
+        assert refreshed.availability_synced_at is not None
+        # price timestamp must NOT be touched
+        assert refreshed.price_synced_at is None
+
+    def test_subset_sync_via_match_ids(self, client, db, app, tmp_path):
+        self._setup(app, tmp_path)
+        m1, _, _ = _seed_confirmed_match(db.session, status="confirmed")
+        resp = client.post(
+            "/matches/sync-availability",
+            json={"match_ids": [m1.id]},
+        )
+        assert resp.status_code == 200
+        assert resp.get_json()["total"] == 1
+
+
+class TestNarrowFeedServing:
+    """Phase D — /feed/prices.yml and /feed/availability.yml serve the files."""
+
+    def test_prices_feed_404_before_generated(self, client, app, tmp_path):
+        app.config["YML_OUTPUT_DIR"] = str(tmp_path)
+        app.config["YML_PRICES_FILENAME"] = "nonexistent-prices.yml"
+        resp = client.get("/feed/prices.yml")
+        assert resp.status_code == 404
+
+    def test_availability_feed_404_before_generated(self, client, app, tmp_path):
+        app.config["YML_OUTPUT_DIR"] = str(tmp_path)
+        app.config["YML_AVAILABILITY_FILENAME"] = "nonexistent-avail.yml"
+        resp = client.get("/feed/availability.yml")
+        assert resp.status_code == 404
+
+    def test_prices_feed_served_after_sync(self, client, db, app, tmp_path):
+        app.config["YML_OUTPUT_DIR"] = str(tmp_path)
+        app.config["YML_PRICES_FILENAME"] = "served-prices.yml"
+        _seed_confirmed_match(db.session, status="confirmed")
+        client.post("/matches/sync-prices")
+
+        resp = client.get("/feed/prices.yml")
+        assert resp.status_code == 200
+        assert resp.mimetype == "application/xml"
+        assert b"<yml_catalog" in resp.data

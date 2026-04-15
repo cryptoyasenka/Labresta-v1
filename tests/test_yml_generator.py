@@ -10,7 +10,11 @@ from app.models.catalog import PromProduct
 from app.models.product_match import ProductMatch
 from app.models.supplier import Supplier
 from app.models.supplier_product import SupplierProduct
-from app.services.yml_generator import regenerate_yml_feed
+from app.services.yml_generator import (
+    regenerate_yml_feed,
+    sync_availability,
+    sync_prices,
+)
 
 
 @pytest.fixture()
@@ -19,11 +23,17 @@ def yml_output_dir(app):
     with tempfile.TemporaryDirectory() as tmp:
         old_dir = app.config.get("YML_OUTPUT_DIR")
         old_name = app.config.get("YML_FILENAME")
+        old_prices = app.config.get("YML_PRICES_FILENAME")
+        old_avail = app.config.get("YML_AVAILABILITY_FILENAME")
         app.config["YML_OUTPUT_DIR"] = tmp
         app.config["YML_FILENAME"] = "test-feed.yml"
+        app.config["YML_PRICES_FILENAME"] = "test-prices.yml"
+        app.config["YML_AVAILABILITY_FILENAME"] = "test-availability.yml"
         yield tmp
         app.config["YML_OUTPUT_DIR"] = old_dir
         app.config["YML_FILENAME"] = old_name
+        app.config["YML_PRICES_FILENAME"] = old_prices
+        app.config["YML_AVAILABILITY_FILENAME"] = old_avail
 
 
 def _seed_confirmed_match(
@@ -263,3 +273,226 @@ class TestPublishFlag:
         assert m1.in_feed is True
         assert m2.in_feed is False
         assert m2.published is False  # not mutated
+
+
+class TestSyncPrices:
+    """Phase D — narrow price-only YML feed."""
+
+    def test_bulk_generates_narrow_price_feed(self, session, yml_output_dir):
+        """Narrow feed has id + vendorCode + price + currencyId; no name/desc."""
+        _seed_confirmed_match(
+            session, external_id="sp1", name="Плита", price_cents=30000,
+            description_ua="<p>desc</p>",
+        )
+        result = sync_prices()
+
+        assert result["total"] == 1
+        assert result["skipped"] == 0
+        assert os.path.exists(result["path"])
+
+        tree = etree.parse(result["path"])
+        offer = tree.find(".//offer")
+        assert offer is not None
+        assert offer.get("id") == "sp1"
+        assert offer.findtext("vendorCode") == "sp1"
+        assert offer.findtext("price") == "300.0"
+        assert offer.findtext("currencyId") == "EUR"
+        # Narrow feed must omit name and description
+        assert offer.find("name") is None
+        assert offer.find("description") is None
+
+    def test_bumps_price_synced_at(self, session, yml_output_dir):
+        m = _seed_confirmed_match(
+            session, external_id="sp2", name="X", price_cents=10000,
+        )
+        assert m.price_synced_at is None
+        sync_prices()
+        session.refresh(m)
+        assert m.price_synced_at is not None
+        # availability timestamp must NOT be touched by price sync
+        assert m.availability_synced_at is None
+
+    def test_skips_matches_with_invalid_price(self, session, yml_output_dir):
+        """Invalid-price matches are counted as skipped, not added to feed."""
+        _seed_confirmed_match(
+            session, external_id="ok", name="Ок", price_cents=20000,
+        )
+        # is_valid_price treats <=0 and implausible values as invalid
+        bad = _seed_confirmed_match(
+            session, external_id="bad", name="Бад", price_cents=10000,
+        )
+        bad.supplier_product.price_cents = 0
+        session.commit()
+
+        result = sync_prices()
+        assert result["total"] == 1
+        assert result["skipped"] == 1
+
+        tree = etree.parse(result["path"])
+        ids = [o.get("id") for o in tree.findall(".//offer")]
+        assert ids == ["ok"]
+
+    def test_subset_match_ids_only_syncs_those(self, session, yml_output_dir):
+        m1 = _seed_confirmed_match(
+            session, external_id="s1", name="A", price_cents=10000,
+        )
+        m2 = _seed_confirmed_match(
+            session, external_id="s2", name="B", price_cents=20000,
+        )
+        result = sync_prices(match_ids=[m1.id])
+        assert result["total"] == 1
+
+        tree = etree.parse(result["path"])
+        ids = [o.get("id") for o in tree.findall(".//offer")]
+        assert ids == ["s1"]
+
+        # Timestamp only on the synced one
+        session.refresh(m1)
+        session.refresh(m2)
+        assert m1.price_synced_at is not None
+        assert m2.price_synced_at is None
+
+    def test_unpublished_excluded(self, session, yml_output_dir):
+        m1 = _seed_confirmed_match(
+            session, external_id="u1", name="Yes", price_cents=10000,
+        )
+        m2 = _seed_confirmed_match(
+            session, external_id="u2", name="No", price_cents=10000,
+        )
+        m2.published = False
+        session.commit()
+
+        result = sync_prices()
+        assert result["total"] == 1
+
+        tree = etree.parse(result["path"])
+        ids = [o.get("id") for o in tree.findall(".//offer")]
+        assert ids == ["u1"]
+
+        # Unpublished match must not get price_synced_at bumped
+        session.refresh(m2)
+        assert m2.price_synced_at is None
+
+    def test_available_attribute_still_set(self, session, yml_output_dir):
+        """Offer tag requires available attribute even in narrow price feed."""
+        m = _seed_confirmed_match(
+            session, external_id="a1", name="Есть", price_cents=10000,
+        )
+        m.supplier_product.available = False
+        session.commit()
+        sync_prices()
+
+        tree = etree.parse(os.path.join(
+            yml_output_dir, "test-prices.yml"
+        ))
+        offer = tree.find(".//offer")
+        assert offer.get("available") == "false"
+
+
+class TestSyncAvailability:
+    """Phase D — narrow availability-only YML feed."""
+
+    def test_bulk_generates_narrow_availability_feed(self, session, yml_output_dir):
+        """Narrow feed has id + vendorCode + available attr; no price/name."""
+        _seed_confirmed_match(
+            session, external_id="av1", name="Плита", price_cents=30000,
+            description_ua="<p>desc</p>",
+        )
+        result = sync_availability()
+
+        assert result["total"] == 1
+        assert result["available"] == 1
+        assert os.path.exists(result["path"])
+
+        tree = etree.parse(result["path"])
+        offer = tree.find(".//offer")
+        assert offer is not None
+        assert offer.get("id") == "av1"
+        assert offer.get("available") == "true"
+        assert offer.findtext("vendorCode") == "av1"
+        # Narrow feed must omit price, name, description
+        assert offer.find("price") is None
+        assert offer.find("name") is None
+        assert offer.find("description") is None
+
+    def test_bumps_availability_synced_at(self, session, yml_output_dir):
+        m = _seed_confirmed_match(
+            session, external_id="av2", name="X", price_cents=10000,
+        )
+        assert m.availability_synced_at is None
+        sync_availability()
+        session.refresh(m)
+        assert m.availability_synced_at is not None
+        # price timestamp must NOT be touched by availability sync
+        assert m.price_synced_at is None
+
+    def test_subset_match_ids_only_syncs_those(self, session, yml_output_dir):
+        m1 = _seed_confirmed_match(
+            session, external_id="av3", name="A", price_cents=10000,
+        )
+        m2 = _seed_confirmed_match(
+            session, external_id="av4", name="B", price_cents=20000,
+        )
+        result = sync_availability(match_ids=[m2.id])
+        assert result["total"] == 1
+
+        tree = etree.parse(result["path"])
+        ids = [o.get("id") for o in tree.findall(".//offer")]
+        assert ids == ["av4"]
+
+        session.refresh(m1)
+        session.refresh(m2)
+        assert m1.availability_synced_at is None
+        assert m2.availability_synced_at is not None
+
+    def test_unpublished_excluded(self, session, yml_output_dir):
+        m1 = _seed_confirmed_match(
+            session, external_id="av5", name="Yes", price_cents=10000,
+        )
+        m2 = _seed_confirmed_match(
+            session, external_id="av6", name="No", price_cents=10000,
+        )
+        m2.published = False
+        session.commit()
+
+        result = sync_availability()
+        assert result["total"] == 1
+
+        tree = etree.parse(result["path"])
+        ids = [o.get("id") for o in tree.findall(".//offer")]
+        assert ids == ["av5"]
+
+    def test_available_attribute_reflects_stock(self, session, yml_output_dir):
+        """available='false' when sp.available is False or needs_review True."""
+        m1 = _seed_confirmed_match(
+            session, external_id="s_yes", name="In", price_cents=10000,
+        )
+        m2 = _seed_confirmed_match(
+            session, external_id="s_no", name="Out", price_cents=10000,
+        )
+        m2.supplier_product.available = False
+        session.commit()
+
+        result = sync_availability()
+        assert result["available"] == 1
+        assert result["unavailable"] == 1
+
+        tree = etree.parse(result["path"])
+        by_id = {o.get("id"): o.get("available") for o in tree.findall(".//offer")}
+        assert by_id["s_yes"] == "true"
+        assert by_id["s_no"] == "false"
+
+    def test_does_not_overwrite_full_feed(self, session, yml_output_dir):
+        """Narrow feeds go to separate files; full feed is untouched."""
+        _seed_confirmed_match(
+            session, external_id="sep1", name="X", price_cents=10000,
+        )
+        full = regenerate_yml_feed()
+        prices = sync_prices()
+        avail = sync_availability()
+
+        assert full["path"] != prices["path"] != avail["path"]
+        # All three files coexist
+        assert os.path.exists(full["path"])
+        assert os.path.exists(prices["path"])
+        assert os.path.exists(avail["path"])
