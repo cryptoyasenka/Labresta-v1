@@ -361,6 +361,32 @@ class TestApplyNameDiff:
         result = _apply_name_diff(old_ua, new_ua, old_ru)
         assert "(380)" in result
 
+    def test_digit_token_not_replaced_inside_larger_number(self):
+        """Regression: `12` -> `13` must not corrupt `121` or `1200` elsewhere
+        in the RU string. Old substring-replace would produce `131` / `1300`."""
+        from app.views.matches import _apply_name_diff
+
+        old_ua = "Модель 12 шт 121 упаковка 1200"
+        new_ua = "Модель 13 шт 121 упаковка 1200"
+        old_ru = "Модель 12 шт 121 упаковка 1200"
+        result = _apply_name_diff(old_ua, new_ua, old_ru)
+        assert "Модель 13" in result
+        assert "121" in result
+        assert "1200" in result
+        assert "131" not in result
+        assert "1300" not in result
+
+    def test_digit_token_not_replaced_inside_alphanumeric(self):
+        """`60` -> `80` must not touch `XFT60UTE` — model codes are not just digits."""
+        from app.views.matches import _apply_name_diff
+
+        old_ua = "Піч 60 см XFT60UTE"
+        new_ua = "Піч 80 см XFT60UTE"
+        old_ru = "Печь 60 см XFT60UTE"
+        result = _apply_name_diff(old_ua, new_ua, old_ru)
+        assert "Печь 80 см" in result
+        assert "XFT60UTE" in result
+
 
 # ===== 1 pp ↔ 1 confirmed/manual supplier match invariant =====
 
