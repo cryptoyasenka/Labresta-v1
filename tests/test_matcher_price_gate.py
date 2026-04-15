@@ -804,3 +804,53 @@ class TestLetterSpaceDigitModel:
         sp_tokens = meaningful_tokens("R301 Ultra + 4 диска")
         assert "r301" in pp_tokens
         assert "r301" in sp_tokens
+
+
+class TestSizeFractionNotModel:
+    """Size-notation fractions (1/2, I/2) must not be extracted as model codes."""
+
+    def test_arabic_fraction_not_extracted(self):
+        from app.services.matcher import extract_model_from_name
+        # "1/2" is a half-size designation, not a model
+        assert extract_model_from_name(
+            "Гриль Salamandra MOBILE PRO 1/2 G", "Salamandra"
+        ) == ""
+
+    def test_roman_fraction_not_extracted(self):
+        from app.services.matcher import extract_model_from_name
+        # Supplier Roman-numeral variant of the same size
+        assert extract_model_from_name(
+            "SALAMANDRA MOBILE PRO I/2 G", "SALAMANDRA"
+        ) == ""
+
+    def test_supplier_roman_matches_catalog_arabic(self):
+        """sp#3734 case: Roman I/2 vs Arabic 1/2 should not trigger name-model mismatch."""
+        from app.services.matcher import find_match_candidates
+        prom = [{
+            "id": 515,
+            "name": "Гриль Salamandra MOBILE PRO 1/2 G",
+            "brand": "Salamandra",
+            "price": 100000,
+            "model": "",
+            "article": "",
+            "display_article": "",
+        }]
+        hits = find_match_candidates(
+            "SALAMANDRA MOBILE PRO I/2 G",
+            "SALAMANDRA",
+            prom,
+            supplier_price_cents=100000,
+        )
+        assert any(h["prom_product_id"] == 515 for h in hits), (
+            "Salamandra Roman I/2 should match catalog Arabic 1/2"
+        )
+
+    def test_real_model_still_extracted(self):
+        """Regression: genuine models with digits are still extracted."""
+        from app.services.matcher import extract_model_from_name
+        assert extract_model_from_name(
+            "Піч конвекційна Unox XFT133", "Unox"
+        ) == "xft133"
+        assert extract_model_from_name(
+            "Диск для овочерізки Robot Coupe 28054", "Robot Coupe"
+        ) == "28054"

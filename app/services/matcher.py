@@ -196,6 +196,11 @@ def extract_model_from_name(name: str, brand: str | None) -> str:
     for token in after_brand_scan.split():
         if not re.search(r"\d", token):
             continue
+        # Skip size-notation fractions ("1/2", "I/2", "II/3") — supplier may
+        # write Roman where catalog writes Arabic, and normalize_model strips
+        # the slash, so "I/2" would become "i2" and clash with catalog "12".
+        if _is_size_fraction(token):
+            continue
         has_letter = bool(re.search(r"[a-zа-яёіїєґ]", token.lower()))
         if len(token) >= 3 or has_letter:
             return token.lower()
@@ -273,6 +278,20 @@ def _glue_letter_digit(text: str) -> str:
         return f"{letters}{digit}"
 
     return _LETTER_DIGIT_GLUE_RE.sub(_sub, text)
+
+
+# Size-notation fractions that must NOT be treated as model codes.
+# Catalog stores half-size grills as "1/2", supplier writes Roman "I/2" — both
+# are size descriptors. Without this guard, extract_model_from_name returns
+# "i2" for the supplier and "12" for the catalog (slash dropped by
+# normalize_model), and the name-model mismatch gate rejects the pair even
+# though everything else lines up. Covers Arabic/Arabic ("1/2", "3/4"),
+# Roman/Arabic ("I/2", "II/3", "IV/2"), and Arabic/Roman ("2/I").
+_SIZE_FRACTION_RE = re.compile(r"^(?:[IVXivx]+/\d+|\d+/[IVXivx]+|\d+/\d+)$")
+
+
+def _is_size_fraction(token: str) -> bool:
+    return bool(_SIZE_FRACTION_RE.match(token))
 
 
 def _near_duplicate_token(a: str, b: str) -> bool:
