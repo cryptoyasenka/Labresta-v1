@@ -33,11 +33,11 @@
             </select>
         </div>
         <div class="col-auto">
-            <label for="availabilityFilter" class="form-label form-label-sm mb-0">Наявність</label>
+            <label for="availabilityFilter" class="form-label form-label-sm mb-0">Наличие</label>
             <select name="availability" id="availabilityFilter" class="form-select form-select-sm">
-                <option value="all" {{ 'selected' if filters.availability == 'all' }}>Всі</option>
-                <option value="available" {{ 'selected' if filters.availability == 'available' }}>В наявності</option>
-                <option value="unavailable" {{ 'selected' if filters.availability == 'unavailable' }}>Немає</option>
+                <option value="all" {{ 'selected' if filters.availability == 'all' }}>Все</option>
+                <option value="available" {{ 'selected' if filters.availability == 'available' }}>В наличии</option>
+                <option value="unavailable" {{ 'selected' if filters.availability == 'unavailable' }}>Нет</option>
             </select>
         </div>
         <div class="col-auto">
@@ -96,7 +96,7 @@
     <span class="mx-2 text-muted">|</span>
     <button type="button" class="btn btn-sm btn-outline-info" id="diffToggleBtn"
             title="Подсветить отличия между названием поставщика и каталога Horoshop">
-        Різниця в назвах
+        Разница в названиях
     </button>
     <span class="mx-2 text-muted">|</span>
     <a href="{{ url_for('matches.export_csv', status=filters.status, confidence=filters.confidence, availability=filters.availability, search=filters.search, sort=filters.sort, order=filters.order) }}"
@@ -279,7 +279,7 @@
                         {% if match.supplier_product.name != match.prom_product.name %}
                         <button class="btn btn-sm btn-success confirm-update-btn" data-id="{{ match.id }}"
                                 title="Подтвердить и обновить название каталога по поставщику">
-                            Підтвердити + оновити
+                            Подтвердить + обновить
                         </button>
                         {% endif %}
                         <button class="btn btn-sm btn-outline-danger reject-btn" data-id="{{ match.id }}">

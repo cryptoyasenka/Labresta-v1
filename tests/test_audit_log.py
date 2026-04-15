@@ -139,4 +139,4 @@ def test_mark_new_creates_audit_entry(client, db):
 def test_audit_page_loads(client, db):
     resp = client.get("/audit/")
     assert resp.status_code == 200
-    assert "Журнал дій" in resp.data.decode()
+    assert "Журнал действий" in resp.data.decode()

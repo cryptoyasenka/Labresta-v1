@@ -1,21 +1,21 @@
 {% extends "base.html" %}
 
-{% block title %}Журнал дій — LabResta Sync{% endblock %}
+{% block title %}Журнал действий — LabResta Sync{% endblock %}
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Журнал дій оператора</h2>
+    <h2>Журнал действий оператора</h2>
     <div class="text-muted">
-        Всього записів: <strong>{{ total }}</strong>
+        Всего записей: <strong>{{ total }}</strong>
     </div>
 </div>
 
 <!-- Filter bar -->
 <form method="get" class="row g-2 mb-4 align-items-end">
     <div class="col-auto">
-        <label class="form-label small">Дія</label>
+        <label class="form-label small">Действие</label>
         <select name="action" class="form-select form-select-sm">
-            <option value="all" {% if action_filter == 'all' %}selected{% endif %}>Всі</option>
+            <option value="all" {% if action_filter == 'all' %}selected{% endif %}>Все</option>
             {% for key, label in action_labels.items() %}
             <option value="{{ key }}" {% if action_filter == key %}selected{% endif %}>{{ label }}</option>
             {% endfor %}
@@ -24,23 +24,23 @@
     <div class="col-auto">
         <label class="form-label small">Оператор</label>
         <select name="user" class="form-select form-select-sm">
-            <option value="all" {% if user_filter == 'all' %}selected{% endif %}>Всі</option>
+            <option value="all" {% if user_filter == 'all' %}selected{% endif %}>Все</option>
             {% for u in users %}
             <option value="{{ u }}" {% if user_filter == u %}selected{% endif %}>{{ u }}</option>
             {% endfor %}
         </select>
     </div>
     <div class="col-auto">
-        <label class="form-label small">З дати</label>
+        <label class="form-label small">С даты</label>
         <input type="date" name="date_from" class="form-control form-control-sm" value="{{ date_from }}">
     </div>
     <div class="col-auto">
-        <label class="form-label small">По дату</label>
+        <label class="form-label small">До даты</label>
         <input type="date" name="date_to" class="form-control form-control-sm" value="{{ date_to }}">
     </div>
     <div class="col-auto">
-        <button type="submit" class="btn btn-primary btn-sm">Фільтр</button>
-        <a href="{{ url_for('audit.index') }}" class="btn btn-outline-secondary btn-sm">Скинути</a>
+        <button type="submit" class="btn btn-primary btn-sm">Фильтр</button>
+        <a href="{{ url_for('audit.index') }}" class="btn btn-outline-secondary btn-sm">Сбросить</a>
     </div>
 </form>
 
@@ -49,11 +49,11 @@
     <table class="table table-hover table-sm align-middle">
         <thead class="table-light">
             <tr>
-                <th>Час</th>
+                <th>Время</th>
                 <th>Оператор</th>
-                <th>Дія</th>
+                <th>Действие</th>
                 <th>Match ID</th>
-                <th>Деталі</th>
+                <th>Детали</th>
             </tr>
         </thead>
         <tbody>
@@ -112,12 +112,12 @@
                             score: {{ d.get('score', '') }}
                         {% elif entry.action == 'reject' %}
                             {% if d.get('new_candidate_id') %}
-                                новий кандидат: #{{ d.get('new_candidate_id') }}
+                                новый кандидат: #{{ d.get('new_candidate_id') }}
                             {% else %}
-                                без заміни
+                                без замены
                             {% endif %}
                         {% elif entry.action == 'unconfirm' %}
-                            було: {{ d.get('old_status', '') }}
+                            было: {{ d.get('old_status', '') }}
                         {% else %}
                             {{ entry.details[:60] }}
                         {% endif %}
@@ -158,8 +158,8 @@
 
 {% else %}
 <div class="text-center text-muted py-5">
-    <h5>Записів поки немає</h5>
-    <p>Журнал почне заповнюватися після дій на сторінці <a href="{{ url_for('matches.review') }}">Сопоставлення</a>.</p>
+    <h5>Записей пока нет</h5>
+    <p>Журнал начнёт заполняться после действий на странице <a href="{{ url_for('matches.review') }}">Сопоставление</a>.</p>
 </div>
 {% endif %}
 {% endblock %}
