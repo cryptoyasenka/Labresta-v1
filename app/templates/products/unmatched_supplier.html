@@ -78,6 +78,7 @@
                 <th>{{ sort_header('Артикул', 'article', sort, order, 'products.unmatched_supplier', filter_params) }}</th>
                 <th>{{ sort_header('Цена', 'price', sort, order, 'products.unmatched_supplier', filter_params) }}</th>
                 <th>Наличие</th>
+                <th>Действия</th>
             </tr>
         </thead>
         <tbody>
@@ -102,6 +103,24 @@
                     <span class="badge bg-danger">Нет в наличии</span>
                     {% endif %}
                 </td>
+                <td class="text-nowrap">
+                    <a href="{{ url_for('matches.review', manual_for_sp=product.id) }}"
+                       class="btn btn-outline-primary btn-sm"
+                       title="Открыть модалку ручного матча для этого товара">
+                        Сопоставить
+                    </a>
+                    {% if not product.needs_catalog_add %}
+                    <button class="btn btn-outline-warning btn-sm mark-new-btn" data-sp-id="{{ product.id }}"
+                            title="Пометить на добавление в Horoshop">
+                        + Horoshop
+                    </button>
+                    {% else %}
+                    <button class="btn btn-warning btn-sm unmark-new-btn" data-sp-id="{{ product.id }}"
+                            title="Снять пометку на добавление">
+                        Отменить +
+                    </button>
+                    {% endif %}
+                </td>
             </tr>
             {% endfor %}
         </tbody>
@@ -121,4 +140,39 @@
     </p>
 </div>
 {% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+    function csrfToken() {
+        var m = document.querySelector('meta[name="csrf-token"]');
+        return m ? m.getAttribute('content') : '';
+    }
+    function postCSRF(url) {
+        return fetch(url, {
+            method: 'POST',
+            headers: { 'X-CSRFToken': csrfToken(), 'Accept': 'application/json' },
+        }).then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); });
+    }
+    document.addEventListener('click', function (e) {
+        var markBtn = e.target.closest('.mark-new-btn');
+        var unmarkBtn = e.target.closest('.unmark-new-btn');
+        if (markBtn) {
+            var id = markBtn.getAttribute('data-sp-id');
+            if (!confirm('Пометить товар на добавление в Horoshop? Все кандидатные матчи будут отклонены.')) return;
+            postCSRF('/matches/mark-new/' + id).then(function (r) {
+                if (r.ok) location.reload();
+                else alert((r.data && r.data.message) || 'Ошибка');
+            });
+        } else if (unmarkBtn) {
+            var id2 = unmarkBtn.getAttribute('data-sp-id');
+            postCSRF('/matches/unmark-new/' + id2).then(function (r) {
+                if (r.ok) location.reload();
+                else alert((r.data && r.data.message) || 'Ошибка');
+            });
+        }
+    });
+})();
+</script>
 {% endblock %}
