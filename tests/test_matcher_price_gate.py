@@ -91,6 +91,22 @@ class TestDisplayArticleFastPath:
         )
         assert all(c["score"] < 100 for c in result)
 
+    def test_sub6_display_article_not_substring_matched(self):
+        # `LT10` is 4 chars but could collide inside `LT10XXX` inside another
+        # brand's unrelated SKU. Substring branch requires >=6 chars now;
+        # equality path still works for direct sup_article == prom_display.
+        prom = [
+            _make_prom(1, "Слайсер Sirman LT10", "Sirman",
+                       price=500000, display_article="LT10"),
+        ]
+        result = find_match_candidates(
+            "Sirman somemodel LT10XXXPACK", "Sirman", prom,
+            supplier_price_cents=510000,
+        )
+        # Must not fast-confirm via substring of short SKU.
+        assert all(c["score"] < 100 for c in result)
+
+
 
 class TestPricePlausibility:
     """Price plausibility gate rejects candidates with implausible price ratios."""

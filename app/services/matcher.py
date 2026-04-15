@@ -408,7 +408,13 @@ def find_match_candidates(
                 if sup_article and sup_article == prom_display:
                     matched = True
                     display_match = True
-                elif sup_name_norm and prom_display in sup_name_norm:
+                elif (
+                    sup_name_norm
+                    and len(prom_display) >= 6
+                    and any(c.isalpha() for c in prom_display)
+                    and any(c.isdigit() for c in prom_display)
+                    and prom_display in sup_name_norm
+                ):
                     matched = True
                     display_match = True
 
