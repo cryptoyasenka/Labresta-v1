@@ -165,6 +165,14 @@ def review():
             )
         ).scalar() or 0
 
+    # Support ?manual_for_sp=<id> — lets /products/supplier trigger the manual
+    # match modal for a specific SP instead of fuzzy-matching by name (which
+    # found the wrong SP when several SPs shared a common name prefix).
+    auto_manual_sp = None
+    manual_for_sp_id = request.args.get("manual_for_sp", type=int)
+    if manual_for_sp_id:
+        auto_manual_sp = db.session.get(SupplierProduct, manual_for_sp_id)
+
     return render_template(
         "matches/review.html",
         matches=pagination.items,
@@ -173,6 +181,7 @@ def review():
         confidence_high=CONFIDENCE_HIGH,
         confidence_medium=CONFIDENCE_MEDIUM,
         unmatched_sp_count=unmatched_sp_count,
+        auto_manual_sp=auto_manual_sp,
     )
 
 

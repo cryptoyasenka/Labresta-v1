@@ -179,9 +179,9 @@
                     {% if not product.is_deleted %}
                     {% set m = matches_by_sp.get(product.id) %}
                     {% if not m or m.status in ('rejected',) %}
-                    <a href="{{ url_for('matches.review', search=product.name) }}"
+                    <a href="{{ url_for('matches.review', manual_for_sp=product.id) }}"
                        class="btn btn-outline-primary btn-sm"
-                       title="Открыть в матчинге, чтобы сопоставить вручную">
+                       title="Открыть модалку ручного матча для этого товара">
                         Сопоставить
                     </a>
                     {% if not product.needs_catalog_add %}

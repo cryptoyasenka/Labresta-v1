@@ -1041,6 +1041,15 @@
         if (manualMatchModal) manualMatchModal.show();
     }
 
+    // Auto-open manual-match modal when /matches was loaded with
+    // ?manual_for_sp=<id> — used by /products/supplier «Сопоставить» button
+    // to target a specific SupplierProduct rather than rely on fuzzy name search.
+    var autoTrigger = document.getElementById('autoManualMatch');
+    if (autoTrigger && manualMatchModal) {
+        // Defer so all other listeners/modal bindings are ready.
+        setTimeout(function () { openManualMatchModal(autoTrigger); }, 50);
+    }
+
     function showManualMatchFeedback(message, kind) {
         var el = document.getElementById('manualMatchFeedback');
         if (!el) return;
