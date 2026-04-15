@@ -34,6 +34,10 @@ class ProductMatch(db.Model):
         db.Float, nullable=True
     )  # Per-product override; NULL = use supplier default
     name_synced = db.Column(db.Boolean, default=False, server_default="0")  # Name updated from supplier
+    price_synced_at = db.Column(db.DateTime, nullable=True)
+    availability_synced_at = db.Column(db.DateTime, nullable=True)
+    in_feed = db.Column(db.Boolean, nullable=False, default=False, server_default="0")
+    published = db.Column(db.Boolean, nullable=False, default=True, server_default="1")
 
     supplier_product = db.relationship("SupplierProduct")
     prom_product = db.relationship("PromProduct")
