@@ -921,6 +921,203 @@ def manual_match():
     return jsonify({"status": "ok", "match_id": new_match.id})
 
 
+# ========== Rebind (Phase E) ==========
+
+
+@matches_bp.route("/search-suppliers")
+@login_required
+def search_suppliers():
+    """AJAX endpoint: search SupplierProduct by name/external_id/article/brand.
+
+    Used by the rebind modal — excludes is_deleted rows. Returns current match
+    state so the operator can see which SP is already in use.
+    """
+    q = request.args.get("q", "").strip()
+    if len(q) < 2:
+        return jsonify([])
+
+    term = f"%{q}%"
+    rows = (
+        db.session.query(SupplierProduct)
+        .options(joinedload(SupplierProduct.supplier))
+        .filter(
+            SupplierProduct.is_deleted.is_(False),
+            db.or_(
+                SupplierProduct.name.ilike(term),
+                SupplierProduct.external_id.ilike(term),
+                SupplierProduct.article.ilike(term),
+                SupplierProduct.brand.ilike(term),
+            ),
+        )
+        .order_by(SupplierProduct.name.asc())
+        .limit(30)
+        .all()
+    )
+
+    # Look up which of these SP already have confirmed/manual matches.
+    if rows:
+        sp_ids = [r.id for r in rows]
+        active = {
+            m.supplier_product_id: (m.id, m.prom_product_id, m.status)
+            for m in ProductMatch.query.filter(
+                ProductMatch.supplier_product_id.in_(sp_ids),
+                ProductMatch.status.in_(("confirmed", "manual")),
+            ).all()
+        }
+    else:
+        active = {}
+
+    results = []
+    for sp in rows:
+        existing = active.get(sp.id)
+        results.append({
+            "id": sp.id,
+            "name": sp.name,
+            "brand": sp.brand or "",
+            "model": sp.model or "",
+            "external_id": sp.external_id,
+            "article": sp.article or "",
+            "supplier_name": sp.supplier.name if sp.supplier else "",
+            "price_eur": f"{sp.price_cents / 100:.2f}" if sp.price_cents else "",
+            "available": bool(sp.available),
+            "active_match_id": existing[0] if existing else None,
+            "active_match_pp_id": existing[1] if existing else None,
+            "active_match_status": existing[2] if existing else None,
+        })
+    return jsonify(results)
+
+
+@matches_bp.route("/<int:match_id>/rebind", methods=["POST"])
+@login_required
+def rebind_match(match_id):
+    """Atomically swap the supplier product on a confirmed/manual match.
+
+    Old match: status=rejected, confirmed_by="rebind:{user}". Row preserved
+    for audit trail. New match on (new_sp, same_pp): upsert to confirmed.
+
+    Blocks if the new_sp already has a confirmed/manual match on a DIFFERENT
+    pp — the operator must unconfirm that first (1 sp ↔ 1 active match is
+    not an invariant of the system, but rebinding into a claimed sp would
+    create a three-way tangle the operator likely didn't intend).
+    """
+    old_match = db.get_or_404(ProductMatch, match_id)
+    if old_match.status not in ("confirmed", "manual"):
+        return jsonify({
+            "status": "error",
+            "message": "Переподвязать можно только подтверждённый или ручной матч",
+        }), 400
+
+    data = request.get_json(silent=True) or {}
+    new_sp_id = data.get("new_supplier_product_id")
+    if not new_sp_id:
+        return jsonify({
+            "status": "error",
+            "message": "Не указан новый supplier_product_id",
+        }), 400
+
+    try:
+        new_sp_id = int(new_sp_id)
+    except (TypeError, ValueError):
+        return jsonify({
+            "status": "error",
+            "message": "supplier_product_id должен быть целым числом",
+        }), 400
+
+    new_sp = db.session.get(SupplierProduct, new_sp_id)
+    if new_sp is None or new_sp.is_deleted:
+        return jsonify({
+            "status": "error",
+            "message": "Новый товар поставщика не найден",
+        }), 404
+
+    if new_sp_id == old_match.supplier_product_id:
+        return jsonify({
+            "status": "error",
+            "message": "Новый товар совпадает с текущим — переподвязывать нечего",
+        }), 400
+
+    # Reject rebind if new_sp already claims a DIFFERENT pp.
+    new_sp_existing = ProductMatch.query.filter(
+        ProductMatch.supplier_product_id == new_sp_id,
+        ProductMatch.prom_product_id != old_match.prom_product_id,
+        ProductMatch.status.in_(("confirmed", "manual")),
+    ).first()
+    if new_sp_existing:
+        return jsonify({
+            "status": "error",
+            "message": (
+                f"Новый товар поставщика уже подтверждён на другой каталог "
+                f"(матч #{new_sp_existing.id}, pp#{new_sp_existing.prom_product_id}). "
+                f"Сначала отмените тот матч."
+            ),
+        }), 409
+
+    target_pp_id = old_match.prom_product_id
+    user_tag = f"rebind:{current_user.name}" if current_user and current_user.is_authenticated else "rebind"
+    now = datetime.now(timezone.utc)
+
+    # Does an existing row already link (new_sp, target_pp)?  If it's rejected
+    # or candidate, upgrade it in place rather than insert (would hit UNIQUE).
+    existing_pair = ProductMatch.query.filter_by(
+        supplier_product_id=new_sp_id,
+        prom_product_id=target_pp_id,
+    ).first()
+
+    old_sp_id = old_match.supplier_product_id
+
+    # Mark old match rejected — releases the pp claim.
+    old_match.status = "rejected"
+    old_match.confirmed_by = user_tag
+    old_match.confirmed_at = now
+    old_match.in_feed = False
+    old_match.published = False
+    db.session.flush()
+
+    if existing_pair is not None:
+        existing_pair.status = "manual"
+        existing_pair.score = 100.0
+        existing_pair.confirmed_by = user_tag
+        existing_pair.confirmed_at = now
+        existing_pair.published = True
+        # Reset sync timestamps — new link, never synced yet.
+        existing_pair.price_synced_at = None
+        existing_pair.availability_synced_at = None
+        existing_pair.in_feed = False
+        new_match = existing_pair
+    else:
+        new_match = ProductMatch(
+            supplier_product_id=new_sp_id,
+            prom_product_id=target_pp_id,
+            score=100.0,
+            status="manual",
+            confirmed_at=now,
+            confirmed_by=user_tag,
+            published=True,
+        )
+        db.session.add(new_match)
+        db.session.flush()
+
+    log_action(
+        "rebind",
+        match_id=new_match.id,
+        supplier_product_id=new_sp_id,
+        prom_product_id=target_pp_id,
+        details={
+            "old_match_id": old_match.id,
+            "old_supplier_product_id": old_sp_id,
+            "new_supplier_product_id": new_sp_id,
+            "prom_product_id": target_pp_id,
+        },
+    )
+    db.session.commit()
+
+    return jsonify({
+        "status": "ok",
+        "old_match_id": old_match.id,
+        "new_match_id": new_match.id,
+    })
+
+
 # ========== Match rules CRUD ==========
 
 
