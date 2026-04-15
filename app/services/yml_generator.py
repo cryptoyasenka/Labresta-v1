@@ -11,7 +11,7 @@ from datetime import datetime, timezone
 
 from flask import current_app
 from lxml import etree
-from sqlalchemy import select
+from sqlalchemy import select, true
 from sqlalchemy.orm import joinedload
 
 from app.extensions import db
@@ -162,7 +162,7 @@ def regenerate_yml_feed() -> dict:
             ProductMatch.id.in_(included_match_ids)
         ).update({"in_feed": True}, synchronize_session=False)
     db.session.query(ProductMatch).filter(
-        ~ProductMatch.id.in_(included_match_ids) if included_match_ids else db.true()
+        ~ProductMatch.id.in_(included_match_ids) if included_match_ids else true()
     ).update({"in_feed": False}, synchronize_session=False)
     db.session.commit()
 
