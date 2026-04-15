@@ -110,15 +110,35 @@ def run(apply: bool) -> None:
 
         for m in stale_rows:
             m.status = "rejected"
+        inserted = 0
+        reopened = 0
+        skipped = 0
         for sp_id, pp_id, score in missing_pairs:
-            db.session.add(ProductMatch(
-                supplier_product_id=sp_id,
-                prom_product_id=pp_id,
-                score=score,
-                status="candidate",
-            ))
+            existing = ProductMatch.query.filter_by(
+                supplier_product_id=sp_id, prom_product_id=pp_id,
+            ).first()
+            if existing is None:
+                db.session.add(ProductMatch(
+                    supplier_product_id=sp_id,
+                    prom_product_id=pp_id,
+                    score=score,
+                    status="candidate",
+                ))
+                inserted += 1
+            elif existing.status == "rejected":
+                existing.status = "candidate"
+                existing.score = score
+                reopened += 1
+            else:
+                # confirmed/manual/already-candidate — leave alone, matcher
+                # rediscovery doesn't override human intent.
+                skipped += 1
         db.session.commit()
-        print(f"\nAPPLIED: rejected {len(stale_rows)} stale, added {len(missing_pairs)} missing.")
+        print(
+            f"\nAPPLIED: rejected {len(stale_rows)} stale, "
+            f"inserted {inserted}, reopened {reopened} rejected→candidate, "
+            f"skipped {skipped} (already confirmed/manual/candidate)."
+        )
 
 
 def main() -> None:
