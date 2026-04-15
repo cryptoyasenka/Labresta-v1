@@ -63,6 +63,17 @@
     <input type="hidden" name="order" value="{{ filters.order }}">
 </form>
 
+{% if filters.search and unmatched_sp_count %}
+<div class="alert alert-info py-2 mb-2">
+    По запросу «{{ filters.search }}» найдено ещё <strong>{{ unmatched_sp_count }}</strong>
+    товар(ов) поставщика <em>без матча</em> — они не отображаются здесь.
+    <a href="{{ url_for('products.supplier_list', search=filters.search, match_state='none') }}"
+       class="alert-link">
+        Открыть в списке «Товары поставщика без матча»
+    </a>
+</div>
+{% endif %}
+
 <!-- Toolbar: bulk actions, diff toggle, export -->
 <div class="mb-2 d-flex align-items-center gap-2 flex-wrap" id="bulkBar">
     <span class="text-muted">Выделенные: <strong id="selectedCount">0</strong></span>

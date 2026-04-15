@@ -150,6 +150,21 @@ def review():
     page = request.args.get("page", 1, type=int)
     pagination = db.paginate(query, page=page, per_page=filters["per_page"])
 
+    # Count supplier products matching the search but without any match row.
+    # Helps the operator realise that /matches hides unmatched SP — surfaces
+    # a link to /products/supplier?match_state=none.
+    unmatched_sp_count = 0
+    if filters["search"]:
+        from sqlalchemy import func as sa_func
+        matched_sp_ids = db.session.query(ProductMatch.supplier_product_id).distinct()
+        unmatched_sp_count = db.session.execute(
+            db.select(sa_func.count(SupplierProduct.id)).where(
+                SupplierProduct.name.ilike(f"%{filters['search']}%"),
+                SupplierProduct.is_deleted == False,  # noqa: E712
+                SupplierProduct.id.not_in(matched_sp_ids),
+            )
+        ).scalar() or 0
+
     return render_template(
         "matches/review.html",
         matches=pagination.items,
@@ -157,6 +172,7 @@ def review():
         filters=filters,
         confidence_high=CONFIDENCE_HIGH,
         confidence_medium=CONFIDENCE_MEDIUM,
+        unmatched_sp_count=unmatched_sp_count,
     )
 
 

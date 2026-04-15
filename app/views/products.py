@@ -53,6 +53,7 @@ def supplier_list():
     supplier_id = request.args.get("supplier_id", type=int)
     available_filter = request.args.get("available", "all")
     needs_review_filter = request.args.get("needs_review", "all")
+    match_filter = request.args.get("match_state", "all")
     show_deleted = request.args.get("show_deleted", "false") == "true"
 
     query = select(SupplierProduct)
@@ -73,6 +74,33 @@ def supplier_list():
         query = query.where(SupplierProduct.needs_review == False)  # noqa: E712
     if search:
         query = query.where(SupplierProduct.name.ilike(f"%{search}%"))
+
+    active_match_sp_ids = select(ProductMatch.supplier_product_id).where(
+        ProductMatch.status.in_(["confirmed", "manual"])
+    ).correlate(None)
+    any_match_sp_ids = select(ProductMatch.supplier_product_id).where(
+        ProductMatch.status.in_(["confirmed", "manual", "candidate"])
+    ).correlate(None)
+
+    if match_filter == "none":
+        query = query.where(SupplierProduct.id.not_in(any_match_sp_ids))
+    elif match_filter == "candidate":
+        cand_ids = select(ProductMatch.supplier_product_id).where(
+            ProductMatch.status == "candidate"
+        ).correlate(None)
+        query = query.where(SupplierProduct.id.in_(cand_ids))
+    elif match_filter == "active":
+        query = query.where(SupplierProduct.id.in_(active_match_sp_ids))
+    elif match_filter == "confirmed":
+        cf_ids = select(ProductMatch.supplier_product_id).where(
+            ProductMatch.status == "confirmed"
+        ).correlate(None)
+        query = query.where(SupplierProduct.id.in_(cf_ids))
+    elif match_filter == "manual":
+        m_ids = select(ProductMatch.supplier_product_id).where(
+            ProductMatch.status == "manual"
+        ).correlate(None)
+        query = query.where(SupplierProduct.id.in_(m_ids))
 
     # Sort
     sort_map = {
@@ -99,10 +127,36 @@ def supplier_list():
         select(Supplier).order_by(Supplier.name)
     ).scalars().all()
 
+    # Load matches for displayed SPs (priority: manual > confirmed > candidate > rejected)
+    sp_ids = [p.id for p in products]
+    matches_by_sp: dict[int, ProductMatch] = {}
+    if sp_ids:
+        status_priority = {"manual": 0, "confirmed": 1, "candidate": 2, "rejected": 3}
+        rows = db.session.execute(
+            select(ProductMatch).where(ProductMatch.supplier_product_id.in_(sp_ids))
+        ).scalars().all()
+        for m in rows:
+            prio = status_priority.get(m.status, 9)
+            existing = matches_by_sp.get(m.supplier_product_id)
+            if existing is None or status_priority.get(existing.status, 9) > prio:
+                matches_by_sp[m.supplier_product_id] = m
+
+    # Attach pp names for rendering in template
+    pp_ids = {m.prom_product_id for m in matches_by_sp.values()}
+    pp_by_id: dict[int, PromProduct] = {}
+    if pp_ids:
+        pp_by_id = {
+            p.id: p for p in db.session.execute(
+                select(PromProduct).where(PromProduct.id.in_(pp_ids))
+            ).scalars().all()
+        }
+
     return render_template(
         "products/supplier.html",
         products=products,
         suppliers=suppliers,
+        matches_by_sp=matches_by_sp,
+        pp_by_id=pp_by_id,
         total=total,
         page=page,
         per_page=per_page,
@@ -113,6 +167,7 @@ def supplier_list():
         supplier_id=supplier_id,
         available=available_filter,
         needs_review=needs_review_filter,
+        match_state=match_filter,
         show_deleted=show_deleted,
     )
 

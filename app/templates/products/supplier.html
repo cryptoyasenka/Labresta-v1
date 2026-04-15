@@ -7,6 +7,7 @@
     'supplier_id': supplier_id or '',
     'available': available,
     'needs_review': needs_review,
+    'match_state': match_state,
     'search': search,
     'per_page': per_page,
 } %}
@@ -14,6 +15,7 @@
     'supplier_id': supplier_id or '',
     'available': available,
     'needs_review': needs_review,
+    'match_state': match_state,
     'search': search,
     'per_page': per_page,
     'sort': sort,
@@ -54,6 +56,17 @@
         </select>
     </div>
     <div class="col-auto">
+        <label class="form-label small mb-0">Матч</label>
+        <select name="match_state" class="form-select form-select-sm">
+            <option value="all" {% if match_state == 'all' %}selected{% endif %}>Все</option>
+            <option value="none" {% if match_state == 'none' %}selected{% endif %}>Без матча</option>
+            <option value="candidate" {% if match_state == 'candidate' %}selected{% endif %}>Кандидат</option>
+            <option value="active" {% if match_state == 'active' %}selected{% endif %}>Подтв./Ручной</option>
+            <option value="confirmed" {% if match_state == 'confirmed' %}selected{% endif %}>Только подтверждён</option>
+            <option value="manual" {% if match_state == 'manual' %}selected{% endif %}>Только ручной</option>
+        </select>
+    </div>
+    <div class="col-auto">
         <label class="form-label small mb-0">Показывать</label>
         <select name="per_page" class="form-select form-select-sm">
             {% for pp in [25, 50, 100] %}
@@ -85,6 +98,7 @@
                 <th>{{ sort_header('Артикул', 'article', sort, order, 'products.supplier_list', filter_params) }}</th>
                 <th>{{ sort_header('Цена', 'price', sort, order, 'products.supplier_list', filter_params) }}</th>
                 <th>Наличие</th>
+                <th>Матч</th>
                 <th>Статус</th>
                 <th>{{ sort_header('Обновлено', 'last_seen_at', sort, order, 'products.supplier_list', filter_params) }}</th>
                 <th>Действия</th>
@@ -116,6 +130,34 @@
                     {% endif %}
                 </td>
                 <td>
+                    {% set m = matches_by_sp.get(product.id) %}
+                    {% if m %}
+                        {% set pp = pp_by_id.get(m.prom_product_id) %}
+                        {% if m.status == 'confirmed' %}
+                            <span class="badge bg-success">Подтв.</span>
+                        {% elif m.status == 'manual' %}
+                            <span class="badge bg-info">Ручной</span>
+                        {% elif m.status == 'candidate' %}
+                            <span class="badge bg-secondary">Кандидат</span>
+                        {% elif m.status == 'rejected' %}
+                            <span class="badge bg-danger">Отклонён</span>
+                        {% endif %}
+                        {% if pp %}
+                            <a href="{{ url_for('matches.review', search=pp.name) }}"
+                               class="small d-block text-decoration-none"
+                               title="Открыть в /matches"
+                               style="max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                                → {{ pp.name }}
+                            </a>
+                        {% endif %}
+                    {% else %}
+                        <span class="badge bg-light text-dark border">Без матча</span>
+                        {% if product.needs_catalog_add %}
+                            <span class="badge bg-warning text-dark ms-1" title="Помечен на добавление в Horoshop">+ Horoshop</span>
+                        {% endif %}
+                    {% endif %}
+                </td>
+                <td>
                     {% if product.needs_review %}
                     <span class="badge bg-warning text-dark">Ревью</span>
                     {% endif %}
@@ -135,9 +177,28 @@
                 </td>
                 <td class="text-nowrap">
                     {% if not product.is_deleted %}
+                    {% set m = matches_by_sp.get(product.id) %}
+                    {% if not m or m.status in ('rejected',) %}
+                    <a href="{{ url_for('matches.review', search=product.name) }}"
+                       class="btn btn-outline-primary btn-sm"
+                       title="Открыть в матчинге, чтобы сопоставить вручную">
+                        Сопоставить
+                    </a>
+                    {% if not product.needs_catalog_add %}
+                    <button class="btn btn-outline-warning btn-sm mark-new-btn" data-sp-id="{{ product.id }}"
+                            title="Пометить на добавление в Horoshop">
+                        + Horoshop
+                    </button>
+                    {% else %}
+                    <button class="btn btn-warning btn-sm unmark-new-btn" data-sp-id="{{ product.id }}"
+                            title="Снять пометку на добавление">
+                        Отменить +
+                    </button>
+                    {% endif %}
+                    {% endif %}
                     {% if product.available %}
                     <button class="btn btn-outline-warning btn-sm" onclick="markUnavailable({{ product.id }})" title="Отметить как отсутствующий">
-                        Нет в наличии
+                        Нет
                     </button>
                     {% else %}
                     <button class="btn btn-outline-success btn-sm" onclick="markAvailable({{ product.id }})" title="Отметить как в наличии">
@@ -198,4 +259,36 @@
 
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/products.js') }}"></script>
+<script>
+(function () {
+    function csrfToken() {
+        var m = document.querySelector('meta[name="csrf-token"]');
+        return m ? m.getAttribute('content') : '';
+    }
+    function postCSRF(url) {
+        return fetch(url, {
+            method: 'POST',
+            headers: { 'X-CSRFToken': csrfToken(), 'Accept': 'application/json' },
+        }).then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); });
+    }
+    document.addEventListener('click', function (e) {
+        var markBtn = e.target.closest('.mark-new-btn');
+        var unmarkBtn = e.target.closest('.unmark-new-btn');
+        if (markBtn) {
+            var id = markBtn.getAttribute('data-sp-id');
+            if (!confirm('Пометить товар на добавление в Horoshop? Все кандидатные матчи будут отклонены.')) return;
+            postCSRF('/matches/mark-new/' + id).then(function (r) {
+                if (r.ok) location.reload();
+                else alert((r.data && r.data.message) || 'Ошибка');
+            });
+        } else if (unmarkBtn) {
+            var id2 = unmarkBtn.getAttribute('data-sp-id');
+            postCSRF('/matches/unmark-new/' + id2).then(function (r) {
+                if (r.ok) location.reload();
+                else alert((r.data && r.data.message) || 'Ошибка');
+            });
+        }
+    });
+})();
+</script>
 {% endblock %}
