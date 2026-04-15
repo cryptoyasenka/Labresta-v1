@@ -80,6 +80,12 @@
                     <button type="submit" class="btn btn-sm btn-outline-info">Загрузить фид</button>
                 </form>
                 {% endif %}
+                <button type="button" class="btn btn-sm btn-outline-primary apply-discount-btn"
+                        data-supplier-id="{{ supplier.id }}"
+                        data-supplier-name="{{ supplier.name }}"
+                        title="Проставить авто-скидку (min. маржа 500 грн, EUR {{ supplier.eur_rate_uah or 51.15 }}) всем подтвержденным матчам без персональной скидки">
+                    Авто-скидка
+                </button>
                 <form method="POST" action="{{ url_for('suppliers.supplier_upload', supplier_id=supplier.id) }}"
                       enctype="multipart/form-data" class="d-inline">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
@@ -107,4 +113,126 @@
     <a href="{{ url_for('suppliers.supplier_add') }}" class="btn btn-success">Добавить первого поставщика</a>
 </div>
 {% endif %}
+
+<!-- Auto-discount preview + confirm modal -->
+<div class="modal fade" id="applyDiscountModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Применить авто-скидку</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-2">Поставщик: <strong id="adSupplierName"></strong></p>
+                <p class="mb-2 small text-muted" id="adEurRate"></p>
+                <div id="adPreviewBody">
+                    <div class="text-muted">Считаем предпросмотр...</div>
+                </div>
+                <div class="form-check mt-3">
+                    <input class="form-check-input" type="checkbox" id="adForceCheck">
+                    <label class="form-check-label small" for="adForceCheck">
+                        Перезаписать существующие персональные скидки (<code>--force</code>)
+                    </label>
+                </div>
+                <div id="adResultAlert" class="alert d-none mt-3"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-primary" id="adApplyBtn" disabled>Применить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+(function () {
+    var modalEl = document.getElementById('applyDiscountModal');
+    var modal = new bootstrap.Modal(modalEl);
+    var nameEl = document.getElementById('adSupplierName');
+    var rateEl = document.getElementById('adEurRate');
+    var previewEl = document.getElementById('adPreviewBody');
+    var forceEl = document.getElementById('adForceCheck');
+    var applyBtn = document.getElementById('adApplyBtn');
+    var resultEl = document.getElementById('adResultAlert');
+    var currentSupplierId = null;
+
+    function fmtDist(dist) {
+        var keys = Object.keys(dist).map(Number).sort(function (a, b) { return a - b; });
+        if (!keys.length) return '<em class="text-muted">—</em>';
+        return '<ul class="mb-0">' + keys.map(function (k) {
+            return '<li><strong>' + k + '%</strong>: ' + dist[k] + '</li>';
+        }).join('') + '</ul>';
+    }
+
+    function loadPreview() {
+        previewEl.innerHTML = '<div class="text-muted">Считаем предпросмотр...</div>';
+        applyBtn.disabled = true;
+        var force = forceEl.checked ? '&force=1' : '';
+        var url = '/suppliers/' + currentSupplierId + '/apply-discount?dry_run=1' + force;
+        fetchWithCSRF(url, { method: 'POST' })
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+                if (data.status !== 'ok') {
+                    previewEl.innerHTML = '<div class="text-danger">' + (data.message || 'Ошибка') + '</div>';
+                    return;
+                }
+                var html = '<p class="mb-1">Матчей в обработке: <strong>' + data.scanned + '</strong>';
+                if (data.skipped_no_price) {
+                    html += ' <span class="text-muted small">(без цены: ' + data.skipped_no_price + ')</span>';
+                }
+                html += '</p>';
+                html += '<p class="mb-1">К изменению: <strong>' + data.changed + '</strong></p>';
+                html += '<p class="mb-1 mt-2">Распределение:</p>' + fmtDist(data.distribution);
+                previewEl.innerHTML = html;
+                applyBtn.disabled = data.changed === 0;
+            })
+            .catch(function (e) {
+                previewEl.innerHTML = '<div class="text-danger">Сеть: ' + e + '</div>';
+            });
+    }
+
+    document.querySelectorAll('.apply-discount-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            currentSupplierId = btn.getAttribute('data-supplier-id');
+            nameEl.textContent = btn.getAttribute('data-supplier-name');
+            rateEl.textContent = 'Правило: мин. маржа 500 грн, цель 19%, курс из настроек поставщика.';
+            forceEl.checked = false;
+            resultEl.className = 'alert d-none mt-3';
+            resultEl.textContent = '';
+            modal.show();
+            loadPreview();
+        });
+    });
+
+    forceEl.addEventListener('change', loadPreview);
+
+    applyBtn.addEventListener('click', function () {
+        applyBtn.disabled = true;
+        var originalLabel = applyBtn.textContent;
+        applyBtn.textContent = 'Применяем...';
+        var force = forceEl.checked ? '?force=1' : '';
+        fetchWithCSRF('/suppliers/' + currentSupplierId + '/apply-discount' + force, { method: 'POST' })
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+                if (data.status === 'ok') {
+                    resultEl.className = 'alert alert-success mt-3';
+                    resultEl.innerHTML = 'Применено. Изменено матчей: <strong>' + data.changed +
+                        '</strong> из ' + data.scanned + '.';
+                } else {
+                    resultEl.className = 'alert alert-danger mt-3';
+                    resultEl.textContent = data.message || 'Ошибка';
+                }
+            })
+            .catch(function (e) {
+                resultEl.className = 'alert alert-danger mt-3';
+                resultEl.textContent = 'Сеть: ' + e;
+            })
+            .finally(function () {
+                applyBtn.textContent = originalLabel;
+                applyBtn.disabled = true;  // prevent double-apply; reload preview to re-enable
+                setTimeout(loadPreview, 200);
+            });
+    });
+})();
+</script>
 {% endblock %}

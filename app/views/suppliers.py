@@ -6,6 +6,7 @@ import tempfile
 from flask import (
     Blueprint,
     flash,
+    jsonify,
     redirect,
     render_template,
     request,
@@ -21,6 +22,7 @@ from app.models.product_match import ProductMatch
 from app.models.supplier import Supplier
 from app.models.supplier_product import SupplierProduct
 from app.models.sync_run import SyncRun
+from app.services.audit_service import log_action
 from app.services.excel_parser import (
     convert_google_sheets_url,
     get_preview_data,
@@ -31,6 +33,7 @@ from app.services.excel_parser import (
 )
 from app.services.feed_fetcher import fetch_feed, fetch_feed_with_retry
 from app.services.feed_parser import parse_supplier_feed, save_supplier_products
+from app.services.pricing import calculate_auto_discount
 
 logger = logging.getLogger(__name__)
 
@@ -273,6 +276,81 @@ def supplier_fetch(supplier_id):
         flash(f"Ошибка загрузки фида: {e}", "error")
 
     return redirect(url_for("suppliers.supplier_list"))
+
+
+@suppliers_bp.route("/<int:supplier_id>/apply-discount", methods=["POST"])
+@login_required
+def supplier_apply_discount(supplier_id):
+    """Apply auto-discount to confirmed+manual matches of this supplier.
+
+    By default fills only ProductMatch.discount_percent that is NULL, so
+    manually-set overrides are preserved. Pass ``force=1`` to overwrite all.
+    Pass ``dry_run=1`` to preview without writing (returns same shape).
+
+    JSON response: ``{status, scanned, changed, distribution: {d%: count}}``.
+    """
+    supplier = db.session.get(Supplier, supplier_id)
+    if not supplier:
+        return jsonify({"status": "error", "message": "Поставщик не найден"}), 404
+
+    dry_run = request.args.get("dry_run") == "1"
+    force = request.args.get("force") == "1"
+    eur_rate = supplier.eur_rate_uah or 51.15
+
+    q = (
+        db.session.query(ProductMatch, SupplierProduct)
+        .join(SupplierProduct, ProductMatch.supplier_product_id == SupplierProduct.id)
+        .filter(
+            ProductMatch.status.in_(["confirmed", "manual"]),
+            SupplierProduct.supplier_id == supplier.id,
+        )
+    )
+    if not force:
+        q = q.filter(ProductMatch.discount_percent.is_(None))
+
+    rows = q.all()
+    dist: dict[int, int] = {}
+    changed = 0
+    skipped_no_price = 0
+
+    for match, sp in rows:
+        if not sp.price_cents or sp.price_cents <= 0:
+            skipped_no_price += 1
+            continue
+        d = calculate_auto_discount(sp.price_cents, eur_rate)
+        dist[d] = dist.get(d, 0) + 1
+        if match.discount_percent != d:
+            if not dry_run:
+                match.discount_percent = float(d)
+            changed += 1
+
+    if not dry_run and changed:
+        log_action(
+            "apply_auto_discount",
+            details={
+                "supplier_id": supplier.id,
+                "supplier_name": supplier.name,
+                "eur_rate": eur_rate,
+                "force": force,
+                "scanned": len(rows),
+                "changed": changed,
+                "distribution": {str(k): v for k, v in dist.items()},
+            },
+        )
+        db.session.commit()
+
+    return jsonify({
+        "status": "ok",
+        "dry_run": dry_run,
+        "force": force,
+        "supplier_id": supplier.id,
+        "supplier_name": supplier.name,
+        "eur_rate": eur_rate,
+        "scanned": len(rows),
+        "changed": changed,
+        "skipped_no_price": skipped_no_price,
+        "distribution": {str(k): v for k, v in sorted(dist.items())},
+    })
 
 
 @suppliers_bp.route("/<int:supplier_id>/upload", methods=["POST"])
