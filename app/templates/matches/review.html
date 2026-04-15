@@ -132,8 +132,10 @@
                         </a>
                     </th>
                     {% endmacro %}
-                    <th>Поставщик</th>
+                    <th>Товар поставщика</th>
+                    <th title="Поставщик, от которого пришёл товар">Поставщик</th>
                     <th>Склад</th>
+                    <th title="В фиде labresta-feed.yml">В фиде</th>
                     <th>Каталог Horoshop</th>
                     <th title="Артикул виробника з картки товару на сайті">Арт. виробника</th>
                     <th>Цена поставщика</th>
@@ -166,11 +168,27 @@
                     data-supplier-default-discount="{{ match.supplier_product.supplier.discount_percent }}">
                     <td><input type="checkbox" class="form-check-input row-checkbox" value="{{ match.id }}"></td>
                     <td class="supplier-name-cell">{{ match.supplier_product.name }}</td>
+                    <td>
+                        <span class="badge bg-dark bg-opacity-75 supplier-badge"
+                              title="Поставщик: {{ match.supplier_product.supplier.name }}">
+                            {{ match.supplier_product.supplier.name }}
+                        </span>
+                    </td>
                     <td class="text-center">
                         {% if match.supplier_product.available %}
                             <span class="badge bg-success" title="В наличии">&#10003;</span>
                         {% else %}
                             <span class="badge bg-secondary" title="Нет в наличии">&mdash;</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-center in-feed-cell" data-in-feed="{{ '1' if match.in_feed else '0' }}"
+                        title="{% if match.in_feed %}В фиде{% if match.price_synced_at %} • Цена: {{ match.price_synced_at.strftime('%d.%m.%Y %H:%M') }}{% endif %}{% if match.availability_synced_at %} • Наличие: {{ match.availability_synced_at.strftime('%d.%m.%Y %H:%M') }}{% endif %}{% if not match.published %} • Снят с фида{% endif %}{% else %}Нет в фиде{% if not match.published %} (снят вручную){% endif %}{% endif %}">
+                        {% if match.in_feed and match.published %}
+                            <span class="badge bg-success">&#10003;</span>
+                        {% elif not match.published %}
+                            <span class="badge bg-warning text-dark" title="Снят с фида">&#8856;</span>
+                        {% else %}
+                            <span class="badge bg-secondary">&mdash;</span>
                         {% endif %}
                     </td>
                     <td class="prom-name-cell">{{ match.prom_product.name }}</td>
@@ -285,7 +303,7 @@
                 </tr>
                 {% else %}
                 <tr>
-                    <td colspan="12" class="text-center text-muted py-4">
+                    <td colspan="15" class="text-center text-muted py-4">
                         Нет матчей для отображения. Попробуйте изменить фильтры или запустить процесс сопоставления.
                     </td>
                 </tr>

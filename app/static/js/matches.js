@@ -117,9 +117,24 @@
             badge.className = 'badge ' + (statusClasses[newStatus] || 'bg-secondary');
             badge.textContent = statusLabels[newStatus] || newStatus;
         }
-        if (newStatus === 'confirmed' || newStatus === 'rejected') {
-            var actionsCell = document.getElementById('actions-' + matchId);
-            if (actionsCell) actionsCell.innerHTML = '';
+        var actionsCell = document.getElementById('actions-' + matchId);
+        if (!actionsCell) return;
+        if (newStatus === 'rejected') {
+            actionsCell.innerHTML = '';
+        } else if (newStatus === 'confirmed' || newStatus === 'manual') {
+            // Replace candidate-action buttons with «Отменить матч» so operator
+            // can revert without page reload (phase B requirement).
+            actionsCell.querySelectorAll('.confirm-btn, .reject-btn, .confirm-update-btn').forEach(function (b) {
+                b.remove();
+            });
+            if (!actionsCell.querySelector('.unconfirm-btn')) {
+                var unBtn = document.createElement('button');
+                unBtn.className = 'btn btn-sm btn-outline-warning unconfirm-btn';
+                unBtn.setAttribute('data-id', matchId);
+                unBtn.title = 'Вернуть матч в статус кандидата (если подтвердили по ошибке)';
+                unBtn.textContent = 'Отменить матч';
+                actionsCell.insertBefore(unBtn, actionsCell.firstChild);
+            }
         }
     }
 
