@@ -752,3 +752,55 @@ class TestAfterBrandContainmentGate:
         """'RESTO ITALIA' stored brand finds 'Restoitalia' in the name."""
         name = "Тістоміс Restoitalia SK402VTW"
         assert "SK402VTW" in after_brand_remainder(name, "RESTO ITALIA")
+
+
+class TestLetterSpaceDigitModel:
+    """Catalog sometimes stores model with a space ('R 301', 'E 44', 'L 22').
+
+    The first letter + following digit token must be glued so extract_model_from_name
+    returns 'r301' rather than dropping the letter and returning bare '301',
+    which would fail strict equality against supplier's joined 'R301'.
+    """
+
+    def test_glues_letter_space_digit(self):
+        assert extract_model_from_name(
+            "Кухонний процесор Robot Coupe R 301 Ultra + 4 диски", "Robot Coupe"
+        ) == "r301"
+
+    def test_supplier_joined_matches_catalog_spaced(self):
+        prom = [
+            _make_prom(1, "Кухонний процесор Robot Coupe R 301 Ultra + 4 диски",
+                       "Robot Coupe", price=100000),
+        ]
+        result = find_match_candidates(
+            "Кухоний процесор Robot Coupe R301 Ultra (220) + 4 диска",
+            "Robot Coupe", prom, supplier_price_cents=100000,
+        )
+        assert len(result) == 1
+        assert result[0]["prom_product_id"] == 1
+
+    def test_glues_two_letter_uppercase_prefix(self):
+        """'IP 3500', 'XR 10' — 1-4 uppercase letters glue to following digits."""
+        assert extract_model_from_name(
+            "Плита AIRHOT IP 3500 настільна", "AIRHOT"
+        ) == "ip3500"
+
+    def test_does_not_glue_lowercase_word(self):
+        """Lowercase prose words must NOT glue to digits ('для 10' stays split)."""
+        assert extract_model_from_name(
+            "Піч Sirman для 10 рівнів XYZ 99", "Sirman"
+        ) == "xyz99"
+
+    def test_mixedcase_word_not_glued(self):
+        """'Sirman Sirio 2 Cromato' — 'Sirio' is mixed-case (not all-uppercase)."""
+        assert extract_model_from_name(
+            "Міксер Sirman Sirio 2 Cromato", "Sirman"
+        ) == ""
+
+    def test_containment_gate_sees_glued_token(self):
+        """pp 'R 301 Ultra' and sp 'R301 Ultra' must produce same tokens for gate."""
+        from app.services.matcher import meaningful_tokens
+        pp_tokens = meaningful_tokens("R 301 Ultra + 4 диски")
+        sp_tokens = meaningful_tokens("R301 Ultra + 4 диска")
+        assert "r301" in pp_tokens
+        assert "r301" in sp_tokens

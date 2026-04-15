@@ -185,6 +185,13 @@ def extract_model_from_name(name: str, brand: str | None) -> str:
     # a false equivalence with "RESTO 44 (380)".
     after_brand_scan = re.sub(r"\([^)]*\)", " ", after_brand)
 
+    # Glue short uppercase letter prefix to a following digit token written
+    # with a space between them ("R 301", "IP 3500", "OGG 4070"). Without
+    # this merge, the model becomes the digits alone (letter(s) dropped as
+    # a too-short token) and fails strict equality against supplier's joined
+    # "R301".
+    after_brand_scan = _glue_letter_digit(after_brand_scan)
+
     # Take the first token that's a plausible model code
     for token in after_brand_scan.split():
         if not re.search(r"\d", token):
@@ -232,6 +239,88 @@ _TOKEN_SPLIT_RE = re.compile(r"[\s.,:;()/]+", re.UNICODE)
 _TOKEN_STRIP_RE = re.compile(r"[^a-z0-9а-яёіїєґ]", re.UNICODE)
 _PAREN_CONTENT_RE = re.compile(r"\([^)]*\)")
 
+# Glue a short uppercase letter prefix to a following digit token when the
+# catalog stores a model with a space ("R 301", "IP 3500", "OGG 4070", "СМ 250").
+# Lowercase tokens are not glued to avoid welding adjectives to sizes (e.g.
+# "для 10" → "для10"). Restricted to 1-4 letters, which covers all observed
+# model prefixes in the catalog while staying narrow enough to not disturb
+# normal prose. Applied uniformly in extract_model_from_name and
+# meaningful_tokens so strict-model equality and containment both see the
+# same joined token on both sides.
+_LETTER_DIGIT_GLUE_RE = re.compile(
+    r"(?<![A-Za-zА-Яа-яІЇЄіїєҐґ0-9])([A-ZА-ЯІЇЄҐ]{1,4})\s+(\d)",
+)
+
+# Common uppercase descriptor words that appear in cookware product names and
+# must NOT be glued to a following digit. Without this guard, "STAR PLUS 40"
+# would become "STAR PLUS40" and tokenize as {star, plus40} instead of
+# {star, plus, 40}, breaking the containment gate. All entries are either
+# common English/Italian words or dictionary-like terms that never serve as a
+# model prefix in the observed catalog (real model prefixes OFEI/OFGI/OTGD/
+# OTGI/OTEI/QUBE are non-words and stay glued).
+_GLUE_STOPWORDS = frozenset({
+    "PLUS", "MAX", "MAXI", "MINI", "MIN", "PRO", "ECO", "BIO", "STD",
+    "TOP", "STAR", "ULTRA", "SMART", "SLIM", "SUPER", "NEW", "OLD", "BIG",
+    "CHEF", "AUTO", "CORE", "INOX", "MEAT", "SARO", "COMBI", "ALL", "HOT",
+})
+
+
+def _glue_letter_digit(text: str) -> str:
+    def _sub(m: re.Match[str]) -> str:
+        letters, digit = m.group(1), m.group(2)
+        if letters.upper() in _GLUE_STOPWORDS:
+            return m.group(0)
+        return f"{letters}{digit}"
+
+    return _LETTER_DIGIT_GLUE_RE.sub(_sub, text)
+
+
+def _near_duplicate_token(a: str, b: str) -> bool:
+    """True if two tokens look like morphological variants (suffix-only diff).
+
+    Accepts pairs like 'диска'/'диски' (gender/case), 'кухоний'/'кухонний'
+    (typo/doubled consonant) but rejects semantically distinct tokens like
+    'abs'/'inox', 'white'/'black', '40'/'60', or pairs where the diff adds
+    a digit suffix ('bistro'/'bistro6' — the latter is a bundled variant,
+    not a morphological form). Requires both tokens ≥4 chars, common prefix
+    within 2 chars of the shorter length, and the diverging tails must be
+    alphabetic (no digits — digits signal a distinct SKU variant).
+    """
+    if a == b:
+        return True
+    la, lb = len(a), len(b)
+    if la < 4 or lb < 4 or abs(la - lb) > 2:
+        return False
+    common = 0
+    for ca, cb in zip(a, b):
+        if ca == cb:
+            common += 1
+        else:
+            break
+    if common < min(la, lb) - 2:
+        return False
+    if any(c.isdigit() for c in a[common:]) or any(c.isdigit() for c in b[common:]):
+        return False
+    return True
+
+
+def _tokens_subset_morph(a: set[str], b: set[str]) -> bool:
+    """Like a.issubset(b), but tolerates morphological near-duplicates.
+
+    Each token in `a` must either be exactly in `b` or have a
+    `_near_duplicate_token` partner in `b`. Used by the after-brand
+    containment gate so that morphological noise in descriptor tokens
+    does not falsely reject same-model matches.
+    """
+    missing = a - b
+    if not missing:
+        return True
+    extras = b - a
+    for tok in missing:
+        if not any(_near_duplicate_token(tok, other) for other in extras):
+            return False
+    return True
+
 
 def meaningful_tokens(text: str) -> set[str]:
     """Tokenize text into comparable normalized tokens.
@@ -249,7 +338,10 @@ def meaningful_tokens(text: str) -> set[str]:
     """
     if not text:
         return set()
-    cleaned = _PAREN_CONTENT_RE.sub(" ", text.lower())
+    # Glue short uppercase model prefix to following digits before lowercasing
+    # so "R 301" / "IP 3500" / "OGG 4070" become single tokens {r301,ip3500,...}.
+    # Must run pre-lowercase because the regex keys on uppercase letters.
+    cleaned = _PAREN_CONTENT_RE.sub(" ", _glue_letter_digit(text).lower())
     out = set()
     for raw in _TOKEN_SPLIT_RE.split(cleaned):
         tok = _TOKEN_STRIP_RE.sub("", raw)
@@ -668,8 +760,8 @@ def find_match_candidates(
                 if not prom_after_tokens:
                     contained.append(candidate)
                     continue
-                if sup_after_tokens.issubset(prom_after_tokens) or prom_after_tokens.issubset(
-                    sup_after_tokens
+                if _tokens_subset_morph(sup_after_tokens, prom_after_tokens) or (
+                    _tokens_subset_morph(prom_after_tokens, sup_after_tokens)
                 ):
                     contained.append(candidate)
                 else:
