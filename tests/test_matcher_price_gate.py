@@ -918,3 +918,117 @@ class TestContainmentCrossBrandPosition:
             supplier_price_cents=100000,
         )
         assert not any(h["prom_product_id"] == 1 for h in hits)
+
+
+class TestDigitOnlyDiscriminator:
+    """Containment gate must reject asymmetric subset when the diff is a
+    pure-digit token — that digit is the model discriminator.
+
+    Real bug: sp#683 'Moretti Forni Neapolis 4' matched pp#2001
+    'Moretti Forni Neapolis (без розстійки)' at 92% WRatio because
+    extract_model_from_name cannot latch onto a single-digit model
+    ('4' has length 1 with no letter, so it's skipped). Cross-side
+    cancellation then left `{neapolis, 4}` vs `{neapolis}` and
+    subset_morph accepted `{neapolis} ⊆ {neapolis, 4}`.
+    """
+
+    def test_neapolis_4_vs_base_neapolis_rejected(self):
+        """sp 'Neapolis 4' must NOT match pp 'Neapolis (без розстійки)'."""
+        prom = [
+            _make_prom(
+                1, "Піч для піци Moretti Forni Neapolis (без розстійки)",
+                "Moretti Forni", 900000,
+            ),
+        ]
+        result = find_match_candidates(
+            "Піч для піци Moretti Forni Neapolis 4",
+            "Moretti Forni", prom, supplier_price_cents=900000,
+        )
+        assert not any(r["prom_product_id"] == 1 for r in result), (
+            "Single-digit model suffix '4' must discriminate from base model"
+        )
+
+    def test_base_neapolis_vs_neapolis_4_rejected(self):
+        """Reverse direction: sp 'Neapolis' must NOT match pp 'Neapolis 4'."""
+        prom = [
+            _make_prom(
+                1, "Піч для піци Moretti Forni Neapolis 4",
+                "Moretti Forni", 900000,
+            ),
+        ]
+        result = find_match_candidates(
+            "Піч для піци Moretti Forni Neapolis (без розстійки)",
+            "Moretti Forni", prom, supplier_price_cents=900000,
+        )
+        assert not any(r["prom_product_id"] == 1 for r in result)
+
+    def test_long_catalog_description_not_treated_as_discriminator(self):
+        """Regression: PROM row with a long description ('21 кг/добу') contains
+        digits embedded among descriptive words — those are NOT pure digit
+        extras and must NOT trigger the discriminator guard, otherwise
+        identical-model rows with verbose catalog descriptions would fail."""
+        prom = [
+            _make_prom(
+                1, "Льодогенератор Brema CB184AHC ABS, корпус пластик 21 кг/добу",
+                "Brema", 94000,
+            ),
+        ]
+        result = find_match_candidates(
+            "Льодогенератор Brema CB184AHC ABS", "Brema", prom,
+            supplier_price_cents=94000,
+        )
+        assert len(result) == 1, "Mixed digit+text extras should not reject"
+
+    def test_descriptor_extras_still_match_base(self):
+        """Regression: non-digit accessory tokens (решітка/ЭПУ) must still
+        allow containment subset — only digit-only extras are gated out."""
+        prom = [
+            _make_prom(1, "Тістоміс LP Group VIS60", "LP Group", 940500),
+        ]
+        result = find_match_candidates(
+            "Тістоміс LP Group VIS60 + решітка з нерж. сталі + ЭПУ",
+            "LP Group", prom, supplier_price_cents=1011300,
+        )
+        assert any(r["prom_product_id"] == 1 for r in result)
+
+    def test_voltage_tag_not_treated_as_discriminator(self):
+        """Regression: '220' in the name is filtered by meaningful_tokens,
+        so the digit-only guard must not trip on voltage-only asymmetry."""
+        prom = [
+            _make_prom(1, "Сиротертка Fimar GR8D", "Fimar", 45800),
+        ]
+        result = find_match_candidates(
+            "Сиротерка Fimar GR8D (220)", "Fimar", prom,
+            supplier_price_cents=45800,
+        )
+        assert len(result) == 1
+
+    def test_digit_only_discriminator_helper(self):
+        """Unit test: fires only when extras on a side are purely digits."""
+        from app.services.matcher import _digit_only_discriminator
+        # supplier extra {4} is pure-digit → discriminator
+        assert _digit_only_discriminator({"neapolis", "4"}, {"neapolis"}) is True
+        # prom extra {4} is pure-digit → discriminator (symmetric)
+        assert _digit_only_discriminator({"neapolis"}, {"neapolis", "4"}) is True
+        # prom extra mixes digits and descriptive words → not discriminator
+        assert _digit_only_discriminator(
+            {"cb184ahc", "abs"},
+            {"cb184ahc", "abs", "корпус", "21", "кг"},
+        ) is False
+        # both sides have non-digit extras → not discriminator
+        assert _digit_only_discriminator({"vis60", "решітка"}, {"vis60"}) is False
+        # identical sets → not discriminator
+        assert _digit_only_discriminator({"vis60"}, {"vis60"}) is False
+        # prom extra {1, 2} pure-digit → discriminator (sibling size variant)
+        assert _digit_only_discriminator({"pro"}, {"pro", "1", "2"}) is True
+
+    def test_roman_fraction_normalized_in_meaningful_tokens(self):
+        """Regression: meaningful_tokens('MOBILE PRO I/2 G') produces the same
+        digit tokens as 'MOBILE PRO 1/2 G' so containment doesn't see a
+        spurious {1} / {2} asymmetry between catalog Arabic and supplier Roman."""
+        from app.services.matcher import meaningful_tokens
+        sup = meaningful_tokens("SALAMANDRA MOBILE PRO I/2 G")
+        pp = meaningful_tokens("Salamandra MOBILE PRO 1/2 G")
+        # Both sides must contain the digits 1 and 2 after normalization.
+        assert "1" in sup and "2" in sup
+        assert "1" in pp and "2" in pp

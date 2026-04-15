@@ -294,6 +294,40 @@ def _is_size_fraction(token: str) -> bool:
     return bool(_SIZE_FRACTION_RE.match(token))
 
 
+# Roman → Arabic map for size-fraction normalization. Restricted to I..X since
+# catalog sizes never exceed single-digit numerators ("I/2", "II/3", rarely
+# "IV/2"). Applied before tokenization so containment sees the same integer
+# on both sides regardless of which script the numerator was written in.
+_ROMAN_TO_ARABIC = {
+    "i": "1", "ii": "2", "iii": "3", "iv": "4", "v": "5",
+    "vi": "6", "vii": "7", "viii": "8", "ix": "9", "x": "10",
+}
+_ROMAN_FRACTION_RE = re.compile(
+    r"(?<![A-Za-zА-Яа-яІЇЄіїєҐґ0-9])([IVXivx]{1,4})\s*/\s*(\d{1,2}|[IVXivx]{1,4})"
+    r"(?![A-Za-zА-Яа-яІЇЄіїєҐґ0-9])",
+)
+
+
+def _normalize_roman_fractions(text: str) -> str:
+    """Rewrite Roman-numerator size fractions ('I/2', 'II/3') to Arabic.
+
+    Only touches tokens that look like size fractions — standalone Roman
+    words in unrelated positions (e.g. a descriptor 'IV') are left alone
+    because the regex requires the '/digit' pattern. Preserves original
+    case elsewhere in the string.
+    """
+    if not text:
+        return text
+
+    def _sub(m: re.Match[str]) -> str:
+        left = _ROMAN_TO_ARABIC.get(m.group(1).lower(), m.group(1))
+        right_raw = m.group(2)
+        right = _ROMAN_TO_ARABIC.get(right_raw.lower(), right_raw)
+        return f"{left}/{right}"
+
+    return _ROMAN_FRACTION_RE.sub(_sub, text)
+
+
 def _near_duplicate_token(a: str, b: str) -> bool:
     """True if two tokens look like morphological variants (suffix-only diff).
 
@@ -341,6 +375,28 @@ def _tokens_subset_morph(a: set[str], b: set[str]) -> bool:
     return True
 
 
+def _digit_only_discriminator(sup: set[str], prom: set[str]) -> bool:
+    """True when exactly one side has extras consisting ONLY of digit tokens.
+
+    Digit-only extras mark SKU discriminators (series 'Neapolis 4' vs
+    'Neapolis', size 'STAR PLUS 40' vs '60'). But a digit token embedded
+    alongside descriptive words in extras means the other side just has a
+    longer description ('21 кг/добу', '41 літ, 2 корзини') and is still
+    the same model — subset_morph should apply there.
+
+    Rule: trigger only when at least one side's extras are non-empty AND
+    all of those extras are pure digits. If any extras side mixes digits
+    with non-digit tokens, it is a description, not a discriminator.
+    Standard mains voltages (220/230/380/400) are already stripped by
+    `meaningful_tokens`, so any digit reaching this check is genuine.
+    """
+    def _all_digit_non_empty(s: set[str]) -> bool:
+        return bool(s) and all(tok.isdigit() for tok in s)
+    sup_extras = sup - prom
+    prom_extras = prom - sup
+    return _all_digit_non_empty(sup_extras) or _all_digit_non_empty(prom_extras)
+
+
 def meaningful_tokens(text: str) -> set[str]:
     """Tokenize text into comparable normalized tokens.
 
@@ -357,10 +413,16 @@ def meaningful_tokens(text: str) -> set[str]:
     """
     if not text:
         return set()
+    # Normalize Roman-numerator size fractions ('I/2' → '1/2') so catalog
+    # Arabic and supplier Roman halves produce the same digit tokens after
+    # slash-splitting. Without this, {2} on one side vs {1, 2} on the other
+    # creates a spurious digit-only diff that the containment gate would
+    # reject as a model discriminator.
+    pre = _normalize_roman_fractions(text)
     # Glue short uppercase model prefix to following digits before lowercasing
     # so "R 301" / "IP 3500" / "OGG 4070" become single tokens {r301,ip3500,...}.
     # Must run pre-lowercase because the regex keys on uppercase letters.
-    cleaned = _PAREN_CONTENT_RE.sub(" ", _glue_letter_digit(text).lower())
+    cleaned = _PAREN_CONTENT_RE.sub(" ", _glue_letter_digit(pre).lower())
     out = set()
     for raw in _TOKEN_SPLIT_RE.split(cleaned):
         tok = _TOKEN_STRIP_RE.sub("", raw)
@@ -822,7 +884,19 @@ def find_match_candidates(
                 if not sup_after_eff or not prom_after_eff:
                     contained.append(candidate)
                     continue
-                if _tokens_subset_morph(sup_after_eff, prom_after_eff) or (
+                # Pure-digit-only extras on one side discriminate SKUs —
+                # reject before the subset check would otherwise absorb it.
+                # Handles 'Neapolis 4' vs 'Neapolis (без розстійки)' where
+                # extract_model_from_name cannot latch onto the single
+                # digit so the name-model gate leaves the pair intact.
+                if _digit_only_discriminator(sup_after_eff, prom_after_eff):
+                    logger.debug(
+                        "Containment rejected (digit-only discriminator): "
+                        "sup=%s prom=%s for prom_id=%d",
+                        sup_after_eff, prom_after_eff,
+                        candidate["prom_product_id"],
+                    )
+                elif _tokens_subset_morph(sup_after_eff, prom_after_eff) or (
                     _tokens_subset_morph(prom_after_eff, sup_after_eff)
                 ):
                     contained.append(candidate)
