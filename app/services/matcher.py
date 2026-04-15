@@ -354,6 +354,29 @@ def meaningful_tokens(text: str) -> set[str]:
     return out - VOLTAGE_TAGS
 
 
+# Cyrillic → Latin transliteration for cross-script type comparison.
+# Catalog sometimes mixes "Гриль Salamandra" (Cyrillic category + Latin model
+# name) with supplier's "Гриль саламандра" (all-Cyrillic) — token_sort_ratio
+# then collapses to ~22 because "саламандра" vs "salamandra" share no literal
+# characters. Normalizing both sides to Latin lets the ratio compare meaning
+# rather than script.
+_CYR_TO_LAT = {
+    "а": "a", "б": "b", "в": "v", "г": "g", "ґ": "g", "д": "d", "е": "e",
+    "ё": "e", "є": "ye", "ж": "zh", "з": "z", "и": "i", "і": "i", "ї": "yi",
+    "й": "y", "к": "k", "л": "l", "м": "m", "н": "n", "о": "o", "п": "p",
+    "р": "r", "с": "s", "т": "t", "у": "u", "ф": "f", "х": "h", "ц": "ts",
+    "ч": "ch", "ш": "sh", "щ": "sch", "ъ": "", "ы": "y", "ь": "", "э": "e",
+    "ю": "yu", "я": "ya",
+}
+
+
+def _transliterate_cyr(text: str) -> str:
+    out = []
+    for ch in text.lower():
+        out.append(_CYR_TO_LAT.get(ch, ch))
+    return "".join(out)
+
+
 def extract_product_type(name: str, brand: str | None) -> str:
     """Extract product type from name — words before the brand.
 
@@ -578,8 +601,11 @@ def find_match_candidates(
 
                 prom_type = extract_product_type(prom_name_full, prom_brand)
                 if prom_type:
+                    # Transliterate both to Latin so Cyrillic "саламандра"
+                    # and Latin "Salamandra" compare as the same token.
                     type_score = fuzz.token_sort_ratio(
-                        supplier_type.lower(), prom_type.lower()
+                        _transliterate_cyr(supplier_type),
+                        _transliterate_cyr(prom_type),
                     )
                     if type_score < TYPE_MATCH_THRESHOLD:
                         logger.debug(
