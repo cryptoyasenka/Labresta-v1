@@ -632,6 +632,8 @@ def bulk_action():
             _cleanup_other_candidates(match.supplier_product_id, match.id)
             processed += 1
         elif action == "reject":
+            if match.status != "candidate":
+                continue
             supplier_product = match.supplier_product
             rejected_prom_id = match.prom_product_id
             db.session.delete(match)
