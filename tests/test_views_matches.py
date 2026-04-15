@@ -651,3 +651,223 @@ class TestNarrowFeedServing:
         assert resp.status_code == 200
         assert resp.mimetype == "application/xml"
         assert b"<yml_catalog" in resp.data
+
+
+def _seed_second_sp(session, *, name="Другой товар", supplier_name="OtherSupplier",
+                    external_id="SP2", brand="TestBrand", price_cents=40000,
+                    article=None, available=True):
+    """Add a second supplier+SP (for rebind tests) to an existing scenario."""
+    sup = Supplier(
+        name=supplier_name,
+        feed_url="http://other.xml",
+        discount_percent=0,
+        is_enabled=True,
+    )
+    session.add(sup)
+    session.flush()
+    sp = SupplierProduct(
+        supplier_id=sup.id,
+        external_id=external_id,
+        name=name,
+        brand=brand,
+        article=article,
+        price_cents=price_cents,
+        available=available,
+        needs_review=False,
+    )
+    session.add(sp)
+    session.commit()
+    return sp
+
+
+class TestSearchSuppliersEndpoint:
+    """Phase E — GET /matches/search-suppliers."""
+
+    def test_short_query_returns_empty(self, client, db):
+        _seed_confirmed_match(db.session)
+        resp = client.get("/matches/search-suppliers?q=x")
+        assert resp.status_code == 200
+        assert resp.get_json() == []
+
+    def test_finds_by_name(self, client, db):
+        _seed_confirmed_match(db.session)
+        _seed_second_sp(db.session, name="Уникальный миксер Robot")
+        resp = client.get("/matches/search-suppliers?q=Уникальный")
+        data = resp.get_json()
+        assert len(data) == 1
+        assert data[0]["name"] == "Уникальный миксер Robot"
+        assert data[0]["supplier_name"] == "OtherSupplier"
+
+    def test_finds_by_external_id(self, client, db):
+        _seed_confirmed_match(db.session)
+        _seed_second_sp(db.session, external_id="ABC-12345")
+        resp = client.get("/matches/search-suppliers?q=ABC-12345")
+        assert len(resp.get_json()) == 1
+
+    def test_finds_by_article(self, client, db):
+        _seed_confirmed_match(db.session)
+        _seed_second_sp(db.session, article="ART-999")
+        resp = client.get("/matches/search-suppliers?q=ART-999")
+        assert len(resp.get_json()) == 1
+
+    def test_excludes_deleted(self, client, db):
+        _seed_confirmed_match(db.session)
+        sp = _seed_second_sp(db.session, name="Удалённый товар")
+        sp.is_deleted = True
+        db.session.commit()
+        resp = client.get("/matches/search-suppliers?q=Удалённый")
+        assert resp.get_json() == []
+
+    def test_includes_active_match_metadata(self, client, db):
+        """SP already in a confirmed match must surface its active_match_* fields."""
+        _, sp, pp = _seed_confirmed_match(db.session)
+        resp = client.get(f"/matches/search-suppliers?q={sp.name[:10]}")
+        data = resp.get_json()
+        hit = [r for r in data if r["id"] == sp.id][0]
+        assert hit["active_match_id"] is not None
+        assert hit["active_match_pp_id"] == pp.id
+        assert hit["active_match_status"] == "confirmed"
+
+
+class TestRebindEndpoint:
+    """Phase E — POST /matches/<id>/rebind."""
+
+    def test_rebind_swaps_sp(self, client, db):
+        match, sp_old, pp = _seed_confirmed_match(db.session, status="confirmed")
+        sp_new = _seed_second_sp(db.session)
+        mid = match.id
+
+        resp = client.post(
+            f"/matches/{mid}/rebind",
+            json={"new_supplier_product_id": sp_new.id},
+        )
+        assert resp.status_code == 200
+        body = resp.get_json()
+        assert body["status"] == "ok"
+        new_id = body["new_match_id"]
+
+        # Old match rejected, unpublished; pp claim released.
+        old = db.session.get(ProductMatch, mid)
+        assert old.status == "rejected"
+        assert old.published is False
+        assert old.confirmed_by.startswith("rebind:")
+
+        # New match confirmed on same pp.
+        new = db.session.get(ProductMatch, new_id)
+        assert new.status == "manual"
+        assert new.supplier_product_id == sp_new.id
+        assert new.prom_product_id == pp.id
+        assert new.published is True
+        assert new.price_synced_at is None
+        assert new.availability_synced_at is None
+
+    def test_rebind_upgrades_existing_candidate_pair(self, client, db):
+        """If (new_sp, target_pp) exists as candidate, upgrade in place."""
+        match, _, pp = _seed_confirmed_match(db.session, status="confirmed")
+        sp_new = _seed_second_sp(db.session)
+        # Pre-existing candidate row on the target pair
+        existing = ProductMatch(
+            supplier_product_id=sp_new.id,
+            prom_product_id=pp.id,
+            score=72.0,
+            status="candidate",
+        )
+        db.session.add(existing)
+        db.session.commit()
+        existing_id = existing.id
+
+        resp = client.post(
+            f"/matches/{match.id}/rebind",
+            json={"new_supplier_product_id": sp_new.id},
+        )
+        assert resp.status_code == 200
+        body = resp.get_json()
+        assert body["new_match_id"] == existing_id
+
+        upgraded = db.session.get(ProductMatch, existing_id)
+        assert upgraded.status == "manual"
+        assert upgraded.score == 100.0
+
+    def test_rebind_rejects_candidate_match_as_source(self, client, db):
+        """Can only rebind from confirmed/manual matches."""
+        match, _, _ = _seed_confirmed_match(db.session, status="confirmed")
+        match.status = "candidate"
+        db.session.commit()
+        sp_new = _seed_second_sp(db.session)
+
+        resp = client.post(
+            f"/matches/{match.id}/rebind",
+            json={"new_supplier_product_id": sp_new.id},
+        )
+        assert resp.status_code == 400
+
+    def test_rebind_requires_new_supplier_product_id(self, client, db):
+        match, _, _ = _seed_confirmed_match(db.session)
+        resp = client.post(f"/matches/{match.id}/rebind", json={})
+        assert resp.status_code == 400
+
+    def test_rebind_rejects_same_sp(self, client, db):
+        match, sp_old, _ = _seed_confirmed_match(db.session)
+        resp = client.post(
+            f"/matches/{match.id}/rebind",
+            json={"new_supplier_product_id": sp_old.id},
+        )
+        assert resp.status_code == 400
+
+    def test_rebind_404_on_missing_sp(self, client, db):
+        match, _, _ = _seed_confirmed_match(db.session)
+        resp = client.post(
+            f"/matches/{match.id}/rebind",
+            json={"new_supplier_product_id": 99999},
+        )
+        assert resp.status_code == 404
+
+    def test_rebind_409_when_new_sp_claims_different_pp(self, client, db):
+        """If the new SP is already confirmed on a DIFFERENT pp, refuse."""
+        match, _, _ = _seed_confirmed_match(db.session)
+        sp_new = _seed_second_sp(db.session)
+
+        other_pp = PromProduct(
+            external_id="OTHER_PP",
+            name="Другой каталог",
+            brand="TestBrand",
+            price=30000,
+        )
+        db.session.add(other_pp)
+        db.session.flush()
+
+        other_match = ProductMatch(
+            supplier_product_id=sp_new.id,
+            prom_product_id=other_pp.id,
+            score=100.0,
+            status="confirmed",
+            confirmed_at=datetime.now(timezone.utc),
+            confirmed_by="seed",
+        )
+        db.session.add(other_match)
+        db.session.commit()
+
+        resp = client.post(
+            f"/matches/{match.id}/rebind",
+            json={"new_supplier_product_id": sp_new.id},
+        )
+        assert resp.status_code == 409
+
+    def test_rebind_creates_audit_entry(self, client, db):
+        from app.models.audit_log import AuditLog
+        match, _, _ = _seed_confirmed_match(db.session)
+        sp_new = _seed_second_sp(db.session)
+
+        resp = client.post(
+            f"/matches/{match.id}/rebind",
+            json={"new_supplier_product_id": sp_new.id},
+        )
+        assert resp.status_code == 200
+
+        entry = (
+            AuditLog.query.filter_by(action="rebind")
+            .order_by(AuditLog.id.desc())
+            .first()
+        )
+        assert entry is not None
+        assert entry.prom_product_id == match.prom_product_id
