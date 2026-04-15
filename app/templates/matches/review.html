@@ -92,6 +92,14 @@
             title="Пересобрать labresta-feed.yml из текущих подтверждённых матчей (published=True)">
         Обновить фид
     </button>
+    <button type="button" class="btn btn-sm btn-outline-primary" id="syncPricesBtn"
+            title="Собрать узкий YML только с ценами (labresta-prices.yml) и обновить price_synced_at">
+        Обновить цены
+    </button>
+    <button type="button" class="btn btn-sm btn-outline-primary" id="syncAvailabilityBtn"
+            title="Собрать узкий YML только с наличием (labresta-availability.yml) и обновить availability_synced_at">
+        Обновить наличие
+    </button>
     <span id="regenerateFeedStatus" class="small text-muted"></span>
     <span class="mx-2 text-muted">|</span>
     <button type="button" class="btn btn-sm btn-outline-info" id="diffToggleBtn"

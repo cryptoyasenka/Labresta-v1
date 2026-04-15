@@ -421,6 +421,54 @@
         });
     }
 
+    // Phase D — narrow sync (prices / availability)
+    function wireNarrowSync(btnId, endpoint, buildMsg) {
+        var btn = document.getElementById(btnId);
+        if (!btn) return;
+        btn.addEventListener('click', function () {
+            btn.disabled = true;
+            var originalLabel = btn.textContent;
+            btn.textContent = 'Генерация...';
+            if (regenerateFeedStatus) regenerateFeedStatus.textContent = '';
+
+            fetchWithCSRF(endpoint, { method: 'POST' })
+                .then(function (resp) {
+                    return resp.json().then(function (data) {
+                        if (!resp.ok) throw new Error(data.message || 'HTTP ' + resp.status);
+                        return data;
+                    });
+                })
+                .then(function (data) {
+                    var msg = buildMsg(data);
+                    if (regenerateFeedStatus) regenerateFeedStatus.textContent = msg;
+                    showAlert(msg, 'success');
+                    setTimeout(function () { window.location.reload(); }, 1200);
+                })
+                .catch(function (err) {
+                    showAlert('Ошибка sync: ' + err.message, 'danger');
+                    btn.disabled = false;
+                    btn.textContent = originalLabel;
+                });
+        });
+    }
+
+    wireNarrowSync(
+        'syncPricesBtn',
+        '/matches/sync-prices',
+        function (d) {
+            var skippedNote = d.skipped ? ' (пропущено без цены: ' + d.skipped + ')' : '';
+            return 'Цены синхронизированы: ' + d.total + ' офферов' + skippedNote;
+        }
+    );
+    wireNarrowSync(
+        'syncAvailabilityBtn',
+        '/matches/sync-availability',
+        function (d) {
+            return 'Наличие синхронизировано: ' + d.total + ' офферов (' +
+                   d.available + ' в наличии, ' + d.unavailable + ' нет)';
+        }
+    );
+
     // ========== Details Comparison Modal ==========
 
     var detailsModal = null;
