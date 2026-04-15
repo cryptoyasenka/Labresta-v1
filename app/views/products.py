@@ -130,17 +130,26 @@ def supplier_list():
         select(Supplier).order_by(Supplier.name)
     ).scalars().all()
 
-    # Distinct brands for dropdown (scoped to selected supplier when provided)
+    # Distinct brands for dropdown (scoped to selected supplier when provided,
+    # and mirroring the is_deleted filter so the dropdown never offers a brand
+    # that would yield zero visible rows).
     brands_q = (
         select(SupplierProduct.brand)
         .where(SupplierProduct.brand.isnot(None))
         .where(SupplierProduct.brand != "")
     )
+    if not show_deleted:
+        brands_q = brands_q.where(SupplierProduct.is_deleted == False)  # noqa: E712
     if supplier_id:
         brands_q = brands_q.where(SupplierProduct.supplier_id == supplier_id)
     brands = db.session.execute(
         brands_q.distinct().order_by(SupplierProduct.brand)
     ).scalars().all()
+    # Keep the currently-selected brand visible even if it's not in the scoped
+    # list — otherwise switching supplier silently drops the filter from the UI
+    # while still applying it via the URL param, producing a confusing empty list.
+    if brand_filter and brand_filter not in brands:
+        brands = sorted(list(brands) + [brand_filter])
 
     # Load matches for displayed SPs (priority: manual > confirmed > candidate > rejected)
     sp_ids = [p.id for p in products]

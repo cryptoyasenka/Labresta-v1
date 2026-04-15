@@ -74,3 +74,55 @@ def test_brand_filter_persists_in_pagination_links(client, session):
     body = resp.data.decode("utf-8")
     # Filter param should flow into filter_params used by sort_header + pagination.
     assert "brand=Sirman" in body
+
+
+def test_brand_dropdown_excludes_deleted_products(client, session):
+    """Brands belonging ONLY to is_deleted rows must not appear in the default
+    (show_deleted=false) dropdown — otherwise selecting them returns 0 rows."""
+    supplier = _seed(session)
+    # Orphan brand that only appears on a deleted row.
+    session.add(
+        SupplierProduct(
+            supplier_id=supplier.id,
+            external_id="E99",
+            name="Old Wega Machine",
+            brand="Wega",
+            price_cents=70000,
+            available=True,
+            is_deleted=True,
+        )
+    )
+    session.commit()
+    resp = client.get("/products/supplier")
+    body = resp.data.decode("utf-8")
+    assert 'value="Wega"' not in body
+    # And the non-deleted brands are still there.
+    assert 'value="Sirman"' in body
+
+
+def test_brand_dropdown_preserves_active_filter_when_out_of_scope(client, session):
+    """If the active brand is not in the scoped list (e.g. supplier changed),
+    the dropdown must still render it as an option so the user sees the filter."""
+    supplier_a = _seed(session)  # has Sirman + Fimar
+    supplier_b = Supplier(
+        name="S2", feed_url="http://s2.xml", discount_percent=0, is_enabled=True
+    )
+    session.add(supplier_b)
+    session.flush()
+    session.add(
+        SupplierProduct(
+            supplier_id=supplier_b.id,
+            external_id="B1",
+            name="Блендер OtherBrand",
+            brand="OtherBrand",
+            price_cents=10000,
+            available=True,
+        )
+    )
+    session.commit()
+    # Ask for supplier_b's view but with brand=Sirman (out of scope).
+    resp = client.get(f"/products/supplier?supplier_id={supplier_b.id}&brand=Sirman")
+    body = resp.data.decode("utf-8")
+    # Sirman should still be listed so user sees the applied filter.
+    assert 'value="Sirman"' in body
+    assert 'value="Sirman" selected' in body or 'selected>Sirman' in body
