@@ -3,7 +3,7 @@
 import logging
 from datetime import datetime, timezone
 
-from sqlalchemy import select
+from sqlalchemy import select, true
 
 from app.extensions import db
 from app.models.catalog import PromProduct
@@ -59,7 +59,7 @@ def apply_match_rules(supplier_id: int) -> int:
     eligible_products = db.session.execute(
         select(SupplierProduct).where(
             SupplierProduct.supplier_id == supplier_id,
-            SupplierProduct.id.not_in(confirmed_ids) if confirmed_ids else True,
+            SupplierProduct.id.not_in(confirmed_ids) if confirmed_ids else true(),
         )
     ).scalars().all()
 

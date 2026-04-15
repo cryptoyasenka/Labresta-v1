@@ -234,6 +234,12 @@ def save_catalog_products(products: list[dict]) -> dict:
 
     Matches on external_id (unique). Updates existing records, inserts new ones.
 
+    Contract: the input is assumed to be a FULL Horoshop catalog export.
+    Every column is overwritten from the row — including nullable fields
+    like description_ua/image_url — so a partial export would WIPE any
+    field absent from the file. Never feed this function a delta/filtered
+    snapshot; use a separate partial-update pipeline for that.
+
     Args:
         products: List of product dicts from parse_catalog_file.
 

@@ -43,16 +43,23 @@ def calculate_auto_discount(
     cost_rate: float = 0.75,
     min_margin_uah: float = 500.0,
 ) -> int:
-    """Largest integer discount % keeping UAH margin >= min_margin_uah.
+    """Integer discount %, rounded UP to favor the customer.
 
     Margin formula:
         margin_eur = retail_eur * ((1 - d/100) - cost_rate)
         margin_uah = margin_eur * eur_rate_uah
 
+    Let d_real solve margin(d_real) == min_margin_uah exactly. Because we
+    round UP (ceil) rather than down (floor), the returned integer % may
+    leave the actual margin slightly below min_margin_uah — by less than
+    one percentage-point of retail. This matches the product spec
+    ("до целого числа в большую сторону").
+
     Returns:
-        - target_discount (int) if full discount keeps margin >= min
-        - smallest integer d in [1..target_discount-1] with margin >= min (ceil of d_max)
-        - 0 if even zero discount can't reach min margin (cheap item, sell at retail)
+        - target_discount (int) if the full target keeps margin >= min
+        - ceil(d_real) when 0 < d_real < target_discount
+        - 0 if even a zero discount can't reach min margin (cheap item,
+          sell at retail)
     """
     if retail_price_cents <= 0 or eur_rate_uah <= 0:
         return 0

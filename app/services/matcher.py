@@ -945,10 +945,16 @@ def run_matching_for_supplier(supplier_id: int) -> int:
     Returns:
         Count of new match candidates generated.
     """
-    # Step 1: Get supplier product IDs with confirmed/manual matches (skip these)
+    # Step 1: Get THIS supplier's product IDs with confirmed/manual matches
+    # (skip these). Scoping by supplier_id keeps the id set small; without
+    # the join we'd load every confirmed sp_id across all suppliers.
     matched_ids_query = (
         select(ProductMatch.supplier_product_id)
-        .where(ProductMatch.status.in_(["confirmed", "manual"]))
+        .join(SupplierProduct, ProductMatch.supplier_product_id == SupplierProduct.id)
+        .where(
+            SupplierProduct.supplier_id == supplier_id,
+            ProductMatch.status.in_(["confirmed", "manual"]),
+        )
         .distinct()
     )
     matched_ids = set(
