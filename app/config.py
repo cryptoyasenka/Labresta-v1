@@ -28,3 +28,5 @@ class DefaultConfig:
     # YML feed output
     YML_OUTPUT_DIR = os.path.join(basedir, "instance", "feeds")
     YML_FILENAME = "labresta-feed.yml"
+    YML_PRICES_FILENAME = "labresta-prices.yml"
+    YML_AVAILABILITY_FILENAME = "labresta-availability.yml"

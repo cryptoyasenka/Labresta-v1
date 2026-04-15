@@ -496,6 +496,69 @@ def regenerate_feed():
     return jsonify({"status": "ok", **result})
 
 
+def _parse_match_ids(data: dict) -> list[int] | None:
+    """Read optional match_ids list from JSON body. Empty/missing → None (bulk)."""
+    raw = data.get("match_ids") if isinstance(data, dict) else None
+    if not raw:
+        return None
+    if not isinstance(raw, list):
+        return None
+    out: list[int] = []
+    for item in raw:
+        try:
+            out.append(int(item))
+        except (TypeError, ValueError):
+            continue
+    return out or None
+
+
+@matches_bp.route("/sync-prices", methods=["POST"])
+@login_required
+def sync_prices_feed():
+    """Generate narrow price-only YML and bump price_synced_at.
+
+    Body (optional): {"match_ids": [123, 456]} — restrict to these matches.
+    No body / empty list = bulk sync of all published confirmed/manual matches.
+    """
+    from app.services.yml_generator import sync_prices
+    data = request.get_json(silent=True) or {}
+    match_ids = _parse_match_ids(data)
+    try:
+        result = sync_prices(match_ids=match_ids)
+    except Exception as exc:  # pragma: no cover — surfaced to UI
+        return jsonify({"status": "error", "message": str(exc)}), 500
+    log_action("sync_prices", details={
+        "total": result["total"],
+        "skipped": result["skipped"],
+        "scope": "bulk" if match_ids is None else f"ids:{len(match_ids)}",
+    })
+    return jsonify({"status": "ok", **result})
+
+
+@matches_bp.route("/sync-availability", methods=["POST"])
+@login_required
+def sync_availability_feed():
+    """Generate narrow availability-only YML and bump availability_synced_at.
+
+    Body (optional): {"match_ids": [123, 456]} — restrict to these matches.
+    No body / empty list = bulk sync of all published confirmed/manual matches.
+    """
+    from app.services.yml_generator import sync_availability
+    data = request.get_json(silent=True) or {}
+    match_ids = _parse_match_ids(data)
+    try:
+        result = sync_availability(match_ids=match_ids)
+    except Exception as exc:  # pragma: no cover — surfaced to UI
+        return jsonify({"status": "error", "message": str(exc)}), 500
+    log_action("sync_availability", details={
+        "total": result["total"],
+        "available": result["available"],
+        "unavailable": result["unavailable"],
+        "scope": "bulk" if match_ids is None else f"ids:{len(match_ids)}",
+    })
+    return jsonify({"status": "ok", **result})
+
+
 @matches_bp.route("/<int:match_id>/update-prom", methods=["POST"])
 @login_required
 def update_prom_fields(match_id):

@@ -1,7 +1,13 @@
-"""YML feed generator — builds Yandex Market Language XML from confirmed matches.
+"""YML feed generators — full feed plus narrow price/availability feeds.
 
 Queries confirmed ProductMatch records, applies pricing via the pricing engine,
-and writes an atomic YML file for prom.ua import.
+and writes atomic YML files for Horoshop import. Three flavors:
+  - regenerate_yml_feed: full catalog (price + availability + description + name)
+  - sync_prices: narrow feed, only price (Horoshop config ignores other fields)
+  - sync_availability: narrow feed, only availability attribute
+
+Narrow feeds let operator push just prices or just stock without re-importing
+description/name, which matters when Horoshop catalog edits should survive.
 """
 
 import logging
@@ -28,15 +34,11 @@ from app.services.pricing import (
 logger = logging.getLogger(__name__)
 
 
-def regenerate_yml_feed() -> dict:
-    """Generate YML feed from all confirmed matches and write atomically.
+def _query_published_matches(match_ids: list[int] | None = None):
+    """Fetch confirmed/manual matches with related sp/pp/supplier, published=True.
 
-    Returns:
-        Dict with stats: total, available, unavailable, path.
+    If match_ids provided, restrict to those ids (for per-row sync).
     """
-    # Query confirmed matches with all related data.
-    # published=False is a per-row unpublish toggle (phase C) — operator can
-    # keep the match row in the DB but exclude it from the feed.
     stmt = (
         select(ProductMatch)
         .where(
@@ -50,43 +52,92 @@ def regenerate_yml_feed() -> dict:
             joinedload(ProductMatch.prom_product),
         )
     )
-    matches = db.session.execute(stmt).scalars().unique().all()
-    included_match_ids = {m.id for m in matches}
+    if match_ids:
+        stmt = stmt.where(ProductMatch.id.in_(match_ids))
+    return db.session.execute(stmt).scalars().unique().all()
 
-    # Build YML XML
+
+def _shop_skeleton():
+    """Build <yml_catalog><shop>… skeleton, return (root, offers_el)."""
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
     root = etree.Element("yml_catalog", date=now)
     shop = etree.SubElement(root, "shop")
-
     etree.SubElement(shop, "name").text = "LabResta"
     etree.SubElement(shop, "company").text = "LabResta"
     etree.SubElement(shop, "url").text = "https://labresta.com"
-
     currencies = etree.SubElement(shop, "currencies")
     etree.SubElement(currencies, "currency", id="EUR", rate="1")
-
     offers_el = etree.SubElement(shop, "offers")
+    return root, offers_el
 
+
+def _is_available_for_offer(match) -> bool:
+    """Match availability rule shared across full and narrow feeds."""
+    sp = match.supplier_product
+    return (
+        is_valid_price(sp.price_cents)
+        and sp.available
+        and not sp.needs_review
+    )
+
+
+def _compute_price_eur(match) -> float:
+    """Apply effective discount to supplier price, mirror full-feed logic."""
+    sp = match.supplier_product
+    supplier = sp.supplier
+    if not is_valid_price(sp.price_cents):
+        return 0.0
+    effective_discount = get_effective_discount(
+        match.discount_percent, supplier.discount_percent
+    )
+    return calculate_price_eur(sp.price_cents, effective_discount)
+
+
+def _write_xml_atomic(root, yml_dir: str, filename: str) -> str:
+    """Atomic write of the XML tree; return absolute output path."""
+    output_path = os.path.join(yml_dir, filename)
+    os.makedirs(yml_dir, exist_ok=True)
+    fd, tmp_path = tempfile.mkstemp(suffix=".tmp", prefix="yml_", dir=yml_dir)
+    try:
+        tree = etree.ElementTree(root)
+        with os.fdopen(fd, "wb") as f:
+            tree.write(
+                f,
+                xml_declaration=True,
+                encoding="UTF-8",
+                pretty_print=True,
+                doctype='<!DOCTYPE yml_catalog SYSTEM "shops.dtd">',
+            )
+        os.replace(tmp_path, output_path)
+    except Exception:
+        try:
+            os.unlink(tmp_path)
+        except OSError:
+            pass
+        raise
+    return output_path
+
+
+def regenerate_yml_feed() -> dict:
+    """Generate full YML feed from all confirmed matches and write atomically.
+
+    Returns:
+        Dict with stats: total, available, unavailable, path.
+    """
+    # published=False is a per-row unpublish toggle (phase C) — operator can
+    # keep the match row in the DB but exclude it from the feed.
+    matches = _query_published_matches()
+    included_match_ids = {m.id for m in matches}
+
+    root, offers_el = _shop_skeleton()
     available_count = 0
     unavailable_count = 0
 
     for match in matches:
         sp = match.supplier_product
         pp = match.prom_product
-        supplier = sp.supplier
-
-        # Determine availability
-        price_valid = is_valid_price(sp.price_cents)
-        is_available = price_valid and sp.available and not sp.needs_review
-
-        # Calculate price
-        effective_discount = get_effective_discount(
-            match.discount_percent, supplier.discount_percent
-        )
-        if price_valid:
-            price_eur = calculate_price_eur(sp.price_cents, effective_discount)
-        else:
-            price_eur = 0.0
+        is_available = _is_available_for_offer(match)
+        price_eur = _compute_price_eur(match)
 
         avail_str = "true" if is_available else "false"
         offer = etree.SubElement(
@@ -127,36 +178,13 @@ def regenerate_yml_feed() -> dict:
 
     total = available_count + unavailable_count
 
-    # Atomic file write
     yml_dir = current_app.config["YML_OUTPUT_DIR"]
-    yml_filename = current_app.config["YML_FILENAME"]
-    output_path = os.path.join(yml_dir, yml_filename)
-
-    os.makedirs(yml_dir, exist_ok=True)
-
-    fd, tmp_path = tempfile.mkstemp(suffix=".tmp", prefix="yml_", dir=yml_dir)
-    try:
-        tree = etree.ElementTree(root)
-        with os.fdopen(fd, "wb") as f:
-            tree.write(
-                f,
-                xml_declaration=True,
-                encoding="UTF-8",
-                pretty_print=True,
-                doctype='<!DOCTYPE yml_catalog SYSTEM "shops.dtd">',
-            )
-        os.replace(tmp_path, output_path)
-    except Exception:
-        # Clean up temp file on failure
-        try:
-            os.unlink(tmp_path)
-        except OSError:
-            pass
-        raise
+    output_path = _write_xml_atomic(
+        root, yml_dir, current_app.config["YML_FILENAME"]
+    )
 
     # Mark in_feed flag: True for included matches, False for the rest.
     # One bulk UPDATE per side — avoid per-row session.add.
-    now_utc = datetime.now(timezone.utc)
     if included_match_ids:
         db.session.query(ProductMatch).filter(
             ProductMatch.id.in_(included_match_ids)
@@ -167,12 +195,8 @@ def regenerate_yml_feed() -> dict:
     db.session.commit()
 
     logger.info(
-        "YML feed generated at %s: %d offers (%d available, %d unavailable) -> %s",
-        now_utc.isoformat(),
-        total,
-        available_count,
-        unavailable_count,
-        output_path,
+        "YML feed generated: %d offers (%d available, %d unavailable) -> %s",
+        total, available_count, unavailable_count, output_path,
     )
 
     return {
@@ -180,4 +204,131 @@ def regenerate_yml_feed() -> dict:
         "available": available_count,
         "unavailable": unavailable_count,
         "path": output_path,
+    }
+
+
+def sync_prices(match_ids: list[int] | None = None) -> dict:
+    """Generate a narrow YML containing only price data; bump price_synced_at.
+
+    Narrow feed structure per offer: id + vendorCode + price + currencyId.
+    `available` attribute is still set (offer tag requires it) but Horoshop-side
+    import settings should be configured to only update prices from this feed.
+
+    Args:
+        match_ids: Optional subset — if provided, only these matches are synced.
+            None = sync all published confirmed/manual matches (bulk).
+
+    Returns:
+        Dict with stats: total, skipped (no valid price), path, synced_at.
+    """
+    matches = _query_published_matches(match_ids)
+    root, offers_el = _shop_skeleton()
+
+    synced_ids: list[int] = []
+    skipped = 0
+
+    for match in matches:
+        pp = match.prom_product
+        if not is_valid_price(match.supplier_product.price_cents):
+            skipped += 1
+            continue
+        is_available = _is_available_for_offer(match)
+        price_eur = _compute_price_eur(match)
+
+        offer = etree.SubElement(
+            offers_el,
+            "offer",
+            id=str(pp.external_id),
+            available="true" if is_available else "false",
+        )
+        etree.SubElement(offer, "vendorCode").text = str(pp.external_id)
+        etree.SubElement(offer, "price").text = f"{price_eur:.1f}"
+        etree.SubElement(offer, "currencyId").text = "EUR"
+        synced_ids.append(match.id)
+
+    yml_dir = current_app.config["YML_OUTPUT_DIR"]
+    output_path = _write_xml_atomic(
+        root, yml_dir, current_app.config["YML_PRICES_FILENAME"]
+    )
+
+    now_utc = datetime.now(timezone.utc)
+    if synced_ids:
+        db.session.query(ProductMatch).filter(
+            ProductMatch.id.in_(synced_ids)
+        ).update({"price_synced_at": now_utc}, synchronize_session=False)
+        db.session.commit()
+
+    logger.info(
+        "Prices sync: %d offers, %d skipped (invalid price) -> %s",
+        len(synced_ids), skipped, output_path,
+    )
+
+    return {
+        "total": len(synced_ids),
+        "skipped": skipped,
+        "path": output_path,
+        "synced_at": now_utc.isoformat(),
+    }
+
+
+def sync_availability(match_ids: list[int] | None = None) -> dict:
+    """Generate a narrow YML containing only availability; bump availability_synced_at.
+
+    Narrow feed structure per offer: id + vendorCode + available attribute.
+    Horoshop-side import settings should be configured to only update stock
+    status from this feed.
+
+    Args:
+        match_ids: Optional subset — if provided, only these matches are synced.
+
+    Returns:
+        Dict with stats: total, available, unavailable, path, synced_at.
+    """
+    matches = _query_published_matches(match_ids)
+    root, offers_el = _shop_skeleton()
+
+    synced_ids: list[int] = []
+    available_count = 0
+    unavailable_count = 0
+
+    for match in matches:
+        pp = match.prom_product
+        is_available = _is_available_for_offer(match)
+
+        offer = etree.SubElement(
+            offers_el,
+            "offer",
+            id=str(pp.external_id),
+            available="true" if is_available else "false",
+        )
+        etree.SubElement(offer, "vendorCode").text = str(pp.external_id)
+        synced_ids.append(match.id)
+        if is_available:
+            available_count += 1
+        else:
+            unavailable_count += 1
+
+    yml_dir = current_app.config["YML_OUTPUT_DIR"]
+    output_path = _write_xml_atomic(
+        root, yml_dir, current_app.config["YML_AVAILABILITY_FILENAME"]
+    )
+
+    now_utc = datetime.now(timezone.utc)
+    if synced_ids:
+        db.session.query(ProductMatch).filter(
+            ProductMatch.id.in_(synced_ids)
+        ).update({"availability_synced_at": now_utc}, synchronize_session=False)
+        db.session.commit()
+
+    logger.info(
+        "Availability sync: %d offers (%d available, %d unavailable) -> %s",
+        len(synced_ids), available_count, unavailable_count, output_path,
+    )
+
+    return {
+        "total": len(synced_ids),
+        "available": available_count,
+        "unavailable": unavailable_count,
+        "path": output_path,
+        "synced_at": now_utc.isoformat(),
     }
