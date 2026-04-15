@@ -87,7 +87,7 @@ def classify_single(match: ProductMatch) -> str | None:
     if sup.issubset(prom) or prom.issubset(sup):
         if sp.price_cents and pp.price and pp.price > 0:
             sup_eur = sp.price_cents / 100.0
-            prom_eur = float(pp.price)
+            prom_eur = float(pp.price) / 100.0
             lo, hi = prom_eur * (1 - PRICE_BAND), prom_eur * (1 + PRICE_BAND)
             if lo <= sup_eur <= hi:
                 return "R2:subset-tight-price"
