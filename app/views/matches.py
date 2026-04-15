@@ -743,7 +743,7 @@ def bulk_action():
 def search_catalog():
     """AJAX endpoint for catalog product search (used in manual match modal)."""
     q = request.args.get("q", "").strip()
-    if len(q) < 2:
+    if len(q) < 2 or len(q) > 200:
         return jsonify([])
 
     search_term = f"%{q}%"
@@ -933,7 +933,7 @@ def search_suppliers():
     state so the operator can see which SP is already in use.
     """
     q = request.args.get("q", "").strip()
-    if len(q) < 2:
+    if len(q) < 2 or len(q) > 200:
         return jsonify([])
 
     term = f"%{q}%"
