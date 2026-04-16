@@ -12,7 +12,11 @@ Automated price and availability sync from supplier feeds to the **Horoshop** st
 - **Fuzzy product matching** — rapidfuzz WRatio + brand/type/voltage/containment/price gates
 - **Rule matching** — deterministic rules applied before fuzzy (see `app/services/rule_matcher.py`)
 - **Auto-discount** — per-supplier closure-price calculation capped at 19% with a UAH-margin floor
-- **Narrow-feed sync** — generates `labresta-prices.yml` / `labresta-availability.yml` for Horoshop import
+- **YML feeds** — three scopes share the same offer shape; see [feed routing invariant in CLAUDE.md §14](CLAUDE.md):
+  - `/feed/yml` — main feed, all suppliers (`labresta-feed.yml`)
+  - `/feed/yml/supplier/<slug>` — per-supplier feed (`labresta-feed-<slug>.yml`)
+  - `/feed/yml/custom/<token>` — ad-hoc selection from `/matches`, deterministic token (`labresta-feed-custom-<token>.yml`)
+  - Narrow CLI-only: `/feed/prices.yml`, `/feed/availability.yml`
 - **Rebind workflow** — swap the supplier side of a confirmed match without breaking the 1 pp ↔ 1 sp invariant
 - **Web dashboard** — manage matches, run audits, trigger syncs, review action log
 
