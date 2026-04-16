@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Кастомные фиды — LabResta Sync{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Кастомные фиды</h2>
+    <div class="text-muted">
+        Всего: <strong>{{ feeds|length }}</strong>
+    </div>
+</div>
+
+{% if feeds %}
+<div class="table-responsive">
+    <table class="table table-hover table-sm align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Название</th>
+                <th>Токен</th>
+                <th>Товаров</th>
+                <th>URL</th>
+                <th class="text-nowrap">Создан</th>
+                <th class="text-nowrap">Обновлён</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for feed in feeds %}
+            {% set feed_url = url_for('feed.serve_custom_yml', token=feed.token, _external=True) %}
+            <tr>
+                <td>
+                    {% if feed.name %}
+                        <strong>{{ feed.name }}</strong>
+                    {% else %}
+                        <span class="text-muted">— без названия —</span>
+                    {% endif %}
+                </td>
+                <td><code>{{ feed.token }}</code></td>
+                <td>{{ feed.match_ids|length }}</td>
+                <td>
+                    <div class="input-group input-group-sm" style="max-width: 480px;">
+                        <input type="text" class="form-control form-control-sm font-monospace small"
+                               value="{{ feed_url }}" readonly
+                               id="feed-url-{{ feed.token }}">
+                        <button type="button" class="btn btn-outline-secondary btn-sm copy-feed-url"
+                                data-target="feed-url-{{ feed.token }}">
+                            Копировать
+                        </button>
+                    </div>
+                </td>
+                <td class="text-nowrap small">
+                    {{ feed.created_at.strftime('%d.%m.%Y %H:%M') if feed.created_at else '—' }}
+                </td>
+                <td class="text-nowrap small">
+                    {{ feed.updated_at.strftime('%d.%m.%Y %H:%M') if feed.updated_at else '—' }}
+                </td>
+                <td class="text-end">
+                    <form method="POST"
+                          action="{{ url_for('feed.custom_feed_delete', token=feed.token) }}"
+                          class="d-inline"
+                          onsubmit="return confirm('Удалить кастомный фид «{{ feed.name or feed.token }}»? Файл и запись будут удалены безвозвратно.')">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Удалить</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="text-center text-muted py-5">
+    <h5>Кастомных фидов пока нет</h5>
+    <p>
+        Соберите ad-hoc фид из выбранных позиций на странице
+        <a href="{{ url_for('matches.review') }}">Совпадения</a> —
+        ссылка появится здесь и останется навсегда, пока вы её не удалите.
+    </p>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+    document.querySelectorAll('.copy-feed-url').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var input = document.getElementById(btn.dataset.target);
+            if (!input) return;
+            input.select();
+            input.setSelectionRange(0, input.value.length);
+            var done = function () {
+                var prev = btn.textContent;
+                btn.textContent = 'Скопировано';
+                btn.classList.add('btn-success');
+                btn.classList.remove('btn-outline-secondary');
+                setTimeout(function () {
+                    btn.textContent = prev;
+                    btn.classList.remove('btn-success');
+                    btn.classList.add('btn-outline-secondary');
+                }, 1500);
+            };
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(input.value).then(done).catch(function () {
+                    document.execCommand('copy');
+                    done();
+                });
+            } else {
+                document.execCommand('copy');
+                done();
+            }
+        });
+    });
+})();
+</script>
+{% endblock %}
