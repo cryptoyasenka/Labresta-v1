@@ -71,6 +71,7 @@ def app():
     from app.models import (  # noqa: F401
         PromProduct, Supplier, SupplierProduct, ProductMatch,
         SyncRun, User, MatchRule, NotificationRule, Notification,
+        CustomFeed,
     )
 
     with flask_app.app_context():
