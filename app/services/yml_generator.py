@@ -1,15 +1,20 @@
-"""YML feed generators — full feed plus narrow price/availability feeds.
+"""YML feed generators — main / per-supplier / custom selection / narrow feeds.
 
 Queries confirmed ProductMatch records, applies pricing via the pricing engine,
-and writes atomic YML files for Horoshop import. Three flavors:
-  - regenerate_yml_feed: full catalog (price + availability + description + name)
-  - sync_prices: narrow feed, only price (Horoshop config ignores other fields)
-  - sync_availability: narrow feed, only availability attribute
+and writes atomic YML files for Horoshop import. Five flavors:
+  - regenerate_yml_feed: full catalog, all suppliers (= regenerate_all_feed)
+  - regenerate_supplier_feed(supplier_id): same content but only one supplier
+  - regenerate_custom_feed(match_ids): arbitrary selection, deterministic token URL
+  - sync_prices: narrow feed, only price (kept for CLI; UI button removed in K.4)
+  - sync_availability: narrow feed, only availability attribute (same)
 
-Narrow feeds let operator push just prices or just stock without re-importing
-description/name, which matters when Horoshop catalog edits should survive.
+Per-supplier and custom feeds use the SAME offer shape as the main feed
+(name, vendorCode, price, available, description) — Horoshop import config
+chooses what to update. Only the main feed touches the in_feed flag.
 """
 
+import hashlib
+import json
 import logging
 import os
 import tempfile
@@ -22,9 +27,10 @@ from sqlalchemy.orm import joinedload
 
 from app.extensions import db
 from app.models.catalog import PromProduct  # noqa: F401 — needed for joinedload
+from app.models.custom_feed import CustomFeed
 from app.models.product_match import ProductMatch
-from app.models.supplier import Supplier  # noqa: F401 — needed for joinedload
-from app.models.supplier_product import SupplierProduct  # noqa: F401 — needed for joinedload
+from app.models.supplier import Supplier
+from app.models.supplier_product import SupplierProduct
 from app.services.pricing import (
     calculate_price_eur,
     get_effective_discount,
@@ -34,10 +40,13 @@ from app.services.pricing import (
 logger = logging.getLogger(__name__)
 
 
-def _query_published_matches(match_ids: list[int] | None = None):
-    """Fetch confirmed/manual matches with related sp/pp/supplier, published=True.
+def _query_published_matches(
+    match_ids: list[int] | None = None,
+    supplier_ids: list[int] | None = None,
+):
+    """Fetch confirmed/manual published matches with sp/pp/supplier eager-loaded.
 
-    If match_ids provided, restrict to those ids (for per-row sync).
+    Filters are AND-combined when both are provided.
     """
     stmt = (
         select(ProductMatch)
@@ -54,7 +63,103 @@ def _query_published_matches(match_ids: list[int] | None = None):
     )
     if match_ids:
         stmt = stmt.where(ProductMatch.id.in_(match_ids))
+    if supplier_ids:
+        stmt = stmt.join(
+            SupplierProduct, ProductMatch.supplier_product_id == SupplierProduct.id
+        ).where(SupplierProduct.supplier_id.in_(supplier_ids))
     return db.session.execute(stmt).scalars().unique().all()
+
+
+def custom_feed_token(match_ids: list[int]) -> str:
+    """Deterministic 12-hex-char token from a sorted unique set of match ids."""
+    canonical = ",".join(str(i) for i in sorted(set(int(x) for x in match_ids)))
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()[:12]
+
+
+def _build_offer_xml(parent_el, match) -> bool:
+    """Append a <offer> element to parent_el for match. Returns is_available."""
+    sp = match.supplier_product
+    pp = match.prom_product
+    is_available = _is_available_for_offer(match)
+    price_eur = _compute_price_eur(match)
+
+    avail_str = "true" if is_available else "false"
+    offer = etree.SubElement(
+        parent_el,
+        "offer",
+        id=str(pp.external_id),
+        available=avail_str,
+    )
+    etree.SubElement(offer, "name").text = pp.name
+    if pp.name_ru:
+        etree.SubElement(offer, "name_ru").text = pp.name_ru
+    if pp.page_url:
+        etree.SubElement(offer, "url").text = pp.page_url
+    etree.SubElement(offer, "price").text = f"{price_eur:.1f}"
+    etree.SubElement(offer, "currencyId").text = "EUR"
+    etree.SubElement(offer, "vendorCode").text = str(pp.external_id)
+
+    if pp.description_ua:
+        desc_el = etree.SubElement(offer, "description")
+        desc_el.text = etree.CDATA(pp.description_ua)
+    if pp.description_ru:
+        desc_ru_el = etree.SubElement(offer, "description_ru")
+        desc_ru_el.text = etree.CDATA(pp.description_ru)
+    return is_available
+
+
+def _generate_feed(
+    filename: str,
+    supplier_ids: list[int] | None = None,
+    match_ids: list[int] | None = None,
+    update_in_feed: bool = False,
+) -> dict:
+    """Shared feed builder. Returns stats dict.
+
+    update_in_feed=True is reserved for the main all-suppliers feed: it sets
+    in_feed=True on included matches and False on the rest. Per-supplier and
+    custom feeds never touch in_feed (multi-file ambiguity).
+    """
+    matches = _query_published_matches(
+        match_ids=match_ids, supplier_ids=supplier_ids
+    )
+    included_ids = {m.id for m in matches}
+
+    root, offers_el = _shop_skeleton()
+    available_count = 0
+    unavailable_count = 0
+    for match in matches:
+        is_avail = _build_offer_xml(offers_el, match)
+        if is_avail:
+            available_count += 1
+        else:
+            unavailable_count += 1
+
+    yml_dir = current_app.config["YML_OUTPUT_DIR"]
+    output_path = _write_xml_atomic(root, yml_dir, filename)
+
+    if update_in_feed:
+        if included_ids:
+            db.session.query(ProductMatch).filter(
+                ProductMatch.id.in_(included_ids)
+            ).update({"in_feed": True}, synchronize_session=False)
+        db.session.query(ProductMatch).filter(
+            ~ProductMatch.id.in_(included_ids) if included_ids else true()
+        ).update({"in_feed": False}, synchronize_session=False)
+        db.session.commit()
+
+    total = available_count + unavailable_count
+    logger.info(
+        "Feed %s: %d offers (%d available, %d unavailable)",
+        filename, total, available_count, unavailable_count,
+    )
+    return {
+        "total": total,
+        "available": available_count,
+        "unavailable": unavailable_count,
+        "path": output_path,
+        "filename": filename,
+    }
 
 
 def _shop_skeleton():
@@ -119,92 +224,86 @@ def _write_xml_atomic(root, yml_dir: str, filename: str) -> str:
 
 
 def regenerate_yml_feed() -> dict:
-    """Generate full YML feed from all confirmed matches and write atomically.
+    """Main feed: all suppliers, all confirmed published matches.
 
-    Returns:
-        Dict with stats: total, available, unavailable, path.
+    This is the only feed that updates the in_feed column on ProductMatch.
+    Per-supplier and custom feeds intentionally do not — multi-file ambiguity.
     """
-    # published=False is a per-row unpublish toggle (phase C) — operator can
-    # keep the match row in the DB but exclude it from the feed.
-    matches = _query_published_matches()
-    included_match_ids = {m.id for m in matches}
-
-    root, offers_el = _shop_skeleton()
-    available_count = 0
-    unavailable_count = 0
-
-    for match in matches:
-        sp = match.supplier_product
-        pp = match.prom_product
-        is_available = _is_available_for_offer(match)
-        price_eur = _compute_price_eur(match)
-
-        avail_str = "true" if is_available else "false"
-        offer = etree.SubElement(
-            offers_el,
-            "offer",
-            id=str(pp.external_id),
-            available=avail_str,
-        )
-        etree.SubElement(offer, "name").text = pp.name
-        if pp.name_ru:
-            etree.SubElement(offer, "name_ru").text = pp.name_ru
-        if pp.page_url:
-            etree.SubElement(offer, "url").text = pp.page_url
-        etree.SubElement(offer, "price").text = f"{price_eur:.1f}"
-        etree.SubElement(offer, "currencyId").text = "EUR"
-
-        # Horoshop matches existing products by artikul; its YML import can be
-        # configured to read either `offer id=` or `<vendorCode>`. We populate
-        # both with external_id (= Horoshop artikul) so either setting works.
-        etree.SubElement(offer, "vendorCode").text = str(pp.external_id)
-
-        # Description — wrap in CDATA so HTML markup in the body survives.
-        # Horoshop import reads <description> and updates the catalog entry's
-        # description when "обновлять существующие" is enabled. Write UA and RU
-        # as separate tags (<description> = UA, <description_ru> = RU) mirroring
-        # the name / name_ru convention above.
-        if pp.description_ua:
-            desc_el = etree.SubElement(offer, "description")
-            desc_el.text = etree.CDATA(pp.description_ua)
-        if pp.description_ru:
-            desc_ru_el = etree.SubElement(offer, "description_ru")
-            desc_ru_el.text = etree.CDATA(pp.description_ru)
-
-        if is_available:
-            available_count += 1
-        else:
-            unavailable_count += 1
-
-    total = available_count + unavailable_count
-
-    yml_dir = current_app.config["YML_OUTPUT_DIR"]
-    output_path = _write_xml_atomic(
-        root, yml_dir, current_app.config["YML_FILENAME"]
+    return _generate_feed(
+        filename=current_app.config["YML_FILENAME"],
+        update_in_feed=True,
     )
 
-    # Mark in_feed flag: True for included matches, False for the rest.
-    # One bulk UPDATE per side — avoid per-row session.add.
-    if included_match_ids:
-        db.session.query(ProductMatch).filter(
-            ProductMatch.id.in_(included_match_ids)
-        ).update({"in_feed": True}, synchronize_session=False)
-    db.session.query(ProductMatch).filter(
-        ~ProductMatch.id.in_(included_match_ids) if included_match_ids else true()
-    ).update({"in_feed": False}, synchronize_session=False)
+
+def regenerate_supplier_feed(supplier_id: int) -> dict:
+    """Per-supplier feed at labresta-feed-<slug>.yml.
+
+    Same offer shape as the main feed; only restricts query by supplier_id.
+    """
+    supplier = db.session.get(Supplier, supplier_id)
+    if supplier is None:
+        raise ValueError(f"Supplier id={supplier_id} not found")
+    filename = f"labresta-feed-{supplier.slug}.yml"
+    result = _generate_feed(
+        filename=filename,
+        supplier_ids=[supplier_id],
+    )
+    result["supplier_slug"] = supplier.slug
+    return result
+
+
+def regenerate_custom_feed(
+    match_ids: list[int],
+    name: str | None = None,
+) -> dict:
+    """Custom selection feed at labresta-feed-custom-<token>.yml.
+
+    Token is sha256(sorted match_ids)[:12] — same selection always resolves
+    to the same URL. Persists/updates a CustomFeed registry row so
+    /feeds/custom can list and delete tokens.
+    """
+    if not match_ids:
+        raise ValueError("regenerate_custom_feed requires non-empty match_ids")
+    token = custom_feed_token(match_ids)
+    filename = f"labresta-feed-custom-{token}.yml"
+    result = _generate_feed(filename=filename, match_ids=match_ids)
+
+    cf = db.session.execute(
+        select(CustomFeed).where(CustomFeed.token == token)
+    ).scalar_one_or_none()
+    if cf is None:
+        cf = CustomFeed(token=token, filename=filename, name=name)
+        cf.match_ids = match_ids
+        db.session.add(cf)
+    else:
+        cf.match_ids = match_ids
+        cf.filename = filename
+        if name is not None:
+            cf.name = name
     db.session.commit()
 
-    logger.info(
-        "YML feed generated: %d offers (%d available, %d unavailable) -> %s",
-        total, available_count, unavailable_count, output_path,
-    )
+    result["token"] = token
+    return result
 
-    return {
-        "total": total,
-        "available": available_count,
-        "unavailable": unavailable_count,
-        "path": output_path,
-    }
+
+def delete_custom_feed(token: str) -> bool:
+    """Remove a CustomFeed row and its YML file. Returns True if anything deleted."""
+    cf = db.session.execute(
+        select(CustomFeed).where(CustomFeed.token == token)
+    ).scalar_one_or_none()
+    if cf is None:
+        return False
+    yml_dir = current_app.config["YML_OUTPUT_DIR"]
+    file_path = os.path.join(yml_dir, cf.filename)
+    try:
+        os.unlink(file_path)
+    except FileNotFoundError:
+        pass
+    except OSError as e:
+        logger.warning("Failed to remove %s: %s", file_path, e)
+    db.session.delete(cf)
+    db.session.commit()
+    return True
 
 
 def sync_prices(match_ids: list[int] | None = None) -> dict:
