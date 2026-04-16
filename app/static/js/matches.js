@@ -18,6 +18,8 @@
     var bulkConfirmBtn = document.getElementById('bulkConfirmBtn');
     var bulkRejectBtn = document.getElementById('bulkRejectBtn');
     var bulkRecalcDiscountBtn = document.getElementById('bulkRecalcDiscountBtn');
+    var customFeedBtn = document.getElementById('customFeedBtn');
+    var customFeedCountEl = document.getElementById('customFeedCount');
     var matchTable = document.getElementById('matchTable');
     var filterForm = document.getElementById('filterForm');
     var diffToggleBtn = document.getElementById('diffToggleBtn');
@@ -47,6 +49,8 @@
         if (bulkConfirmBtn) bulkConfirmBtn.disabled = selectedIds.size === 0;
         if (bulkRejectBtn) bulkRejectBtn.disabled = selectedIds.size === 0;
         if (bulkRecalcDiscountBtn) bulkRecalcDiscountBtn.disabled = selectedIds.size === 0;
+        if (customFeedBtn) customFeedBtn.disabled = selectedIds.size === 0;
+        if (customFeedCountEl) customFeedCountEl.textContent = selectedIds.size;
     }
 
     if (selectAllCb) {
@@ -425,17 +429,49 @@
         });
     }
 
-    // Phase D — narrow sync (prices / availability)
-    function wireNarrowSync(btnId, endpoint, buildMsg) {
-        var btn = document.getElementById(btnId);
-        if (!btn) return;
-        btn.addEventListener('click', function () {
-            btn.disabled = true;
-            var originalLabel = btn.textContent;
-            btn.textContent = 'Генерация...';
-            if (regenerateFeedStatus) regenerateFeedStatus.textContent = '';
+    // Phase K.4 — custom feed from selected matches
+    var customFeedModal = null;
+    var customFeedModalEl = document.getElementById('customFeedModal');
+    if (customFeedModalEl) customFeedModal = new bootstrap.Modal(customFeedModalEl);
+    var customFeedNameInput = document.getElementById('customFeedNameInput');
+    var customFeedCountModalEl = document.getElementById('customFeedCountModal');
+    var customFeedResultEl = document.getElementById('customFeedResult');
+    var customFeedUrlOutput = document.getElementById('customFeedUrlOutput');
+    var customFeedCopyBtn = document.getElementById('customFeedCopyBtn');
+    var customFeedErrorEl = document.getElementById('customFeedError');
+    var customFeedGenerateBtn = document.getElementById('customFeedGenerateBtn');
 
-            fetchWithCSRF(endpoint, { method: 'POST' })
+    if (customFeedBtn && customFeedModal) {
+        customFeedBtn.addEventListener('click', function () {
+            if (selectedIds.size === 0) return;
+            if (customFeedNameInput) customFeedNameInput.value = '';
+            if (customFeedResultEl) customFeedResultEl.classList.add('d-none');
+            if (customFeedErrorEl) customFeedErrorEl.classList.add('d-none');
+            if (customFeedCountModalEl) customFeedCountModalEl.textContent = selectedIds.size;
+            if (customFeedGenerateBtn) {
+                customFeedGenerateBtn.disabled = false;
+                customFeedGenerateBtn.textContent = 'Сгенерировать фид';
+            }
+            customFeedModal.show();
+        });
+    }
+
+    if (customFeedGenerateBtn) {
+        customFeedGenerateBtn.addEventListener('click', function () {
+            if (selectedIds.size === 0) return;
+            customFeedGenerateBtn.disabled = true;
+            customFeedGenerateBtn.textContent = 'Генерация...';
+            if (customFeedErrorEl) customFeedErrorEl.classList.add('d-none');
+
+            var payload = {
+                match_ids: Array.from(selectedIds),
+                name: customFeedNameInput ? customFeedNameInput.value.trim() : ''
+            };
+            fetchWithCSRF('/matches/regenerate-custom', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
                 .then(function (resp) {
                     return resp.json().then(function (data) {
                         if (!resp.ok) throw new Error(data.message || 'HTTP ' + resp.status);
@@ -443,35 +479,48 @@
                     });
                 })
                 .then(function (data) {
-                    var msg = buildMsg(data);
-                    if (regenerateFeedStatus) regenerateFeedStatus.textContent = msg;
-                    showAlert(msg, 'success');
-                    setTimeout(function () { window.location.reload(); }, 1200);
+                    if (customFeedUrlOutput) customFeedUrlOutput.value = data.url || '';
+                    if (customFeedResultEl) customFeedResultEl.classList.remove('d-none');
+                    customFeedGenerateBtn.disabled = false;
+                    customFeedGenerateBtn.textContent = 'Сгенерировать ещё раз';
                 })
                 .catch(function (err) {
-                    showAlert('Ошибка sync: ' + err.message, 'danger');
-                    btn.disabled = false;
-                    btn.textContent = originalLabel;
+                    if (customFeedErrorEl) {
+                        customFeedErrorEl.textContent = 'Ошибка: ' + err.message;
+                        customFeedErrorEl.classList.remove('d-none');
+                    }
+                    customFeedGenerateBtn.disabled = false;
+                    customFeedGenerateBtn.textContent = 'Сгенерировать фид';
                 });
         });
     }
 
-    wireNarrowSync(
-        'syncPricesBtn',
-        '/matches/sync-prices',
-        function (d) {
-            var skippedNote = d.skipped ? ' (пропущено без цены: ' + d.skipped + ')' : '';
-            return 'Цены синхронизированы: ' + d.total + ' офферов' + skippedNote;
-        }
-    );
-    wireNarrowSync(
-        'syncAvailabilityBtn',
-        '/matches/sync-availability',
-        function (d) {
-            return 'Наличие синхронизировано: ' + d.total + ' офферов (' +
-                   d.available + ' в наличии, ' + d.unavailable + ' нет)';
-        }
-    );
+    if (customFeedCopyBtn && customFeedUrlOutput) {
+        customFeedCopyBtn.addEventListener('click', function () {
+            customFeedUrlOutput.select();
+            customFeedUrlOutput.setSelectionRange(0, customFeedUrlOutput.value.length);
+            var done = function () {
+                var prev = customFeedCopyBtn.textContent;
+                customFeedCopyBtn.textContent = 'Скопировано';
+                customFeedCopyBtn.classList.add('btn-success');
+                customFeedCopyBtn.classList.remove('btn-outline-secondary');
+                setTimeout(function () {
+                    customFeedCopyBtn.textContent = prev;
+                    customFeedCopyBtn.classList.remove('btn-success');
+                    customFeedCopyBtn.classList.add('btn-outline-secondary');
+                }, 1500);
+            };
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(customFeedUrlOutput.value).then(done).catch(function () {
+                    document.execCommand('copy');
+                    done();
+                });
+            } else {
+                document.execCommand('copy');
+                done();
+            }
+        });
+    }
 
     // ========== Details Comparison Modal ==========
 

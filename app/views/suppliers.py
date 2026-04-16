@@ -34,6 +34,8 @@ from app.services.excel_parser import (
 from app.services.feed_fetcher import fetch_feed, fetch_feed_with_retry
 from app.services.feed_parser import parse_supplier_feed, save_supplier_products
 from app.services.pricing import calculate_auto_discount
+from app.services.sync_pipeline import run_full_sync
+from app.services.yml_generator import regenerate_supplier_feed
 
 logger = logging.getLogger(__name__)
 
@@ -509,6 +511,87 @@ def supplier_mapping_confirm(supplier_id):
         flash("Маппинг колонок сохранён.", "success")
 
     return redirect(url_for("suppliers.supplier_list"))
+
+
+@suppliers_bp.route("/<int:supplier_id>/regenerate-feed", methods=["POST"])
+@login_required
+def supplier_regenerate_feed(supplier_id):
+    """Regenerate the per-supplier YML at labresta-feed-<slug>.yml.
+
+    Does not touch the main feed and does not flip in_feed flags.
+    """
+    supplier = db.session.get(Supplier, supplier_id)
+    if not supplier:
+        return jsonify({"status": "error", "message": "Поставщик не найден"}), 404
+    try:
+        result = regenerate_supplier_feed(supplier_id)
+    except Exception as exc:  # pragma: no cover — surfaced to UI
+        logger.exception("Per-supplier feed regen failed for %s", supplier.name)
+        return jsonify({"status": "error", "message": str(exc)}), 500
+    log_action("regenerate_supplier_feed", details={
+        "supplier_id": supplier.id,
+        "supplier_name": supplier.name,
+        "supplier_slug": result.get("supplier_slug"),
+        "total": result["total"],
+        "available": result["available"],
+        "unavailable": result["unavailable"],
+    })
+    return jsonify({"status": "ok", **result})
+
+
+@suppliers_bp.route("/fetch-all", methods=["POST"])
+@login_required
+def suppliers_fetch_all():
+    """Run the full sync pipeline for every enabled supplier.
+
+    Synchronous: blocks the request until all suppliers finish (or fail).
+    Each supplier's run is recorded as a SyncRun row and individual errors
+    are isolated — one supplier's failure does not abort the others.
+    """
+    enabled = db.session.execute(
+        select(Supplier).where(Supplier.is_enabled.is_(True)).order_by(Supplier.name)
+    ).scalars().all()
+    if not enabled:
+        return jsonify({
+            "status": "ok",
+            "summary": {"total": 0, "ok": 0, "failed": 0},
+            "results": [],
+            "message": "Нет активных поставщиков для обновления.",
+        })
+
+    results = []
+    ok = 0
+    failed = 0
+    for supplier in enabled:
+        try:
+            run_full_sync(supplier_id=supplier.id)
+            results.append({
+                "supplier_id": supplier.id,
+                "name": supplier.name,
+                "status": "ok",
+            })
+            ok += 1
+        except Exception as exc:
+            logger.exception("fetch-all: supplier %s failed", supplier.name)
+            results.append({
+                "supplier_id": supplier.id,
+                "name": supplier.name,
+                "status": "error",
+                "message": str(exc),
+            })
+            failed += 1
+
+    log_action("fetch_all_suppliers", details={
+        "total": len(enabled),
+        "ok": ok,
+        "failed": failed,
+    })
+
+    return jsonify({
+        "status": "ok",
+        "summary": {"total": len(enabled), "ok": ok, "failed": failed},
+        "results": results,
+    })
 
 
 def _validate_supplier_form(form):

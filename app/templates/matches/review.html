@@ -90,15 +90,11 @@
     <span class="mx-2 text-muted">|</span>
     <button type="button" class="btn btn-sm btn-primary" id="regenerateFeedBtn"
             title="Пересобрать labresta-feed.yml из текущих подтверждённых матчей (published=True)">
-        Обновить фид
+        Обновить общий фид
     </button>
-    <button type="button" class="btn btn-sm btn-outline-primary" id="syncPricesBtn"
-            title="Собрать узкий YML только с ценами (labresta-prices.yml) и обновить price_synced_at">
-        Обновить цены
-    </button>
-    <button type="button" class="btn btn-sm btn-outline-primary" id="syncAvailabilityBtn"
-            title="Собрать узкий YML только с наличием (labresta-availability.yml) и обновить availability_synced_at">
-        Обновить наличие
+    <button type="button" class="btn btn-sm btn-outline-primary" id="customFeedBtn" disabled
+            title="Собрать кастомный YML-фид только из выделенных позиций (постоянная ссылка по токену)">
+        Собрать фид из выбранного (<span id="customFeedCount">0</span>)
     </button>
     <span id="regenerateFeedStatus" class="small text-muted"></span>
     <span class="mx-2 text-muted">|</span>
@@ -581,6 +577,53 @@
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
                 <button type="button" class="btn btn-primary" id="detailsModalSaveBtn">
                     Сохранить изменения
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Feed Modal (Phase K.4) -->
+<div class="modal fade" id="customFeedModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Кастомный фид из выделенных позиций</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-2">
+                    Выделено матчей: <strong id="customFeedCountModal">0</strong>.
+                    Будет создан YML с постоянным URL — повторная генерация той же
+                    выборки даст ту же ссылку.
+                </p>
+                <div class="mb-3">
+                    <label for="customFeedNameInput" class="form-label small">
+                        Название (необязательно, для удобства поиска в списке)
+                    </label>
+                    <input type="text" id="customFeedNameInput" class="form-control form-control-sm"
+                           placeholder="Например: Хиты MARESTO">
+                </div>
+                <div id="customFeedResult" class="d-none">
+                    <hr>
+                    <p class="mb-2 small text-muted">URL фида:</p>
+                    <div class="input-group input-group-sm mb-2">
+                        <input type="text" id="customFeedUrlOutput" readonly
+                               class="form-control form-control-sm font-monospace small">
+                        <button type="button" class="btn btn-outline-secondary btn-sm" id="customFeedCopyBtn">
+                            Копировать
+                        </button>
+                    </div>
+                    <p class="small mb-0">
+                        <a href="{{ url_for('feed.custom_feeds_list') }}">Открыть список кастомных фидов</a>
+                    </p>
+                </div>
+                <div id="customFeedError" class="alert alert-danger d-none mt-3"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-primary" id="customFeedGenerateBtn">
+                    Сгенерировать фид
                 </button>
             </div>
         </div>

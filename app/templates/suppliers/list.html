@@ -9,6 +9,34 @@
 </div>
 
 {% if suppliers %}
+<!-- Global feed actions -->
+<div class="card mb-3">
+    <div class="card-body py-2">
+        <div class="d-flex flex-wrap align-items-center gap-2">
+            <button type="button" class="btn btn-sm btn-primary" id="fetchAllBtn"
+                    title="Запустить полную синхронизацию всех активных поставщиков (загрузка фидов из источников)">
+                Обновить всех из источников
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-primary" id="regenMainBtn"
+                    title="Пересобрать labresta-feed.yml (общий фид) из текущих confirmed/manual published-матчей">
+                Пересобрать общий YML
+            </button>
+            <a href="{{ url_for('feed.custom_feeds_list') }}" class="btn btn-sm btn-outline-secondary">
+                Кастомные фиды
+            </a>
+            <span class="text-muted small">Общий фид:</span>
+            <div class="input-group input-group-sm" style="max-width: 420px;">
+                <input type="text" id="mainFeedUrlInput"
+                       class="form-control form-control-sm font-monospace small"
+                       value="{{ url_for('feed.serve_yml', _external=True) }}" readonly>
+                <button type="button" class="btn btn-outline-secondary btn-sm copy-url"
+                        data-target="mainFeedUrlInput">Копировать</button>
+            </div>
+            <span id="globalFeedStatus" class="small text-muted ms-2"></span>
+        </div>
+    </div>
+</div>
+
 <table class="table table-striped">
     <thead>
         <tr>
@@ -19,6 +47,7 @@
             <th>Статус</th>
             <th>Последняя загрузка</th>
             <th>Результат</th>
+            <th>YML поставщика</th>
             <th>Действия</th>
         </tr>
     </thead>
@@ -65,6 +94,28 @@
                 {% else %}
                     <span class="text-muted">---</span>
                 {% endif %}
+            </td>
+            <td>
+                {% set sup_feed_url = url_for('feed.serve_supplier_yml', slug=supplier.slug, _external=True) %}
+                <div class="d-flex flex-column gap-1" style="min-width: 280px;">
+                    <button type="button" class="btn btn-sm btn-outline-primary regen-supplier-btn"
+                            data-supplier-id="{{ supplier.id }}"
+                            data-supplier-name="{{ supplier.name }}"
+                            title="Пересобрать labresta-feed-{{ supplier.slug }}.yml (только этот поставщик)">
+                        Пересобрать YML
+                    </button>
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control form-control-sm font-monospace small"
+                               value="{{ sup_feed_url }}" readonly
+                               id="sup-feed-url-{{ supplier.id }}">
+                        <button type="button" class="btn btn-outline-secondary btn-sm copy-url"
+                                data-target="sup-feed-url-{{ supplier.id }}">
+                            Копировать
+                        </button>
+                    </div>
+                    <span class="small text-muted regen-supplier-status"
+                          id="regen-status-{{ supplier.id }}"></span>
+                </div>
             </td>
             <td>
                 <a href="{{ url_for('suppliers.supplier_edit', supplier_id=supplier.id) }}" class="btn btn-sm btn-outline-primary">Изменить</a>
@@ -232,6 +283,140 @@
                 applyBtn.disabled = true;  // prevent double-apply; reload preview to re-enable
                 setTimeout(loadPreview, 200);
             });
+    });
+})();
+
+// Phase K.4 — feed-action buttons (fetch-all / regen-main / regen-supplier / copy-url)
+(function () {
+    function copyToClipboard(input, btn) {
+        if (!input) return;
+        input.select();
+        input.setSelectionRange(0, input.value.length);
+        var done = function () {
+            var prev = btn.textContent;
+            btn.textContent = 'Скопировано';
+            btn.classList.add('btn-success');
+            btn.classList.remove('btn-outline-secondary');
+            setTimeout(function () {
+                btn.textContent = prev;
+                btn.classList.remove('btn-success');
+                btn.classList.add('btn-outline-secondary');
+            }, 1500);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(input.value).then(done).catch(function () {
+                document.execCommand('copy');
+                done();
+            });
+        } else {
+            document.execCommand('copy');
+            done();
+        }
+    }
+
+    document.querySelectorAll('.copy-url').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var target = document.getElementById(btn.dataset.target);
+            copyToClipboard(target, btn);
+        });
+    });
+
+    function postJson(url) {
+        return fetchWithCSRF(url, { method: 'POST' }).then(function (r) {
+            return r.json().then(function (data) {
+                if (!r.ok || data.status === 'error') {
+                    throw new Error(data.message || 'HTTP ' + r.status);
+                }
+                return data;
+            });
+        });
+    }
+
+    function setBusy(btn, label) {
+        btn.dataset.originalLabel = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = label;
+    }
+
+    function unsetBusy(btn) {
+        btn.disabled = false;
+        if (btn.dataset.originalLabel) btn.textContent = btn.dataset.originalLabel;
+    }
+
+    var statusEl = document.getElementById('globalFeedStatus');
+    function setStatus(msg, isError) {
+        if (!statusEl) return;
+        statusEl.textContent = msg || '';
+        statusEl.classList.toggle('text-danger', !!isError);
+        statusEl.classList.toggle('text-muted', !isError);
+    }
+
+    var fetchAllBtn = document.getElementById('fetchAllBtn');
+    if (fetchAllBtn) {
+        fetchAllBtn.addEventListener('click', function () {
+            if (!confirm('Запустить обновление фидов всех активных поставщиков? Это может занять минуту.')) return;
+            setBusy(fetchAllBtn, 'Загружаем...');
+            setStatus('');
+            postJson('/suppliers/fetch-all')
+                .then(function (data) {
+                    var s = data.summary || { total: 0, ok: 0, failed: 0 };
+                    var msg = 'Обновлено: ' + s.ok + ' / ' + s.total +
+                              (s.failed ? ' (с ошибками: ' + s.failed + ')' : '');
+                    setStatus(msg, s.failed > 0);
+                    setTimeout(function () { window.location.reload(); }, 1500);
+                })
+                .catch(function (err) {
+                    setStatus('Ошибка: ' + err.message, true);
+                    unsetBusy(fetchAllBtn);
+                });
+        });
+    }
+
+    var regenMainBtn = document.getElementById('regenMainBtn');
+    if (regenMainBtn) {
+        regenMainBtn.addEventListener('click', function () {
+            setBusy(regenMainBtn, 'Генерация...');
+            setStatus('');
+            postJson('/matches/regenerate-feed')
+                .then(function (data) {
+                    setStatus('Общий фид обновлён: ' + data.total + ' офферов (' +
+                              data.available + ' в наличии, ' + data.unavailable + ' нет)');
+                    unsetBusy(regenMainBtn);
+                })
+                .catch(function (err) {
+                    setStatus('Ошибка: ' + err.message, true);
+                    unsetBusy(regenMainBtn);
+                });
+        });
+    }
+
+    document.querySelectorAll('.regen-supplier-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var supplierId = btn.dataset.supplierId;
+            var statusSpan = document.getElementById('regen-status-' + supplierId);
+            setBusy(btn, 'Генерация...');
+            if (statusSpan) {
+                statusSpan.textContent = '';
+                statusSpan.classList.remove('text-danger');
+                statusSpan.classList.add('text-muted');
+            }
+            postJson('/suppliers/' + supplierId + '/regenerate-feed')
+                .then(function (data) {
+                    if (statusSpan) {
+                        statusSpan.textContent = 'Готово: ' + data.total + ' (' +
+                            data.available + '/' + data.unavailable + ')';
+                    }
+                    unsetBusy(btn);
+                })
+                .catch(function (err) {
+                    if (statusSpan) {
+                        statusSpan.textContent = 'Ошибка: ' + err.message;
+                        statusSpan.classList.add('text-danger');
+                        statusSpan.classList.remove('text-muted');
+                    }
+                    unsetBusy(btn);
+                });
+        });
     });
 })();
 </script>

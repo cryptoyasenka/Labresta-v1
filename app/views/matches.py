@@ -559,6 +559,47 @@ def sync_availability_feed():
     return jsonify({"status": "ok", **result})
 
 
+@matches_bp.route("/regenerate-custom", methods=["POST"])
+@login_required
+def regenerate_custom():
+    """Generate a custom-selection YML feed and return its public URL.
+
+    Body: {"match_ids": [int, ...], "name": "optional human label"}.
+    Token is deterministic over the sorted unique match_ids — same selection
+    always resolves to the same URL.
+    """
+    from flask import url_for
+
+    from app.services.yml_generator import regenerate_custom_feed
+
+    data = request.get_json(silent=True) or {}
+    match_ids = _parse_match_ids(data)
+    if not match_ids:
+        return jsonify({
+            "status": "error",
+            "message": "Не выбрано ни одной позиции для фида.",
+        }), 400
+    name = (data.get("name") or "").strip() or None
+
+    try:
+        result = regenerate_custom_feed(match_ids=match_ids, name=name)
+    except Exception as exc:  # pragma: no cover — surfaced to UI
+        return jsonify({"status": "error", "message": str(exc)}), 500
+
+    log_action("regenerate_custom_feed", details={
+        "token": result["token"],
+        "name": name,
+        "match_count": len(match_ids),
+        "available": result["available"],
+        "unavailable": result["unavailable"],
+    })
+
+    feed_url = url_for(
+        "feed.serve_custom_yml", token=result["token"], _external=True
+    )
+    return jsonify({"status": "ok", "url": feed_url, **result})
+
+
 @matches_bp.route("/<int:match_id>/update-prom", methods=["POST"])
 @login_required
 def update_prom_fields(match_id):
