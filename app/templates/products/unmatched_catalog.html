@@ -6,26 +6,56 @@
 {% set filter_params = {
     'brand': brand,
     'search': search,
+    'supplier_id': supplier_id or '',
+    'match_state': match_state,
+    'decision': decision,
     'per_page': per_page,
 } %}
 {% set page_params = {
     'brand': brand,
     'search': search,
+    'supplier_id': supplier_id or '',
+    'match_state': match_state,
+    'decision': decision,
     'per_page': per_page,
     'sort': sort,
     'order': order,
 } %}
 
+{% set decision_labels = {
+    'needs_delete': 'Удалить из Horoshop',
+    'needs_request': 'Запросить у поставщика',
+    'keep_searching': 'Продолжать искать',
+} %}
+{% set decision_badges = {
+    'needs_delete': 'bg-danger',
+    'needs_request': 'bg-warning text-dark',
+    'keep_searching': 'bg-info text-dark',
+} %}
+
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h2>Товары Horoshop без матча</h2>
-    <span class="text-muted">Всего: {{ total }} товаров</span>
+    <span class="text-muted">Всего: {{ total }}</span>
 </div>
 
-<p class="text-muted mb-3">Товары из каталога Horoshop, для которых не найден подтверждённый матч с товаром поставщика.</p>
+<p class="text-muted mb-3 small">
+    Товары из каталога Horoshop без подтверждённого/ручного матча.
+    Выбери поставщика, чтобы увидеть список относительно него —
+    и решить что делать: удалить из каталога, запросить у поставщика или продолжить искать.
+</p>
 
 {# Filter bar #}
 <form method="GET" action="{{ url_for('products.unmatched_catalog') }}" class="row g-2 mb-3 align-items-end">
+    <div class="col-auto">
+        <label class="form-label small mb-0">Поставщик</label>
+        <select name="supplier_id" class="form-select form-select-sm">
+            <option value="">Любой (глобально)</option>
+            {% for s in suppliers %}
+            <option value="{{ s.id }}" {% if supplier_id == s.id %}selected{% endif %}>{{ s.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
     <div class="col-auto">
         <label class="form-label small mb-0">Бренд</label>
         <select name="brand" class="form-select form-select-sm">
@@ -33,6 +63,25 @@
             {% for b in brands %}
             <option value="{{ b }}" {% if brand == b %}selected{% endif %}>{{ b }}</option>
             {% endfor %}
+        </select>
+    </div>
+    <div class="col-auto">
+        <label class="form-label small mb-0">Кандидат</label>
+        <select name="match_state" class="form-select form-select-sm">
+            <option value="all" {% if match_state == 'all' %}selected{% endif %}>Все</option>
+            <option value="none" {% if match_state == 'none' %}selected{% endif %}>Нет кандидата</option>
+            <option value="candidate" {% if match_state == 'candidate' %}selected{% endif %}>Есть кандидат</option>
+        </select>
+    </div>
+    <div class="col-auto">
+        <label class="form-label small mb-0">Решение</label>
+        <select name="decision" class="form-select form-select-sm">
+            <option value="" {% if not decision %}selected{% endif %}>Все</option>
+            <option value="pending" {% if decision == 'pending' %}selected{% endif %}>Без решения</option>
+            <option value="reviewed" {% if decision == 'reviewed' %}selected{% endif %}>С решением</option>
+            <option value="needs_delete" {% if decision == 'needs_delete' %}selected{% endif %}>К удалению</option>
+            <option value="needs_request" {% if decision == 'needs_request' %}selected{% endif %}>Запросить</option>
+            <option value="keep_searching" {% if decision == 'keep_searching' %}selected{% endif %}>Искать дальше</option>
         </select>
     </div>
     <div class="col-auto">
@@ -44,12 +93,12 @@
         </select>
     </div>
     <div class="col">
-        <label class="form-label small mb-0">Поиск</label>
+        <label class="form-label small mb-0">Поиск (название / артикул / display)</label>
         <div class="input-group input-group-sm">
-            <input type="text" class="form-control" name="search" value="{{ search }}" placeholder="Название товара...">
+            <input type="text" class="form-control" name="search" value="{{ search }}" placeholder="HKN-20SN2V, Тістоміс...">
             <button type="submit" class="btn btn-outline-secondary">Найти</button>
-            {% if search or brand %}
-            <a href="{{ url_for('products.unmatched_catalog') }}" class="btn btn-outline-danger">Сбросить</a>
+            {% if search or brand or supplier_id or match_state != 'all' or decision %}
+            <a href="{{ url_for('products.unmatched_catalog') }}" class="btn btn-outline-danger">Сброс</a>
             {% endif %}
         </div>
     </div>
@@ -57,37 +106,62 @@
 
 {% if products %}
 <div class="table-responsive">
-    <table class="table table-striped table-hover table-sm">
+    <table class="table table-striped table-hover table-sm align-middle">
         <thead class="table-dark">
             <tr>
                 <th>{{ sort_header('Название', 'name', sort, order, 'products.unmatched_catalog', filter_params) }}</th>
                 <th>{{ sort_header('Бренд', 'brand', sort, order, 'products.unmatched_catalog', filter_params) }}</th>
-                <th>Модель</th>
                 <th>{{ sort_header('Артикул', 'article', sort, order, 'products.unmatched_catalog', filter_params) }}</th>
+                <th>{{ sort_header('Display', 'display_article', sort, order, 'products.unmatched_catalog', filter_params) }}</th>
                 <th>{{ sort_header('Цена', 'price', sort, order, 'products.unmatched_catalog', filter_params) }}</th>
-                <th>Ссылка</th>
+                <th>Состояние</th>
+                <th>Решение</th>
+                <th style="min-width: 220px;">Действия</th>
             </tr>
         </thead>
         <tbody>
             {% for product in products %}
-            <tr>
-                <td>{{ product.name }}</td>
+            <tr data-pp-id="{{ product.id }}">
+                <td>
+                    {{ product.name }}
+                    {% if product.page_url %}
+                    <a href="{{ product.page_url }}" target="_blank" rel="noopener" class="ms-1 small text-muted">↗</a>
+                    {% endif %}
+                </td>
                 <td>{{ product.brand or '-' }}</td>
-                <td>{{ product.model or '-' }}</td>
-                <td>{{ product.article or '-' }}</td>
+                <td><code>{{ product.article or '-' }}</code></td>
+                <td><code>{{ product.display_article or '-' }}</code></td>
                 <td>
                     {% if product.price is not none %}
                         {{ "%.2f"|format(product.price / 100) }} {{ product.currency }}
+                    {% else %}-{% endif %}
+                </td>
+                <td>
+                    {% if product.id in candidate_set %}
+                    <a href="{{ url_for('matches.review', status='candidate', search=product.article or product.display_article or product.name) }}"
+                       class="badge bg-primary text-decoration-none" title="Открыть /matches с поиском по артикулу">Есть кандидат →</a>
                     {% else %}
-                        -
+                    <span class="badge bg-secondary">Нет кандидата</span>
                     {% endif %}
                 </td>
                 <td>
-                    {% if product.page_url %}
-                    <a href="{{ product.page_url }}" target="_blank" rel="noopener" class="btn btn-outline-secondary btn-sm">Horoshop</a>
+                    {% if product.operator_decision %}
+                    <span class="badge {{ decision_badges.get(product.operator_decision, 'bg-secondary') }}">
+                        {{ decision_labels.get(product.operator_decision, product.operator_decision) }}
+                    </span>
                     {% else %}
-                    -
+                    <span class="text-muted small">—</span>
                     {% endif %}
+                </td>
+                <td>
+                    <div class="btn-group btn-group-sm" role="group">
+                        <button type="button" class="btn btn-outline-danger btn-decision" data-decision="needs_delete" title="Удалить из Horoshop">Удалить</button>
+                        <button type="button" class="btn btn-outline-warning btn-decision" data-decision="needs_request" title="Запросить у поставщика">Запросить</button>
+                        <button type="button" class="btn btn-outline-info btn-decision" data-decision="keep_searching" title="Продолжить искать">Искать</button>
+                        {% if product.operator_decision %}
+                        <button type="button" class="btn btn-outline-secondary btn-decision-clear" title="Сбросить решение">✕</button>
+                        {% endif %}
+                    </div>
                 </td>
             </tr>
             {% endfor %}
@@ -100,12 +174,63 @@
 {% else %}
 <div class="text-center py-5">
     <p class="text-muted fs-5">
-        {% if search %}
-            По запросу "{{ search }}" ничего не найдено.
+        {% if search or brand or supplier_id or decision or match_state != 'all' %}
+            Ничего не найдено по текущим фильтрам.
         {% else %}
             Все товары Horoshop имеют подтверждённый матч.
         {% endif %}
     </p>
 </div>
 {% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+    function csrfToken() {
+        var m = document.querySelector('meta[name="csrf-token"]');
+        return m ? m.getAttribute('content') : '';
+    }
+    async function postJSON(url, body) {
+        var headers = {'X-CSRFToken': csrfToken(), 'Accept': 'application/json'};
+        if (body !== undefined) headers['Content-Type'] = 'application/json';
+        var resp = await fetch(url, {
+            method: 'POST',
+            headers: headers,
+            body: body !== undefined ? JSON.stringify(body) : undefined,
+        });
+        var data = await resp.json().catch(function () { return {}; });
+        return {ok: resp.ok, status: resp.status, data: data};
+    }
+    document.querySelectorAll('.btn-decision').forEach(function (btn) {
+        btn.addEventListener('click', async function (e) {
+            var row = e.target.closest('tr');
+            var ppId = row.dataset.ppId;
+            var decision = btn.dataset.decision;
+            btn.disabled = true;
+            var r = await postJSON('/products/catalog/' + ppId + '/set-decision', {decision: decision});
+            if (r.ok) {
+                location.reload();
+            } else {
+                alert('Ошибка: ' + ((r.data && r.data.message) || r.status));
+                btn.disabled = false;
+            }
+        });
+    });
+    document.querySelectorAll('.btn-decision-clear').forEach(function (btn) {
+        btn.addEventListener('click', async function (e) {
+            var row = e.target.closest('tr');
+            var ppId = row.dataset.ppId;
+            btn.disabled = true;
+            var r = await postJSON('/products/catalog/' + ppId + '/clear-decision');
+            if (r.ok) {
+                location.reload();
+            } else {
+                btn.disabled = false;
+            }
+        });
+    });
+})();
+</script>
 {% endblock %}

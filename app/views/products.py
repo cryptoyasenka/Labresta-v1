@@ -1,8 +1,10 @@
 """Product management blueprint: supplier products, unmatched lists, and management actions."""
 
+from datetime import datetime, timezone
+
 from flask import Blueprint, jsonify, render_template, request
 from flask_login import login_required
-from sqlalchemy import func, select
+from sqlalchemy import func, or_, select
 
 from app.extensions import db
 from app.models.catalog import PromProduct
@@ -14,6 +16,12 @@ products_bp = Blueprint("products", __name__)
 
 VALID_SORT_SUPPLIER = {"name", "price", "brand", "last_seen_at", "model", "article"}
 VALID_PER_PAGE = {25, 50, 100}
+
+VALID_OPERATOR_DECISIONS = {
+    "needs_delete",
+    "needs_request",
+    "keep_searching",
+}
 
 
 def _parse_pagination(default_sort="name"):
@@ -210,27 +218,89 @@ def supplier_list():
 @products_bp.route("/unmatched-catalog")
 @login_required
 def unmatched_catalog():
-    """List prom.ua products that have no confirmed/manual match."""
+    """List Horoshop products without a confirmed/manual match.
+
+    Filters:
+      - brand: exact brand on PromProduct
+      - supplier_id: narrow to "no confirmed/manual match from THIS supplier"
+        and compute per-row candidate state scoped to this supplier
+      - match_state: "all" | "none" (no candidate anywhere) | "candidate"
+        (has candidate but not confirmed). When supplier is set, the scope
+        is per-supplier; otherwise global.
+      - decision: "" | "pending" | "needs_delete" | "needs_request" |
+        "keep_searching" | "reviewed" (any non-null decision)
+      - search: matches name, article, OR display_article (ilike)
+      - sort: name | brand | price | article | display_article
+    """
     page, per_page, sort, order, search = _parse_pagination("name")
     brand_filter = request.args.get("brand", "").strip()
+    supplier_id = request.args.get("supplier_id", type=int)
+    match_state = request.args.get("match_state", "all")
+    decision_filter = request.args.get("decision", "").strip()
 
-    # Subquery: prom_product_ids with confirmed or manual match
-    matched_ids = select(ProductMatch.prom_product_id).where(
-        ProductMatch.status.in_(["confirmed", "manual"])
-    ).correlate(None)
+    # Base: PP with no confirmed/manual match from ANY supplier (global view).
+    # When a supplier is chosen we re-scope the exclusion to that supplier only.
+    if supplier_id:
+        matched_ids = (
+            select(ProductMatch.prom_product_id)
+            .join(
+                SupplierProduct,
+                SupplierProduct.id == ProductMatch.supplier_product_id,
+            )
+            .where(
+                ProductMatch.status.in_(["confirmed", "manual"]),
+                SupplierProduct.supplier_id == supplier_id,
+            )
+            .correlate(None)
+        )
+    else:
+        matched_ids = select(ProductMatch.prom_product_id).where(
+            ProductMatch.status.in_(["confirmed", "manual"])
+        ).correlate(None)
 
     query = select(PromProduct).where(PromProduct.id.not_in(matched_ids))
 
     if search:
-        query = query.where(PromProduct.name.ilike(f"%{search}%"))
+        like = f"%{search}%"
+        query = query.where(
+            or_(
+                PromProduct.name.ilike(like),
+                PromProduct.article.ilike(like),
+                PromProduct.display_article.ilike(like),
+            )
+        )
     if brand_filter:
         query = query.where(PromProduct.brand == brand_filter)
+
+    if decision_filter == "pending":
+        query = query.where(PromProduct.operator_decision.is_(None))
+    elif decision_filter == "reviewed":
+        query = query.where(PromProduct.operator_decision.isnot(None))
+    elif decision_filter in VALID_OPERATOR_DECISIONS:
+        query = query.where(PromProduct.operator_decision == decision_filter)
+
+    # match_state filter uses candidate presence. Scope to supplier when chosen.
+    if match_state in ("none", "candidate"):
+        candidate_pp_ids = select(ProductMatch.prom_product_id).where(
+            ProductMatch.status == "candidate"
+        )
+        if supplier_id:
+            candidate_pp_ids = candidate_pp_ids.join(
+                SupplierProduct,
+                SupplierProduct.id == ProductMatch.supplier_product_id,
+            ).where(SupplierProduct.supplier_id == supplier_id)
+        candidate_pp_ids = candidate_pp_ids.correlate(None)
+        if match_state == "none":
+            query = query.where(PromProduct.id.not_in(candidate_pp_ids))
+        else:  # candidate
+            query = query.where(PromProduct.id.in_(candidate_pp_ids))
 
     sort_map = {
         "name": PromProduct.name,
         "brand": PromProduct.brand,
         "price": PromProduct.price,
         "article": PromProduct.article,
+        "display_article": PromProduct.display_article,
     }
     query = _apply_sort(query, PromProduct, sort, order, sort_map)
 
@@ -241,18 +311,56 @@ def unmatched_catalog():
     offset = (page - 1) * per_page
     products = db.session.execute(query.offset(offset).limit(per_page)).scalars().all()
 
-    # Distinct brands for dropdown
-    brands = db.session.execute(
+    # Brands dropdown — scoped so the filter list never offers a dead option.
+    brands_q = (
         select(PromProduct.brand)
         .where(PromProduct.brand.isnot(None))
-        .distinct()
-        .order_by(PromProduct.brand)
+        .where(PromProduct.brand != "")
+    )
+    if supplier_id:
+        # Restrict to brands that HAVE offers from this supplier (otherwise
+        # the dropdown is polluted with brands that are hopeless by design).
+        sup_brands = (
+            select(SupplierProduct.brand)
+            .where(
+                SupplierProduct.supplier_id == supplier_id,
+                SupplierProduct.brand.isnot(None),
+                SupplierProduct.is_deleted == False,  # noqa: E712
+            )
+            .correlate(None)
+        )
+        brands_q = brands_q.where(PromProduct.brand.in_(sup_brands))
+    brands = db.session.execute(
+        brands_q.distinct().order_by(PromProduct.brand)
     ).scalars().all()
+    if brand_filter and brand_filter not in brands:
+        brands = sorted(list(brands) + [brand_filter])
+
+    suppliers = db.session.execute(
+        select(Supplier).order_by(Supplier.name)
+    ).scalars().all()
+
+    # Per-row candidate state for the displayed page (scoped to supplier if set).
+    # Used to show a "has candidate → go to /matches" hint next to each row.
+    pp_ids = [p.id for p in products]
+    candidate_set: set[int] = set()
+    if pp_ids:
+        cand_q = select(ProductMatch.prom_product_id).where(
+            ProductMatch.status == "candidate",
+            ProductMatch.prom_product_id.in_(pp_ids),
+        )
+        if supplier_id:
+            cand_q = cand_q.join(
+                SupplierProduct,
+                SupplierProduct.id == ProductMatch.supplier_product_id,
+            ).where(SupplierProduct.supplier_id == supplier_id)
+        candidate_set = set(db.session.execute(cand_q).scalars().all())
 
     return render_template(
         "products/unmatched_catalog.html",
         products=products,
         brands=brands,
+        suppliers=suppliers,
         total=total,
         page=page,
         per_page=per_page,
@@ -261,6 +369,10 @@ def unmatched_catalog():
         order=order,
         search=search,
         brand=brand_filter,
+        supplier_id=supplier_id,
+        match_state=match_state,
+        decision=decision_filter,
+        candidate_set=candidate_set,
     )
 
 
@@ -439,5 +551,45 @@ def set_status(product_id):
         product.needs_review = bool(data["needs_review"])
     if "available" in data:
         product.available = bool(data["available"])
+    db.session.commit()
+    return jsonify({"status": "ok"})
+
+
+# ---------------------------------------------------------------------------
+# Operator triage for Horoshop PP without supplier match
+# ---------------------------------------------------------------------------
+@products_bp.route("/catalog/<int:pp_id>/set-decision", methods=["POST"])
+@login_required
+def set_catalog_decision(pp_id):
+    """Record an operator decision on a Horoshop PP without supplier match."""
+    pp = db.session.get(PromProduct, pp_id)
+    if not pp:
+        return jsonify({"status": "error", "message": "Товар не найден"}), 404
+    data = request.get_json(silent=True) or {}
+    decision = (data.get("decision") or "").strip()
+    if decision not in VALID_OPERATOR_DECISIONS:
+        return jsonify({
+            "status": "error",
+            "message": f"Недопустимое решение: {decision!r}",
+        }), 400
+    pp.operator_decision = decision
+    note = data.get("note")
+    if note is not None:
+        pp.operator_decision_note = (str(note).strip() or None)
+    pp.operator_decision_at = datetime.now(timezone.utc)
+    db.session.commit()
+    return jsonify({"status": "ok", "decision": decision})
+
+
+@products_bp.route("/catalog/<int:pp_id>/clear-decision", methods=["POST"])
+@login_required
+def clear_catalog_decision(pp_id):
+    """Clear an operator decision (put item back in the pending pile)."""
+    pp = db.session.get(PromProduct, pp_id)
+    if not pp:
+        return jsonify({"status": "error", "message": "Товар не найден"}), 404
+    pp.operator_decision = None
+    pp.operator_decision_note = None
+    pp.operator_decision_at = None
     db.session.commit()
     return jsonify({"status": "ok"})

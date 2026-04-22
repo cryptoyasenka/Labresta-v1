@@ -23,8 +23,19 @@ class PromProduct(db.Model):
     description_ru = db.Column(db.Text, nullable=True)
     imported_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
+    # Operator triage for PP that have no supplier match. Set from
+    # /products/unmatched-catalog after a human decides what to do next:
+    #   - None             → not yet reviewed (default)
+    #   - "needs_delete"   → remove from Horoshop catalog (no supplier has it)
+    #   - "needs_request"  → ask supplier to quote / add this SKU to feed
+    #   - "keep_searching" → intentionally keep visible, still hunting a match
+    operator_decision = db.Column(db.String(32), nullable=True)
+    operator_decision_note = db.Column(db.Text, nullable=True)
+    operator_decision_at = db.Column(db.DateTime, nullable=True)
+
     __table_args__ = (
         db.Index("ix_prom_products_brand", "brand"),
         db.Index("ix_prom_products_name", "name"),
         db.Index("ix_prom_products_display_article", "display_article"),
+        db.Index("ix_prom_products_operator_decision", "operator_decision"),
     )
