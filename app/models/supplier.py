@@ -36,6 +36,13 @@ class Supplier(db.Model):
     feed_url = db.Column(db.String(500), nullable=True)
     discount_percent = db.Column(db.Float, default=0.0)  # e.g. 15.0 for 15%
     eur_rate_uah = db.Column(db.Float, default=51.15, server_default="51.15")  # used for min-margin calc
+    # Min margin (UAH) the dealer wants to preserve per sale. Clamp reduces the
+    # base discount (per_brand / flat / auto) so margin_uah stays >= this value.
+    # 0 disables the clamp.
+    min_margin_uah = db.Column(db.Float, default=500.0, server_default="500.0", nullable=False)
+    # Cost rate: how much we pay the supplier as fraction of their retail.
+    # e.g. 0.75 means our buy-price = supplier_retail * 0.75 (supplier gives us 25% off).
+    cost_rate = db.Column(db.Float, default=0.75, server_default="0.75", nullable=False)
     # flat        — use Supplier.discount_percent for every match
     # per_brand   — look up SupplierBrandDiscount by sp.brand, fallback to discount_percent
     # auto_margin — apply calculate_auto_discount (MARESTO min-margin formula)

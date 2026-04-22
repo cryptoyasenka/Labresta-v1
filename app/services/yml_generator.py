@@ -33,6 +33,7 @@ from app.models.supplier import Supplier
 from app.models.supplier_product import SupplierProduct
 from app.services.pricing import (
     calculate_price_eur,
+    clamp_discount_for_min_margin,
     is_valid_price,
     resolve_discount_percent,
 )
@@ -187,7 +188,13 @@ def _is_available_for_offer(match) -> bool:
 
 
 def _compute_price_eur(match) -> float:
-    """Apply effective discount to supplier price, mirror full-feed logic."""
+    """Apply effective discount to supplier price, mirror full-feed logic.
+
+    When supplier.min_margin_uah > 0 AND there is no per-match override, the
+    base discount (per_brand / flat) is clamped DOWN so UAH margin stays at
+    or above min_margin_uah. A per-match override bypasses the clamp —
+    operator intent wins.
+    """
     sp = match.supplier_product
     supplier = sp.supplier
     if not is_valid_price(sp.price_cents):
@@ -195,6 +202,16 @@ def _compute_price_eur(match) -> float:
     effective_discount = resolve_discount_percent(
         match.discount_percent, supplier, sp.brand
     )
+    if match.discount_percent is None and supplier is not None:
+        min_margin = float(getattr(supplier, "min_margin_uah", 0.0) or 0.0)
+        if min_margin > 0:
+            effective_discount = clamp_discount_for_min_margin(
+                effective_discount,
+                sp.price_cents,
+                float(getattr(supplier, "eur_rate_uah", 51.15) or 51.15),
+                min_margin,
+                float(getattr(supplier, "cost_rate", 0.75) or 0.75),
+            )
     return calculate_price_eur(sp.price_cents, effective_discount)
 
 

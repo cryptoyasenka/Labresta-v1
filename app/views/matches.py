@@ -820,9 +820,15 @@ def bulk_action():
             sp = match.supplier_product
             if not sp or not sp.price_cents or sp.price_cents <= 0:
                 continue
-            rate = (sp.supplier.eur_rate_uah or 51.15) if sp.supplier else 51.15
+            supplier = sp.supplier
+            rate = (supplier.eur_rate_uah or 51.15) if supplier else 51.15
+            min_margin = float((supplier.min_margin_uah or 500.0) if supplier else 500.0)
+            cost_rate_v = float((supplier.cost_rate or 0.75) if supplier else 0.75)
             from app.services.pricing import calculate_auto_discount
-            new_d = float(calculate_auto_discount(sp.price_cents, rate))
+            new_d = float(calculate_auto_discount(
+                sp.price_cents, rate,
+                cost_rate=cost_rate_v, min_margin_uah=min_margin,
+            ))
             if match.discount_percent != new_d:
                 match.discount_percent = new_d
             processed += 1

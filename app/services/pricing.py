@@ -41,7 +41,8 @@ def resolve_discount_percent(
 
     Priority:
       1. Per-match override (match.discount_percent) — always wins if set,
-         operator intent beats any supplier-level rule.
+         operator intent beats any supplier-level rule. NOT clamped by
+         min-margin: the operator knows what they're doing.
       2. Supplier.pricing_mode:
          - 'per_brand'   — lookup SupplierBrandDiscount by brand (case-insensitive,
                            trimmed). Fallback to Supplier.discount_percent if the
@@ -50,6 +51,10 @@ def resolve_discount_percent(
                            calculate_auto_discount directly). Returns
                            Supplier.discount_percent as a conservative default.
          - 'flat' / anything else — Supplier.discount_percent.
+
+    This function returns the BASE discount. Callers that have the
+    supplier-product retail price should wrap the result in
+    ``clamp_discount_for_min_margin`` to guarantee a minimum UAH margin.
 
     ``supplier`` accepts either a Supplier ORM instance or a duck-typed object
     exposing ``pricing_mode``, ``discount_percent`` and ``brand_discounts``
@@ -74,6 +79,58 @@ def resolve_discount_percent(
     return default
 
 
+def clamp_discount_for_min_margin(
+    base_discount: float,
+    retail_price_cents: int,
+    eur_rate_uah: float,
+    min_margin_uah: float,
+    cost_rate: float = 0.75,
+) -> int:
+    """Reduce the base discount so margin (sell - buy) × rate stays >= min_uah.
+
+    Rounds DOWN (floor) to guarantee the margin is at least ``min_margin_uah``.
+    The result is always an integer % in [0, floor(base_discount)].
+
+    Math:
+        buy_eur    = retail_eur × cost_rate
+        sell_eur   = retail_eur × (1 - d/100)
+        margin_eur = retail_eur × (1 - cost_rate - d/100)
+        margin_uah = margin_eur × eur_rate_uah
+
+    Solve margin_uah >= min_uah for d:
+        d <= 100 × (1 - cost_rate - min_uah / (retail_eur × eur_rate_uah))
+
+    Returns:
+        - floor(base_discount) if the base already clears min_margin
+        - floor(d_max) in (0, base_discount) if clamped down
+        - 0 if even 0% discount can't reach min_margin (cheap item, sell at retail)
+    """
+    if retail_price_cents <= 0 or eur_rate_uah <= 0 or min_margin_uah <= 0:
+        return int(base_discount)
+
+    base_d = float(base_discount)
+    retail_eur = retail_price_cents / 100.0
+    max_margin_frac = 1 - cost_rate  # 0.25 when cost_rate=0.75
+
+    # Margin at 0% discount — if still below min, cheap item: sell at retail.
+    if retail_eur * max_margin_frac * eur_rate_uah < min_margin_uah:
+        return 0
+
+    # Margin at base — if it already clears min, keep base (floor to int).
+    base_frac = max_margin_frac - base_d / 100.0
+    if base_frac * retail_eur * eur_rate_uah >= min_margin_uah:
+        return int(math.floor(base_d))
+
+    # Otherwise clamp down: largest integer d with margin_uah >= min.
+    d_max = 100.0 * (max_margin_frac - min_margin_uah / (retail_eur * eur_rate_uah))
+    d = int(math.floor(d_max))
+    if d < 0:
+        return 0
+    if d > int(math.floor(base_d)):
+        return int(math.floor(base_d))
+    return d
+
+
 def is_valid_price(price_cents: int | None) -> bool:
     return price_cents is not None and price_cents > 0
 
@@ -85,21 +142,19 @@ def calculate_auto_discount(
     cost_rate: float = 0.75,
     min_margin_uah: float = 500.0,
 ) -> int:
-    """Integer discount %, rounded UP to favor the customer.
+    """Integer discount %, rounded DOWN to guarantee margin >= min_margin_uah.
 
     Margin formula:
         margin_eur = retail_eur * ((1 - d/100) - cost_rate)
         margin_uah = margin_eur * eur_rate_uah
 
-    Let d_real solve margin(d_real) == min_margin_uah exactly. Because we
-    round UP (ceil) rather than down (floor), the returned integer % may
-    leave the actual margin slightly below min_margin_uah — by less than
-    one percentage-point of retail. This matches the product spec
-    ("до целого числа в большую сторону").
+    We round DOWN (floor) so the returned integer % always satisfies
+    margin_uah >= min_margin_uah strictly. Higher discount = lower margin;
+    rounding down means less discount, which keeps margin on the safe side.
 
     Returns:
         - target_discount (int) if the full target keeps margin >= min
-        - ceil(d_real) when 0 < d_real < target_discount
+        - floor(d_max) when 0 < d_max < target_discount
         - 0 if even a zero discount can't reach min margin (cheap item,
           sell at retail)
     """
@@ -119,14 +174,13 @@ def calculate_auto_discount(
     if target_frac * retail_eur * eur_rate_uah >= min_margin_uah:
         return int(target_discount)
 
-    # binary/search boundary: largest integer d in [0..target) with margin >= min.
+    # Largest integer d in [0..target) with margin_uah >= min.
     # d_max (real) satisfies (max_margin_frac - d/100) * retail_eur * rate = min
     # → d = 100 * (max_margin_frac - min/(retail_eur*rate))
-    d_real = 100.0 * (max_margin_frac - min_margin_uah / (retail_eur * eur_rate_uah))
-    # Round UP per spec ("до целого числа в большую сторону") — margin may dip slightly below min.
-    d = math.ceil(d_real)
+    d_max = 100.0 * (max_margin_frac - min_margin_uah / (retail_eur * eur_rate_uah))
+    d = math.floor(d_max)
     if d < 0:
         return 0
     if d > int(target_discount):
         return int(target_discount)
-    return d
+    return int(d)

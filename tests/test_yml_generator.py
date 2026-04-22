@@ -511,6 +511,7 @@ class TestPerBrandPricing:
             discount_percent=17.0,  # fallback for brands not listed
             pricing_mode="per_brand",
             is_enabled=True,
+            min_margin_uah=0.0,  # disable clamp — this test isolates per-brand logic
         )
         session.add(supplier)
         session.flush()

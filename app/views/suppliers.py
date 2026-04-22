@@ -350,6 +350,8 @@ def supplier_apply_discount(supplier_id):
     dry_run = request.args.get("dry_run") == "1"
     force = request.args.get("force") == "1"
     eur_rate = supplier.eur_rate_uah or 51.15
+    min_margin = float(supplier.min_margin_uah or 500.0)
+    cost_rate = float(supplier.cost_rate or 0.75)
 
     q = (
         db.session.query(ProductMatch, SupplierProduct)
@@ -371,7 +373,10 @@ def supplier_apply_discount(supplier_id):
         if not sp.price_cents or sp.price_cents <= 0:
             skipped_no_price += 1
             continue
-        d = calculate_auto_discount(sp.price_cents, eur_rate)
+        d = calculate_auto_discount(
+            sp.price_cents, eur_rate,
+            cost_rate=cost_rate, min_margin_uah=min_margin,
+        )
         dist[d] = dist.get(d, 0) + 1
         if match.discount_percent != d:
             if not dry_run:
