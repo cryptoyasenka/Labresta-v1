@@ -27,6 +27,7 @@ from app.services.excel_parser import (
     convert_google_sheets_url,
     get_preview_data,
     is_google_sheets_url,
+    is_xlsx_url,
     parse_excel_products,
     validate_xlsx_response,
     REQUIRED_FIELDS,
@@ -83,10 +84,15 @@ def supplier_add():
         db.session.add(supplier)
         db.session.commit()
 
-        # If Google Sheets URL, redirect to mapping preview
-        if feed_url and is_google_sheets_url(feed_url):
+        # Excel-by-URL path: Google Sheets OR a direct .xlsx URL.
+        # Both flow through the same mapping-preview UX — only the
+        # download step differs.
+        if feed_url and (is_google_sheets_url(feed_url) or is_xlsx_url(feed_url)):
             try:
-                download_url = convert_google_sheets_url(feed_url)
+                if is_google_sheets_url(feed_url):
+                    download_url = convert_google_sheets_url(feed_url)
+                else:
+                    download_url = feed_url
                 raw_bytes = fetch_feed_with_retry(download_url)
                 validate_xlsx_response(raw_bytes)
 
@@ -102,7 +108,7 @@ def supplier_add():
                 flash(f"Поставщик '{supplier.name}' добавлен. Настройте маппинг колонок.", "success")
                 return redirect(url_for("suppliers.supplier_mapping_preview", supplier_id=supplier.id))
             except Exception as e:
-                logger.exception("Failed to download Google Sheets for supplier %s", supplier.name)
+                logger.exception("Failed to download xlsx for supplier %s", supplier.name)
                 flash(
                     f"Поставщик '{supplier.name}' добавлен, но не удалось загрузить файл: {e}",
                     "error",
@@ -218,13 +224,19 @@ def supplier_fetch(supplier_id):
         return redirect(url_for("suppliers.supplier_list"))
 
     try:
-        if supplier.feed_url and is_google_sheets_url(supplier.feed_url):
+        is_excel = supplier.feed_url and (
+            is_google_sheets_url(supplier.feed_url) or is_xlsx_url(supplier.feed_url)
+        )
+        if is_excel:
             # Excel pipeline: download, validate, parse with saved mapping
             if not supplier.column_mapping:
                 flash("Маппинг колонок не настроен. Сначала настройте колонки.", "error")
                 return redirect(url_for("suppliers.supplier_list"))
 
-            download_url = convert_google_sheets_url(supplier.feed_url)
+            if is_google_sheets_url(supplier.feed_url):
+                download_url = convert_google_sheets_url(supplier.feed_url)
+            else:
+                download_url = supplier.feed_url
             raw_bytes = fetch_feed_with_retry(download_url)
             validate_xlsx_response(raw_bytes)
 
@@ -403,10 +415,13 @@ def supplier_mapping_preview(supplier_id):
 
     # Re-download if no data or data has empty headers (stale session)
     if not preview_data or not preview_data.get("all_headers"):
-        # Try to re-download for Google Sheets suppliers
-        if supplier.feed_url and is_google_sheets_url(supplier.feed_url):
+        # Try to re-download for Excel-by-URL suppliers (Google Sheets or direct xlsx)
+        if supplier.feed_url and (is_google_sheets_url(supplier.feed_url) or is_xlsx_url(supplier.feed_url)):
             try:
-                download_url = convert_google_sheets_url(supplier.feed_url)
+                if is_google_sheets_url(supplier.feed_url):
+                    download_url = convert_google_sheets_url(supplier.feed_url)
+                else:
+                    download_url = supplier.feed_url
                 raw_bytes = fetch_feed_with_retry(download_url)
                 validate_xlsx_response(raw_bytes)
 

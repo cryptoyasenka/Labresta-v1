@@ -43,6 +43,24 @@ def is_google_sheets_url(url: str) -> bool:
     return bool(GOOGLE_SHEETS_PATTERN.search(url))
 
 
+def is_xlsx_url(url: str) -> bool:
+    """Heuristic: URL likely serves an .xlsx file (non-Google).
+
+    Covers two signals commonly seen with dealer/b2b export endpoints:
+      - path ends with ``.xlsx`` (with or without query string)
+      - query param ``filetype=xlsx`` is present (e.g. np.com.ua dealer-export)
+    """
+    if not url:
+        return False
+    low = url.lower()
+    path = low.split("?", 1)[0]
+    if path.endswith(".xlsx"):
+        return True
+    if "filetype=xlsx" in low:
+        return True
+    return False
+
+
 def convert_google_sheets_url(url: str) -> str:
     """Convert a Google Sheets sharing URL to an .xlsx download URL.
 
