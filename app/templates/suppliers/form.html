@@ -108,9 +108,7 @@
     </div>
 
     <div class="d-flex gap-2">
-        <button type="submit" class="btn btn-primary">
-            {{ 'Сохранить' if supplier else 'Добавить' }}
-        </button>
+        <button type="submit" class="btn btn-primary" id="submit-btn">Сохранить</button>
         <a href="{{ url_for('suppliers.supplier_list') }}" class="btn btn-outline-secondary">Отмена</a>
     </div>
 </form>
@@ -154,6 +152,15 @@ function removeBrandRow(btn) {
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('pricing_mode').addEventListener('change', updatePricingModeUI);
     updatePricingModeUI();
+
+    const form = document.querySelector('form');
+    const btn = document.getElementById('submit-btn');
+    form.addEventListener('submit', function() {
+        if (btn.dataset.submitted === '1') return;
+        btn.dataset.submitted = '1';
+        btn.disabled = true;
+        btn.textContent = 'Сохранение…';
+    });
 });
 </script>
 {% endblock %}
