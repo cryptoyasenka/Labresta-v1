@@ -780,6 +780,26 @@ def find_match_candidates(
                 if prom_name_model and sup_name_model_for_fast_norm == prom_name_model:
                     matched = True
 
+            # Pure-letter manufacturer SKUs (HKN-FNT-M, HKN-LPD-S): when the
+            # supplier provided article appears verbatim inside the prom
+            # product name, accept as SKU match. Extracting model from name
+            # requires a digit token (skipped for dash-only letter SKUs), and
+            # the after-brand containment gate rejects when descriptor extras
+            # don't overlap (sp#4698 'з набором дисків' vs pp#3269 'з
+            # електронним блоком'). Raw article must contain a dash or digit
+            # to filter out short generic letter codes ("CE", "UL"). Length
+            # >=6 post-normalize mirrors the prom_display branch above.
+            if not matched and sup_article and len(sup_article) >= 6:
+                raw_article = (supplier_article or "").strip()
+                has_dash_or_digit = "-" in raw_article or any(
+                    c.isdigit() for c in raw_article
+                )
+                if has_dash_or_digit:
+                    prom_name_norm = normalize_model(p["name"])
+                    if prom_name_norm and sup_article in prom_name_norm:
+                        matched = True
+                        display_match = True
+
             if matched and p["id"] not in fast_match_ids:
                 fast_match_ids.add(p["id"])
                 fast_matches.append(

@@ -1292,3 +1292,80 @@ class TestCompoundAndDashSplit:
         # 1-char Cyrillic extra → False (rule is Latin-only; Cyrillic 1-char
         # gets filtered at tokenization anyway)
         assert _asymmetric_sku_suffix({"x"}, {"x", "з"}) is False
+
+
+class TestPureLetterArticleFastPath:
+    """Pure-letter manufacturer SKUs (HKN-FNT-M, HKN-LPD-S) are valid article
+    codes but normalize_model strips dashes leaving no digit. The symmetric
+    fast-path check accepts when the supplier article appears verbatim inside
+    the prom product name — needed for sp#4698 where descriptor extras differ
+    ('з набором дисків' vs 'з електронним блоком') blocking the containment
+    gate, and extract_model_from_name returns '' because the SKU has no digit
+    token."""
+
+    def test_pure_letter_article_in_prom_name_matches(self):
+        """sp 'Hurakan Hkn-fnt-m NEW з набором дисків' (article='HKN-FNT-M NEW')
+        must match pp 'HURAKAN HKN-FNT-M NEW з електронним блоком' via
+        substring of normalized article inside normalized prom name."""
+        prom = [
+            _make_prom(
+                1, "ОВОЧЕРІЗКА HURAKAN HKN-FNT-M NEW З ЕЛЕКТРОННИМ БЛОКОМ",
+                "Hurakan", 80000,
+            ),
+        ]
+        result = find_match_candidates(
+            "Овочерізка Hurakan Hkn-fnt-m NEW з набором дисків",
+            "Hurakan", prom, supplier_price_cents=80000,
+            supplier_article="HKN-FNT-M NEW",
+        )
+        assert any(r["prom_product_id"] == 1 for r in result)
+
+    def test_pure_letter_article_does_not_match_different_suffix(self):
+        """Counter-check: article 'HKN-FNT-M' must NOT match pp 'HKN-FNT-A'.
+        Normalized 'hknfntm' is not a substring of normalized 'hknfnta'."""
+        prom = [
+            _make_prom(
+                1, "ОВОЧЕРІЗКА HURAKAN HKN-FNT-A З НАБОРОМ ДИСКІВ",
+                "Hurakan", 80000,
+            ),
+        ]
+        result = find_match_candidates(
+            "Овочерізка Hurakan Hkn-fnt-m з набором дисків",
+            "Hurakan", prom, supplier_price_cents=80000,
+            supplier_article="HKN-FNT-M",
+        )
+        assert not any(r["prom_product_id"] == 1 for r in result)
+
+    def test_short_article_does_not_trigger_fast_path(self):
+        """Short raw articles (<6 chars after normalize) must not trigger the
+        substring check — 'CE' or 'UL' could appear in any product name."""
+        prom = [
+            _make_prom(1, "Pizza oven CE certified", "Apach", 80000),
+            _make_prom(2, "Completely different product", "Apach", 80000),
+        ]
+        result = find_match_candidates(
+            "Apach oven", "Apach", prom, supplier_price_cents=80000,
+            supplier_article="CE",
+        )
+        # Neither should match via pure-letter fast-path (too short).
+        fast_path_matches = [r for r in result if r.get("score") == 100.0]
+        assert len(fast_path_matches) == 0
+
+    def test_letters_only_no_dash_article_rejected(self):
+        """Article without dash or digit in raw form must not trigger the
+        check — 'HKNFNTMNEW' as a single alphabetic string is too weak a
+        signal to bypass the containment gate."""
+        prom = [
+            _make_prom(
+                1, "Apach HKNFNTMNEW product with totally unrelated words",
+                "Apach", 80000,
+            ),
+        ]
+        result = find_match_candidates(
+            "Apach totally unrelated product desc",
+            "Apach", prom, supplier_price_cents=80000,
+            supplier_article="HKNFNTMNEW",
+        )
+        # No dash/digit in raw article → fast-path skipped.
+        # Fuzzy + containment will reject because tokens don't overlap.
+        assert not any(r["prom_product_id"] == 1 for r in result)
