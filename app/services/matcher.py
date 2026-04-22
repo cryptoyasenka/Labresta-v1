@@ -72,14 +72,25 @@ def extract_voltages(name: str) -> set[str]:
 
 
 def normalize_text(text: str) -> str:
-    """Apply NFC unicode normalization to handle Cyrillic edge cases.
+    """Apply NFC unicode normalization and canonicalize slitny/razdelny SKU forms.
 
-    Applied before rapidfuzz's default_process to ensure consistent
-    comparison of Ukrainian/Cyrillic product names (Research Pitfall 5).
+    NFC fixes Cyrillic composition edge cases (Research Pitfall 5).
+
+    Additionally inserts a space at every letter↔digit transition so rapidfuzz
+    WRatio treats 'ATS22UT' and 'ATS 22 UT' as equivalent token sequences.
+    Without this, a razdelny supplier name ('ATS 22 UT повний унгер 1ф') scores
+    noticeably lower against a slitny catalog name ('ATS22UT 1Ф (220В)') than
+    against an unrelated razdelny catalog name ('APACH ATS 22 UT 380 В') — and
+    with MATCH_LIMIT=3 the correct target drops out of the top-K before the
+    post-gates can even see it. Normalizing the shapes here keeps the fuzzy
+    ranking aligned with the containment gate's view of identity.
     """
     if not text:
         return ""
-    return unicodedata.normalize("NFC", text)
+    text = unicodedata.normalize("NFC", text)
+    # rapidfuzz.utils.default_process will collapse the inserted whitespace
+    # and lowercase, so we only add spaces here — no other normalization.
+    return _ALNUM_BOUNDARY_RE.sub(" ", text)
 
 
 def get_confidence_label(score: float) -> str:
@@ -256,7 +267,7 @@ _PAREN_CONTENT_RE = re.compile(r"\([^)]*\)")
 # is directly available) so BISTRO+6 stays whole.
 _ALNUM_BOUNDARY_RE = re.compile(
     r"(?<=[a-zа-яёіїєґ])(?=\d)|(?<=\d)(?=[a-zа-яёіїєґ])",
-    re.UNICODE,
+    re.UNICODE | re.IGNORECASE,
 )
 
 
