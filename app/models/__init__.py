@@ -9,3 +9,4 @@ from app.models.match_rule import MatchRule  # noqa: F401
 from app.models.notification_rule import NotificationRule, Notification  # noqa: F401
 from app.models.audit_log import AuditLog  # noqa: F401
 from app.models.custom_feed import CustomFeed  # noqa: F401
+from app.models.supplier_brand_discount import SupplierBrandDiscount  # noqa: F401

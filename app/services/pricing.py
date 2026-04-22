@@ -32,6 +32,48 @@ def get_effective_discount(
     return supplier_discount
 
 
+def resolve_discount_percent(
+    match_discount: float | None,
+    supplier,
+    brand: str | None,
+) -> float:
+    """Return the final customer discount % for a match.
+
+    Priority:
+      1. Per-match override (match.discount_percent) — always wins if set,
+         operator intent beats any supplier-level rule.
+      2. Supplier.pricing_mode:
+         - 'per_brand'   — lookup SupplierBrandDiscount by brand (case-insensitive,
+                           trimmed). Fallback to Supplier.discount_percent if the
+                           brand isn't listed.
+         - 'auto_margin' — NOT handled here (caller decides; MARESTO path uses
+                           calculate_auto_discount directly). Returns
+                           Supplier.discount_percent as a conservative default.
+         - 'flat' / anything else — Supplier.discount_percent.
+
+    ``supplier`` accepts either a Supplier ORM instance or a duck-typed object
+    exposing ``pricing_mode``, ``discount_percent`` and ``brand_discounts``
+    (iterable of objects with ``brand`` + ``discount_percent``). The iterable
+    form keeps this callable pure for unit tests.
+    """
+    if match_discount is not None:
+        return match_discount
+
+    mode = getattr(supplier, "pricing_mode", "flat") or "flat"
+    default = float(getattr(supplier, "discount_percent", 0.0) or 0.0)
+
+    if mode == "per_brand" and brand:
+        key = brand.strip().lower()
+        if key:
+            for row in getattr(supplier, "brand_discounts", []) or []:
+                row_brand = (getattr(row, "brand", "") or "").strip().lower()
+                if row_brand == key:
+                    return float(row.discount_percent)
+        return default
+
+    return default
+
+
 def is_valid_price(price_cents: int | None) -> bool:
     return price_cents is not None and price_cents > 0
 

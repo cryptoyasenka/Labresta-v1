@@ -36,6 +36,15 @@ class Supplier(db.Model):
     feed_url = db.Column(db.String(500), nullable=True)
     discount_percent = db.Column(db.Float, default=0.0)  # e.g. 15.0 for 15%
     eur_rate_uah = db.Column(db.Float, default=51.15, server_default="51.15")  # used for min-margin calc
+    # flat        — use Supplier.discount_percent for every match
+    # per_brand   — look up SupplierBrandDiscount by sp.brand, fallback to discount_percent
+    # auto_margin — apply calculate_auto_discount (MARESTO min-margin formula)
+    pricing_mode = db.Column(
+        db.String(20),
+        nullable=False,
+        default="flat",
+        server_default="flat",
+    )
     column_mapping = db.Column(db.Text, nullable=True)  # JSON: {"header_row": int, "columns": {col_idx: field}}
     is_enabled = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))

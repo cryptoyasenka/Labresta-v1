@@ -2,12 +2,27 @@
 
 import pytest
 
+from types import SimpleNamespace
+
 from app.services.pricing import (
     calculate_auto_discount,
     calculate_price_eur,
     get_effective_discount,
     is_valid_price,
+    resolve_discount_percent,
 )
+
+
+def _supplier(mode="flat", default=15.0, brand_rows=None):
+    return SimpleNamespace(
+        pricing_mode=mode,
+        discount_percent=default,
+        brand_discounts=brand_rows or [],
+    )
+
+
+def _brand_row(brand, pct):
+    return SimpleNamespace(brand=brand, discount_percent=pct)
 
 
 # --- calculate_price_eur: tenths rounding ---
@@ -162,3 +177,92 @@ def test_auto_invalid_rate():
 )
 def test_auto_parametrized(retail_cents, expected):
     assert calculate_auto_discount(retail_cents, 51.15) == expected
+
+
+# --- resolve_discount_percent ---
+
+
+def test_resolve_match_override_wins_flat():
+    s = _supplier(mode="flat", default=15.0)
+    assert resolve_discount_percent(22.0, s, "HURAKAN") == 22.0
+
+
+def test_resolve_match_override_wins_per_brand():
+    s = _supplier(
+        mode="per_brand", default=17.0, brand_rows=[_brand_row("HURAKAN", 15.0)]
+    )
+    assert resolve_discount_percent(5.0, s, "HURAKAN") == 5.0
+
+
+def test_resolve_flat_returns_supplier_default():
+    s = _supplier(mode="flat", default=15.0)
+    assert resolve_discount_percent(None, s, "HURAKAN") == 15.0
+
+
+def test_resolve_per_brand_hit():
+    s = _supplier(
+        mode="per_brand",
+        default=17.0,
+        brand_rows=[
+            _brand_row("HURAKAN", 15.0),
+            _brand_row("SIRMAN", 20.0),
+        ],
+    )
+    assert resolve_discount_percent(None, s, "HURAKAN") == 15.0
+    assert resolve_discount_percent(None, s, "SIRMAN") == 20.0
+
+
+def test_resolve_per_brand_case_insensitive():
+    s = _supplier(
+        mode="per_brand", default=17.0, brand_rows=[_brand_row("Robot Coupe", 20.0)]
+    )
+    assert resolve_discount_percent(None, s, "ROBOT COUPE") == 20.0
+    assert resolve_discount_percent(None, s, "robot coupe") == 20.0
+
+
+def test_resolve_per_brand_trims_whitespace():
+    s = _supplier(
+        mode="per_brand", default=17.0, brand_rows=[_brand_row("BARTSCHER", 20.0)]
+    )
+    assert resolve_discount_percent(None, s, "  BARTSCHER  ") == 20.0
+
+
+def test_resolve_per_brand_miss_falls_back_to_default():
+    s = _supplier(
+        mode="per_brand", default=17.0, brand_rows=[_brand_row("HURAKAN", 15.0)]
+    )
+    assert resolve_discount_percent(None, s, "APACH") == 17.0
+
+
+def test_resolve_per_brand_empty_brand_uses_default():
+    s = _supplier(
+        mode="per_brand", default=17.0, brand_rows=[_brand_row("HURAKAN", 15.0)]
+    )
+    assert resolve_discount_percent(None, s, None) == 17.0
+    assert resolve_discount_percent(None, s, "") == 17.0
+    assert resolve_discount_percent(None, s, "   ") == 17.0
+
+
+def test_resolve_auto_margin_returns_default():
+    """auto_margin path isn't resolved here — caller uses calculate_auto_discount."""
+    s = _supplier(mode="auto_margin", default=19.0)
+    assert resolve_discount_percent(None, s, "HURAKAN") == 19.0
+
+
+def test_resolve_unknown_mode_treated_as_flat():
+    s = _supplier(mode="something_weird", default=10.0)
+    assert resolve_discount_percent(None, s, "HURAKAN") == 10.0
+
+
+def test_resolve_missing_attributes_defaults_zero():
+    """Duck-typed object without pricing_mode/discount_percent should not explode."""
+    s = SimpleNamespace()
+    assert resolve_discount_percent(None, s, "HURAKAN") == 0.0
+
+
+def test_resolve_match_override_zero_wins():
+    """Explicit 0 discount from operator beats any supplier rule."""
+    s = _supplier(
+        mode="per_brand", default=17.0, brand_rows=[_brand_row("HURAKAN", 15.0)]
+    )
+    assert resolve_discount_percent(0.0, s, "HURAKAN") == 0.0

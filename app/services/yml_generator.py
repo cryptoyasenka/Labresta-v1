@@ -33,8 +33,8 @@ from app.models.supplier import Supplier
 from app.models.supplier_product import SupplierProduct
 from app.services.pricing import (
     calculate_price_eur,
-    get_effective_discount,
     is_valid_price,
+    resolve_discount_percent,
 )
 
 logger = logging.getLogger(__name__)
@@ -192,8 +192,8 @@ def _compute_price_eur(match) -> float:
     supplier = sp.supplier
     if not is_valid_price(sp.price_cents):
         return 0.0
-    effective_discount = get_effective_discount(
-        match.discount_percent, supplier.discount_percent
+    effective_discount = resolve_discount_percent(
+        match.discount_percent, supplier, sp.brand
     )
     return calculate_price_eur(sp.price_cents, effective_discount)
 
