@@ -41,6 +41,15 @@
             </select>
         </div>
         <div class="col-auto">
+            <label for="supplierFilter" class="form-label form-label-sm mb-0">Поставщик</label>
+            <select name="supplier_id" id="supplierFilter" class="form-select form-select-sm">
+                <option value="all" {{ 'selected' if filters.supplier_id == 'all' }}>Все</option>
+                {% for s in suppliers_list %}
+                <option value="{{ s.id }}" {{ 'selected' if filters.supplier_id == s.id|string }}>{{ s.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-auto">
             <label for="searchInput" class="form-label form-label-sm mb-0">Поиск</label>
             <input type="text" name="search" id="searchInput" class="form-control form-control-sm"
                    placeholder="Название товара..." value="{{ filters.search }}">
@@ -103,11 +112,11 @@
         Разница в названиях
     </button>
     <span class="mx-2 text-muted">|</span>
-    <a href="{{ url_for('matches.export_csv', status=filters.status, confidence=filters.confidence, availability=filters.availability, search=filters.search, sort=filters.sort, order=filters.order) }}"
+    <a href="{{ url_for('matches.export_csv', status=filters.status, confidence=filters.confidence, availability=filters.availability, supplier_id=filters.supplier_id, search=filters.search, sort=filters.sort, order=filters.order) }}"
        class="btn btn-sm btn-outline-secondary">
         Экспорт CSV
     </a>
-    <a href="{{ url_for('matches.export_xlsx', status=filters.status, confidence=filters.confidence, availability=filters.availability, search=filters.search, sort=filters.sort, order=filters.order) }}"
+    <a href="{{ url_for('matches.export_xlsx', status=filters.status, confidence=filters.confidence, availability=filters.availability, supplier_id=filters.supplier_id, search=filters.search, sort=filters.sort, order=filters.order) }}"
        class="btn btn-sm btn-outline-secondary">
         Экспорт Excel
     </a>
@@ -127,7 +136,7 @@
                         <a href="{{ url_for('matches.review',
                             status=filters.status,
                             confidence=filters.confidence,
-                            availability=filters.availability,
+                            availability=filters.availability, supplier_id=filters.supplier_id,
                             search=filters.search,
                             per_page=filters.per_page,
                             sort=col,
@@ -355,14 +364,14 @@
                     <li class="page-item">
                         <a class="page-link" href="{{ url_for('matches.review',
                             status=filters.status, confidence=filters.confidence,
-                            availability=filters.availability,
+                            availability=filters.availability, supplier_id=filters.supplier_id,
                             search=filters.search, sort=filters.sort, order=filters.order,
                             per_page=filters.per_page, page=1) }}">&#171;</a>
                     </li>
                     <li class="page-item">
                         <a class="page-link" href="{{ url_for('matches.review',
                             status=filters.status, confidence=filters.confidence,
-                            availability=filters.availability,
+                            availability=filters.availability, supplier_id=filters.supplier_id,
                             search=filters.search, sort=filters.sort, order=filters.order,
                             per_page=filters.per_page, page=pagination.prev_num) }}">&#8249;</a>
                     </li>
@@ -388,14 +397,14 @@
                     <li class="page-item">
                         <a class="page-link" href="{{ url_for('matches.review',
                             status=filters.status, confidence=filters.confidence,
-                            availability=filters.availability,
+                            availability=filters.availability, supplier_id=filters.supplier_id,
                             search=filters.search, sort=filters.sort, order=filters.order,
                             per_page=filters.per_page, page=pagination.next_num) }}">&#8250;</a>
                     </li>
                     <li class="page-item">
                         <a class="page-link" href="{{ url_for('matches.review',
                             status=filters.status, confidence=filters.confidence,
-                            availability=filters.availability,
+                            availability=filters.availability, supplier_id=filters.supplier_id,
                             search=filters.search, sort=filters.sort, order=filters.order,
                             per_page=filters.per_page, page=pagination.pages) }}">&#187;</a>
                     </li>

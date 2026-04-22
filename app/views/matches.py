@@ -14,6 +14,7 @@ from app.extensions import db
 from app.models.catalog import PromProduct
 from app.models.match_rule import MatchRule
 from app.models.product_match import ProductMatch
+from app.models.supplier import Supplier
 from app.models.supplier_product import SupplierProduct
 from app.services.audit_service import log_action
 from app.services.matcher import CONFIDENCE_HIGH, CONFIDENCE_MEDIUM, find_match_for_product
@@ -75,6 +76,7 @@ def _build_match_query():
     status = request.args.get("status", "all")
     confidence = request.args.get("confidence", "all")
     availability = request.args.get("availability", "all")
+    supplier_id = request.args.get("supplier_id", "all")
     search = request.args.get("search", "").strip()
     sort_col = request.args.get("sort", "score")
     order = request.args.get("order", "asc")
@@ -107,6 +109,16 @@ def _build_match_query():
             query = query.filter(ProductMatch.supplier_product.has(SupplierProduct.available == True))  # noqa: E712
         elif availability == "unavailable":
             query = query.filter(ProductMatch.supplier_product.has(SupplierProduct.available == False))  # noqa: E712
+
+    if supplier_id and supplier_id != "all":
+        try:
+            sid = int(supplier_id)
+        except (TypeError, ValueError):
+            sid = None
+        if sid is not None:
+            query = query.filter(
+                ProductMatch.supplier_product.has(SupplierProduct.supplier_id == sid)
+            )
 
     # Always hide matches whose SP is ignored — operator explicitly opted them
     # out of the catalog. /products/supplier?show_ignored=1 stays the only
@@ -141,6 +153,7 @@ def _build_match_query():
         "status": status,
         "confidence": confidence,
         "availability": availability,
+        "supplier_id": supplier_id,
         "search": search,
         "sort": sort_col,
         "order": order,
@@ -180,6 +193,10 @@ def review():
     if manual_for_sp_id:
         auto_manual_sp = db.session.get(SupplierProduct, manual_for_sp_id)
 
+    suppliers_list = db.session.execute(
+        db.select(Supplier).order_by(Supplier.name)
+    ).scalars().all()
+
     return render_template(
         "matches/review.html",
         matches=pagination.items,
@@ -189,6 +206,7 @@ def review():
         confidence_medium=CONFIDENCE_MEDIUM,
         unmatched_sp_count=unmatched_sp_count,
         auto_manual_sp=auto_manual_sp,
+        suppliers_list=suppliers_list,
     )
 
 
