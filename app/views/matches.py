@@ -2,7 +2,7 @@
 
 from datetime import datetime, timezone
 
-from flask import Blueprint, Response, jsonify, render_template, request, send_file
+from flask import Blueprint, Response, jsonify, redirect, render_template, request, send_file, url_for
 from flask_login import current_user, login_required
 from sqlalchemy import asc, desc, nulls_last
 from sqlalchemy.orm import joinedload
@@ -196,7 +196,13 @@ def review():
     """Main match review page with filtering, sorting, and pagination."""
     query, filters = _build_match_query()
     page = request.args.get("page", 1, type=int)
-    pagination = db.paginate(query, page=page, per_page=filters["per_page"])
+    pagination = db.paginate(query, page=page, per_page=filters["per_page"], error_out=False)
+    # After bulk-confirm the list shrinks — redirect to the last existing page
+    # instead of showing 404 / empty state on page=N.
+    if page > 1 and not pagination.items and pagination.pages >= 1:
+        args = request.args.to_dict(flat=True)
+        args["page"] = pagination.pages
+        return redirect(url_for("matches.review", **args))
 
     # Count supplier products matching the search but without any match row.
     # Helps the operator realise that /matches hides unmatched SP — surfaces
