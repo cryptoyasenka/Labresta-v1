@@ -206,6 +206,40 @@ class TestPricingModeForm:
         brands = {r.brand for r in sup.brand_discounts}
         assert brands == {"HURAKAN", "CEADO"}
 
+    def test_edit_updates_same_brand_new_rate(self, client, db):
+        """Replace HURAKAN=15% with HURAKAN=14% in one request.
+
+        Exercises DELETE + INSERT on the same unique key (supplier_id, brand)
+        within a single transaction — SQLAlchemy must order DELETE before
+        INSERT at flush time for the UNIQUE constraint not to trip.
+        """
+        sup = Supplier(name="S", discount_percent=10.0, pricing_mode="per_brand")
+        db.session.add(sup)
+        db.session.flush()
+        from app.models.supplier_brand_discount import SupplierBrandDiscount
+        db.session.add(
+            SupplierBrandDiscount(supplier_id=sup.id, brand="HURAKAN", discount_percent=15.0)
+        )
+        db.session.commit()
+
+        resp = client.post(
+            f"/suppliers/{sup.id}/edit",
+            data={
+                "name": "S",
+                "feed_url": "",
+                "discount_percent": "10",
+                "pricing_mode": "per_brand",
+                "brand_name[]": ["HURAKAN"],
+                "brand_discount[]": ["14"],
+            },
+            follow_redirects=False,
+        )
+        assert resp.status_code == 302
+        db.session.refresh(sup)
+        assert len(sup.brand_discounts) == 1
+        assert sup.brand_discounts[0].brand == "HURAKAN"
+        assert sup.brand_discounts[0].discount_percent == 14.0
+
     def test_edit_blank_rows_are_ignored(self, client, db):
         sup = Supplier(name="S", discount_percent=10.0, pricing_mode="flat")
         db.session.add(sup)

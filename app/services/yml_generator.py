@@ -23,7 +23,7 @@ from datetime import datetime, timezone
 from flask import current_app
 from lxml import etree
 from sqlalchemy import select, true
-from sqlalchemy.orm import joinedload
+from sqlalchemy.orm import joinedload, selectinload
 
 from app.extensions import db
 from app.models.catalog import PromProduct  # noqa: F401 — needed for joinedload
@@ -55,9 +55,9 @@ def _query_published_matches(
             ProductMatch.published.is_(True),
         )
         .options(
-            joinedload(ProductMatch.supplier_product).joinedload(
-                SupplierProduct.supplier
-            ),
+            joinedload(ProductMatch.supplier_product)
+            .joinedload(SupplierProduct.supplier)
+            .selectinload(Supplier.brand_discounts),
             joinedload(ProductMatch.prom_product),
         )
     )
