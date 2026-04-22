@@ -781,20 +781,24 @@ def find_match_candidates(
                     matched = True
 
             # Pure-letter manufacturer SKUs (HKN-FNT-M, HKN-LPD-S): when the
-            # supplier provided article appears verbatim inside the prom
-            # product name, accept as SKU match. Extracting model from name
-            # requires a digit token (skipped for dash-only letter SKUs), and
-            # the after-brand containment gate rejects when descriptor extras
-            # don't overlap (sp#4698 'з набором дисків' vs pp#3269 'з
-            # електронним блоком'). Raw article must contain a dash or digit
-            # to filter out short generic letter codes ("CE", "UL"). Length
-            # >=6 post-normalize mirrors the prom_display branch above.
+            # supplier provided article is a dash-joined letter-only code and
+            # appears verbatim inside the prom product name, accept as SKU
+            # match. Extracting model from name requires a digit token
+            # (skipped for dash-only letter SKUs), and the after-brand
+            # containment gate rejects when descriptor extras don't overlap
+            # (sp#4698 'з набором дисків' vs pp#3269 'з електронним блоком').
+            #
+            # Restricted to "raw article has a dash AND no digits" so digit-
+            # bearing articles like 'ATS12U 1/2' do NOT skip the voltage/
+            # phase post-gate (sp#4529 '3ф' must not collide with pp#2980
+            # '220 В 1ф' just because the SKU string overlaps). Length >=6
+            # post-normalize mirrors the prom_display branch above.
             if not matched and sup_article and len(sup_article) >= 6:
                 raw_article = (supplier_article or "").strip()
-                has_dash_or_digit = "-" in raw_article or any(
-                    c.isdigit() for c in raw_article
-                )
-                if has_dash_or_digit:
+                has_dash = "-" in raw_article
+                has_digit = any(c.isdigit() for c in raw_article)
+                is_pure_letter_sku = has_dash and not has_digit
+                if is_pure_letter_sku:
                     prom_name_norm = normalize_model(p["name"])
                     if prom_name_norm and sup_article in prom_name_norm:
                         matched = True

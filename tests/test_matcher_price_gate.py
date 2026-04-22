@@ -1352,9 +1352,9 @@ class TestPureLetterArticleFastPath:
         assert len(fast_path_matches) == 0
 
     def test_letters_only_no_dash_article_rejected(self):
-        """Article without dash or digit in raw form must not trigger the
-        check — 'HKNFNTMNEW' as a single alphabetic string is too weak a
-        signal to bypass the containment gate."""
+        """Article without dash in raw form must not trigger the check —
+        'HKNFNTMNEW' as a single alphabetic string is too weak a signal to
+        bypass the containment gate (no SKU structure to anchor on)."""
         prom = [
             _make_prom(
                 1, "Apach HKNFNTMNEW product with totally unrelated words",
@@ -1366,6 +1366,26 @@ class TestPureLetterArticleFastPath:
             "Apach", prom, supplier_price_cents=80000,
             supplier_article="HKNFNTMNEW",
         )
-        # No dash/digit in raw article → fast-path skipped.
+        # No dash in raw article → fast-path skipped.
         # Fuzzy + containment will reject because tokens don't overlap.
+        assert not any(r["prom_product_id"] == 1 for r in result)
+
+    def test_digit_bearing_article_does_not_bypass_voltage_gate(self):
+        """sp#4529 regression: article 'ATS12U 1/2' (has digits) must NOT
+        skip the voltage/phase post-gate via pure-letter fast-path. sp is
+        3ф, pp is 1ф (220В) — must be rejected even though the SKU
+        substring matches."""
+        prom = [
+            _make_prom(
+                1, "М'ясорубка Apach ATS12U 1/2 унгер 220 В",
+                "Apach", 50000,
+            ),
+        ]
+        result = find_match_candidates(
+            "М'ясорубка Apach ATS 12 U 1/2 унгер 3ф.",
+            "Apach", prom, supplier_price_cents=50000,
+            supplier_article="ATS12U 1/2",
+        )
+        # article has digits → pure-letter fast-path must not fire.
+        # Voltage gate rejects 3ф vs 220В (which resolves to 1ф).
         assert not any(r["prom_product_id"] == 1 for r in result)
