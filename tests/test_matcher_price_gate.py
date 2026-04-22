@@ -1032,3 +1032,120 @@ class TestDigitOnlyDiscriminator:
         # Both sides must contain the digits 1 and 2 after normalization.
         assert "1" in sup and "2" in sup
         assert "1" in pp and "2" in pp
+
+
+class TestShortAlphaDiscriminator:
+    """Asymmetric short alphabetic extras (RD/LD/B/F/ABS/INOX) discriminate
+    SKUs just like asymmetric digits. Real bug: НП supplier's 'Asber GT-500 DD'
+    was falsely matched to Horoshop's 'ASBER GT-500 RD DD' at 80% because
+    containment subset rule treated {rd} as a pass-through accessory, and
+    'Asber GE-500 B DD' lost its discriminating 'B' to the 1-char filter,
+    becoming indistinguishable from 'Asber GE-500 DD'."""
+
+    def test_asber_gt500_dd_does_not_match_gt500_rd_dd(self):
+        """Supplier 'GT-500 DD' must NOT match catalog 'GT-500 RD DD' — 'RD'
+        is a SKU variant, not an accessory. Containment subset rule must reject."""
+        prom = [
+            _make_prom(
+                1, "Посудомийна машина ASBER GT-500 RD DD", "Asber", 150000,
+            ),
+        ]
+        result = find_match_candidates(
+            "Посудомийка фронтальна Asber GT-500 DD", "Asber", prom,
+            supplier_price_cents=150000,
+        )
+        assert not any(r["prom_product_id"] == 1 for r in result), (
+            "'GT-500 DD' ⊂ 'GT-500 RD DD' must be rejected: 'RD' is SKU discriminator"
+        )
+
+    def test_asber_gt500_rd_dd_does_not_match_gt500_dd(self):
+        """Reverse direction: supplier 'GT-500 RD DD' must NOT match catalog
+        'GT-500 DD' — same logic, opposite side."""
+        prom = [
+            _make_prom(
+                1, "Посудомийна машина ASBER GT-500 DD", "Asber", 140000,
+            ),
+        ]
+        result = find_match_candidates(
+            "Посудомийка фронтальна Asber GT-500 RD DD", "Asber", prom,
+            supplier_price_cents=140000,
+        )
+        assert not any(r["prom_product_id"] == 1 for r in result)
+
+    def test_asber_ge500_b_dd_does_not_match_ge500_rd_dd(self):
+        """'GE-500 B DD' and 'GE-500 RD DD' are distinct SKU variants — both
+        have a discriminating suffix, neither is subset of the other. The
+        1-char 'B' must be preserved in tokenization so this fails subset."""
+        prom = [
+            _make_prom(
+                1, "Посудомийна машина ASBER GE-500 RD DD", "Asber", 150000,
+            ),
+        ]
+        result = find_match_candidates(
+            "Посудомийка фронтальна Asber GE-500 B DD", "Asber", prom,
+            supplier_price_cents=150000,
+        )
+        assert not any(r["prom_product_id"] == 1 for r in result)
+
+    def test_asber_identical_gt500_rd_dd_still_matches(self):
+        """Regression: same exact variant on both sides must still match 100%."""
+        prom = [
+            _make_prom(
+                1, "Посудомийна машина ASBER GT-500 RD DD", "Asber", 150000,
+            ),
+        ]
+        result = find_match_candidates(
+            "Посудомийка фронтальна Asber GT-500 RD DD", "Asber", prom,
+            supplier_price_cents=150000,
+        )
+        assert len(result) == 1
+        assert result[0]["prom_product_id"] == 1
+        assert result[0]["score"] >= 90
+
+    def test_descriptor_word_still_matches_base(self):
+        """Regression: long descriptor on one side ('кухонний', 'запасний') must
+        still match base product — short_alpha triggers only for ≤4 char tokens."""
+        prom = [
+            _make_prom(1, "Тістоміс LP Group VIS60", "LP Group", 940500),
+        ]
+        result = find_match_candidates(
+            "Тістоміс LP Group VIS60 запасний кухонний",
+            "LP Group", prom, supplier_price_cents=940500,
+        )
+        assert any(r["prom_product_id"] == 1 for r in result)
+
+    def test_short_alpha_discriminator_helper(self):
+        """Unit: fires only when one side has short-alpha extras exclusively."""
+        from app.services.matcher import _short_alpha_discriminator
+        # One-sided 'rd' extra → discriminator
+        assert _short_alpha_discriminator({"gt500", "dd"}, {"gt500", "rd", "dd"}) is True
+        # Reverse direction → discriminator
+        assert _short_alpha_discriminator({"gt500", "rd", "dd"}, {"gt500", "dd"}) is True
+        # Both sides have extras → not discriminator (subset_morph handles it)
+        assert _short_alpha_discriminator({"x", "rd"}, {"x", "ld"}) is False
+        # One side has LONG extra ('решітка' 7 chars) → descriptor, not discriminator
+        assert _short_alpha_discriminator(
+            {"vis60"}, {"vis60", "решітка"}
+        ) is False
+        # Mixed extras (short + long) on one side → descriptor
+        assert _short_alpha_discriminator(
+            {"cb184ahc"}, {"cb184ahc", "abs", "корпус"}
+        ) is False
+        # Identical sets → not discriminator
+        assert _short_alpha_discriminator({"vis60"}, {"vis60"}) is False
+        # Digit-only extra → not handled here (digit_only_discriminator covers it)
+        assert _short_alpha_discriminator({"neapolis"}, {"neapolis", "4"}) is False
+
+    def test_one_char_latin_letter_kept_in_tokens(self):
+        """Regression: 'GE-500 B DD' must produce token 'b' so it discriminates
+        from 'GE-500 DD' at containment. Pre-fix, 1-char letters were dropped."""
+        from app.services.matcher import meaningful_tokens
+        assert "b" in meaningful_tokens("Asber GE-500 B DD")
+
+    def test_one_char_cyrillic_still_filtered(self):
+        """Regression: Ukrainian prepositions 'з'/'в'/'і' stay filtered — only
+        Latin 1-char letters are kept as potential SKU suffixes."""
+        from app.services.matcher import meaningful_tokens
+        tokens = meaningful_tokens("решітка з нерж сталі")
+        assert "з" not in tokens
+        assert "нерж" in tokens

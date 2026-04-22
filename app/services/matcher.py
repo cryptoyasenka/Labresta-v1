@@ -397,6 +397,46 @@ def _digit_only_discriminator(sup: set[str], prom: set[str]) -> bool:
     return _all_digit_non_empty(sup_extras) or _all_digit_non_empty(prom_extras)
 
 
+# SKU discriminator suffix length threshold. Short (≤4 char) alphabetic tokens
+# like 'RD', 'LD', 'B', 'F', 'ABS', 'INOX' mark SKU variants, not descriptors.
+# Longer tokens (≥5 chars) are prose words ('решітка', 'кухонний', 'запасний')
+# and indicate bundled accessories or verbose catalog wording — those should
+# still match the base product via the subset-containment rule.
+_SKU_DISCRIM_MAX_LEN = 4
+
+
+def _short_alpha_discriminator(sup: set[str], prom: set[str]) -> bool:
+    """True when exactly one side has short alphabetic tokens as its only extras.
+
+    Short (≤4 char) pure-letter tokens appearing on ONE side only are SKU
+    discriminators — 'RD'/'LD' (dishwasher variant), 'B'/'F' (model suffix),
+    'ABS'/'INOX' (material). The base descriptions otherwise match; the lone
+    short token is the SKU distinguisher.
+
+    Rule: fires only when exactly ONE side's extras are non-empty AND all of
+    that side's extras are pure-letter AND short. If BOTH sides have extras,
+    subset_morph already rejects via the existing path (neither side is a
+    subset of the other). If the single side's extras include a long word,
+    it is a descriptor — don't trigger.
+
+    Intentionally narrower than digit_only: mixed-length extras on one side
+    ({'abs', 'корпус', '21', 'кг'}) stay with subset_morph, so verbose catalog
+    rows like 'Brema CB184AHC ABS, корпус пластик 21 кг/добу' keep matching
+    supplier's 'Brema CB184AHC ABS' where the supplier is a strict subset.
+    """
+    def _all_short_alpha(s: set[str]) -> bool:
+        return bool(s) and all(
+            tok.isalpha() and len(tok) <= _SKU_DISCRIM_MAX_LEN for tok in s
+        )
+    sup_extras = sup - prom
+    prom_extras = prom - sup
+    if sup_extras and not prom_extras:
+        return _all_short_alpha(sup_extras)
+    if prom_extras and not sup_extras:
+        return _all_short_alpha(prom_extras)
+    return False
+
+
 def meaningful_tokens(text: str) -> set[str]:
     """Tokenize text into comparable normalized tokens.
 
@@ -407,7 +447,11 @@ def meaningful_tokens(text: str) -> set[str]:
     should drive a containment mismatch.
 
     Digits of any length are kept ('4' distinguishes 'RESTO 4' from 'RESTO 44').
-    Letter tokens require length >= 2 (drops prepositions like 'з', 'в', 'i').
+    Letter tokens require length >= 2 (drops prepositions like 'з', 'в', 'і'),
+    except 1-char Latin letters which are kept — catalog SKU suffixes like
+    'GE-500 B DD' (where 'B' marks a Built-in variant distinct from bare
+    'GE-500 DD') are almost always ASCII. Cyrillic 1-char tokens stay filtered
+    since they are prepositions, not SKU markers.
     Standard mains voltage numbers (220/230/380/400) are excluded — they're
     handled by the dedicated voltage gate, not by token containment.
     """
@@ -431,6 +475,9 @@ def meaningful_tokens(text: str) -> set[str]:
         if tok.isdigit():
             out.add(tok)
         elif len(tok) >= 2:
+            out.add(tok)
+        elif tok.isascii() and tok.isalpha():
+            # 1-char Latin SKU suffix ('B', 'F', 'R') — keep as discriminator.
             out.add(tok)
     return out - VOLTAGE_TAGS
 
@@ -892,6 +939,18 @@ def find_match_candidates(
                 if _digit_only_discriminator(sup_after_eff, prom_after_eff):
                     logger.debug(
                         "Containment rejected (digit-only discriminator): "
+                        "sup=%s prom=%s for prom_id=%d",
+                        sup_after_eff, prom_after_eff,
+                        candidate["prom_product_id"],
+                    )
+                # Short alphabetic extras on ONE side (≤4 chars, pure letters)
+                # are SKU discriminators (RD/LD/B/F/ABS/INOX), not accessory
+                # descriptors. Handles 'GT-500 DD' vs 'GT-500 RD DD' where
+                # extract_model_from_name returns the same token on both
+                # sides and subset_morph would otherwise absorb the 'rd' diff.
+                elif _short_alpha_discriminator(sup_after_eff, prom_after_eff):
+                    logger.debug(
+                        "Containment rejected (short-alpha discriminator): "
                         "sup=%s prom=%s for prom_id=%d",
                         sup_after_eff, prom_after_eff,
                         candidate["prom_product_id"],
