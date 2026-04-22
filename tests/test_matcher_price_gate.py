@@ -1612,3 +1612,73 @@ class TestDigitBearingArticleFastPath:
         )
         fast_path_matches = [r for r in result if r.get("score") == 100.0]
         assert len(fast_path_matches) == 0
+
+
+class TestArticleSuffixCross:
+    """SP article is a prefix of PP article separated by a dash suffix
+    (or vice versa). These are DIFFERENT SKU variants — must not match.
+
+    Real incident 2026-04-22: HKN-GXSD2GN/3GN saladetta family. SP article
+    'HKN-GXSD2GN' (no suffix) matched PP name 'Саладета HURAKAN HKN-GXSD2GN-SC'
+    at 100% via the digit-bearing article fast-path (SP article was a substring
+    of PP name; boundary regex allowed '-' as a word boundary, so '-SC' after
+    the anchor was ignored). The -SC / -GC variants are distinct products in
+    the catalog — cross-matching corrupts the feed.
+    """
+
+    def test_sp_no_suffix_must_not_match_pp_with_dash_suffix(self):
+        prom = [
+            _make_prom(1, "Саладета HURAKAN HKN-GXSD2GN-SC", "Hurakan", 80000),
+        ]
+        result = find_match_candidates(
+            "Саладета Hurakan HKN-GXSD2GN 2-х дверна з гранітною поверхнею",
+            "Hurakan", prom, supplier_price_cents=80000,
+            supplier_article="HKN-GXSD2GN",
+        )
+        assert not any(r["prom_product_id"] == 1 for r in result)
+
+    def test_sp_with_dash_suffix_must_not_match_pp_without_suffix(self):
+        prom = [
+            _make_prom(1, "Саладетта HURAKAN HKN-GXSD2GN", "Hurakan", 80000),
+        ]
+        result = find_match_candidates(
+            "Саладета Hurakan HKN-GXSD2GN-SC 2-х дверна",
+            "Hurakan", prom, supplier_price_cents=80000,
+            supplier_article="HKN-GXSD2GN-SC",
+        )
+        assert not any(r["prom_product_id"] == 1 for r in result)
+
+    def test_sp_gc_must_not_match_pp_sc(self):
+        prom = [
+            _make_prom(1, "Саладетта HURAKAN HKN-GXSD3GN-SC", "Hurakan", 80000),
+        ]
+        result = find_match_candidates(
+            "Саладета Hurakan HKN-GXSD3GN-GC 3-х дверна",
+            "Hurakan", prom, supplier_price_cents=80000,
+            supplier_article="HKN-GXSD3GN-GC",
+        )
+        assert not any(r["prom_product_id"] == 1 for r in result)
+
+    def test_sp_with_suffix_still_matches_pp_same_suffix(self):
+        """Positive control: exact suffix match still flows through fast-path."""
+        prom = [
+            _make_prom(1, "Саладета HURAKAN HKN-GXSD2GN-SC", "Hurakan", 80000),
+        ]
+        result = find_match_candidates(
+            "Саладета Hurakan HKN-GXSD2GN-SC 2-х дверна",
+            "Hurakan", prom, supplier_price_cents=80000,
+            supplier_article="HKN-GXSD2GN-SC",
+        )
+        assert any(r["prom_product_id"] == 1 for r in result)
+
+    def test_sp_no_suffix_matches_pp_no_suffix(self):
+        """Positive control: both sides without suffix — same SKU, must match."""
+        prom = [
+            _make_prom(1, "Саладетта HURAKAN HKN-GXSD2GN", "Hurakan", 80000),
+        ]
+        result = find_match_candidates(
+            "Саладета Hurakan HKN-GXSD2GN 2-х дверна з гранітною поверхнею",
+            "Hurakan", prom, supplier_price_cents=80000,
+            supplier_article="HKN-GXSD2GN",
+        )
+        assert any(r["prom_product_id"] == 1 for r in result)

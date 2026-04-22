@@ -874,9 +874,15 @@ def find_match_candidates(
                         escaped = re.escape(raw_article_fixed)
                         # Flexible internal whitespace in article.
                         escaped = re.sub(r"(\\[ \t])+", r"\\s+", escaped)
+                        # Reject dash-suffix continuation: SKU 'HKN-GXSD2GN'
+                        # must not match 'HKN-GXSD2GN-SC' (different SKU). A
+                        # dash followed by alnum right after the anchor is a
+                        # SKU variant marker (-SC/-GC/-M/-A etc.), not a word
+                        # boundary. Plain '-' with whitespace or EOL after is
+                        # allowed — it's a sentence-level separator.
                         boundary_re = re.compile(
                             rf"(?<![0-9A-Za-zА-Яа-яЁёІіЇїЄєҐґ]){escaped}"
-                            rf"(?![0-9A-Za-zА-Яа-яЁёІіЇїЄєҐґ])",
+                            rf"(?![0-9A-Za-zА-Яа-яЁёІіЇїЄєҐґ]|-[0-9A-Za-zА-Яа-яЁёІіЇїЄєҐґ])",
                             re.IGNORECASE | re.UNICODE,
                         )
                         if boundary_re.search(prom_name_fixed):
