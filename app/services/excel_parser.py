@@ -21,11 +21,18 @@ GOOGLE_SHEETS_PATTERN = re.compile(
 )
 
 COLUMN_KEYWORDS = {
-    "name": ["назва", "название", "name"],
+    # "title" covers Horoshop-style dealer exports (title_uk / title_ru).
+    # "наименование/найменування" covers common 1C and distributor templates.
+    "name": ["назва", "название", "наименование", "найменування", "title", "name"],
     "price": ["ціна", "цена", "price"],
     "available": ["наявність", "наличие", "available", "в наявності", "в наличии"],
-    "brand": ["бренд", "brand", "виробник", "производитель"],
+    # "brend" (Latin-only transliteration) is a frequent real-world header —
+    # e.g. NP dealer export uses attr_brend_uk / attr_brend_ru.
+    "brand": ["бренд", "brand", "brend", "виробник", "производитель"],
     "model": ["модель", "model"],
+    # SKU/vendor-code column. When present, it becomes the stable external_id
+    # (takes priority over brand+model) — see parse_excel_products.
+    "article": ["артикул", "sku", "vendor", "vendorcode", "article"],
 }
 
 REQUIRED_FIELDS = {"name", "brand", "model", "price"}
@@ -217,22 +224,28 @@ def parse_excel_products(
 
         brand = values.get("brand", "").strip()
         model_val = values.get("model", "").strip()
+        article = values.get("article", "").strip()
 
         name = values.get("name", "").strip()
         if not name:
             continue
 
-        # Stable external_id: prefer brand+model, fallback to name
-        if brand and model_val:
+        # Stable external_id priority: article (SKU) → brand+model → name.
+        # SKUs are the most stable identifier across feed refreshes; fall back
+        # only when the feed doesn't carry one.
+        if article:
+            ext_id = article.lower()
+            dup_label = f"article '{article}'"
+        elif brand and model_val:
             ext_id = f"{brand.lower()}|{model_val.lower()}"
+            dup_label = f"brand+model '{brand} {model_val}'"
         else:
             ext_id = name.lower()
+            dup_label = f"name '{name}'"
 
         # Skip duplicates
         if ext_id in seen_ids:
-            errors.append(
-                f"Row {row_idx + 1}: duplicate brand+model '{brand} {model_val}'"
-            )
+            errors.append(f"Row {row_idx + 1}: duplicate {dup_label}")
             continue
         seen_ids.add(ext_id)
 
@@ -248,6 +261,10 @@ def parse_excel_products(
                     f"Row {row_idx + 1}: unparseable price '{price_str}'"
                 )
                 price_error = True
+        else:
+            # Empty price: keep the row but surface it as a warning so the
+            # operator doesn't wonder why 9 of 686 products came in at 0 EUR.
+            errors.append(f"Row {row_idx + 1}: empty price")
 
         # Parse availability
         if has_available_col:
@@ -269,6 +286,10 @@ def parse_excel_products(
         # Unparseable price => mark unavailable
         if price_error:
             available = False
+        # Missing price => also unavailable, even if the feed says "в наличии"
+        # (we can't quote a 0-EUR offer to Horoshop).
+        if price_cents is None:
+            available = False
 
         products.append(
             {
@@ -276,9 +297,14 @@ def parse_excel_products(
                 "name": name,
                 "brand": brand,
                 "model": model_val,
-                "article": None,
+                "article": article or None,
                 "price_cents": price_cents,
-                "currency": "UAH",
+                # LabResta pipeline treats supplier prices as EUR — MARESTO YML
+                # uses <currencyId>EUR</currencyId>, calculate_price_eur and
+                # calculate_auto_discount assume EUR cents. Horoshop-style xlsx
+                # dealer exports likewise quote in EUR. Hard-coded to EUR is the
+                # pragmatic choice until a real UAH supplier appears.
+                "currency": "EUR",
                 "available": available,
                 "supplier_id": supplier_id,
             }

@@ -49,6 +49,7 @@ FIELD_CHOICES = [
     ("name", "Название"),
     ("brand", "Бренд"),
     ("model", "Модель"),
+    ("article", "Артикул"),
     ("price", "Цена"),
     ("available", "Наявність"),
 ]

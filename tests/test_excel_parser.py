@@ -214,7 +214,7 @@ class TestParseExcelProducts:
         assert products[0]["model"] == "APE-42"
         assert products[0]["price_cents"] == 1500000
         assert products[0]["supplier_id"] == 1
-        assert products[0]["currency"] == "UAH"
+        assert products[0]["currency"] == "EUR"
 
     def test_include_no_brand(self, tmp_path):
         """Rows without brand are included with name-based external_id."""
@@ -374,3 +374,121 @@ class TestConstants:
 
     def test_required_fields(self):
         assert REQUIRED_FIELDS == {"name", "brand", "model", "price"}
+
+
+# ===========================================================================
+# Horoshop-style dealer exports (NP / НП: title_uk / attr_brend_uk / артикул)
+# ===========================================================================
+
+
+# Minimal subset of the 24-column NP dealer-export schema — enough to exercise
+# detect_columns and parse_excel_products without dragging all 24 headers into
+# every test. Order mirrors the real feed so column indices match.
+NP_HEADERS = [
+    "id",
+    "артикул",
+    "[оффера] цена",
+    "[оффера] фото",
+    "[оффера] наличие",
+    "title_uk",
+    "attr_brend_uk",
+    "title_ru",
+    "attr_brend_ru",
+]
+
+
+class TestHoroshopDealerExport:
+    """Validate NP-style Horoshop dealer export ingestion end-to-end."""
+
+    def _write_np_xlsx(self, path, rows):
+        _create_xlsx(str(path), NP_HEADERS, rows)
+        return str(path)
+
+    def test_detect_columns_maps_title_brend_and_article(self, tmp_path):
+        """title_uk → name, attr_brend_uk → brand, артикул → article, first-wins."""
+        xlsx = self._write_np_xlsx(
+            tmp_path / "np.xlsx",
+            [[69773, "HKN-IMC25", 400.0, "img.jpg", "в наличии",
+              "Льдогенератор Hurakan", "HURAKAN",
+              "Льдогенератор Hurakan RU", "HURAKAN"]],
+        )
+        wb = openpyxl.load_workbook(xlsx, read_only=True)
+        ws = wb[wb.sheetnames[0]]
+        header_row, mapping = detect_columns(ws)
+        wb.close()
+
+        assert header_row == 0
+        # ukr variants win (come first in the row) — ru columns stay unmapped.
+        assert mapping == {
+            1: "article",
+            2: "price",
+            4: "available",
+            5: "name",
+            6: "brand",
+        }
+
+    def test_article_becomes_external_id(self, tmp_path):
+        """When article column is mapped, SKU — not brand+model — is external_id."""
+        xlsx = self._write_np_xlsx(
+            tmp_path / "np.xlsx",
+            [
+                [69773, "HKN-IMC25", 400.0, "img.jpg", "в наличии",
+                 "Hurakan IMC25", "HURAKAN", "Hurakan IMC25 RU", "HURAKAN"],
+                [69775, "HKN-IMC40", 505.0, "img.jpg", "в наличии",
+                 "Hurakan IMC40", "HURAKAN", "Hurakan IMC40 RU", "HURAKAN"],
+            ],
+        )
+        products, errors = parse_excel_products(
+            xlsx,
+            {1: "article", 2: "price", 4: "available", 5: "name", 6: "brand"},
+            header_row=0,
+            supplier_id=42,
+        )
+        assert errors == []
+        assert len(products) == 2
+        # external_id comes from the SKU column, not fabricated from brand+model
+        assert products[0]["external_id"] == "hkn-imc25"
+        assert products[0]["article"] == "HKN-IMC25"
+        assert products[0]["brand"] == "HURAKAN"
+        assert products[0]["name"] == "Hurakan IMC25"
+        assert products[0]["price_cents"] == 40000  # 400.0 EUR → 40000 cents
+        assert products[0]["available"] is True
+        assert products[1]["external_id"] == "hkn-imc40"
+
+    def test_duplicate_article_across_rows_is_skipped(self, tmp_path):
+        """Two rows with the same SKU — second is dropped, error logged."""
+        xlsx = self._write_np_xlsx(
+            tmp_path / "np.xlsx",
+            [
+                [1, "HKN-IMC25", 400.0, "", "в наличии",
+                 "Name one", "HURAKAN", "", "HURAKAN"],
+                [2, "HKN-IMC25", 450.0, "", "в наличии",
+                 "Name two", "HURAKAN", "", "HURAKAN"],
+            ],
+        )
+        products, errors = parse_excel_products(
+            xlsx,
+            {1: "article", 2: "price", 4: "available", 5: "name", 6: "brand"},
+            header_row=0,
+            supplier_id=1,
+        )
+        assert len(products) == 1
+        assert len(errors) == 1
+        assert "HKN-IMC25" in errors[0]
+
+    def test_fallback_external_id_when_no_article_column(self, tmp_path):
+        """Without article mapping, external_id keeps old brand+model behavior."""
+        xlsx = tmp_path / "no_article.xlsx"
+        _create_xlsx(
+            str(xlsx),
+            ["Название", "Бренд", "Модель", "Цена"],
+            [["Thing", "Apach", "APE-42", 15000]],
+        )
+        products, errors = parse_excel_products(
+            str(xlsx),
+            {0: "name", 1: "brand", 2: "model", 3: "price"},
+            header_row=0,
+            supplier_id=1,
+        )
+        assert products[0]["external_id"] == "apach|ape-42"
+        assert products[0]["article"] is None
