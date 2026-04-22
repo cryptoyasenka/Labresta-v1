@@ -11,22 +11,73 @@ from app.models.supplier_product import SupplierProduct
 from app.models.product_match import ProductMatch
 
 
-ARTICLE_RE = re.compile(r"\b(HKN-[A-Z0-9][A-Z0-9\-]*)\b", re.IGNORECASE)
+NAME_ANCHOR_RE = re.compile(r"HKN[- ]([A-Z0-9][A-Z0-9]*(?:[- ][A-Z0-9]+)?)", re.IGNORECASE)
 
 
-def extract_article(name: str, url: str) -> str | None:
-    if name:
-        m = ARTICLE_RE.search(name.upper())
-        if m:
-            return m.group(1).upper()
+def extract_anchor(name: str, url: str) -> str | None:
+    """Return a short uniquely-identifying tail (e.g. 'WD-120L', 'DRT520').
+
+    Takes at most 2 tokens after `HKN-` because:
+    - 1 token: `HKN-PCORN` → "PCORN" (single-word products)
+    - 2 tokens: `HKN-WD-120L` → "WD-120L" (model + size)
+    URLs often append descriptive words (color, capacity, shape) that the
+    SP article doesn't have, so we stop early. If 2-token match misses,
+    find_sp falls back to 1-token.
+    """
     if url:
-        # URL tail like ...hurakan-hkn-pcorn/
         m = re.search(r"hkn-([a-z0-9\-]+?)/?\s*$", url, re.IGNORECASE)
         if m:
-            tail = m.group(1).rstrip("/").strip()
-            # Drop any trailing descriptive words
-            first = tail.split("-")[0]
-            return f"HKN-{first}".upper()
+            tokens = [t for t in m.group(1).rstrip("/").split("-") if t]
+            if tokens:
+                return "-".join(tokens[:2]).upper()
+    if name:
+        m = NAME_ANCHOR_RE.search(name.upper())
+        if m:
+            return m.group(1).upper().replace(" ", "-")
+    return None
+
+
+def _first_token(anchor: str) -> str:
+    return anchor.split("-")[0] if anchor else anchor
+
+
+def _anchor_variants(anchor: str) -> list[str]:
+    """Patterns to try when searching SP.article/name/external_id.
+
+    Suppliers are inconsistent: "HKN WD-120L", "HKN-WD-120L", "HKNWD120L",
+    "WD-120L" all refer to the same product. Generate ilike patterns for
+    each plausible normalisation.
+    """
+    a = anchor.strip("- ")
+    variants = {a, a.replace("-", " "), a.replace("-", ""), a.replace("-", "_")}
+    return [f"%{v}%" for v in variants if v]
+
+
+def find_sp(session, supplier_id: int, anchor: str):
+    """Look up an SP by anchor, trying article / external_id / name fallbacks.
+
+    Two-tier search: first the full anchor (e.g. "WD-120L"), then the first
+    token only ("WD") as fallback. The second tier helps when the file URL
+    embeds descriptive suffixes that the SP article trims (colour/size).
+    """
+    from sqlalchemy import or_ as sa_or
+    tiers = [anchor, _first_token(anchor)]
+    seen: set[str] = set()
+    for tier in tiers:
+        if not tier or tier in seen:
+            continue
+        seen.add(tier)
+        for pat in _anchor_variants(tier):
+            sp = session.query(SupplierProduct).filter(
+                SupplierProduct.supplier_id == supplier_id,
+                sa_or(
+                    SupplierProduct.article.ilike(pat),
+                    SupplierProduct.external_id.ilike(pat),
+                    SupplierProduct.name.ilike(pat),
+                ),
+            ).first()
+            if sp:
+                return sp
     return None
 
 
@@ -78,23 +129,12 @@ def main():
         no_article = []      # Can't extract article
 
         for p in products:
-            art = extract_article(p["name"] or "", p["np_url"] or "")
+            art = extract_anchor(p["name"] or "", p["np_url"] or "")
             if not art:
                 no_article.append(p)
                 continue
 
-            sp = db.session.query(SupplierProduct).filter(
-                SupplierProduct.supplier_id == 2,
-                SupplierProduct.article.ilike(art.replace("-", "%")),
-            ).first()
-            # If not by article, fallback to name substring
-            if not sp and p["name"]:
-                # Use article from name as name fragment
-                sp = db.session.query(SupplierProduct).filter(
-                    SupplierProduct.supplier_id == 2,
-                    SupplierProduct.name.ilike(f"%{art}%"),
-                ).first()
-
+            sp = find_sp(db.session, 2, art)
             if not sp:
                 no_sp.append({**p, "article": art})
                 continue
