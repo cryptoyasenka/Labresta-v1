@@ -1,0 +1,4458 @@
+{
+  "counts": {
+    "READY": 108,
+    "AMBIGUOUS": 13,
+    "NO_SP": 2
+  },
+  "rows": [
+    {
+      "row": 9,
+      "name": "БЛЕНДЕР HURAKAN HKN-HBH2000S",
+      "np_url": "https://np.com.ua/product/blender-hurakan-hkn-hbh2000s/",
+      "lab_url": "https://labresta.com.ua/blender-hurakan-hkn-hbh2000s/",
+      "hkn_tail": "HBH2000S",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4759,
+          "article": "HKN-HBH2000S",
+          "name": "Блендер Hurakan HKN-HBH2000S",
+          "colour": null
+        },
+        {
+          "sp_id": 4760,
+          "article": "HKN-HBH2000STH",
+          "name": "Блендер з шумопоглинаючим покриттям Hurakan HKN-HBH2000STH",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4759,
+        "article": "HKN-HBH2000S",
+        "name": "Блендер Hurakan HKN-HBH2000S",
+        "matches": [
+          {
+            "id": 1245,
+            "status": "confirmed",
+            "pp_id": 3899
+          }
+        ]
+      }
+    },
+    {
+      "row": 11,
+      "name": "БЛЕНДЕР З ШУМОПОГЛИНАЮЧИМ ПОКРИТТЯМ HURAKAN HKN-HBH2000STH",
+      "np_url": "https://np.com.ua/product/blender-z-shumopohlynaiuchym-pokryttyam-hurakan-hkn-hbh2000sth/",
+      "lab_url": "https://labresta.com.ua/blender-hurakan-hkn-hbh2000sth-z-shumopohlynaiuchym-pokryttiam/",
+      "hkn_tail": "HBH2000STH",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4760,
+          "article": "HKN-HBH2000STH",
+          "name": "Блендер з шумопоглинаючим покриттям Hurakan HKN-HBH2000STH",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4760,
+        "article": "HKN-HBH2000STH",
+        "name": "Блендер з шумопоглинаючим покриттям Hurakan HKN-HBH2000STH",
+        "matches": [
+          {
+            "id": 1769,
+            "status": "confirmed",
+            "pp_id": 3900
+          }
+        ]
+      }
+    },
+    {
+      "row": 13,
+      "name": "ВАКУУМНИЙ ПАКУВАЛЬНИК HURAKAN HKN-VAC400, 390 ММ ПЛАНКА",
+      "np_url": "https://np.com.ua/product/vakuumnyj-pakuvalnyk-390-mm-planka-hkn-vac400/",
+      "lab_url": "https://labresta.com.ua/vakuumnyi-pakuvalnyk-hurakan-hkn-vac400-20-m3-hod./",
+      "hkn_tail": "VAC400",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5047,
+          "article": "HKN-VAC400",
+          "name": "Вакуумний пакувальник Hurakan HKN-VAC400, 390 мм планка",
+          "colour": null
+        },
+        {
+          "sp_id": 4748,
+          "article": "HKN-VAC400E",
+          "name": "Вакуумний пакувальник Hurakan HKN-VAC400E*",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 5047,
+        "article": "HKN-VAC400",
+        "name": "Вакуумний пакувальник Hurakan HKN-VAC400, 390 мм планка",
+        "matches": [
+          {
+            "id": 1795,
+            "status": "confirmed",
+            "pp_id": 4612
+          }
+        ]
+      }
+    },
+    {
+      "row": 14,
+      "name": "ВАКУУМНИЙ ПАКУВАЛЬНИК HURAKAN HKN-VAC400E",
+      "np_url": "https://np.com.ua/product/vakuumnyj-pakuvalnyk-hurakan-hkn-vac400e/",
+      "lab_url": "https://labresta.com.ua/vakuumator-hurakan-hkn-vac400e/",
+      "hkn_tail": "VAC400E",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4748,
+          "article": "HKN-VAC400E",
+          "name": "Вакуумний пакувальник Hurakan HKN-VAC400E*",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4748,
+        "article": "HKN-VAC400E",
+        "name": "Вакуумний пакувальник Hurakan HKN-VAC400E*",
+        "matches": [
+          {
+            "id": 1796,
+            "status": "confirmed",
+            "pp_id": 4629
+          }
+        ]
+      }
+    },
+    {
+      "row": 16,
+      "name": "ВАФЕЛЬНИЦЯ HURAKAN HKN-GES2M ОДИНАРНА",
+      "np_url": "https://np.com.ua/product/vafelnyczya-odynarna-hkn-ges2m/",
+      "lab_url": "https://labresta.com.ua/vafelnytsia-hurakan-hkn-ges2m-dlia-belhiiskykh-vafel/",
+      "hkn_tail": "GES2M",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5091,
+          "article": "HKN-GES2M",
+          "name": "Вафельниця Hurakan HKN-GES2M одинарна",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 5091,
+        "article": "HKN-GES2M",
+        "name": "Вафельниця Hurakan HKN-GES2M одинарна",
+        "matches": [
+          {
+            "id": 1746,
+            "status": "confirmed",
+            "pp_id": 4335
+          }
+        ]
+      }
+    },
+    {
+      "row": 17,
+      "name": "ВАФЕЛЬНИЦЯ HURAKAN HKN-GES300 NUT",
+      "np_url": "https://np.com.ua/ru/product/vafelnytsa-hurakan-hkn-ges300-nut/",
+      "lab_url": "https://labresta.com.ua/vafelnytsia-hurakan-hkn-ges300-nut/",
+      "hkn_tail": "GES300-NUT",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4643,
+          "article": "HKN-GES300 NUT",
+          "name": "Вафельниця Hurakan HKN-GES300 NUT",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4643,
+        "article": "HKN-GES300 NUT",
+        "name": "Вафельниця Hurakan HKN-GES300 NUT",
+        "matches": [
+          {
+            "id": 1231,
+            "status": "confirmed",
+            "pp_id": 4358
+          }
+        ]
+      }
+    },
+    {
+      "row": 18,
+      "name": "ВАФЕЛЬНИЦЯ HURAKAN HKN-GES5HK ДЛЯ ФІГУРНИХ ВАФЕЛЬ",
+      "np_url": "https://np.com.ua/product/vafelnyczya-dlya-figurnyh-vafel-hkn-ges5hk/",
+      "lab_url": "https://labresta.com.ua/vafelnytsia-honkonhska-hurakan-hkn-ges5hk/",
+      "hkn_tail": "GES5HK",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5001,
+          "article": "HKN-GES5HK",
+          "name": "Вафельниця Hurakan HKN-GES5HK для фігурних вафель",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 5001,
+        "article": "HKN-GES5HK",
+        "name": "Вафельниця Hurakan HKN-GES5HK для фігурних вафель",
+        "matches": [
+          {
+            "id": 1747,
+            "status": "confirmed",
+            "pp_id": 4341
+          }
+        ]
+      }
+    },
+    {
+      "row": 19,
+      "name": "ВІТРИНА КОНДИТЕРСЬКА ХОЛОДИЛЬНА HURAKAN HKN-LPD150 BLACK (0.9 м, кругла)",
+      "np_url": "https://np.com.ua/ru/product/vytryna-kholodylnaya-hurakan-hkn-lpd150-black-0-9-m-kruhlaya/",
+      "lab_url": "https://labresta.com.ua/vitryna-kholodylna-hurakan-hkn-lpd150-black-09-m/",
+      "hkn_tail": "LPD150-BLACK-0-9-M-KRUHLAYA",
+      "file_colour": "BLACK",
+      "sp_hits": [
+        {
+          "sp_id": 4652,
+          "article": "HKN-LPD150 BLACK",
+          "name": "Вітрина кондитерська холодильна Hurakan HKN-LPD150 Black (0.9 м, кругла)",
+          "colour": "BLACK"
+        },
+        {
+          "sp_id": 4653,
+          "article": "HKN-LPD150 WHITE",
+          "name": "Вітрина кондитерська холодильна Hurakan HKN-LPD150 White (0.9 м, кругла)",
+          "colour": null,
+          "filtered_out": "file is BLACK, SP has no colour token"
+        },
+        {
+          "sp_id": 4648,
+          "article": "HKN-LPD150S BLACK",
+          "name": "Вітрина кондитерська холодильна Hurakan HKN-LPD150S Black (0,9 м, квадратна)",
+          "colour": "BLACK"
+        },
+        {
+          "sp_id": 4649,
+          "article": "HKN-LPD150S WHITE",
+          "name": "Вітрина кондитерська холодильна Hurakan HKN-LPD150S White (0,9 м, квадратна)",
+          "colour": null,
+          "filtered_out": "file is BLACK, SP has no colour token"
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4652,
+        "article": "HKN-LPD150 BLACK",
+        "name": "Вітрина кондитерська холодильна Hurakan HKN-LPD150 Black (0.9 м, кругла)",
+        "matches": [
+          {
+            "id": 1442,
+            "status": "confirmed",
+            "pp_id": 2264
+          }
+        ]
+      }
+    },
+    {
+      "row": 20,
+      "name": "ВІТРИНА КОНДИТЕРСЬКА ХОЛОДИЛЬНА HURAKAN HKN-LPD150 WHITE (0.9 м, кругла)",
+      "np_url": "https://np.com.ua/ru/product/vytryna-kholodylnaya-hurakan-hkn-lpd150-white-0-9-m-kruhlaya/",
+      "lab_url": "https://labresta.com.ua/vitryna-kholodylna-hurakan-hkn-lpd150-white-09-m/",
+      "hkn_tail": "LPD150-WHITE-0-9-M-KRUHLAYA",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4652,
+          "article": "HKN-LPD150 BLACK",
+          "name": "Вітрина кондитерська холодильна Hurakan HKN-LPD150 Black (0.9 м, кругла)",
+          "colour": "BLACK",
+          "filtered_out": "file has no colour, SP is BLACK"
+        },
+        {
+          "sp_id": 4653,
+          "article": "HKN-LPD150 WHITE",
+          "name": "Вітрина кондитерська холодильна Hurakan HKN-LPD150 White (0.9 м, кругла)",
+          "colour": null
+        },
+        {
+          "sp_id": 4648,
+          "article": "HKN-LPD150S BLACK",
+          "name": "Вітрина кондитерська холодильна Hurakan HKN-LPD150S Black (0,9 м, квадратна)",
+          "colour": "BLACK",
+          "filtered_out": "file has no colour, SP is BLACK"
+        },
+        {
+          "sp_id": 4649,
+          "article": "HKN-LPD150S WHITE",
+          "name": "Вітрина кондитерська холодильна Hurakan HKN-LPD150S White (0,9 м, квадратна)",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4653,
+        "article": "HKN-LPD150 WHITE",
+        "name": "Вітрина кондитерська холодильна Hurakan HKN-LPD150 White (0.9 м, кругла)",
+        "matches": [
+          {
+            "id": 1443,
+            "status": "confirmed",
+            "pp_id": 2266
+          }
+        ]
+      }
+    },
+    {
+      "row": 21,
+      "name": "ВІТРИНА КОНДИТЕРСЬКА ХОЛОДИЛЬНА HURAKAN HKN-LPD150S BLACK (0,9 м, квадратна)",
+      "np_url": "https://np.com.ua/ru/product/vytryna-kholodylnaya-hurakan-hkn-lpd150s-black-0-9-m-kvadratnaya/",
+      "lab_url": "https://labresta.com.ua/vitryna-kholodylna-hurakan-hkn-lpd150s-black-09-m/",
+      "hkn_tail": "LPD150S-BLACK-0-9-M-KVADRATNAYA",
+      "file_colour": "BLACK",
+      "sp_hits": [
+        {
+          "sp_id": 4648,
+          "article": "HKN-LPD150S BLACK",
+          "name": "Вітрина кондитерська холодильна Hurakan HKN-LPD150S Black (0,9 м, квадратна)",
+          "colour": "BLACK"
+        },
+        {
+          "sp_id": 4649,
+          "article": "HKN-LPD150S WHITE",
+          "name": "Вітрина кондитерська холодильна Hurakan HKN-LPD150S White (0,9 м, квадратна)",
+          "colour": null,
+          "filtered_out": "file is BLACK, SP has no colour token"
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4648,
+        "article": "HKN-LPD150S BLACK",
+        "name": "Вітрина кондитерська холодильна Hurakan HKN-LPD150S Black (0,9 м, квадратна)",
+        "matches": [
+          {
+            "id": 1647,
+            "status": "confirmed",
+            "pp_id": 2260
+          }
+        ]
+      }
+    },
+    {
+      "row": 22,
+      "name": "ВІТРИНА КОНДИТЕРСЬКА ХОЛОДИЛЬНА HURAKAN HKN-LPD150S WHITE (0,9 м, квадратна)",
+      "np_url": "https://np.com.ua/ru/product/vytryna-kholodylnaya-hurakan-hkn-lpd150s-white-0-9-m-kvadratnaya/",
+      "lab_url": "https://labresta.com.ua/vitryna-kholodylna-hurakan-hkn-lpd150s-white-09-m/",
+      "hkn_tail": "LPD150S-WHITE-0-9-M-KVADRATNAYA",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4648,
+          "article": "HKN-LPD150S BLACK",
+          "name": "Вітрина кондитерська холодильна Hurakan HKN-LPD150S Black (0,9 м, квадратна)",
+          "colour": "BLACK",
+          "filtered_out": "file has no colour, SP is BLACK"
+        },
+        {
+          "sp_id": 4649,
+          "article": "HKN-LPD150S WHITE",
+          "name": "Вітрина кондитерська холодильна Hurakan HKN-LPD150S White (0,9 м, квадратна)",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4649,
+        "article": "HKN-LPD150S WHITE",
+        "name": "Вітрина кондитерська холодильна Hurakan HKN-LPD150S White (0,9 м, квадратна)",
+        "matches": [
+          {
+            "id": 1648,
+            "status": "confirmed",
+            "pp_id": 2262
+          }
+        ]
+      }
+    },
+    {
+      "row": 23,
+      "name": "ВІТРИНА КОНДИТЕРСЬКА ХОЛОДИЛЬНА HURAKAN HKN-LPD210 BLACK (1,2 м, кругла)",
+      "np_url": "https://np.com.ua/ru/product/vytryna-kholodylna-hurakan-hkn-lpd210-black-1-2-m-kruhlaya/",
+      "lab_url": "https://labresta.com.ua/vitryna-kholodylna-hurakan-hkn-lpd210-black-12-m/",
+      "hkn_tail": "LPD210-BLACK-1-2-M-KRUHLAYA",
+      "file_colour": "BLACK",
+      "sp_hits": [
+        {
+          "sp_id": 4647,
+          "article": "HKN-LPD210 BLACK",
+          "name": "Вітрина кондитерська холодильна Hurakan HKN-LPD210 Black (1,2 м, кругла)",
+          "colour": "BLACK"
+        },
+        {
+          "sp_id": 4654,
+          "article": "HKN-LPD210 WHITE",
+          "name": "Вітрина кондитерська холодильна Hurakan HKN-LPD210 White (1,2 м, кругла)",
+          "colour": null,
+          "filtered_out": "file is BLACK, SP has no colour token"
+        },
+        {
+          "sp_id": 4650,
+          "article": "HKN-LPD210S BLACK",
+          "name": "Вітрина кондитерська холодильна Hurakan HKN-LPD210S Black (1,2 м, квадратна)",
+          "colour": "BLACK"
+        },
+        {
+          "sp_id": 4651,
+          "article": "HKN-LPD210S WHITE",
+          "name": "Вітрина кондитерська холодильна Hurakan HKN-LPD210S White (1,2 м, квадратна)",
+          "colour": null,
+          "filtered_out": "file is BLACK, SP has no colour token"
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4647,
+        "article": "HKN-LPD210 BLACK",
+        "name": "Вітрина кондитерська холодильна Hurakan HKN-LPD210 Black (1,2 м, кругла)",
+        "matches": [
+          {
+            "id": 1649,
+            "status": "confirmed",
+            "pp_id": 2265
+          }
+        ]
+      }
+    },
+    {
+      "row": 24,
+      "name": "ВІТРИНА КОНДИТЕРСЬКА ХОЛОДИЛЬНА HURAKAN HKN-LPD210 WHITE (1,2 м, кругла)",
+      "np_url": "https://np.com.ua/ru/product/vytryna-kholodylna-hurakan-hkn-lpd210-white-1-2-m-kruhlaya/",
+      "lab_url": "https://labresta.com.ua/vitryna-kholodylna-hurakan-hkn-lpd210-white-12-m/",
+      "hkn_tail": "LPD210-WHITE-1-2-M-KRUHLAYA",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4647,
+          "article": "HKN-LPD210 BLACK",
+          "name": "Вітрина кондитерська холодильна Hurakan HKN-LPD210 Black (1,2 м, кругла)",
+          "colour": "BLACK",
+          "filtered_out": "file has no colour, SP is BLACK"
+        },
+        {
+          "sp_id": 4654,
+          "article": "HKN-LPD210 WHITE",
+          "name": "Вітрина кондитерська холодильна Hurakan HKN-LPD210 White (1,2 м, кругла)",
+          "colour": null
+        },
+        {
+          "sp_id": 4650,
+          "article": "HKN-LPD210S BLACK",
+          "name": "Вітрина кондитерська холодильна Hurakan HKN-LPD210S Black (1,2 м, квадратна)",
+          "colour": "BLACK",
+          "filtered_out": "file has no colour, SP is BLACK"
+        },
+        {
+          "sp_id": 4651,
+          "article": "HKN-LPD210S WHITE",
+          "name": "Вітрина кондитерська холодильна Hurakan HKN-LPD210S White (1,2 м, квадратна)",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4654,
+        "article": "HKN-LPD210 WHITE",
+        "name": "Вітрина кондитерська холодильна Hurakan HKN-LPD210 White (1,2 м, кругла)",
+        "matches": [
+          {
+            "id": 1650,
+            "status": "confirmed",
+            "pp_id": 2267
+          }
+        ]
+      }
+    },
+    {
+      "row": 25,
+      "name": "ВІТРИНА КОНДИТЕРСЬКА ХОЛОДИЛЬНА HURAKAN HKN-LPD210S BLACK (1,2 м, квадратна)",
+      "np_url": "https://np.com.ua/ru/product/vytryna-kholodylnaya-hurakan-hkn-lpd210s-black-1-2-m-kvadratnaya/",
+      "lab_url": "https://labresta.com.ua/vitryna-kholodylna-hurakan-hkn-lpd210s-black-12-m/",
+      "hkn_tail": "LPD210S-BLACK-1-2-M-KVADRATNAYA",
+      "file_colour": "BLACK",
+      "sp_hits": [
+        {
+          "sp_id": 4650,
+          "article": "HKN-LPD210S BLACK",
+          "name": "Вітрина кондитерська холодильна Hurakan HKN-LPD210S Black (1,2 м, квадратна)",
+          "colour": "BLACK"
+        },
+        {
+          "sp_id": 4651,
+          "article": "HKN-LPD210S WHITE",
+          "name": "Вітрина кондитерська холодильна Hurakan HKN-LPD210S White (1,2 м, квадратна)",
+          "colour": null,
+          "filtered_out": "file is BLACK, SP has no colour token"
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4650,
+        "article": "HKN-LPD210S BLACK",
+        "name": "Вітрина кондитерська холодильна Hurakan HKN-LPD210S Black (1,2 м, квадратна)",
+        "matches": [
+          {
+            "id": 1651,
+            "status": "confirmed",
+            "pp_id": 2261
+          }
+        ]
+      }
+    },
+    {
+      "row": 26,
+      "name": "ВІТРИНА КОНДИТЕРСЬКА ХОЛОДИЛЬНА HURAKAN HKN-LPD210S WHITE (1,2 м, квадратна)",
+      "np_url": "https://np.com.ua/ru/product/vytryna-kholodylnaya-hurakan-hkn-lpd210s-white-1-2-m-kvadratnaya/",
+      "lab_url": "https://labresta.com.ua/vitryna-kholodylna-hurakan-hkn-lpd210s-white-12-m/",
+      "hkn_tail": "LPD210S-WHITE-1-2-M-KVADRATNAYA",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4650,
+          "article": "HKN-LPD210S BLACK",
+          "name": "Вітрина кондитерська холодильна Hurakan HKN-LPD210S Black (1,2 м, квадратна)",
+          "colour": "BLACK",
+          "filtered_out": "file has no colour, SP is BLACK"
+        },
+        {
+          "sp_id": 4651,
+          "article": "HKN-LPD210S WHITE",
+          "name": "Вітрина кондитерська холодильна Hurakan HKN-LPD210S White (1,2 м, квадратна)",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4651,
+        "article": "HKN-LPD210S WHITE",
+        "name": "Вітрина кондитерська холодильна Hurakan HKN-LPD210S White (1,2 м, квадратна)",
+        "matches": [
+          {
+            "id": 1652,
+            "status": "confirmed",
+            "pp_id": 2263
+          }
+        ]
+      }
+    },
+    {
+      "row": 27,
+      "name": "ВІТРИНА ТЕПЛОВА HURAKAN HKN WD-120L",
+      "np_url": "https://np.com.ua/ru/product/vytryna-teplovaya-hurakan-hkn-wd-120l/",
+      "lab_url": "https://labresta.com.ua/teplova-vitryna-hurakan-wd-120l/",
+      "hkn_tail": "WD-120L",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4844,
+          "article": "HKN WD-120L",
+          "name": "Вітрина теплова Hurakan HKN WD-120L",
+          "colour": null
+        },
+        {
+          "sp_id": 4801,
+          "article": "HKN WD-160L",
+          "name": "Вітрина теплова Hurakan HKN WD-160L",
+          "colour": null
+        },
+        {
+          "sp_id": 4806,
+          "article": "HKN WD-165L",
+          "name": "Вітрина теплова Hurakan HKN WD-165L",
+          "colour": null
+        },
+        {
+          "sp_id": 4903,
+          "article": "HKN-FWD370A",
+          "name": "Подрібнювач відходів Hurakan HKN-FWD370A",
+          "colour": null
+        },
+        {
+          "sp_id": 4904,
+          "article": "HKN-FWD450A",
+          "name": "Подрібнювач відходів Hurakan HKN-FWD450A",
+          "colour": null
+        }
+      ],
+      "verdict": "AMBIGUOUS",
+      "notes": [
+        "5 SPs match after colour filter (tok exact=3, tail contained=0)"
+      ]
+    },
+    {
+      "row": 28,
+      "name": "ВІТРИНА ТЕПЛОВА HURAKAN HKN WD-165L",
+      "np_url": "https://np.com.ua/ru/product/vytryna-teplovaya-hurakan-hkn-wd-165l/",
+      "lab_url": "https://labresta.com.ua/teplova-vitryna-hurakan-hkn-wd-165l/",
+      "hkn_tail": "WD-165L",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4844,
+          "article": "HKN WD-120L",
+          "name": "Вітрина теплова Hurakan HKN WD-120L",
+          "colour": null
+        },
+        {
+          "sp_id": 4801,
+          "article": "HKN WD-160L",
+          "name": "Вітрина теплова Hurakan HKN WD-160L",
+          "colour": null
+        },
+        {
+          "sp_id": 4806,
+          "article": "HKN WD-165L",
+          "name": "Вітрина теплова Hurakan HKN WD-165L",
+          "colour": null
+        },
+        {
+          "sp_id": 4903,
+          "article": "HKN-FWD370A",
+          "name": "Подрібнювач відходів Hurakan HKN-FWD370A",
+          "colour": null
+        },
+        {
+          "sp_id": 4904,
+          "article": "HKN-FWD450A",
+          "name": "Подрібнювач відходів Hurakan HKN-FWD450A",
+          "colour": null
+        }
+      ],
+      "verdict": "AMBIGUOUS",
+      "notes": [
+        "5 SPs match after colour filter (tok exact=3, tail contained=0)"
+      ]
+    },
+    {
+      "row": 29,
+      "name": "ВІТРИНА ХОЛОДИЛЬНА HURAKAN HKN-LPD100B",
+      "np_url": "https://np.com.ua/ru/product/vytryna-holodylnaya-hurakan-hkn-lpd100b/",
+      "lab_url": "https://labresta.com.ua/vitryna-kholodylna-hurakan-hkn-lpd100b/",
+      "hkn_tail": "LPD100B",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4845,
+          "article": "HKN-LPD100B",
+          "name": "Вітрина холодильна Hurakan HKN-LPD100B",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4845,
+        "article": "HKN-LPD100B",
+        "name": "Вітрина холодильна Hurakan HKN-LPD100B",
+        "matches": [
+          {
+            "id": 1265,
+            "status": "confirmed",
+            "pp_id": 2179
+          }
+        ]
+      }
+    },
+    {
+      "row": 30,
+      "name": "ВІТРИНА ХОЛОДИЛЬНА HURAKAN HKN-LPD120S",
+      "np_url": "https://np.com.ua/ru/product/vytryna-holodylnaya-hurakan-hkn-lpd120s/",
+      "lab_url": "https://labresta.com.ua/vitryna-kholodylna-hurakan-hkn-lpd120s/",
+      "hkn_tail": "LPD120S",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4846,
+          "article": "HKN-LPD120S",
+          "name": "Вітрина холодильна Hurakan HKN-LPD120S",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4846,
+        "article": "HKN-LPD120S",
+        "name": "Вітрина холодильна Hurakan HKN-LPD120S",
+        "matches": [
+          {
+            "id": 1266,
+            "status": "confirmed",
+            "pp_id": 2180
+          }
+        ]
+      }
+    },
+    {
+      "row": 31,
+      "name": "ВІТРИНА ХОЛОДИЛЬНА HURAKAN HKN-UPD218B BLACK",
+      "np_url": "https://np.com.ua/ru/product/vytryna-kholodylnaya-hurakan-hkn-upd218b-black/",
+      "lab_url": "https://labresta.com.ua/vitryna-kholodylna-hurakan-hkn-upd218b-black/",
+      "hkn_tail": "UPD218B-BLACK",
+      "file_colour": "BLACK",
+      "sp_hits": [
+        {
+          "sp_id": 4730,
+          "article": "HKN-UPD218B black",
+          "name": "Вітрина холодильна Hurakan HKN-UPD218B Black",
+          "colour": "BLACK"
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4730,
+        "article": "HKN-UPD218B black",
+        "name": "Вітрина холодильна Hurakan HKN-UPD218B Black",
+        "matches": [
+          {
+            "id": 1309,
+            "status": "confirmed",
+            "pp_id": 2254
+          }
+        ]
+      }
+    },
+    {
+      "row": 32,
+      "name": "ВІТРИНА ХОЛОДИЛЬНА HURAKAN HKN-UPD238B BLACK",
+      "np_url": "https://np.com.ua/ru/product/vytryna-kholodylnaya-hurakan-hkn-upd238b-black/",
+      "lab_url": "https://labresta.com.ua/vitryna-kholodylna-hurakan-hkn-upd238b-black/",
+      "hkn_tail": "UPD238B-BLACK",
+      "file_colour": "BLACK",
+      "sp_hits": [
+        {
+          "sp_id": 4729,
+          "article": "HKN-UPD238B black",
+          "name": "Вітрина холодильна Hurakan HKN-UPD238B Black",
+          "colour": "BLACK"
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4729,
+        "article": "HKN-UPD238B black",
+        "name": "Вітрина холодильна Hurakan HKN-UPD238B Black",
+        "matches": [
+          {
+            "id": 1310,
+            "status": "confirmed",
+            "pp_id": 2255
+          }
+        ]
+      }
+    },
+    {
+      "row": 33,
+      "name": "ВІТРИНА ХОЛОДИЛЬНА HURAKAN HKN-UPD278B BLACK",
+      "np_url": "https://np.com.ua/ru/product/vytryna-kholodylnaya-hurakan-hkn-upd278b-black/",
+      "lab_url": "https://labresta.com.ua/vitryna-kholodylna-hurakan-hkn-upd278b-black/",
+      "hkn_tail": "UPD278B-BLACK",
+      "file_colour": "BLACK",
+      "sp_hits": [
+        {
+          "sp_id": 4693,
+          "article": "HKN-UPD278B black",
+          "name": "Вітрина холодильна Hurakan HKN-UPD278B Black",
+          "colour": "BLACK"
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4693,
+        "article": "HKN-UPD278B black",
+        "name": "Вітрина холодильна Hurakan HKN-UPD278B Black",
+        "matches": [
+          {
+            "id": 1311,
+            "status": "confirmed",
+            "pp_id": 2256
+          }
+        ]
+      }
+    },
+    {
+      "row": 35,
+      "name": "ВІТРИНА ХОЛОДИЛЬНА HURAKAN HKN-UPD78B BLACK",
+      "np_url": "https://np.com.ua/ru/product/vytryna-holodylnaya-hurakan-hkn-upd78b-black/",
+      "lab_url": "https://labresta.com.ua/vitryna-kholodylna-hurakan-hkn-upd78b-black/",
+      "hkn_tail": "UPD78B-BLACK",
+      "file_colour": "BLACK",
+      "sp_hits": [
+        {
+          "sp_id": 4847,
+          "article": "HKN-UPD78B black",
+          "name": "Вітрина холодильна Hurakan HKN-UPD78B Black",
+          "colour": "BLACK"
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4847,
+        "article": "HKN-UPD78B black",
+        "name": "Вітрина холодильна Hurakan HKN-UPD78B Black",
+        "matches": [
+          {
+            "id": 1312,
+            "status": "confirmed",
+            "pp_id": 2181
+          }
+        ]
+      }
+    },
+    {
+      "row": 36,
+      "name": "ВІТРИНА ХОЛОДИЛЬНА HURAKAN HKN-UPD98B BLACK",
+      "np_url": "https://np.com.ua/ru/product/vytryna-kholodylnaya-hurakan-hkn-upd78b-black-2/",
+      "lab_url": "https://labresta.com.ua/vitryna-kholodylna-hurakan-hkn-upd98b-black/",
+      "hkn_tail": "UPD78B-BLACK-2",
+      "file_colour": "BLACK",
+      "sp_hits": [
+        {
+          "sp_id": 4847,
+          "article": "HKN-UPD78B black",
+          "name": "Вітрина холодильна Hurakan HKN-UPD78B Black",
+          "colour": "BLACK"
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4847,
+        "article": "HKN-UPD78B black",
+        "name": "Вітрина холодильна Hurakan HKN-UPD78B Black",
+        "matches": [
+          {
+            "id": 1312,
+            "status": "confirmed",
+            "pp_id": 2181
+          }
+        ]
+      }
+    },
+    {
+      "row": 37,
+      "name": "ГРИЛЬ \"ХОТ-ДОГ\" HURAKAN HKN-GW11M НА 11 РОЛИКІВ",
+      "np_url": "https://np.com.ua/product/hryl-khot-doh-hurakan-hkn-gw11m-na-11-rolykiv/",
+      "lab_url": "https://labresta.com.ua/hryl-rolykovyi-hurakan-hkn-gw11m-11-rolykiv/",
+      "hkn_tail": "GW11M-NA-11-ROLYKIV",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4770,
+          "article": "HKN-GW11M",
+          "name": "Гриль \"хот-дог\" Hurakan HKN-GW11M на 11 роликів",
+          "colour": null
+        },
+        {
+          "sp_id": 4753,
+          "article": "HKN-GW11M COVER",
+          "name": "Захисний екран для грилю \"хот-дог\" Hurakan HKN-GW11M на 11 роликів",
+          "colour": null
+        }
+      ],
+      "verdict": "AMBIGUOUS",
+      "notes": [
+        "2 SPs match after colour filter (tok exact=2, tail contained=0)"
+      ]
+    },
+    {
+      "row": 40,
+      "name": "ГРИЛЬ SALAMANDER HURAKAN HKN-SAL450H",
+      "np_url": "https://np.com.ua/ru/product/hryl-salamander-hurakan-hkn-sal450h-2/",
+      "lab_url": "https://labresta.com.ua/hryl-salamander-hurakan-hkn-sal450h/",
+      "hkn_tail": "SAL450H-2",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4617,
+          "article": "HKN-SAL450H",
+          "name": "Гриль Salamander Hurakan HKN-SAL450H",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4617,
+        "article": "HKN-SAL450H",
+        "name": "Гриль Salamander Hurakan HKN-SAL450H",
+        "matches": [
+          {
+            "id": 1299,
+            "status": "confirmed",
+            "pp_id": 499
+          }
+        ]
+      }
+    },
+    {
+      "row": 41,
+      "name": "ГРИЛЬ SALAMANDER HURAKAN HKN-SAL650H",
+      "np_url": "https://np.com.ua/ru/product/hryl-salamander-hurakan-hkn-sal650h-2/",
+      "lab_url": "https://labresta.com.ua/hryl-salamander-hurakan-hkn-sal650h/",
+      "hkn_tail": "SAL650H-2",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4618,
+          "article": "HKN-SAL650H",
+          "name": "Гриль Salamander Hurakan HKN-SAL650H",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4618,
+        "article": "HKN-SAL650H",
+        "name": "Гриль Salamander Hurakan HKN-SAL650H",
+        "matches": [
+          {
+            "id": 1300,
+            "status": "confirmed",
+            "pp_id": 494
+          }
+        ]
+      }
+    },
+    {
+      "row": 44,
+      "name": "ГРИЛЬ КОНТАКТНИЙ HURAKAN HKN-PE34R ОДИНАРНИЙ РЕБРО",
+      "np_url": "https://np.com.ua/product/gryl-kontaktnyj-odynarnyj-rebro-hkn-pe34r/",
+      "lab_url": "https://labresta.com.ua/hryl-kontaktnyi-hurakan-hkn-pe34r/",
+      "hkn_tail": "PE34R",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5073,
+          "article": "HKN-PE34R",
+          "name": "Гриль контактний Hurakan HKN-PE34R одинарний ребро",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 5073,
+        "article": "HKN-PE34R",
+        "name": "Гриль контактний Hurakan HKN-PE34R одинарний ребро",
+        "matches": [
+          {
+            "id": 1663,
+            "status": "confirmed",
+            "pp_id": 3979
+          }
+        ]
+      }
+    },
+    {
+      "row": 50,
+      "name": "КАРТОПЛЕЧИСТКА HURAKAN HKN-PP20",
+      "np_url": "https://np.com.ua/product/kartoplechystka-hurakan-hkn-pp20/",
+      "lab_url": "https://labresta.com.ua/kartoplechystka-hurakan-hkn-pp20/",
+      "hkn_tail": "PP20",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4733,
+          "article": "HKN-PP20",
+          "name": "Картоплечистка Hurakan HKN-PP20",
+          "colour": null
+        },
+        {
+          "sp_id": 4895,
+          "article": "TPP20F 20 3 Ф",
+          "name": "Картоплечистка Tatra TPP20F 20 3ф",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4733,
+        "article": "HKN-PP20",
+        "name": "Картоплечистка Hurakan HKN-PP20",
+        "matches": [
+          {
+            "id": 1292,
+            "status": "confirmed",
+            "pp_id": 3420
+          }
+        ]
+      }
+    },
+    {
+      "row": 51,
+      "name": "КАРТОПЛЕЧИСТКА HURAKAN HKN-PPF10M",
+      "np_url": "https://np.com.ua/product/kartoplechystka-hkn-ppf10m/",
+      "lab_url": "https://labresta.com.ua/kartoplechystka-hurakan-hkn-ppf10m/",
+      "hkn_tail": "PPF10M",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5009,
+          "article": "HKN-PPF10M",
+          "name": "Картоплечистка Hurakan HKN-PPF10M",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 5009,
+        "article": "HKN-PPF10M",
+        "name": "Картоплечистка Hurakan HKN-PPF10M",
+        "matches": [
+          {
+            "id": 1293,
+            "status": "confirmed",
+            "pp_id": 3419
+          }
+        ]
+      }
+    },
+    {
+      "row": 52,
+      "name": "КАРТОПЛЕЧИСТКА HURAKAN HKN-PPF15D",
+      "np_url": "https://np.com.ua/product/kartoplechystka-hurakan-hkn-ppf15d/",
+      "lab_url": "https://labresta.com.ua/kartoplechystka-hurakan-hkn-ppf15d/",
+      "hkn_tail": "PPF15D",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4732,
+          "article": "HKN-PPF15D",
+          "name": "Картоплечистка Hurakan HKN-PPF15D",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4732,
+        "article": "HKN-PPF15D",
+        "name": "Картоплечистка Hurakan HKN-PPF15D",
+        "matches": [
+          {
+            "id": 1294,
+            "status": "confirmed",
+            "pp_id": 3421
+          }
+        ]
+      }
+    },
+    {
+      "row": 53,
+      "name": "КИП'ЯТИЛЬНИК HURAKAN HKN-HVB12 З ПОДВІЙНИМИ СТІНКАМИ НА 9 Л",
+      "np_url": "https://np.com.ua/product/kypyatylnyk-z-podvijnymy-stinkamy-hkn-hvb12-9l/",
+      "lab_url": "https://labresta.com.ua/elektrokypiatylnyk-hurakan-hkn-hvb12-9-l/",
+      "hkn_tail": "HVB12-9L",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4975,
+          "article": "HKN-HVB12",
+          "name": "Кип'ятильник Hurakan HKN-HVB12 з подвійними стінками на 9 л",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4975,
+        "article": "HKN-HVB12",
+        "name": "Кип'ятильник Hurakan HKN-HVB12 з подвійними стінками на 9 л",
+        "matches": [
+          {
+            "id": 1771,
+            "status": "confirmed",
+            "pp_id": 4263
+          }
+        ]
+      }
+    },
+    {
+      "row": 54,
+      "name": "КИП'ЯТИЛЬНИК HURAKAN HKN-HVB15 З ПОДВІЙНИМИ СТІНКАМИ НА 13 Л",
+      "np_url": "https://np.com.ua/product/kypyatylnyk-z-podvijnymy-stinkamy-hkn-hvb15-13l/",
+      "lab_url": "https://labresta.com.ua/elektrokypiatylnyk-hurakan-hkn-hvb15/",
+      "hkn_tail": "HVB15-13L",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5020,
+          "article": "HKN-HVB15",
+          "name": "Кип'ятильник Hurakan HKN-HVB15 з подвійними стінками на 13 л",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 5020,
+        "article": "HKN-HVB15",
+        "name": "Кип'ятильник Hurakan HKN-HVB15 з подвійними стінками на 13 л",
+        "matches": [
+          {
+            "id": 1772,
+            "status": "confirmed",
+            "pp_id": 4260
+          }
+        ]
+      }
+    },
+    {
+      "row": 58,
+      "name": "КИП'ЯТИЛЬНИК ПРОТОЧНИЙ HURAKAN HKN-HVZ25M НА 8 Л",
+      "np_url": "https://np.com.ua/ru/product/kypyatylnyk-protochnyj-hurakan-hkn-hvz25m-na-5-l/",
+      "lab_url": "https://labresta.com.ua/protochnyi-vodonahrivach-hurakan-hkn-hvz25m/",
+      "hkn_tail": "HVZ25M-NA-5-L",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4817,
+          "article": "HKN-HVZ25M",
+          "name": "Кип'ятильник проточний Hurakan HKN-HVZ25M на 8 л",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4817,
+        "article": "HKN-HVZ25M",
+        "name": "Кип'ятильник проточний Hurakan HKN-HVZ25M на 8 л",
+        "matches": [
+          {
+            "id": 1777,
+            "status": "confirmed",
+            "pp_id": 4261
+          }
+        ]
+      }
+    },
+    {
+      "row": 59,
+      "name": "КИП'ЯТИЛЬНИК ПРОТОЧНИЙ HURAKAN HKN-HVZ35M НА 12 Л",
+      "np_url": "https://np.com.ua/product/kypyatylnyk-protochnyj-hurakan-hkn-hvz35m-na-12-l/",
+      "lab_url": "https://labresta.com.ua/protochnyi-vodonahrivach-hurakan-hkn-hvz35m/",
+      "hkn_tail": "HVZ35M-NA-12-L",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4816,
+          "article": "HKN-HVZ35M",
+          "name": "Кип'ятильник проточний Hurakan HKN-HVZ35M на 12 л",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4816,
+        "article": "HKN-HVZ35M",
+        "name": "Кип'ятильник проточний Hurakan HKN-HVZ35M на 12 л",
+        "matches": [
+          {
+            "id": 1778,
+            "status": "confirmed",
+            "pp_id": 4259
+          }
+        ]
+      }
+    },
+    {
+      "row": 60,
+      "name": "КУТЕР HURAKAN HKN-CL12 12 Л",
+      "np_url": "https://np.com.ua/ru/product/kutter-hurakan-hkn-cl12-12-l/",
+      "lab_url": "https://labresta.com.ua/kuter-hurakan-hkn-cl12/",
+      "hkn_tail": "CL12-12-L",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4820,
+          "article": "HKN-CL12",
+          "name": "Кутер Hurakan HKN-CL12 12 л",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4820,
+        "article": "HKN-CL12",
+        "name": "Кутер Hurakan HKN-CL12 12 л",
+        "matches": [
+          {
+            "id": 1624,
+            "status": "confirmed",
+            "pp_id": 3222
+          }
+        ]
+      }
+    },
+    {
+      "row": 61,
+      "name": "КУТЕР HURAKAN HKN-CL6 6 Л",
+      "np_url": "https://np.com.ua/product/kuter-6-l-hkn-cl6/",
+      "lab_url": "https://labresta.com.ua/kutter-hurakan-hkn-cl6/",
+      "hkn_tail": "CL6",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5016,
+          "article": "HKN-CL6",
+          "name": "Кутер Hurakan HKN-CL6 6 л",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 5016,
+        "article": "HKN-CL6",
+        "name": "Кутер Hurakan HKN-CL6 6 л",
+        "matches": [
+          {
+            "id": 1625,
+            "status": "confirmed",
+            "pp_id": 3214
+          }
+        ]
+      }
+    },
+    {
+      "row": 62,
+      "name": "КУТЕР HURAKAN HKN-CL9 9 Л",
+      "np_url": "https://np.com.ua/product/kuter-9-l-hkn-cl9/",
+      "lab_url": "https://labresta.com.ua/kutter-hurakan-hkn-cl9/",
+      "hkn_tail": "CL9",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5060,
+          "article": "HKN-CL9",
+          "name": "Кутер Hurakan HKN-CL9 9 л",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 5060,
+        "article": "HKN-CL9",
+        "name": "Кутер Hurakan HKN-CL9 9 л",
+        "matches": [
+          {
+            "id": 1626,
+            "status": "confirmed",
+            "pp_id": 3215
+          }
+        ]
+      }
+    },
+    {
+      "row": 69,
+      "name": "ЛЬОДОГЕНЕРАТОР ЗАЛИВНОГО ТИПУ HURAKAN HKN-IMF12M, 12 КГ ПАЛЬЧИК",
+      "np_url": "https://np.com.ua/product/lodogenerator-zalyvnogo-typu-12-kg-palchyk-hkn-imf12m/",
+      "lab_url": "https://labresta.com.ua/lodohenerator-hurakan-hkn-imf12m-korpus-neirzh/",
+      "hkn_tail": "IMF12M",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5090,
+          "article": "HKN-IMF12M",
+          "name": "Льодогенератор заливного типу Hurakan HKN-IMF12M, 12 кг пальчик",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 5090,
+        "article": "HKN-IMF12M",
+        "name": "Льодогенератор заливного типу Hurakan HKN-IMF12M, 12 кг пальчик",
+        "matches": [
+          {
+            "id": 1790,
+            "status": "confirmed",
+            "pp_id": 1475
+          }
+        ]
+      }
+    },
+    {
+      "row": 70,
+      "name": "ЛЬОДОГЕНЕРАТОР ЗАЛИВНОГО ТИПУ HURAKAN HKN-IMF15, 15 КГ КУБИК",
+      "np_url": "https://np.com.ua/product/lodohenerator-zalyvnoho-typu-hurakan-hkn-imf15-15-kh-kubyk/",
+      "lab_url": "https://labresta.com.ua/lodohenerator-kubykovyi-hurakan-hkn-imf15-korpus-nerzh./",
+      "hkn_tail": "IMF15-15-KH-KUBYK",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4813,
+          "article": "HKN-IMF15",
+          "name": "Льодогенератор заливного типу Hurakan HKN-IMF15, 15 кг кубик",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4813,
+        "article": "HKN-IMF15",
+        "name": "Льодогенератор заливного типу Hurakan HKN-IMF15, 15 кг кубик",
+        "matches": [
+          {
+            "id": 1791,
+            "status": "confirmed",
+            "pp_id": 1497
+          }
+        ]
+      }
+    },
+    {
+      "row": 71,
+      "name": "ЛЬОДОГЕНЕРАТОР ЗАЛИВНОГО ТИПУ HURAKAN HKN-IMF17, 15 КГ ПАЛЬЧИК",
+      "np_url": "https://np.com.ua/product/lodohenerator-zalyvnoho-typu-hurakan-hkn-imf17-15-kh-palchyk/",
+      "lab_url": "https://labresta.com.ua/lodohenerator-hurakan-hkn-imf17/",
+      "hkn_tail": "IMF17-15-KH-PALCHYK",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4812,
+          "article": "HKN-IMF17",
+          "name": "Льодогенератор заливного типу Hurakan HKN-IMF17, 15 кг пальчик",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4812,
+        "article": "HKN-IMF17",
+        "name": "Льодогенератор заливного типу Hurakan HKN-IMF17, 15 кг пальчик",
+        "matches": [
+          {
+            "id": 1644,
+            "status": "confirmed",
+            "pp_id": 1496
+          }
+        ]
+      }
+    },
+    {
+      "row": 73,
+      "name": "МІКСЕР ДЛЯ МОЛОЧНИХ КОКТЕЙЛІВ HURAKAN HKN-FR1GD ОДНОПОСТОВИЙ",
+      "np_url": "https://np.com.ua/product/mikser-dlya-molochnykh-koktejliv-hurakan-hkn-fr1gd-odnopostovyj/",
+      "lab_url": "https://labresta.com.ua/mikser-dlia-molochnykh-kokteiliv-hurakan-hkn-fr1gd/",
+      "hkn_tail": "FR1GD-ODNOPOSTOVYJ",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4762,
+          "article": "HKN-FR1GD",
+          "name": "Міксер для молочних коктейлів Hurakan HKN-FR1GD однопостовий",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4762,
+        "article": "HKN-FR1GD",
+        "name": "Міксер для молочних коктейлів Hurakan HKN-FR1GD однопостовий",
+        "matches": [
+          {
+            "id": 1412,
+            "status": "confirmed",
+            "pp_id": 3798
+          }
+        ]
+      }
+    },
+    {
+      "row": 74,
+      "name": "МІКСЕР ДЛЯ МОЛОЧНИХ КОКТЕЙЛІВ HURAKAN HKN-FR2GD ДВОПОСТОВИЙ",
+      "np_url": "https://np.com.ua/product/mikser-dlya-molochnykh-koktejliv-hurakan-hkn-fr2gd-dvopostovyj/",
+      "lab_url": "https://labresta.com.ua/mikser-dlia-molochnykh-kokteiliv-hurakan-hkn-fr2gd/",
+      "hkn_tail": "FR2GD-DVOPOSTOVYJ",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4763,
+          "article": "HKN-FR2GD",
+          "name": "Міксер для молочних коктейлів Hurakan HKN-FR2GD двопостовий",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4763,
+        "article": "HKN-FR2GD",
+        "name": "Міксер для молочних коктейлів Hurakan HKN-FR2GD двопостовий",
+        "matches": [
+          {
+            "id": 1413,
+            "status": "confirmed",
+            "pp_id": 3799
+          }
+        ]
+      }
+    },
+    {
+      "row": 78,
+      "name": "МІКСЕР ПЛАНЕТАРНИЙ HURAKAN HKN-IP15FM НА 15 Л",
+      "np_url": "https://np.com.ua/ru/product/mykser-planetarnyj-na-15-l-hkn-ip15fm/",
+      "lab_url": "https://labresta.com.ua/mikser-planetarnyi-hurakan-hkn-ip15fm/",
+      "hkn_tail": "IP15FM",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5051,
+          "article": "HKN-IP15FM",
+          "name": "Міксер планетарний Hurakan HKN-IP15FM на 15 л",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 5051,
+        "article": "HKN-IP15FM",
+        "name": "Міксер планетарний Hurakan HKN-IP15FM на 15 л",
+        "matches": [
+          {
+            "id": 1439,
+            "status": "confirmed",
+            "pp_id": 3152
+          }
+        ]
+      }
+    },
+    {
+      "row": 79,
+      "name": "МІКСЕР ПЛАНЕТАРНИЙ HURAKAN HKN-KS5M НА 5 Л",
+      "np_url": "https://np.com.ua/product/mikser-planetarnyj-hurakan-hkn-ks5m-na-5-l/",
+      "lab_url": "https://labresta.com.ua/planetarnyi-mikser-hurakan-hkn-ks5m/",
+      "hkn_tail": "KS5M-NA-5-L",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4640,
+          "article": "HKN-KS5M",
+          "name": "Міксер планетарний Hurakan HKN-KS5M на 5 л*",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4640,
+        "article": "HKN-KS5M",
+        "name": "Міксер планетарний Hurakan HKN-KS5M на 5 л*",
+        "matches": [
+          {
+            "id": 1440,
+            "status": "confirmed",
+            "pp_id": 3145
+          }
+        ]
+      }
+    },
+    {
+      "row": 80,
+      "name": "МІКСЕР ПЛАНЕТАРНИЙ HURAKAN HKN-KS7M НА 7 Л*",
+      "np_url": "https://np.com.ua/product/mikser-planetarnyj-hurakan-hkn-ks7m-na-7-l/",
+      "lab_url": "https://labresta.com.ua/planetarnyi-mikser-hurakan-hkn-ks7m/",
+      "hkn_tail": "KS7M-NA-7-L",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4619,
+          "article": "HKN-KS7M",
+          "name": "Міксер планетарний Hurakan HKN-KS7M на 7 л",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4619,
+        "article": "HKN-KS7M",
+        "name": "Міксер планетарний Hurakan HKN-KS7M на 7 л",
+        "matches": [
+          {
+            "id": 1441,
+            "status": "confirmed",
+            "pp_id": 3143
+          }
+        ]
+      }
+    },
+    {
+      "row": 81,
+      "name": "МІКСЕР ПОГРУЖНИЙ  HURAKAN HKN-MPX160 COMBI З НАСАДКАМИ",
+      "np_url": "https://np.com.ua/ru/product/mykser-pohruzhnoj-hurakan-hkn-mpx160-combi-s-nasadkamy/",
+      "lab_url": "https://labresta.com.ua/mikser-pohruzhnyi-hurakan-hkn-mpx160-combi/",
+      "hkn_tail": "MPX160-COMBI-S-NASADKAMY",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4805,
+          "article": "HKN-MPX160",
+          "name": "Міксер погружний Hurakan HKN-MPX160",
+          "colour": null
+        },
+        {
+          "sp_id": 4804,
+          "article": "HKN-MPX160 COMBI",
+          "name": "Міксер погружний Hurakan HKN-MPX160 Combi з насадками",
+          "colour": null
+        }
+      ],
+      "verdict": "AMBIGUOUS",
+      "notes": [
+        "2 SPs match after colour filter (tok exact=2, tail contained=0)"
+      ]
+    },
+    {
+      "row": 83,
+      "name": "МЛИННИЦЯ HURAKAN HKN-CSE400P ОДИНАРНА",
+      "np_url": "https://np.com.ua/product/mlynnytsya-hurakan-hkn-cse400p-odynarna/",
+      "lab_url": "https://labresta.com.ua/mlynnytsia-hurakan-hkn-cse400p-odynarna/",
+      "hkn_tail": "CSE400P-ODYNARNA",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4761,
+          "article": "HKN-CSE400P",
+          "name": "Млинниця Hurakan HKN-CSE400P одинарна",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4761,
+        "article": "HKN-CSE400P",
+        "name": "Млинниця Hurakan HKN-CSE400P одинарна",
+        "matches": [
+          {
+            "id": 1213,
+            "status": "confirmed",
+            "pp_id": 4388
+          }
+        ]
+      }
+    },
+    {
+      "row": 85,
+      "name": "М'ЯСОРУБКА HURAKAN HKN-12SS 750W НЕРЖ. СТАЛЬ REVERSE",
+      "np_url": "https://np.com.ua/product/myasorubka-750w-nerzh-stal-reverse-hkn-12ss/",
+      "lab_url": "https://labresta.com.ua/miasorubka-hurakan-hkn-12ss-reverse/",
+      "hkn_tail": "12SS",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4997,
+          "article": "HKN-12SS",
+          "name": "М'ясорубка Hurakan HKN-12SS 750w нерж. сталь Reverse",
+          "colour": null
+        },
+        {
+          "sp_id": 4995,
+          "article": "HKN-12SSE",
+          "name": "М'ясорубка Hurakan HKN-12SSE 170 кг/год, нерж. сталь",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4997,
+        "article": "HKN-12SS",
+        "name": "М'ясорубка Hurakan HKN-12SS 750w нерж. сталь Reverse",
+        "matches": [
+          {
+            "id": 1193,
+            "status": "confirmed",
+            "pp_id": 2981
+          }
+        ]
+      }
+    },
+    {
+      "row": 89,
+      "name": "М'ЯСОРУБКА HURAKAN HKN-22SSE 240 КГ/ГОД, НЕРЖ. СТАЛЬ",
+      "np_url": "https://np.com.ua/product/myasorubka-240-kg-god-nerzh-stal-hkn-22sse/",
+      "lab_url": "https://labresta.com.ua/miasorubka-hurakan-hkn-22sse/",
+      "hkn_tail": "22SSE",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4996,
+          "article": "HKN-22SSE",
+          "name": "М'ясорубка Hurakan HKN-22SSE 240 кг/год, нерж. сталь",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4996,
+        "article": "HKN-22SSE",
+        "name": "М'ясорубка Hurakan HKN-22SSE 240 кг/год, нерж. сталь",
+        "matches": [
+          {
+            "id": 1617,
+            "status": "confirmed",
+            "pp_id": 2982
+          }
+        ]
+      }
+    },
+    {
+      "row": 90,
+      "name": "ОВОЧЕРІЗКА HURAKAN HKN-FNT-A З НАБОРОМ ДИСКІВ",
+      "np_url": "https://np.com.ua/ru/product/ovoshcherezka-hurakan-hkn-fnt-a-s-naborom-dyskov/",
+      "lab_url": "https://labresta.com.ua/ovocherizka-hurakan-hkn-fnt-a-z-naborom-dyskiv/",
+      "hkn_tail": "FNT-A-S-NABOROM-DYSKOV",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4623,
+          "article": "HKN-FNT-A",
+          "name": "Овочерізка Hurakan Hkn-fnt-a з набором дисків",
+          "colour": null
+        },
+        {
+          "sp_id": 4698,
+          "article": "HKN-FNT-M NEW",
+          "name": "Овочерізка Hurakan Hkn-fnt-m з набором дисків NEW",
+          "colour": null
+        }
+      ],
+      "verdict": "AMBIGUOUS",
+      "notes": [
+        "2 SPs match after colour filter (tok exact=2, tail contained=0)"
+      ]
+    },
+    {
+      "row": 91,
+      "name": "ОВОЧЕРІЗКА HURAKAN HKN-FNT-M З НАБОРОМ ДИСКІВ  NEW",
+      "np_url": "https://np.com.ua/ru/product/ovoshherezka-s-naborom-dyskov-hkn-fnt-m-new/",
+      "lab_url": "https://labresta.com.ua/ovocherizka-hurakan-hkn-fnt-m-new-z-komplektom-dyskiv/",
+      "hkn_tail": "FNT-M-NEW",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4623,
+          "article": "HKN-FNT-A",
+          "name": "Овочерізка Hurakan Hkn-fnt-a з набором дисків",
+          "colour": null
+        },
+        {
+          "sp_id": 4698,
+          "article": "HKN-FNT-M NEW",
+          "name": "Овочерізка Hurakan Hkn-fnt-m з набором дисків NEW",
+          "colour": null
+        }
+      ],
+      "verdict": "AMBIGUOUS",
+      "notes": [
+        "2 SPs match after colour filter (tok exact=2, tail contained=0)"
+      ]
+    },
+    {
+      "row": 92,
+      "name": "ПИЛА ДЛЯ РОЗРІЗАННЯ М'ЯСА HURAKAN HKN-SE1260",
+      "np_url": "https://np.com.ua/ru/product/pyla-dlya-razrezanyya-myasa-hurakan-hkn-se1260/",
+      "lab_url": "https://labresta.com.ua/pyla-dlia-miasa-hurakan-hkn-se1260/",
+      "hkn_tail": "SE1260",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4689,
+          "article": "HKN-SE1260",
+          "name": "Пила для розрізання м'яса Hurakan HKN-SE1260",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4689,
+        "article": "HKN-SE1260",
+        "name": "Пила для розрізання м'яса Hurakan HKN-SE1260",
+        "matches": [
+          {
+            "id": 1668,
+            "status": "confirmed",
+            "pp_id": 3493
+          }
+        ]
+      }
+    },
+    {
+      "row": 93,
+      "name": "ПИЛА ДЛЯ РОЗРІЗАННЯ М'ЯСА HURAKAN HKN-SE1650M2",
+      "np_url": "https://np.com.ua/ru/product/pyla-dlya-razrezanyya-myasa-hurakan-hkn-se1650m2/",
+      "lab_url": "https://labresta.com.ua/pyla-dlia-miasa-hurakan-hkn-se1650m2/",
+      "hkn_tail": "SE1650M2",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4688,
+          "article": "HKN-SE1650M2",
+          "name": "Пила для розрізання м'яса Hurakan HKN-SE1650M2",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4688,
+        "article": "HKN-SE1650M2",
+        "name": "Пила для розрізання м'яса Hurakan HKN-SE1650M2",
+        "matches": [
+          {
+            "id": 1669,
+            "status": "confirmed",
+            "pp_id": 3491
+          }
+        ]
+      }
+    },
+    {
+      "row": 94,
+      "name": "ПІЧ ДЛЯ ПІЦИ HURAKAN HKN-HEP2, 2 РІВНЯ  380В",
+      "np_url": "https://np.com.ua/product/pich-dlya-pitsy-hurakan-hkn-hep2-2-rivnya-380v/",
+      "lab_url": "https://labresta.com.ua/pich-dlia-pitsy-hurakan-hkn-hep2-380-v/",
+      "hkn_tail": "HEP2-2-RIVNYA-380V",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5004,
+          "article": "HKN-HEP2",
+          "name": "Піч для піци Hurakan HKN-HEP2, 2 рівня 220в",
+          "colour": null
+        },
+        {
+          "sp_id": 4750,
+          "article": "HKN-HEP2 380B",
+          "name": "Піч для піци Hurakan HKN-HEP2, 2 рівня 380в",
+          "colour": null
+        }
+      ],
+      "verdict": "AMBIGUOUS",
+      "notes": [
+        "2 SPs match after colour filter (tok exact=2, tail contained=0)"
+      ]
+    },
+    {
+      "row": 97,
+      "name": "ПІЧ КОНВЕКЦІЙНА HURAKAN HKN-XFT133M, 220В",
+      "np_url": "https://np.com.ua/product/pich-konvektsijna-hurakan-hkn-xft133m-220v/",
+      "lab_url": "https://labresta.com.ua/pich-konvektsiina-hurakan-hkn-xft133m/",
+      "hkn_tail": "XFT133M-220V",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4690,
+          "article": "HKN-XFT133M",
+          "name": "Піч конвекційна Hurakan HKN-XFT133M, 220в",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4690,
+        "article": "HKN-XFT133M",
+        "name": "Піч конвекційна Hurakan HKN-XFT133M, 220в",
+        "matches": [
+          {
+            "id": 1675,
+            "status": "confirmed",
+            "pp_id": 1264
+          }
+        ]
+      }
+    },
+    {
+      "row": 100,
+      "name": "ПІЧ МІКРОХВИЛЬОВА  HURAKAN HKN-WP1000M",
+      "np_url": "https://np.com.ua/ru/product/pech-mykrovolnovaya-hurakan-hkn-wp1000m/",
+      "lab_url": "https://labresta.com.ua/pich-mikrokhvylova-hurakan-hkn-wp1000m/",
+      "hkn_tail": "WP1000M",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4661,
+          "article": "HKN-WP1000M",
+          "name": "Піч мікрохвильова Hurakan HKN-WP1000M",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4661,
+        "article": "HKN-WP1000M",
+        "name": "Піч мікрохвильова Hurakan HKN-WP1000M",
+        "matches": [
+          {
+            "id": 1322,
+            "status": "confirmed",
+            "pp_id": 727
+          }
+        ]
+      }
+    },
+    {
+      "row": 101,
+      "name": "ПЛИТА ІНДУКЦІЙНА  HURAKAN HKN-ICF70D2V 2-Х КОНФОРОЧНА, 7000W",
+      "np_url": "https://np.com.ua/product/plyta-indukczijna-2-h-konforochna-7000w-hkn-icf70d2v/",
+      "lab_url": "https://labresta.com.ua/plyta-induktsiina-hurakan-hkn-icf70d2v-2kh35-kvt/",
+      "hkn_tail": "ICF70D2V",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5069,
+          "article": "HKN-ICF70D2V",
+          "name": "Плита індукційна Hurakan HKN-ICF70D2V 2-х конфорочна, 7000w",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 5069,
+        "article": "HKN-ICF70D2V",
+        "name": "Плита індукційна Hurakan HKN-ICF70D2V 2-х конфорочна, 7000w",
+        "matches": [
+          {
+            "id": 1787,
+            "status": "confirmed",
+            "pp_id": 42
+          }
+        ]
+      }
+    },
+    {
+      "row": 104,
+      "name": "ПЛИТА ІНДУКЦІЙНА HURAKAN HKN-ICF35D З ЕЛЕКТРОННИМ УПРАВЛІННЯМ, 3500W",
+      "np_url": "https://np.com.ua/product/plyta-indukczijna-z-elektronnym-upravlinnyam-3500w-hkn-icf35d/",
+      "lab_url": "https://labresta.com.ua/plyta-induktsiina-hurakan-hkn-icf35d-35-kvt/",
+      "hkn_tail": "ICF35D",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5079,
+          "article": "HKN-ICF35D",
+          "name": "Плита індукційна Hurakan HKN-ICF35D з електронним управлінням, 3500w",
+          "colour": null
+        },
+        {
+          "sp_id": 4982,
+          "article": "HKN-ICF35Dx47",
+          "name": "Плита індукційна Hurakan HKN-ICF35Dx47 4-х конфорочна, 14000w",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 5079,
+        "article": "HKN-ICF35D",
+        "name": "Плита індукційна Hurakan HKN-ICF35D з електронним управлінням, 3500w",
+        "matches": [
+          {
+            "id": 1780,
+            "status": "confirmed",
+            "pp_id": 46
+          }
+        ]
+      }
+    },
+    {
+      "row": 105,
+      "name": "ПЛИТА ІНДУКЦІЙНА HURAKAN HKN-ICF35Dx47 4-Х КОНФОРОЧНА, 14000W",
+      "np_url": "https://np.com.ua/product/plyta-indukczijna-4-h-konforochna-14000w-hkn-icf35dx47/",
+      "lab_url": "https://labresta.com.ua/plyta-induktsiina-hurakan-hkn-icf35dx47-4kh35-kvt/",
+      "hkn_tail": "ICF35DX47",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4982,
+          "article": "HKN-ICF35Dx47",
+          "name": "Плита індукційна Hurakan HKN-ICF35Dx47 4-х конфорочна, 14000w",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4982,
+        "article": "HKN-ICF35Dx47",
+        "name": "Плита індукційна Hurakan HKN-ICF35Dx47 4-х конфорочна, 14000w",
+        "matches": [
+          {
+            "id": 1781,
+            "status": "confirmed",
+            "pp_id": 43
+          }
+        ]
+      }
+    },
+    {
+      "row": 106,
+      "name": "ПЛИТА ІНДУКЦІЙНА HURAKAN HKN-ICF35M З МЕХАНІЧНИМ УПРАВЛІННЯМ, 3500W",
+      "np_url": "https://np.com.ua/product/plyta-indukczijna-z-mehanichnym-upravlinnyam-3500w-hkn-icf35m/",
+      "lab_url": "https://labresta.com.ua/plyta-induktsiina-hurakan-hkn-icf35m-35-kvt/",
+      "hkn_tail": "ICF35M",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5078,
+          "article": "HKN-ICF35M",
+          "name": "Плита індукційна Hurakan HKN-ICF35M з механічним управлінням, 3500w",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 5078,
+        "article": "HKN-ICF35M",
+        "name": "Плита індукційна Hurakan HKN-ICF35M з механічним управлінням, 3500w",
+        "matches": [
+          {
+            "id": 1782,
+            "status": "confirmed",
+            "pp_id": 48
+          }
+        ]
+      }
+    },
+    {
+      "row": 107,
+      "name": "ПЛИТА ІНДУКЦІЙНА HURAKAN HKN-ICF35T З СЕНСОРНИМ УПРАВЛІННЯМ, 3500W",
+      "np_url": "https://np.com.ua/product/plyta-indukczijna-z-sensornym-upravlinnyam-3500w-hkn-icf35t/",
+      "lab_url": "https://labresta.com.ua/plyta-induktsiina-hurakan-hkn-icf35t-35-kvt/",
+      "hkn_tail": "ICF35T",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5081,
+          "article": "HKN-ICF35T",
+          "name": "Плита індукційна Hurakan HKN-ICF35T з сенсорним управлінням, 3500w",
+          "colour": null
+        },
+        {
+          "sp_id": 5082,
+          "article": "HKN-ICF35TM",
+          "name": "Плита індукційна Hurakan HKN-ICF35TM з сенсорним управлінням, 3500w",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 5081,
+        "article": "HKN-ICF35T",
+        "name": "Плита індукційна Hurakan HKN-ICF35T з сенсорним управлінням, 3500w",
+        "matches": [
+          {
+            "id": 1783,
+            "status": "confirmed",
+            "pp_id": 49
+          }
+        ]
+      }
+    },
+    {
+      "row": 109,
+      "name": "ПЛИТА ІНДУКЦІЙНА HURAKAN HKN-ICF70D 2-Х КОНФОРОЧНА, 7000W",
+      "np_url": "https://np.com.ua/product/plyta-indukczijna-2-h-konforochna-7000w-hkn-icf70d/",
+      "lab_url": "https://labresta.com.ua/plyta-induktsiina-hurakan-hkn-icf70d-2kh35-kvt/",
+      "hkn_tail": "ICF70D",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5055,
+          "article": "HKN-ICF70D",
+          "name": "Плита індукційна Hurakan HKN-ICF70D 2-х конфорочна, 7000w",
+          "colour": null
+        },
+        {
+          "sp_id": 5069,
+          "article": "HKN-ICF70D2V",
+          "name": "Плита індукційна Hurakan HKN-ICF70D2V 2-х конфорочна, 7000w",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 5055,
+        "article": "HKN-ICF70D",
+        "name": "Плита індукційна Hurakan HKN-ICF70D 2-х конфорочна, 7000w",
+        "matches": [
+          {
+            "id": 1786,
+            "status": "confirmed",
+            "pp_id": 41
+          }
+        ]
+      }
+    },
+    {
+      "row": 114,
+      "name": "ПОДРІБНЮВАЧ ДЛЯ СПЕЦІЙ HURAKAN HKN-SG100",
+      "np_url": "https://np.com.ua/ru/product/yzmelchytel-dlya-speczyj-hkn-sg100/",
+      "lab_url": "https://labresta.com.ua/podribniuvach-dlia-spetsii-hurakan-hkn-sg100/",
+      "hkn_tail": "SG100",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4993,
+          "article": "HKN-SG100",
+          "name": "Подрібнювач для спецій Hurakan HKN-SG100",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4993,
+        "article": "HKN-SG100",
+        "name": "Подрібнювач для спецій Hurakan HKN-SG100",
+        "matches": [
+          {
+            "id": 1303,
+            "status": "confirmed",
+            "pp_id": 3218
+          }
+        ]
+      }
+    },
+    {
+      "row": 115,
+      "name": "ПОДРІБНЮВАЧ ДЛЯ СПЕЦІЙ HURAKAN HKN-SG400",
+      "np_url": "https://np.com.ua/ru/product/yzmelchytel-dlya-speczyj-hkn-sg400/",
+      "lab_url": "https://labresta.com.ua/podribniuvach-dlia-spetsii-hkn-sg400/",
+      "hkn_tail": "SG400",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4994,
+          "article": "HKN-SG400",
+          "name": "Подрібнювач для спецій Hurakan HKN-SG400",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4994,
+        "article": "HKN-SG400",
+        "name": "Подрібнювач для спецій Hurakan HKN-SG400",
+        "matches": [
+          {
+            "id": 1670,
+            "status": "confirmed",
+            "pp_id": 3219
+          }
+        ]
+      }
+    },
+    {
+      "row": 116,
+      "name": "ПРЕС ДЛЯ ПІЦИ HURAKAN HKN-PPR18",
+      "np_url": "https://np.com.ua/ru/product/press-dlya-pytstsy-hurakan-hkn-ppr18/",
+      "lab_url": "https://labresta.com.ua/pres-dlia-pitsy-hurakan-hkn-ppr18/",
+      "hkn_tail": "PPR18",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4670,
+          "article": "HKN-PPR18",
+          "name": "Прес для піци Hurakan HKN-PPR18",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4670,
+        "article": "HKN-PPR18",
+        "name": "Прес для піци Hurakan HKN-PPR18",
+        "matches": [
+          {
+            "id": 1295,
+            "status": "confirmed",
+            "pp_id": 2004
+          }
+        ]
+      }
+    },
+    {
+      "row": 117,
+      "name": "РИСОВАРКА HURAKAN HKN-SR180",
+      "np_url": "https://np.com.ua/product/rysovarka-hurakan-hkn-sr180/",
+      "lab_url": "https://labresta.com.ua/rysovarka-hurakan-hkn-sr180/",
+      "hkn_tail": "SR180",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4747,
+          "article": "HKN-SR180",
+          "name": "Рисоварка Hurakan HKN-SR180",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4747,
+        "article": "HKN-SR180",
+        "name": "Рисоварка Hurakan HKN-SR180",
+        "matches": [
+          {
+            "id": 1306,
+            "status": "confirmed",
+            "pp_id": 971
+          }
+        ]
+      }
+    },
+    {
+      "row": 119,
+      "name": "САЛАДЕТА HURAKAN HKN-GXSD2GN-GC 2-Х ДВЕРНА З ГРАНІТНОЮ ПОВЕРХНЕЮ І СКЛОМ",
+      "np_url": "https://np.com.ua/ru/product/saladetta-2-h-dvernaya-s-granytnoj-poverhnostyu-y-steklom-hkn-gxsd2gn-gc/",
+      "lab_url": "https://labresta.com.ua/ctil-dlia-pitsy-hurakan-hkn-gxsd2gn-gc/",
+      "hkn_tail": "GXSD2GN-GC",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5030,
+          "article": "HKN-GXSD2GN",
+          "name": "Саладета Hurakan HKN-GXSD2GN 2-х дверна з гранітною поверхнею",
+          "colour": null
+        },
+        {
+          "sp_id": 5032,
+          "article": "HKN-GXSD2GN-GC",
+          "name": "Саладета Hurakan HKN-GXSD2GN-GC 2-х дверна з гранітною поверхнею і склом",
+          "colour": null
+        },
+        {
+          "sp_id": 5028,
+          "article": "HKN-GXSD2GN-SC",
+          "name": "Саладета Hurakan HKN-GXSD2GN-SC 2-х дверна",
+          "colour": null
+        }
+      ],
+      "verdict": "AMBIGUOUS",
+      "notes": [
+        "3 SPs match after colour filter (tok exact=3, tail contained=0)"
+      ]
+    },
+    {
+      "row": 120,
+      "name": "САЛАДЕТА HURAKAN HKN-GXSD2GN-SC 2-Х ДВЕРНА",
+      "np_url": "https://np.com.ua/ru/product/saladetta-2-h-dvernaya-hkn-gxsd2gn-sc/",
+      "lab_url": "https://labresta.com.ua/saladeta-hurakan-hkn-gxsd2gn-sc/",
+      "hkn_tail": "GXSD2GN-SC",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5030,
+          "article": "HKN-GXSD2GN",
+          "name": "Саладета Hurakan HKN-GXSD2GN 2-х дверна з гранітною поверхнею",
+          "colour": null
+        },
+        {
+          "sp_id": 5032,
+          "article": "HKN-GXSD2GN-GC",
+          "name": "Саладета Hurakan HKN-GXSD2GN-GC 2-х дверна з гранітною поверхнею і склом",
+          "colour": null
+        },
+        {
+          "sp_id": 5028,
+          "article": "HKN-GXSD2GN-SC",
+          "name": "Саладета Hurakan HKN-GXSD2GN-SC 2-х дверна",
+          "colour": null
+        }
+      ],
+      "verdict": "AMBIGUOUS",
+      "notes": [
+        "3 SPs match after colour filter (tok exact=3, tail contained=0)"
+      ]
+    },
+    {
+      "row": 121,
+      "name": "САЛАДЕТА HURAKAN HKN-GXSD3GN 3-Х ДВЕРНА З ГРАНІТНОЮ ПОВЕРХНЕЮ",
+      "np_url": "https://np.com.ua/product/saladeta-3-h-dverna-z-granitnoyu-poverhneyu-hkn-gxsd3gn/",
+      "lab_url": "https://labresta.com.ua/saladetta-hurakan-hkn-gxsd3gn/",
+      "hkn_tail": "GXSD3GN",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5031,
+          "article": "HKN-GXSD3GN",
+          "name": "Саладета Hurakan HKN-GXSD3GN 3-х дверна з гранітною поверхнею",
+          "colour": null
+        },
+        {
+          "sp_id": 5033,
+          "article": "HKN-GXSD3GN-GC",
+          "name": "Саладета Hurakan HKN-GXSD3GN-GC 3-х дверна з гранітною поверхнею і склом",
+          "colour": null
+        },
+        {
+          "sp_id": 5029,
+          "article": "HKN-GXSD3GN-SC",
+          "name": "Саладета Hurakan HKN-GXSD3GN-SC 3-х дверна",
+          "colour": null
+        }
+      ],
+      "verdict": "AMBIGUOUS",
+      "notes": [
+        "3 SPs match after colour filter (tok exact=3, tail contained=3)"
+      ]
+    },
+    {
+      "row": 122,
+      "name": "САЛАДЕТА HURAKAN HKN-GXSD3GN-GC 3-Х ДВЕРНА З ГРАНІТНОЮ ПОВЕРХНЕЮ І СКЛОМ",
+      "np_url": "https://np.com.ua/product/saladeta-3-h-dverna-z-granitnoyu-poverhneyu-i-sklom-hkn-gxsd3gn-gc/",
+      "lab_url": "https://labresta.com.ua/saladetta-hurakan-hkn-gxsd3gn-gc/",
+      "hkn_tail": "GXSD3GN-GC",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5031,
+          "article": "HKN-GXSD3GN",
+          "name": "Саладета Hurakan HKN-GXSD3GN 3-х дверна з гранітною поверхнею",
+          "colour": null
+        },
+        {
+          "sp_id": 5033,
+          "article": "HKN-GXSD3GN-GC",
+          "name": "Саладета Hurakan HKN-GXSD3GN-GC 3-х дверна з гранітною поверхнею і склом",
+          "colour": null
+        },
+        {
+          "sp_id": 5029,
+          "article": "HKN-GXSD3GN-SC",
+          "name": "Саладета Hurakan HKN-GXSD3GN-SC 3-х дверна",
+          "colour": null
+        }
+      ],
+      "verdict": "AMBIGUOUS",
+      "notes": [
+        "3 SPs match after colour filter (tok exact=3, tail contained=0)"
+      ]
+    },
+    {
+      "row": 123,
+      "name": "САЛАДЕТА HURAKAN HKN-GXSD3GN-SC 3-Х ДВЕРНА",
+      "np_url": "https://np.com.ua/ru/product/saladetta-3-h-dvernaya-hkn-gxsd3gn-sc/",
+      "lab_url": "https://labresta.com.ua/saladetta-hurakan-hkn-gxsd3gn-sc/",
+      "hkn_tail": "GXSD3GN-SC",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5031,
+          "article": "HKN-GXSD3GN",
+          "name": "Саладета Hurakan HKN-GXSD3GN 3-х дверна з гранітною поверхнею",
+          "colour": null
+        },
+        {
+          "sp_id": 5033,
+          "article": "HKN-GXSD3GN-GC",
+          "name": "Саладета Hurakan HKN-GXSD3GN-GC 3-х дверна з гранітною поверхнею і склом",
+          "colour": null
+        },
+        {
+          "sp_id": 5029,
+          "article": "HKN-GXSD3GN-SC",
+          "name": "Саладета Hurakan HKN-GXSD3GN-SC 3-х дверна",
+          "colour": null
+        }
+      ],
+      "verdict": "AMBIGUOUS",
+      "notes": [
+        "3 SPs match after colour filter (tok exact=3, tail contained=0)"
+      ]
+    },
+    {
+      "row": 124,
+      "name": "СЛАЙСЕР HURAKAN HKN-HM220, 220 ММ",
+      "np_url": "https://np.com.ua/product/slajser-220-mm-hkn-hm220/",
+      "lab_url": "https://labresta.com.ua/slaiser-hurakan-hkn-hm220/",
+      "hkn_tail": "HM220",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4965,
+          "article": "HKN-HM220",
+          "name": "Слайсер Hurakan HKN-HM220, 220 мм",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4965,
+        "article": "HKN-HM220",
+        "name": "Слайсер Hurakan HKN-HM220, 220 мм",
+        "matches": [
+          {
+            "id": 1770,
+            "status": "confirmed",
+            "pp_id": 3353
+          }
+        ]
+      }
+    },
+    {
+      "row": 126,
+      "name": "СЛАЙСЕР HURAKAN HKN-HM300DL. 300 ММ",
+      "np_url": "https://np.com.ua/product/slajser-hurakan-hkn-hm300dl-300-mm/",
+      "lab_url": "https://labresta.com.ua/slaiser-hurakan-hkn-hm300dl-300-mm/",
+      "hkn_tail": "HM300DL-300-MM",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4829,
+          "article": "HKN-HM300DL",
+          "name": "Слайсер Hurakan HKN-HM300DL. 300 мм",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4829,
+        "article": "HKN-HM300DL",
+        "name": "Слайсер Hurakan HKN-HM300DL. 300 мм",
+        "matches": [
+          {
+            "id": 1255,
+            "status": "confirmed",
+            "pp_id": 3357
+          }
+        ]
+      }
+    },
+    {
+      "row": 127,
+      "name": "СЛАЙСЕР HURAKAN HKN-HM300L. 300 ММ",
+      "np_url": "https://np.com.ua/product/slajser-hurakan-hkn-hm300l-300-mm/",
+      "lab_url": "https://labresta.com.ua/slaiser-hurakan-hkn-hm300l.-300-mm/",
+      "hkn_tail": "HM300L-300-MM",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4828,
+          "article": "HKN-HM300L",
+          "name": "Слайсер Hurakan HKN-HM300L. 300 мм",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4828,
+        "article": "HKN-HM300L",
+        "name": "Слайсер Hurakan HKN-HM300L. 300 мм",
+        "matches": [
+          {
+            "id": 1256,
+            "status": "confirmed",
+            "pp_id": 3365
+          }
+        ]
+      }
+    },
+    {
+      "row": 128,
+      "name": "СОКОВИЖИМАЛКА HURAKAN HKN-CFV120 PRO",
+      "np_url": "https://np.com.ua/product/sokovyzhymalka-hurakan-hkn-cfv120-pro/",
+      "lab_url": "https://labresta.com.ua/sokovyzhymalka-hurakan-hkn-cfv120-pro/",
+      "hkn_tail": "CFV120-PRO",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4758,
+          "article": "HKN-CFV120 PRO",
+          "name": "Соковижималка Hurakan HKN-CFV120 PRO",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4758,
+        "article": "HKN-CFV120 PRO",
+        "name": "Соковижималка Hurakan HKN-CFV120 PRO",
+        "matches": [
+          {
+            "id": 1212,
+            "status": "confirmed",
+            "pp_id": 3728
+          }
+        ]
+      }
+    },
+    {
+      "row": 130,
+      "name": "СОКОВИЖИМАЛКА ДЛЯ ЦИТРУСОВИХ HURAKAN HKN-AGRL З ПРЕСОМ",
+      "np_url": "https://np.com.ua/product/sokovyzhymalka-dlya-tsytrusovykh-hurakan-hkn-agrl-z-presom/",
+      "lab_url": "https://labresta.com.ua/sokovyzhymalka-dlia-tsytrusovykh-hurakan-hkn-agrl-z-presom/",
+      "hkn_tail": "AGRL-Z-PRESOM",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4749,
+          "article": "HKN-AGRL",
+          "name": "Соковижималка для цитрусових Hurakan Hkn-agrl з пресом",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4749,
+        "article": "HKN-AGRL",
+        "name": "Соковижималка для цитрусових Hurakan Hkn-agrl з пресом",
+        "matches": [
+          {
+            "id": 1202,
+            "status": "confirmed",
+            "pp_id": 3729
+          }
+        ]
+      }
+    },
+    {
+      "row": 131,
+      "name": "СОКОВИЖИМАЛКА ДЛЯ ЦИТРУСОВИХ HURAKAN HKN-SPM  БЕЗ ПРЕСУ",
+      "np_url": "https://np.com.ua/ru/product/sokovyzhymalka-dlya-czytrusovyh-bez-pressa-hkn-spm/",
+      "lab_url": "https://labresta.com.ua/sokovytyskach-dlia-tsytrusovykh-hurakan-hkn-spm/",
+      "hkn_tail": "SPM",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5070,
+          "article": "HKN-SPM",
+          "name": "Соковижималка для цитрусових Hurakan Hkn-spm без пресу",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 5070,
+        "article": "HKN-SPM",
+        "name": "Соковижималка для цитрусових Hurakan Hkn-spm без пресу",
+        "matches": [
+          {
+            "id": 1671,
+            "status": "confirmed",
+            "pp_id": 3723
+          }
+        ]
+      }
+    },
+    {
+      "row": 132,
+      "name": "СТЕРИЛІЗАТОР НОЖІВ HURAKAN HKN-UVA10",
+      "np_url": "https://np.com.ua/ru/product/sterylyzator-nozhej-hkn-uva10/",
+      "lab_url": "https://labresta.com.ua/sterylizator-dlia-nozhiv-hurakan-hkn-uva10/",
+      "hkn_tail": "UVA10",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4901,
+          "article": "HKN-UVA10",
+          "name": "Стерилізатор ножів Hurakan HKN-UVA10",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4901,
+        "article": "HKN-UVA10",
+        "name": "Стерилізатор ножів Hurakan HKN-UVA10",
+        "matches": [
+          {
+            "id": 1673,
+            "status": "confirmed",
+            "pp_id": 4910
+          }
+        ]
+      }
+    },
+    {
+      "row": 136,
+      "name": "СТІЛ МОРОЗИЛЬНИЙ HURAKAN HKN-GXFC2GN 2-ДВЕРНИЙ",
+      "np_url": "https://np.com.ua/product/stil-morozylnyj-2-dvernyj-hkn-gxfc2gn/",
+      "lab_url": "https://labresta.com.ua/stil-morozylnyi-hurakan-hkn-gxfc2gn-shyryna-700-mm/",
+      "hkn_tail": "GXFC2GN",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5039,
+          "article": "HKN-GXFC2GN",
+          "name": "Стіл морозильний Hurakan HKN-GXFC2GN 2-дверний",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 5039,
+        "article": "HKN-GXFC2GN",
+        "name": "Стіл морозильний Hurakan HKN-GXFC2GN 2-дверний",
+        "matches": [
+          {
+            "id": 1635,
+            "status": "confirmed",
+            "pp_id": 1786
+          }
+        ]
+      }
+    },
+    {
+      "row": 137,
+      "name": "СТІЛ МОРОЗИЛЬНИЙ HURAKAN HKN-GXFC3GN 3-ДВЕРНИЙ",
+      "np_url": "https://np.com.ua/product/stil-morozylnyj-3-dvernyj-hkn-gxfc3gn/",
+      "lab_url": "https://labresta.com.ua/stil-morozylnyi-hurakan-hkn-gxfc3gn-shyryna-700-mm/",
+      "hkn_tail": "GXFC3GN",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5040,
+          "article": "HKN-GXFC3GN",
+          "name": "Стіл морозильний Hurakan HKN-GXFC3GN 3-дверний",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 5040,
+        "article": "HKN-GXFC3GN",
+        "name": "Стіл морозильний Hurakan HKN-GXFC3GN 3-дверний",
+        "matches": [
+          {
+            "id": 1636,
+            "status": "confirmed",
+            "pp_id": 1819
+          }
+        ]
+      }
+    },
+    {
+      "row": 138,
+      "name": "СТІЛ ХОЛОДИЛЬНИЙ HURAKAN HKN-GXPZ2GR ДЛЯ ПІЦИ 2-ДВЕРНИЙ З ГРАН. ПОВ.",
+      "np_url": "https://np.com.ua/ru/product/stol-holodylnyj-dlya-pyczczy-2-dvernyj-s-gran-pov-hkn-gxpz2gr/",
+      "lab_url": "https://labresta.com.ua/stil-dlia-pitsy-hurakan-hkn-gxpz2gr-hranitna-stilnytsia/",
+      "hkn_tail": "GXPZ2GR",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5041,
+          "article": "HKN-GXPZ2GR",
+          "name": "Стіл холодильний Hurakan HKN-GXPZ2GR для піци 2-дверний з гран. пов.",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 5041,
+        "article": "HKN-GXPZ2GR",
+        "name": "Стіл холодильний Hurakan HKN-GXPZ2GR для піци 2-дверний з гран. пов.",
+        "matches": [
+          {
+            "id": 1759,
+            "status": "confirmed",
+            "pp_id": 1368
+          }
+        ]
+      }
+    },
+    {
+      "row": 139,
+      "name": "СТІЛ ХОЛОДИЛЬНИЙ HURAKAN HKN-GXPZ3GR ДЛЯ ПІЦИ 3-ДВЕРНИЙ З ГРАН. ПОВ. НИЖН. АГР.",
+      "np_url": "https://np.com.ua/product/stil-holodylnyj-dlya-piczy-3-dvernyj-z-gran-pov-nyzhn-agr-hkn-gxpz3gr/",
+      "lab_url": "https://labresta.com.ua/stil-dlia-pitsy-hurakan-hkn-gxpz3gr-1400kh700-hranitna-stilnytsia/",
+      "hkn_tail": "GXPZ3GR",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5042,
+          "article": "HKN-GXPZ3GR",
+          "name": "Стіл холодильний Hurakan HKN-GXPZ3GR для піци 3-дверний з гран. пов. нижн. агр.",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 5042,
+        "article": "HKN-GXPZ3GR",
+        "name": "Стіл холодильний Hurakan HKN-GXPZ3GR для піци 3-дверний з гран. пов. нижн. агр.",
+        "matches": [
+          {
+            "id": 1760,
+            "status": "confirmed",
+            "pp_id": 1434
+          }
+        ]
+      }
+    },
+    {
+      "row": 142,
+      "name": "СТІЛ ХОЛОДИЛЬНИЙ HURAKAN HKN-GXRC4GN 4-ДВЕРНИЙ",
+      "np_url": "https://np.com.ua/product/stil-kholodylnyj-hurakan-hkn-gxrc4gn-4-dvernyj/",
+      "lab_url": "https://labresta.com.ua/stil-kholodylnyi-hurakan-hkn-gxrc4gn/",
+      "hkn_tail": "GXRC4GN-4-DVERNYJ",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4655,
+          "article": "HKN-GXRC4GN",
+          "name": "Стіл холодильний Hurakan HKN-GXRC4GN 4-дверний",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4655,
+        "article": "HKN-GXRC4GN",
+        "name": "Стіл холодильний Hurakan HKN-GXRC4GN 4-дверний",
+        "matches": [
+          {
+            "id": 1423,
+            "status": "confirmed",
+            "pp_id": 1650
+          }
+        ]
+      }
+    },
+    {
+      "row": 143,
+      "name": "СТІЛ ХОЛОДИЛЬНИЙ HURAKAN HKN-GXS3GN 3-Х ДВЕРНИЙ З НИЖНІМ РОЗМІЩЕННЯМ АГРЕГАТУ",
+      "np_url": "https://np.com.ua/product/stil-holodylnyj-3-h-dvernyj-z-nyzhnim-rozmishhennyam-agregatu-hkn-gxs3gn/",
+      "lab_url": "https://labresta.com.ua/stil-kholodylnyi-hurakan-hkn-gxs3gn/",
+      "hkn_tail": "GXS3GN",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5027,
+          "article": "HKN-GXS3GN",
+          "name": "Стіл холодильний Hurakan HKN-GXS3GN 3-х дверний з нижнім розміщенням агрегату",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 5027,
+        "article": "HKN-GXS3GN",
+        "name": "Стіл холодильний Hurakan HKN-GXS3GN 3-х дверний з нижнім розміщенням агрегату",
+        "matches": [
+          {
+            "id": 1638,
+            "status": "confirmed",
+            "pp_id": 1610
+          }
+        ]
+      }
+    },
+    {
+      "row": 146,
+      "name": "СУПНИЦЯ HURAKAN HKN-FWP",
+      "np_url": "https://np.com.ua/product/supnyczya-10-l-hkn-fwp/",
+      "lab_url": "https://labresta.com.ua/supnytsia-hurakan-hkn-fwp/",
+      "hkn_tail": "FWP",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5056,
+          "article": "HKN-FWP",
+          "name": "Супниця Hurakan Hkn-fwp",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 5056,
+        "article": "HKN-FWP",
+        "name": "Супниця Hurakan Hkn-fwp",
+        "matches": [
+          {
+            "id": 1229,
+            "status": "confirmed",
+            "pp_id": 4152
+          }
+        ]
+      }
+    },
+    {
+      "row": 148,
+      "name": "ТІСТОМІС HURAKAN HKN-10SN НА 10 Л ОДНА ШВИДКІСТЬ",
+      "np_url": "https://np.com.ua/ru/product/testomes-na-10-l-odna-skorost-hkn-10sn/",
+      "lab_url": "https://labresta.com.ua/tistomis-hurakan-hkn-10sn/",
+      "hkn_tail": "10SN",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5012,
+          "article": "HKN-10SN",
+          "name": "Тістоміс Hurakan HKN-10SN на 10 л одна швидкість",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 5012,
+        "article": "HKN-10SN",
+        "name": "Тістоміс Hurakan HKN-10SN на 10 л одна швидкість",
+        "matches": [
+          {
+            "id": 1614,
+            "status": "confirmed",
+            "pp_id": 2733
+          }
+        ]
+      }
+    },
+    {
+      "row": 149,
+      "name": "ТІСТОМІС HURAKAN HKN-15HN ДЛЯ КPУТОГО ТІСТА",
+      "np_url": "https://np.com.ua/product/tistomis-hurakan-hkn-15hn-dlya-kputoho-tista/",
+      "lab_url": "https://labresta.com.ua/tistomis-hurakan-hkn-15hn-dlia-kputoho-tista/",
+      "hkn_tail": "15HN-DLYA-KPUTOHO-TISTA",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4823,
+          "article": "HKN-15HN",
+          "name": "Тістоміс Hurakan HKN-15HN для кpутого тіста",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4823,
+        "article": "HKN-15HN",
+        "name": "Тістоміс Hurakan HKN-15HN для кpутого тіста",
+        "matches": [
+          {
+            "id": 1195,
+            "status": "confirmed",
+            "pp_id": 2758
+          }
+        ]
+      }
+    },
+    {
+      "row": 150,
+      "name": "ТІСТОМІС HURAKAN HKN-20SN2V НА 20 Л ДВІ ШВИДКОСТІ",
+      "np_url": "https://np.com.ua/product/tistomis-hurakan-hkn-20sn2v-na-20-l-dvi-shvydkosti/",
+      "lab_url": "https://labresta.com.ua/tistomis-hurakan-hkn-20sn2v-20-l-2-shv./",
+      "hkn_tail": "20SN2V-NA-20-L-DVI-SHVYDKOSTI",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4837,
+          "article": "HKN-20SN2V",
+          "name": "Тістоміс Hurakan HKN-20SN2V на 20 л дві швидкості",
+          "colour": null
+        },
+        {
+          "sp_id": 5059,
+          "article": "HKN-M20SN2V",
+          "name": "Тістоміс Hurakan HKN-M20SN2V на 20 л дві швидкості",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4837,
+        "article": "HKN-20SN2V",
+        "name": "Тістоміс Hurakan HKN-20SN2V на 20 л дві швидкості",
+        "matches": [
+          {
+            "id": 1738,
+            "status": "confirmed",
+            "pp_id": 2725
+          }
+        ]
+      }
+    },
+    {
+      "row": 151,
+      "name": "ТІСТОМІС HURAKAN HKN-30SN2V НА 30 Л ДВІ ШВИДКОСТІ",
+      "np_url": "https://np.com.ua/product/tistomis-na-30-l-dvi-shvydkosti-hkn-30sn2v/",
+      "lab_url": "https://labresta.com.ua/tistomis-hurakan-hkn-30sn2v/",
+      "hkn_tail": "30SN2V",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5013,
+          "article": "HKN-30SN2V",
+          "name": "Тістоміс Hurakan HKN-30SN2V на 30 л дві швидкості",
+          "colour": null
+        },
+        {
+          "sp_id": 5052,
+          "article": "HKN-M30SN2V",
+          "name": "Тістоміс Hurakan HKN-M30SN2V на 30 л дві швидкості",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 5013,
+        "article": "HKN-30SN2V",
+        "name": "Тістоміс Hurakan HKN-30SN2V на 30 л дві швидкості",
+        "matches": [
+          {
+            "id": 1618,
+            "status": "confirmed",
+            "pp_id": 2717
+          }
+        ]
+      }
+    },
+    {
+      "row": 152,
+      "name": "ТІСТОМІС HURAKAN HKN-7.5HN ДЛЯ КPУТОГО ТІСТА",
+      "np_url": "https://np.com.ua/ru/product/testomes-hurakan-hkn-7-5hn-dlya-kputoho-testa/",
+      "lab_url": "https://labresta.com.ua/tistomis-hurakan-hkn-7.5hn-dlia-kputoho-tista/",
+      "hkn_tail": "7-5HN-DLYA-KPUTOHO-TESTA",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4822,
+          "article": "HKN-7.5HN",
+          "name": "Тістоміс Hurakan HKN-7.5HN для кpутого тіста",
+          "colour": null
+        },
+        {
+          "sp_id": 4716,
+          "article": "107812",
+          "name": "Настінний тримач для дисків Robot Coupe (107812)",
+          "colour": null
+        },
+        {
+          "sp_id": 5086,
+          "article": "150137",
+          "name": "Соковижималка Bartscher \"Power fresh\" (150197)",
+          "colour": null
+        },
+        {
+          "sp_id": 4657,
+          "article": "19047938",
+          "name": "Посудомийка фронтальна Asber GE-500 DD",
+          "colour": null
+        },
+        {
+          "sp_id": 4658,
+          "article": "19104673",
+          "name": "Посудомийка купольна Asber GEX-H500 DD",
+          "colour": null
+        },
+        {
+          "sp_id": 4656,
+          "article": "19104751",
+          "name": "Посудомийка купольна Asber GTX-H500 DD",
+          "colour": null
+        },
+        {
+          "sp_id": 4721,
+          "article": "1961W",
+          "name": "Комплект 7 дисків Robot Coupe (1961W)",
+          "colour": null
+        },
+        {
+          "sp_id": 4723,
+          "article": "27113",
+          "name": "Диск для кубиків 8x8x8 мм Robot Coupe (27113)",
+          "colour": null
+        },
+        {
+          "sp_id": 4795,
+          "article": "27164W",
+          "name": "Тертка для дерунів Robot Coupe (27164W)",
+          "colour": null
+        },
+        {
+          "sp_id": 4718,
+          "article": "27764",
+          "name": "Диск-тертка для пармезану Robot Coupe (27764)",
+          "colour": null
+        },
+        {
+          "sp_id": 4798,
+          "article": "28016W",
+          "name": "Диск для тертки 7 мм Robot Coupe (28016W)",
+          "colour": null
+        },
+        {
+          "sp_id": 4713,
+          "article": "28057W",
+          "name": "Диск для терки 2 мм Robot Coupe (28057W)",
+          "colour": null
+        },
+        {
+          "sp_id": 4725,
+          "article": "28073W",
+          "name": "Диск для тертки 4 мм Robot Coupe (28073W)",
+          "colour": null
+        },
+        {
+          "sp_id": 4709,
+          "article": "28173W",
+          "name": "Диск для нарізки соломкою 2x10 мм Robot Coupe (28173W)",
+          "colour": null
+        },
+        {
+          "sp_id": 4710,
+          "article": "28187",
+          "name": "Насадка для приготування картопляного пюре 2 мм Robot Coupe (28187)",
+          "colour": null
+        },
+        {
+          "sp_id": 4787,
+          "article": "28197W",
+          "name": "Диск для кубиків 12x12x12 мм Robot Coupe (28197W)",
+          "colour": null
+        },
+        {
+          "sp_id": 4874,
+          "article": "ACB7540B A R290",
+          "name": "Льодогенератор Apach ACB7540B A R290",
+          "colour": null
+        },
+        {
+          "sp_id": 4916,
+          "article": "AFN-801 EXP",
+          "name": "Шафа морозильна Fagor AFN-801 EXP NEO Concept 700 л",
+          "colour": null
+        },
+        {
+          "sp_id": 4917,
+          "article": "AFP-801 EXP",
+          "name": "Шафа холодильна Fagor AFP-801 EXP NEO Concept 700 л",
+          "colour": null
+        },
+        {
+          "sp_id": 4988,
+          "article": "AP7QM",
+          "name": "Піч конвекційна Apach AP7QM",
+          "colour": null
+        },
+        {
+          "sp_id": 4477,
+          "article": "AP7QM GAS",
+          "name": "Піч конвекційна Apach AP7QM GAS",
+          "colour": null
+        },
+        {
+          "sp_id": 5037,
+          "article": "AP7QT",
+          "name": "Пароконвектомат Apach AP7QT",
+          "colour": null
+        },
+        {
+          "sp_id": 4600,
+          "article": "APFE-47/2P/PL",
+          "name": "Фритюрниця Apach APFE-47/2P/PL 2 по 6 л",
+          "colour": null
+        },
+        {
+          "sp_id": 4632,
+          "article": "APFE-47P/PL",
+          "name": "Фритюрниця Apach APFE-47P/PL 13 л",
+          "colour": null
+        },
+        {
+          "sp_id": 4578,
+          "article": "APFE-47T/PL",
+          "name": "Фритюрниця Apach APFE-47T/PL електрична настільна",
+          "colour": null
+        },
+        {
+          "sp_id": 4631,
+          "article": "APFE-77P/PL",
+          "name": "Фритюрниця Apach APFE-77P/PL 2 по 13 л",
+          "colour": null
+        },
+        {
+          "sp_id": 4579,
+          "article": "APFE-77T/PL",
+          "name": "Фритюрниця Apach APFE-77T/PL електрична настільна",
+          "colour": null
+        },
+        {
+          "sp_id": 4768,
+          "article": "APGEW-87P/PL",
+          "name": "Вапогриль Apach APGEW-87P/PL ребр. чавун",
+          "colour": null
+        },
+        {
+          "sp_id": 4601,
+          "article": "APPE-47P/PL",
+          "name": "Макароноварка Apach APPE-47P/PL",
+          "colour": null
+        },
+        {
+          "sp_id": 4597,
+          "article": "APPE-77P/PL",
+          "name": "Макароноварка Apach APPE-77P/PL",
+          "colour": null
+        },
+        {
+          "sp_id": 4765,
+          "article": "APRE-77QP/PL",
+          "name": "Плита Apach APRE-77QP/PL 4-х конфорочна (INT)",
+          "colour": null
+        },
+        {
+          "sp_id": 4587,
+          "article": "APRE-77QT/PL",
+          "name": "Плита Apach APRE-77QT/PL 4-х конфорочна настільна (з підставкою)",
+          "colour": null
+        },
+        {
+          "sp_id": 4588,
+          "article": "APRE-77T",
+          "name": "Плита Apach APRE-77T електрична 4-конфорочна настільна (з підставкою)",
+          "colour": null
+        },
+        {
+          "sp_id": 4764,
+          "article": "APRE-77T/PL",
+          "name": "Плита Apach APRE-77T/PL електрична 4-конфорочна настільна",
+          "colour": null
+        },
+        {
+          "sp_id": 4766,
+          "article": "APRES-77P/PL",
+          "name": "Плита Apach APRES-77P/PL 4-х конфорочна (NP)",
+          "colour": null
+        },
+        {
+          "sp_id": 4589,
+          "article": "APRES-77T",
+          "name": "Плита Apach APRES-77T електрична 4-конфорочна настільна (з підставкою)",
+          "colour": null
+        },
+        {
+          "sp_id": 4583,
+          "article": "APRES-77T/PL",
+          "name": "Плита Apach APRES-77T/PL електрична 4-конфорочна настільна",
+          "colour": null
+        },
+        {
+          "sp_id": 4636,
+          "article": "APRG-117P/PL",
+          "name": "Плита Apach APRG-117P/PL 6-ти конфорочна газова",
+          "colour": null
+        },
+        {
+          "sp_id": 4568,
+          "article": "APRG-77T/PL",
+          "name": "Плита Apach APRG-77T/PL газова 4-комфорочна настільна",
+          "colour": null
+        },
+        {
+          "sp_id": 4598,
+          "article": "APRI-47P/PL",
+          "name": "Плита Apach APRI-47P/PL індукційна",
+          "colour": null
+        },
+        {
+          "sp_id": 4584,
+          "article": "APRI-47T/PL",
+          "name": "Плита Apach APRI-47T/PL індукційна настільна",
+          "colour": null
+        },
+        {
+          "sp_id": 5105,
+          "article": "APRI-77P",
+          "name": "Плита Apach APRI-77P індукційна",
+          "colour": null
+        },
+        {
+          "sp_id": 4599,
+          "article": "APRI-77P/PL",
+          "name": "Плита Apach APRI-77P/PL індукційна",
+          "colour": null
+        },
+        {
+          "sp_id": 4585,
+          "article": "APRI-77T/PL",
+          "name": "Плита Apach APRI-77T/PL індукційна настільна",
+          "colour": null
+        },
+        {
+          "sp_id": 4581,
+          "article": "APTE-47PL/PL",
+          "name": "Поверхня для смаження Apach APTE-47PL/PL гл. сталь",
+          "colour": null
+        },
+        {
+          "sp_id": 4767,
+          "article": "APTE-47PR/PL",
+          "name": "Поверхня для смаження Apach APTE-47PR/PL ребр. сталь",
+          "colour": null
+        },
+        {
+          "sp_id": 4586,
+          "article": "APTE-47TL/PL",
+          "name": "Поверхня для смаження Apach APTE-47TL/PL електрична настільна",
+          "colour": null
+        },
+        {
+          "sp_id": 4576,
+          "article": "APTE-47TR/PL",
+          "name": "Поверхня для смаження Apach APTE-47TR/PL настільна ребр. сталь",
+          "colour": null
+        },
+        {
+          "sp_id": 4580,
+          "article": "APTE-77PL/PL",
+          "name": "Поверхня для смаження Apach APTE-77PL/PL гл. сталь",
+          "colour": null
+        },
+        {
+          "sp_id": 4736,
+          "article": "APTE-77PLR/PL",
+          "name": "Поверхня для смаження Apach APTE-77PLR/PL гл. + ребр. сталь",
+          "colour": null
+        },
+        {
+          "sp_id": 4582,
+          "article": "APTE-77PR/PL",
+          "name": "Поверхня для смаження Apach APTE-77PR/PL ребр. сталь",
+          "colour": null
+        },
+        {
+          "sp_id": 4577,
+          "article": "APTE-77TL/PL",
+          "name": "Поверхня для смаження Apach APTE-77TL/PL електрична настільна",
+          "colour": null
+        },
+        {
+          "sp_id": 4574,
+          "article": "APTE-77TR/PL",
+          "name": "Поверхня для смаження Apach APTE-77TR/PL настільна ребр. сталь",
+          "colour": null
+        },
+        {
+          "sp_id": 4920,
+          "article": "ATM-2745",
+          "name": "Гриль контактний Tatra ATM-2745",
+          "colour": null
+        },
+        {
+          "sp_id": 4563,
+          "article": "BIN108.17-AG/ASC.B",
+          "name": "Бункер для зберігання льоду Apach BIN108.17-AG/ASC.B",
+          "colour": null
+        },
+        {
+          "sp_id": 5093,
+          "article": "CAFP-801",
+          "name": "Шафа холодильна Fagor CAFP-801 NEO Concept 700 л",
+          "colour": null
+        },
+        {
+          "sp_id": 4946,
+          "article": "E37S",
+          "name": "Кавомолка Ceado E37S",
+          "colour": null
+        },
+        {
+          "sp_id": 5088,
+          "article": "GV 470 EL",
+          "name": "Вапогриль Arris GV 470 EL",
+          "colour": null
+        },
+        {
+          "sp_id": 5139,
+          "article": "GV 870 EL",
+          "name": "Вапогриль Arris GV 870 EL",
+          "colour": null
+        },
+        {
+          "sp_id": 5018,
+          "article": "HKN-12(CR) SCE",
+          "name": "М'ясорубка Hurakan HKN-12(CR) SCE 170 кг/год",
+          "colour": null
+        },
+        {
+          "sp_id": 4997,
+          "article": "HKN-12SS",
+          "name": "М'ясорубка Hurakan HKN-12SS 750w нерж. сталь Reverse",
+          "colour": null
+        },
+        {
+          "sp_id": 4995,
+          "article": "HKN-12SSE",
+          "name": "М'ясорубка Hurakan HKN-12SSE 170 кг/год, нерж. сталь",
+          "colour": null
+        },
+        {
+          "sp_id": 5067,
+          "article": "HKN-DL775 black",
+          "name": "Лампа інфрачервона Hurakan HKN-DL775, 190 мм чорна",
+          "colour": "BLACK",
+          "filtered_out": "file has no colour, SP is BLACK"
+        },
+        {
+          "sp_id": 5066,
+          "article": "HKN-DL775 bronze",
+          "name": "Лампа інфрачервона Hurakan HKN-DL775, 190 мм бронзова",
+          "colour": "BRONZE",
+          "filtered_out": "file has no colour, SP is BRONZE"
+        },
+        {
+          "sp_id": 5022,
+          "article": "HKN-DL775 silver",
+          "name": "Лампа інфрачервона Hurakan HKN-DL775, 190 мм срібна",
+          "colour": "SILVER",
+          "filtered_out": "file has no colour, SP is SILVER"
+        },
+        {
+          "sp_id": 5068,
+          "article": "HKN-DL800 bronze",
+          "name": "Лампа інфрачервона Hurakan HKN-DL800, 275 мм бронзова",
+          "colour": "BRONZE",
+          "filtered_out": "file has no colour, SP is BRONZE"
+        },
+        {
+          "sp_id": 5007,
+          "article": "HKN-DL800 silver",
+          "name": "Лампа інфрачервона Hurakan HKN-DL800, 275 мм срібна",
+          "colour": "SILVER",
+          "filtered_out": "file has no colour, SP is SILVER"
+        },
+        {
+          "sp_id": 4903,
+          "article": "HKN-FWD370A",
+          "name": "Подрібнювач відходів Hurakan HKN-FWD370A",
+          "colour": null
+        },
+        {
+          "sp_id": 4769,
+          "article": "HKN-GW7M",
+          "name": "Гриль \"хот-дог\" Hurakan HKN-GW7M на 7 роликів",
+          "colour": null
+        },
+        {
+          "sp_id": 4751,
+          "article": "HKN-GW7M COVER",
+          "name": "Захисний екран для грилю \"хот-дог\" Hurakan HKN-GW7M на 7 роликів",
+          "colour": null
+        },
+        {
+          "sp_id": 4982,
+          "article": "HKN-ICF35Dx47",
+          "name": "Плита індукційна Hurakan HKN-ICF35Dx47 4-х конфорочна, 14000w",
+          "colour": null
+        },
+        {
+          "sp_id": 5055,
+          "article": "HKN-ICF70D",
+          "name": "Плита індукційна Hurakan HKN-ICF70D 2-х конфорочна, 7000w",
+          "colour": null
+        },
+        {
+          "sp_id": 5069,
+          "article": "HKN-ICF70D2V",
+          "name": "Плита індукційна Hurakan HKN-ICF70D2V 2-х конфорочна, 7000w",
+          "colour": null
+        },
+        {
+          "sp_id": 4812,
+          "article": "HKN-IMF17",
+          "name": "Льодогенератор заливного типу Hurakan HKN-IMF17, 15 кг пальчик",
+          "colour": null
+        },
+        {
+          "sp_id": 4460,
+          "article": "HKN-ISV7",
+          "name": "Шприц для ковбас Hurakan HKN-ISV7, 7 л",
+          "colour": null
+        },
+        {
+          "sp_id": 4999,
+          "article": "HKN-ISV7P BLACK",
+          "name": "Шприц для ковбас Hurakan HKN-ISV7P Black, 7 л",
+          "colour": "BLACK",
+          "filtered_out": "file has no colour, SP is BLACK"
+        },
+        {
+          "sp_id": 4860,
+          "article": "HKN-KS7",
+          "name": "Міксер планетарний Hurakan HKN-KS7 на 7 л",
+          "colour": null
+        },
+        {
+          "sp_id": 4619,
+          "article": "HKN-KS7M",
+          "name": "Міксер планетарний Hurakan HKN-KS7M на 7 л",
+          "colour": null
+        },
+        {
+          "sp_id": 5076,
+          "article": "HKN-PSL730",
+          "name": "Поверхня для смаження Hurakan HKN-PSL730 гладка",
+          "colour": null
+        },
+        {
+          "sp_id": 5077,
+          "article": "HKN-PSLR730",
+          "name": "Поверхня для смаження Hurakan HKN-PSLR730 гладка+ребро",
+          "colour": null
+        },
+        {
+          "sp_id": 4693,
+          "article": "HKN-UPD278B black",
+          "name": "Вітрина холодильна Hurakan HKN-UPD278B Black",
+          "colour": "BLACK",
+          "filtered_out": "file has no colour, SP is BLACK"
+        },
+        {
+          "sp_id": 4847,
+          "article": "HKN-UPD78B black",
+          "name": "Вітрина холодильна Hurakan HKN-UPD78B Black",
+          "colour": "BLACK",
+          "filtered_out": "file has no colour, SP is BLACK"
+        },
+        {
+          "sp_id": 4809,
+          "article": "HKN-UPD78W white",
+          "name": "Вітрина холодильна Hurakan HKN-UPD78W White",
+          "colour": null
+        },
+        {
+          "sp_id": 4692,
+          "article": "HKN-WNC470CDW",
+          "name": "Шафа для вина Hurakan HKN-WNC470CDW",
+          "colour": null
+        },
+        {
+          "sp_id": 5015,
+          "article": "MIG 27 SS",
+          "name": "Нвч піч Scan MIG 27 SS",
+          "colour": null
+        },
+        {
+          "sp_id": 4802,
+          "article": "MIRRA 275 CE",
+          "name": "Слайсер Sirman Mirra 275 CE",
+          "colour": null
+        },
+        {
+          "sp_id": 4941,
+          "article": "RTC 237",
+          "name": "Шафа холодильна Scan RTC 237 we",
+          "colour": null
+        },
+        {
+          "sp_id": 4955,
+          "article": "TEF.47",
+          "name": "Фритюрниця Tatra електрична TEF.47 (з кошиками 2 шт.) 400 мм",
+          "colour": null
+        },
+        {
+          "sp_id": 4954,
+          "article": "TEF.87",
+          "name": "Фритюрниця Tatra електрична TEF.87 (з кошиками 4 шт.) 800 мм",
+          "colour": null
+        },
+        {
+          "sp_id": 4947,
+          "article": "TEP.47",
+          "name": "Макароноварка Tatra електрична TEP.47 (з кошиками)",
+          "colour": null
+        },
+        {
+          "sp_id": 4948,
+          "article": "TER.47",
+          "name": "Плита електрична 2-х конфорочна TER.47",
+          "colour": null
+        },
+        {
+          "sp_id": 4949,
+          "article": "TER.87",
+          "name": "Плита електрична Tatra 4-х конфорочна TER.87",
+          "colour": null
+        },
+        {
+          "sp_id": 4950,
+          "article": "TET.47R",
+          "name": "Поверхня для смаження Tatra електрична TET.47R 400 мм (ребро)*",
+          "colour": null
+        },
+        {
+          "sp_id": 4951,
+          "article": "TET.47S",
+          "name": "Поверхня для смаження Tatra електрична 400 мм (гладка) TET.47S",
+          "colour": null
+        },
+        {
+          "sp_id": 4952,
+          "article": "TET.87R",
+          "name": "Поверхня для смаження Tatra електрична TET.87R 800мм (ребро)",
+          "colour": null
+        },
+        {
+          "sp_id": 4953,
+          "article": "TET.87S",
+          "name": "Поверхня для смаження Tatra електрична TET.87S 800 мм (гладка)",
+          "colour": null
+        },
+        {
+          "sp_id": 4737,
+          "article": "TET.87SR",
+          "name": "Поверхня для смаження Tatra електрична TET.87SR 800 мм (гладка+ребро)",
+          "colour": null
+        },
+        {
+          "sp_id": 4803,
+          "article": "TPI 07 M.V",
+          "name": "Пароконвектомат Tatra TPI 07 M.V",
+          "colour": null
+        },
+        {
+          "sp_id": 4971,
+          "article": "TRC700BT",
+          "name": "Шафа морозильна Tatra TRC700BT",
+          "colour": null
+        },
+        {
+          "sp_id": 4612,
+          "article": "TRC700BTS",
+          "name": "Шафа морозильна Tatra TRC700BTS",
+          "colour": null
+        },
+        {
+          "sp_id": 4969,
+          "article": "TRC700TN",
+          "name": "Шафа холодильна Tatra TRC700TN",
+          "colour": null
+        },
+        {
+          "sp_id": 4607,
+          "article": "TRC700TNS",
+          "name": "Шафа холодильна Tatra TRC700TNS",
+          "colour": null
+        },
+        {
+          "sp_id": 5109,
+          "article": "С-17 PN-w",
+          "name": "Вітрина кондитерська Cold с-17 PN-w (з агр, wenge mag., бронза, контроль вологості)",
+          "colour": "BRONZE",
+          "filtered_out": "file has no colour, SP is BRONZE"
+        }
+      ],
+      "verdict": "AMBIGUOUS",
+      "notes": [
+        "94 SPs match after colour filter (tok exact=0, tail contained=0)"
+      ]
+    },
+    {
+      "row": 153,
+      "name": "ТІСТОМІС HURAKAN HKN-8SN НА 8 Л ОДНА ШВИДКІСТЬ",
+      "np_url": "https://np.com.ua/ru/product/testomes-na-8-l-odna-skorost-hkn-8sn/",
+      "lab_url": "https://labresta.com.ua/tistomis-hurakan-hkn-8sn-8-litriv/",
+      "hkn_tail": "8SN",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5011,
+          "article": "HKN-8SN",
+          "name": "Тістоміс Hurakan HKN-8SN на 8 л одна швидкість",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 5011,
+        "article": "HKN-8SN",
+        "name": "Тістоміс Hurakan HKN-8SN на 8 л одна швидкість",
+        "matches": [
+          {
+            "id": 1739,
+            "status": "confirmed",
+            "pp_id": 2734
+          }
+        ]
+      }
+    },
+    {
+      "row": 155,
+      "name": "ТІСТОМІС HURAKAN HKN-M50SN2V НА 50 Л ДВІ ШВИДКОСТІ",
+      "np_url": "https://np.com.ua/product/tistomis-hurakan-hkn-m50sn2v-na-50-l-dvi-shvydkosti/",
+      "lab_url": "https://labresta.com.ua/tistomis-hurakan-hkn-m50sn2v/",
+      "hkn_tail": "M50SN2V-NA-50-L-DVI-SHVYDKOSTI",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4731,
+          "article": "HKN-M50SN2V",
+          "name": "Тістоміс Hurakan HKN-M50SN2V на 50 л дві швидкості (220B)",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4731,
+        "article": "HKN-M50SN2V",
+        "name": "Тістоміс Hurakan HKN-M50SN2V на 50 л дві швидкості (220B)",
+        "matches": [
+          {
+            "id": 1655,
+            "status": "confirmed",
+            "pp_id": 2785
+          }
+        ]
+      }
+    },
+    {
+      "row": 156,
+      "name": "ТІСТОМІС HURAKAN HKN-M60SN2V НА 60 Л ДВІ ШВИДКОСТІ",
+      "np_url": "https://np.com.ua/product/tistomis-hurakan-hkn-m60sn2v-na-60-l-dvi-shvydkosti/",
+      "lab_url": "https://labresta.com.ua/tistomis-hurakan-hkn-m60sn2v/",
+      "hkn_tail": "M60SN2V-NA-60-L-DVI-SHVYDKOSTI",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4553,
+          "article": "HKN-M60SN2V",
+          "name": "Тістоміс Hurakan HKN-M60SN2V на 60 л дві швидкості (220B)",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4553,
+        "article": "HKN-M60SN2V",
+        "name": "Тістоміс Hurakan HKN-M60SN2V на 60 л дві швидкості (220B)",
+        "matches": [
+          {
+            "id": 1656,
+            "status": "confirmed",
+            "pp_id": 2786
+          }
+        ]
+      }
+    },
+    {
+      "row": 157,
+      "name": "ТІСТОРОЗКАТКА HURAKAN HKN-DRT520",
+      "np_url": "https://np.com.ua/ru/product/tiestoraskatka-hurakan-hkn-drt520/",
+      "lab_url": "https://labresta.com.ua/tistorozkatka-hurakan-hkn-drt520/",
+      "hkn_tail": "DRT520",
+      "file_colour": null,
+      "sp_hits": [],
+      "verdict": "NO_SP",
+      "notes": []
+    },
+    {
+      "row": 158,
+      "name": "ТІСТОРОЗКАТКА ДЛЯ ПІЦИ HURAKAN HKN-APD30",
+      "np_url": "https://np.com.ua/product/tistorozkatka-dlya-pitsy-hurakan-hkn-apd30/",
+      "lab_url": "https://labresta.com.ua/tistorozkatka-hurakan-hkn-apd30/",
+      "hkn_tail": "APD30",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4756,
+          "article": "HKN-APD30",
+          "name": "Тісторозкатка для піци Hurakan HKN-APD30",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4756,
+        "article": "HKN-APD30",
+        "name": "Тісторозкатка для піци Hurakan HKN-APD30",
+        "matches": [
+          {
+            "id": 1405,
+            "status": "confirmed",
+            "pp_id": 2889
+          }
+        ]
+      }
+    },
+    {
+      "row": 159,
+      "name": "ТІСТОРОЗКАТКА ДЛЯ ПІЦИ HURAKAN HKN-APD40",
+      "np_url": "https://np.com.ua/product/tistorozkatka-dlya-pitsy-hurakan-hkn-apd40/",
+      "lab_url": "https://labresta.com.ua/tistorozkatka-hurakan-hkn-apd40/",
+      "hkn_tail": "APD40",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4757,
+          "article": "HKN-APD40",
+          "name": "Тісторозкатка для піци Hurakan HKN-APD40",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4757,
+        "article": "HKN-APD40",
+        "name": "Тісторозкатка для піци Hurakan HKN-APD40",
+        "matches": [
+          {
+            "id": 1406,
+            "status": "confirmed",
+            "pp_id": 2892
+          }
+        ]
+      }
+    },
+    {
+      "row": 160,
+      "name": "ТІСТОРОЗКАТКА ПІДЛОГОВА HURAKAN HKN-DRF520",
+      "np_url": "https://np.com.ua/ru/product/testoraskatka-napolnaya-hurakan-hkn-drf520/",
+      "lab_url": "https://labresta.com.ua/tistorozkatka-hurakan-hkn-drf520/",
+      "hkn_tail": "DRF520",
+      "file_colour": null,
+      "sp_hits": [],
+      "verdict": "NO_SP",
+      "notes": []
+    },
+    {
+      "row": 162,
+      "name": "ФАРШЕМІШАЛКА HURAKAN HKN-MM40P",
+      "np_url": "https://np.com.ua/ru/product/farshemeshalka-hurakan-hkn-mm40p/",
+      "lab_url": "https://labresta.com.ua/farshemishalka-hurakan-hkn-mm40p/",
+      "hkn_tail": "MM40P",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4628,
+          "article": "HKN-MM40P",
+          "name": "Фаршемішалка Hurakan HKN-MM40P",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4628,
+        "article": "HKN-MM40P",
+        "name": "Фаршемішалка Hurakan HKN-MM40P",
+        "matches": [
+          {
+            "id": 1281,
+            "status": "confirmed",
+            "pp_id": 3443
+          }
+        ]
+      }
+    },
+    {
+      "row": 163,
+      "name": "ФАРШЕМІШАЛКА HURAKAN HKN-MM60P",
+      "np_url": "https://np.com.ua/ru/product/farshemeshalka-hurakan-hkn-mm60p/",
+      "lab_url": "https://labresta.com.ua/farshemishalka-hurakan-hkn-mm60p/",
+      "hkn_tail": "MM60P",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4629,
+          "article": "HKN-MM60P",
+          "name": "Фаршемішалка Hurakan HKN-MM60P",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4629,
+        "article": "HKN-MM60P",
+        "name": "Фаршемішалка Hurakan HKN-MM60P",
+        "matches": [
+          {
+            "id": 1282,
+            "status": "confirmed",
+            "pp_id": 3444
+          }
+        ]
+      }
+    },
+    {
+      "row": 164,
+      "name": "ФРИЗЕР ДЛЯ МОРОЗИВА HURAKAN HKN-BQ22CT",
+      "np_url": "https://np.com.ua/product/frizer-dlya-morozyva-hurakan-hkn-bq22ct/",
+      "lab_url": "https://labresta.com.ua/frizer-dlia-morozyva-hurakan-hkn-bq22ct/",
+      "hkn_tail": "BQ22CT",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4814,
+          "article": "HKN-BQ22CT",
+          "name": "Фризер для морозива Hurakan HKN-BQ22CT",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4814,
+        "article": "HKN-BQ22CT",
+        "name": "Фризер для морозива Hurakan HKN-BQ22CT",
+        "matches": [
+          {
+            "id": 1210,
+            "status": "confirmed",
+            "pp_id": 1698
+          }
+        ]
+      }
+    },
+    {
+      "row": 165,
+      "name": "ФРИТЮРНИЦЯ HURAKAN HKN-FT1010N ПОДВІЙНА З КРАНОМ 10+10 Л",
+      "np_url": "https://np.com.ua/ru/product/frytyurnycza-dvojnaya-s-kranom-10-10-l-hkn-ft1010n/",
+      "lab_url": "https://labresta.com.ua/frytiurnytsia-hurakan-hkn-ft1010n-1010-litriv-iz-kranom/",
+      "hkn_tail": "FT1010N",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5063,
+          "article": "HKN-FT1010N",
+          "name": "Фритюрниця Hurakan HKN-FT1010N подвійна з краном 10+10 л",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 5063,
+        "article": "HKN-FT1010N",
+        "name": "Фритюрниця Hurakan HKN-FT1010N подвійна з краном 10+10 л",
+        "matches": [
+          {
+            "id": 1743,
+            "status": "confirmed",
+            "pp_id": 599
+          }
+        ]
+      }
+    },
+    {
+      "row": 168,
+      "name": "ФРИТЮРНИЦЯ HURAKAN HKN-FT6N ОДИНАРНА 6 Л",
+      "np_url": "https://np.com.ua/product/frytyurnyczya-odynarna-6-l-hkn-ft6n/",
+      "lab_url": "https://labresta.com.ua/frytiurnytsia-hurakan-hkn-ft6n/",
+      "hkn_tail": "FT6N",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5061,
+          "article": "HKN-FT6N",
+          "name": "Фритюрниця Hurakan HKN-FT6N одинарна 6 л",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 5061,
+        "article": "HKN-FT6N",
+        "name": "Фритюрниця Hurakan HKN-FT6N одинарна 6 л",
+        "matches": [
+          {
+            "id": 1414,
+            "status": "confirmed",
+            "pp_id": 603
+          }
+        ]
+      }
+    },
+    {
+      "row": 169,
+      "name": "ФРИТЮРНИЦЯ HURAKAN HKN-FT88N ПОДВІЙНА З КРАНОМ 8+8 Л",
+      "np_url": "https://np.com.ua/ru/product/frytiurnytsa-hurakan-hkn-ft8n-odynarnaya-s-kranom-8-8-l/",
+      "lab_url": "https://labresta.com.ua/frytiurnytsia-hurakan-hkn-ft88n-z-kranom-88-l/",
+      "hkn_tail": "FT8N-ODYNARNAYA-S-KRANOM-8-8-L",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4627,
+          "article": "HKN-FT8N",
+          "name": "Фритюрниця Hurakan HKN-FT8N одинарна з краном 8 л",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4627,
+        "article": "HKN-FT8N",
+        "name": "Фритюрниця Hurakan HKN-FT8N одинарна з краном 8 л",
+        "matches": [
+          {
+            "id": 1416,
+            "status": "confirmed",
+            "pp_id": 663
+          }
+        ]
+      }
+    },
+    {
+      "row": 173,
+      "name": "ХЛІБОРІЗКА HURAKAN HKN-PICO12M",
+      "np_url": "https://np.com.ua/ru/product/hleborezka-hkn-pico12m/",
+      "lab_url": "https://labresta.com.ua/khliborizka-hurakan-hkn-pico12m/",
+      "hkn_tail": "PICO12M",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5010,
+          "article": "HKN-PICO12M",
+          "name": "Хліборізка Hurakan HKN-PICO12M",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 5010,
+        "article": "HKN-PICO12M",
+        "name": "Хліборізка Hurakan HKN-PICO12M",
+        "matches": [
+          {
+            "id": 1291,
+            "status": "confirmed",
+            "pp_id": 2947
+          }
+        ]
+      }
+    },
+    {
+      "row": 174,
+      "name": "ХОЛОДИЛЬНА ВІТРИНА-НАДСТАВКА HURAKAN HKN-GXD1200GC ЗІ СКЛОМ",
+      "np_url": "https://np.com.ua/product/holodylna-vitryna-nadstavka-zi-sklom-hkn-gxd1200gc/",
+      "lab_url": "https://labresta.com.ua/vitryna-nastilna-hurakan-hkn-gxd1200gc-kholodylna-dlia-topinhu/",
+      "hkn_tail": "GXD1200GC",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5043,
+          "article": "HKN-GXD1200GC",
+          "name": "Холодильна вітрина-надставка Hurakan HKN-GXD1200GC зі склом",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 5043,
+        "article": "HKN-GXD1200GC",
+        "name": "Холодильна вітрина-надставка Hurakan HKN-GXD1200GC зі склом",
+        "matches": [
+          {
+            "id": 1754,
+            "status": "confirmed",
+            "pp_id": 2092
+          }
+        ]
+      }
+    },
+    {
+      "row": 175,
+      "name": "ХОЛОДИЛЬНА ВІТРИНА-НАДСТАВКА HURAKAN HKN-GXD1400GC ЗІ СКЛОМ",
+      "np_url": "https://np.com.ua/product/holodylna-vitryna-nadstavka-zi-sklom-hkn-gxd1400gc/",
+      "lab_url": "https://labresta.com.ua/vitryna-nastilna-hurakan-hkn-gxd1400gc-kholodylna-dlia-topinhu/",
+      "hkn_tail": "GXD1400GC",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4938,
+          "article": "HKN-GXD1400GC",
+          "name": "Холодильна вітрина-надставка Hurakan HKN-GXD1400GC зі склом",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4938,
+        "article": "HKN-GXD1400GC",
+        "name": "Холодильна вітрина-надставка Hurakan HKN-GXD1400GC зі склом",
+        "matches": [
+          {
+            "id": 1755,
+            "status": "confirmed",
+            "pp_id": 2093
+          }
+        ]
+      }
+    },
+    {
+      "row": 176,
+      "name": "ХОЛОДИЛЬНА ВІТРИНА-НАДСТАВКА HURAKAN HKN-GXD1500GC ЗІ СКЛОМ",
+      "np_url": "https://np.com.ua/ru/product/holodylnaya-vytryna-nadstavka-so-steklom-hkn-gxd1500gc/",
+      "lab_url": "https://labresta.com.ua/vitryna-nastilna-hurakan-hkn-gxd1500gc-kholodylna-dlia-topinhu/",
+      "hkn_tail": "GXD1500GC",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4937,
+          "article": "HKN-GXD1500GC",
+          "name": "Холодильна вітрина-надставка Hurakan HKN-GXD1500GC зі склом",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4937,
+        "article": "HKN-GXD1500GC",
+        "name": "Холодильна вітрина-надставка Hurakan HKN-GXD1500GC зі склом",
+        "matches": [
+          {
+            "id": 1756,
+            "status": "confirmed",
+            "pp_id": 2091
+          }
+        ]
+      }
+    },
+    {
+      "row": 177,
+      "name": "ХОЛОДИЛЬНА ВІТРИНА-НАДСТАВКА HURAKAN HKN-GXD1800GC ЗІ СКЛОМ",
+      "np_url": "https://np.com.ua/ru/product/holodylnaya-vytryna-nadstavka-so-steklom-hkn-gxd1800gc/",
+      "lab_url": "https://labresta.com.ua/vitryna-nastilna-hurakan-hkn-gxd1800gc-kholodylna-dlia-topinhu/",
+      "hkn_tail": "GXD1800GC",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4939,
+          "article": "HKN-GXD1800GC",
+          "name": "Холодильна вітрина-надставка Hurakan HKN-GXD1800GC зі склом",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4939,
+        "article": "HKN-GXD1800GC",
+        "name": "Холодильна вітрина-надставка Hurakan HKN-GXD1800GC зі склом",
+        "matches": [
+          {
+            "id": 1757,
+            "status": "confirmed",
+            "pp_id": 2094
+          }
+        ]
+      }
+    },
+    {
+      "row": 178,
+      "name": "ХОЛОДИЛЬНА ВІТРИНА-НАДСТАВКА HURAKAN HKN-GXD2000GC ЗІ СКЛОМ",
+      "np_url": "https://np.com.ua/ru/product/holodylnaya-vytryna-nadstavka-so-steklom-hkn-gxd2000gc/",
+      "lab_url": "https://labresta.com.ua/vitryna-nastilna-hurakan-hkn-gxd2000gc-kholodylna-dlia-topinhu/",
+      "hkn_tail": "GXD2000GC",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 5044,
+          "article": "HKN-GXD2000GC",
+          "name": "Холодильна вітрина-надставка Hurakan HKN-GXD2000GC зі склом",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 5044,
+        "article": "HKN-GXD2000GC",
+        "name": "Холодильна вітрина-надставка Hurakan HKN-GXD2000GC зі склом",
+        "matches": [
+          {
+            "id": 1758,
+            "status": "confirmed",
+            "pp_id": 2095
+          }
+        ]
+      }
+    },
+    {
+      "row": 180,
+      "name": "ШАФА БАРНА ХОЛОДИЛЬНА HURAKAN HKN-DB125H НА 115 Л, СКЛЯНІ РОЗПАШНІ ДВЕРІ  865 ММ",
+      "np_url": "https://np.com.ua/product/shafa-barna-kholodylna-hurakan-hkn-db125h-na-115-l-sklyani-rozpashni-dveri-865-mm/",
+      "lab_url": "https://labresta.com.ua/barna-kholodylna-shafa-hurakan-hkn-db125h/",
+      "hkn_tail": "DB125H-NA-115-L-SKLYANI-ROZPASHNI-DVERI-865-MM",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4738,
+          "article": "HKN-DB125H",
+          "name": "Шафа барна холодильна Hurakan HKN-DB125H на 115 л, скляні розпашні двері 865 мм",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4738,
+        "article": "HKN-DB125H",
+        "name": "Шафа барна холодильна Hurakan HKN-DB125H на 115 л, скляні розпашні двері 865 мм",
+        "matches": [
+          {
+            "id": 1740,
+            "status": "confirmed",
+            "pp_id": 1835
+          }
+        ]
+      }
+    },
+    {
+      "row": 181,
+      "name": "ШАФА БАРНА ХОЛОДИЛЬНА HURAKAN HKN-DB205S НА 200 Л, СКЛЯНІ РОЗСУВНІ ДВЕРІ 865 ММ",
+      "np_url": "https://np.com.ua/ru/product/shkaf-barnyj-kholodylnyj-hurakan-hkn-db205s-na-200-l-steklyannye-razdvyzhnye-dvery/",
+      "lab_url": "https://labresta.com.ua/barna-kholodylna-shafa-hurakan-hkn-db205s/",
+      "hkn_tail": "DB205S-NA-200-L-STEKLYANNYE-RAZDVYZHNYE-DVERY",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4680,
+          "article": "HKN-DB205S",
+          "name": "Шафа барна холодильна Hurakan HKN-DB205S на 200 л, скляні розсувні двері 865 мм",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4680,
+        "article": "HKN-DB205S",
+        "name": "Шафа барна холодильна Hurakan HKN-DB205S на 200 л, скляні розсувні двері 865 мм",
+        "matches": [
+          {
+            "id": 1741,
+            "status": "confirmed",
+            "pp_id": 1834
+          }
+        ]
+      }
+    },
+    {
+      "row": 182,
+      "name": "ШАФА БАРНА ХОЛОДИЛЬНА HURAKAN HKN-DB335S НА 300 Л, СКЛЯНІ РОЗСУВНІ ДВЕРІ 865 ММ",
+      "np_url": "https://np.com.ua/ru/product/shkaf-barnyj-kholodylnyj-hurakan-hkn-db335s-na-300-l-steklyannye-razdvyzhnye-dvery/",
+      "lab_url": "https://labresta.com.ua/barna-kholodylna-shafa-hurakan-hkn-db335s/",
+      "hkn_tail": "DB335S-NA-300-L-STEKLYANNYE-RAZDVYZHNYE-DVERY",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4681,
+          "article": "HKN-DB335S",
+          "name": "Шафа барна холодильна Hurakan HKN-DB335S на 300 л, скляні розсувні двері 865 мм",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4681,
+        "article": "HKN-DB335S",
+        "name": "Шафа барна холодильна Hurakan HKN-DB335S на 300 л, скляні розсувні двері 865 мм",
+        "matches": [
+          {
+            "id": 1742,
+            "status": "confirmed",
+            "pp_id": 1829
+          }
+        ]
+      }
+    },
+    {
+      "row": 183,
+      "name": "ШАФА ДЛЯ ВИНА HURAKAN HKN-WNC110T",
+      "np_url": "https://np.com.ua/product/shafa-dlya-vyna-hurakan-hkn-wnc110t/",
+      "lab_url": "https://labresta.com.ua/shafa-dlia-vyna-hurakan-hkn-wnc110t/",
+      "hkn_tail": "WNC110T",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4691,
+          "article": "HKN-WNC110T",
+          "name": "Шафа для вина Hurakan HKN-WNC110T",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4691,
+        "article": "HKN-WNC110T",
+        "name": "Шафа для вина Hurakan HKN-WNC110T",
+        "matches": [
+          {
+            "id": 1320,
+            "status": "confirmed",
+            "pp_id": 5414
+          }
+        ]
+      }
+    },
+    {
+      "row": 184,
+      "name": "ШАФА ДЛЯ ВИНА HURAKAN HKN-WNC470CDW",
+      "np_url": "https://np.com.ua/product/shafa-dlya-vyna-hurakan-hkn-wnc470cdw/",
+      "lab_url": "https://labresta.com.ua/shafa-dlia-vyna-hurakan-hkn-wnc470cdw/",
+      "hkn_tail": "WNC470CDW",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4692,
+          "article": "HKN-WNC470CDW",
+          "name": "Шафа для вина Hurakan HKN-WNC470CDW",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4692,
+        "article": "HKN-WNC470CDW",
+        "name": "Шафа для вина Hurakan HKN-WNC470CDW",
+        "matches": [
+          {
+            "id": 1321,
+            "status": "confirmed",
+            "pp_id": 5415
+          }
+        ]
+      }
+    },
+    {
+      "row": 188,
+      "name": "ШАФА МОРОЗИЛЬНА БАРНА HURAKAN HKN-BCS143F",
+      "np_url": "https://np.com.ua/product/shafa-morozylna-barna-hurakan-hkn-bcs143f/",
+      "lab_url": "https://labresta.com.ua/shafa-morozylna-barna-hurakan-hkn-bcs143f/",
+      "hkn_tail": "BCS143F",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4679,
+          "article": "HKN-BCS143F",
+          "name": "Шафа морозильна барна Hurakan HKN-BCS143F",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4679,
+        "article": "HKN-BCS143F",
+        "name": "Шафа морозильна барна Hurakan HKN-BCS143F",
+        "matches": [
+          {
+            "id": 1207,
+            "status": "confirmed",
+            "pp_id": 5475
+          }
+        ]
+      }
+    },
+    {
+      "row": 191,
+      "name": "ШАФА МОРОЗИЛЬНА БАРНА HURAKAN HKN-UF100G НА 88 Л, СКЛЯНІ РОЗПАШНІ ДВЕРІ",
+      "np_url": "https://np.com.ua/product/shafa-morozylna-hurakan-hkn-uf100g-na-88-l-sklyani-rozpashni-dveri/",
+      "lab_url": "https://labresta.com.ua/shafa-morozylna-barna-hurakan-hkn-uf100g/",
+      "hkn_tail": "UF100G-NA-88-L-SKLYANI-ROZPASHNI-DVERI",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4740,
+          "article": "HKN-UF100G",
+          "name": "Шафа морозильна барна Hurakan HKN-UF100G на 88 л, скляні розпашні двері",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4740,
+        "article": "HKN-UF100G",
+        "name": "Шафа морозильна барна Hurakan HKN-UF100G на 88 л, скляні розпашні двері",
+        "matches": [
+          {
+            "id": 1672,
+            "status": "confirmed",
+            "pp_id": 5478
+          }
+        ]
+      }
+    },
+    {
+      "row": 192,
+      "name": "ШАФА РОЗСТІЙНА HURAKAN HKN-XLT196M",
+      "np_url": "https://np.com.ua/product/shafa-rozstijna-hkn-xlt196m/",
+      "lab_url": "https://labresta.com.ua/shafa-rozstiina-hurakan-hkn-xlt196m/",
+      "hkn_tail": "XLT196M",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4990,
+          "article": "HKN-XLT196M",
+          "name": "Шафа розстійна Hurakan HKN-XLT196M",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4990,
+        "article": "HKN-XLT196M",
+        "name": "Шафа розстійна Hurakan HKN-XLT196M",
+        "matches": [
+          {
+            "id": 1324,
+            "status": "confirmed",
+            "pp_id": 5008
+          }
+        ]
+      }
+    },
+    {
+      "row": 200,
+      "name": "ШАФА ХОЛОДИЛЬНА БАРНА HURAKAN HKN-BC145 НА 100 Л, СКЛЯНІ РОЗПАШНІ ДВЕРІ",
+      "np_url": "https://np.com.ua/product/shafa-kholodylna-hurakan-hkn-bc145-na-100-l-sklyani-rozpashni-dveri/",
+      "lab_url": "https://labresta.com.ua/shafa-kholodylna-barna-hurakan-hkn-bc145/",
+      "hkn_tail": "BC145-NA-100-L-SKLYANI-ROZPASHNI-DVERI",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4739,
+          "article": "HKN-BC145",
+          "name": "Шафа холодильна барна Hurakan HKN-BC145 на 100 л, скляні розпашні двері",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4739,
+        "article": "HKN-BC145",
+        "name": "Шафа холодильна барна Hurakan HKN-BC145 на 100 л, скляні розпашні двері",
+        "matches": [
+          {
+            "id": 1619,
+            "status": "confirmed",
+            "pp_id": 5477
+          }
+        ]
+      }
+    },
+    {
+      "row": 201,
+      "name": "ШАФА ХОЛОДИЛЬНА БАРНА HURAKAN HKN-BCS143",
+      "np_url": "https://np.com.ua/product/shafa-kholodylna-barna-hurakan-hkn-bcs143/",
+      "lab_url": "https://labresta.com.ua/shafa-kholodylna-barna-hurakan-hkn-bcs143/",
+      "hkn_tail": "BCS143",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4678,
+          "article": "HKN-BCS143",
+          "name": "Шафа холодильна барна Hurakan HKN-BCS143",
+          "colour": null
+        },
+        {
+          "sp_id": 4679,
+          "article": "HKN-BCS143F",
+          "name": "Шафа морозильна барна Hurakan HKN-BCS143F",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4678,
+        "article": "HKN-BCS143",
+        "name": "Шафа холодильна барна Hurakan HKN-BCS143",
+        "matches": [
+          {
+            "id": 1206,
+            "status": "confirmed",
+            "pp_id": 5476
+          }
+        ]
+      }
+    },
+    {
+      "row": 204,
+      "name": "ШАФА ШОКОВОЇ ЗАМОРОЗКИ HURAKAN HKN-BCF10M",
+      "np_url": "https://np.com.ua/product/shafa-shokovoyi-zamorozky-hurakan-hkn-bcf10m/",
+      "lab_url": "https://labresta.com.ua/shafa-shokovoho-zamorozhuvannia-hurakan-hkn-bcf10m/",
+      "hkn_tail": "BCF10M",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4909,
+          "article": "HKN-BCF10M",
+          "name": "Шафа шокової заморозки Hurakan HKN-BCF10M",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4909,
+        "article": "HKN-BCF10M",
+        "name": "Шафа шокової заморозки Hurakan HKN-BCF10M",
+        "matches": [
+          {
+            "id": 1620,
+            "status": "confirmed",
+            "pp_id": 5040
+          }
+        ]
+      }
+    },
+    {
+      "row": 205,
+      "name": "ШАФА ШОКОВОЇ ЗАМОРОЗКИ HURAKAN HKN-BCF5M",
+      "np_url": "https://np.com.ua/product/shafa-shokovoyi-zamorozky-hurakan-hkn-bcf5m/",
+      "lab_url": "https://labresta.com.ua/shafa-shokovoho-zamorozhuvannia-hurakan-hkn-bcf5m/",
+      "hkn_tail": "BCF5M",
+      "file_colour": null,
+      "sp_hits": [
+        {
+          "sp_id": 4908,
+          "article": "HKN-BCF5M",
+          "name": "Шафа шокової заморозки Hurakan HKN-BCF5M",
+          "colour": null
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4908,
+        "article": "HKN-BCF5M",
+        "name": "Шафа шокової заморозки Hurakan HKN-BCF5M",
+        "matches": [
+          {
+            "id": 1621,
+            "status": "confirmed",
+            "pp_id": 5041
+          }
+        ]
+      }
+    },
+    {
+      "row": 207,
+      "name": "ШПРИЦ ДЛЯ КОВБАС HURAKAN HKN-ISV7P BLACK, 7 л",
+      "np_url": "https://np.com.ua/product/shprycz-dlya-kovbas-7-l-hkn-isv7p-black/",
+      "lab_url": "https://labresta.com.ua/shpryts-kovbasnyi-hurakan-hkn-isv7p-black/",
+      "hkn_tail": "ISV7P-BLACK",
+      "file_colour": "BLACK",
+      "sp_hits": [
+        {
+          "sp_id": 4999,
+          "article": "HKN-ISV7P BLACK",
+          "name": "Шприц для ковбас Hurakan HKN-ISV7P Black, 7 л",
+          "colour": "BLACK"
+        }
+      ],
+      "verdict": "READY",
+      "notes": [],
+      "chosen_sp": {
+        "sp_id": 4999,
+        "article": "HKN-ISV7P BLACK",
+        "name": "Шприц для ковбас Hurakan HKN-ISV7P Black, 7 л",
+        "matches": [
+          {
+            "id": 1646,
+            "status": "confirmed",
+            "pp_id": 5589
+          }
+        ]
+      }
+    }
+  ]
+}

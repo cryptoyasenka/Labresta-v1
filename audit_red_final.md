@@ -1,0 +1,425 @@
+# Red-rows audit — готовность к загрузке фида
+
+**Всего красных строк:** 123
+
+- `READY`: 108
+- `AMBIGUOUS`: 13
+- `NO_SP`: 2
+
+
+## NO_SP (2)
+
+- **ТІСТОРОЗКАТКА HURAKAN HKN-DRT520** (row 157, tail=DRT520, colour=None)
+- **ТІСТОРОЗКАТКА ПІДЛОГОВА HURAKAN HKN-DRF520** (row 160, tail=DRF520, colour=None)
+
+## AMBIGUOUS (13)
+
+- **ВІТРИНА ТЕПЛОВА HURAKAN HKN WD-120L** (row 27, tail=WD-120L, colour=None)
+    - _note: 5 SPs match after colour filter (tok exact=3, tail contained=0)_
+    - sp_hits (5):
+      - sp#4844 HKN WD-120L — Вітрина теплова Hurakan HKN WD-120L
+      - sp#4801 HKN WD-160L — Вітрина теплова Hurakan HKN WD-160L
+      - sp#4806 HKN WD-165L — Вітрина теплова Hurakan HKN WD-165L
+      - sp#4903 HKN-FWD370A — Подрібнювач відходів Hurakan HKN-FWD370A
+      - sp#4904 HKN-FWD450A — Подрібнювач відходів Hurakan HKN-FWD450A
+- **ВІТРИНА ТЕПЛОВА HURAKAN HKN WD-165L** (row 28, tail=WD-165L, colour=None)
+    - _note: 5 SPs match after colour filter (tok exact=3, tail contained=0)_
+    - sp_hits (5):
+      - sp#4844 HKN WD-120L — Вітрина теплова Hurakan HKN WD-120L
+      - sp#4801 HKN WD-160L — Вітрина теплова Hurakan HKN WD-160L
+      - sp#4806 HKN WD-165L — Вітрина теплова Hurakan HKN WD-165L
+      - sp#4903 HKN-FWD370A — Подрібнювач відходів Hurakan HKN-FWD370A
+      - sp#4904 HKN-FWD450A — Подрібнювач відходів Hurakan HKN-FWD450A
+- **ГРИЛЬ "ХОТ-ДОГ" HURAKAN HKN-GW11M НА 11 РОЛИКІВ** (row 37, tail=GW11M-NA-11-ROLYKIV, colour=None)
+    - _note: 2 SPs match after colour filter (tok exact=2, tail contained=0)_
+    - sp_hits (2):
+      - sp#4770 HKN-GW11M — Гриль "хот-дог" Hurakan HKN-GW11M на 11 роликів
+      - sp#4753 HKN-GW11M COVER — Захисний екран для грилю "хот-дог" Hurakan HKN-GW11M на 11 роликів
+- **МІКСЕР ПОГРУЖНИЙ  HURAKAN HKN-MPX160 COMBI З НАСАДКАМИ** (row 81, tail=MPX160-COMBI-S-NASADKAMY, colour=None)
+    - _note: 2 SPs match after colour filter (tok exact=2, tail contained=0)_
+    - sp_hits (2):
+      - sp#4805 HKN-MPX160 — Міксер погружний Hurakan HKN-MPX160
+      - sp#4804 HKN-MPX160 COMBI — Міксер погружний Hurakan HKN-MPX160 Combi з насадками
+- **ОВОЧЕРІЗКА HURAKAN HKN-FNT-A З НАБОРОМ ДИСКІВ** (row 90, tail=FNT-A-S-NABOROM-DYSKOV, colour=None)
+    - _note: 2 SPs match after colour filter (tok exact=2, tail contained=0)_
+    - sp_hits (2):
+      - sp#4623 HKN-FNT-A — Овочерізка Hurakan Hkn-fnt-a з набором дисків
+      - sp#4698 HKN-FNT-M NEW — Овочерізка Hurakan Hkn-fnt-m з набором дисків NEW
+- **ОВОЧЕРІЗКА HURAKAN HKN-FNT-M З НАБОРОМ ДИСКІВ  NEW** (row 91, tail=FNT-M-NEW, colour=None)
+    - _note: 2 SPs match after colour filter (tok exact=2, tail contained=0)_
+    - sp_hits (2):
+      - sp#4623 HKN-FNT-A — Овочерізка Hurakan Hkn-fnt-a з набором дисків
+      - sp#4698 HKN-FNT-M NEW — Овочерізка Hurakan Hkn-fnt-m з набором дисків NEW
+- **ПІЧ ДЛЯ ПІЦИ HURAKAN HKN-HEP2, 2 РІВНЯ  380В** (row 94, tail=HEP2-2-RIVNYA-380V, colour=None)
+    - _note: 2 SPs match after colour filter (tok exact=2, tail contained=0)_
+    - sp_hits (2):
+      - sp#5004 HKN-HEP2 — Піч для піци Hurakan HKN-HEP2, 2 рівня 220в
+      - sp#4750 HKN-HEP2 380B — Піч для піци Hurakan HKN-HEP2, 2 рівня 380в
+- **САЛАДЕТА HURAKAN HKN-GXSD2GN-GC 2-Х ДВЕРНА З ГРАНІТНОЮ ПОВЕРХНЕЮ І СКЛОМ** (row 119, tail=GXSD2GN-GC, colour=None)
+    - _note: 3 SPs match after colour filter (tok exact=3, tail contained=0)_
+    - sp_hits (3):
+      - sp#5030 HKN-GXSD2GN — Саладета Hurakan HKN-GXSD2GN 2-х дверна з гранітною поверхнею
+      - sp#5032 HKN-GXSD2GN-GC — Саладета Hurakan HKN-GXSD2GN-GC 2-х дверна з гранітною поверхнею і склом
+      - sp#5028 HKN-GXSD2GN-SC — Саладета Hurakan HKN-GXSD2GN-SC 2-х дверна
+- **САЛАДЕТА HURAKAN HKN-GXSD2GN-SC 2-Х ДВЕРНА** (row 120, tail=GXSD2GN-SC, colour=None)
+    - _note: 3 SPs match after colour filter (tok exact=3, tail contained=0)_
+    - sp_hits (3):
+      - sp#5030 HKN-GXSD2GN — Саладета Hurakan HKN-GXSD2GN 2-х дверна з гранітною поверхнею
+      - sp#5032 HKN-GXSD2GN-GC — Саладета Hurakan HKN-GXSD2GN-GC 2-х дверна з гранітною поверхнею і склом
+      - sp#5028 HKN-GXSD2GN-SC — Саладета Hurakan HKN-GXSD2GN-SC 2-х дверна
+- **САЛАДЕТА HURAKAN HKN-GXSD3GN 3-Х ДВЕРНА З ГРАНІТНОЮ ПОВЕРХНЕЮ** (row 121, tail=GXSD3GN, colour=None)
+    - _note: 3 SPs match after colour filter (tok exact=3, tail contained=3)_
+    - sp_hits (3):
+      - sp#5031 HKN-GXSD3GN — Саладета Hurakan HKN-GXSD3GN 3-х дверна з гранітною поверхнею
+      - sp#5033 HKN-GXSD3GN-GC — Саладета Hurakan HKN-GXSD3GN-GC 3-х дверна з гранітною поверхнею і склом
+      - sp#5029 HKN-GXSD3GN-SC — Саладета Hurakan HKN-GXSD3GN-SC 3-х дверна
+- **САЛАДЕТА HURAKAN HKN-GXSD3GN-GC 3-Х ДВЕРНА З ГРАНІТНОЮ ПОВЕРХНЕЮ І СКЛОМ** (row 122, tail=GXSD3GN-GC, colour=None)
+    - _note: 3 SPs match after colour filter (tok exact=3, tail contained=0)_
+    - sp_hits (3):
+      - sp#5031 HKN-GXSD3GN — Саладета Hurakan HKN-GXSD3GN 3-х дверна з гранітною поверхнею
+      - sp#5033 HKN-GXSD3GN-GC — Саладета Hurakan HKN-GXSD3GN-GC 3-х дверна з гранітною поверхнею і склом
+      - sp#5029 HKN-GXSD3GN-SC — Саладета Hurakan HKN-GXSD3GN-SC 3-х дверна
+- **САЛАДЕТА HURAKAN HKN-GXSD3GN-SC 3-Х ДВЕРНА** (row 123, tail=GXSD3GN-SC, colour=None)
+    - _note: 3 SPs match after colour filter (tok exact=3, tail contained=0)_
+    - sp_hits (3):
+      - sp#5031 HKN-GXSD3GN — Саладета Hurakan HKN-GXSD3GN 3-х дверна з гранітною поверхнею
+      - sp#5033 HKN-GXSD3GN-GC — Саладета Hurakan HKN-GXSD3GN-GC 3-х дверна з гранітною поверхнею і склом
+      - sp#5029 HKN-GXSD3GN-SC — Саладета Hurakan HKN-GXSD3GN-SC 3-х дверна
+- **ТІСТОМІС HURAKAN HKN-7.5HN ДЛЯ КPУТОГО ТІСТА** (row 152, tail=7-5HN-DLYA-KPUTOHO-TESTA, colour=None)
+    - _note: 94 SPs match after colour filter (tok exact=0, tail contained=0)_
+    - sp_hits (103):
+      - sp#4822 HKN-7.5HN — Тістоміс Hurakan HKN-7.5HN для кpутого тіста
+      - sp#4716 107812 — Настінний тримач для дисків Robot Coupe (107812)
+      - sp#5086 150137 — Соковижималка Bartscher "Power fresh" (150197)
+      - sp#4657 19047938 — Посудомийка фронтальна Asber GE-500 DD
+      - sp#4658 19104673 — Посудомийка купольна Asber GEX-H500 DD
+      - sp#4656 19104751 — Посудомийка купольна Asber GTX-H500 DD
+      - sp#4721 1961W — Комплект 7 дисків Robot Coupe (1961W)
+      - sp#4723 27113 — Диск для кубиків 8x8x8 мм Robot Coupe (27113)
+
+## READY (108)
+
+- **БЛЕНДЕР HURAKAN HKN-HBH2000S** (row 9, tail=HBH2000S, colour=None)
+    - sp#4759 HKN-HBH2000S — Блендер Hurakan HKN-HBH2000S
+      - match#1245 status=confirmed pp_id=3899
+- **БЛЕНДЕР З ШУМОПОГЛИНАЮЧИМ ПОКРИТТЯМ HURAKAN HKN-HBH2000STH** (row 11, tail=HBH2000STH, colour=None)
+    - sp#4760 HKN-HBH2000STH — Блендер з шумопоглинаючим покриттям Hurakan HKN-HBH2000STH
+      - match#1769 status=confirmed pp_id=3900
+- **ВАКУУМНИЙ ПАКУВАЛЬНИК HURAKAN HKN-VAC400, 390 ММ ПЛАНКА** (row 13, tail=VAC400, colour=None)
+    - sp#5047 HKN-VAC400 — Вакуумний пакувальник Hurakan HKN-VAC400, 390 мм планка
+      - match#1795 status=confirmed pp_id=4612
+- **ВАКУУМНИЙ ПАКУВАЛЬНИК HURAKAN HKN-VAC400E** (row 14, tail=VAC400E, colour=None)
+    - sp#4748 HKN-VAC400E — Вакуумний пакувальник Hurakan HKN-VAC400E*
+      - match#1796 status=confirmed pp_id=4629
+- **ВАФЕЛЬНИЦЯ HURAKAN HKN-GES2M ОДИНАРНА** (row 16, tail=GES2M, colour=None)
+    - sp#5091 HKN-GES2M — Вафельниця Hurakan HKN-GES2M одинарна
+      - match#1746 status=confirmed pp_id=4335
+- **ВАФЕЛЬНИЦЯ HURAKAN HKN-GES300 NUT** (row 17, tail=GES300-NUT, colour=None)
+    - sp#4643 HKN-GES300 NUT — Вафельниця Hurakan HKN-GES300 NUT
+      - match#1231 status=confirmed pp_id=4358
+- **ВАФЕЛЬНИЦЯ HURAKAN HKN-GES5HK ДЛЯ ФІГУРНИХ ВАФЕЛЬ** (row 18, tail=GES5HK, colour=None)
+    - sp#5001 HKN-GES5HK — Вафельниця Hurakan HKN-GES5HK для фігурних вафель
+      - match#1747 status=confirmed pp_id=4341
+- **ВІТРИНА КОНДИТЕРСЬКА ХОЛОДИЛЬНА HURAKAN HKN-LPD150 BLACK (0.9 м, кругла)** (row 19, tail=LPD150-BLACK-0-9-M-KRUHLAYA, colour=BLACK)
+    - sp#4652 HKN-LPD150 BLACK — Вітрина кондитерська холодильна Hurakan HKN-LPD150 Black (0.9 м, кругла)
+      - match#1442 status=confirmed pp_id=2264
+- **ВІТРИНА КОНДИТЕРСЬКА ХОЛОДИЛЬНА HURAKAN HKN-LPD150 WHITE (0.9 м, кругла)** (row 20, tail=LPD150-WHITE-0-9-M-KRUHLAYA, colour=None)
+    - sp#4653 HKN-LPD150 WHITE — Вітрина кондитерська холодильна Hurakan HKN-LPD150 White (0.9 м, кругла)
+      - match#1443 status=confirmed pp_id=2266
+- **ВІТРИНА КОНДИТЕРСЬКА ХОЛОДИЛЬНА HURAKAN HKN-LPD150S BLACK (0,9 м, квадратна)** (row 21, tail=LPD150S-BLACK-0-9-M-KVADRATNAYA, colour=BLACK)
+    - sp#4648 HKN-LPD150S BLACK — Вітрина кондитерська холодильна Hurakan HKN-LPD150S Black (0,9 м, квадратна)
+      - match#1647 status=confirmed pp_id=2260
+- **ВІТРИНА КОНДИТЕРСЬКА ХОЛОДИЛЬНА HURAKAN HKN-LPD150S WHITE (0,9 м, квадратна)** (row 22, tail=LPD150S-WHITE-0-9-M-KVADRATNAYA, colour=None)
+    - sp#4649 HKN-LPD150S WHITE — Вітрина кондитерська холодильна Hurakan HKN-LPD150S White (0,9 м, квадратна)
+      - match#1648 status=confirmed pp_id=2262
+- **ВІТРИНА КОНДИТЕРСЬКА ХОЛОДИЛЬНА HURAKAN HKN-LPD210 BLACK (1,2 м, кругла)** (row 23, tail=LPD210-BLACK-1-2-M-KRUHLAYA, colour=BLACK)
+    - sp#4647 HKN-LPD210 BLACK — Вітрина кондитерська холодильна Hurakan HKN-LPD210 Black (1,2 м, кругла)
+      - match#1649 status=confirmed pp_id=2265
+- **ВІТРИНА КОНДИТЕРСЬКА ХОЛОДИЛЬНА HURAKAN HKN-LPD210 WHITE (1,2 м, кругла)** (row 24, tail=LPD210-WHITE-1-2-M-KRUHLAYA, colour=None)
+    - sp#4654 HKN-LPD210 WHITE — Вітрина кондитерська холодильна Hurakan HKN-LPD210 White (1,2 м, кругла)
+      - match#1650 status=confirmed pp_id=2267
+- **ВІТРИНА КОНДИТЕРСЬКА ХОЛОДИЛЬНА HURAKAN HKN-LPD210S BLACK (1,2 м, квадратна)** (row 25, tail=LPD210S-BLACK-1-2-M-KVADRATNAYA, colour=BLACK)
+    - sp#4650 HKN-LPD210S BLACK — Вітрина кондитерська холодильна Hurakan HKN-LPD210S Black (1,2 м, квадратна)
+      - match#1651 status=confirmed pp_id=2261
+- **ВІТРИНА КОНДИТЕРСЬКА ХОЛОДИЛЬНА HURAKAN HKN-LPD210S WHITE (1,2 м, квадратна)** (row 26, tail=LPD210S-WHITE-1-2-M-KVADRATNAYA, colour=None)
+    - sp#4651 HKN-LPD210S WHITE — Вітрина кондитерська холодильна Hurakan HKN-LPD210S White (1,2 м, квадратна)
+      - match#1652 status=confirmed pp_id=2263
+- **ВІТРИНА ХОЛОДИЛЬНА HURAKAN HKN-LPD100B** (row 29, tail=LPD100B, colour=None)
+    - sp#4845 HKN-LPD100B — Вітрина холодильна Hurakan HKN-LPD100B
+      - match#1265 status=confirmed pp_id=2179
+- **ВІТРИНА ХОЛОДИЛЬНА HURAKAN HKN-LPD120S** (row 30, tail=LPD120S, colour=None)
+    - sp#4846 HKN-LPD120S — Вітрина холодильна Hurakan HKN-LPD120S
+      - match#1266 status=confirmed pp_id=2180
+- **ВІТРИНА ХОЛОДИЛЬНА HURAKAN HKN-UPD218B BLACK** (row 31, tail=UPD218B-BLACK, colour=BLACK)
+    - sp#4730 HKN-UPD218B black — Вітрина холодильна Hurakan HKN-UPD218B Black
+      - match#1309 status=confirmed pp_id=2254
+- **ВІТРИНА ХОЛОДИЛЬНА HURAKAN HKN-UPD238B BLACK** (row 32, tail=UPD238B-BLACK, colour=BLACK)
+    - sp#4729 HKN-UPD238B black — Вітрина холодильна Hurakan HKN-UPD238B Black
+      - match#1310 status=confirmed pp_id=2255
+- **ВІТРИНА ХОЛОДИЛЬНА HURAKAN HKN-UPD278B BLACK** (row 33, tail=UPD278B-BLACK, colour=BLACK)
+    - sp#4693 HKN-UPD278B black — Вітрина холодильна Hurakan HKN-UPD278B Black
+      - match#1311 status=confirmed pp_id=2256
+- **ВІТРИНА ХОЛОДИЛЬНА HURAKAN HKN-UPD78B BLACK** (row 35, tail=UPD78B-BLACK, colour=BLACK)
+    - sp#4847 HKN-UPD78B black — Вітрина холодильна Hurakan HKN-UPD78B Black
+      - match#1312 status=confirmed pp_id=2181
+- **ВІТРИНА ХОЛОДИЛЬНА HURAKAN HKN-UPD98B BLACK** (row 36, tail=UPD78B-BLACK-2, colour=BLACK)
+    - sp#4847 HKN-UPD78B black — Вітрина холодильна Hurakan HKN-UPD78B Black
+      - match#1312 status=confirmed pp_id=2181
+- **ГРИЛЬ SALAMANDER HURAKAN HKN-SAL450H** (row 40, tail=SAL450H-2, colour=None)
+    - sp#4617 HKN-SAL450H — Гриль Salamander Hurakan HKN-SAL450H
+      - match#1299 status=confirmed pp_id=499
+- **ГРИЛЬ SALAMANDER HURAKAN HKN-SAL650H** (row 41, tail=SAL650H-2, colour=None)
+    - sp#4618 HKN-SAL650H — Гриль Salamander Hurakan HKN-SAL650H
+      - match#1300 status=confirmed pp_id=494
+- **ГРИЛЬ КОНТАКТНИЙ HURAKAN HKN-PE34R ОДИНАРНИЙ РЕБРО** (row 44, tail=PE34R, colour=None)
+    - sp#5073 HKN-PE34R — Гриль контактний Hurakan HKN-PE34R одинарний ребро
+      - match#1663 status=confirmed pp_id=3979
+- **КАРТОПЛЕЧИСТКА HURAKAN HKN-PP20** (row 50, tail=PP20, colour=None)
+    - sp#4733 HKN-PP20 — Картоплечистка Hurakan HKN-PP20
+      - match#1292 status=confirmed pp_id=3420
+- **КАРТОПЛЕЧИСТКА HURAKAN HKN-PPF10M** (row 51, tail=PPF10M, colour=None)
+    - sp#5009 HKN-PPF10M — Картоплечистка Hurakan HKN-PPF10M
+      - match#1293 status=confirmed pp_id=3419
+- **КАРТОПЛЕЧИСТКА HURAKAN HKN-PPF15D** (row 52, tail=PPF15D, colour=None)
+    - sp#4732 HKN-PPF15D — Картоплечистка Hurakan HKN-PPF15D
+      - match#1294 status=confirmed pp_id=3421
+- **КИП'ЯТИЛЬНИК HURAKAN HKN-HVB12 З ПОДВІЙНИМИ СТІНКАМИ НА 9 Л** (row 53, tail=HVB12-9L, colour=None)
+    - sp#4975 HKN-HVB12 — Кип'ятильник Hurakan HKN-HVB12 з подвійними стінками на 9 л
+      - match#1771 status=confirmed pp_id=4263
+- **КИП'ЯТИЛЬНИК HURAKAN HKN-HVB15 З ПОДВІЙНИМИ СТІНКАМИ НА 13 Л** (row 54, tail=HVB15-13L, colour=None)
+    - sp#5020 HKN-HVB15 — Кип'ятильник Hurakan HKN-HVB15 з подвійними стінками на 13 л
+      - match#1772 status=confirmed pp_id=4260
+- **КИП'ЯТИЛЬНИК ПРОТОЧНИЙ HURAKAN HKN-HVZ25M НА 8 Л** (row 58, tail=HVZ25M-NA-5-L, colour=None)
+    - sp#4817 HKN-HVZ25M — Кип'ятильник проточний Hurakan HKN-HVZ25M на 8 л
+      - match#1777 status=confirmed pp_id=4261
+- **КИП'ЯТИЛЬНИК ПРОТОЧНИЙ HURAKAN HKN-HVZ35M НА 12 Л** (row 59, tail=HVZ35M-NA-12-L, colour=None)
+    - sp#4816 HKN-HVZ35M — Кип'ятильник проточний Hurakan HKN-HVZ35M на 12 л
+      - match#1778 status=confirmed pp_id=4259
+- **КУТЕР HURAKAN HKN-CL12 12 Л** (row 60, tail=CL12-12-L, colour=None)
+    - sp#4820 HKN-CL12 — Кутер Hurakan HKN-CL12 12 л
+      - match#1624 status=confirmed pp_id=3222
+- **КУТЕР HURAKAN HKN-CL6 6 Л** (row 61, tail=CL6, colour=None)
+    - sp#5016 HKN-CL6 — Кутер Hurakan HKN-CL6 6 л
+      - match#1625 status=confirmed pp_id=3214
+- **КУТЕР HURAKAN HKN-CL9 9 Л** (row 62, tail=CL9, colour=None)
+    - sp#5060 HKN-CL9 — Кутер Hurakan HKN-CL9 9 л
+      - match#1626 status=confirmed pp_id=3215
+- **ЛЬОДОГЕНЕРАТОР ЗАЛИВНОГО ТИПУ HURAKAN HKN-IMF12M, 12 КГ ПАЛЬЧИК** (row 69, tail=IMF12M, colour=None)
+    - sp#5090 HKN-IMF12M — Льодогенератор заливного типу Hurakan HKN-IMF12M, 12 кг пальчик
+      - match#1790 status=confirmed pp_id=1475
+- **ЛЬОДОГЕНЕРАТОР ЗАЛИВНОГО ТИПУ HURAKAN HKN-IMF15, 15 КГ КУБИК** (row 70, tail=IMF15-15-KH-KUBYK, colour=None)
+    - sp#4813 HKN-IMF15 — Льодогенератор заливного типу Hurakan HKN-IMF15, 15 кг кубик
+      - match#1791 status=confirmed pp_id=1497
+- **ЛЬОДОГЕНЕРАТОР ЗАЛИВНОГО ТИПУ HURAKAN HKN-IMF17, 15 КГ ПАЛЬЧИК** (row 71, tail=IMF17-15-KH-PALCHYK, colour=None)
+    - sp#4812 HKN-IMF17 — Льодогенератор заливного типу Hurakan HKN-IMF17, 15 кг пальчик
+      - match#1644 status=confirmed pp_id=1496
+- **МІКСЕР ДЛЯ МОЛОЧНИХ КОКТЕЙЛІВ HURAKAN HKN-FR1GD ОДНОПОСТОВИЙ** (row 73, tail=FR1GD-ODNOPOSTOVYJ, colour=None)
+    - sp#4762 HKN-FR1GD — Міксер для молочних коктейлів Hurakan HKN-FR1GD однопостовий
+      - match#1412 status=confirmed pp_id=3798
+- **МІКСЕР ДЛЯ МОЛОЧНИХ КОКТЕЙЛІВ HURAKAN HKN-FR2GD ДВОПОСТОВИЙ** (row 74, tail=FR2GD-DVOPOSTOVYJ, colour=None)
+    - sp#4763 HKN-FR2GD — Міксер для молочних коктейлів Hurakan HKN-FR2GD двопостовий
+      - match#1413 status=confirmed pp_id=3799
+- **МІКСЕР ПЛАНЕТАРНИЙ HURAKAN HKN-IP15FM НА 15 Л** (row 78, tail=IP15FM, colour=None)
+    - sp#5051 HKN-IP15FM — Міксер планетарний Hurakan HKN-IP15FM на 15 л
+      - match#1439 status=confirmed pp_id=3152
+- **МІКСЕР ПЛАНЕТАРНИЙ HURAKAN HKN-KS5M НА 5 Л** (row 79, tail=KS5M-NA-5-L, colour=None)
+    - sp#4640 HKN-KS5M — Міксер планетарний Hurakan HKN-KS5M на 5 л*
+      - match#1440 status=confirmed pp_id=3145
+- **МІКСЕР ПЛАНЕТАРНИЙ HURAKAN HKN-KS7M НА 7 Л*** (row 80, tail=KS7M-NA-7-L, colour=None)
+    - sp#4619 HKN-KS7M — Міксер планетарний Hurakan HKN-KS7M на 7 л
+      - match#1441 status=confirmed pp_id=3143
+- **МЛИННИЦЯ HURAKAN HKN-CSE400P ОДИНАРНА** (row 83, tail=CSE400P-ODYNARNA, colour=None)
+    - sp#4761 HKN-CSE400P — Млинниця Hurakan HKN-CSE400P одинарна
+      - match#1213 status=confirmed pp_id=4388
+- **М'ЯСОРУБКА HURAKAN HKN-12SS 750W НЕРЖ. СТАЛЬ REVERSE** (row 85, tail=12SS, colour=None)
+    - sp#4997 HKN-12SS — М'ясорубка Hurakan HKN-12SS 750w нерж. сталь Reverse
+      - match#1193 status=confirmed pp_id=2981
+- **М'ЯСОРУБКА HURAKAN HKN-22SSE 240 КГ/ГОД, НЕРЖ. СТАЛЬ** (row 89, tail=22SSE, colour=None)
+    - sp#4996 HKN-22SSE — М'ясорубка Hurakan HKN-22SSE 240 кг/год, нерж. сталь
+      - match#1617 status=confirmed pp_id=2982
+- **ПИЛА ДЛЯ РОЗРІЗАННЯ М'ЯСА HURAKAN HKN-SE1260** (row 92, tail=SE1260, colour=None)
+    - sp#4689 HKN-SE1260 — Пила для розрізання м'яса Hurakan HKN-SE1260
+      - match#1668 status=confirmed pp_id=3493
+- **ПИЛА ДЛЯ РОЗРІЗАННЯ М'ЯСА HURAKAN HKN-SE1650M2** (row 93, tail=SE1650M2, colour=None)
+    - sp#4688 HKN-SE1650M2 — Пила для розрізання м'яса Hurakan HKN-SE1650M2
+      - match#1669 status=confirmed pp_id=3491
+- **ПІЧ КОНВЕКЦІЙНА HURAKAN HKN-XFT133M, 220В** (row 97, tail=XFT133M-220V, colour=None)
+    - sp#4690 HKN-XFT133M — Піч конвекційна Hurakan HKN-XFT133M, 220в
+      - match#1675 status=confirmed pp_id=1264
+- **ПІЧ МІКРОХВИЛЬОВА  HURAKAN HKN-WP1000M** (row 100, tail=WP1000M, colour=None)
+    - sp#4661 HKN-WP1000M — Піч мікрохвильова Hurakan HKN-WP1000M
+      - match#1322 status=confirmed pp_id=727
+- **ПЛИТА ІНДУКЦІЙНА  HURAKAN HKN-ICF70D2V 2-Х КОНФОРОЧНА, 7000W** (row 101, tail=ICF70D2V, colour=None)
+    - sp#5069 HKN-ICF70D2V — Плита індукційна Hurakan HKN-ICF70D2V 2-х конфорочна, 7000w
+      - match#1787 status=confirmed pp_id=42
+- **ПЛИТА ІНДУКЦІЙНА HURAKAN HKN-ICF35D З ЕЛЕКТРОННИМ УПРАВЛІННЯМ, 3500W** (row 104, tail=ICF35D, colour=None)
+    - sp#5079 HKN-ICF35D — Плита індукційна Hurakan HKN-ICF35D з електронним управлінням, 3500w
+      - match#1780 status=confirmed pp_id=46
+- **ПЛИТА ІНДУКЦІЙНА HURAKAN HKN-ICF35Dx47 4-Х КОНФОРОЧНА, 14000W** (row 105, tail=ICF35DX47, colour=None)
+    - sp#4982 HKN-ICF35Dx47 — Плита індукційна Hurakan HKN-ICF35Dx47 4-х конфорочна, 14000w
+      - match#1781 status=confirmed pp_id=43
+- **ПЛИТА ІНДУКЦІЙНА HURAKAN HKN-ICF35M З МЕХАНІЧНИМ УПРАВЛІННЯМ, 3500W** (row 106, tail=ICF35M, colour=None)
+    - sp#5078 HKN-ICF35M — Плита індукційна Hurakan HKN-ICF35M з механічним управлінням, 3500w
+      - match#1782 status=confirmed pp_id=48
+- **ПЛИТА ІНДУКЦІЙНА HURAKAN HKN-ICF35T З СЕНСОРНИМ УПРАВЛІННЯМ, 3500W** (row 107, tail=ICF35T, colour=None)
+    - sp#5081 HKN-ICF35T — Плита індукційна Hurakan HKN-ICF35T з сенсорним управлінням, 3500w
+      - match#1783 status=confirmed pp_id=49
+- **ПЛИТА ІНДУКЦІЙНА HURAKAN HKN-ICF70D 2-Х КОНФОРОЧНА, 7000W** (row 109, tail=ICF70D, colour=None)
+    - sp#5055 HKN-ICF70D — Плита індукційна Hurakan HKN-ICF70D 2-х конфорочна, 7000w
+      - match#1786 status=confirmed pp_id=41
+- **ПОДРІБНЮВАЧ ДЛЯ СПЕЦІЙ HURAKAN HKN-SG100** (row 114, tail=SG100, colour=None)
+    - sp#4993 HKN-SG100 — Подрібнювач для спецій Hurakan HKN-SG100
+      - match#1303 status=confirmed pp_id=3218
+- **ПОДРІБНЮВАЧ ДЛЯ СПЕЦІЙ HURAKAN HKN-SG400** (row 115, tail=SG400, colour=None)
+    - sp#4994 HKN-SG400 — Подрібнювач для спецій Hurakan HKN-SG400
+      - match#1670 status=confirmed pp_id=3219
+- **ПРЕС ДЛЯ ПІЦИ HURAKAN HKN-PPR18** (row 116, tail=PPR18, colour=None)
+    - sp#4670 HKN-PPR18 — Прес для піци Hurakan HKN-PPR18
+      - match#1295 status=confirmed pp_id=2004
+- **РИСОВАРКА HURAKAN HKN-SR180** (row 117, tail=SR180, colour=None)
+    - sp#4747 HKN-SR180 — Рисоварка Hurakan HKN-SR180
+      - match#1306 status=confirmed pp_id=971
+- **СЛАЙСЕР HURAKAN HKN-HM220, 220 ММ** (row 124, tail=HM220, colour=None)
+    - sp#4965 HKN-HM220 — Слайсер Hurakan HKN-HM220, 220 мм
+      - match#1770 status=confirmed pp_id=3353
+- **СЛАЙСЕР HURAKAN HKN-HM300DL. 300 ММ** (row 126, tail=HM300DL-300-MM, colour=None)
+    - sp#4829 HKN-HM300DL — Слайсер Hurakan HKN-HM300DL. 300 мм
+      - match#1255 status=confirmed pp_id=3357
+- **СЛАЙСЕР HURAKAN HKN-HM300L. 300 ММ** (row 127, tail=HM300L-300-MM, colour=None)
+    - sp#4828 HKN-HM300L — Слайсер Hurakan HKN-HM300L. 300 мм
+      - match#1256 status=confirmed pp_id=3365
+- **СОКОВИЖИМАЛКА HURAKAN HKN-CFV120 PRO** (row 128, tail=CFV120-PRO, colour=None)
+    - sp#4758 HKN-CFV120 PRO — Соковижималка Hurakan HKN-CFV120 PRO
+      - match#1212 status=confirmed pp_id=3728
+- **СОКОВИЖИМАЛКА ДЛЯ ЦИТРУСОВИХ HURAKAN HKN-AGRL З ПРЕСОМ** (row 130, tail=AGRL-Z-PRESOM, colour=None)
+    - sp#4749 HKN-AGRL — Соковижималка для цитрусових Hurakan Hkn-agrl з пресом
+      - match#1202 status=confirmed pp_id=3729
+- **СОКОВИЖИМАЛКА ДЛЯ ЦИТРУСОВИХ HURAKAN HKN-SPM  БЕЗ ПРЕСУ** (row 131, tail=SPM, colour=None)
+    - sp#5070 HKN-SPM — Соковижималка для цитрусових Hurakan Hkn-spm без пресу
+      - match#1671 status=confirmed pp_id=3723
+- **СТЕРИЛІЗАТОР НОЖІВ HURAKAN HKN-UVA10** (row 132, tail=UVA10, colour=None)
+    - sp#4901 HKN-UVA10 — Стерилізатор ножів Hurakan HKN-UVA10
+      - match#1673 status=confirmed pp_id=4910
+- **СТІЛ МОРОЗИЛЬНИЙ HURAKAN HKN-GXFC2GN 2-ДВЕРНИЙ** (row 136, tail=GXFC2GN, colour=None)
+    - sp#5039 HKN-GXFC2GN — Стіл морозильний Hurakan HKN-GXFC2GN 2-дверний
+      - match#1635 status=confirmed pp_id=1786
+- **СТІЛ МОРОЗИЛЬНИЙ HURAKAN HKN-GXFC3GN 3-ДВЕРНИЙ** (row 137, tail=GXFC3GN, colour=None)
+    - sp#5040 HKN-GXFC3GN — Стіл морозильний Hurakan HKN-GXFC3GN 3-дверний
+      - match#1636 status=confirmed pp_id=1819
+- **СТІЛ ХОЛОДИЛЬНИЙ HURAKAN HKN-GXPZ2GR ДЛЯ ПІЦИ 2-ДВЕРНИЙ З ГРАН. ПОВ.** (row 138, tail=GXPZ2GR, colour=None)
+    - sp#5041 HKN-GXPZ2GR — Стіл холодильний Hurakan HKN-GXPZ2GR для піци 2-дверний з гран. пов.
+      - match#1759 status=confirmed pp_id=1368
+- **СТІЛ ХОЛОДИЛЬНИЙ HURAKAN HKN-GXPZ3GR ДЛЯ ПІЦИ 3-ДВЕРНИЙ З ГРАН. ПОВ. НИЖН. АГР.** (row 139, tail=GXPZ3GR, colour=None)
+    - sp#5042 HKN-GXPZ3GR — Стіл холодильний Hurakan HKN-GXPZ3GR для піци 3-дверний з гран. пов. нижн. агр.
+      - match#1760 status=confirmed pp_id=1434
+- **СТІЛ ХОЛОДИЛЬНИЙ HURAKAN HKN-GXRC4GN 4-ДВЕРНИЙ** (row 142, tail=GXRC4GN-4-DVERNYJ, colour=None)
+    - sp#4655 HKN-GXRC4GN — Стіл холодильний Hurakan HKN-GXRC4GN 4-дверний
+      - match#1423 status=confirmed pp_id=1650
+- **СТІЛ ХОЛОДИЛЬНИЙ HURAKAN HKN-GXS3GN 3-Х ДВЕРНИЙ З НИЖНІМ РОЗМІЩЕННЯМ АГРЕГАТУ** (row 143, tail=GXS3GN, colour=None)
+    - sp#5027 HKN-GXS3GN — Стіл холодильний Hurakan HKN-GXS3GN 3-х дверний з нижнім розміщенням агрегату
+      - match#1638 status=confirmed pp_id=1610
+- **СУПНИЦЯ HURAKAN HKN-FWP** (row 146, tail=FWP, colour=None)
+    - sp#5056 HKN-FWP — Супниця Hurakan Hkn-fwp
+      - match#1229 status=confirmed pp_id=4152
+- **ТІСТОМІС HURAKAN HKN-10SN НА 10 Л ОДНА ШВИДКІСТЬ** (row 148, tail=10SN, colour=None)
+    - sp#5012 HKN-10SN — Тістоміс Hurakan HKN-10SN на 10 л одна швидкість
+      - match#1614 status=confirmed pp_id=2733
+- **ТІСТОМІС HURAKAN HKN-15HN ДЛЯ КPУТОГО ТІСТА** (row 149, tail=15HN-DLYA-KPUTOHO-TISTA, colour=None)
+    - sp#4823 HKN-15HN — Тістоміс Hurakan HKN-15HN для кpутого тіста
+      - match#1195 status=confirmed pp_id=2758
+- **ТІСТОМІС HURAKAN HKN-20SN2V НА 20 Л ДВІ ШВИДКОСТІ** (row 150, tail=20SN2V-NA-20-L-DVI-SHVYDKOSTI, colour=None)
+    - sp#4837 HKN-20SN2V — Тістоміс Hurakan HKN-20SN2V на 20 л дві швидкості
+      - match#1738 status=confirmed pp_id=2725
+- **ТІСТОМІС HURAKAN HKN-30SN2V НА 30 Л ДВІ ШВИДКОСТІ** (row 151, tail=30SN2V, colour=None)
+    - sp#5013 HKN-30SN2V — Тістоміс Hurakan HKN-30SN2V на 30 л дві швидкості
+      - match#1618 status=confirmed pp_id=2717
+- **ТІСТОМІС HURAKAN HKN-8SN НА 8 Л ОДНА ШВИДКІСТЬ** (row 153, tail=8SN, colour=None)
+    - sp#5011 HKN-8SN — Тістоміс Hurakan HKN-8SN на 8 л одна швидкість
+      - match#1739 status=confirmed pp_id=2734
+- **ТІСТОМІС HURAKAN HKN-M50SN2V НА 50 Л ДВІ ШВИДКОСТІ** (row 155, tail=M50SN2V-NA-50-L-DVI-SHVYDKOSTI, colour=None)
+    - sp#4731 HKN-M50SN2V — Тістоміс Hurakan HKN-M50SN2V на 50 л дві швидкості (220B)
+      - match#1655 status=confirmed pp_id=2785
+- **ТІСТОМІС HURAKAN HKN-M60SN2V НА 60 Л ДВІ ШВИДКОСТІ** (row 156, tail=M60SN2V-NA-60-L-DVI-SHVYDKOSTI, colour=None)
+    - sp#4553 HKN-M60SN2V — Тістоміс Hurakan HKN-M60SN2V на 60 л дві швидкості (220B)
+      - match#1656 status=confirmed pp_id=2786
+- **ТІСТОРОЗКАТКА ДЛЯ ПІЦИ HURAKAN HKN-APD30** (row 158, tail=APD30, colour=None)
+    - sp#4756 HKN-APD30 — Тісторозкатка для піци Hurakan HKN-APD30
+      - match#1405 status=confirmed pp_id=2889
+- **ТІСТОРОЗКАТКА ДЛЯ ПІЦИ HURAKAN HKN-APD40** (row 159, tail=APD40, colour=None)
+    - sp#4757 HKN-APD40 — Тісторозкатка для піци Hurakan HKN-APD40
+      - match#1406 status=confirmed pp_id=2892
+- **ФАРШЕМІШАЛКА HURAKAN HKN-MM40P** (row 162, tail=MM40P, colour=None)
+    - sp#4628 HKN-MM40P — Фаршемішалка Hurakan HKN-MM40P
+      - match#1281 status=confirmed pp_id=3443
+- **ФАРШЕМІШАЛКА HURAKAN HKN-MM60P** (row 163, tail=MM60P, colour=None)
+    - sp#4629 HKN-MM60P — Фаршемішалка Hurakan HKN-MM60P
+      - match#1282 status=confirmed pp_id=3444
+- **ФРИЗЕР ДЛЯ МОРОЗИВА HURAKAN HKN-BQ22CT** (row 164, tail=BQ22CT, colour=None)
+    - sp#4814 HKN-BQ22CT — Фризер для морозива Hurakan HKN-BQ22CT
+      - match#1210 status=confirmed pp_id=1698
+- **ФРИТЮРНИЦЯ HURAKAN HKN-FT1010N ПОДВІЙНА З КРАНОМ 10+10 Л** (row 165, tail=FT1010N, colour=None)
+    - sp#5063 HKN-FT1010N — Фритюрниця Hurakan HKN-FT1010N подвійна з краном 10+10 л
+      - match#1743 status=confirmed pp_id=599
+- **ФРИТЮРНИЦЯ HURAKAN HKN-FT6N ОДИНАРНА 6 Л** (row 168, tail=FT6N, colour=None)
+    - sp#5061 HKN-FT6N — Фритюрниця Hurakan HKN-FT6N одинарна 6 л
+      - match#1414 status=confirmed pp_id=603
+- **ФРИТЮРНИЦЯ HURAKAN HKN-FT88N ПОДВІЙНА З КРАНОМ 8+8 Л** (row 169, tail=FT8N-ODYNARNAYA-S-KRANOM-8-8-L, colour=None)
+    - sp#4627 HKN-FT8N — Фритюрниця Hurakan HKN-FT8N одинарна з краном 8 л
+      - match#1416 status=confirmed pp_id=663
+- **ХЛІБОРІЗКА HURAKAN HKN-PICO12M** (row 173, tail=PICO12M, colour=None)
+    - sp#5010 HKN-PICO12M — Хліборізка Hurakan HKN-PICO12M
+      - match#1291 status=confirmed pp_id=2947
+- **ХОЛОДИЛЬНА ВІТРИНА-НАДСТАВКА HURAKAN HKN-GXD1200GC ЗІ СКЛОМ** (row 174, tail=GXD1200GC, colour=None)
+    - sp#5043 HKN-GXD1200GC — Холодильна вітрина-надставка Hurakan HKN-GXD1200GC зі склом
+      - match#1754 status=confirmed pp_id=2092
+- **ХОЛОДИЛЬНА ВІТРИНА-НАДСТАВКА HURAKAN HKN-GXD1400GC ЗІ СКЛОМ** (row 175, tail=GXD1400GC, colour=None)
+    - sp#4938 HKN-GXD1400GC — Холодильна вітрина-надставка Hurakan HKN-GXD1400GC зі склом
+      - match#1755 status=confirmed pp_id=2093
+- **ХОЛОДИЛЬНА ВІТРИНА-НАДСТАВКА HURAKAN HKN-GXD1500GC ЗІ СКЛОМ** (row 176, tail=GXD1500GC, colour=None)
+    - sp#4937 HKN-GXD1500GC — Холодильна вітрина-надставка Hurakan HKN-GXD1500GC зі склом
+      - match#1756 status=confirmed pp_id=2091
+- **ХОЛОДИЛЬНА ВІТРИНА-НАДСТАВКА HURAKAN HKN-GXD1800GC ЗІ СКЛОМ** (row 177, tail=GXD1800GC, colour=None)
+    - sp#4939 HKN-GXD1800GC — Холодильна вітрина-надставка Hurakan HKN-GXD1800GC зі склом
+      - match#1757 status=confirmed pp_id=2094
+- **ХОЛОДИЛЬНА ВІТРИНА-НАДСТАВКА HURAKAN HKN-GXD2000GC ЗІ СКЛОМ** (row 178, tail=GXD2000GC, colour=None)
+    - sp#5044 HKN-GXD2000GC — Холодильна вітрина-надставка Hurakan HKN-GXD2000GC зі склом
+      - match#1758 status=confirmed pp_id=2095
+- **ШАФА БАРНА ХОЛОДИЛЬНА HURAKAN HKN-DB125H НА 115 Л, СКЛЯНІ РОЗПАШНІ ДВЕРІ  865 ММ** (row 180, tail=DB125H-NA-115-L-SKLYANI-ROZPASHNI-DVERI-865-MM, colour=None)
+    - sp#4738 HKN-DB125H — Шафа барна холодильна Hurakan HKN-DB125H на 115 л, скляні розпашні двері 865 мм
+      - match#1740 status=confirmed pp_id=1835
+- **ШАФА БАРНА ХОЛОДИЛЬНА HURAKAN HKN-DB205S НА 200 Л, СКЛЯНІ РОЗСУВНІ ДВЕРІ 865 ММ** (row 181, tail=DB205S-NA-200-L-STEKLYANNYE-RAZDVYZHNYE-DVERY, colour=None)
+    - sp#4680 HKN-DB205S — Шафа барна холодильна Hurakan HKN-DB205S на 200 л, скляні розсувні двері 865 мм
+      - match#1741 status=confirmed pp_id=1834
+- **ШАФА БАРНА ХОЛОДИЛЬНА HURAKAN HKN-DB335S НА 300 Л, СКЛЯНІ РОЗСУВНІ ДВЕРІ 865 ММ** (row 182, tail=DB335S-NA-300-L-STEKLYANNYE-RAZDVYZHNYE-DVERY, colour=None)
+    - sp#4681 HKN-DB335S — Шафа барна холодильна Hurakan HKN-DB335S на 300 л, скляні розсувні двері 865 мм
+      - match#1742 status=confirmed pp_id=1829
+- **ШАФА ДЛЯ ВИНА HURAKAN HKN-WNC110T** (row 183, tail=WNC110T, colour=None)
+    - sp#4691 HKN-WNC110T — Шафа для вина Hurakan HKN-WNC110T
+      - match#1320 status=confirmed pp_id=5414
+- **ШАФА ДЛЯ ВИНА HURAKAN HKN-WNC470CDW** (row 184, tail=WNC470CDW, colour=None)
+    - sp#4692 HKN-WNC470CDW — Шафа для вина Hurakan HKN-WNC470CDW
+      - match#1321 status=confirmed pp_id=5415
+- **ШАФА МОРОЗИЛЬНА БАРНА HURAKAN HKN-BCS143F** (row 188, tail=BCS143F, colour=None)
+    - sp#4679 HKN-BCS143F — Шафа морозильна барна Hurakan HKN-BCS143F
+      - match#1207 status=confirmed pp_id=5475
+- **ШАФА МОРОЗИЛЬНА БАРНА HURAKAN HKN-UF100G НА 88 Л, СКЛЯНІ РОЗПАШНІ ДВЕРІ** (row 191, tail=UF100G-NA-88-L-SKLYANI-ROZPASHNI-DVERI, colour=None)
+    - sp#4740 HKN-UF100G — Шафа морозильна барна Hurakan HKN-UF100G на 88 л, скляні розпашні двері
+      - match#1672 status=confirmed pp_id=5478
+- **ШАФА РОЗСТІЙНА HURAKAN HKN-XLT196M** (row 192, tail=XLT196M, colour=None)
+    - sp#4990 HKN-XLT196M — Шафа розстійна Hurakan HKN-XLT196M
+      - match#1324 status=confirmed pp_id=5008
+- **ШАФА ХОЛОДИЛЬНА БАРНА HURAKAN HKN-BC145 НА 100 Л, СКЛЯНІ РОЗПАШНІ ДВЕРІ** (row 200, tail=BC145-NA-100-L-SKLYANI-ROZPASHNI-DVERI, colour=None)
+    - sp#4739 HKN-BC145 — Шафа холодильна барна Hurakan HKN-BC145 на 100 л, скляні розпашні двері
+      - match#1619 status=confirmed pp_id=5477
+- **ШАФА ХОЛОДИЛЬНА БАРНА HURAKAN HKN-BCS143** (row 201, tail=BCS143, colour=None)
+    - sp#4678 HKN-BCS143 — Шафа холодильна барна Hurakan HKN-BCS143
+      - match#1206 status=confirmed pp_id=5476
+- **ШАФА ШОКОВОЇ ЗАМОРОЗКИ HURAKAN HKN-BCF10M** (row 204, tail=BCF10M, colour=None)
+    - sp#4909 HKN-BCF10M — Шафа шокової заморозки Hurakan HKN-BCF10M
+      - match#1620 status=confirmed pp_id=5040
+- **ШАФА ШОКОВОЇ ЗАМОРОЗКИ HURAKAN HKN-BCF5M** (row 205, tail=BCF5M, colour=None)
+    - sp#4908 HKN-BCF5M — Шафа шокової заморозки Hurakan HKN-BCF5M
+      - match#1621 status=confirmed pp_id=5041
+- **ШПРИЦ ДЛЯ КОВБАС HURAKAN HKN-ISV7P BLACK, 7 л** (row 207, tail=ISV7P-BLACK, colour=BLACK)
+    - sp#4999 HKN-ISV7P BLACK — Шприц для ковбас Hurakan HKN-ISV7P Black, 7 л
+      - match#1646 status=confirmed pp_id=5589
