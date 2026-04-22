@@ -24,18 +24,22 @@
     var filterForm = document.getElementById('filterForm');
     var diffToggleBtn = document.getElementById('diffToggleBtn');
 
-    // ========== Split.js resizable panels ==========
+    // ========== Sticky header offset (filter bar height -> CSS var for thead) ==========
 
-    var tablePanel = document.getElementById('matchTablePanel');
-    var detailPanel = document.getElementById('matchDetailPanel');
-
-    if (tablePanel && detailPanel && typeof Split !== 'undefined') {
-        Split(['#matchTablePanel', '#matchDetailPanel'], {
-            sizes: [70, 30],
-            minSize: [400, 200],
-            gutterSize: 8,
-            direction: 'horizontal'
-        });
+    var stickyHeader = document.getElementById('matchesStickyHeader');
+    if (stickyHeader) {
+        var updateStickyOffset = function () {
+            var h = stickyHeader.getBoundingClientRect().height;
+            document.documentElement.style.setProperty(
+                '--matches-sticky-top-offset', h + 'px'
+            );
+        };
+        updateStickyOffset();
+        window.addEventListener('resize', updateStickyOffset);
+        // Re-measure after fonts/images finish loading (navbar wrapping, etc.)
+        if (document.readyState !== 'complete') {
+            window.addEventListener('load', updateStickyOffset);
+        }
     }
 
     // ========== Checkbox management ==========

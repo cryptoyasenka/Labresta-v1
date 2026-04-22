@@ -41,36 +41,60 @@ td, th {
     border-radius: 0.5rem;
 }
 
-/* Split.js resizable panels */
-.split-container {
-    display: flex;
-    flex-direction: row;
-}
-
-.gutter {
-    background-color: #e9ecef;
-    cursor: col-resize;
-    flex-shrink: 0;
-}
-
-.gutter:hover {
-    background-color: #dee2e6;
-}
-
 #matchTablePanel {
-    overflow-x: auto;
     min-width: 0;
 }
 
-#matchDetailPanel {
-    overflow-y: auto;
-    min-width: 0;
-    border-left: 1px solid #dee2e6;
-    background-color: #fafafa;
+/* Bootstrap's .table-responsive adds overflow-x:auto which creates a new
+   scrolling context and kills sticky <thead>. On /matches we accept page-
+   level horizontal scrolling if the 15-column table doesn't fit, in trade
+   for sticky column headers. */
+#matchTablePanel .table-responsive {
+    overflow: visible;
 }
 
-.detail-panel-content {
-    font-size: 0.9rem;
+/* Sticky top bar for /matches: keeps filter form + bulk toolbar pinned */
+.matches-sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+    background-color: #fff;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-left: -2rem;
+    margin-right: -2rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    border-bottom: 1px solid #dee2e6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+/* Sticky thead — offset is the measured sticky header height (set via JS).
+   NB: Chrome needs `border-collapse: separate` on the enclosing table for
+   `position: sticky` to work on <th>. We re-add cell bottom borders to keep
+   the table looking close to Bootstrap's default. */
+#matchTable {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+#matchTable thead th {
+    position: sticky;
+    top: var(--matches-sticky-top-offset, 140px);
+    z-index: 2;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+#matchTable tbody td {
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* Sortable headers: show interactivity affordance */
+#matchTable thead .sortable-header {
+    cursor: pointer;
+}
+#matchTable thead .sortable-header:hover {
+    color: #0d6efd !important;
+    text-decoration: underline !important;
 }
 
 /* Diff highlighting */

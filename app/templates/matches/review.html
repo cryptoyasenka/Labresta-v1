@@ -10,8 +10,10 @@
     </div>
 </div>
 
+<!-- Sticky bar: filters + bulk toolbar stay pinned while scrolling the table -->
+<div class="matches-sticky-header" id="matchesStickyHeader">
 <!-- Filter bar -->
-<form method="get" action="{{ url_for('matches.review') }}" id="filterForm" class="mb-3">
+<form method="get" action="{{ url_for('matches.review') }}" id="filterForm" class="mb-2">
     <div class="row g-2 align-items-end">
         <div class="col-auto">
             <label for="statusFilter" class="form-label form-label-sm mb-0">Статус</label>
@@ -121,12 +123,11 @@
         Экспорт Excel
     </a>
 </div>
+</div><!-- /.matches-sticky-header -->
 
-<!-- Resizable split panels -->
-<div class="split-container" id="splitContainer">
-    <!-- Left panel: match table -->
-    <div id="matchTablePanel">
-        <div class="table-responsive">
+<!-- Match table (full width; detail panel removed per UX — details via «Детали» modal) -->
+<div id="matchTablePanel">
+    <div class="table-responsive">
         <table class="table table-hover table-sm align-middle" id="matchTable">
             <thead class="table-light">
                 <tr>
@@ -160,7 +161,7 @@
                     <th>Цена поставщика</th>
                     <th>Цена в Horoshop</th>
                     <th>Расч. цена Horoshop</th>
-                    <th>Скидка</th>
+                    {{ sort_header('discount_percent', 'Скидка') }}
                     {{ sort_header('score', 'Конфиденс') }}
                     {{ sort_header('status', 'Статус') }}
                     {{ sort_header('created_at', 'Создан') }}
@@ -385,6 +386,7 @@
                         <li class="page-item {{ 'active' if p == pagination.page }}">
                             <a class="page-link" href="{{ url_for('matches.review',
                                 status=filters.status, confidence=filters.confidence,
+                                availability=filters.availability, supplier_id=filters.supplier_id,
                                 search=filters.search, sort=filters.sort, order=filters.order,
                                 per_page=filters.per_page, page=p) }}">{{ p }}</a>
                         </li>
@@ -416,14 +418,6 @@
             </nav>
         </div>
         {% endif %}
-    </div>
-
-    <!-- Right panel: detail/preview pane -->
-    <div id="matchDetailPanel">
-        <div class="detail-panel-content p-3" id="detailContent">
-            <p class="text-muted text-center mt-4">Выберите строку для просмотра деталей</p>
-        </div>
-    </div>
 </div>
 
 <!-- Manual Match Modal -->

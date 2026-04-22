@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 
 from flask import Blueprint, Response, jsonify, render_template, request, send_file
 from flask_login import current_user, login_required
-from sqlalchemy import asc, desc
+from sqlalchemy import asc, desc, nulls_last
 from sqlalchemy.orm import joinedload
 
 import json
@@ -79,7 +79,9 @@ def _build_match_query():
     supplier_id = request.args.get("supplier_id", "all")
     search = request.args.get("search", "").strip()
     sort_col = request.args.get("sort", "score")
-    order = request.args.get("order", "asc")
+    # Default: highest score first — matches the review flow (confirm easy
+    # 100% first, then drill into uncertain rows).
+    order = request.args.get("order", "desc")
     per_page = request.args.get("per_page", 25, type=int)
 
     if per_page not in (25, 50, 100):
@@ -144,10 +146,17 @@ def _build_match_query():
         "score": ProductMatch.score,
         "status": ProductMatch.status,
         "created_at": ProductMatch.created_at,
+        # Per-match discount override column. NULLs (use supplier default)
+        # should always sort last regardless of direction, otherwise a single
+        # click sends the user to a page of "—" rows.
+        "discount_percent": ProductMatch.discount_percent,
     }
     sort_column = sort_map.get(sort_col, ProductMatch.score)
     sort_func = asc if order == "asc" else desc
-    query = query.order_by(sort_func(sort_column))
+    if sort_col == "discount_percent":
+        query = query.order_by(nulls_last(sort_func(sort_column)))
+    else:
+        query = query.order_by(sort_func(sort_column))
 
     filters = {
         "status": status,
