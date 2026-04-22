@@ -260,6 +260,24 @@ def unmatched_catalog():
 
     query = select(PromProduct).where(PromProduct.id.not_in(matched_ids))
 
+    # When a supplier is chosen, restrict PP to brands the supplier actually
+    # carries — otherwise the result includes brands the supplier has never
+    # stocked (Rational/Pavoni/GoodFood), which is meaningless for triage.
+    # Case-insensitive because PP catalog and SP feed disagree on case
+    # ("Hurakan" in PP vs "HURAKAN" in НП feed).
+    if supplier_id:
+        sup_brands_lower = (
+            select(func.lower(SupplierProduct.brand))
+            .where(
+                SupplierProduct.supplier_id == supplier_id,
+                SupplierProduct.brand.isnot(None),
+                SupplierProduct.brand != "",
+                SupplierProduct.is_deleted == False,  # noqa: E712
+            )
+            .correlate(None)
+        )
+        query = query.where(func.lower(PromProduct.brand).in_(sup_brands_lower))
+
     if search:
         like = f"%{search}%"
         query = query.where(
@@ -318,18 +336,19 @@ def unmatched_catalog():
         .where(PromProduct.brand != "")
     )
     if supplier_id:
-        # Restrict to brands that HAVE offers from this supplier (otherwise
-        # the dropdown is polluted with brands that are hopeless by design).
-        sup_brands = (
-            select(SupplierProduct.brand)
+        # Dropdown uses same case-insensitive intersect as the main query so
+        # it never offers a dead option and covers PP 'Hurakan' vs SP 'HURAKAN'.
+        sup_brands_lower_dd = (
+            select(func.lower(SupplierProduct.brand))
             .where(
                 SupplierProduct.supplier_id == supplier_id,
                 SupplierProduct.brand.isnot(None),
+                SupplierProduct.brand != "",
                 SupplierProduct.is_deleted == False,  # noqa: E712
             )
             .correlate(None)
         )
-        brands_q = brands_q.where(PromProduct.brand.in_(sup_brands))
+        brands_q = brands_q.where(func.lower(PromProduct.brand).in_(sup_brands_lower_dd))
     brands = db.session.execute(
         brands_q.distinct().order_by(PromProduct.brand)
     ).scalars().all()

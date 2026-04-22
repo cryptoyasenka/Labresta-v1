@@ -138,30 +138,35 @@ class TestUnmatchedCatalogGlobal:
 
 
 class TestUnmatchedCatalogSupplierScope:
-    def test_supplier_filter_includes_pp_not_matched_by_that_supplier(
+    def test_supplier_filter_hides_pp_of_brands_supplier_does_not_carry(
         self, client, session
     ):
-        s = _seed(session)
-        # For supplier B: pp1 has confirmed only with supplier A, so relative
-        # to B it IS unmatched and should appear.
-        resp = client.get(f"/products/unmatched-catalog?supplier_id={s['sup_b'].id}")
-        body = resp.data.decode("utf-8")
-        assert "HKN-A" in body
-        assert "HKN-B" in body
-        assert "AP-C" in body
-        assert "FG-D" in body
+        """When supplier_id set, only PP of brands the supplier carries show.
 
-    def test_supplier_filter_hides_pp_confirmed_by_that_supplier(
-        self, client, session
-    ):
+        This is the key rule: a Horoshop PP of a brand the supplier has
+        never stocked is not actionable against that supplier. Seed sup_a
+        only carries Hurakan SPs, so Apach (pp3) and Fagor (pp4) must hide.
+        """
         s = _seed(session)
         resp = client.get(f"/products/unmatched-catalog?supplier_id={s['sup_a'].id}")
         body = resp.data.decode("utf-8")
-        # pp1 has confirmed from sup_a → hidden
-        # pp2 candidate only → still shown (candidate ≠ confirmed)
+        # pp1 confirmed by sup_a → hidden anyway
+        # pp2 Hurakan candidate only, brand carried → visible
         assert "HKN-B" in body
-        assert "AP-C" in body
-        assert "FG-D" in body
+        # Brands sup_a doesn't carry
+        assert "AP-C" not in body
+        assert "FG-D" not in body
+
+    def test_supplier_with_no_offers_shows_empty(self, client, session):
+        """Supplier with no SPs has no carried brands → empty list."""
+        s = _seed(session)
+        resp = client.get(f"/products/unmatched-catalog?supplier_id={s['sup_b'].id}")
+        body = resp.data.decode("utf-8")
+        # sup_b has zero SPs in seed → nothing visible
+        assert "HKN-A" not in body
+        assert "HKN-B" not in body
+        assert "AP-C" not in body
+        assert "FG-D" not in body
 
     def test_supplier_brands_dropdown_restricted_to_supplier(self, client, session):
         s = _seed(session)
@@ -172,6 +177,53 @@ class TestUnmatchedCatalogSupplierScope:
         # Apach and Fagor are not in sup_a's offers
         assert 'value="Apach"' not in body
         assert 'value="Fagor"' not in body
+
+    def test_supplier_hides_pp_of_brands_not_carried(self, client, session):
+        """PP brands the supplier doesn't carry must not appear in the list."""
+        s = _seed(session)
+        # pp3 (Apach) and pp4 (Fagor) — sup_a only carries Hurakan. Must hide.
+        resp = client.get(f"/products/unmatched-catalog?supplier_id={s['sup_a'].id}")
+        body = resp.data.decode("utf-8")
+        assert "HKN-B" in body  # Hurakan, sup_a does carry → visible
+        assert "AP-C" not in body  # Apach, sup_a doesn't carry → hidden
+        assert "FG-D" not in body  # Fagor, sup_a doesn't carry → hidden
+
+    def test_supplier_brand_intersect_is_case_insensitive(self, client, session):
+        """PP brand 'Hurakan' must match SP brand 'HURAKAN' (real-world case)."""
+        from app.models.supplier import Supplier
+        from app.models.supplier_product import SupplierProduct
+        from app.models.catalog import PromProduct
+
+        sup = Supplier(
+            name="UpperSup", feed_url="http://u.xml",
+            discount_percent=0, is_enabled=True,
+        )
+        session.add(sup)
+        session.flush()
+        # SP brand uppercase
+        session.add(SupplierProduct(
+            supplier_id=sup.id, external_id="U1",
+            name="Hurakan thing", brand="HURAKAN",
+            article="HKN-X", available=True,
+        ))
+        # PP brand PascalCase — should still intersect
+        session.add(PromProduct(
+            external_id="PU1", name="Hurakan HKN-X",
+            brand="Hurakan", article="HKN-X", price=10000,
+        ))
+        # PP of a brand the supplier does NOT carry — must hide
+        session.add(PromProduct(
+            external_id="PU2", name="Rational thing",
+            brand="Rational", article="R-1", price=20000,
+        ))
+        session.commit()
+
+        resp = client.get(f"/products/unmatched-catalog?supplier_id={sup.id}")
+        body = resp.data.decode("utf-8")
+        assert "HKN-X" in body  # case-insensitive intersect keeps it
+        assert "Rational thing" not in body
+        # Dropdown also shows Hurakan
+        assert 'value="Hurakan"' in body
 
 
 class TestOperatorDecision:
