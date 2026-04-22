@@ -4,35 +4,25 @@
 
 | Статус | Кол-во |
 |---|---|
-| ✅ Сматчено confirmed/manual | 163 |
-| 🟡 Только candidate (нужен клик Confirm) | 2 |
-| 🔴 SP есть, но нет match-строки (скорер не нашёл PP) | 7 |
+| ✅ Сматчено confirmed/manual | 168 |
+| 🟡 Только candidate (нужен клик Confirm) | 0 |
+| 🔴 SP есть, но нет match-строки (скорер не нашёл PP) | 4 |
 | ⚫ Вообще нет как SP в БД (проблема фида?) | 6 |
 
 ---
 
-## 🟡 Candidate — нужно подтвердить (2)
+## 🟡 Candidate — нужно подтвердить (0)
 
 Эти товары уже есть как матчи-кандидаты. Просто открой и нажми Confirm.
 
-- **IP-20F** (SP#4992) — МІКСЕР ПЛАНЕТАРНИЙ HURAKAN HKN-IP 20F НА 20 Л
-  - [Открыть](http://127.0.0.1:5050/matches?supplier_id=2&status=candidate&search=IP-20F)
-- **PSL730** (SP#5076) — ПОВЕРХНЯ ДЛЯ СМАЖЕННЯ HURAKAN HKN-PSL730 ГЛАДКА
-  - [Открыть](http://127.0.0.1:5050/matches?supplier_id=2&status=candidate&search=PSL730)
 
 ---
 
-## 🔴 SP есть, но нет match-строки (7)
+## 🔴 SP есть, но нет match-строки (4)
 
 Скорер не нашёл подходящий PP в каталоге — либо артикул в каталоге отличается, либо PP вообще нет.
 Решение: пойти в UI, найти SP, нажать 'Сопоставить вручную' и поискать по имени.
 
-- **C1** (SP#4966) — АПАРАТ ДЛЯ ПРИГОТУВАННЯ ЦУКРОВОЇ ВАТИ HURAKAN HKN-C1
-  - Labresta URL (справочно): https://labresta.com.ua/aparat-dlia-pryhotuvannia-solodkoi-vaty-hurakan-hkn-c1/
-  - [Найти SP в UI](http://127.0.0.1:5050/products/supplier?search=C1)
-- **DHD10G** (SP#4602) — ДЕГІДРАТОР HURAKAN HKN-DHD10G
-  - Labresta URL (справочно): https://labresta.com.ua/dehidrator-hurakan-hkn-dhd10g/
-  - [Найти SP в UI](http://127.0.0.1:5050/products/supplier?search=DHD10G)
 - **DHD12G** (SP#4603) — ДЕГІДРАТОР HURAKAN HKN-DHD12G
   - Labresta URL (справочно): https://labresta.com.ua/dehidrator-hurakan-hkn-dhd12g/
   - [Найти SP в UI](http://127.0.0.1:5050/products/supplier?search=DHD12G)
@@ -45,9 +35,6 @@
 - **DL800** (SP#5068) — ЛАМПА ІНФРАЧЕРВОНА HURAKAN HKN-DL800, 275 ММ БРОНЗОВА
   - Labresta URL (справочно): https://labresta.com.ua/infrachervona-lampa-hurakan-hkn-dl800-bronza-dlia-pidihrivannia-strav/
   - [Найти SP в UI](http://127.0.0.1:5050/products/supplier?search=DL800)
-- **HM250** (SP#5106) — СЛАЙСЕР HURAKAN HKN-HM250. 250 ММ
-  - Labresta URL (справочно): https://labresta.com.ua/slaiser-hurakan-hkn-hm250/
-  - [Найти SP в UI](http://127.0.0.1:5050/products/supplier?search=HM250)
 
 ---
 

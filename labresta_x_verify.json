@@ -1,67 +1,14 @@
 {
   "summary": {
     "total": 178,
-    "matched_ok": 163,
-    "matched_candidate": 2,
-    "no_match": 7,
+    "matched_ok": 168,
+    "matched_candidate": 0,
+    "no_match": 4,
     "no_sp": 6,
     "no_article": 0
   },
-  "matched_candidate": [
-    {
-      "sp_id": 4992,
-      "article": "IP-20F",
-      "num": 70,
-      "np_url": "https://np.com.ua/product/mikser-planetarnyj-na-20-l-hkn-ip-20f/",
-      "name": "МІКСЕР ПЛАНЕТАРНИЙ HURAKAN HKN-IP 20F НА 20 Л",
-      "np_price": "34866",
-      "rts_price": "29636,10",
-      "lab_price": 33669,
-      "lab_url": "https://labresta.com.ua/planetarnyi-mikser-hurakan-hkn-ip-20f/",
-      "discount": "-3.43%",
-      "diff": 4032.9
-    },
-    {
-      "sp_id": 5076,
-      "article": "PSL730",
-      "num": 106,
-      "np_url": "https://np.com.ua/ru/product/zharochnaya-poverhnost-gladkaya-hkn-psl730/",
-      "name": "ПОВЕРХНЯ ДЛЯ СМАЖЕННЯ HURAKAN HKN-PSL730 ГЛАДКА",
-      "np_price": "9962",
-      "rts_price": "8467,70",
-      "lab_price": 9657,
-      "lab_url": "https://labresta.com.ua/poverkhnia-hryl-dlia-smazhennia-hurakan-hkn-psl730-hladka/",
-      "discount": "-3.06%",
-      "diff": 1189.3
-    }
-  ],
+  "matched_candidate": [],
   "no_match": [
-    {
-      "sp_id": 4966,
-      "article": "C1",
-      "num": 2,
-      "np_url": "https://np.com.ua/ru/product/apparat-dlya-prygotovlenyya-saharnoj-vaty-hkn-c1/",
-      "name": "АПАРАТ ДЛЯ ПРИГОТУВАННЯ ЦУКРОВОЇ ВАТИ HURAKAN HKN-C1",
-      "np_price": "10486",
-      "rts_price": "8913,10",
-      "lab_price": 9096,
-      "lab_url": "https://labresta.com.ua/aparat-dlia-pryhotuvannia-solodkoi-vaty-hurakan-hkn-c1/",
-      "discount": "-13.26%",
-      "diff": 182.9
-    },
-    {
-      "sp_id": 4602,
-      "article": "DHD10G",
-      "num": 42,
-      "np_url": "https://np.com.ua/ru/product/dehydrator-hurakan-hkn-dhd10g/",
-      "name": "ДЕГІДРАТОР HURAKAN HKN-DHD10G",
-      "np_price": "10288",
-      "rts_price": "0",
-      "lab_price": 8874,
-      "lab_url": "https://labresta.com.ua/dehidrator-hurakan-hkn-dhd10g/",
-      "discount": "-13.74%",
-      "diff": 8874
-    },
     {
       "sp_id": 4603,
       "article": "DHD12G",
@@ -113,19 +60,6 @@
       "lab_url": "https://labresta.com.ua/infrachervona-lampa-hurakan-hkn-dl800-bronza-dlia-pidihrivannia-strav/",
       "discount": "-5.18%",
       "diff": 540.75
-    },
-    {
-      "sp_id": 5106,
-      "article": "HM250",
-      "num": 120,
-      "np_url": "https://np.com.ua/product/slajser-250-mm-hkn-hm250/",
-      "name": "СЛАЙСЕР HURAKAN HKN-HM250. 250 ММ",
-      "np_price": "20710",
-      "rts_price": "17603,50",
-      "lab_price": 20097,
-      "lab_url": "https://labresta.com.ua/slaiser-hurakan-hkn-hm250/",
-      "discount": "-2.96%",
-      "diff": 2493.5
     }
   ],
   "no_sp": [

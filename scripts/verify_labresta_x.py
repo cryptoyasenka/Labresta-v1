@@ -53,21 +53,33 @@ def _anchor_variants(anchor: str) -> list[str]:
     return [f"%{v}%" for v in variants if v]
 
 
-def find_sp(session, supplier_id: int, anchor: str):
-    """Look up an SP by anchor, trying article / external_id / name fallbacks.
+def _hkn_patterns(anchor: str) -> list[str]:
+    """Patterns that include an HKN prefix — tried FIRST because short anchors
+    ("C1", "A2") are too generic for a bare `%C1%` search (matches AC12, PC10,
+    etc; .first() returns the wrong SP). HKN-anchored patterns disambiguate.
+    """
+    a = anchor.strip("- ")
+    if not a:
+        return []
+    bodies = {a, a.replace("-", " "), a.replace("-", ""), a.replace("-", "_")}
+    pats: list[str] = []
+    for b in bodies:
+        pats.extend([f"HKN-{b}%", f"HKN {b}%", f"HKN{b}%"])
+    return pats
 
-    Two-tier search: first the full anchor (e.g. "WD-120L"), then the first
-    token only ("WD") as fallback. The second tier helps when the file URL
-    embeds descriptive suffixes that the SP article trims (colour/size).
+
+def find_sp(session, supplier_id: int, anchor: str):
+    """Look up an SP by anchor. Tiered: HKN-prefixed exact-ish first, then
+    loose substring fallback. Three tiers total:
+
+      1. HKN-{anchor}* — disambiguates short generic anchors.
+      2. %anchor% — loose substring on article/external_id/name.
+      3. %first_token% — last resort when anchor has descriptive suffix.
     """
     from sqlalchemy import or_ as sa_or
-    tiers = [anchor, _first_token(anchor)]
-    seen: set[str] = set()
-    for tier in tiers:
-        if not tier or tier in seen:
-            continue
-        seen.add(tier)
-        for pat in _anchor_variants(tier):
+
+    def _search(patterns: list[str]):
+        for pat in patterns:
             sp = session.query(SupplierProduct).filter(
                 SupplierProduct.supplier_id == supplier_id,
                 sa_or(
@@ -78,6 +90,25 @@ def find_sp(session, supplier_id: int, anchor: str):
             ).first()
             if sp:
                 return sp
+        return None
+
+    # Tier 1: HKN-prefixed variants (both full anchor and first token)
+    for tier_anchor in (anchor, _first_token(anchor)):
+        if not tier_anchor:
+            continue
+        sp = _search(_hkn_patterns(tier_anchor))
+        if sp:
+            return sp
+
+    # Tier 2 & 3: loose substring
+    seen: set[str] = set()
+    for tier in (anchor, _first_token(anchor)):
+        if not tier or tier in seen:
+            continue
+        seen.add(tier)
+        sp = _search(_anchor_variants(tier))
+        if sp:
+            return sp
     return None
 
 
