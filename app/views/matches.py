@@ -138,7 +138,9 @@ def _build_match_query():
         ).filter(
             db.or_(
                 SupplierProduct.name.ilike(search_term),
+                SupplierProduct.article.ilike(search_term),
                 PromProduct.name.ilike(search_term),
+                PromProduct.article.ilike(search_term),
             )
         )
 
@@ -186,9 +188,13 @@ def review():
     if filters["search"]:
         from sqlalchemy import func as sa_func
         matched_sp_ids = db.session.query(ProductMatch.supplier_product_id).distinct()
+        search_term_uc = f"%{filters['search']}%"
         unmatched_sp_count = db.session.execute(
             db.select(sa_func.count(SupplierProduct.id)).where(
-                SupplierProduct.name.ilike(f"%{filters['search']}%"),
+                db.or_(
+                    SupplierProduct.name.ilike(search_term_uc),
+                    SupplierProduct.article.ilike(search_term_uc),
+                ),
                 SupplierProduct.is_deleted == False,  # noqa: E712
                 SupplierProduct.id.not_in(matched_sp_ids),
             )

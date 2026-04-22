@@ -729,6 +729,32 @@ class TestSearchSuppliersEndpoint:
         assert hit["active_match_status"] == "confirmed"
 
 
+class TestReviewPageSearchByArticle:
+    """Regression: /matches?search=ARTICLE must find matches even when the
+    article string only appears in SupplierProduct.article, not in the
+    name (e.g. supplier uses "380В" cyrillic in the name but "380B" latin
+    in the article — searching latin "380B" previously returned 0 rows).
+    """
+
+    def test_search_matches_by_sp_article(self, client, db):
+        match, sp, _pp = _seed_confirmed_match(db.session, status="candidate")
+        sp.article = "HKN-HEP2 380B"
+        db.session.commit()
+
+        resp = client.get("/matches/?search=HKN-HEP2%20380B&status=candidate")
+        assert resp.status_code == 200
+        assert f"data-match-id=\"{match.id}\"".encode() in resp.data
+
+    def test_search_matches_by_pp_article(self, client, db):
+        match, _sp, pp = _seed_confirmed_match(db.session, status="candidate")
+        pp.article = "CAT-999-X"
+        db.session.commit()
+
+        resp = client.get("/matches/?search=CAT-999-X&status=candidate")
+        assert resp.status_code == 200
+        assert f"data-match-id=\"{match.id}\"".encode() in resp.data
+
+
 class TestRebindEndpoint:
     """Phase E — POST /matches/<id>/rebind."""
 

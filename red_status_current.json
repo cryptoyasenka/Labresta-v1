@@ -1,0 +1,338 @@
+[
+  {
+    "id": 1761,
+    "status": "deleted"
+  },
+  {
+    "id": 1762,
+    "status": "deleted"
+  },
+  {
+    "id": 1765,
+    "status": "deleted"
+  },
+  {
+    "id": 1766,
+    "status": "deleted"
+  },
+  {
+    "id": 1624,
+    "status": "confirmed",
+    "score": 95.0,
+    "sp_id": 4820,
+    "pp_id": 3222,
+    "sp_name": "Кутер Hurakan HKN-CL12 12 л",
+    "sp_article": "HKN-CL12",
+    "pp_name": "Кутер Hurakan HKN-CL12 12 л"
+  },
+  {
+    "id": 1643,
+    "status": "candidate",
+    "score": 95.0,
+    "sp_id": 4750,
+    "pp_id": 1984,
+    "sp_name": "Піч для піци Hurakan HKN-HEP2, 2 рівня 380в",
+    "sp_article": "HKN-HEP2 380B",
+    "pp_name": "Піч для піци HURAKAN HKN-HEP2 (380 В)"
+  },
+  {
+    "id": 1647,
+    "status": "confirmed",
+    "score": 95.0,
+    "sp_id": 4648,
+    "pp_id": 2260,
+    "sp_name": "Вітрина кондитерська холодильна Hurakan HKN-LPD150S Black (0,9 м, квадратна)",
+    "sp_article": "HKN-LPD150S BLACK",
+    "pp_name": "Вітрина кондитерська холодильна Hurakan HKN-LPD150S Black (0,9 м, квадратна)"
+  },
+  {
+    "id": 1648,
+    "status": "confirmed",
+    "score": 95.0,
+    "sp_id": 4649,
+    "pp_id": 2262,
+    "sp_name": "Вітрина кондитерська холодильна Hurakan HKN-LPD150S White (0,9 м, квадратна)",
+    "sp_article": "HKN-LPD150S WHITE",
+    "pp_name": "Вітрина кондитерська холодильна Hurakan HKN-LPD150S White (0,9 м, квадратна)"
+  },
+  {
+    "id": 1649,
+    "status": "confirmed",
+    "score": 95.0,
+    "sp_id": 4647,
+    "pp_id": 2265,
+    "sp_name": "Вітрина кондитерська холодильна Hurakan HKN-LPD210 Black (1,2 м, кругла)",
+    "sp_article": "HKN-LPD210 BLACK",
+    "pp_name": "Вітрина кондитерська холодильна Hurakan HKN-LPD210 Black (1,2 м, кругла)"
+  },
+  {
+    "id": 1650,
+    "status": "confirmed",
+    "score": 95.0,
+    "sp_id": 4654,
+    "pp_id": 2267,
+    "sp_name": "Вітрина кондитерська холодильна Hurakan HKN-LPD210 White (1,2 м, кругла)",
+    "sp_article": "HKN-LPD210 WHITE",
+    "pp_name": "Вітрина кондитерська холодильна Hurakan HKN-LPD210 White (1,2 м, кругла)"
+  },
+  {
+    "id": 1651,
+    "status": "confirmed",
+    "score": 95.0,
+    "sp_id": 4650,
+    "pp_id": 2261,
+    "sp_name": "Вітрина кондитерська холодильна Hurakan HKN-LPD210S Black (1,2 м, квадратна)",
+    "sp_article": "HKN-LPD210S BLACK",
+    "pp_name": "Вітрина кондитерська холодильна Hurakan HKN-LPD210S Black (1,2 м, квадратна)"
+  },
+  {
+    "id": 1652,
+    "status": "confirmed",
+    "score": 95.0,
+    "sp_id": 4651,
+    "pp_id": 2263,
+    "sp_name": "Вітрина кондитерська холодильна Hurakan HKN-LPD210S White (1,2 м, квадратна)",
+    "sp_article": "HKN-LPD210S WHITE",
+    "pp_name": "Вітрина кондитерська холодильна Hurakan HKN-LPD210S White (1,2 м, квадратна)"
+  },
+  {
+    "id": 1659,
+    "status": "confirmed",
+    "score": 95.0,
+    "sp_id": 4804,
+    "pp_id": 3084,
+    "sp_name": "Міксер погружний Hurakan HKN-MPX160 Combi з насадками",
+    "sp_article": "HKN-MPX160 COMBI",
+    "pp_name": "Міксер погружний Hurakan HKN-MPX160 Combi з насадками"
+  },
+  {
+    "id": 1663,
+    "status": "confirmed",
+    "score": 95.0,
+    "sp_id": 5073,
+    "pp_id": 3979,
+    "sp_name": "Гриль контактний Hurakan HKN-PE34R одинарний ребро",
+    "sp_article": "HKN-PE34R",
+    "pp_name": "Гриль контактний Hurakan HKN-PE34R одинарний ребро"
+  },
+  {
+    "id": 1668,
+    "status": "confirmed",
+    "score": 95.0,
+    "sp_id": 4689,
+    "pp_id": 3493,
+    "sp_name": "Пила для розрізання м'яса Hurakan HKN-SE1260",
+    "sp_article": "HKN-SE1260",
+    "pp_name": "Пила для розрізання м'яса Hurakan HKN-SE1260"
+  },
+  {
+    "id": 1669,
+    "status": "confirmed",
+    "score": 95.0,
+    "sp_id": 4688,
+    "pp_id": 3491,
+    "sp_name": "Пила для розрізання м'яса Hurakan HKN-SE1650M2",
+    "sp_article": "HKN-SE1650M2",
+    "pp_name": "Пила для розрізання м'яса Hurakan HKN-SE1650M2"
+  },
+  {
+    "id": 1670,
+    "status": "confirmed",
+    "score": 95.0,
+    "sp_id": 4994,
+    "pp_id": 3219,
+    "sp_name": "Подрібнювач для спецій Hurakan HKN-SG400",
+    "sp_article": "HKN-SG400",
+    "pp_name": "Подрібнювач для спецій Hurakan HKN-SG400"
+  },
+  {
+    "id": 1673,
+    "status": "confirmed",
+    "score": 95.0,
+    "sp_id": 4901,
+    "pp_id": 4910,
+    "sp_name": "Стерилізатор ножів Hurakan HKN-UVA10",
+    "sp_article": "HKN-UVA10",
+    "pp_name": "Стерилізатор ножів Hurakan HKN-UVA10"
+  },
+  {
+    "id": 1675,
+    "status": "confirmed",
+    "score": 95.0,
+    "sp_id": 4690,
+    "pp_id": 1264,
+    "sp_name": "Піч конвекційна Hurakan HKN-XFT133M, 220в",
+    "sp_article": "HKN-XFT133M",
+    "pp_name": "Піч конвекційна Hurakan HKN-XFT133M, 220в"
+  },
+  {
+    "id": 1614,
+    "status": "confirmed",
+    "score": 90.0,
+    "sp_id": 5012,
+    "pp_id": 2733,
+    "sp_name": "Тістоміс Hurakan HKN-10SN на 10 л одна швидкість",
+    "sp_article": "HKN-10SN",
+    "pp_name": "Тістоміс Hurakan HKN-10SN на 10 л одна швидкість"
+  },
+  {
+    "id": 1617,
+    "status": "confirmed",
+    "score": 90.0,
+    "sp_id": 4996,
+    "pp_id": 2982,
+    "sp_name": "М'ясорубка Hurakan HKN-22SSE 240 кг/год, нерж. сталь",
+    "sp_article": "HKN-22SSE",
+    "pp_name": "М'ясорубка Hurakan HKN-22SSE 240 кг/год, нерж. сталь"
+  },
+  {
+    "id": 1618,
+    "status": "confirmed",
+    "score": 90.0,
+    "sp_id": 5013,
+    "pp_id": 2717,
+    "sp_name": "Тістоміс Hurakan HKN-30SN2V на 30 л дві швидкості",
+    "sp_article": "HKN-30SN2V",
+    "pp_name": "Тістоміс Hurakan HKN-30SN2V на 30 л дві швидкості"
+  },
+  {
+    "id": 1619,
+    "status": "confirmed",
+    "score": 90.0,
+    "sp_id": 4739,
+    "pp_id": 5477,
+    "sp_name": "Шафа холодильна барна Hurakan HKN-BC145 на 100 л, скляні розпашні двері",
+    "sp_article": "HKN-BC145",
+    "pp_name": "Шафа холодильна барна Hurakan HKN-BC145 на 100 л, скляні розпашні двері"
+  },
+  {
+    "id": 1638,
+    "status": "confirmed",
+    "score": 90.0,
+    "sp_id": 5027,
+    "pp_id": 1610,
+    "sp_name": "Стіл холодильний Hurakan HKN-GXS3GN 3-х дверний з нижнім розміщенням агрегату",
+    "sp_article": "HKN-GXS3GN",
+    "pp_name": "Стіл холодильний Hurakan HKN-GXS3GN 3-х дверний з нижнім розміщенням агрегату"
+  },
+  {
+    "id": 1655,
+    "status": "confirmed",
+    "score": 90.0,
+    "sp_id": 4731,
+    "pp_id": 2785,
+    "sp_name": "Тістоміс Hurakan HKN-M50SN2V на 50 л дві швидкості (220B)",
+    "sp_article": "HKN-M50SN2V",
+    "pp_name": "Тістоміс Hurakan HKN-M50SN2V на 50 л дві швидкості (220B)"
+  },
+  {
+    "id": 1656,
+    "status": "confirmed",
+    "score": 90.0,
+    "sp_id": 4553,
+    "pp_id": 2786,
+    "sp_name": "Тістоміс Hurakan HKN-M60SN2V на 60 л дві швидкості (220B)",
+    "sp_article": "HKN-M60SN2V",
+    "pp_name": "Тістоміс Hurakan HKN-M60SN2V на 60 л дві швидкості (220B)"
+  },
+  {
+    "id": 1672,
+    "status": "confirmed",
+    "score": 90.0,
+    "sp_id": 4740,
+    "pp_id": 5478,
+    "sp_name": "Шафа морозильна барна Hurakan HKN-UF100G на 88 л, скляні розпашні двері",
+    "sp_article": "HKN-UF100G",
+    "pp_name": "Шафа морозильна барна Hurakan HKN-UF100G на 88 л, скляні розпашні двері"
+  },
+  {
+    "id": 1625,
+    "status": "confirmed",
+    "score": 89.8,
+    "sp_id": 5016,
+    "pp_id": 3214,
+    "sp_name": "Кутер Hurakan HKN-CL6 6 л",
+    "sp_article": "HKN-CL6",
+    "pp_name": "Кутер Hurakan HKN-CL6 6 л"
+  },
+  {
+    "id": 1626,
+    "status": "confirmed",
+    "score": 89.8,
+    "sp_id": 5060,
+    "pp_id": 3215,
+    "sp_name": "Кутер Hurakan HKN-CL9 9 л",
+    "sp_article": "HKN-CL9",
+    "pp_name": "Кутер Hurakan HKN-CL9 9 л"
+  },
+  {
+    "id": 1640,
+    "status": "confirmed",
+    "score": 88.52,
+    "sp_id": 5031,
+    "pp_id": 1385,
+    "sp_name": "Саладета Hurakan HKN-GXSD3GN 3-х дверна з гранітною поверхнею",
+    "sp_article": "HKN-GXSD3GN",
+    "pp_name": "Саладета Hurakan HKN-GXSD3GN 3-х дверна з гранітною поверхнею"
+  },
+  {
+    "id": 1646,
+    "status": "confirmed",
+    "score": 86.36,
+    "sp_id": 4999,
+    "pp_id": 5589,
+    "sp_name": "Шприц для ковбас Hurakan HKN-ISV7P Black, 7 л",
+    "sp_article": "HKN-ISV7P BLACK",
+    "pp_name": "Шприц ковбасний HURAKAN HKN-ISV7P BLACK"
+  },
+  {
+    "id": 1635,
+    "status": "confirmed",
+    "score": 85.95,
+    "sp_id": 5039,
+    "pp_id": 1786,
+    "sp_name": "Стіл морозильний Hurakan HKN-GXFC2GN 2-дверний",
+    "sp_article": "HKN-GXFC2GN",
+    "pp_name": "Стіл морозильний Hurakan HKN-GXFC2GN 2-дверний"
+  },
+  {
+    "id": 1636,
+    "status": "confirmed",
+    "score": 85.95,
+    "sp_id": 5040,
+    "pp_id": 1819,
+    "sp_name": "Стіл морозильний Hurakan HKN-GXFC3GN 3-дверний",
+    "sp_article": "HKN-GXFC3GN",
+    "pp_name": "Стіл морозильний Hurakan HKN-GXFC3GN 3-дверний"
+  },
+  {
+    "id": 1620,
+    "status": "confirmed",
+    "score": 85.71,
+    "sp_id": 4909,
+    "pp_id": 5040,
+    "sp_name": "Шафа шокової заморозки Hurakan HKN-BCF10M",
+    "sp_article": "HKN-BCF10M",
+    "pp_name": "Шафа шокової заморозки Hurakan HKN-BCF10M"
+  },
+  {
+    "id": 1644,
+    "status": "confirmed",
+    "score": 85.5,
+    "sp_id": 4812,
+    "pp_id": 1496,
+    "sp_name": "Льодогенератор заливного типу Hurakan HKN-IMF17, 15 кг пальчик",
+    "sp_article": "HKN-IMF17",
+    "pp_name": "Льодогенератор заливного типу Hurakan HKN-IMF17, 15 кг пальчик"
+  },
+  {
+    "id": 1621,
+    "status": "confirmed",
+    "score": 85.39,
+    "sp_id": 4908,
+    "pp_id": 5041,
+    "sp_name": "Шафа шокової заморозки Hurakan HKN-BCF5M",
+    "sp_article": "HKN-BCF5M",
+    "pp_name": "Шафа шокової заморозки Hurakan HKN-BCF5M"
+  }
+]
