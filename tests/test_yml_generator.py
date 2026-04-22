@@ -496,3 +496,100 @@ class TestSyncAvailability:
         assert os.path.exists(full["path"])
         assert os.path.exists(prices["path"])
         assert os.path.exists(avail["path"])
+
+
+class TestPerBrandPricing:
+    """End-to-end: Supplier.pricing_mode=per_brand resolves per-brand rates
+    at feed-generation time (not from match.discount_percent).
+    """
+
+    def _seed_per_brand_supplier(self, session):
+        from app.models.supplier_brand_discount import SupplierBrandDiscount
+
+        supplier = Supplier(
+            name="NP",
+            discount_percent=17.0,  # fallback for brands not listed
+            pricing_mode="per_brand",
+            is_enabled=True,
+        )
+        session.add(supplier)
+        session.flush()
+        session.add_all([
+            SupplierBrandDiscount(supplier_id=supplier.id, brand="HURAKAN", discount_percent=15.0),
+            SupplierBrandDiscount(supplier_id=supplier.id, brand="SIRMAN", discount_percent=20.0),
+        ])
+        session.commit()
+        return supplier
+
+    def _add_match(self, session, supplier, brand, external_id, price_cents):
+        pp = PromProduct(
+            external_id=external_id,
+            name=f"{brand} item",
+            brand=brand,
+            price=price_cents,
+            page_url=f"https://labresta.com.ua/{external_id}/",
+        )
+        session.add(pp)
+        session.flush()
+        sp = SupplierProduct(
+            supplier_id=supplier.id,
+            external_id=f"np-{external_id}",
+            name=f"{brand} item",
+            brand=brand,
+            price_cents=price_cents,
+            available=True,
+            needs_review=False,
+        )
+        session.add(sp)
+        session.flush()
+        m = ProductMatch(
+            supplier_product_id=sp.id,
+            prom_product_id=pp.id,
+            score=100.0,
+            status="confirmed",
+            confirmed_by="test",
+        )
+        session.add(m)
+        session.commit()
+        return m
+
+    def test_feed_applies_brand_specific_rates(self, session, yml_output_dir):
+        """HURAKAN=15%, SIRMAN=20%, unknown brand falls back to supplier default 17%."""
+        supplier = self._seed_per_brand_supplier(session)
+        self._add_match(session, supplier, "HURAKAN", "h1", 10000)   # 100 EUR → -15% → 85.0
+        self._add_match(session, supplier, "SIRMAN", "s1", 10000)    # 100 EUR → -20% → 80.0
+        self._add_match(session, supplier, "APACH", "a1", 10000)     # 100 EUR → -17% (fallback) → 83.0
+
+        result = regenerate_yml_feed()
+        assert result["total"] == 3
+
+        tree = etree.parse(result["path"])
+        prices = {
+            o.get("id"): float(o.find("price").text)
+            for o in tree.findall(".//offer")
+        }
+        assert prices["h1"] == 85.0
+        assert prices["s1"] == 80.0
+        assert prices["a1"] == 83.0
+
+    def test_match_override_still_wins_in_per_brand_mode(self, session, yml_output_dir):
+        """Per-match discount_percent (operator intent) beats brand lookup."""
+        supplier = self._seed_per_brand_supplier(session)
+        m = self._add_match(session, supplier, "HURAKAN", "h1", 10000)
+        m.discount_percent = 30.0  # operator override
+        session.commit()
+
+        result = regenerate_yml_feed()
+        tree = etree.parse(result["path"])
+        offer = tree.find(".//offer[@id='h1']")
+        assert float(offer.find("price").text) == 70.0  # 100 * 0.70
+
+    def test_brand_lookup_case_insensitive_in_feed(self, session, yml_output_dir):
+        """Brand in feed can be lower-case while DB row is upper-case."""
+        supplier = self._seed_per_brand_supplier(session)
+        self._add_match(session, supplier, "hurakan", "h1", 10000)  # lowercase
+
+        result = regenerate_yml_feed()
+        tree = etree.parse(result["path"])
+        offer = tree.find(".//offer[@id='h1']")
+        assert float(offer.find("price").text) == 85.0

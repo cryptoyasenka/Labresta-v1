@@ -20,6 +20,7 @@ from app.extensions import db
 from app.models.notification_rule import Notification
 from app.models.product_match import ProductMatch
 from app.models.supplier import Supplier
+from app.models.supplier_brand_discount import SupplierBrandDiscount
 from app.models.supplier_product import SupplierProduct
 from app.models.sync_run import SyncRun
 from app.services.audit_service import log_action
@@ -76,12 +77,29 @@ def supplier_add():
             )
 
         feed_url = request.form.get("feed_url", "").strip() or None
+        mode = (request.form.get("pricing_mode") or "flat").strip() or "flat"
         supplier = Supplier(
             name=request.form["name"].strip(),
             feed_url=feed_url,
             discount_percent=float(request.form.get("discount_percent", 0)),
+            pricing_mode=mode,
         )
         db.session.add(supplier)
+        db.session.flush()  # need supplier.id for brand_discounts FK
+
+        if mode == "per_brand":
+            try:
+                brand_rows = _parse_brand_discounts_form(request.form)
+            except ValueError as exc:
+                db.session.rollback()
+                return render_template(
+                    "suppliers/form.html",
+                    supplier=None,
+                    form_data=request.form,
+                    errors={"brand_discounts": str(exc)},
+                )
+            _replace_brand_discounts(supplier, brand_rows)
+
         db.session.commit()
 
         # Excel-by-URL path: Google Sheets OR a direct .xlsx URL.
@@ -139,9 +157,30 @@ def supplier_edit(supplier_id):
                 errors=errors,
             )
 
+        mode = (request.form.get("pricing_mode") or "flat").strip() or "flat"
+        brand_rows: list[tuple[str, float]] = []
+        if mode == "per_brand":
+            try:
+                brand_rows = _parse_brand_discounts_form(request.form)
+            except ValueError as exc:
+                return render_template(
+                    "suppliers/form.html",
+                    supplier=supplier,
+                    form_data=request.form,
+                    errors={"brand_discounts": str(exc)},
+                )
+
         supplier.name = request.form["name"].strip()
         supplier.feed_url = request.form.get("feed_url", "").strip() or None
         supplier.discount_percent = float(request.form.get("discount_percent", 0))
+        supplier.pricing_mode = mode
+
+        if mode == "per_brand":
+            _replace_brand_discounts(supplier, brand_rows)
+        # flat / auto_margin: leave brand_discounts untouched so the operator
+        # can flip back to per_brand without re-entering rates. They're
+        # ignored by resolve_discount_percent unless pricing_mode == 'per_brand'.
+
         db.session.commit()
         flash(f"Поставщик '{supplier.name}' обновлён.", "success")
         return redirect(url_for("suppliers.supplier_list"))
@@ -609,6 +648,9 @@ def suppliers_fetch_all():
     })
 
 
+VALID_PRICING_MODES = {"flat", "per_brand", "auto_margin"}
+
+
 def _validate_supplier_form(form):
     """Validate supplier form data. Returns dict of field -> error message, or empty dict."""
     errors = {}
@@ -624,4 +666,52 @@ def _validate_supplier_form(form):
     except (ValueError, TypeError):
         errors["discount_percent"] = "Скидка должна быть числом."
 
+    mode = form.get("pricing_mode", "flat").strip() or "flat"
+    if mode not in VALID_PRICING_MODES:
+        errors["pricing_mode"] = "Недопустимый режим скидок."
+
     return errors
+
+
+def _parse_brand_discounts_form(form) -> list[tuple[str, float]]:
+    """Pull parallel brand_name[] + brand_discount[] arrays from the form.
+
+    Drops blank rows. Raises ValueError with a human message on any malformed
+    discount value so the caller can surface it as a form error.
+    """
+    names = form.getlist("brand_name[]")
+    discounts = form.getlist("brand_discount[]")
+    rows: list[tuple[str, float]] = []
+    for raw_brand, raw_disc in zip(names, discounts):
+        brand = (raw_brand or "").strip()
+        if not brand and not (raw_disc or "").strip():
+            continue  # blank row — user added then left empty
+        if not brand:
+            raise ValueError("Название бренда не может быть пустым.")
+        try:
+            d = float(raw_disc)
+        except (TypeError, ValueError) as exc:
+            raise ValueError(f"Скидка для '{brand}' должна быть числом.") from exc
+        if d < 0 or d > 100:
+            raise ValueError(f"Скидка для '{brand}' должна быть от 0 до 100.")
+        rows.append((brand, d))
+    # dedupe on lowercased brand, last-write-wins (matches DB UNIQUE semantics)
+    seen: dict[str, tuple[str, float]] = {}
+    for brand, d in rows:
+        seen[brand.strip().lower()] = (brand, d)
+    return list(seen.values())
+
+
+def _replace_brand_discounts(supplier: Supplier, rows: list[tuple[str, float]]) -> None:
+    """Replace supplier.brand_discounts with the given rows (delete-then-insert)."""
+    for existing in list(supplier.brand_discounts):
+        db.session.delete(existing)
+    db.session.flush()
+    for brand, pct in rows:
+        db.session.add(
+            SupplierBrandDiscount(
+                supplier_id=supplier.id,
+                brand=brand,
+                discount_percent=pct,
+            )
+        )

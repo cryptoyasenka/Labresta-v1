@@ -5,13 +5,25 @@
 {% block content %}
 <h1>{{ 'Редактировать поставщика' if supplier else 'Добавить поставщика' }}</h1>
 
-<form method="POST" class="mt-3" style="max-width: 600px;">
+{% set current_mode = (form_data.pricing_mode if form_data else (supplier.pricing_mode if supplier else 'flat')) or 'flat' %}
+{% if form_data %}
+    {% set brand_names = form_data.getlist('brand_name[]') %}
+    {% set brand_pcts = form_data.getlist('brand_discount[]') %}
+{% elif supplier %}
+    {% set brand_names = supplier.brand_discounts | map(attribute='brand') | list %}
+    {% set brand_pcts = supplier.brand_discounts | map(attribute='discount_percent') | list %}
+{% else %}
+    {% set brand_names = [] %}
+    {% set brand_pcts = [] %}
+{% endif %}
+
+<form method="POST" class="mt-3" style="max-width: 720px;">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <div class="mb-3">
         <label for="name" class="form-label">Название</label>
         <input type="text" class="form-control {% if errors and errors.name %}is-invalid{% endif %}"
                id="name" name="name"
-               value="{{ supplier.name if supplier else (form_data.name if form_data else '') }}"
+               value="{{ (form_data.name if form_data else (supplier.name if supplier else '')) }}"
                required>
         {% if errors and errors.name %}
             <div class="invalid-feedback">{{ errors.name }}</div>
@@ -22,25 +34,77 @@
         <label for="feed_url" class="form-label">URL фида</label>
         <input type="url" class="form-control {% if errors and errors.feed_url %}is-invalid{% endif %}"
                id="feed_url" name="feed_url"
-               value="{{ supplier.feed_url if supplier else (form_data.feed_url if form_data else '') }}">
+               value="{{ (form_data.feed_url if form_data else (supplier.feed_url if supplier else '')) }}">
         {% if errors and errors.feed_url %}
             <div class="invalid-feedback">{{ errors.feed_url }}</div>
         {% endif %}
         <small class="form-text text-muted">
-            YML/XML фид или ссылка на Google Sheets (публичный доступ).
-            Для Google Sheets: Файл &rarr; Поделиться &rarr; Все у кого есть ссылка.
+            YML/XML фид, прямой .xlsx или ссылка на Google Sheets (публичный доступ).
         </small>
     </div>
 
     <div class="mb-3">
-        <label for="discount_percent" class="form-label">Скидка %</label>
+        <label for="pricing_mode" class="form-label">Режим скидок</label>
+        <select class="form-select {% if errors and errors.pricing_mode %}is-invalid{% endif %}"
+                id="pricing_mode" name="pricing_mode">
+            <option value="flat" {% if current_mode == 'flat' %}selected{% endif %}>
+                Плоская — одна скидка на всё
+            </option>
+            <option value="per_brand" {% if current_mode == 'per_brand' %}selected{% endif %}>
+                По брендам — своя скидка на каждый бренд
+            </option>
+            <option value="auto_margin" {% if current_mode == 'auto_margin' %}selected{% endif %}>
+                Авто-маржа — расчёт по минимальной марже (MARESTO)
+            </option>
+        </select>
+        {% if errors and errors.pricing_mode %}
+            <div class="invalid-feedback">{{ errors.pricing_mode }}</div>
+        {% endif %}
+    </div>
+
+    <div class="mb-3" id="flat-discount-row">
+        <label for="discount_percent" class="form-label">
+            Скидка % <span class="text-muted" id="flat-discount-hint">(применяется ко всему)</span>
+        </label>
         <input type="number" class="form-control {% if errors and errors.discount_percent %}is-invalid{% endif %}"
                id="discount_percent" name="discount_percent"
-               value="{{ supplier.discount_percent if supplier else (form_data.discount_percent if form_data else '0') }}"
+               value="{{ form_data.discount_percent if form_data else (supplier.discount_percent if supplier else '0') }}"
                step="0.01" min="0" max="100">
+        <small class="form-text text-muted" id="per-brand-fallback-hint" style="display:none;">
+            Используется как запасная скидка для брендов, которых нет в таблице ниже.
+        </small>
         {% if errors and errors.discount_percent %}
             <div class="invalid-feedback">{{ errors.discount_percent }}</div>
         {% endif %}
+    </div>
+
+    <div class="mb-3" id="brand-discounts-block" style="display:none;">
+        <label class="form-label">Скидки по брендам</label>
+        {% if errors and errors.brand_discounts %}
+            <div class="alert alert-danger py-2">{{ errors.brand_discounts }}</div>
+        {% endif %}
+        <table class="table table-sm table-bordered align-middle" id="brand-discounts-table">
+            <thead>
+                <tr>
+                    <th style="width: 65%;">Бренд</th>
+                    <th style="width: 25%;">Скидка %</th>
+                    <th style="width: 10%;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bn in brand_names %}
+                <tr>
+                    <td><input type="text" class="form-control form-control-sm" name="brand_name[]" value="{{ bn }}"></td>
+                    <td><input type="number" class="form-control form-control-sm" name="brand_discount[]" value="{{ brand_pcts[loop.index0] }}" step="0.01" min="0" max="100"></td>
+                    <td><button type="button" class="btn btn-sm btn-outline-danger w-100" onclick="removeBrandRow(this)">×</button></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addBrandRow()">+ Добавить бренд</button>
+        <small class="form-text text-muted d-block mt-1">
+            Для брендов не в таблице применяется "Скидка %" выше.
+        </small>
     </div>
 
     <div class="d-flex gap-2">
@@ -51,7 +115,45 @@
     </div>
 </form>
 
-<p class="text-muted mt-3" style="max-width: 600px;">
-    <small>Для загрузки файла Excel используйте кнопку "Загрузить файл" на странице поставщика после создания.</small>
+<p class="text-muted mt-3" style="max-width: 720px;">
+    <small>Для загрузки файла Excel вручную используйте кнопку "Загрузить файл" на странице поставщика после создания.</small>
 </p>
+
+<script>
+function updatePricingModeUI() {
+    const mode = document.getElementById('pricing_mode').value;
+    const brandBlock = document.getElementById('brand-discounts-block');
+    const flatHint = document.getElementById('flat-discount-hint');
+    const pbHint = document.getElementById('per-brand-fallback-hint');
+    if (mode === 'per_brand') {
+        brandBlock.style.display = '';
+        flatHint.style.display = 'none';
+        pbHint.style.display = '';
+    } else {
+        brandBlock.style.display = 'none';
+        flatHint.style.display = '';
+        pbHint.style.display = 'none';
+    }
+}
+
+function addBrandRow(brand, pct) {
+    const tbody = document.querySelector('#brand-discounts-table tbody');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td><input type="text" class="form-control form-control-sm" name="brand_name[]" value="${brand ? brand.replace(/"/g, '&quot;') : ''}"></td>
+        <td><input type="number" class="form-control form-control-sm" name="brand_discount[]" value="${pct != null ? pct : ''}" step="0.01" min="0" max="100"></td>
+        <td><button type="button" class="btn btn-sm btn-outline-danger w-100" onclick="removeBrandRow(this)">×</button></td>
+    `;
+    tbody.appendChild(tr);
+}
+
+function removeBrandRow(btn) {
+    btn.closest('tr').remove();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('pricing_mode').addEventListener('change', updatePricingModeUI);
+    updatePricingModeUI();
+});
+</script>
 {% endblock %}
