@@ -19,6 +19,12 @@ class DefaultConfig:
     PERMANENT_SESSION_LIFETIME = timedelta(days=365)
     SESSION_COOKIE_SAMESITE = "Lax"
 
+    # CSRF token is bound to the session (which lasts 365 days); the default
+    # 1-hour time limit would break long manual-review sessions with an
+    # opaque "Unexpected token '<'" on the client when the reject/confirm
+    # POST hits a 400 HTML error page.
+    WTF_CSRF_TIME_LIMIT = None
+
     # FTP settings (used in Plan 04)
     FTP_HOST = os.environ.get("FTP_HOST", "")
     FTP_USER = os.environ.get("FTP_USER", "")

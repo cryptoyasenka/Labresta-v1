@@ -223,14 +223,7 @@
             }
 
             fetchWithCSRF('/matches/' + matchId + '/' + action, { method: 'POST' })
-                .then(function (resp) {
-                    // Always parse JSON — the server returns an explanatory
-                    // body on 4xx too (e.g. 409 prom_already_claimed).
-                    return resp.json().then(function (data) {
-                        data.__status = resp.status;
-                        return data;
-                    });
-                })
+                .then(parseJsonOrFriendly)
                 .then(function (data) {
                     if (data.status === 'ok') {
                         if (!isConfirm && row) {
@@ -282,12 +275,7 @@
         }
 
         fetchWithCSRF('/matches/' + matchId + '/confirm-update', { method: 'POST' })
-            .then(function (resp) {
-                return resp.json().then(function (data) {
-                    data.__status = resp.status;
-                    return data;
-                });
-            })
+            .then(parseJsonOrFriendly)
             .then(function (data) {
                 if (data.status === 'ok') {
                     updateRowStatus(matchId, data.new_status);

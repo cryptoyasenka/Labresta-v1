@@ -1,8 +1,25 @@
 import os
 
-from flask import Flask
+from flask import Flask, jsonify, request
+from flask_wtf.csrf import CSRFError
 
 from app.extensions import configure_sqlite_wal, csrf, db, login_manager
+
+
+def _wants_json_response() -> bool:
+    """AJAX requests should get JSON errors, not HTML error pages.
+
+    Our fetchWithCSRF wrapper always sends X-CSRFToken + Content-Type: application/json,
+    so either signal is enough. Also check Accept header for explicit XHRs.
+    """
+    if request.headers.get("X-CSRFToken"):
+        return True
+    if request.is_json:
+        return True
+    accept = request.accept_mimetypes
+    return accept.best == "application/json" or (
+        accept["application/json"] > accept["text/html"]
+    )
 
 
 def create_app(config_name="default"):
@@ -72,6 +89,39 @@ def create_app(config_name="default"):
     from app.scheduler import init_scheduler
 
     init_scheduler(app)
+
+    # JSON error handlers for AJAX endpoints (avoids the opaque
+    # "Unexpected token '<'" JSON.parse crash in the client when the
+    # server would otherwise return an HTML error page).
+    @app.errorhandler(CSRFError)
+    def handle_csrf_error(e):
+        if _wants_json_response():
+            return jsonify({
+                "status": "error",
+                "code": "csrf_invalid",
+                "message": "Сессия устарела, обновите страницу (Ctrl+F5).",
+            }), 400
+        return e.description, 400
+
+    @app.errorhandler(404)
+    def handle_not_found(e):
+        if _wants_json_response():
+            return jsonify({
+                "status": "error",
+                "code": "not_found",
+                "message": "Объект не найден. Обновите страницу — список мог измениться.",
+            }), 404
+        return e, 404
+
+    @app.errorhandler(500)
+    def handle_server_error(e):
+        if _wants_json_response():
+            return jsonify({
+                "status": "error",
+                "code": "server_error",
+                "message": "Внутренняя ошибка сервера. Посмотрите логи.",
+            }), 500
+        return e, 500
 
     # Register CLI commands
     from app.cli import create_admin_command, sync_command
