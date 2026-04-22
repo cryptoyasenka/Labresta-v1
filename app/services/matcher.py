@@ -232,17 +232,45 @@ def after_brand_remainder(name: str, brand: str | None) -> str:
     return name
 
 
-# NB: '+' and '-' are intentionally NOT token separators.
+# NB: '+' is intentionally NOT a token separator.
 #   '+' in EU catalog names typically marks a variant/bundle suffix
 #      ("BISTRO+6 дисків", "F8+8"), not a general separator.
-#   '-' is usually part of SKU codes ("EFT-60/2", "75PE-C", "iVario 2-XS") —
-#      splitting on it would merge false positives and lose tokens.
-# Keeping both inside tokens makes containment comparisons treat them as
-# distinct from the base token (e.g. "bistro" vs "bistro6", "eft60" matches
-# "eft60" regardless of supplier's hyphen style).
-_TOKEN_SPLIT_RE = re.compile(r"[\s.,:;()/]+", re.UNICODE)
-_TOKEN_STRIP_RE = re.compile(r"[^a-z0-9а-яёіїєґ]", re.UNICODE)
+# '-' IS a separator: inside dashed SKUs like "HKN-FNT-M" or "EFT-60/2" the
+# dashed pieces are independent identifiers. Without this split, "HKN-FNT-M"
+# merged to "hknfntm" which _near_duplicate_token then treated as a sibling
+# of "hknfnta" (only 1 char diff), causing FNT-M → FNT-A false matches.
+# Compound letter↔digit boundary split below guarantees "ATS12U" and
+# "ATS 12 U" produce the same token set {ats, 12, u}, so slitny and
+# razdelny catalog styles align through the containment gate.
+_TOKEN_SPLIT_RE = re.compile(r"[\s.,:;()/\-]+", re.UNICODE)
+# '+' is kept inside tokens as a first-class character so 'BISTRO+6' does
+# not collapse to 'bistro6' and then split to {bistro, 6} — that bundle
+# marker must stay distinct from the base 'bistro'.
+_TOKEN_STRIP_RE = re.compile(r"[^a-z0-9а-яёіїєґ+]", re.UNICODE)
 _PAREN_CONTENT_RE = re.compile(r"\([^)]*\)")
+
+# Split at every letter↔digit transition so slitny and razdelny SKU forms
+# align: 'ats12u' → {ats, 12, u}; 'hknlpd150s' → {hknlpd, 150, s}; 'eft60'
+# → {eft, 60}. Tokens with '+' like 'bistro+6' do not pass this regex (the
+# '+' sits between letters and the next digit and no letter↔digit boundary
+# is directly available) so BISTRO+6 stays whole.
+_ALNUM_BOUNDARY_RE = re.compile(
+    r"(?<=[a-zа-яёіїєґ])(?=\d)|(?<=\d)(?=[a-zа-яёіїєґ])",
+    re.UNICODE,
+)
+
+
+def _split_alnum_boundary(token: str) -> list[str]:
+    """Split a token at every direct letter↔digit transition.
+
+    'ats12u' → ['ats','12','u']; 'hknlpd150s' → ['hknlpd','150','s'];
+    'eft60' → ['eft','60']; '75pe' → ['75','pe']. Pure letters or pure
+    digits pass through. Tokens containing '+' (kept by _TOKEN_STRIP_RE)
+    preserve '+' inside one chunk because the regex only fires on direct
+    letter↔digit adjacency: 'bistro+6' → ['bistro+6'].
+    """
+    parts = _ALNUM_BOUNDARY_RE.split(token)
+    return [p for p in parts if p]
 
 # Glue a short uppercase letter prefix to a following digit token when the
 # catalog stores a model with a space ("R 301", "IP 3500", "OGG 4070", "СМ 250").
@@ -253,7 +281,23 @@ _PAREN_CONTENT_RE = re.compile(r"\([^)]*\)")
 # meaningful_tokens so strict-model equality and containment both see the
 # same joined token on both sides.
 _LETTER_DIGIT_GLUE_RE = re.compile(
-    r"(?<![A-Za-zА-Яа-яІЇЄіїєҐґ0-9])([A-ZА-ЯІЇЄҐ]{1,4})\s+(\d)",
+    r"(?<![A-Za-zА-Яа-яІЇЄіїєҐґ0-9])"
+    # Don't glue when the letter-prefix is itself a trailing SKU suffix
+    # coming after a digit token ("ATS 12 U 1/2" must not glue "U 1" → "U1";
+    # the trailing 'U' belongs to "ATS12", handled by TRAILING_LETTER_GLUE).
+    r"(?<!\d\s)"
+    r"([A-ZА-ЯІЇЄҐ]{1,4})\s+(\d)",
+)
+
+# Second-pass glue: fuse a trailing single uppercase letter to a preceding
+# letter-digit compound ("ATS12 U" → "ATS12U", "ATS22 UT" → "ATS22UT"). This
+# catches razdelny catalog styles where the SKU suffix is written as a
+# separate word after the digit ("ATS 12 U 1/2"). The first-pass glue merges
+# the letter prefix and first digit; this second pass picks up the trailing
+# letter token so strict-model equality and containment see identical
+# "ATS12U" / "ATS22UT" tokens on both sides.
+_TRAILING_LETTER_GLUE_RE = re.compile(
+    r"([A-ZА-ЯІЇЄҐ]+\d+)\s+([A-ZА-ЯІЇЄҐ]{1,2})(?![A-Za-zА-Яа-яІЇЄіїєҐґ0-9])",
 )
 
 # Common uppercase descriptor words that appear in cookware product names and
@@ -269,6 +313,11 @@ _GLUE_STOPWORDS = frozenset({
     "CHEF", "AUTO", "CORE", "INOX", "MEAT", "SARO", "COMBI", "ALL", "HOT",
 })
 
+# Cyrillic suffix tokens that look like trailing SKU letters but are actually
+# phase/voltage descriptors ("1Ф", "3Ф"). Strip them before the trailing-letter
+# glue fires so "ATS12 Ф" does not collapse to "ATS12Ф".
+_TRAILING_LETTER_STOPWORDS = frozenset({"Ф", "ф", "В", "в"})
+
 
 def _glue_letter_digit(text: str) -> str:
     def _sub(m: re.Match[str]) -> str:
@@ -277,7 +326,15 @@ def _glue_letter_digit(text: str) -> str:
             return m.group(0)
         return f"{letters}{digit}"
 
-    return _LETTER_DIGIT_GLUE_RE.sub(_sub, text)
+    def _sub_trailing(m: re.Match[str]) -> str:
+        compound, suffix = m.group(1), m.group(2)
+        if suffix in _TRAILING_LETTER_STOPWORDS:
+            return m.group(0)
+        return f"{compound}{suffix}"
+
+    text = _LETTER_DIGIT_GLUE_RE.sub(_sub, text)
+    text = _TRAILING_LETTER_GLUE_RE.sub(_sub_trailing, text)
+    return text
 
 
 # Size-notation fractions that must NOT be treated as model codes.
@@ -437,6 +494,31 @@ def _short_alpha_discriminator(sup: set[str], prom: set[str]) -> bool:
     return False
 
 
+def _asymmetric_sku_suffix(sup: set[str], prom: set[str]) -> bool:
+    """True when one side's extras contain a 1-char Latin letter, other is empty.
+
+    A lone 1-char ASCII letter in asymmetric extras is almost always an SKU
+    marker — 'U' (Unger attachment in Apach ATS12U), 'B' (Built-in / Black),
+    'F' (Front / Freezer), 'R' (Right). Real bug: 'Apach ATS 12 U 1/2 унгер
+    1ф' matched 'APACH ATS 12 1Ф' at 95% because the supplier's extras {u, 1,
+    2, унгер} are a mixed bag that neither digit_only nor short_alpha catch,
+    and the base subset rule treated prom as ⊂ sup.
+
+    Narrow by design: requires ONE side empty so verbose descriptors still
+    pass (e.g. prom's 'корпус пластик 21 кг/добу' with supplier's exact base
+    SKU — prom_extras have no 1-char Latin, rule skips, subset_morph accepts).
+    """
+    def _has_one_char_latin(s: set[str]) -> bool:
+        return any(len(t) == 1 and t.isascii() and t.isalpha() for t in s)
+    sup_extras = sup - prom
+    prom_extras = prom - sup
+    if sup_extras and not prom_extras:
+        return _has_one_char_latin(sup_extras)
+    if prom_extras and not sup_extras:
+        return _has_one_char_latin(prom_extras)
+    return False
+
+
 def meaningful_tokens(text: str) -> set[str]:
     """Tokenize text into comparable normalized tokens.
 
@@ -472,13 +554,21 @@ def meaningful_tokens(text: str) -> set[str]:
         tok = _TOKEN_STRIP_RE.sub("", raw)
         if not tok:
             continue
-        if tok.isdigit():
-            out.add(tok)
-        elif len(tok) >= 2:
-            out.add(tok)
-        elif tok.isascii() and tok.isalpha():
-            # 1-char Latin SKU suffix ('B', 'F', 'R') — keep as discriminator.
-            out.add(tok)
+        # Split at letter↔digit boundaries so "ATS12U" tokenizes like
+        # "ATS 12 U" and the containment gate aligns slitny/razdelny catalog
+        # styles. Pure-letter or pure-digit tokens come back as [tok].
+        for sub in _split_alnum_boundary(tok):
+            if not sub:
+                continue
+            if sub.isdigit():
+                out.add(sub)
+            elif len(sub) >= 2:
+                out.add(sub)
+            elif sub.isascii() and sub.isalpha():
+                # 1-char Latin SKU suffix ('B', 'F', 'R', 'U') — keep as
+                # discriminator. Cyrillic 1-char tokens (prepositions 'з',
+                # 'в', 'і') stay filtered.
+                out.add(sub)
     return out - VOLTAGE_TAGS
 
 
@@ -951,6 +1041,17 @@ def find_match_candidates(
                 elif _short_alpha_discriminator(sup_after_eff, prom_after_eff):
                     logger.debug(
                         "Containment rejected (short-alpha discriminator): "
+                        "sup=%s prom=%s for prom_id=%d",
+                        sup_after_eff, prom_after_eff,
+                        candidate["prom_product_id"],
+                    )
+                # Lone 1-char Latin in asymmetric extras = SKU suffix.
+                # Catches 'ATS 12 U 1/2 унгер' vs 'ATS 12' where sup's extras
+                # mix the 'u' marker with digits and a long Cyrillic word —
+                # neither short_alpha nor digit_only fires there.
+                elif _asymmetric_sku_suffix(sup_after_eff, prom_after_eff):
+                    logger.debug(
+                        "Containment rejected (asymmetric 1-char Latin SKU suffix): "
                         "sup=%s prom=%s for prom_id=%d",
                         sup_after_eff, prom_after_eff,
                         candidate["prom_product_id"],

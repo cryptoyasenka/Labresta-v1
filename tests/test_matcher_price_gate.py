@@ -798,12 +798,20 @@ class TestLetterSpaceDigitModel:
         ) == ""
 
     def test_containment_gate_sees_glued_token(self):
-        """pp 'R 301 Ultra' and sp 'R301 Ultra' must produce same tokens for gate."""
+        """pp 'R 301 Ultra' and sp 'R301 Ultra' must produce same tokens for gate.
+
+        With compound letter↔digit split, both forms canonicalize to the same
+        segmented set {r, 301, ultra, 4, диски/диска} regardless of whether
+        the source wrote the SKU glued or spaced."""
         from app.services.matcher import meaningful_tokens
         pp_tokens = meaningful_tokens("R 301 Ultra + 4 диски")
         sp_tokens = meaningful_tokens("R301 Ultra + 4 диска")
-        assert "r301" in pp_tokens
-        assert "r301" in sp_tokens
+        # Both forms produce the same SKU segments after glue + boundary split.
+        assert {"r", "301"} <= pp_tokens
+        assert {"r", "301"} <= sp_tokens
+        # The descriptor tokens align so containment succeeds regardless of
+        # the verb form ("диски" vs "диска" differ but are not SKU tokens).
+        assert pp_tokens - {"диски"} == sp_tokens - {"диска"}
 
 
 class TestSizeFractionNotModel:
@@ -1149,3 +1157,138 @@ class TestShortAlphaDiscriminator:
         tokens = meaningful_tokens("решітка з нерж сталі")
         assert "з" not in tokens
         assert "нерж" in tokens
+
+
+class TestCompoundAndDashSplit:
+    """Horoshop frequently writes model codes slitno ('ATS12U', 'HKN-LPD150S')
+    while supplier feeds split them ('ATS 12 U', 'HKN LPD 150 S'). Without
+    letter↔digit boundary split and dash split, 'Apach ATS12U 1/2 унгер' does
+    not align with supplier's 'Apach ATS 12 U 1/2 унгер 1ф' in the containment
+    gate — the correct match falls out of top-3 and the wrong plain 'ATS 12
+    1Ф' wins 95% via token_sort on descriptor words."""
+
+    def test_compound_split_letter_digit_letter(self):
+        from app.services.matcher import _split_alnum_boundary
+        # All direct letter↔digit transitions split (slitny SKUs canonicalize
+        # to the same segments as the razdelny form).
+        assert _split_alnum_boundary("ats12u") == ["ats", "12", "u"]
+        assert _split_alnum_boundary("hknlpd150s") == ["hknlpd", "150", "s"]
+        assert _split_alnum_boundary("75pe") == ["75", "pe"]
+        assert _split_alnum_boundary("vis60") == ["vis", "60"]
+        assert _split_alnum_boundary("eft60") == ["eft", "60"]
+        # '+' is preserved by _TOKEN_STRIP_RE and breaks direct letter↔digit
+        # adjacency, so "BISTRO+6" bundle marker stays whole.
+        assert _split_alnum_boundary("bistro+6") == ["bistro+6"]
+        # Pure letters or pure digits pass through.
+        assert _split_alnum_boundary("hknfntm") == ["hknfntm"]
+        assert _split_alnum_boundary("150") == ["150"]
+        assert _split_alnum_boundary("abc") == ["abc"]
+
+    def test_meaningful_tokens_splits_ats12u(self):
+        from app.services.matcher import meaningful_tokens
+        tokens = meaningful_tokens("Apach ATS12U 1/2 унгер 220 В")
+        assert "ats" in tokens
+        assert "12" in tokens
+        assert "u" in tokens
+        assert "унгер" in tokens
+        # Voltage filtered.
+        assert "220" not in tokens
+
+    def test_meaningful_tokens_splits_dashed_sku(self):
+        from app.services.matcher import meaningful_tokens
+        tokens = meaningful_tokens("Hurakan HKN-FNT-M з набором дисків")
+        assert "hkn" in tokens
+        assert "fnt" in tokens
+        assert "m" in tokens
+        # 1-char Cyrillic 'з' (preposition) still filtered.
+        assert "з" not in tokens
+
+    def test_dash_split_preserves_eft_60_slash_2(self):
+        """Regression: 'EFT-60/2' and 'EFT 60/2' must produce identical tokens
+        now that '-' splits. Both → {eft, 60, 2}."""
+        from app.services.matcher import meaningful_tokens
+        a = meaningful_tokens("Apach EFT-60/2")
+        b = meaningful_tokens("Apach EFT 60/2")
+        assert a == b
+
+    def test_vis60_plus_accessories_still_matches(self):
+        """Regression: compound split fires on 'VIS60' → {vis, 60}, but supplier
+        'VIS60 + решітка + ЭПУ' vs prom 'VIS60' must still pass containment
+        because prom's tokens {vis, 60} are a subset of sup's."""
+        prom = [
+            _make_prom(1, "Тістоміс LP Group VIS60", "LP Group", 940500),
+        ]
+        result = find_match_candidates(
+            "Тістоміс LP Group VIS60 + решітка + ЭПУ",
+            "LP Group", prom, supplier_price_cents=940500,
+        )
+        assert any(r["prom_product_id"] == 1 for r in result)
+
+    def test_ats12u_matches_razdelny_supplier(self):
+        """sp 'Apach ATS 12 U 1/2 унгер 1ф' must find pp 'Apach ATS12U 1/2
+        унгер 220 В' through containment after compound-split aligns the
+        merged/razdelny artikul."""
+        prom = [
+            _make_prom(1, "М'ясорубка Apach ATS12U 1/2 унгер 220 В", "Apach", 50000),
+        ]
+        result = find_match_candidates(
+            "М'ясорубка Apach ATS 12 U 1/2 унгер 1ф.", "Apach", prom,
+            supplier_price_cents=50000,
+        )
+        assert any(r["prom_product_id"] == 1 for r in result)
+
+    def test_ats_12_u_unger_does_not_match_plain_ats_12(self):
+        """Core bug case: sp 'Apach ATS 12 U 1/2 унгер 1ф' must NOT match
+        pp 'APACH ATS 12 1Ф' (the plain, non-unger version) — the lone 'u'
+        in asymmetric extras is an SKU marker, not a prose descriptor."""
+        prom = [
+            _make_prom(1, "М'ясорубка APACH ATS 12 1Ф", "Apach", 50000),
+        ]
+        result = find_match_candidates(
+            "М'ясорубка Apach ATS 12 U 1/2 унгер 1ф.", "Apach", prom,
+            supplier_price_cents=50000,
+        )
+        assert not any(r["prom_product_id"] == 1 for r in result)
+
+    def test_hkn_fnt_m_does_not_match_fnt_a(self):
+        """sp 'Hurakan Hkn-fnt-m' must NOT match pp 'Hurakan HKN-FNT-A' —
+        the 'M' vs 'A' suffix is a model variant. Pre-fix, dash-strip merged
+        both to 'hknfntm' / 'hknfnta' which near_duplicate_token saw as
+        morphological siblings (6/7 char common prefix)."""
+        prom = [
+            _make_prom(
+                1, "ОВОЧЕРІЗКА HURAKAN HKN-FNT-A З НАБОРОМ ДИСКІВ",
+                "Hurakan", 80000,
+            ),
+        ]
+        result = find_match_candidates(
+            "Овочерізка Hurakan Hkn-fnt-m з набором дисків NEW",
+            "Hurakan", prom, supplier_price_cents=80000,
+        )
+        assert not any(r["prom_product_id"] == 1 for r in result)
+
+    def test_asymmetric_sku_suffix_helper(self):
+        from app.services.matcher import _asymmetric_sku_suffix
+        # sup has 1-char Latin in extras, prom extras empty → True
+        assert _asymmetric_sku_suffix(
+            {"ats", "12", "u", "1", "2", "унгер"}, {"ats", "12"}
+        ) is True
+        # prom has 1-char Latin in extras, sup extras empty → True
+        assert _asymmetric_sku_suffix(
+            {"ats", "12"}, {"ats", "12", "u", "1", "2", "унгер"}
+        ) is True
+        # Both sides have extras → False (subset_morph handles it)
+        assert _asymmetric_sku_suffix({"x", "u"}, {"x", "r"}) is False
+        # No 1-char Latin in extras (just long Cyrillic) → False, descriptor
+        assert _asymmetric_sku_suffix(
+            {"vis60"}, {"vis60", "решітка", "эпу"}
+        ) is False
+        # No 1-char Latin (digits only) → False, handled by digit_only
+        assert _asymmetric_sku_suffix(
+            {"neapolis"}, {"neapolis", "4"}
+        ) is False
+        # Identical sets → False
+        assert _asymmetric_sku_suffix({"x"}, {"x"}) is False
+        # 1-char Cyrillic extra → False (rule is Latin-only; Cyrillic 1-char
+        # gets filtered at tokenization anyway)
+        assert _asymmetric_sku_suffix({"x"}, {"x", "з"}) is False
