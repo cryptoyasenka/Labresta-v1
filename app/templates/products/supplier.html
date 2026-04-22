@@ -11,6 +11,7 @@
     'match_state': match_state,
     'search': search,
     'per_page': per_page,
+    'show_ignored': 'true' if show_ignored else '',
 } %}
 {% set page_params = {
     'supplier_id': supplier_id or '',
@@ -22,6 +23,7 @@
     'per_page': per_page,
     'sort': sort,
     'order': order,
+    'show_ignored': 'true' if show_ignored else '',
 } %}
 
 {% block content %}
@@ -85,12 +87,21 @@
             {% endfor %}
         </select>
     </div>
+    <div class="col-auto">
+        <label class="form-label small mb-0">Исключённые</label>
+        <div class="form-check form-switch pt-1">
+            <input class="form-check-input" type="checkbox" name="show_ignored" value="true"
+                   id="showIgnoredToggle" {% if show_ignored %}checked{% endif %}
+                   onchange="this.form.submit()">
+            <label class="form-check-label small" for="showIgnoredToggle">Показать</label>
+        </div>
+    </div>
     <div class="col">
         <label class="form-label small mb-0">Поиск</label>
         <div class="input-group input-group-sm">
             <input type="text" class="form-control" name="search" value="{{ search }}" placeholder="Название товара...">
             <button type="submit" class="btn btn-outline-secondary">Найти</button>
-            {% if search or supplier_id or brand or available != 'all' or needs_review != 'all' %}
+            {% if search or supplier_id or brand or available != 'all' or needs_review != 'all' or show_ignored %}
             <a href="{{ url_for('products.supplier_list') }}" class="btn btn-outline-danger">Сбросить</a>
             {% endif %}
         </div>
@@ -178,6 +189,9 @@
                     {% if product.is_deleted %}
                     <span class="badge bg-secondary">Удален</span>
                     {% endif %}
+                    {% if product.ignored %}
+                    <span class="badge bg-dark" title="Исключён оператором — скрыт из /matches">Исключён</span>
+                    {% endif %}
                 </td>
                 <td>
                     {% if product.last_seen_at %}
@@ -222,6 +236,17 @@
                     <button class="btn btn-outline-danger btn-sm" onclick="deleteProduct({{ product.id }})" title="Удалить товар">
                         Удалить
                     </button>
+                    {% if not product.ignored %}
+                    <button class="btn btn-outline-dark btn-sm" onclick="ignoreProduct({{ product.id }})"
+                            title="Исключить из матчинга — товар пропадёт из /matches и этого списка (смотри чекбокс «Исключённые»)">
+                        Исключить
+                    </button>
+                    {% else %}
+                    <button class="btn btn-dark btn-sm" onclick="unignoreProduct({{ product.id }})"
+                            title="Вернуть товар в работу">
+                        Вернуть
+                    </button>
+                    {% endif %}
                     {% endif %}
                 </td>
             </tr>

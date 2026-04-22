@@ -139,6 +139,41 @@ async function submitForcePrice() {
  * Soft-delete a supplier product with confirmation.
  * @param {number} productId - Product ID
  */
+async function ignoreProduct(productId) {
+    if (!confirm('Исключить товар из матчинга? Он пропадёт из /matches и из этого списка. Вернуть можно, включив «Показать исключённые».')) {
+        return;
+    }
+    try {
+        const resp = await fetchWithCSRF(`/products/supplier/${productId}/ignore`, {
+            method: 'POST',
+        });
+        const data = await resp.json();
+        if (resp.ok && data.status === 'ok') {
+            location.reload();
+        } else {
+            alert(data.message || 'Ошибка');
+        }
+    } catch (err) {
+        alert('Ошибка сети: ' + err.message);
+    }
+}
+
+async function unignoreProduct(productId) {
+    try {
+        const resp = await fetchWithCSRF(`/products/supplier/${productId}/unignore`, {
+            method: 'POST',
+        });
+        const data = await resp.json();
+        if (resp.ok && data.status === 'ok') {
+            location.reload();
+        } else {
+            alert(data.message || 'Ошибка');
+        }
+    } catch (err) {
+        alert('Ошибка сети: ' + err.message);
+    }
+}
+
 async function deleteProduct(productId) {
     if (!confirm('Удалить товар? Это действие можно отменить.')) {
         return;

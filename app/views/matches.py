@@ -108,6 +108,13 @@ def _build_match_query():
         elif availability == "unavailable":
             query = query.filter(ProductMatch.supplier_product.has(SupplierProduct.available == False))  # noqa: E712
 
+    # Always hide matches whose SP is ignored — operator explicitly opted them
+    # out of the catalog. /products/supplier?show_ignored=1 stays the only
+    # surface where they're visible.
+    query = query.filter(
+        ProductMatch.supplier_product.has(SupplierProduct.ignored == False)  # noqa: E712
+    )
+
     if search:
         search_term = f"%{search}%"
         query = query.join(

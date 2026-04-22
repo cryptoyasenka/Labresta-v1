@@ -56,12 +56,17 @@ def supplier_list():
     match_filter = request.args.get("match_state", "all")
     brand_filter = request.args.get("brand", "").strip()
     show_deleted = request.args.get("show_deleted", "false") == "true"
+    show_ignored = request.args.get("show_ignored", "false") == "true"
 
     query = select(SupplierProduct)
 
     # Exclude deleted by default
     if not show_deleted:
         query = query.where(SupplierProduct.is_deleted == False)  # noqa: E712
+
+    # Exclude ignored by default — operator action, not feed state.
+    if not show_ignored:
+        query = query.where(SupplierProduct.ignored == False)  # noqa: E712
 
     if supplier_id:
         query = query.where(SupplierProduct.supplier_id == supplier_id)
@@ -195,6 +200,7 @@ def supplier_list():
         needs_review=needs_review_filter,
         match_state=match_filter,
         show_deleted=show_deleted,
+        show_ignored=show_ignored,
     )
 
 
@@ -390,6 +396,35 @@ def delete_product(product_id):
     product.available = False
     db.session.commit()
     return jsonify({"status": "ok", "message": "Товар удален"})
+
+
+@products_bp.route("/supplier/<int:product_id>/ignore", methods=["POST"])
+@login_required
+def ignore_product(product_id):
+    """Mark a supplier product as ignored (operator exclusion).
+
+    Hides it from /matches and the default /products/supplier view. Use for
+    offers that should not be cataloged at all — e.g. brandless feeds where
+    cross-brand matching would be unsafe.
+    """
+    product = db.session.get(SupplierProduct, product_id)
+    if not product:
+        return jsonify({"status": "error", "message": "Товар не найден"}), 404
+    product.ignored = True
+    db.session.commit()
+    return jsonify({"status": "ok", "message": "Товар исключён"})
+
+
+@products_bp.route("/supplier/<int:product_id>/unignore", methods=["POST"])
+@login_required
+def unignore_product(product_id):
+    """Remove the ignored flag from a supplier product."""
+    product = db.session.get(SupplierProduct, product_id)
+    if not product:
+        return jsonify({"status": "error", "message": "Товар не найден"}), 404
+    product.ignored = False
+    db.session.commit()
+    return jsonify({"status": "ok", "message": "Товар возвращён в работу"})
 
 
 @products_bp.route("/supplier/<int:product_id>/set-status", methods=["POST"])

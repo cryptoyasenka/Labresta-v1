@@ -22,6 +22,12 @@ class SupplierProduct(db.Model):
     price_forced = db.Column(db.Boolean, default=False, server_default="0")
     is_deleted = db.Column(db.Boolean, default=False, server_default="0")
     needs_catalog_add = db.Column(db.Boolean, default=False, server_default="0")
+    # Operator-driven exclusion. Hides the SP from /matches and the default
+    # /products/supplier view without deleting it. Unlike is_deleted (feed
+    # removed it) or needs_catalog_add (add to Horoshop manually), this is a
+    # "deliberately out of scope" bucket — e.g. offers without a brand that we
+    # do not want to catalog at all.
+    ignored = db.Column(db.Boolean, default=False, server_default="0")
     description = db.Column(db.Text, nullable=True)
     image_url = db.Column(db.String(500), nullable=True)  # Main picture from feed
     images = db.Column(db.Text, nullable=True)  # All picture URLs, JSON array
