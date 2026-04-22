@@ -5,20 +5,22 @@
 | Статус | Кол-во |
 |---|---|
 | ✅ Сматчено confirmed/manual | 168 |
-| 🟡 Только candidate (нужен клик Confirm) | 0 |
-| 🔴 SP есть, но нет match-строки (скорер не нашёл PP) | 4 |
+| 🟡 Только candidate (нужен клик Confirm) | 1 |
+| 🔴 SP есть, но нет match-строки (скорер не нашёл PP) | 3 |
 | ⚫ Вообще нет как SP в БД (проблема фида?) | 6 |
 
 ---
 
-## 🟡 Candidate — нужно подтвердить (0)
+## 🟡 Candidate — нужно подтвердить (1)
 
 Эти товары уже есть как матчи-кандидаты. Просто открой и нажми Confirm.
 
+- **DHD10G** (SP#4602) — ДЕГІДРАТОР HURAKAN HKN-DHD10G
+  - [Открыть](http://127.0.0.1:5050/matches?supplier_id=2&status=candidate&search=DHD10G)
 
 ---
 
-## 🔴 SP есть, но нет match-строки (4)
+## 🔴 SP есть, но нет match-строки (3)
 
 Скорер не нашёл подходящий PP в каталоге — либо артикул в каталоге отличается, либо PP вообще нет.
 Решение: пойти в UI, найти SP, нажать 'Сопоставить вручную' и поискать по имени.
@@ -32,9 +34,6 @@
 - **DL775** (SP#5067) — ЛАМПА ІНФРАЧЕРВОНА HURAKAN HKN-DL775, 190 ММ БРОНЗОВА
   - Labresta URL (справочно): https://labresta.com.ua/infrachervona-lampa-hurakan-hkn-dl775-bronzova-dlia-pidihrivu-strav/
   - [Найти SP в UI](http://127.0.0.1:5050/products/supplier?search=DL775)
-- **DL800** (SP#5068) — ЛАМПА ІНФРАЧЕРВОНА HURAKAN HKN-DL800, 275 ММ БРОНЗОВА
-  - Labresta URL (справочно): https://labresta.com.ua/infrachervona-lampa-hurakan-hkn-dl800-bronza-dlia-pidihrivannia-strav/
-  - [Найти SP в UI](http://127.0.0.1:5050/products/supplier?search=DL800)
 
 ---
 

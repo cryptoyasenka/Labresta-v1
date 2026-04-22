@@ -2,12 +2,26 @@
   "summary": {
     "total": 178,
     "matched_ok": 168,
-    "matched_candidate": 0,
-    "no_match": 4,
+    "matched_candidate": 1,
+    "no_match": 3,
     "no_sp": 6,
     "no_article": 0
   },
-  "matched_candidate": [],
+  "matched_candidate": [
+    {
+      "sp_id": 4602,
+      "article": "DHD10G",
+      "num": 42,
+      "np_url": "https://np.com.ua/ru/product/dehydrator-hurakan-hkn-dhd10g/",
+      "name": "ДЕГІДРАТОР HURAKAN HKN-DHD10G",
+      "np_price": "10288",
+      "rts_price": "0",
+      "lab_price": 8874,
+      "lab_url": "https://labresta.com.ua/dehidrator-hurakan-hkn-dhd10g/",
+      "discount": "-13.74%",
+      "diff": 8874
+    }
+  ],
   "no_match": [
     {
       "sp_id": 4603,
@@ -47,19 +61,6 @@
       "lab_url": "https://labresta.com.ua/infrachervona-lampa-hurakan-hkn-dl775-bronzova-dlia-pidihrivu-strav/",
       "discount": "-5.98%",
       "diff": 425.85
-    },
-    {
-      "sp_id": 5068,
-      "article": "DL800",
-      "num": 59,
-      "np_url": "https://np.com.ua/ru/product/lampa-infrachervona-275-mm-bronzovaya-hkn-dl800/",
-      "name": "ЛАМПА ІНФРАЧЕРВОНА HURAKAN HKN-DL800, 275 ММ БРОНЗОВА",
-      "np_price": "5505",
-      "rts_price": "4679,25",
-      "lab_price": 5220,
-      "lab_url": "https://labresta.com.ua/infrachervona-lampa-hurakan-hkn-dl800-bronza-dlia-pidihrivannia-strav/",
-      "discount": "-5.18%",
-      "diff": 540.75
     }
   ],
   "no_sp": [
