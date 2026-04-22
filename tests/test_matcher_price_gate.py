@@ -530,6 +530,77 @@ class TestVoltageVariantGate:
         )
         assert len(result) == 1
 
+    def test_phase_1f_extracts_220_230(self):
+        """'1ф' phase marker must imply 220/230 V family."""
+        assert extract_voltages("Apach ATS 22 UT повний унгер 1ф") == {"220", "230"}
+
+    def test_phase_3f_extracts_380_400(self):
+        """'3ф' phase marker must imply 380/400 V family."""
+        assert extract_voltages("Apach ATS 22 UT 3ф") == {"380", "400"}
+
+    def test_phase_1f_vs_380v_rejected(self):
+        """sp '1ф' must NOT match pp '380 В' — different phase variant.
+        Regression from sp#5113 6th regen: pp#2985 '380 В' appeared as
+        secondary candidate alongside correct pp#2974 '220 В' because
+        sup_voltages was empty (no explicit '220' in sup name)."""
+        prom = [
+            _make_prom(
+                1, "М'ясорубка Apach APACH ATS 22 UT 380 В (повний унгер)",
+                "Apach", 50000,
+            ),
+        ]
+        result = find_match_candidates(
+            "М'ясорубка Apach ATS 22 UT повний унгер 1ф.", "Apach", prom,
+            supplier_price_cents=50000,
+        )
+        assert len(result) == 0
+
+    def test_phase_3f_vs_220v_rejected(self):
+        """sp '3ф' must NOT match pp '220 В' (1-phase variant)."""
+        prom = [
+            _make_prom(
+                1, "М'ясорубка Apach ATS12U 1/2 унгер 220 В", "Apach", 50000,
+            ),
+        ]
+        result = find_match_candidates(
+            "М'ясорубка Apach ATS 12 U 1/2 унгер 3ф.", "Apach", prom,
+            supplier_price_cents=50000,
+        )
+        assert len(result) == 0
+
+    def test_phase_1f_matches_220v_explicit(self):
+        """sp '1ф' must match pp '220 В' (same phase family)."""
+        prom = [
+            _make_prom(
+                1, "М'ясорубка Apach ATS12U 1/2 унгер 220 В", "Apach", 50000,
+            ),
+        ]
+        result = find_match_candidates(
+            "М'ясорубка Apach ATS 12 U 1/2 унгер 1ф.", "Apach", prom,
+            supplier_price_cents=50000,
+        )
+        assert len(result) == 1
+
+    def test_phase_3f_matches_380v_explicit(self):
+        """sp '3ф' must match pp '380 В' (same phase family)."""
+        prom = [
+            _make_prom(
+                1, "М'ясорубка Apach APACH ATS 22 UT 380 В (повний унгер)",
+                "Apach", 50000,
+            ),
+        ]
+        result = find_match_candidates(
+            "М'ясорубка Apach ATS 22 UT повний унгер 3ф.", "Apach", prom,
+            supplier_price_cents=50000,
+        )
+        assert len(result) == 1
+
+    def test_phase_marker_ignored_without_context(self):
+        """Isolated '1' or '3' must not trigger phase inference — the full
+        'ф'/'ph' suffix is required. 'ATS 12' must not resolve to 220 V."""
+        assert extract_voltages("ATS 12 U 1/2") == set()
+        assert extract_voltages("APACH 300 3 секции") == set()
+
 
 class TestBrandWhitespaceVariants:
     """Brand variants differing only by whitespace/punctuation must still gate correctly."""

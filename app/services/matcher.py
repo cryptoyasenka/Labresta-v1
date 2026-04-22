@@ -62,6 +62,15 @@ VOLTAGE_RE = re.compile(
     r"(?:\((\d{3})(?:\s*[ВBV])?\s*\)|(?<!\d)(\d{3})\s*[ВBV]\b)",
     re.IGNORECASE | re.UNICODE,
 )
+# Phase markers: '1ф', '3ф', '1ph', '3ph' — infer voltage implication.
+# 1-phase → 220/230 V family, 3-phase → 380/400 V family. Suppliers and
+# catalog use these labels interchangeably: sp#5113 'ATS 22 UT 1ф' must
+# not match pp#2985 'ATS 22 UT 380 В' (that's the 3-phase variant).
+PHASE_RE = re.compile(
+    r"(?<![a-zа-я0-9])([13])\s*(?:ф|ph|phase|фаз[ан]?(?:и|ы|ий)?)(?![a-zа-я0-9])",
+    re.IGNORECASE | re.UNICODE,
+)
+_PHASE_TO_VOLTAGES = {"1": frozenset({"220", "230"}), "3": frozenset({"380", "400"})}
 
 
 def extract_voltages(name: str) -> set[str]:
@@ -69,6 +78,8 @@ def extract_voltages(name: str) -> set[str]:
 
     Matches three forms: '(220)', '(220 В)' and bare '220 В' / '380В' in any
     context (including inside multi-value parentheses like '(13 кг/год, 380 В)').
+    Also expands phase markers ('1ф' → {'220','230'}, '3ф' → {'380','400'})
+    so a supplier-labeled 1-phase product cannot match a 380 V catalog entry.
     """
     if not name:
         return set()
@@ -77,6 +88,8 @@ def extract_voltages(name: str) -> set[str]:
         v = m.group(1) or m.group(2)
         if v in VOLTAGE_TAGS:
             vs.add(v)
+    for m in PHASE_RE.finditer(name):
+        vs |= _PHASE_TO_VOLTAGES.get(m.group(1), frozenset())
     return vs
 
 
