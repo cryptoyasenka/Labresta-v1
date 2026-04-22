@@ -24,6 +24,15 @@ logger = logging.getLogger(__name__)
 #   60% cutoff validated as reasonable for Cyrillic product names with WRatio.
 SCORE_CUTOFF = 60.0  # User decision: 60% minimum threshold
 MATCH_LIMIT = 3  # User decision: top-3 candidates per product
+# Oversample factor for rapidfuzz top-K before post-gates run. Raw WRatio
+# ranks the correct target below the MATCH_LIMIT cutoff when descriptor
+# words diverge (sp 'HKN-FNT-M з набором дисків NEW' scores pp 'HKN-FNT-A
+# З НАБОРОМ ДИСКІВ' at 93% but the true match pp 'HKN-FNT-M NEW з
+# електронним блоком' at 63%). Post-gates (asymmetric SKU suffix,
+# name-model mismatch, etc.) correctly reject the wrong hit — but only
+# if they see it in the candidate pool. Feed them the top-K above the
+# score cutoff, then truncate to MATCH_LIMIT after filtering.
+FUZZY_OVERSAMPLE_LIMIT = 50
 CONFIDENCE_HIGH = 80.0  # >80% = High confidence
 CONFIDENCE_MEDIUM = 60.0  # 60-80% = Medium confidence
 # Below 60% = Low (filtered out by SCORE_CUTOFF, never stored)
@@ -785,20 +794,29 @@ def find_match_candidates(
                 if len(fast_matches) >= limit:
                     break
 
-    # Step 3: Extract matches using rapidfuzz WRatio
+    # Step 3: Extract matches using rapidfuzz WRatio.
+    # Oversample FUZZY_OVERSAMPLE_LIMIT candidates and let post-gates filter
+    # them down. Final truncation to MATCH_LIMIT happens after all gates run
+    # so descriptor-word noise can't bury a correct SKU match (sp#4698
+    # 'HKN-FNT-M з набором дисків' where pp#3269 'HKN-FNT-M NEW з електронним
+    # блоком' scores 63% while pp#3291 'HKN-FNT-A З НАБОРОМ ДИСКІВ' scores 93%).
     fuzzy_limit = limit - len(fast_matches)
     fuzzy_output = []
     if fuzzy_limit > 0:
+        extract_limit = max(FUZZY_OVERSAMPLE_LIMIT, fuzzy_limit + len(fast_match_ids))
         results = process.extract(
             normalize_text(supplier_product_name),
             choices,
             scorer=fuzz.WRatio,
             processor=utils.default_process,
             score_cutoff=score_cutoff,
-            limit=fuzzy_limit + len(fast_match_ids),  # extra to compensate for skips
+            limit=extract_limit,
         )
 
-        # Step 4: Build result list (skip fast-path matches)
+        # Step 4: Build result list (skip fast-path matches).
+        # Do NOT slice to fuzzy_limit here — post-gates need visibility into
+        # all oversampled candidates to promote the correct target when raw
+        # WRatio ranks an accessory-descriptor sibling higher.
         for matched_name, score, prom_id in results:
             if prom_id in fast_match_ids:
                 continue
@@ -810,8 +828,6 @@ def find_match_candidates(
                     "confidence": get_confidence_label(score),
                 }
             )
-            if len(fuzzy_output) >= fuzzy_limit:
-                break
 
     # Step 4.5: Type gate — reject candidates where product types differ
     if brand_was_matched and supplier_brand:
