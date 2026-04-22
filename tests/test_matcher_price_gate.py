@@ -1441,6 +1441,23 @@ class TestPureLetterArticleFastPath:
         # Fuzzy + containment will reject because tokens don't overlap.
         assert not any(r["prom_product_id"] == 1 for r in result)
 
+    def test_cyrillic_homoglyph_in_sku_normalized_to_latin(self):
+        """sp#4983 article 'GXSN2ТN' (Cyrillic Т) must normalize to the same
+        value as pure-Latin 'GXSN2TN' so catalog lookup matches."""
+        from app.services.matcher import normalize_model
+        assert normalize_model("GXSN2ТN") == normalize_model("GXSN2TN") == "gxsn2tn"
+        assert normalize_model("HKN-GXSN3ТN") == normalize_model("HKN-GXSN3TN") == "hkngxsn3tn"
+
+    def test_pure_cyrillic_not_transliterated(self):
+        """Real Cyrillic words must not be transliterated — only mixed-script
+        corrupted SKUs are fixed."""
+        from app.services.matcher import normalize_model
+        # Pure Cyrillic 'автомат' stays as Cyrillic letters (then stripped by
+        # the [^a-z0-9] filter → empty).
+        assert normalize_model("АВТОМАТ") == ""
+        # Pure Latin unchanged.
+        assert normalize_model("XFT133") == "xft133"
+
     def test_digit_bearing_article_does_not_bypass_voltage_gate(self):
         """sp#4529 regression: article 'ATS12U 1/2' (has digits) must NOT
         skip the voltage/phase post-gate via pure-letter fast-path. sp is

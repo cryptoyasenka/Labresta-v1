@@ -128,15 +128,42 @@ def get_confidence_label(score: float) -> str:
         return "low"
 
 
+# Cyrillic↔Latin homoglyph map for SKU identity comparison only.
+# Suppliers occasionally type manufacturer SKUs with Cyrillic lookalikes
+# (sp#4983 article='GXSN2ТN' — Cyrillic Т inside a Latin SKU). Applied only
+# when the string is mixed-script (has both Latin and Cyrillic): pure-Cyrillic
+# values like 'АВТОМАТ' are preserved since they are legitimate words, not
+# corrupted SKU codes.
+_HOMOGLYPH_CYR_TO_LAT = str.maketrans({
+    "А": "A", "В": "B", "Е": "E", "К": "K", "М": "M", "Н": "H",
+    "О": "O", "Р": "P", "С": "C", "Т": "T", "У": "Y", "Х": "X",
+    "а": "a", "в": "b", "е": "e", "к": "k", "м": "m", "н": "h",
+    "о": "o", "р": "p", "с": "c", "т": "t", "у": "y", "х": "x",
+})
+_LATIN_LETTER_RE = re.compile(r"[A-Za-z]")
+_CYRILLIC_LETTER_RE = re.compile(r"[А-Яа-яЁёІіЇїЄєҐґ]")
+
+
+def _fix_cyrillic_homoglyphs(value: str) -> str:
+    """Transliterate Cyrillic homoglyph letters to Latin when the SKU is
+    mixed-script. No-op for pure Cyrillic or pure Latin strings."""
+    if _LATIN_LETTER_RE.search(value) and _CYRILLIC_LETTER_RE.search(value):
+        return value.translate(_HOMOGLYPH_CYR_TO_LAT)
+    return value
+
+
 def normalize_model(value: str | None) -> str:
     """Normalize a model/article string for strict literal comparison.
 
     Lowercases, strips whitespace, and removes all non-alphanumeric characters
     so that "XFT-133" == "xft133" == "XFT 133" but "XFT133" != "XFT134".
+    Also fixes Cyrillic homoglyphs in mixed-script SKUs (e.g. 'GXSN2ТN' with
+    Cyrillic Т → 'GXSN2TN') so the corrupted-input form matches the catalog.
     """
     if not value or not value.strip():
         return ""
-    return re.sub(r"[^a-z0-9]", "", value.strip().lower())
+    fixed = _fix_cyrillic_homoglyphs(value.strip())
+    return re.sub(r"[^a-z0-9]", "", fixed.lower())
 
 
 _PAREN_CODE_RE = re.compile(r"\(([A-Za-z0-9.\-_/]{6,})\)")
