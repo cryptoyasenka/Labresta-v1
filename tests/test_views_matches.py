@@ -480,6 +480,74 @@ class TestPpClaimInvariant:
         assert resp.status_code == 200
 
 
+class TestReviewListHidesClaimedCandidates:
+    """Dead candidates (pp claimed by another SP) must not appear in /matches.
+
+    Backend refuses to confirm them (1 pp ↔ 1 SP invariant), so listing them
+    just wastes operator time scrolling past unconfirmable rows.
+    """
+
+    def test_candidate_on_claimed_pp_is_hidden_by_default(self, client, db):
+        m_confirmed, _, pp = _seed_confirmed_match(db.session, status="confirmed")
+        _, dead_cand = _seed_second_sp_and_candidate(db.session, pp)
+
+        resp = client.get("/matches/?status=candidate")
+        assert resp.status_code == 200
+        body = resp.get_data(as_text=True)
+        # The dead candidate's row must not render
+        assert f'data-match-id="{dead_cand.id}"' not in body
+
+    def test_candidate_on_claimed_pp_visible_with_show_claimed(self, client, db):
+        _, _, pp = _seed_confirmed_match(db.session, status="confirmed")
+        _, dead_cand = _seed_second_sp_and_candidate(db.session, pp)
+
+        resp = client.get("/matches/?status=candidate&show_claimed=1")
+        assert resp.status_code == 200
+        body = resp.get_data(as_text=True)
+        assert f'data-match-id="{dead_cand.id}"' in body
+
+    def test_confirmed_rows_still_visible(self, client, db):
+        """The claiming match itself (status=confirmed) must still render."""
+        m_confirmed, _, pp = _seed_confirmed_match(db.session, status="confirmed")
+        _seed_second_sp_and_candidate(db.session, pp)
+
+        resp = client.get("/matches/?status=confirmed")
+        assert resp.status_code == 200
+        body = resp.get_data(as_text=True)
+        assert f'data-match-id="{m_confirmed.id}"' in body
+
+    def test_candidate_on_unclaimed_pp_is_visible(self, client, db):
+        """Regression guard: clean candidates (pp NOT claimed) must still render."""
+        supplier = Supplier(
+            name="Clean", feed_url="http://clean.xml",
+            discount_percent=0, is_enabled=True,
+        )
+        db.session.add(supplier)
+        db.session.flush()
+
+        sp = SupplierProduct(
+            supplier_id=supplier.id, external_id="CLEAN1",
+            name="Clean Product", brand="B", price_cents=10000,
+            available=True, needs_review=False,
+        )
+        pp = PromProduct(
+            external_id="CLEAN_PP", name="Clean PP",
+            name_ru="Clean PP RU", brand="B", price=10000,
+        )
+        db.session.add_all([sp, pp])
+        db.session.flush()
+        cand = ProductMatch(
+            supplier_product_id=sp.id, prom_product_id=pp.id,
+            score=90.0, status="candidate",
+        )
+        db.session.add(cand)
+        db.session.commit()
+
+        resp = client.get("/matches/?status=candidate")
+        body = resp.get_data(as_text=True)
+        assert f'data-match-id="{cand.id}"' in body
+
+
 class TestUnpublishRepublishEndpoints:
     """Phase C — toggle ProductMatch.published without losing the match row."""
 

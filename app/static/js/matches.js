@@ -91,22 +91,46 @@
 
     // ========== Individual confirm/reject ==========
 
+    // Alerts are pinned to the top of the VIEWPORT (not document). When the
+    // operator scrolls deep into a long match list and an action fails, the
+    // old container-top alert was rendered above the visible area and missed
+    // entirely — the action silently "didn't work". Fixed positioning +
+    // longer timeout for errors ensures they're always seen.
     function showAlert(message, type) {
-        var container = document.querySelector('.container-fluid');
-        if (!container) return;
         var alertDiv = document.createElement('div');
-        alertDiv.className = 'alert alert-' + type + ' alert-dismissible fade show';
+        alertDiv.className = 'alert alert-' + type + ' alert-dismissible fade show shadow js-floating-alert';
         alertDiv.setAttribute('role', 'alert');
+        alertDiv.style.position = 'fixed';
+        alertDiv.style.top = '72px';
+        alertDiv.style.left = '50%';
+        alertDiv.style.transform = 'translateX(-50%)';
+        alertDiv.style.zIndex = '1080';
+        alertDiv.style.maxWidth = '90vw';
+        alertDiv.style.minWidth = '320px';
+        // Stack multiple alerts vertically instead of overlapping.
+        var existing = document.querySelectorAll('.js-floating-alert');
+        if (existing.length) {
+            var offset = 72;
+            existing.forEach(function (el) {
+                offset += el.offsetHeight + 8;
+            });
+            alertDiv.style.top = offset + 'px';
+        }
+        // Text only — error messages may splice in names from supplier feeds
+        // (uncontrolled source), so never innerHTML. Callers that want
+        // formatting should build DOM nodes after calling showAlert.
         alertDiv.appendChild(document.createTextNode(message));
         var closeBtn = document.createElement('button');
         closeBtn.type = 'button';
         closeBtn.className = 'btn-close';
         closeBtn.setAttribute('data-bs-dismiss', 'alert');
         alertDiv.appendChild(closeBtn);
-        container.insertBefore(alertDiv, container.firstChild);
+        document.body.appendChild(alertDiv);
+        // Errors/warnings linger longer — operator needs time to read them.
+        var timeoutMs = (type === 'danger' || type === 'warning') ? 10000 : 5000;
         setTimeout(function () {
             if (alertDiv.parentNode) alertDiv.remove();
-        }, 5000);
+        }, timeoutMs);
     }
 
     var statusLabels = {

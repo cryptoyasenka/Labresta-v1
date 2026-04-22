@@ -144,6 +144,22 @@ def _build_match_query():
             )
         )
 
+    # Hide "dead" candidates — ones whose prom_product is already claimed by
+    # a confirmed/manual match. Backend will refuse to confirm them anyway
+    # (1 pp ↔ 1 SP invariant), so surfacing them just wastes operator time.
+    # Pass ?show_claimed=1 to inspect them (e.g. to bulk-reject).
+    show_claimed = request.args.get("show_claimed", "0") == "1"
+    if not show_claimed:
+        claimed_pp_ids = db.session.query(ProductMatch.prom_product_id).filter(
+            ProductMatch.status.in_(("confirmed", "manual"))
+        )
+        query = query.filter(
+            db.or_(
+                ProductMatch.status != "candidate",
+                ~ProductMatch.prom_product_id.in_(claimed_pp_ids),
+            )
+        )
+
     sort_map = {
         "score": ProductMatch.score,
         "status": ProductMatch.status,
@@ -169,6 +185,7 @@ def _build_match_query():
         "sort": sort_col,
         "order": order,
         "per_page": per_page,
+        "show_claimed": show_claimed,
     }
     return query, filters
 
