@@ -1477,3 +1477,138 @@ class TestPureLetterArticleFastPath:
         # article has digits → pure-letter fast-path must not fire.
         # Voltage gate rejects 3ф vs 220В (which resolves to 1ф).
         assert not any(r["prom_product_id"] == 1 for r in result)
+
+
+class TestDigitBearingArticleFastPath:
+    """A2 gap fix (2026-04-22): when catalog pp has no explicit
+    article/display_article, a full SKU embedded in pp.name must still
+    be recognized as a match — even when the article contains digits.
+    Common cases: HKN-20SN2V (Hurakan), AFN-1602 EXP (Fagor),
+    AC800dig DD (Apach), ACB130.65B A R290 (Apach).
+    """
+
+    def test_hkn_20sn2v_digit_article_in_prom_name_matches(self):
+        """sp 'Тістоміс Hurakan HKN-20SN2V на 20 л дві швидкості' (article
+        'HKN-20SN2V' has digits) must match pp 'Тістоміс Hurakan HKN-20SN2V,
+        20 л, 2 шв.' even though descriptor extras differ."""
+        prom = [
+            _make_prom(
+                1, "Тістоміс Hurakan HKN-20SN2V, 20 л, 2 шв.",
+                "Hurakan", 50000,
+            ),
+        ]
+        result = find_match_candidates(
+            "Тістоміс Hurakan HKN-20SN2V на 20 л дві швидкості",
+            "Hurakan", prom, supplier_price_cents=50000,
+            supplier_article="HKN-20SN2V",
+        )
+        assert any(r["prom_product_id"] == 1 for r in result)
+
+    def test_afn_1602_exp_multiword_article_matches(self):
+        """sp 'Шафа морозильна Fagor AFN-1602 EXP NEO Concept 1400 л'
+        (article 'AFN-1602 EXP' has digits + space) must match
+        pp 'Морозильна шафа FAGOR NEO CONCEPT AFN-1602 EXP'."""
+        prom = [
+            _make_prom(
+                1, "Морозильна шафа FAGOR NEO CONCEPT AFN-1602 EXP (-18...-22 °C, неірж.)",
+                "Fagor", 600000,
+            ),
+        ]
+        result = find_match_candidates(
+            "Шафа морозильна Fagor AFN-1602 EXP NEO Concept 1400 л",
+            "Fagor", prom, supplier_price_cents=600000,
+            supplier_article="AFN-1602 EXP",
+        )
+        assert any(r["prom_product_id"] == 1 for r in result)
+
+    def test_ac800dig_dd_mixed_case_article_matches(self):
+        """sp article 'AC800dig DD' (mixed case, digit) must match
+        pp 'Посудомийна машина APACH AC800DIG DD' via case-insensitive
+        boundary check."""
+        prom = [
+            _make_prom(1, "Посудомийна машина APACH AC800DIG DD", "Apach", 300000),
+        ]
+        result = find_match_candidates(
+            "Посудомийка Apach AC800DIG DD купольна з дозатором",
+            "Apach", prom, supplier_price_cents=300000,
+            supplier_article="AC800dig DD",
+        )
+        assert any(r["prom_product_id"] == 1 for r in result)
+
+    def test_acb130_punctuation_article_matches(self):
+        """sp article 'ACB130.65B A R290' (has dots + digits + spaces)
+        must match pp 'Льдогенератор Apach ACB130.65B A R290, 130 кг/доб'."""
+        prom = [
+            _make_prom(1, "Льдогенератор Apach ACB130.65B A R290, 130 кг/доб",
+                       "Apach", 150000),
+        ]
+        result = find_match_candidates(
+            "Льодогенератор Apach ACB130.65B A R290",
+            "Apach", prom, supplier_price_cents=150000,
+            supplier_article="ACB130.65B A R290",
+        )
+        assert any(r["prom_product_id"] == 1 for r in result)
+
+    def test_prefix_collision_rejected_by_word_boundary(self):
+        """sp article 'APE8AD' must NOT match pp 'Посудомийна машина Apach
+        APE8ADS' — the article is a prefix of a longer SKU, word-boundary
+        guard must reject."""
+        prom = [
+            _make_prom(1, "Посудомийна машина Apach APE8ADS на 8 кошик 450×340 мм",
+                       "Apach", 250000),
+        ]
+        result = find_match_candidates(
+            "Посудомийка Apach APE8AD",
+            "Apach", prom, supplier_price_cents=250000,
+            supplier_article="APE8AD",
+        )
+        assert not any(r["prom_product_id"] == 1 for r in result)
+
+    def test_fast_path_skips_when_pp_has_own_article(self):
+        """Catalog has explicit pp.article = 'XFT134'. sp.article='XFT133'.
+        pp.name does contain 'XFT133' accidentally in a descriptor. The
+        new fast-path must NOT fire because pp has its own article (would
+        otherwise conflict with the model-field gate)."""
+        prom = [
+            _make_prom(1, "Unox XFT134 something XFT133 descriptor",
+                       "Unox", 100000, article="XFT134"),
+        ]
+        result = find_match_candidates(
+            "Unox oven XFT133",
+            "Unox", prom, supplier_price_cents=100000,
+            supplier_article="XFT133",
+        )
+        # Model-field gate rejects because pp.article != sp.article
+        assert not any(r["prom_product_id"] == 1 for r in result)
+
+    def test_fast_path_respects_voltage_gate(self):
+        """sp 'HKN-INDUCTION 1ф' must not match pp 'HKN-INDUCTION 380В'
+        via the new article fast-path — voltage gate still applies."""
+        prom = [
+            _make_prom(1, "Плита індукційна HURAKAN HKN-INDUCT-01 380 В",
+                       "Hurakan", 80000),
+        ]
+        result = find_match_candidates(
+            "Плита індукційна Hurakan HKN-INDUCT-01 1ф",
+            "Hurakan", prom, supplier_price_cents=80000,
+            supplier_article="HKN-INDUCT-01",
+        )
+        # 1ф (220/230) vs pp 380 В → voltage gate rejects
+        assert not any(r["prom_product_id"] == 1 for r in result)
+
+    def test_fast_path_does_not_fire_for_short_article(self):
+        """Short article (<6 chars normalized) must not trigger — avoids
+        trivial substring collisions like 'A100' in product descriptions."""
+        prom = [
+            _make_prom(1, "Apach A100 product with totally unrelated words",
+                       "Apach", 80000),
+            _make_prom(2, "Apach completely different A100 xxx",
+                       "Apach", 80000),
+        ]
+        result = find_match_candidates(
+            "Apach mixer different product",
+            "Apach", prom, supplier_price_cents=80000,
+            supplier_article="A100",
+        )
+        fast_path_matches = [r for r in result if r.get("score") == 100.0]
+        assert len(fast_path_matches) == 0

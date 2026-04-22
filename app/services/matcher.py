@@ -844,6 +844,45 @@ def find_match_candidates(
                         matched = True
                         display_match = True
 
+            # Digit-bearing article fast-path: when catalog has no explicit
+            # article/display (~186 NP pp rows of Hurakan/Apach/Fagor/Tatra),
+            # the full SKU ("HKN-20SN2V", "AFN-1602 EXP", "AC800dig DD") lives
+            # only inside pp.name. Descriptor words in sp.name ("на 20 л дві
+            # швидкості" vs pp "20 л, 2 шв.") break the containment gate, and
+            # fuzzy doesn't always surface these pairs above the threshold.
+            # Guard against prefix collisions (sp 'APE8AD' vs pp 'APE8ADS') by
+            # enforcing word-boundary on raw pp.name.
+            if (
+                not matched
+                and sup_article
+                and len(sup_article) >= 6
+                and not prom_article
+                and not prom_display
+            ):
+                raw_article = (supplier_article or "").strip()
+                # Require structural SKU markers: digit OR non-alphanumeric
+                # separator (dash, space, dot, paren). Pure-letter no-structure
+                # strings like "HKNFNTMNEW" are too weak a signal — fall back
+                # to fuzzy + containment for those.
+                has_digit = any(c.isdigit() for c in raw_article)
+                has_structure = any(not c.isalnum() for c in raw_article)
+                if len(raw_article) >= 5 and (has_digit or has_structure):
+                    prom_name_norm = normalize_model(p["name"])
+                    if prom_name_norm and sup_article in prom_name_norm:
+                        raw_article_fixed = _fix_cyrillic_homoglyphs(raw_article)
+                        prom_name_fixed = _fix_cyrillic_homoglyphs(p["name"] or "")
+                        escaped = re.escape(raw_article_fixed)
+                        # Flexible internal whitespace in article.
+                        escaped = re.sub(r"(\\[ \t])+", r"\\s+", escaped)
+                        boundary_re = re.compile(
+                            rf"(?<![0-9A-Za-zА-Яа-яЁёІіЇїЄєҐґ]){escaped}"
+                            rf"(?![0-9A-Za-zА-Яа-яЁёІіЇїЄєҐґ])",
+                            re.IGNORECASE | re.UNICODE,
+                        )
+                        if boundary_re.search(prom_name_fixed):
+                            matched = True
+                            display_match = True
+
             if matched and p["id"] not in fast_match_ids:
                 fast_match_ids.add(p["id"])
                 fast_matches.append(
