@@ -637,6 +637,24 @@ def meaningful_tokens(text: str) -> set[str]:
     return out - VOLTAGE_TAGS
 
 
+def _has_model_discriminator(tokens: set[str]) -> bool:
+    """True if any token looks like a product identifier.
+
+    Digits or alphanumeric combinations ('47', 'evok90vw', 'gt500') are
+    model codes. Latin-alpha tokens of any length ('softcooker', 'busch',
+    'optima+') are brand/family names — supplier feeds reserve Latin for
+    model identifiers. Pure Cyrillic tokens without digits are category
+    descriptors ('вітрина', 'холодильна', 'льодогенератор') that match any
+    item of the same class in the catalog and produce ambiguous candidates.
+    """
+    for t in tokens:
+        if any(c.isdigit() for c in t):
+            return True
+        if t.isascii() and any(c.isalpha() for c in t):
+            return True
+    return False
+
+
 # Cyrillic → Latin transliteration for cross-script type comparison.
 # Catalog sometimes mixes "Гриль Salamandra" (Cyrillic category + Latin model
 # name) with supplier's "Гриль саламандра" (all-Cyrillic) — token_sort_ratio
@@ -721,6 +739,26 @@ def find_match_candidates(
     """
     if not prom_products or not supplier_product_name:
         return []
+
+    # Step 0: Model-identifier gate. SP names that carry only generic
+    # category tokens ('Вітрина холодильна', 'Льодогенератор') fuzzy-match
+    # every catalog item of the same class at ~90% — drowning review with
+    # 3+ ambiguous candidates per SP. Require at least one identifier:
+    # a supplier article/model field, or a digit/Latin token in the name.
+    # Skip the gate when price is unknown (nothing we can rule out later)
+    # stays skipped, but that's a separate price-plausibility concern.
+    if supplier_article or supplier_model:
+        pass  # explicit SKU field carries the identifier — trust it
+    else:
+        _after_tokens = meaningful_tokens(
+            after_brand_remainder(supplier_product_name, supplier_brand)
+        )
+        if _after_tokens and not _has_model_discriminator(_after_tokens):
+            logger.info(
+                "SP skipped (no model identifier): name=%r brand=%r tokens=%s",
+                supplier_product_name, supplier_brand, sorted(_after_tokens),
+            )
+            return []
 
     # Step 1: Brand-based blocking
     # When supplier has a brand, it MUST exist in the catalog. If we don't
