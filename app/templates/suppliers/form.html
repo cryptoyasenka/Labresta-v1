@@ -107,6 +107,46 @@
         </small>
     </div>
 
+    <fieldset class="border rounded p-3 mb-3">
+        <legend class="w-auto px-2" style="font-size: 1rem;">Цены и маржа</legend>
+
+        <div class="mb-3">
+            <label for="eur_rate_uah" class="form-label">Курс EUR → UAH</label>
+            <input type="number" class="form-control {% if errors and errors.eur_rate_uah %}is-invalid{% endif %}"
+                   id="eur_rate_uah" name="eur_rate_uah"
+                   value="{{ form_data.eur_rate_uah if form_data else (supplier.eur_rate_uah if supplier else '51.15') }}"
+                   step="0.01" min="0.01">
+            <small class="form-text text-muted">Для расчёта маржи в гривне. Обновляйте при изменении курса.</small>
+            {% if errors and errors.eur_rate_uah %}
+                <div class="invalid-feedback">{{ errors.eur_rate_uah }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="cost_rate" class="form-label">Доля закупки (cost rate)</label>
+            <input type="number" class="form-control {% if errors and errors.cost_rate %}is-invalid{% endif %}"
+                   id="cost_rate" name="cost_rate"
+                   value="{{ form_data.cost_rate if form_data else (supplier.cost_rate if supplier else '0.75') }}"
+                   step="0.01" min="0.01" max="0.99">
+            <small class="form-text text-muted">Сколько платим поставщику от его розницы. 0.75 = скидка дилера 25%.</small>
+            {% if errors and errors.cost_rate %}
+                <div class="invalid-feedback">{{ errors.cost_rate }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="min_margin_uah" class="form-label">Мин. маржа, UAH</label>
+            <input type="number" class="form-control {% if errors and errors.min_margin_uah %}is-invalid{% endif %}"
+                   id="min_margin_uah" name="min_margin_uah"
+                   value="{{ form_data.min_margin_uah if form_data else (supplier.min_margin_uah if supplier else '500') }}"
+                   step="1" min="0">
+            <small class="form-text text-muted">Нижний порог дохода с продажи. Скидка ужимается вниз, чтобы маржа ≥ этого значения. 0 отключает клэмп.</small>
+            {% if errors and errors.min_margin_uah %}
+                <div class="invalid-feedback">{{ errors.min_margin_uah }}</div>
+            {% endif %}
+        </div>
+    </fieldset>
+
     <div class="d-flex gap-2">
         <button type="submit" class="btn btn-primary" id="submit-btn">Сохранить</button>
         <a href="{{ url_for('suppliers.supplier_list') }}" class="btn btn-outline-secondary">Отмена</a>

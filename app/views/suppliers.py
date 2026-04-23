@@ -85,6 +85,15 @@ def supplier_add():
             discount_percent=float(request.form.get("discount_percent", 0)),
             pricing_mode=mode,
         )
+        raw_rate = request.form.get("eur_rate_uah", "").strip()
+        if raw_rate:
+            supplier.eur_rate_uah = float(raw_rate)
+        raw_min = request.form.get("min_margin_uah", "").strip()
+        if raw_min:
+            supplier.min_margin_uah = float(raw_min)
+        raw_cost = request.form.get("cost_rate", "").strip()
+        if raw_cost:
+            supplier.cost_rate = float(raw_cost)
         db.session.add(supplier)
         db.session.flush()  # need supplier.id for brand_discounts FK
 
@@ -175,6 +184,16 @@ def supplier_edit(supplier_id):
         supplier.feed_url = request.form.get("feed_url", "").strip() or None
         supplier.discount_percent = float(request.form.get("discount_percent", 0))
         supplier.pricing_mode = mode
+
+        raw_rate = request.form.get("eur_rate_uah", "").strip()
+        if raw_rate:
+            supplier.eur_rate_uah = float(raw_rate)
+        raw_min = request.form.get("min_margin_uah", "").strip()
+        if raw_min:
+            supplier.min_margin_uah = float(raw_min)
+        raw_cost = request.form.get("cost_rate", "").strip()
+        if raw_cost:
+            supplier.cost_rate = float(raw_cost)
 
         if mode == "per_brand":
             _replace_brand_discounts(supplier, brand_rows)
@@ -675,6 +694,33 @@ def _validate_supplier_form(form):
     mode = form.get("pricing_mode", "flat").strip() or "flat"
     if mode not in VALID_PRICING_MODES:
         errors["pricing_mode"] = "Недопустимый режим скидок."
+
+    raw_rate = form.get("eur_rate_uah", "").strip()
+    if raw_rate:
+        try:
+            v = float(raw_rate)
+            if v <= 0:
+                errors["eur_rate_uah"] = "Курс EUR/UAH должен быть больше 0."
+        except (ValueError, TypeError):
+            errors["eur_rate_uah"] = "Курс EUR/UAH должен быть числом."
+
+    raw_min = form.get("min_margin_uah", "").strip()
+    if raw_min:
+        try:
+            v = float(raw_min)
+            if v < 0:
+                errors["min_margin_uah"] = "Мин. маржа не может быть отрицательной."
+        except (ValueError, TypeError):
+            errors["min_margin_uah"] = "Мин. маржа должна быть числом."
+
+    raw_cost = form.get("cost_rate", "").strip()
+    if raw_cost:
+        try:
+            v = float(raw_cost)
+            if v <= 0 or v >= 1:
+                errors["cost_rate"] = "Доля закупки должна быть в диапазоне (0, 1)."
+        except (ValueError, TypeError):
+            errors["cost_rate"] = "Доля закупки должна быть числом."
 
     return errors
 

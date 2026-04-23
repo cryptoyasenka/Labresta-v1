@@ -323,6 +323,135 @@ class TestPricingModeForm:
         assert 'value="per_brand"' in html
         assert 'По брендам' in html
 
+    def test_form_renders_margin_fields_with_current_values(self, client, db):
+        sup = Supplier(
+            name="S",
+            discount_percent=10.0,
+            pricing_mode="flat",
+            eur_rate_uah=52.5,
+            min_margin_uah=700.0,
+            cost_rate=0.8,
+        )
+        db.session.add(sup)
+        db.session.commit()
+
+        resp = client.get(f"/suppliers/{sup.id}/edit")
+        assert resp.status_code == 200
+        html = resp.get_data(as_text=True)
+        assert 'name="eur_rate_uah"' in html
+        assert 'name="min_margin_uah"' in html
+        assert 'name="cost_rate"' in html
+        assert 'value="52.5"' in html
+        assert 'value="700.0"' in html
+        assert 'value="0.8"' in html
+
+    def test_add_persists_margin_fields(self, client, db):
+        resp = client.post(
+            "/suppliers/add",
+            data={
+                "name": "NewSup",
+                "feed_url": "",
+                "discount_percent": "10",
+                "pricing_mode": "flat",
+                "eur_rate_uah": "53.0",
+                "min_margin_uah": "600",
+                "cost_rate": "0.7",
+            },
+            follow_redirects=False,
+        )
+        assert resp.status_code == 302
+        sup = db.session.execute(_select_supplier_by_name("NewSup")).scalar_one()
+        assert sup.eur_rate_uah == 53.0
+        assert sup.min_margin_uah == 600.0
+        assert sup.cost_rate == 0.7
+
+    def test_add_uses_defaults_when_margin_fields_omitted(self, client, db):
+        resp = client.post(
+            "/suppliers/add",
+            data={
+                "name": "DefaultSup",
+                "feed_url": "",
+                "discount_percent": "10",
+                "pricing_mode": "flat",
+            },
+            follow_redirects=False,
+        )
+        assert resp.status_code == 302
+        sup = db.session.execute(_select_supplier_by_name("DefaultSup")).scalar_one()
+        assert sup.eur_rate_uah == 51.15
+        assert sup.min_margin_uah == 500.0
+        assert sup.cost_rate == 0.75
+
+    def test_edit_updates_margin_fields(self, client, db):
+        sup = Supplier(
+            name="S",
+            discount_percent=10.0,
+            pricing_mode="flat",
+            min_margin_uah=500.0,
+            cost_rate=0.75,
+        )
+        db.session.add(sup)
+        db.session.commit()
+
+        resp = client.post(
+            f"/suppliers/{sup.id}/edit",
+            data={
+                "name": "S",
+                "feed_url": "",
+                "discount_percent": "10",
+                "pricing_mode": "flat",
+                "eur_rate_uah": "52.0",
+                "min_margin_uah": "800",
+                "cost_rate": "0.7",
+            },
+            follow_redirects=False,
+        )
+        assert resp.status_code == 302
+        db.session.refresh(sup)
+        assert sup.eur_rate_uah == 52.0
+        assert sup.min_margin_uah == 800.0
+        assert sup.cost_rate == 0.7
+
+    def test_edit_rejects_invalid_cost_rate(self, client, db):
+        sup = Supplier(name="S", discount_percent=10.0, pricing_mode="flat")
+        db.session.add(sup)
+        db.session.commit()
+
+        resp = client.post(
+            f"/suppliers/{sup.id}/edit",
+            data={
+                "name": "S",
+                "feed_url": "",
+                "discount_percent": "10",
+                "pricing_mode": "flat",
+                "cost_rate": "1.5",
+            },
+            follow_redirects=False,
+        )
+        assert resp.status_code == 200  # rendered with error, no redirect
+        html = resp.get_data(as_text=True)
+        assert "Доля закупки" in html
+
+    def test_edit_rejects_negative_min_margin(self, client, db):
+        sup = Supplier(name="S", discount_percent=10.0, pricing_mode="flat")
+        db.session.add(sup)
+        db.session.commit()
+
+        resp = client.post(
+            f"/suppliers/{sup.id}/edit",
+            data={
+                "name": "S",
+                "feed_url": "",
+                "discount_percent": "10",
+                "pricing_mode": "flat",
+                "min_margin_uah": "-100",
+            },
+            follow_redirects=False,
+        )
+        assert resp.status_code == 200
+        html = resp.get_data(as_text=True)
+        assert "Мин. маржа" in html
+
 
 def _select_supplier_by_name(name):
     from sqlalchemy import select
