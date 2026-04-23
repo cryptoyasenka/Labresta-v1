@@ -83,6 +83,7 @@ def _build_offer_xml(parent_el, match) -> bool:
     pp = match.prom_product
     is_available = _is_available_for_offer(match)
     price_eur = _compute_price_eur(match)
+    retail_eur = (sp.price_cents or 0) / 100.0
 
     avail_str = "true" if is_available else "false"
     offer = etree.SubElement(
@@ -97,6 +98,11 @@ def _build_offer_xml(parent_el, match) -> bool:
     if pp.page_url:
         etree.SubElement(offer, "url").text = pp.page_url
     etree.SubElement(offer, "price").text = f"{price_eur:.1f}"
+    # <oldprice> = supplier retail when we applied a real discount.
+    # Horoshop then calculates the % from (oldprice - price) and ignores
+    # its own "Знижка %" product-card field, preventing double-discount.
+    if retail_eur > price_eur + 0.05:
+        etree.SubElement(offer, "oldprice").text = f"{retail_eur:.1f}"
     etree.SubElement(offer, "currencyId").text = "EUR"
     etree.SubElement(offer, "vendorCode").text = str(pp.external_id)
 

@@ -594,3 +594,98 @@ class TestPerBrandPricing:
         tree = etree.parse(result["path"])
         offer = tree.find(".//offer[@id='h1']")
         assert float(offer.find("price").text) == 85.0
+
+
+class TestOldPriceEmission:
+    """<oldprice> = supplier retail so Horoshop shows a single discount
+    instead of double-applying its product-card «Знижка %» field."""
+
+    def test_oldprice_emitted_when_discounted(self, session, yml_output_dir):
+        """Discounted match → both <price> and <oldprice>, price < oldprice."""
+        from app.models.supplier_brand_discount import SupplierBrandDiscount
+
+        supplier = Supplier(
+            name="NP",
+            discount_percent=17.0,
+            pricing_mode="per_brand",
+            is_enabled=True,
+            min_margin_uah=0.0,
+        )
+        session.add(supplier)
+        session.flush()
+        session.add(SupplierBrandDiscount(
+            supplier_id=supplier.id, brand="HURAKAN", discount_percent=15.0,
+        ))
+        pp = PromProduct(
+            external_id="op1", name="Hurakan", brand="HURAKAN",
+            price=22500, page_url="https://labresta.com.ua/op1/",
+        )
+        session.add(pp)
+        session.flush()
+        sp = SupplierProduct(
+            supplier_id=supplier.id, external_id="np-op1",
+            name="Hurakan", brand="HURAKAN",
+            price_cents=22500, available=True, needs_review=False,
+        )
+        session.add(sp)
+        session.flush()
+        session.add(ProductMatch(
+            supplier_product_id=sp.id, prom_product_id=pp.id,
+            score=100.0, status="confirmed", confirmed_by="test",
+        ))
+        session.commit()
+
+        result = regenerate_yml_feed()
+        tree = etree.parse(result["path"])
+        offer = tree.find(".//offer[@id='op1']")
+        assert offer.findtext("price") == "191.3"       # 225 * 0.85
+        assert offer.findtext("oldprice") == "225.0"    # supplier retail
+
+    def test_oldprice_absent_without_discount(self, session, yml_output_dir):
+        """No discount → price == retail → no <oldprice> tag at all."""
+        _seed_confirmed_match(
+            session, external_id="op2", name="Zero discount",
+            price_cents=50000,  # supplier.discount_percent defaults to 0
+        )
+        result = regenerate_yml_feed()
+        tree = etree.parse(result["path"])
+        offer = tree.find(".//offer[@id='op2']")
+        assert offer.findtext("price") == "500.0"
+        assert offer.find("oldprice") is None
+
+    def test_oldprice_element_order_before_currency(self, session, yml_output_dir):
+        """Tag order: price → oldprice → currencyId → vendorCode."""
+        from app.models.supplier_brand_discount import SupplierBrandDiscount
+
+        supplier = Supplier(
+            name="NP2", discount_percent=15.0, pricing_mode="flat",
+            is_enabled=True, min_margin_uah=0.0,
+        )
+        session.add(supplier)
+        session.flush()
+        pp = PromProduct(
+            external_id="op3", name="X", brand="X",
+            price=10000, page_url="https://labresta.com.ua/op3/",
+        )
+        sp = SupplierProduct(
+            supplier_id=supplier.id, external_id="np-op3",
+            name="X", brand="X",
+            price_cents=10000, available=True, needs_review=False,
+        )
+        session.add_all([pp, sp])
+        session.flush()
+        session.add(ProductMatch(
+            supplier_product_id=sp.id, prom_product_id=pp.id,
+            score=100.0, status="confirmed", confirmed_by="test",
+        ))
+        session.commit()
+
+        result = regenerate_yml_feed()
+        tree = etree.parse(result["path"])
+        offer = tree.find(".//offer[@id='op3']")
+        tags = [child.tag for child in offer]
+        price_idx = tags.index("price")
+        oldprice_idx = tags.index("oldprice")
+        currency_idx = tags.index("currencyId")
+        vendor_idx = tags.index("vendorCode")
+        assert price_idx < oldprice_idx < currency_idx < vendor_idx
