@@ -923,6 +923,17 @@ def find_match_candidates(
                         escaped = re.escape(raw_article_fixed)
                         # Flexible internal whitespace in article.
                         escaped = re.sub(r"(\\[ \t])+", r"\\s+", escaped)
+                        # If raw article is compact (no internal whitespace),
+                        # allow optional whitespace at letter↔digit transitions
+                        # so compact SP 'AFM250VV200' matches spaced PP form
+                        # 'AFM 250 VV 200' (Apach mixer-variant naming quirk).
+                        if not any(c.isspace() for c in raw_article_fixed):
+                            escaped = re.sub(
+                                r"(?<=[A-Za-zА-Яа-яЁёІіЇїЄєҐґ])(?=\d)"
+                                r"|(?<=\d)(?=[A-Za-zА-Яа-яЁёІіЇїЄєҐґ])",
+                                r"\\s*",
+                                escaped,
+                            )
                         # Reject dash-suffix continuation: SKU 'HKN-GXSD2GN'
                         # must not match 'HKN-GXSD2GN-SC' (different SKU). A
                         # dash followed by alnum right after the anchor is a
@@ -996,10 +1007,12 @@ def find_match_candidates(
                 # Find prom product brand for type extraction
                 prom_brand = None
                 prom_name_full = candidate["prom_name"]
+                prom_p = None
                 for p in candidates_pool:
                     if p["id"] == candidate["prom_product_id"]:
                         prom_brand = p.get("brand") or supplier_brand
                         prom_name_full = p["name"]
+                        prom_p = p
                         break
 
                 prom_type = extract_product_type(prom_name_full, prom_brand)
@@ -1011,14 +1024,57 @@ def find_match_candidates(
                         _transliterate_cyr(prom_type),
                     )
                     if type_score < TYPE_MATCH_THRESHOLD:
-                        logger.debug(
-                            "Type gate rejected: '%s' vs '%s' (score=%d) for prom_id=%d",
-                            supplier_type,
-                            prom_type,
-                            type_score,
-                            candidate["prom_product_id"],
-                        )
-                        continue
+                        # Bypass: model equality trumps type mismatch. Catalog
+                        # naming quirks ("Міксер ручний" vs "Міксер погружний"
+                        # for the same SKU AFM250VV200) should not block an
+                        # SKU-level equivalence. Require the SP model to carry
+                        # both letters and digits (pure-digit tokens like "200"
+                        # would falsely substring into unrelated pp names).
+                        sp_model_norm = sup_article or sup_model
+                        if not sp_model_norm and supplier_brand:
+                            sp_model_norm = normalize_model(
+                                extract_model_from_name(
+                                    supplier_product_name, supplier_brand
+                                )
+                            )
+                        bypass = False
+                        if (
+                            sp_model_norm
+                            and len(sp_model_norm) >= 5
+                            and any(c.isalpha() for c in sp_model_norm)
+                            and any(c.isdigit() for c in sp_model_norm)
+                            and prom_p is not None
+                        ):
+                            pp_article_norm = normalize_model(prom_p.get("article"))
+                            pp_model_field_norm = normalize_model(prom_p.get("model"))
+                            pp_display_norm = normalize_model(
+                                prom_p.get("display_article")
+                            )
+                            pp_name_norm = normalize_model(prom_name_full)
+                            if (
+                                sp_model_norm == pp_article_norm
+                                or sp_model_norm == pp_model_field_norm
+                                or sp_model_norm == pp_display_norm
+                                or (pp_name_norm and sp_model_norm in pp_name_norm)
+                            ):
+                                bypass = True
+                        if bypass:
+                            logger.debug(
+                                "Type gate bypass (model=%r): '%s' vs '%s' prom_id=%d",
+                                sp_model_norm,
+                                supplier_type,
+                                prom_type,
+                                candidate["prom_product_id"],
+                            )
+                        else:
+                            logger.debug(
+                                "Type gate rejected: '%s' vs '%s' (score=%d) for prom_id=%d",
+                                supplier_type,
+                                prom_type,
+                                type_score,
+                                candidate["prom_product_id"],
+                            )
+                            continue
                 # If type couldn't be extracted, let it pass
                 type_filtered.append(candidate)
             fuzzy_output = type_filtered
@@ -1118,7 +1174,27 @@ def find_match_candidates(
                 prom_name_model = normalize_model(
                     extract_model_from_name(prom_name_full, prom_brand_for_model)
                 )
-                if prom_name_model and sup_name_model != prom_name_model:
+                # Bypass when the SP-extracted model is fully present inside
+                # the PP's normalized name, even though prom-side extraction
+                # produced only a prefix. extract_model_from_name glues
+                # 'AFM 250' → 'AFM250' but not 'VV 200' (preceded by digit+
+                # space), so spaced catalog SKUs return a truncated 'afm250vv'
+                # while the compact supplier form yields the full 'afm250vv200'.
+                # Only the forward direction (sp_model ⊂ pp_name) is safe —
+                # reverse containment would wrongly equate prefix SKU pairs
+                # like 'HKN-GXSD2GN' ⊂ 'HKN-GXSD2GN-SC'.
+                mismatch = prom_name_model and sup_name_model != prom_name_model
+                if mismatch:
+                    pp_name_norm_full = normalize_model(prom_name_full)
+                    if (
+                        len(sup_name_model) >= 5
+                        and any(c.isalpha() for c in sup_name_model)
+                        and any(c.isdigit() for c in sup_name_model)
+                        and pp_name_norm_full
+                        and sup_name_model in pp_name_norm_full
+                    ):
+                        mismatch = False
+                if mismatch:
                     logger.debug(
                         "Name-model mismatch rejected: '%s' vs '%s' for prom_id=%d",
                         sup_name_model, prom_name_model,
