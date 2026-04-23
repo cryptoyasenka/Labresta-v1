@@ -225,6 +225,12 @@ def run_job(flask_app, job_id: str) -> None:
                 ).scalar() or 0
                 _update_progress(job_id, sup.id, sup.name, total_sp, total_sp)
 
+            # Safe auto-confirm pass (R1-R4): promote identical-token candidates
+            # so the user sees 100% matches already confirmed after a rematch.
+            _set(job_id, phase="auto_confirm")
+            from scripts.bulk_auto_confirm import apply_rules as _apply_safe_rules
+            auto_stats = _apply_safe_rules(apply=True, confirmed_by="rematch:bulk_auto_confirm")
+
             # Audit: finish.
             db.session.add(AuditLog(
                 user_id=user_id, user_name=user_name, action="rematch_finish",
@@ -235,6 +241,7 @@ def run_job(flask_app, job_id: str) -> None:
                     "total_deleted": total_deleted,
                     "total_created": total_created,
                     "suppliers": results,
+                    "auto_stats": auto_stats,
                 }, ensure_ascii=False),
             ))
             db.session.commit()
@@ -250,6 +257,7 @@ def run_job(flask_app, job_id: str) -> None:
                     "total_deleted": total_deleted,
                     "total_created": total_created,
                     "suppliers": results,
+                    "auto_stats": auto_stats,
                 },
             )
 

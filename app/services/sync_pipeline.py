@@ -200,6 +200,17 @@ def _sync_single_supplier(supplier: Supplier) -> str:
         logger.info("Match candidates generated: %d", candidates)
         SyncProgress.update("matching", candidates, candidates)
 
+        # Stage 6.5: Safe auto-confirm pass (R1-R4) — promote identical-token
+        # candidates so the operator doesn't see 100% matches sitting in the
+        # review queue after every sync.
+        logger.info("Stage 6.5/7: Safe auto-confirm (bulk_auto_confirm rules)")
+        from scripts.bulk_auto_confirm import apply_rules as _apply_safe_rules
+        auto_stats = _apply_safe_rules(apply=True, confirmed_by="sync:bulk_auto_confirm")
+        logger.info(
+            "Auto-confirm: %d confirmed, %d rejected (R4), per_rule=%s",
+            auto_stats["confirmed"], auto_stats["rejected"], auto_stats["per_rule"],
+        )
+
         # Stage 7: Regenerate YML feed (only runs if all prior stages succeeded)
         logger.info("Stage 7/7: Regenerating YML feed")
         from app.services.yml_generator import regenerate_yml_feed
