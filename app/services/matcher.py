@@ -313,6 +313,41 @@ _TOKEN_SPLIT_RE = re.compile(r"[\s.,:;()/\-]+", re.UNICODE)
 # marker must stay distinct from the base 'bistro'.
 _TOKEN_STRIP_RE = re.compile(r"[^a-z0-9а-яёіїєґ+]", re.UNICODE)
 _PAREN_CONTENT_RE = re.compile(r"\([^)]*\)")
+_PAREN_INNER_RE = re.compile(r"\(([^)]*)\)")
+# Numbers, voltage markers, and unit labels that don't count as bracket
+# discriminators. Used by _parens_discriminator to decide whether paren
+# content carries a variant-distinguishing word (e.g. 'no stand', 'на базі',
+# 'тефлон', 'без підставки') or just formatting noise ('380 В', '9,4 л',
+# '3 рівні', 'GN2/3', '100 шт.'). If stripping the noise leaves nothing,
+# the bracket has no discriminator.
+_PAREN_NOISE_RE = re.compile(
+    r"\b(?:220|230|380|400|[вb]|kw|квт|вт|w|мм|см|м|л|кг|г|мл|шт|штук|"
+    r"рівн[іь]|літрів|літри|літра|gn|[.,\d/xх\s\-]+)\b",
+    re.IGNORECASE,
+)
+_PAREN_TOKEN_SPLIT_RE = re.compile(r"[\s,./+\-]+")
+
+
+def _parens_discriminator(name: str) -> set[str]:
+    """Return meaningful tokens from parens content, stripped of voltage /
+    numeric / quantity-unit noise.
+
+    Used by the bracket-discriminator gate to detect pairs where both names
+    carry parens with real variant markers ('(no stand)' vs '(на базі)') —
+    meaningful_tokens strips all parens unconditionally, which makes such
+    pairs look token-equal at 100%. This helper keeps only content that
+    could realistically discriminate variants.
+    """
+    if not name:
+        return set()
+    out: set[str] = set()
+    for m in _PAREN_INNER_RE.finditer(name):
+        inner = _PAREN_NOISE_RE.sub(" ", m.group(1).lower())
+        for tok in _PAREN_TOKEN_SPLIT_RE.split(inner):
+            tok = tok.strip()
+            if tok and len(tok) >= 2 and not tok.isdigit():
+                out.add(tok)
+    return out
 
 # Split at every letter↔digit transition so slitny and razdelny SKU forms
 # align: 'ats12u' → {ats, 12, u}; 'hknlpd150s' → {hknlpd, 150, s}; 'eft60'
@@ -1227,6 +1262,34 @@ def find_match_candidates(
 
     fast_matches = [c for c in fast_matches if _voltage_ok(c)]
     fuzzy_output = [c for c in fuzzy_output if _voltage_ok(c)]
+
+    # Step 4.85: Bracket-discriminator gate.
+    # meaningful_tokens strips parens content unconditionally — that's right
+    # for voltage/quantity/synonym parens but wrong for variant markers like
+    # "(no stand)" vs "(на базі)" (different packaging of the same SKU).
+    # When BOTH sp and pp carry parens AND the tokens inside (minus
+    # voltage/numeric/unit noise) form disjoint non-empty sets, the
+    # candidate is a variant mismatch — reject.
+    sup_bracket_disc = _parens_discriminator(supplier_product_name)
+    if sup_bracket_disc:
+        def _bracket_ok(candidate) -> bool:
+            prom_name_full = candidate["prom_name"]
+            for p in candidates_pool:
+                if p["id"] == candidate["prom_product_id"]:
+                    prom_name_full = p["name"]
+                    break
+            prom_bracket_disc = _parens_discriminator(prom_name_full)
+            if prom_bracket_disc and not (sup_bracket_disc & prom_bracket_disc):
+                logger.debug(
+                    "Bracket discriminator rejected: sup=%s vs prom=%s for prom_id=%d",
+                    sup_bracket_disc, prom_bracket_disc,
+                    candidate["prom_product_id"],
+                )
+                return False
+            return True
+
+        fast_matches = [c for c in fast_matches if _bracket_ok(c)]
+        fuzzy_output = [c for c in fuzzy_output if _bracket_ok(c)]
 
     # Step 4.9: After-brand token-containment gate.
     # Within the same brand, false positives arise when the model code matches
