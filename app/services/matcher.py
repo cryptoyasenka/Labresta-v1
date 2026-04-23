@@ -32,7 +32,7 @@ MATCH_LIMIT = 3  # User decision: top-3 candidates per product
 # name-model mismatch, etc.) correctly reject the wrong hit — but only
 # if they see it in the candidate pool. Feed them the top-K above the
 # score cutoff, then truncate to MATCH_LIMIT after filtering.
-FUZZY_OVERSAMPLE_LIMIT = 50
+FUZZY_OVERSAMPLE_LIMIT = 200
 CONFIDENCE_HIGH = 80.0  # >80% = High confidence
 CONFIDENCE_MEDIUM = 60.0  # 60-80% = Medium confidence
 # Below 60% = Low (filtered out by SCORE_CUTOFF, never stored)
