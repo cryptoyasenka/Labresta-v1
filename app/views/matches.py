@@ -17,7 +17,12 @@ from app.models.product_match import ProductMatch
 from app.models.supplier import Supplier
 from app.models.supplier_product import SupplierProduct
 from app.services.audit_service import log_action
-from app.services.matcher import CONFIDENCE_HIGH, CONFIDENCE_MEDIUM, find_match_for_product
+from app.services.matcher import (
+    CONFIDENCE_HIGH,
+    CONFIDENCE_MEDIUM,
+    find_match_for_product,
+    run_matching_for_supplier,
+)
 
 matches_bp = Blueprint("matches", __name__)
 
@@ -651,6 +656,103 @@ def regenerate_feed():
         "unavailable": result["unavailable"],
     })
     return jsonify({"status": "ok", **result})
+
+
+@matches_bp.route("/rematch", methods=["POST"])
+@login_required
+def rematch():
+    """Wipe `candidate` + `rejected` matches in scope and re-run fuzzy matcher.
+
+    Body: {"supplier_id": <int>}  — single supplier.
+          {"supplier_id": "all"}  — all enabled suppliers.
+
+    Invariant: `confirmed` and `manual` matches are never touched. They are
+    protected both here (WHERE status IN ('candidate','rejected')) and in
+    `run_matching_for_supplier` which skips supplier products that already
+    have confirmed/manual. Also enforced by `uq_match_prom_confirmed` index.
+    """
+    data = request.get_json(silent=True) or {}
+    scope_raw = data.get("supplier_id")
+    if scope_raw is None:
+        return jsonify({"status": "error", "message": "supplier_id required"}), 400
+
+    if scope_raw == "all":
+        suppliers = db.session.execute(
+            db.select(Supplier).where(Supplier.is_enabled == True)  # noqa: E712
+        ).scalars().all()
+    else:
+        try:
+            sid = int(scope_raw)
+        except (TypeError, ValueError):
+            return jsonify({"status": "error", "message": "supplier_id must be int or 'all'"}), 400
+        supplier = db.session.get(Supplier, sid)
+        if not supplier:
+            return jsonify({"status": "error", "message": f"Supplier #{sid} not found"}), 404
+        suppliers = [supplier]
+
+    if not suppliers:
+        return jsonify({"status": "error", "message": "No suppliers in scope"}), 400
+
+    # Backup before destructive op.
+    backup_path: str | None = None
+    try:
+        from scripts.backup_db import backup as _backup
+        backup_path = str(_backup())
+    except Exception as exc:  # pragma: no cover — surfaced to UI
+        return jsonify({"status": "error", "message": f"Backup failed: {exc}"}), 500
+
+    results = []
+    total_deleted = 0
+    total_created = 0
+
+    for sup in suppliers:
+        # Count protected matches (sanity check — surfaced in response).
+        protected = db.session.execute(
+            db.select(db.func.count(ProductMatch.id))
+            .join(SupplierProduct, ProductMatch.supplier_product_id == SupplierProduct.id)
+            .where(
+                SupplierProduct.supplier_id == sup.id,
+                ProductMatch.status.in_(("confirmed", "manual")),
+            )
+        ).scalar() or 0
+
+        # Delete candidate + rejected for this supplier's products.
+        wipe_q = db.delete(ProductMatch).where(
+            ProductMatch.status.in_(("candidate", "rejected")),
+            ProductMatch.supplier_product_id.in_(
+                db.select(SupplierProduct.id).where(SupplierProduct.supplier_id == sup.id)
+            ),
+        )
+        deleted = db.session.execute(wipe_q).rowcount or 0
+        db.session.commit()
+
+        # Run matcher fresh.
+        created = run_matching_for_supplier(sup.id)
+
+        total_deleted += deleted
+        total_created += created
+        results.append({
+            "supplier_id": sup.id,
+            "supplier_name": sup.name,
+            "protected": protected,
+            "deleted": deleted,
+            "created": created,
+        })
+
+    log_action("rematch", details={
+        "scope": "all" if scope_raw == "all" else f"supplier:{suppliers[0].id}",
+        "total_deleted": total_deleted,
+        "total_created": total_created,
+        "backup": backup_path,
+    })
+
+    return jsonify({
+        "status": "ok",
+        "backup": backup_path,
+        "total_deleted": total_deleted,
+        "total_created": total_created,
+        "suppliers": results,
+    })
 
 
 def _parse_match_ids(data: dict) -> list[int] | None:

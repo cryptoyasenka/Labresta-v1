@@ -17,6 +17,10 @@
                     title="Запустить полную синхронизацию всех активных поставщиков (загрузка фидов из источников)">
                 Обновить всех из источников
             </button>
+            <button type="button" class="btn btn-sm btn-outline-warning" id="rematchAllBtn"
+                    title="Стереть candidate+rejected у всех активных поставщиков и прогнать matcher заново. Confirmed/manual не затрагиваются.">
+                Перезапустить matcher (все)
+            </button>
             <button type="button" class="btn btn-sm btn-outline-primary" id="regenMainBtn"
                     title="Пересобрать labresta-feed.yml (общий фид) из текущих confirmed/manual published-матчей">
                 Пересобрать общий YML
@@ -131,6 +135,12 @@
                     <button type="submit" class="btn btn-sm btn-outline-info">Загрузить фид</button>
                 </form>
                 {% endif %}
+                <button type="button" class="btn btn-sm btn-outline-warning rematch-supplier-btn"
+                        data-supplier-id="{{ supplier.id }}"
+                        data-supplier-name="{{ supplier.name }}"
+                        title="Стереть candidate+rejected и прогнать matcher заново. Confirmed/manual защищены.">
+                    Перезапустить matcher
+                </button>
                 <button type="button" class="btn btn-sm btn-outline-primary apply-discount-btn"
                         data-supplier-id="{{ supplier.id }}"
                         data-supplier-name="{{ supplier.name }}"
@@ -406,6 +416,91 @@
                         statusSpan.textContent = 'Готово: ' + data.total + ' (' +
                             data.available + '/' + data.unavailable + ')';
                     }
+                    unsetBusy(btn);
+                })
+                .catch(function (err) {
+                    if (statusSpan) {
+                        statusSpan.textContent = 'Ошибка: ' + err.message;
+                        statusSpan.classList.add('text-danger');
+                        statusSpan.classList.remove('text-muted');
+                    }
+                    unsetBusy(btn);
+                });
+        });
+    });
+
+    function postRematch(body) {
+        return fetchWithCSRF('/matches/rematch', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+        }).then(function (r) {
+            return r.json().then(function (data) {
+                if (!r.ok || data.status === 'error') {
+                    throw new Error(data.message || 'HTTP ' + r.status);
+                }
+                return data;
+            });
+        });
+    }
+
+    function summarizeRematch(data) {
+        var parts = [];
+        (data.suppliers || []).forEach(function (s) {
+            parts.push(s.supplier_name + ': protected=' + s.protected +
+                       ', удалено=' + s.deleted + ', создано=' + s.created);
+        });
+        return 'Rematch готов (' + parts.join(' | ') + ')';
+    }
+
+    var rematchAllBtn = document.getElementById('rematchAllBtn');
+    if (rematchAllBtn) {
+        rematchAllBtn.addEventListener('click', function () {
+            if (!confirm(
+                'Перезапустить matcher для ВСЕХ активных поставщиков?\n\n' +
+                'Что произойдёт:\n' +
+                '• backup БД в backups/\n' +
+                '• УДАЛЯТСЯ все candidate и rejected матчи\n' +
+                '• confirmed и manual матчи НЕ затрагиваются\n' +
+                '• matcher прогонится заново со свежей логикой\n\n' +
+                'Это может занять несколько минут.'
+            )) return;
+            setBusy(rematchAllBtn, 'Matching...');
+            setStatus('');
+            postRematch({ supplier_id: 'all' })
+                .then(function (data) {
+                    setStatus(summarizeRematch(data) + ' — backup: ' + (data.backup || '?'));
+                    unsetBusy(rematchAllBtn);
+                })
+                .catch(function (err) {
+                    setStatus('Ошибка: ' + err.message, true);
+                    unsetBusy(rematchAllBtn);
+                });
+        });
+    }
+
+    document.querySelectorAll('.rematch-supplier-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var sid = btn.dataset.supplierId;
+            var sname = btn.dataset.supplierName || ('#' + sid);
+            if (!confirm(
+                'Перезапустить matcher для «' + sname + '»?\n\n' +
+                'Удалятся candidate+rejected, confirmed+manual сохранятся. BACKUP БД будет создан.'
+            )) return;
+            var statusSpan = document.getElementById('regen-status-' + sid);
+            setBusy(btn, 'Matching...');
+            if (statusSpan) {
+                statusSpan.textContent = '';
+                statusSpan.classList.remove('text-danger');
+                statusSpan.classList.add('text-muted');
+            }
+            postRematch({ supplier_id: parseInt(sid, 10) })
+                .then(function (data) {
+                    var s = (data.suppliers || [])[0] || {};
+                    var msg = 'Rematch: protected=' + (s.protected || 0) +
+                              ', удалено=' + (s.deleted || 0) +
+                              ', создано=' + (s.created || 0);
+                    if (statusSpan) statusSpan.textContent = msg;
                     unsetBusy(btn);
                 })
                 .catch(function (err) {
