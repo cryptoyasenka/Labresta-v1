@@ -18,6 +18,7 @@
     var bulkConfirmBtn = document.getElementById('bulkConfirmBtn');
     var bulkRejectBtn = document.getElementById('bulkRejectBtn');
     var bulkRecalcDiscountBtn = document.getElementById('bulkRecalcDiscountBtn');
+    var bulkClampMarginBtn = document.getElementById('bulkClampMarginBtn');
     var customFeedBtn = document.getElementById('customFeedBtn');
     var customFeedCountEl = document.getElementById('customFeedCount');
     var matchTable = document.getElementById('matchTable');
@@ -53,6 +54,7 @@
         if (bulkConfirmBtn) bulkConfirmBtn.disabled = selectedIds.size === 0;
         if (bulkRejectBtn) bulkRejectBtn.disabled = selectedIds.size === 0;
         if (bulkRecalcDiscountBtn) bulkRecalcDiscountBtn.disabled = selectedIds.size === 0;
+        if (bulkClampMarginBtn) bulkClampMarginBtn.disabled = selectedIds.size === 0;
         if (customFeedBtn) customFeedBtn.disabled = selectedIds.size === 0;
         if (customFeedCountEl) customFeedCountEl.textContent = selectedIds.size;
     }
@@ -818,6 +820,113 @@
         bulkRecalcDiscountBtn.addEventListener('click', function () {
             doBulkAction('recalc_discount');
         });
+    }
+
+    function doClampMarginDryRun() {
+        var ids = Array.from(selectedIds);
+        if (ids.length === 0) return;
+        bulkClampMarginBtn.disabled = true;
+        var originalText = bulkClampMarginBtn.textContent;
+        bulkClampMarginBtn.textContent = 'Расчёт…';
+
+        fetchWithCSRF('/matches/bulk-action', {
+            method: 'POST',
+            body: JSON.stringify({ action: 'clamp_margin', ids: ids, dry_run: true })
+        })
+            .then(function (resp) { return resp.json(); })
+            .then(function (data) {
+                if (data.status !== 'ok') {
+                    throw new Error(data.message || 'Ошибка dry-run');
+                }
+                showClampPreviewModal(data.preview || [], ids);
+            })
+            .catch(function (err) {
+                showAlert('Ошибка: ' + err.message, 'danger');
+            })
+            .finally(function () {
+                bulkClampMarginBtn.disabled = selectedIds.size === 0;
+                bulkClampMarginBtn.textContent = originalText;
+            });
+    }
+
+    function showClampPreviewModal(preview, allIds) {
+        var modal = document.getElementById('clampPreviewModal');
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'clampPreviewModal';
+            modal.className = 'modal fade';
+            modal.tabIndex = -1;
+            modal.innerHTML =
+                '<div class="modal-dialog modal-xl modal-dialog-scrollable">' +
+                '<div class="modal-content">' +
+                '<div class="modal-header">' +
+                '<h5 class="modal-title">Применение min-margin (предпросмотр)</h5>' +
+                '<button type="button" class="btn-close" data-bs-dismiss="modal"></button>' +
+                '</div>' +
+                '<div class="modal-body" id="clampPreviewBody"></div>' +
+                '<div class="modal-footer">' +
+                '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>' +
+                '<button type="button" class="btn btn-warning" id="clampPreviewApplyBtn">Применить</button>' +
+                '</div>' +
+                '</div></div>';
+            document.body.appendChild(modal);
+        }
+        var body = modal.querySelector('#clampPreviewBody');
+        if (preview.length === 0) {
+            body.innerHTML = '<p class="text-muted">Среди выбранных матчей нет кандидатов для клэмпа ' +
+                '(все либо имеют ручной % скидки, либо не confirmed/manual, либо без цены).</p>';
+        } else {
+            var rows = preview.map(function (p) {
+                var changed = Math.abs(p.base_discount - p.effective_discount) > 0.001;
+                return '<tr' + (changed ? ' class="table-warning"' : '') + '>' +
+                    '<td>' + p.match_id + '</td>' +
+                    '<td>' + (p.supplier_product_name || '').replace(/</g, '&lt;') + '</td>' +
+                    '<td class="text-end">' + p.base_discount.toFixed(1) + '%</td>' +
+                    '<td class="text-end"><strong>' + p.effective_discount.toFixed(1) + '%</strong></td>' +
+                    '<td class="text-end">' + p.margin_uah.toFixed(0) + '</td>' +
+                    '<td>' + (p.clamp_applied ? '<span class="badge bg-warning text-dark">clamp</span>' : '') + '</td>' +
+                    '</tr>';
+            }).join('');
+            var changedCount = preview.filter(function (p) {
+                return Math.abs(p.base_discount - p.effective_discount) > 0.001;
+            }).length;
+            body.innerHTML =
+                '<p>Будет зафиксировано в <strong>' + preview.length + '</strong> матчах ' +
+                '(из них скидка изменится у <strong>' + changedCount + '</strong>). ' +
+                'Матчи с заданным вручную % пропущены.</p>' +
+                '<div class="table-responsive"><table class="table table-sm">' +
+                '<thead><tr><th>#</th><th>Товар</th><th class="text-end">База %</th><th class="text-end">Итог %</th>' +
+                '<th class="text-end">Маржа UAH</th><th>Пометка</th></tr></thead>' +
+                '<tbody>' + rows + '</tbody></table></div>';
+        }
+        var applyBtn = modal.querySelector('#clampPreviewApplyBtn');
+        applyBtn.disabled = preview.length === 0;
+        applyBtn.onclick = function () {
+            applyBtn.disabled = true;
+            applyBtn.textContent = 'Применяется…';
+            fetchWithCSRF('/matches/bulk-action', {
+                method: 'POST',
+                body: JSON.stringify({ action: 'clamp_margin', ids: allIds })
+            })
+                .then(function (resp) { return resp.json(); })
+                .then(function (data) {
+                    if (data.status !== 'ok') throw new Error(data.message || 'Ошибка');
+                    window.location.reload();
+                })
+                .catch(function (err) {
+                    showAlert('Ошибка: ' + err.message, 'danger');
+                    applyBtn.disabled = false;
+                    applyBtn.textContent = 'Применить';
+                });
+        };
+        var bs = window.bootstrap && window.bootstrap.Modal
+            ? window.bootstrap.Modal.getOrCreateInstance(modal)
+            : null;
+        if (bs) bs.show();
+    }
+
+    if (bulkClampMarginBtn) {
+        bulkClampMarginBtn.addEventListener('click', doClampMarginDryRun);
     }
 
     // ========== Detail panel ==========

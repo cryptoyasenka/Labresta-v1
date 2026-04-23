@@ -135,6 +135,50 @@ def is_valid_price(price_cents: int | None) -> bool:
     return price_cents is not None and price_cents > 0
 
 
+def compute_match_pricing(match) -> dict | None:
+    """Return pricing breakdown for a match, or None if retail price is missing.
+
+    Resolves the base discount through ``resolve_discount_percent`` and applies
+    ``clamp_discount_for_min_margin`` when the match has no per-match override
+    and the supplier has a positive ``min_margin_uah``. Produces the numbers the
+    UI shows side-by-side (base %, effective %, sell price EUR, margin UAH,
+    clamp-applied flag).
+    """
+    sp = match.supplier_product
+    if sp is None or not is_valid_price(sp.price_cents):
+        return None
+    supplier = sp.supplier
+    rate = float(getattr(supplier, "eur_rate_uah", 51.15) or 51.15)
+    cost_rate_v = float(getattr(supplier, "cost_rate", 0.75) or 0.75)
+    min_margin = float(getattr(supplier, "min_margin_uah", 0.0) or 0.0)
+
+    base_d = float(resolve_discount_percent(match.discount_percent, supplier, sp.brand) or 0.0)
+    eff_d = base_d
+    clamp_applied = False
+    if match.discount_percent is None and min_margin > 0:
+        clamped = clamp_discount_for_min_margin(
+            base_d, sp.price_cents, rate, min_margin, cost_rate_v
+        )
+        if float(clamped) != base_d:
+            clamp_applied = True
+        eff_d = float(clamped)
+
+    price_eur = calculate_price_eur(sp.price_cents, eff_d)
+    retail_eur = sp.price_cents / 100.0
+    margin_eur = retail_eur * (1 - cost_rate_v - eff_d / 100.0)
+    margin_uah = margin_eur * rate
+    return {
+        "base_discount": base_d,
+        "effective_discount": eff_d,
+        "price_eur": price_eur,
+        "margin_uah": margin_uah,
+        "margin_eur": margin_eur,
+        "clamp_applied": clamp_applied,
+        "min_margin_uah": min_margin,
+        "has_override": match.discount_percent is not None,
+    }
+
+
 def calculate_auto_discount(
     retail_price_cents: int,
     eur_rate_uah: float,

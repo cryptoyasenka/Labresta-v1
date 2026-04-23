@@ -83,6 +83,15 @@ def _build_match_query():
     # 100% first, then drill into uncertain rows).
     order = request.args.get("order", "desc")
     per_page = request.args.get("per_page", 25, type=int)
+    margin_below_raw = request.args.get("margin_below", "").strip()
+    margin_below: float | None = None
+    if margin_below_raw:
+        try:
+            margin_below = float(margin_below_raw)
+            if margin_below < 0:
+                margin_below = None
+        except (TypeError, ValueError):
+            margin_below = None
 
     if per_page not in (25, 50, 100):
         per_page = 25
@@ -186,6 +195,8 @@ def _build_match_query():
         "order": order,
         "per_page": per_page,
         "show_claimed": show_claimed,
+        "margin_below": margin_below,
+        "margin_below_raw": margin_below_raw,
     }
     return query, filters
 
@@ -194,15 +205,55 @@ def _build_match_query():
 @login_required
 def review():
     """Main match review page with filtering, sorting, and pagination."""
+    from app.services.pricing import compute_match_pricing
+
     query, filters = _build_match_query()
     page = request.args.get("page", 1, type=int)
-    pagination = db.paginate(query, page=page, per_page=filters["per_page"], error_out=False)
-    # After bulk-confirm the list shrinks — redirect to the last existing page
-    # instead of showing 404 / empty state on page=N.
-    if page > 1 and not pagination.items and pagination.pages >= 1:
-        args = request.args.to_dict(flat=True)
-        args["page"] = pagination.pages
-        return redirect(url_for("matches.review", **args))
+
+    if filters["margin_below"] is not None:
+        # Margin depends on per_brand + clamp — can't express in SQL. Materialize
+        # the filtered query, compute margin per row, then paginate in Python.
+        # Filter by margin at BASE discount (pre-clamp) so the operator sees all
+        # items where the min-margin rule triggered or would trigger, not just
+        # the ones the clamp couldn't save.
+        all_items = query.all()
+        threshold = float(filters["margin_below"])
+        kept: list = []
+        pricing_map: dict[int, dict] = {}
+        for m in all_items:
+            p = compute_match_pricing(m)
+            if p is None:
+                continue
+            sp = m.supplier_product
+            supplier = sp.supplier
+            rate = float(getattr(supplier, "eur_rate_uah", 51.15) or 51.15)
+            cost_rate_v = float(getattr(supplier, "cost_rate", 0.75) or 0.75)
+            retail_eur = sp.price_cents / 100.0
+            margin_at_base = retail_eur * (1 - cost_rate_v - p["base_discount"] / 100.0) * rate
+            if margin_at_base < threshold:
+                kept.append(m)
+                pricing_map[m.id] = p
+        per_page = filters["per_page"]
+        total = len(kept)
+        pages = max(1, (total + per_page - 1) // per_page)
+        if page < 1:
+            page = 1
+        if page > pages and total > 0:
+            args = request.args.to_dict(flat=True)
+            args["page"] = pages
+            return redirect(url_for("matches.review", **args))
+        start = (page - 1) * per_page
+        items = kept[start : start + per_page]
+        pagination = _InMemoryPagination(items=items, page=page, per_page=per_page, total=total, pages=pages)
+    else:
+        pagination = db.paginate(query, page=page, per_page=filters["per_page"], error_out=False)
+        # After bulk-confirm the list shrinks — redirect to the last existing page
+        # instead of showing 404 / empty state on page=N.
+        if page > 1 and not pagination.items and pagination.pages >= 1:
+            args = request.args.to_dict(flat=True)
+            args["page"] = pagination.pages
+            return redirect(url_for("matches.review", **args))
+        pricing_map = {m.id: compute_match_pricing(m) for m in pagination.items}
 
     # Count supplier products matching the search but without any match row.
     # Helps the operator realise that /matches hides unmatched SP — surfaces
@@ -245,7 +296,50 @@ def review():
         unmatched_sp_count=unmatched_sp_count,
         auto_manual_sp=auto_manual_sp,
         suppliers_list=suppliers_list,
+        pricing_map=pricing_map,
     )
+
+
+class _InMemoryPagination:
+    """Drop-in replacement for flask_sqlalchemy.Pagination when we need to
+    filter by a Python-computed column (margin_uah) and still render the
+    standard pagination controls.
+    """
+    def __init__(self, items, page, per_page, total, pages):
+        self.items = items
+        self.page = page
+        self.per_page = per_page
+        self.total = total
+        self.pages = pages
+
+    @property
+    def has_prev(self):
+        return self.page > 1
+
+    @property
+    def has_next(self):
+        return self.page < self.pages
+
+    @property
+    def prev_num(self):
+        return self.page - 1
+
+    @property
+    def next_num(self):
+        return self.page + 1
+
+    def iter_pages(self, left_edge=1, left_current=2, right_current=3, right_edge=1):
+        last = 0
+        for num in range(1, self.pages + 1):
+            if (
+                num <= left_edge
+                or (num > self.page - left_current - 1 and num < self.page + right_current)
+                or num > self.pages - right_edge
+            ):
+                if last + 1 != num:
+                    yield None
+                yield num
+                last = num
 
 
 @matches_bp.route("/<int:match_id>/confirm", methods=["POST"])
@@ -774,15 +868,17 @@ def bulk_action():
     action = data.get("action")
     ids = data.get("ids", [])
 
-    if action not in ("confirm", "reject", "recalc_discount"):
+    if action not in ("confirm", "reject", "recalc_discount", "clamp_margin"):
         return jsonify({"status": "error", "message": "Invalid action"}), 400
 
     if not ids:
         return jsonify({"status": "error", "message": "No matches selected"}), 400
 
+    dry_run = bool(data.get("dry_run"))
     matches = ProductMatch.query.filter(ProductMatch.id.in_(ids)).all()
     processed = 0
     skipped_claimed: list[dict] = []
+    preview: list[dict] = []
 
     for match in matches:
         if action == "confirm":
@@ -832,6 +928,40 @@ def bulk_action():
             if match.discount_percent != new_d:
                 match.discount_percent = new_d
             processed += 1
+        elif action == "clamp_margin":
+            # Materializes the current effective discount (per_brand / flat +
+            # min-margin clamp) into match.discount_percent so the UI column
+            # "Скидка" shows the final rate. Matches with an existing override
+            # are skipped — operator intent wins.
+            if match.status not in ("confirmed", "manual"):
+                continue
+            if match.discount_percent is not None:
+                continue  # manual override — do not touch
+            from app.services.pricing import compute_match_pricing
+            p = compute_match_pricing(match)
+            if p is None:
+                continue
+            new_d = float(p["effective_discount"])
+            old_d = match.discount_percent
+            preview.append({
+                "match_id": match.id,
+                "supplier_product_name": match.supplier_product.name if match.supplier_product else "",
+                "base_discount": p["base_discount"],
+                "effective_discount": new_d,
+                "margin_uah": round(p["margin_uah"], 2),
+                "clamp_applied": p["clamp_applied"],
+            })
+            if not dry_run:
+                match.discount_percent = new_d
+                processed += 1
+
+    if dry_run:
+        return jsonify({
+            "status": "ok",
+            "dry_run": True,
+            "preview": preview,
+            "would_change": len(preview),
+        })
 
     log_action(f"bulk_{action}",
                details={"match_ids": ids, "processed": processed,
@@ -842,6 +972,7 @@ def bulk_action():
         "status": "ok",
         "processed": processed,
         "skipped_claimed": skipped_claimed,
+        "preview": preview if action == "clamp_margin" else [],
     })
 
 

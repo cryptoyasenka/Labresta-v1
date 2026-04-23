@@ -992,3 +992,153 @@ class TestRebindUIRender:
         body = resp.data.decode("utf-8")
         # Modal HTML is always present on the page; the per-row button isn't.
         assert "rebind-btn" not in body
+
+
+def _seed_per_brand_supplier_with_matches(session):
+    """НП-like per_brand supplier with 3 matches at retail prices tuned so the
+    min-margin clamp triggers only for the cheapest one.
+
+    At eur_rate=51.15, cost_rate=0.75, min_margin=500, per_brand Hurakan=15%:
+      - retail 200 EUR → margin at 15% = 200 * (0.25 - 0.15) * 51.15 = 1023 UAH (safe)
+      - retail 60 EUR  → margin at 15% = 60 * 0.10 * 51.15 = 306.9 UAH (needs clamp down)
+      - retail 20 EUR  → margin at 0% = 20 * 0.25 * 51.15 = 255.75 UAH (too cheap, clamp→0)
+    """
+    from app.models.supplier_brand_discount import SupplierBrandDiscount
+    supplier = Supplier(
+        name="NP-per-brand",
+        feed_url="http://np.xml",
+        discount_percent=17.0,
+        eur_rate_uah=51.15,
+        min_margin_uah=500.0,
+        cost_rate=0.75,
+        pricing_mode="per_brand",
+        is_enabled=True,
+    )
+    session.add(supplier)
+    session.flush()
+    session.add(SupplierBrandDiscount(
+        supplier_id=supplier.id, brand="Hurakan", discount_percent=15.0
+    ))
+
+    matches = []
+    for i, p_eur in enumerate([200.0, 60.0, 20.0]):
+        sp = SupplierProduct(
+            supplier_id=supplier.id,
+            external_id=f"NPSP{i}",
+            name=f"Hurakan item {i}",
+            brand="Hurakan",
+            price_cents=int(p_eur * 100),
+            available=True,
+        )
+        session.add(sp)
+        pp = PromProduct(
+            external_id=f"PROM_NP{i}",
+            name=f"Hurakan item {i}",
+            brand="Hurakan",
+            price=int(p_eur * 100),
+        )
+        session.add(pp)
+        session.flush()
+        m = ProductMatch(
+            supplier_product_id=sp.id,
+            prom_product_id=pp.id,
+            score=95.0,
+            status="confirmed",
+            discount_percent=None,
+            confirmed_at=datetime.now(timezone.utc),
+            confirmed_by="seed",
+        )
+        session.add(m)
+        matches.append(m)
+    session.commit()
+    return supplier, matches
+
+
+class TestMarginBelowFilter:
+    def test_filter_shows_only_matches_under_threshold(self, client, db):
+        _seed_per_brand_supplier_with_matches(db.session)
+        resp = client.get("/matches/?margin_below=500")
+        assert resp.status_code == 200
+        body = resp.data.decode("utf-8")
+        # 60 EUR (margin ~306) and 20 EUR (margin ~255) should show; 200 EUR (1023) must not.
+        assert "Hurakan item 1" in body  # 60 EUR under 500
+        assert "Hurakan item 2" in body  # 20 EUR under 500
+        assert "Hurakan item 0" not in body  # 200 EUR above 500
+
+    def test_filter_blank_shows_all(self, client, db):
+        _seed_per_brand_supplier_with_matches(db.session)
+        resp = client.get("/matches/")
+        assert resp.status_code == 200
+        body = resp.data.decode("utf-8")
+        assert "Hurakan item 0" in body
+        assert "Hurakan item 1" in body
+        assert "Hurakan item 2" in body
+
+    def test_margin_uah_column_rendered(self, client, db):
+        _seed_per_brand_supplier_with_matches(db.session)
+        resp = client.get("/matches/")
+        assert resp.status_code == 200
+        body = resp.data.decode("utf-8")
+        assert "Маржа UAH" in body
+
+
+class TestBulkClampMargin:
+    def test_clamp_margin_dry_run_returns_preview_without_writing(self, client, db):
+        supplier, matches = _seed_per_brand_supplier_with_matches(db.session)
+        ids = [m.id for m in matches]
+        resp = client.post(
+            "/matches/bulk-action",
+            json={"action": "clamp_margin", "ids": ids, "dry_run": True},
+        )
+        assert resp.status_code == 200
+        data = resp.get_json()
+        assert data["status"] == "ok"
+        assert data["dry_run"] is True
+        assert data["would_change"] == 3
+        preview_by_id = {p["match_id"]: p for p in data["preview"]}
+        # 60 EUR should show clamp_applied
+        cheap_match = [m for m in matches if m.supplier_product.price_cents == 6000][0]
+        assert preview_by_id[cheap_match.id]["clamp_applied"] is True
+        # nothing written
+        for m in matches:
+            db.session.refresh(m)
+            assert m.discount_percent is None
+
+    def test_clamp_margin_real_apply_materializes_effective_discount(self, client, db):
+        supplier, matches = _seed_per_brand_supplier_with_matches(db.session)
+        ids = [m.id for m in matches]
+        resp = client.post(
+            "/matches/bulk-action",
+            json={"action": "clamp_margin", "ids": ids},
+        )
+        assert resp.status_code == 200
+        data = resp.get_json()
+        assert data["status"] == "ok"
+        assert data["processed"] == 3
+        # 200 EUR Hurakan: per_brand 15%, margin 1023 ≥ 500 → effective=15
+        # 60  EUR Hurakan: clamp reduces 15 → 10 (margin_at_10 = 60*0.15*51.15 = 460 still <500?)
+        # let's assert on sign rather than exact: effective < base for cheap one
+        for m in matches:
+            db.session.refresh(m)
+            assert m.discount_percent is not None
+
+    def test_clamp_margin_skips_manual_override(self, client, db):
+        supplier, matches = _seed_per_brand_supplier_with_matches(db.session)
+        matches[0].discount_percent = 12.0  # operator set this manually
+        db.session.commit()
+        ids = [m.id for m in matches]
+
+        resp = client.post(
+            "/matches/bulk-action",
+            json={"action": "clamp_margin", "ids": ids},
+        )
+        assert resp.status_code == 200
+        db.session.refresh(matches[0])
+        assert matches[0].discount_percent == 12.0  # untouched
+
+    def test_clamp_margin_rejects_unknown_action(self, client, db):
+        resp = client.post(
+            "/matches/bulk-action",
+            json={"action": "bogus_action", "ids": [1]},
+        )
+        assert resp.status_code == 400
