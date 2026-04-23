@@ -2,7 +2,7 @@
 
 from datetime import datetime, timezone
 
-from flask import Blueprint, Response, jsonify, redirect, render_template, request, send_file, url_for
+from flask import Blueprint, Response, current_app, jsonify, redirect, render_template, request, send_file, url_for
 from flask_login import current_user, login_required
 from sqlalchemy import asc, desc, nulls_last
 from sqlalchemy.orm import joinedload
@@ -661,14 +661,20 @@ def regenerate_feed():
 @matches_bp.route("/rematch", methods=["POST"])
 @login_required
 def rematch():
-    """Wipe `candidate` + `rejected` matches in scope and re-run fuzzy matcher.
+    """Queue a background rematch job and return `job_id` immediately.
 
     Body: {"supplier_id": <int>}  — single supplier.
           {"supplier_id": "all"}  — all enabled suppliers.
 
+    Response: 202 Accepted `{status: "started", job_id: str}`.
+              409 Conflict `{status: "busy", active_job_id: str}` if another
+              rematch is already running.
+
+    The UI then polls `GET /matches/rematch/status/<job_id>` every ~2 s.
+
     Invariant: `confirmed` and `manual` matches are never touched. They are
-    protected both here (WHERE status IN ('candidate','rejected')) and in
-    `run_matching_for_supplier` which skips supplier products that already
+    protected both by the job's DELETE WHERE (status IN ('candidate','rejected'))
+    and by `run_matching_for_supplier` skipping supplier products that already
     have confirmed/manual. Also enforced by `uq_match_prom_confirmed` index.
     """
     data = request.get_json(silent=True) or {}
@@ -676,83 +682,62 @@ def rematch():
     if scope_raw is None:
         return jsonify({"status": "error", "message": "supplier_id required"}), 400
 
+    # Validate scope before spawning the thread so errors are surfaced sync.
     if scope_raw == "all":
-        suppliers = db.session.execute(
-            db.select(Supplier).where(Supplier.is_enabled == True)  # noqa: E712
-        ).scalars().all()
+        any_enabled = db.session.execute(
+            db.select(db.func.count(Supplier.id)).where(Supplier.is_enabled == True)  # noqa: E712
+        ).scalar() or 0
+        if not any_enabled:
+            return jsonify({"status": "error", "message": "Нет активных поставщиков"}), 400
     else:
         try:
             sid = int(scope_raw)
         except (TypeError, ValueError):
             return jsonify({"status": "error", "message": "supplier_id must be int or 'all'"}), 400
-        supplier = db.session.get(Supplier, sid)
-        if not supplier:
+        if not db.session.get(Supplier, sid):
             return jsonify({"status": "error", "message": f"Supplier #{sid} not found"}), 404
-        suppliers = [supplier]
+        scope_raw = sid
 
-    if not suppliers:
-        return jsonify({"status": "error", "message": "No suppliers in scope"}), 400
+    from app.services import rematch_job
 
-    # Backup before destructive op.
-    backup_path: str | None = None
-    try:
-        from scripts.backup_db import backup as _backup
-        backup_path = str(_backup())
-    except Exception as exc:  # pragma: no cover — surfaced to UI
-        return jsonify({"status": "error", "message": f"Backup failed: {exc}"}), 500
+    user_id = current_user.id if current_user and current_user.is_authenticated else None
+    user_name = current_user.name if current_user and current_user.is_authenticated else None
+    job_id, active = rematch_job.create_job(scope_raw, user_id, user_name)
+    if job_id is None:
+        return jsonify({
+            "status": "busy",
+            "message": "Rematch уже запущен",
+            "active_job_id": active["id"] if active else None,
+        }), 409
 
-    results = []
-    total_deleted = 0
-    total_created = 0
+    # In tests we may want to run synchronously — honour that toggle.
+    if current_app.config.get("REMATCH_SYNC_MODE"):
+        rematch_job.run_job(current_app._get_current_object(), job_id)
+    else:
+        rematch_job.start_thread(current_app._get_current_object(), job_id)
+    return jsonify({"status": "started", "job_id": job_id}), 202
 
-    for sup in suppliers:
-        # Count protected matches (sanity check — surfaced in response).
-        protected = db.session.execute(
-            db.select(db.func.count(ProductMatch.id))
-            .join(SupplierProduct, ProductMatch.supplier_product_id == SupplierProduct.id)
-            .where(
-                SupplierProduct.supplier_id == sup.id,
-                ProductMatch.status.in_(("confirmed", "manual")),
-            )
-        ).scalar() or 0
 
-        # Delete candidate + rejected for this supplier's products.
-        wipe_q = db.delete(ProductMatch).where(
-            ProductMatch.status.in_(("candidate", "rejected")),
-            ProductMatch.supplier_product_id.in_(
-                db.select(SupplierProduct.id).where(SupplierProduct.supplier_id == sup.id)
-            ),
-        )
-        deleted = db.session.execute(wipe_q).rowcount or 0
-        db.session.commit()
+@matches_bp.route("/rematch/status/active", methods=["GET"])
+@login_required
+def rematch_status_active():
+    """Return the currently running (or pending) rematch job, if any."""
+    from app.services import rematch_job
+    job = rematch_job.get_active_job()
+    if not job:
+        return jsonify({"status": "none"})
+    return jsonify({"status": "ok", "job": job})
 
-        # Run matcher fresh.
-        created = run_matching_for_supplier(sup.id)
 
-        total_deleted += deleted
-        total_created += created
-        results.append({
-            "supplier_id": sup.id,
-            "supplier_name": sup.name,
-            "protected": protected,
-            "deleted": deleted,
-            "created": created,
-        })
-
-    log_action("rematch", details={
-        "scope": "all" if scope_raw == "all" else f"supplier:{suppliers[0].id}",
-        "total_deleted": total_deleted,
-        "total_created": total_created,
-        "backup": backup_path,
-    })
-
-    return jsonify({
-        "status": "ok",
-        "backup": backup_path,
-        "total_deleted": total_deleted,
-        "total_created": total_created,
-        "suppliers": results,
-    })
+@matches_bp.route("/rematch/status/<job_id>", methods=["GET"])
+@login_required
+def rematch_status(job_id):
+    """Return the current state of a rematch job (running / done / error)."""
+    from app.services import rematch_job
+    job = rematch_job.get_job(job_id)
+    if not job:
+        return jsonify({"status": "not_found"}), 404
+    return jsonify({"status": "ok", "job": job})
 
 
 def _parse_match_ids(data: dict) -> list[int] | None:

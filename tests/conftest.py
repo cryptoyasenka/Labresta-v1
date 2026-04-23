@@ -29,6 +29,9 @@ def app():
         "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
         "SQLALCHEMY_TRACK_MODIFICATIONS": False,
         "WTF_CSRF_ENABLED": False,
+        # Run rematch jobs synchronously inside the request so tests can
+        # assert on the result without polling / thread-join.
+        "REMATCH_SYNC_MODE": True,
     })
 
     flask_app.test_client_class = FlaskLoginClient

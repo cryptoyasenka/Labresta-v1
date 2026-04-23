@@ -23,6 +23,9 @@ ACTION_LABELS = {
     "unmark_new": "Знято позначку додавання",
     "bulk_confirm": "Масове підтвердження",
     "bulk_reject": "Масове відхилення",
+    "rematch_start": "Перезапуск matcher (старт)",
+    "rematch_finish": "Перезапуск matcher (готово)",
+    "rematch_error": "Перезапуск matcher (помилка)",
 }
 
 

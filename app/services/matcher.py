@@ -1314,7 +1314,7 @@ def find_match_for_product(
     )
 
 
-def run_matching_for_supplier(supplier_id: int) -> int:
+def run_matching_for_supplier(supplier_id: int, progress_cb=None) -> int:
     """Run fuzzy matching for all unmatched products of a supplier.
 
     Skips products that already have confirmed or manual matches.
@@ -1322,6 +1322,9 @@ def run_matching_for_supplier(supplier_id: int) -> int:
 
     Args:
         supplier_id: ID of the supplier to process.
+        progress_cb: optional callable(done: int, total: int) fired every 20
+            products (and after the last one). Exceptions from the callback
+            are swallowed — it's a progress hook, not a control channel.
 
     Returns:
         Count of new match candidates generated.
@@ -1368,7 +1371,8 @@ def run_matching_for_supplier(supplier_id: int) -> int:
 
     # Step 4: Match each unmatched product
     total_candidates = 0
-    for sp in unmatched_products:
+    sp_total = len(unmatched_products)
+    for idx, sp in enumerate(unmatched_products, start=1):
         candidates = find_match_candidates(
             sp.name, sp.brand, prom_list,
             supplier_price_cents=sp.price_cents,
@@ -1393,6 +1397,12 @@ def run_matching_for_supplier(supplier_id: int) -> int:
                 )
                 db.session.add(match)
                 total_candidates += 1
+
+        if progress_cb is not None and (idx % 20 == 0 or idx == sp_total):
+            try:
+                progress_cb(idx, sp_total)
+            except Exception:  # progress is advisory, don't abort matching
+                pass
 
     db.session.commit()
     logger.info(
