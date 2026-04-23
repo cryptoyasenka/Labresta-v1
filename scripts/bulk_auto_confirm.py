@@ -199,80 +199,115 @@ def _claimed_pp_ids() -> set[int]:
     )
 
 
-def run(apply: bool) -> None:
-    app = create_app()
-    with app.app_context():
-        singles, multis_by_sp = _group_candidates_by_sp()
-        print(f"Single-candidate matches: {len(singles)}")
-        print(f"Multi-candidate supplier products: {len(multis_by_sp)}")
+def apply_rules(apply: bool, confirmed_by: str = "rule:bulk_auto_confirm") -> dict:
+    """Classify current candidates by R1-R4 and optionally apply.
 
-        claimed = _claimed_pp_ids()
+    Must be called inside an active Flask app context — does not create one.
 
-        confirm_buckets: dict[str, list[int]] = {}
-        reject_ids: list[int] = []
-        skipped_claimed = 0
+    Returns a dict with counts:
+        {
+            "singles": int, "multis": int, "skipped_claimed": int,
+            "per_rule": {rule_name: count_confirmed, ...},
+            "r4_rejects": int,
+            "confirmed": int, "rejected": int,     # 0 on dry-run
+            "applied": bool,
+        }
+    """
+    singles, multis_by_sp = _group_candidates_by_sp()
+    claimed = _claimed_pp_ids()
 
-        for m in singles:
-            if m.prom_product_id in claimed:
+    confirm_buckets: dict[str, list[int]] = {}
+    reject_ids: list[int] = []
+    skipped_claimed = 0
+
+    for m in singles:
+        if m.prom_product_id in claimed:
+            skipped_claimed += 1
+            continue
+        rule = classify_single(m)
+        if rule:
+            confirm_buckets.setdefault(rule, []).append(m.id)
+            claimed.add(m.prom_product_id)
+
+    r3_confirms: list[int] = []
+    for sp_id, cands in multis_by_sp.items():
+        result = classify_multi(cands)
+        if result:
+            winner, losers = result
+            if winner.prom_product_id in claimed:
                 skipped_claimed += 1
                 continue
-            rule = classify_single(m)
-            if rule:
-                confirm_buckets.setdefault(rule, []).append(m.id)
-                claimed.add(m.prom_product_id)
+            r3_confirms.append(winner.id)
+            claimed.add(winner.prom_product_id)
+            reject_ids.extend(l.id for l in losers)
+    if r3_confirms:
+        confirm_buckets["R3:multi-winner-tokens-equal"] = r3_confirms
 
-        r3_confirms: list[int] = []
-        for sp_id, cands in multis_by_sp.items():
-            result = classify_multi(cands)
-            if result:
-                winner, losers = result
-                if winner.prom_product_id in claimed:
-                    skipped_claimed += 1
-                    continue
-                r3_confirms.append(winner.id)
-                claimed.add(winner.prom_product_id)
-                reject_ids.extend(l.id for l in losers)
-        if r3_confirms:
-            confirm_buckets["R3:multi-winner-tokens-equal"] = r3_confirms
+    # R4: reject candidates that duplicate a confirmed exact-tokens match
+    r4_rejects = _find_r4_bundle_sibling_candidates()
+    reject_ids.extend(r4_rejects)
 
-        if skipped_claimed:
-            print(f"  Skipped {skipped_claimed} candidate(s): pp already claimed")
+    stats = {
+        "singles": len(singles),
+        "multis": len(multis_by_sp),
+        "skipped_claimed": skipped_claimed,
+        "per_rule": {k: len(v) for k, v in confirm_buckets.items()},
+        "r4_rejects": len(r4_rejects),
+        "confirmed": 0,
+        "rejected": 0,
+        "applied": apply,
+    }
 
-        # R4: reject candidates that duplicate a confirmed exact-tokens match
-        r4_rejects = _find_r4_bundle_sibling_candidates()
-        reject_ids.extend(r4_rejects)
+    if not apply:
+        return stats
 
-        total_confirm = sum(len(v) for v in confirm_buckets.values())
-        for rule, ids in confirm_buckets.items():
-            print(f"  {rule}: confirm {len(ids)}")
-        print(f"  R3 side effect: reject {len(reject_ids) - len(r4_rejects)} sibling subset candidates")
-        print(f"  R4:reject-bundle-of-confirmed: reject {len(r4_rejects)}")
-        print(f"Total confirmed: {total_confirm}, rejected: {len(reject_ids)}")
-
-        if not apply:
-            print("\nDRY-RUN — pass --apply to commit.")
-            return
-
-        now = datetime.now(timezone.utc)
-        confirmed = 0
-        for ids in confirm_buckets.values():
-            for mid in ids:
-                m = db.session.get(ProductMatch, mid)
-                if not m or m.status != "candidate":
-                    continue
-                m.status = "confirmed"
-                m.confirmed_at = now
-                m.confirmed_by = "rule:bulk_auto_confirm"
-                confirmed += 1
-        rejected = 0
-        for mid in reject_ids:
+    now = datetime.now(timezone.utc)
+    confirmed = 0
+    for ids in confirm_buckets.values():
+        for mid in ids:
             m = db.session.get(ProductMatch, mid)
             if not m or m.status != "candidate":
                 continue
-            m.status = "rejected"
-            rejected += 1
-        db.session.commit()
-        print(f"\nAPPLIED: {confirmed} confirmed, {rejected} rejected.")
+            m.status = "confirmed"
+            m.confirmed_at = now
+            m.confirmed_by = confirmed_by
+            confirmed += 1
+    rejected = 0
+    for mid in reject_ids:
+        m = db.session.get(ProductMatch, mid)
+        if not m or m.status != "candidate":
+            continue
+        m.status = "rejected"
+        rejected += 1
+    db.session.commit()
+    stats["confirmed"] = confirmed
+    stats["rejected"] = rejected
+    return stats
+
+
+def run(apply: bool) -> None:
+    app = create_app()
+    with app.app_context():
+        stats = apply_rules(apply)
+        print(f"Single-candidate matches: {stats['singles']}")
+        print(f"Multi-candidate supplier products: {stats['multis']}")
+        if stats["skipped_claimed"]:
+            print(f"  Skipped {stats['skipped_claimed']} candidate(s): pp already claimed")
+        for rule, cnt in stats["per_rule"].items():
+            print(f"  {rule}: confirm {cnt}")
+        total_confirm = sum(stats["per_rule"].values())
+        r3_side = sum(
+            cnt for rule, cnt in stats["per_rule"].items()
+            if rule.startswith("R3")
+        )
+        # R3 reject side-effect count is equal to (total rejected - r4); kept for parity
+        # with prior output, but no longer strictly tracked separately.
+        print(f"  R4:reject-bundle-of-confirmed: reject {stats['r4_rejects']}")
+        print(f"Total confirmed: {total_confirm}, rejected: {stats['confirmed'] + stats['rejected'] if apply else '?'}")
+        if not apply:
+            print("\nDRY-RUN — pass --apply to commit.")
+            return
+        print(f"\nAPPLIED: {stats['confirmed']} confirmed, {stats['rejected']} rejected.")
 
 
 def main() -> None:
