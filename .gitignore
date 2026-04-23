@@ -28,6 +28,12 @@ backups/
 
 # Local reports / audit dumps
 reports/
+audit_*.json
+audit_*.txt
+red_*.json
+red_*.txt
+np_*.json
+np_*.txt
 
 # Windows redirect artefact
 nul
