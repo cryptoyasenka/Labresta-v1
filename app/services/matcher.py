@@ -159,10 +159,15 @@ def normalize_model(value: str | None) -> str:
     so that "XFT-133" == "xft133" == "XFT 133" but "XFT133" != "XFT134".
     Also fixes Cyrillic homoglyphs in mixed-script SKUs (e.g. 'GXSN2ТN' with
     Cyrillic Т → 'GXSN2TN') so the corrupted-input form matches the catalog.
+
+    Strips a trailing "/PL" packaging suffix used by supplier Новий Проект
+    (e.g. "APPE-47P/PL" → "appe47p"). Per Yana 2026-04-23: "/PL" is a
+    logistical variant of the same SKU, not a separate product.
     """
     if not value or not value.strip():
         return ""
     fixed = _fix_cyrillic_homoglyphs(value.strip())
+    fixed = re.sub(r"/pl$", "", fixed, flags=re.IGNORECASE)
     return re.sub(r"[^a-z0-9]", "", fixed.lower())
 
 
@@ -765,6 +770,12 @@ def find_match_candidates(
     fast_matches = []
     sup_model = normalize_model(supplier_model)
     sup_article = normalize_model(supplier_article)
+    # Strip "/PL" packaging suffix from the raw article too (normalize_model
+    # already strips it, but the boundary-regex fast-paths below compare
+    # against the raw form, so they need the stripped value as well).
+    supplier_article_raw = re.sub(
+        r"/pl$", "", (supplier_article or "").strip(), flags=re.IGNORECASE
+    )
 
     # Also try extracting model from name when fields are empty
     sup_name_model_for_fast = ""
@@ -834,7 +845,7 @@ def find_match_candidates(
             # '220 В 1ф' just because the SKU string overlaps). Length >=6
             # post-normalize mirrors the prom_display branch above.
             if not matched and sup_article and len(sup_article) >= 6:
-                raw_article = (supplier_article or "").strip()
+                raw_article = supplier_article_raw
                 has_dash = "-" in raw_article
                 has_digit = any(c.isdigit() for c in raw_article)
                 is_pure_letter_sku = has_dash and not has_digit
@@ -859,7 +870,7 @@ def find_match_candidates(
                 and not prom_article
                 and not prom_display
             ):
-                raw_article = (supplier_article or "").strip()
+                raw_article = supplier_article_raw
                 # Require structural SKU markers: digit OR non-alphanumeric
                 # separator (dash, space, dot, paren). Pure-letter no-structure
                 # strings like "HKNFNTMNEW" are too weak a signal — fall back
