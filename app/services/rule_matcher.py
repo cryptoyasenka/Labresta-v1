@@ -63,6 +63,35 @@ def apply_match_rules(supplier_id: int) -> int:
         )
     ).scalars().all()
 
+    # 3.5. Preload prom products referenced by rules in ONE query — avoids an
+    # N+1 SELECT inside the for sp × for rule loop. Stale rule rows are detected
+    # by absence in the dict (vs. db.session.get returning None).
+    rule_pp_ids = {r.prom_product_id for r in rules}
+    prom_by_id: dict[int, PromProduct] = {}
+    if rule_pp_ids:
+        prom_by_id = {
+            pp.id: pp for pp in db.session.execute(
+                select(PromProduct).where(PromProduct.id.in_(rule_pp_ids))
+            ).scalars().all()
+        }
+
+    # 3.6. Preload existing (sp_id, pp_id) ProductMatch rows for the pairs the
+    # rules might touch — single query instead of two .first() lookups per
+    # (sp, rule) iteration. Loaded via ORM so mutation flows back through the
+    # session (status upgrade on line ~127).
+    eligible_sp_ids = [sp.id for sp in eligible_products]
+    existing_by_pair: dict[tuple[int, int], ProductMatch] = {}
+    if eligible_sp_ids and rule_pp_ids:
+        existing_by_pair = {
+            (pm.supplier_product_id, pm.prom_product_id): pm
+            for pm in db.session.execute(
+                select(ProductMatch).where(
+                    ProductMatch.supplier_product_id.in_(eligible_sp_ids),
+                    ProductMatch.prom_product_id.in_(rule_pp_ids),
+                )
+            ).scalars().all()
+        }
+
     count = 0
 
     for sp in eligible_products:
@@ -77,7 +106,7 @@ def apply_match_rules(supplier_id: int) -> int:
                     continue
 
             # Verify prom product still exists (stale rule check)
-            prom_product = db.session.get(PromProduct, rule.prom_product_id)
+            prom_product = prom_by_id.get(rule.prom_product_id)
             if prom_product is None:
                 logger.warning(
                     "Stale rule id=%d: prom_product_id=%d no longer exists, skipping",
@@ -92,17 +121,17 @@ def apply_match_rules(supplier_id: int) -> int:
             # then continue evaluating remaining rules: another rule with the
             # same name_pattern but different brand filter may target a free pp.
             if rule.prom_product_id in claimed_pp_ids:
-                existing_for_pair = ProductMatch.query.filter_by(
-                    supplier_product_id=sp.id,
-                    prom_product_id=rule.prom_product_id,
-                ).first()
+                pair = (sp.id, rule.prom_product_id)
+                existing_for_pair = existing_by_pair.get(pair)
                 if existing_for_pair is None:
-                    db.session.add(ProductMatch(
+                    new_candidate = ProductMatch(
                         supplier_product_id=sp.id,
                         prom_product_id=rule.prom_product_id,
                         score=100.0,
                         status="candidate",
-                    ))
+                    )
+                    db.session.add(new_candidate)
+                    existing_by_pair[pair] = new_candidate
                 logger.info(
                     "Rule id=%d: pp#%d already claimed, leaving sp#%d as candidate",
                     rule.id, rule.prom_product_id, sp.id,
@@ -110,10 +139,7 @@ def apply_match_rules(supplier_id: int) -> int:
                 continue
 
             # Check for existing match with same pair
-            existing = ProductMatch.query.filter_by(
-                supplier_product_id=sp.id,
-                prom_product_id=rule.prom_product_id,
-            ).first()
+            existing = existing_by_pair.get((sp.id, rule.prom_product_id))
 
             if existing is not None:
                 if existing.status == "rejected":
@@ -142,6 +168,7 @@ def apply_match_rules(supplier_id: int) -> int:
                     confirmed_at=datetime.now(timezone.utc),
                 )
                 db.session.add(new_match)
+                existing_by_pair[(sp.id, rule.prom_product_id)] = new_match
                 claimed_pp_ids.add(rule.prom_product_id)
                 count += 1
                 break  # This product is matched, move to next product
