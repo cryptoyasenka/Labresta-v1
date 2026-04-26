@@ -31,7 +31,6 @@ from app.services.excel_parser import (
     is_xlsx_url,
     parse_excel_products,
     validate_xlsx_response,
-    REQUIRED_FIELDS,
 )
 from app.services.feed_fetcher import fetch_feed, fetch_feed_with_retry
 from app.services.feed_parser import parse_supplier_feed, save_supplier_products

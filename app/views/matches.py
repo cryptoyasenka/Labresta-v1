@@ -810,8 +810,6 @@ def regenerate_custom():
     Token is deterministic over the sorted unique match_ids — same selection
     always resolves to the same URL.
     """
-    from flask import url_for
-
     from app.services.yml_generator import regenerate_custom_feed
 
     data = request.get_json(silent=True) or {}

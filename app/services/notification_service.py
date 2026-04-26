@@ -1,7 +1,6 @@
 """Notification service: check rules against new products and dispatch alerts."""
 
 import logging
-from datetime import datetime, timezone
 
 from sqlalchemy import select
 
