@@ -12,6 +12,7 @@ from app.services.excel_parser import (
     detect_columns,
     get_preview_data,
     is_google_sheets_url,
+    is_xlsx_url,
     parse_excel_products,
     validate_xlsx_response,
 )
@@ -61,6 +62,43 @@ class TestIsGoogleSheetsUrl:
 
     def test_empty_string(self):
         assert is_google_sheets_url("") is False
+
+
+class TestIsXlsxUrl:
+    def test_path_ending_in_xlsx(self):
+        assert is_xlsx_url("https://example.com/feed.xlsx") is True
+
+    def test_path_ending_in_xlsx_with_query(self):
+        assert is_xlsx_url("https://example.com/feed.xlsx?token=abc") is True
+
+    def test_filetype_xlsx_query(self):
+        assert (
+            is_xlsx_url(
+                "https://np.com.ua/dealer-export?dealer_id=69781&filetype=xlsx&platform=horoshop"
+            )
+            is True
+        )
+
+    def test_filetype_xlsx_uppercase(self):
+        assert is_xlsx_url("https://example.com/x?FILETYPE=XLSX") is True
+
+    def test_other_filetype_not_matched(self):
+        assert is_xlsx_url("https://example.com/x?filetype=csv") is False
+
+    def test_substring_filetype_in_other_param_not_matched(self):
+        # Regression: a query like ?somefiletype=xlsxfoo must not match.
+        assert is_xlsx_url("https://example.com/x?somefiletype=xlsxfoo") is False
+
+    def test_filetype_xlsxfoo_value_not_matched(self):
+        # Regression: filetype=xlsxfoo must not match (value must be exactly xlsx).
+        assert is_xlsx_url("https://example.com/x?filetype=xlsxfoo") is False
+
+    def test_empty_string(self):
+        assert is_xlsx_url("") is False
+
+    def test_xlsx_in_path_segment_not_extension(self):
+        # ".xlsx" elsewhere in the path doesn't count — only as extension.
+        assert is_xlsx_url("https://example.com/xlsx-help/index.html") is False
 
 
 # ===========================================================================

@@ -177,11 +177,37 @@ function updatePricingModeUI() {
 function addBrandRow(brand, pct) {
     const tbody = document.querySelector('#brand-discounts-table tbody');
     const tr = document.createElement('tr');
-    tr.innerHTML = `
-        <td><input type="text" class="form-control form-control-sm" name="brand_name[]" value="${brand ? brand.replace(/"/g, '&quot;') : ''}"></td>
-        <td><input type="number" class="form-control form-control-sm" name="brand_discount[]" value="${pct != null ? pct : ''}" step="0.01" min="0" max="100"></td>
-        <td><button type="button" class="btn btn-sm btn-outline-danger w-100" onclick="removeBrandRow(this)">×</button></td>
-    `;
+
+    const tdName = document.createElement('td');
+    const inpName = document.createElement('input');
+    inpName.type = 'text';
+    inpName.className = 'form-control form-control-sm';
+    inpName.name = 'brand_name[]';
+    if (brand) inpName.value = brand;
+    tdName.appendChild(inpName);
+
+    const tdPct = document.createElement('td');
+    const inpPct = document.createElement('input');
+    inpPct.type = 'number';
+    inpPct.className = 'form-control form-control-sm';
+    inpPct.name = 'brand_discount[]';
+    inpPct.step = '0.01';
+    inpPct.min = '0';
+    inpPct.max = '100';
+    if (pct != null) inpPct.value = pct;
+    tdPct.appendChild(inpPct);
+
+    const tdBtn = document.createElement('td');
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'btn btn-sm btn-outline-danger w-100';
+    btn.textContent = '×';
+    btn.addEventListener('click', () => removeBrandRow(btn));
+    tdBtn.appendChild(btn);
+
+    tr.appendChild(tdName);
+    tr.appendChild(tdPct);
+    tr.appendChild(tdBtn);
     tbody.appendChild(tr);
 }
 

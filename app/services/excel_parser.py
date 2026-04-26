@@ -7,6 +7,7 @@ into the same list[dict] format used by save_supplier_products().
 
 import logging
 import re
+from urllib.parse import parse_qsl, urlparse
 
 import openpyxl
 
@@ -59,12 +60,12 @@ def is_xlsx_url(url: str) -> bool:
     """
     if not url:
         return False
-    low = url.lower()
-    path = low.split("?", 1)[0]
-    if path.endswith(".xlsx"):
+    parsed = urlparse(url)
+    if parsed.path.lower().endswith(".xlsx"):
         return True
-    if "filetype=xlsx" in low:
-        return True
+    for key, value in parse_qsl(parsed.query, keep_blank_values=True):
+        if key.lower() == "filetype" and value.lower() == "xlsx":
+            return True
     return False
 
 
