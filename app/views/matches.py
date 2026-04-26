@@ -958,15 +958,51 @@ def bulk_action():
         return jsonify({"status": "error", "message": "No matches selected"}), 400
 
     dry_run = bool(data.get("dry_run"))
-    matches = ProductMatch.query.filter(ProductMatch.id.in_(ids)).all()
+    # Eager-load sp + supplier to avoid lazy SELECT per match in the loop
+    # (recalc_discount / clamp_margin / supplier_product_name on skip).
+    matches = ProductMatch.query.options(
+        joinedload(ProductMatch.supplier_product).joinedload(SupplierProduct.supplier),
+    ).filter(ProductMatch.id.in_(ids)).all()
     processed = 0
     skipped_claimed: list[dict] = []
     preview: list[dict] = []
 
+    # Bulk preloads for action="confirm" — kill N+1 from _pp_already_claimed
+    # and _cleanup_other_candidates running once per match in the loop.
+    claimed_by_pp: dict[int, ProductMatch] = {}
+    orphans_by_sp: dict[int, list[ProductMatch]] = {}
+    if action == "confirm" and matches:
+        match_ids = {m.id for m in matches}
+        pp_ids = {m.prom_product_id for m in matches}
+        sp_ids = {m.supplier_product_id for m in matches}
+
+        # Single SELECT for all "is some other confirmed/manual match
+        # already claiming any of these pp_ids?" lookups.
+        claimed_rows = ProductMatch.query.filter(
+            ProductMatch.prom_product_id.in_(pp_ids),
+            ProductMatch.status.in_(("confirmed", "manual")),
+            ProductMatch.id.notin_(match_ids),
+        ).all()
+        for row in claimed_rows:
+            # Keep the first claim per pp_id — _pp_already_claimed used .first()
+            # so callers only ever inspect one row.
+            claimed_by_pp.setdefault(row.prom_product_id, row)
+
+        # Single SELECT for all candidate orphans across the sp_ids being
+        # confirmed. _cleanup_other_candidates filters by != keep_match_id
+        # at use-time so we keep ALL candidates and let the per-match step
+        # exclude its own id.
+        orphan_rows = ProductMatch.query.filter(
+            ProductMatch.supplier_product_id.in_(sp_ids),
+            ProductMatch.status == "candidate",
+        ).all()
+        for row in orphan_rows:
+            orphans_by_sp.setdefault(row.supplier_product_id, []).append(row)
+
     for match in matches:
         if action == "confirm":
-            existing = _pp_already_claimed(match.prom_product_id, exclude_match_id=match.id)
-            if existing:
+            existing = claimed_by_pp.get(match.prom_product_id)
+            if existing is not None and existing.id != match.id:
                 skipped_claimed.append({
                     "match_id": match.id,
                     "prom_product_id": match.prom_product_id,
@@ -977,7 +1013,14 @@ def bulk_action():
             match.confirmed_at = datetime.now(timezone.utc)
             match.confirmed_by = current_user.name
             current_user.matches_processed += 1
-            _cleanup_other_candidates(match.supplier_product_id, match.id)
+            # Inline _cleanup_other_candidates using preloaded orphans.
+            for orphan in orphans_by_sp.get(match.supplier_product_id, []):
+                if orphan.id == match.id:
+                    continue
+                db.session.delete(orphan)
+            # Reflect the new claim so a later match in the same batch
+            # targeting the same pp_id sees it as claimed.
+            claimed_by_pp[match.prom_product_id] = match
             processed += 1
         elif action == "reject":
             if match.status != "candidate":
