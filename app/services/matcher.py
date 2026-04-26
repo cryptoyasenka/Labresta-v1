@@ -46,7 +46,6 @@ MAX_PRICE_RATIO = 3.0  # Reject candidates where price differs by more than 3x
 # completely different products. A loose threshold caused false 98% matches
 # between SNACK2100TN-FC and SNACK3100TN-FC in MARESTO → Horoshop.
 MODEL_BOOST_POINTS = 10.0  # Bonus points when model/article matches (after normalize)
-MODEL_BOOST_THRESHOLD = 80  # Legacy: kept for reference, not used for strict compare
 
 # --- Product type gate ---
 TYPE_MATCH_THRESHOLD = 50  # Minimum type similarity to keep candidate
