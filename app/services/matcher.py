@@ -320,8 +320,12 @@ _PAREN_INNER_RE = re.compile(r"\(([^)]*)\)")
 # '3 рівні', 'GN2/3', '100 шт.'). If stripping the noise leaves nothing,
 # the bracket has no discriminator.
 _PAREN_NOISE_RE = re.compile(
-    r"\b(?:220|230|380|400|[вb]|kw|квт|вт|w|мм|см|м|л|кг|г|мл|шт|штук|"
-    r"рівн[іь]|літрів|літри|літра|gn|[.,\d/xх\s\-]+)\b",
+    r"\d+\s*[вbу](?=\W|$)"  # glued voltage: 380в, 220b, 380 в, etc.
+    r"|\b(?:220|230|380|400|[вbу]|kw|квт|вт|w|мм|см|м|л|кг|г|мл|шт|штук|"
+    r"рівн\w*|уровн\w*|літрів|літри|літра|колб\w*|персон\w*|автомат\w*|"
+    r"ручн\w*|технолог\w*|приготуванн\w*|gn|"
+    r"на|за|до|для|з|зі|по|"
+    r"[.,\d/xх\s\-]+)\b",
     re.IGNORECASE,
 )
 _PAREN_TOKEN_SPLIT_RE = re.compile(r"[\s,./+\-]+")
@@ -347,6 +351,24 @@ def _parens_discriminator(name: str) -> set[str]:
             if tok and len(tok) >= 2 and not tok.isdigit():
                 out.add(tok)
     return out
+
+
+_BASE_PACKAGE_RE = re.compile(r"\b(?:no|без)\b", re.IGNORECASE)
+
+
+def _has_base_package_marker(name: str) -> bool:
+    """Paren content signals a base/no-stand package version.
+
+    Drives an exception in the asymmetric bracket-containment gate: when SP
+    has '(no stand)' or '(без підставки)', the base catalog entry is the
+    legitimate target even though it does not echo the bracket tokens.
+    """
+    if not name:
+        return False
+    for m in _PAREN_INNER_RE.finditer(name):
+        if _BASE_PACKAGE_RE.search(m.group(1)):
+            return True
+    return False
 
 # Split at every letter↔digit transition so slitny and razdelny SKU forms
 # align: 'ats12u' → {ats, 12, u}; 'hknlpd150s' → {hknlpd, 150, s}; 'eft60'
@@ -1289,6 +1311,85 @@ def find_match_candidates(
 
         fast_matches = [c for c in fast_matches if _bracket_ok(c)]
         fuzzy_output = [c for c in fuzzy_output if _bracket_ok(c)]
+
+    # Step 4.87: Asymmetric bracket-token containment.
+    # Step 4.85 only fires when BOTH sides carry parens — but a variant like
+    # "Sirman Mantegna (тефлон)" has its discriminator in parens on the SP
+    # side while the catalog has plain "Sirman Mantegna 300" with no parens
+    # at all. If one side's paren-discriminator tokens don't appear anywhere
+    # in the OTHER side's full text (name + article + display_article), the
+    # candidate is a variant mismatch — reject.
+    # Exception: '(no stand)' / '(без підставки)' is a base-package signal,
+    # not a feature discriminator — the legitimate target is the plain
+    # catalog base row. Skip the gate for these.
+    sup_has_base_marker = _has_base_package_marker(supplier_product_name)
+
+    def _full_text_tokens(*parts) -> set[str]:
+        out: set[str] = set()
+        for part in parts:
+            if not part:
+                continue
+            for tok in _PAREN_TOKEN_SPLIT_RE.split(str(part).lower()):
+                tok = tok.strip()
+                if tok:
+                    out.add(tok)
+        return out
+
+    def _bracket_containment_ok(candidate) -> bool:
+        # display_article fast-matches bypass: manufacturer SKU equality is
+        # stronger evidence than paren-token similarity (mirrors Step 4.9).
+        if candidate.get("_skip_post_gates"):
+            return True
+
+        prom_name_full = candidate["prom_name"]
+        prom_article = ""
+        prom_display = ""
+        for p in candidates_pool:
+            if p["id"] == candidate["prom_product_id"]:
+                prom_name_full = p["name"]
+                prom_article = p.get("article") or ""
+                prom_display = p.get("display_article") or ""
+                break
+
+        # If supplier's article appears verbatim in PP name/article/display,
+        # PP parens are specs (temperature/abbrev), not a variant — skip gate.
+        sup_art_norm = (supplier_article or "").strip().lower()
+        if sup_art_norm and len(sup_art_norm) >= 4:
+            pp_blob = " ".join([prom_name_full or "", prom_article or "",
+                                prom_display or ""]).lower()
+            if sup_art_norm in pp_blob:
+                return True
+
+        # SP-side paren-discriminator must appear in PP full text.
+        if sup_bracket_disc and not sup_has_base_marker:
+            pp_tokens = _full_text_tokens(prom_name_full, prom_article, prom_display)
+            missing = {t for t in sup_bracket_disc
+                       if not any(t in pp_tok for pp_tok in pp_tokens)}
+            if missing:
+                logger.debug(
+                    "Bracket-containment rejected (SP→PP): missing=%s for prom_id=%d",
+                    missing, candidate["prom_product_id"],
+                )
+                return False
+
+        # PP-side paren-discriminator must appear in SP full text.
+        prom_bracket_disc = _parens_discriminator(prom_name_full)
+        if prom_bracket_disc and not _has_base_package_marker(prom_name_full):
+            sp_tokens = _full_text_tokens(
+                supplier_product_name, supplier_article or "", supplier_model or "",
+            )
+            missing = {t for t in prom_bracket_disc
+                       if not any(t in sp_tok for sp_tok in sp_tokens)}
+            if missing:
+                logger.debug(
+                    "Bracket-containment rejected (PP→SP): missing=%s for prom_id=%d",
+                    missing, candidate["prom_product_id"],
+                )
+                return False
+        return True
+
+    fast_matches = [c for c in fast_matches if _bracket_containment_ok(c)]
+    fuzzy_output = [c for c in fuzzy_output if _bracket_containment_ok(c)]
 
     # Step 4.9: After-brand token-containment gate.
     # Within the same brand, false positives arise when the model code matches
