@@ -1646,6 +1646,20 @@ def run_matching_for_supplier(supplier_id: int, progress_cb=None) -> int:
         )
         return 0
 
+    # Step 3.5: Preload existing (sp_id, pp_id) pairs for this supplier in ONE
+    # query — avoids an N+1 SELECT per candidate inside the matching loop.
+    sp_ids = [sp.id for sp in unmatched_products]
+    existing_pairs: set[tuple[int, int]] = set()
+    if sp_ids:
+        existing_pairs = set(
+            db.session.execute(
+                select(
+                    ProductMatch.supplier_product_id,
+                    ProductMatch.prom_product_id,
+                ).where(ProductMatch.supplier_product_id.in_(sp_ids))
+            ).all()
+        )
+
     # Step 4: Match each unmatched product
     total_candidates = 0
     sp_total = len(unmatched_products)
@@ -1657,23 +1671,18 @@ def run_matching_for_supplier(supplier_id: int, progress_cb=None) -> int:
             supplier_article=sp.article,
         )
         for c in candidates:
-            # Check if pair already exists (avoid duplicates)
-            existing = db.session.execute(
-                select(ProductMatch).where(
-                    ProductMatch.supplier_product_id == sp.id,
-                    ProductMatch.prom_product_id == c["prom_product_id"],
-                )
-            ).scalar_one_or_none()
-
-            if existing is None:
-                match = ProductMatch(
-                    supplier_product_id=sp.id,
-                    prom_product_id=c["prom_product_id"],
-                    score=c["score"],
-                    status="candidate",
-                )
-                db.session.add(match)
-                total_candidates += 1
+            pair = (sp.id, c["prom_product_id"])
+            if pair in existing_pairs:
+                continue
+            match = ProductMatch(
+                supplier_product_id=sp.id,
+                prom_product_id=c["prom_product_id"],
+                score=c["score"],
+                status="candidate",
+            )
+            db.session.add(match)
+            existing_pairs.add(pair)
+            total_candidates += 1
 
         if progress_cb is not None and (idx % 20 == 0 or idx == sp_total):
             try:
