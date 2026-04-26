@@ -262,10 +262,25 @@ def apply_rules(apply: bool, confirmed_by: str = "rule:bulk_auto_confirm") -> di
         return stats
 
     now = datetime.now(timezone.utc)
+
+    # Batch-load every match we plan to mutate in one SELECT — Stage 6.5 of
+    # sync_pipeline runs this on every supplier sync, so per-id db.session.get
+    # was an N+1 in production hot path.
+    all_ids: set[int] = set(reject_ids)
+    for ids in confirm_buckets.values():
+        all_ids.update(ids)
+    matches_by_id: dict[int, ProductMatch] = {}
+    if all_ids:
+        matches_by_id = {
+            m.id: m for m in db.session.execute(
+                select(ProductMatch).where(ProductMatch.id.in_(all_ids))
+            ).scalars().all()
+        }
+
     confirmed = 0
     for ids in confirm_buckets.values():
         for mid in ids:
-            m = db.session.get(ProductMatch, mid)
+            m = matches_by_id.get(mid)
             if not m or m.status != "candidate":
                 continue
             m.status = "confirmed"
@@ -274,7 +289,7 @@ def apply_rules(apply: bool, confirmed_by: str = "rule:bulk_auto_confirm") -> di
             confirmed += 1
     rejected = 0
     for mid in reject_ids:
-        m = db.session.get(ProductMatch, mid)
+        m = matches_by_id.get(mid)
         if not m or m.status != "candidate":
             continue
         m.status = "rejected"
