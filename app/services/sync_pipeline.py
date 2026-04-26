@@ -20,6 +20,7 @@ from app.services.excel_parser import (
 )
 from app.services.feed_fetcher import fetch_feed_with_retry
 from app.services.feed_parser import parse_supplier_feed, save_supplier_products
+from app.services.kodaki_adapter import apply_supplier_adapter
 from app.services.telegram_notifier import (
     notify_disappeared_products,
     notify_sync_failure,
@@ -140,6 +141,7 @@ def _sync_single_supplier(supplier: Supplier) -> str:
                     "Проверьте маппинг колонок." % (len(errors), len(products))
                 )
         else:
+            raw_bytes = apply_supplier_adapter(raw_bytes, supplier.feed_url)
             products = parse_supplier_feed(raw_bytes, supplier.id)
 
         sync_run.products_fetched = len(products)
