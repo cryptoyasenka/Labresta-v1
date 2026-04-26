@@ -474,7 +474,6 @@ def _is_model_token(token: str) -> bool:
     parenthesized numbers like (220). Unsafe: Cyrillic words — they differ between
     UA and RU and must not be transplanted.
     """
-    import re
     clean = token.strip("(),.:;")
     if not clean:
         return False
@@ -516,7 +515,6 @@ def _apply_name_diff(old_ua: str, new_ua: str, old_ru: str) -> str:
     if not replacements:
         return old_ru
 
-    import re
     result = old_ru
     for old_tok, new_tok in replacements.items():
         pattern = re.compile(r"(?<![A-Za-z0-9])" + re.escape(old_tok) + r"(?![A-Za-z0-9])")

@@ -14,7 +14,6 @@ chooses what to update. Only the main feed touches the in_feed flag.
 """
 
 import hashlib
-import json
 import logging
 import os
 import tempfile
