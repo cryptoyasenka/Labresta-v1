@@ -15,13 +15,20 @@ Map:
     -                   → <currencyId>EUR</currencyId>
     <description>       → <description>
     <image>             → <picture>
-    <attributes>        → IGNORED (это размеры Довжина/Ширина/Висота, не цены)
+    <attributes>        → IGNORED (Довжина/Ширина/Висота — размеры, не цены),
+                          КРОМЕ "Технічні дані" — оттуда вытаскиваем voltage
+                          (220В/380В) и приписываем к <name> как `(380 В)`,
+                          иначе matcher не различает 220V/380V варианты одной
+                          модели (см. invariant feedback_labresta_voltage_variants).
 """
 
 import hashlib
+import re
 from urllib.parse import urlparse
 
 from lxml import etree
+
+_VOLTAGE_RE = re.compile(r"\b(220|230|380|400)\s*[ВB]", re.IGNORECASE)
 
 
 def is_kodaki_url(url: str | None) -> bool:
@@ -37,7 +44,12 @@ def is_kodaki_url(url: str | None) -> bool:
 
 def kodaki_to_yml(raw_bytes: bytes, currency: str = "EUR") -> bytes:
     """Transform Кодаки `dwebexporter` XML into YML-spec bytes."""
-    parser = etree.XMLParser(recover=True)
+    parser = etree.XMLParser(
+        recover=True,
+        resolve_entities=False,
+        no_network=True,
+        huge_tree=False,
+    )
     src = etree.fromstring(raw_bytes, parser=parser)
 
     yml_root = etree.Element("yml_catalog")
@@ -48,6 +60,11 @@ def kodaki_to_yml(raw_bytes: bytes, currency: str = "EUR") -> bytes:
         name = _text(offer, "name")
         if not name:
             continue
+
+        if not _VOLTAGE_RE.search(name):
+            voltage = _voltage_from_attributes(offer)
+            if voltage:
+                name = f"{name} ({voltage} В)"
 
         model = _text(offer, "model") or ""
         external_id = model or hashlib.sha256(name.encode("utf-8")).hexdigest()[:12]
@@ -111,4 +128,26 @@ def _text(element: etree._Element, tag: str) -> str | None:
     child = element.find(tag)
     if child is not None and child.text:
         return child.text.strip()
+    return None
+
+
+def _voltage_from_attributes(offer: etree._Element) -> str | None:
+    """Pull voltage tag (220/230/380/400) out of the 'Технічні дані' attribute.
+
+    Кодаки encodes electrical specs only inside <attributes>; those don't
+    survive the YML transform, so we read them here and let kodaki_to_yml
+    splice the voltage back into <name>.
+    """
+    for attr in offer.iterfind("attributes/attribute"):
+        name_el = attr.find("name")
+        if name_el is None or not name_el.text:
+            continue
+        if "Технічні дані" not in name_el.text:
+            continue
+        value_el = attr.find("value")
+        if value_el is None or not value_el.text:
+            continue
+        m = _VOLTAGE_RE.search(value_el.text)
+        if m:
+            return m.group(1)
     return None

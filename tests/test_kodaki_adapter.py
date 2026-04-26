@@ -148,6 +148,152 @@ class TestKodakiToYml:
         # Output contains no "Довжина" anywhere
         assert b"\xd0\x94\xd0\xbe\xd0\xb2\xd0\xb6\xd0\xb8\xd0\xbd\xd0\xb0" not in out
 
+
+class TestVoltageInjection:
+    """Voltage from 'Технічні дані' attribute → name suffix.
+
+    Кодаки holds 220В/380В only in <attributes>, which we drop. The matcher's
+    voltage gate reads voltage from the name only, so we splice it back.
+    """
+
+    VOLTAGE_FEED = """<?xml version="1.0" encoding="UTF-8"?>
+<offers>
+    <offer>
+        <name>Тістоміс спіральний MSP50 JET/T</name>
+        <price>8535</price>
+        <manufacturer>MAC.PAN</manufacturer>
+        <model>000010143</model>
+        <in_stock>0</in_stock>
+        <attributes>
+            <attribute><name>Технічні дані</name><value>1,5 3,0 + 0,25 кВт 380В</value></attribute>
+            <attribute><name>Довжина</name><value>570.00</value></attribute>
+        </attributes>
+    </offer>
+    <offer>
+        <name>Супник електричний SB-6000</name>
+        <price>68</price>
+        <manufacturer>FROSTY</manufacturer>
+        <model>000004521</model>
+        <in_stock>20</in_stock>
+        <attributes>
+            <attribute><name>Технічні дані</name><value>0,40 кВт/ 220В</value></attribute>
+        </attributes>
+    </offer>
+    <offer>
+        <name>Картоплечистка PPN10 (380 В)</name>
+        <price>500</price>
+        <manufacturer>FIMAR</manufacturer>
+        <model>000099999</model>
+        <in_stock>1</in_stock>
+        <attributes>
+            <attribute><name>Технічні дані</name><value>0,75 кВт/ 380В</value></attribute>
+        </attributes>
+    </offer>
+    <offer>
+        <name>Аксесуар без електрики</name>
+        <price>10</price>
+        <manufacturer>FROSTY</manufacturer>
+        <model>000088888</model>
+        <in_stock>5</in_stock>
+        <attributes>
+            <attribute><name>Довжина</name><value>100</value></attribute>
+        </attributes>
+    </offer>
+</offers>
+""".encode("utf-8")
+
+    def test_voltage_appended_to_name_when_missing(self):
+        out = kodaki_to_yml(self.VOLTAGE_FEED)
+        root = etree.fromstring(out)
+        by_id = {o.get("id"): o for o in root.findall("./shop/offers/offer")}
+        # 380В injected from attribute
+        assert by_id["000010143"].find("name").text == \
+            "Тістоміс спіральний MSP50 JET/T (380 В)"
+        # 220В injected from attribute
+        assert by_id["000004521"].find("name").text == \
+            "Супник електричний SB-6000 (220 В)"
+
+    def test_voltage_not_double_appended_when_already_in_name(self):
+        out = kodaki_to_yml(self.VOLTAGE_FEED)
+        root = etree.fromstring(out)
+        by_id = {o.get("id"): o for o in root.findall("./shop/offers/offer")}
+        # Name already had '(380 В)' — must stay as-is, not become double
+        assert by_id["000099999"].find("name").text == \
+            "Картоплечистка PPN10 (380 В)"
+
+    def test_no_voltage_attribute_leaves_name_intact(self):
+        out = kodaki_to_yml(self.VOLTAGE_FEED)
+        root = etree.fromstring(out)
+        by_id = {o.get("id"): o for o in root.findall("./shop/offers/offer")}
+        assert by_id["000088888"].find("name").text == "Аксесуар без електрики"
+
+    def test_voltage_feeds_into_matcher_voltage_gate(self):
+        """End-to-end: adapter → parser → matcher.extract_voltages picks it up."""
+        from app.services.matcher import extract_voltages
+        yml = kodaki_to_yml(self.VOLTAGE_FEED)
+        products = parse_supplier_feed(yml, supplier_id=999)
+        msp50 = next(p for p in products if p["external_id"] == "000010143")
+        assert "380" in extract_voltages(msp50["name"])
+        supnyk = next(p for p in products if p["external_id"] == "000004521")
+        assert "220" in extract_voltages(supnyk["name"])
+
+
+class TestXmlSecurity:
+    """Adapter must reject entity-bomb / XXE payloads safely."""
+
+    def test_billion_laughs_does_not_expand(self):
+        # Classic billion-laughs entity bomb. With resolve_entities=False the
+        # &lol9; references must NOT expand — at worst we get an empty/partial
+        # tree, never an OOM.
+        bomb = b"""<?xml version="1.0"?>
+<!DOCTYPE lolz [
+  <!ENTITY lol "lol">
+  <!ENTITY lol2 "&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;">
+  <!ENTITY lol3 "&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;">
+  <!ENTITY lol4 "&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;">
+]>
+<offers>
+    <offer>
+        <name>Bomb &lol4;</name>
+        <price>100</price>
+        <model>BOMB-1</model>
+        <in_stock>1</in_stock>
+    </offer>
+</offers>
+"""
+        out = kodaki_to_yml(bomb)
+        # Output must be small (KB, not MB) — entity didn't blow up
+        assert len(out) < 5000
+        root = etree.fromstring(out)
+        offers = root.findall("./shop/offers/offer")
+        # Either offer is dropped or its name is the literal/empty form,
+        # but never a megabyte of expanded "lol".
+        for o in offers:
+            n = o.find("name")
+            if n is not None and n.text:
+                assert "lol" * 100 not in n.text
+
+    def test_external_entity_not_fetched(self):
+        # XXE attempt to read a local file. With no_network=True and
+        # resolve_entities=False this must silently fail to expand.
+        xxe = b"""<?xml version="1.0"?>
+<!DOCTYPE foo [
+  <!ENTITY xxe SYSTEM "file:///etc/passwd">
+]>
+<offers>
+    <offer>
+        <name>XXE &xxe;</name>
+        <price>1</price>
+        <model>XXE-1</model>
+        <in_stock>1</in_stock>
+    </offer>
+</offers>
+"""
+        out = kodaki_to_yml(xxe)
+        # No /etc/passwd content (or 'root:' shell user line) leaked into output
+        assert b"root:" not in out
+        assert b"/bin/" not in out
+
     def test_output_is_compatible_with_feed_parser(self):
         """The generated YML must parse cleanly through parse_supplier_feed."""
         yml_bytes = kodaki_to_yml(SYNTHETIC)
