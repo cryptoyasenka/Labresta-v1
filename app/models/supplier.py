@@ -53,6 +53,8 @@ class Supplier(db.Model):
         server_default="flat",
     )
     column_mapping = db.Column(db.Text, nullable=True)  # JSON: {"header_row": int, "columns": {col_idx: field}}
+    # Parser type for xlsx/Sheets feeds: 'auto' (default, generic excel) or 'rp' (РП Україна section-grouped).
+    parser_type = db.Column(db.String(20), nullable=False, default="auto", server_default="auto")
     is_enabled = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     updated_at = db.Column(

@@ -35,6 +35,7 @@ from app.services.excel_parser import (
 from app.services.feed_fetcher import fetch_feed, fetch_feed_with_retry
 from app.services.feed_parser import parse_supplier_feed, save_supplier_products
 from app.services.kodaki_adapter import apply_supplier_adapter
+from app.services.rp_parser import parse_rp_sheet
 from app.services.pricing import calculate_auto_discount
 from app.services.sync_pipeline import run_full_sync
 from app.services.yml_generator import regenerate_supplier_feed
@@ -79,11 +80,13 @@ def supplier_add():
 
         feed_url = request.form.get("feed_url", "").strip() or None
         mode = (request.form.get("pricing_mode") or "flat").strip() or "flat"
+        parser_type = (request.form.get("parser_type") or "auto").strip() or "auto"
         supplier = Supplier(
             name=request.form["name"].strip(),
             feed_url=feed_url,
             discount_percent=float(request.form.get("discount_percent", 0)),
             pricing_mode=mode,
+            parser_type=parser_type,
         )
         raw_rate = request.form.get("eur_rate_uah", "").strip()
         if raw_rate:
@@ -111,6 +114,43 @@ def supplier_add():
             _replace_brand_discounts(supplier, brand_rows)
 
         db.session.commit()
+
+        if feed_url and supplier.parser_type == "rp":
+            # RP Україна pipeline: section-grouped xlsx, no column mapping step.
+            try:
+                download_url = (
+                    convert_google_sheets_url(feed_url)
+                    if is_google_sheets_url(feed_url)
+                    else feed_url
+                )
+                raw_bytes = fetch_feed_with_retry(download_url)
+                validate_xlsx_response(raw_bytes)
+                fd, tmp_path = tempfile.mkstemp(suffix=".xlsx")
+                os.close(fd)
+                try:
+                    with open(tmp_path, "wb") as f:
+                        f.write(raw_bytes)
+                    products, errors = parse_rp_sheet(tmp_path, supplier.id)
+                    for err in errors:
+                        logger.warning("RP parse (add): %s", err)
+                    result = save_supplier_products(products)
+                    msg = (
+                        f"Поставщик '{supplier.name}' добавлен. РП фід: "
+                        f"{result['total']} товарів ({result['created']} нових)."
+                    )
+                    if errors:
+                        msg += f" Попереджень: {len(errors)}."
+                    flash(msg, "success")
+                finally:
+                    if os.path.exists(tmp_path):
+                        os.unlink(tmp_path)
+            except Exception as e:
+                logger.exception("RP feed fetch failed for supplier %s", supplier.name)
+                flash(
+                    f"Поставщик '{supplier.name}' добавлен, але не вдалося завантажити фід: {e}",
+                    "error",
+                )
+            return redirect(url_for("suppliers.supplier_list"))
 
         # Excel-by-URL path: Google Sheets OR a direct .xlsx URL.
         # Both flow through the same mapping-preview UX — only the
@@ -184,6 +224,7 @@ def supplier_edit(supplier_id):
         supplier.feed_url = request.form.get("feed_url", "").strip() or None
         supplier.discount_percent = float(request.form.get("discount_percent", 0))
         supplier.pricing_mode = mode
+        supplier.parser_type = (request.form.get("parser_type") or "auto").strip() or "auto"
 
         raw_rate = request.form.get("eur_rate_uah", "").strip()
         if raw_rate:
@@ -283,10 +324,37 @@ def supplier_fetch(supplier_id):
         return redirect(url_for("suppliers.supplier_list"))
 
     try:
-        is_excel = supplier.feed_url and (
+        if supplier.parser_type == "rp" and supplier.feed_url:
+            # RP Україна pipeline: section-grouped xlsx, no column mapping needed.
+            download_url = (
+                convert_google_sheets_url(supplier.feed_url)
+                if is_google_sheets_url(supplier.feed_url)
+                else supplier.feed_url
+            )
+            raw_bytes = fetch_feed_with_retry(download_url)
+            validate_xlsx_response(raw_bytes)
+            fd, tmp_path = tempfile.mkstemp(suffix=".xlsx")
+            os.close(fd)
+            try:
+                with open(tmp_path, "wb") as f:
+                    f.write(raw_bytes)
+                products, errors = parse_rp_sheet(tmp_path, supplier.id)
+                for err in errors:
+                    logger.warning("RP parse (fetch): %s", err)
+                result = save_supplier_products(products)
+                msg = (
+                    f"РП фід: {result['total']} товарів "
+                    f"({result['created']} нових, {result['updated']} оновлено)."
+                )
+                if errors:
+                    msg += f" Попереджень: {len(errors)}."
+                flash(msg, "success")
+            finally:
+                if os.path.exists(tmp_path):
+                    os.unlink(tmp_path)
+        elif supplier.feed_url and (
             is_google_sheets_url(supplier.feed_url) or is_xlsx_url(supplier.feed_url)
-        )
-        if is_excel:
+        ):
             # Excel pipeline: download, validate, parse with saved mapping
             if not supplier.column_mapping:
                 flash("Маппинг колонок не настроен. Сначала настройте колонки.", "error")

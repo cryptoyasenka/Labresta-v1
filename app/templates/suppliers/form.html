@@ -44,6 +44,22 @@
     </div>
 
     <div class="mb-3">
+        <label for="parser_type" class="form-label">Тип парсера xlsx/Sheets</label>
+        {% set current_parser = (form_data.parser_type if form_data else (supplier.parser_type if supplier else 'auto')) or 'auto' %}
+        <select class="form-select" id="parser_type" name="parser_type">
+            <option value="auto" {% if current_parser == 'auto' %}selected{% endif %}>
+                Авто (загальна таблиця з заголовком)
+            </option>
+            <option value="rp" {% if current_parser == 'rp' %}selected{% endif %}>
+                РП Україна (рядки бренд + товар, без заголовку)
+            </option>
+        </select>
+        <small class="form-text text-muted">
+            Тільки для xlsx/Google Sheets. YML-фіди ігнорують цей параметр.
+        </small>
+    </div>
+
+    <div class="mb-3">
         <label for="pricing_mode" class="form-label">Режим скидок</label>
         <select class="form-select {% if errors and errors.pricing_mode %}is-invalid{% endif %}"
                 id="pricing_mode" name="pricing_mode">
