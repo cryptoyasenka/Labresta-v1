@@ -15,6 +15,7 @@ from app.models.sync_run import SyncRun
 from app.services.excel_parser import (
     convert_google_sheets_url,
     is_google_sheets_url,
+    is_xlsx_url,
     parse_excel_products,
     validate_xlsx_response,
 )
@@ -89,7 +90,8 @@ def _sync_single_supplier(supplier: Supplier) -> str:
     tmp_path = None
     try:
         is_rp = supplier.parser_type == "rp"
-        is_excel = not is_rp and is_google_sheets_url(supplier.feed_url or "")
+        _feed_url = supplier.feed_url or ""
+        is_excel = not is_rp and (is_google_sheets_url(_feed_url) or is_xlsx_url(_feed_url))
 
         # Stage 1: Fetch
         if is_rp and supplier.feed_url:
@@ -115,7 +117,11 @@ def _sync_single_supplier(supplier: Supplier) -> str:
                 logger.warning(msg)
                 raise ValueError(msg)
 
-            download_url = convert_google_sheets_url(supplier.feed_url)
+            download_url = (
+                convert_google_sheets_url(supplier.feed_url)
+                if is_google_sheets_url(supplier.feed_url)
+                else supplier.feed_url
+            )
             logger.info("Stage 1/7: Fetching Excel feed from %s", download_url)
             SyncProgress.update("fetching", 0)
             raw_bytes = fetch_feed_with_retry(download_url)
