@@ -144,6 +144,24 @@
             <button type="button" class="btn btn-outline-secondary" id="refreshBtn">
                 Обновить данные
             </button>
+            <div class="dropdown">
+                <button class="btn btn-outline-success dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    Фід Horoshop
+                </button>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="dropdown-item" href="#"
+                           onclick="navigator.clipboard.writeText('{{ request.url_root }}{{ url_for('feed.serve_yml').lstrip('/') }}'); this.textContent='✓ Скопійовано!'; setTimeout(()=>this.textContent='Скопіювати URL фіду',1500); return false;">
+                            Скопіювати URL фіду
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{{ url_for('feed.serve_yml') }}" download="labresta-feed.yml">
+                            Завантажити YML
+                        </a>
+                    </li>
+                </ul>
+            </div>
             <span class="text-muted ms-auto" id="countdown">
                 {% if stats.next_sync_seconds is not none %}
                     Следующий автосинк через: <span id="countdownValue">--</span>
