@@ -18,6 +18,7 @@ from app.services.excel_parser import (
     parse_excel_products,
     validate_xlsx_response,
 )
+from app.services.rp_parser import parse_rp_sheet
 from app.services.feed_fetcher import fetch_feed_with_retry
 from app.services.feed_parser import parse_supplier_feed, save_supplier_products
 from app.services.kodaki_adapter import apply_supplier_adapter
@@ -87,10 +88,24 @@ def _sync_single_supplier(supplier: Supplier) -> str:
 
     tmp_path = None
     try:
-        is_excel = is_google_sheets_url(supplier.feed_url or "")
+        is_rp = supplier.parser_type == "rp"
+        is_excel = not is_rp and is_google_sheets_url(supplier.feed_url or "")
 
         # Stage 1: Fetch
-        if is_excel:
+        if is_rp and supplier.feed_url:
+            download_url = (
+                convert_google_sheets_url(supplier.feed_url)
+                if is_google_sheets_url(supplier.feed_url)
+                else supplier.feed_url
+            )
+            logger.info("Stage 1/7: Fetching RP feed from %s", download_url)
+            SyncProgress.update("fetching", 0)
+            raw_bytes = fetch_feed_with_retry(download_url)
+        elif is_rp and not supplier.feed_url:
+            raise ValueError(
+                "Поставщик '%s' (тип RP) не имеет URL фида." % supplier.name
+            )
+        elif is_excel:
             # Check column_mapping before fetching — skip gracefully if not configured
             if not supplier.column_mapping:
                 msg = (
@@ -119,7 +134,16 @@ def _sync_single_supplier(supplier: Supplier) -> str:
 
         # Stage 2: Parse
         logger.info("Stage 2/7: Parsing feed")
-        if is_excel:
+        if is_rp:
+            validate_xlsx_response(raw_bytes)
+            fd, tmp_path = tempfile.mkstemp(suffix=".xlsx")
+            os.close(fd)
+            with open(tmp_path, "wb") as f:
+                f.write(raw_bytes)
+            products, rp_errors = parse_rp_sheet(tmp_path, supplier.id)
+            for err in rp_errors:
+                logger.warning("RP parse (sync): %s", err)
+        elif is_excel:
             validate_xlsx_response(raw_bytes)
             fd, tmp_path = tempfile.mkstemp(suffix=".xlsx")
             os.close(fd)

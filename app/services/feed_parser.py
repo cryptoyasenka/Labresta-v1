@@ -1,9 +1,12 @@
 """YML/XML feed parser with encoding detection for supplier product feeds."""
 
 import json
+import logging
 from datetime import datetime, timezone
 
 import chardet
+
+logger = logging.getLogger(__name__)
 from lxml import etree
 from sqlalchemy import select
 
@@ -28,6 +31,9 @@ def parse_supplier_feed(raw_bytes: bytes, supplier_id: int) -> list[dict]:
         article, price_cents, currency, available, supplier_id.
     """
     root = _parse_xml(raw_bytes)
+    if root is None:
+        logger.error("parse_supplier_feed: XML parser returned None — invalid or empty document")
+        return []
 
     products = []
     for offer in root.iter("offer"):
