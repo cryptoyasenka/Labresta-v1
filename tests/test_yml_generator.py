@@ -246,6 +246,44 @@ class TestYmlDescriptionPropagation:
         assert offer.find("description_ru") is None
 
 
+class TestYmlVendorTag:
+    """`_seed_confirmed_match` already sets brand='TestBrand' on the
+    PromProduct, so the default fixture exercises the populated path."""
+
+    def test_vendor_written_when_brand_present(self, session, yml_output_dir):
+        _seed_confirmed_match(
+            session, external_id="v1",
+            name="Кавомашина TestModel", price_cents=50000,
+        )
+        result = regenerate_yml_feed()
+        tree = etree.parse(result["path"])
+        offer = tree.find(".//offer")
+        assert offer.findtext("vendor") == "TestBrand"
+
+    def test_vendor_absent_when_brand_null(self, session, yml_output_dir):
+        m = _seed_confirmed_match(
+            session, external_id="v2",
+            name="Безбрендовый", price_cents=10000,
+        )
+        m.prom_product.brand = None
+        session.commit()
+        result = regenerate_yml_feed()
+        tree = etree.parse(result["path"])
+        offer = tree.find(".//offer")
+        assert offer.find("vendor") is None
+
+    def test_vendor_in_per_supplier_feed(self, session, yml_output_dir):
+        from app.services.yml_generator import regenerate_supplier_feed
+        m = _seed_confirmed_match(
+            session, external_id="v3",
+            name="Поставщикский", price_cents=10000,
+        )
+        result = regenerate_supplier_feed(m.supplier_product.supplier_id)
+        tree = etree.parse(result["path"])
+        offer = tree.find(".//offer")
+        assert offer.findtext("vendor") == "TestBrand"
+
+
 class TestPublishFlag:
     """Phase C — published=False excludes match from feed but keeps the row."""
 

@@ -105,6 +105,8 @@ def _build_offer_xml(parent_el, match) -> bool:
         etree.SubElement(offer, "oldprice").text = f"{retail_eur:.1f}"
     etree.SubElement(offer, "currencyId").text = "EUR"
     etree.SubElement(offer, "vendorCode").text = str(pp.external_id)
+    if pp.brand:
+        etree.SubElement(offer, "vendor").text = pp.brand
 
     if pp.description_ua:
         desc_el = etree.SubElement(offer, "description")
