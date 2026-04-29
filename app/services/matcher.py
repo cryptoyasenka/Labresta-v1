@@ -71,6 +71,119 @@ PHASE_RE = re.compile(
 )
 _PHASE_TO_VOLTAGES = {"1": frozenset({"220", "230"}), "3": frozenset({"380", "400"})}
 
+# --- Color variant gate ---
+# Same model can ship in BLACK / WHITE / silver / inox etc. The catalog often
+# has a separate row per color (HKN-LPD150S BLACK + HKN-LPD150S WHITE), so a
+# supplier-side colored name must not auto-confirm against a differently-colored
+# catalog row. We collapse multilingual color words (uk/ru/en) to canonical
+# family tags ('black', 'white', ...) so 'чорна' / 'чёрный' / 'BLACK' compare
+# equal. Word lists are deliberately conservative — full-word forms only,
+# no 3-letter stems — to avoid hijacking brand/model substrings.
+_COLOR_FAMILIES = {
+    "black": [
+        "чорний", "чорна", "чорне", "чорні", "чорного", "чорному", "чорним",
+        "чорній", "чорну", "чорною",
+        "чёрный", "чёрная", "чёрное", "чёрные", "чёрного", "чёрному", "чёрным",
+        "чёрной", "чёрную",
+        "черный", "черная", "черное", "черные", "черного", "черному", "черным",
+        "черной", "черную",
+        "black",
+    ],
+    "white": [
+        "білий", "біла", "біле", "білі", "білого", "білому", "білим", "білій",
+        "білу", "білою",
+        "белый", "белая", "белое", "белые", "белого", "белому", "белым",
+        "белой", "белую",
+        "white",
+    ],
+    "silver": [
+        "сірий", "сіра", "сіре", "сірі", "сірого", "сірому", "сірим", "сірій",
+        "сіру", "сірою",
+        "серый", "серая", "серое", "серые", "серого", "серому", "серым",
+        "серой", "серую",
+        "silver", "grey", "gray",
+    ],
+    "inox": [
+        "інокс", "инокс", "inox",
+        "нержавіючий", "нержавіюча", "нержавіюче", "нержавіючі", "нержавійка",
+        "нержавеющий", "нержавеющая", "нержавеющее", "нержавеющие", "нержавейка",
+        "stainless",
+    ],
+    "red": [
+        "червоний", "червона", "червоне", "червоні", "червоного", "червоному",
+        "червоним", "червоній", "червону", "червоною",
+        "красный", "красная", "красное", "красные", "красного", "красному",
+        "красным", "красной", "красную",
+        "red",
+    ],
+    "blue": [
+        "синій", "синя", "синє", "сині", "синього", "синьому", "синім",
+        "синьої", "синю", "синьою",
+        "синий", "синяя", "синее", "синие", "синего", "синему", "синим",
+        "синей", "синюю",
+        "blue",
+    ],
+    "green": [
+        "зелений", "зелена", "зелене", "зелені", "зеленого", "зеленому",
+        "зеленим", "зеленій", "зелену", "зеленою",
+        "зелёный", "зелёная", "зелёное", "зелёные", "зелёного", "зелёному",
+        "зелёным", "зелёной", "зелёную",
+        "зеленый", "зеленая", "зеленое", "зеленые",
+        "green",
+    ],
+    "yellow": [
+        "жовтий", "жовта", "жовте", "жовті", "жовтого", "жовтому", "жовтим",
+        "жовтій", "жовту", "жовтою",
+        "жёлтый", "жёлтая", "жёлтое", "жёлтые",
+        "желтый", "желтая", "желтое", "желтые",
+        "yellow",
+    ],
+    "gold": [
+        "золотий", "золота", "золоте", "золоті",
+        "золотой", "золотая", "золотое", "золотые",
+        "gold", "golden",
+    ],
+    "bronze": [
+        "бронза", "бронзи", "бронзовий", "бронзова", "бронзове", "бронзові",
+        "бронзовый", "бронзовая", "бронзовое", "бронзовые",
+        "bronze",
+    ],
+    "chrome": [
+        "хром", "хрома", "хромований", "хромована", "хромоване", "хромовані",
+        "хромированный", "хромированная", "хромированное", "хромированные",
+        "chrome", "chromed",
+    ],
+}
+
+_COLOR_FAMILY_RES = {
+    family: re.compile(r"\b(?:" + "|".join(words) + r")\b",
+                       re.IGNORECASE | re.UNICODE)
+    for family, words in _COLOR_FAMILIES.items()
+}
+
+
+def _extract_colors(*parts: str) -> set[str]:
+    """Extract canonical color family tags ({'black', 'white', ...}) from text.
+
+    Accepts one or more strings (name + article + display_article) and returns
+    the union of color families detected anywhere across them. Multilingual
+    labels collapse to one tag — 'BLACK' / 'чорний' / 'чёрная' all → 'black'.
+
+    Word lists are full-word forms only (no 3-letter stems), so brand/model
+    substrings like 'СР' or 'син' are not picked up as colors. Word boundaries
+    are Unicode-aware via re.UNICODE.
+    """
+    if not parts:
+        return set()
+    blob = " ".join(p for p in parts if p)
+    if not blob:
+        return set()
+    out: set[str] = set()
+    for family, regex in _COLOR_FAMILY_RES.items():
+        if regex.search(blob):
+            out.add(family)
+    return out
+
 
 def extract_voltages(name: str) -> set[str]:
     """Extract canonical voltage tags ({'220','230','380','400'}) from a name.
@@ -1390,6 +1503,49 @@ def find_match_candidates(
 
     fast_matches = [c for c in fast_matches if _bracket_containment_ok(c)]
     fuzzy_output = [c for c in fuzzy_output if _bracket_containment_ok(c)]
+
+    # Step 4.88: Color-variant gate.
+    # Catalog often splits the same model by color (HKN-LPD150S BLACK +
+    # HKN-LPD150S WHITE). Without this gate, a supplier 'Hurakan HKN-LPD150S
+    # чорна' auto-confirms against either row at score=100 because color words
+    # in the regular name are invisible to the bracket gates.
+    # Rule (symmetric, conservative): if BOTH sides carry color tags and the
+    # tag sets are disjoint, reject. If one side has no color, pass — that
+    # side may be a base/uncolored row, and Stage A handles the
+    # sibling-aware downgrade for that case.
+    sup_colors = _extract_colors(
+        supplier_product_name, supplier_article or "", supplier_model or ""
+    )
+    if sup_colors:
+        def _color_ok(candidate) -> bool:
+            if candidate.get("_skip_post_gates"):
+                return True
+            prom_name_full = candidate["prom_name"]
+            prom_article = ""
+            prom_display = ""
+            for p in candidates_pool:
+                if p["id"] == candidate["prom_product_id"]:
+                    prom_name_full = p["name"]
+                    prom_article = p.get("article") or ""
+                    prom_display = p.get("display_article") or ""
+                    break
+            sup_art_norm = (supplier_article or "").strip().lower()
+            if sup_art_norm and len(sup_art_norm) >= 4:
+                pp_blob = " ".join([prom_name_full or "", prom_article or "",
+                                    prom_display or ""]).lower()
+                if sup_art_norm in pp_blob:
+                    return True
+            pp_colors = _extract_colors(prom_name_full, prom_article, prom_display)
+            if pp_colors and not (sup_colors & pp_colors):
+                logger.debug(
+                    "Color variant rejected: sup=%s vs prom=%s for prom_id=%d",
+                    sup_colors, pp_colors, candidate["prom_product_id"],
+                )
+                return False
+            return True
+
+        fast_matches = [c for c in fast_matches if _color_ok(c)]
+        fuzzy_output = [c for c in fuzzy_output if _color_ok(c)]
 
     # Step 4.9: After-brand token-containment gate.
     # Within the same brand, false positives arise when the model code matches
