@@ -760,6 +760,20 @@ def _short_alpha_discriminator(sup: set[str], prom: set[str]) -> bool:
     return False
 
 
+def _all_short_latin_alpha(tokens: set[str]) -> bool:
+    """True if every token in `tokens` is short (≤4 chars), pure-letter, ASCII.
+
+    Used by the Step 4.91 identical-model bypass to refuse the bypass when
+    asymmetric after-brand extras consist entirely of SKU-marker-shaped
+    tokens (ABS/INOX/RD/LD). Cyrillic descriptors and digits are NOT in
+    this class — they are prose, not SKU discriminators.
+    """
+    return bool(tokens) and all(
+        t.isascii() and t.isalpha() and len(t) <= _SKU_DISCRIM_MAX_LEN
+        for t in tokens
+    )
+
+
 def _asymmetric_sku_suffix(sup: set[str], prom: set[str]) -> bool:
     """True when one side's extras contain a 1-char Latin letter, other is empty.
 
@@ -1601,6 +1615,24 @@ def find_match_candidates(
             # No brand to strip — compare full-name meaningful tokens.
             sup_after_tokens = meaningful_tokens(supplier_product_name)
         if sup_after_tokens:
+            # Step 4.91: pool-unique model-code bypass precomputation.
+            # Map normalized model -> count of PPs in candidate pool sharing it.
+            # Used inside the loop to bypass after-brand containment when the
+            # manufacturer SKU is identical on both sides AND globally unique
+            # in the catalog. Uniqueness gate prevents one generic supplier
+            # name from fanning across sibling variants (e.g. catalog has 5
+            # rows of Sirman TC-22 with descriptive suffixes — bypass MUST NOT
+            # fire there; existing discriminators handle that correctly).
+            _pool_model_counts: dict[str, int] = {}
+            for _p in candidates_pool:
+                _pm = normalize_model(extract_model_from_name(
+                    _p.get("name", ""), _p.get("brand") or supplier_brand,
+                ))
+                if _pm:
+                    _pool_model_counts[_pm] = _pool_model_counts.get(_pm, 0) + 1
+            _sup_model_for_bypass = normalize_model(extract_model_from_name(
+                supplier_product_name, supplier_brand,
+            ))
             contained = []
             for candidate in fast_matches + fuzzy_output:
                 # display_article fast-matches bypass containment — manufacturer
@@ -1678,12 +1710,36 @@ def find_match_candidates(
                 ):
                     contained.append(candidate)
                 else:
-                    logger.debug(
-                        "Containment rejected: sup=%s prom=%s diff=%s for prom_id=%d",
-                        sup_after_eff, prom_after_eff,
-                        sup_after_eff ^ prom_after_eff,
-                        candidate["prom_product_id"],
+                    # Step 4.91: identical-model fallback bypass.
+                    # When the manufacturer SKU is byte-identical on both sides
+                    # AND globally unique in the candidate pool AND neither
+                    # side's asymmetric extras are entirely short Latin (≤4
+                    # chars pure ASCII letters — i.e. SKU markers like
+                    # ABS/INOX/RD/LD), accept. Catches 'Unox XV393 Cheflux'
+                    # (sub-family marker) vs 'Unox XV393 на 5 рівнів' (capacity
+                    # prose) where extras are descriptive but model identical.
+                    sup_extras_for_bypass = sup_after_eff - prom_after_eff
+                    prom_extras_for_bypass = prom_after_eff - sup_after_eff
+                    bypass_blocked = (
+                        _all_short_latin_alpha(sup_extras_for_bypass)
+                        or _all_short_latin_alpha(prom_extras_for_bypass)
                     )
+                    _prom_model_norm = normalize_model(extract_model_from_name(
+                        prom_name_full, prom_brand_for_tokens,
+                    )) if _sup_model_for_bypass else ""
+                    if (_sup_model_for_bypass
+                            and _prom_model_norm
+                            and _prom_model_norm == _sup_model_for_bypass
+                            and _pool_model_counts.get(_prom_model_norm, 0) == 1
+                            and not bypass_blocked):
+                        contained.append(candidate)
+                    else:
+                        logger.debug(
+                            "Containment rejected: sup=%s prom=%s diff=%s for prom_id=%d",
+                            sup_after_eff, prom_after_eff,
+                            sup_after_eff ^ prom_after_eff,
+                            candidate["prom_product_id"],
+                        )
             fast_ids = {c["prom_product_id"] for c in fast_matches}
             fast_matches = [c for c in contained if c["prom_product_id"] in fast_ids]
             fuzzy_output = [c for c in contained if c["prom_product_id"] not in fast_ids]
