@@ -1816,6 +1816,26 @@ def run_matching_for_supplier(supplier_id: int, progress_cb=None) -> int:
             ).all()
         )
 
+    # Step 3.6: Preload PP ids already claimed by ANY non-rejected match from
+    # this supplier. This guards the 1pp ↔ 1 supplier invariant at the source:
+    # if Maresto already has a confirmed/manual/candidate match on PP X,
+    # generating another candidate from a different Maresto SP onto the same
+    # PP just creates duplicate noise that violates the invariant. Without
+    # this guard, suppliers that ship two SP rows with near-identical names
+    # (variants, in-feed dups, leftover external_ids) explode the candidate
+    # queue with same-supplier dups on the same catalog product.
+    claimed_pp_ids: set[int] = set(
+        db.session.execute(
+            select(ProductMatch.prom_product_id)
+            .join(SupplierProduct, ProductMatch.supplier_product_id == SupplierProduct.id)
+            .where(
+                SupplierProduct.supplier_id == supplier_id,
+                ProductMatch.status != "rejected",
+            )
+            .distinct()
+        ).scalars().all()
+    )
+
     # Step 4: Match each unmatched product
     total_candidates = 0
     sp_total = len(unmatched_products)
@@ -1830,6 +1850,13 @@ def run_matching_for_supplier(supplier_id: int, progress_cb=None) -> int:
             pair = (sp.id, c["prom_product_id"])
             if pair in existing_pairs:
                 continue
+            if c["prom_product_id"] in claimed_pp_ids:
+                logger.debug(
+                    "Skip candidate sp_id=%d pp_id=%d: PP already claimed "
+                    "by another non-rejected match from supplier %d",
+                    sp.id, c["prom_product_id"], supplier_id,
+                )
+                continue
             match = ProductMatch(
                 supplier_product_id=sp.id,
                 prom_product_id=c["prom_product_id"],
@@ -1838,6 +1865,7 @@ def run_matching_for_supplier(supplier_id: int, progress_cb=None) -> int:
             )
             db.session.add(match)
             existing_pairs.add(pair)
+            claimed_pp_ids.add(c["prom_product_id"])
             total_candidates += 1
 
         if progress_cb is not None and (idx % 20 == 0 or idx == sp_total):
