@@ -222,7 +222,18 @@
                             <span class="badge bg-secondary">&mdash;</span>
                         {% endif %}
                     </td>
-                    <td class="prom-name-cell">{{ match.prom_product.name }}</td>
+                    <td class="prom-name-cell">
+                        {{ match.prom_product.name }}
+                        {% set alt_n = alt_counts.get(match.id, 0) %}
+                        {% if alt_n > 0 %}
+                        <button type="button"
+                                class="btn btn-sm py-0 px-2 ms-1 alt-badge"
+                                data-match-id="{{ match.id }}"
+                                title="Этот товар каталога есть ещё у другого поставщика — клик чтобы развернуть">
+                            +{{ alt_n }} поставщик{{ '' if alt_n == 1 else ('а' if alt_n < 5 else 'ов') }}
+                        </button>
+                        {% endif %}
+                    </td>
                     <td class="small font-monospace prom-display-article-cell">
                         {% if match.prom_product.display_article %}
                             {{ match.prom_product.display_article }}

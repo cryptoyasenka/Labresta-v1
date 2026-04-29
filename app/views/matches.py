@@ -292,6 +292,32 @@ def review():
         db.select(Supplier).order_by(Supplier.name)
     ).scalars().all()
 
+    # Per-row alternatives count: number of non-rejected matches on the same
+    # prom_product, excluding the row itself. Surfaces cross-supplier overlaps
+    # so the operator can swap suppliers without leaving /matches.
+    alt_counts: dict[int, int] = {m.id: 0 for m in pagination.items}
+    visible_pp_ids = {m.prom_product_id for m in pagination.items}
+    if visible_pp_ids:
+        rows = (
+            db.session.query(
+                ProductMatch.prom_product_id,
+                db.func.count(ProductMatch.id),
+            )
+            .filter(
+                ProductMatch.prom_product_id.in_(visible_pp_ids),
+                ProductMatch.status != "rejected",
+            )
+            .group_by(ProductMatch.prom_product_id)
+            .all()
+        )
+        pp_total = {pp_id: cnt for pp_id, cnt in rows}
+        for m in pagination.items:
+            total = pp_total.get(m.prom_product_id, 0)
+            if m.status != "rejected":
+                alt_counts[m.id] = max(0, total - 1)
+            else:
+                alt_counts[m.id] = total
+
     return render_template(
         "matches/review.html",
         matches=pagination.items,
@@ -303,6 +329,7 @@ def review():
         auto_manual_sp=auto_manual_sp,
         suppliers_list=suppliers_list,
         pricing_map=pricing_map,
+        alt_counts=alt_counts,
     )
 
 
@@ -420,6 +447,57 @@ def confirm_and_update(match_id):
         "old_name": old_name_ua,
         "new_name": new_name_ua,
         "name_ru": prom_product.name_ru,
+    })
+
+
+@matches_bp.route("/<int:match_id>/alternatives")
+@login_required
+def alternatives(match_id):
+    """Return list of other supplier matches on the same catalog product.
+
+    Used by the matches review UI to surface cross-supplier overlaps inline.
+    Excludes the current match and any rejected ones. Sorted by score desc.
+    """
+    match = db.get_or_404(ProductMatch, match_id)
+    alts = (
+        ProductMatch.query.options(
+            joinedload(ProductMatch.supplier_product).joinedload(SupplierProduct.supplier),
+        )
+        .filter(
+            ProductMatch.prom_product_id == match.prom_product_id,
+            ProductMatch.id != match.id,
+            ProductMatch.status != "rejected",
+        )
+        .order_by(ProductMatch.score.desc(), ProductMatch.id.asc())
+        .all()
+    )
+    result = []
+    for alt in alts:
+        sp = alt.supplier_product
+        if sp is None or sp.is_deleted or sp.ignored:
+            continue
+        supplier = sp.supplier
+        result.append({
+            "match_id": alt.id,
+            "supplier_id": sp.supplier_id,
+            "supplier_name": supplier.name if supplier else "",
+            "supplier_slug": supplier.slug if supplier else "",
+            "sp_id": sp.id,
+            "sp_name": sp.name,
+            "sp_external_id": sp.external_id,
+            "sp_article": sp.article or "",
+            "sp_price_eur": (sp.price_cents / 100.0) if sp.price_cents else None,
+            "sp_currency": sp.currency or "EUR",
+            "sp_available": bool(sp.available),
+            "score": float(alt.score) if alt.score is not None else 0.0,
+            "status": alt.status,
+        })
+    return jsonify({
+        "status": "ok",
+        "current_match_id": match.id,
+        "current_match_status": match.status,
+        "prom_product_id": match.prom_product_id,
+        "alternatives": result,
     })
 
 
