@@ -47,3 +47,4 @@ nul
 # graphify knowledge graph output (структура кода — не утаскивать в git)
 graphify-out/
 .tmp_rp/
+.tmp/*.csv
