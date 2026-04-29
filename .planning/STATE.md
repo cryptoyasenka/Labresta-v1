@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Tech Debt + Excel Suppliers + Multi-Supplier
 status: maintenance
-stopped_at: 2026-04-29 #9 closed (friendly missing-feed page); #10/#12/#14/#15 still open
-last_updated: "2026-04-29T16:00:00.000Z"
+stopped_at: 2026-04-29 #9 closed; #10 stage B (color gate 4.88) done; stage A + #12/#14/#15 still open
+last_updated: "2026-04-29T18:30:00.000Z"
 last_activity: 2026-04-29
 progress:
   total_phases: 7
@@ -34,10 +34,11 @@ Last activity: 2026-04-29 (read-only audit + eur_rate fallback fix)
 - PromProducts: 5683
 - SupplierProducts: 6918
 - Matches: 1861 confirmed + 7 manual + 279 candidate, 0 rejected
-- Tests: 553 green @ commit `eb22fbf`
+- Tests: 569 green @ commit `960fea3`
 
 ## Recent landed work (2026-04-23 → 2026-04-29)
 
+- 2026-04-29 `960fea3` — Step 4.88 asymmetric color-variant gate (#10 stage B)
 - 2026-04-29 `eb22fbf` — friendly "Фид ещё не собран" page replaces blank 404 on all 5 public feed routes (closes #9)
 - 2026-04-29 `c7175d2` — `resolve_eur_rate()` helper logs WARNING when supplier rate falls back to 51.15
 - 2026-04-27 `37cdb64` — removed per-match apply-discount endpoint (live store, dead code)
@@ -52,7 +53,7 @@ Last activity: 2026-04-29 (read-only audit + eur_rate fallback fix)
 ## Open issues (await Yana decision)
 
 - **#9** ~~Per-supplier YML route returns 404~~ — closed 2026-04-29 by `eb22fbf` (option B: friendly HTML page with regen instructions, status stays 404 for bots).
-- **#10** SP color/voltage variant collisions auto-confirmed (real for #2650 FW-100 white sibling exists). Needs sibling-aware color gate (analogous to Step 4.85). Cannot fix one-line — symmetric voltage gate would regress 342 confirmed.
+- **#10** SP color/voltage variant collisions: stage B done 2026-04-29 (`960fea3`, Step 4.88 asymmetric color gate — defends against future cross-language color discord and parens/display_article cases that 4.85/4.9 miss). Stage A (sibling-aware downgrade for SP without color when catalog has color siblings) still pending.
 - **#12** 279 candidates remain — manual triage required (CLAUDE.md invariant #3 forbids 100%-bulk-confirm).
 - **#14** Pure-letter SKU substring fast-path bypasses all text gates (deliberate compromise documented in code; voltage/paren/price gates still apply).
 - **#15** RP candidates `#3546` (SIRMAN TC-12) + `#3569` (UNOX XFT193) score=100 + identical names BUT both PPs already have confirmed maresto matches → 1pp↔1supplier conflict.
