@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Фид ещё не собран — LabResta Sync{% endblock %}
+
+{% block content %}
+<div class="container py-5" style="max-width: 720px;">
+    <div class="alert alert-warning">
+        <h2 class="h4 mb-3">Фид ещё не собран</h2>
+        <p class="mb-2">
+            Файл <code>{{ filename }}</code> ({{ label }}) ещё не сгенерирован на сервере.
+        </p>
+        <p class="mb-3">
+            Чтобы создать его, зайдите на
+            <a href="{{ url_for('suppliers.supplier_list') }}">страницу поставщиков</a>
+            и нажмите кнопку <strong>«Пересобрать YML»</strong> рядом с нужным поставщиком.
+            Главный фид собирается на дашборде кнопкой <strong>«Сгенерировать YML»</strong>.
+        </p>
+        <p class="text-muted small mb-0">
+            После первой генерации этот URL начнёт отдавать товары в формате YML.
+        </p>
+    </div>
+</div>
+{% endblock %}

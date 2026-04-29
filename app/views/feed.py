@@ -12,6 +12,7 @@ Authenticated:
   /feeds/custom/<token>/delete    — POST: drop file + registry row
 """
 
+import os
 import re
 
 from flask import (
@@ -38,22 +39,27 @@ _SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9-]{0,49}$")
 _TOKEN_RE = re.compile(r"^[0-9a-f]{12}$")
 
 
-def _serve_file(filename: str):
+def _serve_file(filename: str, *, label: str):
+    """Serve a YML from YML_OUTPUT_DIR or render a friendly 'not built yet' page.
+
+    The page is HTML (status 404) so a person opening the URL in a browser sees
+    instructions instead of a blank Werkzeug error. For Horoshop and other bots
+    the 404 status still signals 'no feed', which is the correct semantics.
+    """
     yml_dir = current_app.config["YML_OUTPUT_DIR"]
-    try:
-        return send_from_directory(yml_dir, filename, mimetype="application/xml")
-    except FileNotFoundError:
-        abort(404)
-
-
-def _serve_config(config_key: str):
-    return _serve_file(current_app.config[config_key])
+    if not os.path.isfile(os.path.join(yml_dir, filename)):
+        return render_template(
+            "feeds/missing.html",
+            filename=filename,
+            label=label,
+        ), 404
+    return send_from_directory(yml_dir, filename, mimetype="application/xml")
 
 
 @feed_bp.route("/feed/yml")
 def serve_yml():
     """Full main feed — public, no auth."""
-    return _serve_config("YML_FILENAME")
+    return _serve_file(current_app.config["YML_FILENAME"], label="главный фид")
 
 
 @feed_bp.route("/feed/yml/supplier/<slug>")
@@ -61,12 +67,15 @@ def serve_supplier_yml(slug: str):
     """Per-supplier feed at labresta-feed-<slug>.yml — public, no auth."""
     if not _SLUG_RE.match(slug):
         abort(404)
-    exists = db.session.execute(
-        select(Supplier.id).where(Supplier.slug == slug)
-    ).first()
-    if exists is None:
+    supplier = db.session.execute(
+        select(Supplier).where(Supplier.slug == slug)
+    ).scalar_one_or_none()
+    if supplier is None:
         abort(404)
-    return _serve_file(f"labresta-feed-{slug}.yml")
+    return _serve_file(
+        f"labresta-feed-{slug}.yml",
+        label=f"фид поставщика {supplier.name}",
+    )
 
 
 @feed_bp.route("/feed/yml/custom/<token>")
@@ -79,19 +88,25 @@ def serve_custom_yml(token: str):
     ).scalar_one_or_none()
     if cf is None:
         abort(404)
-    return _serve_file(cf.filename)
+    return _serve_file(
+        cf.filename,
+        label=f"кастомный фид «{cf.name or cf.token}»",
+    )
 
 
 @feed_bp.route("/feed/prices.yml")
 def serve_prices_yml():
     """Narrow price-only feed — public, no auth."""
-    return _serve_config("YML_PRICES_FILENAME")
+    return _serve_file(current_app.config["YML_PRICES_FILENAME"], label="фид цен")
 
 
 @feed_bp.route("/feed/availability.yml")
 def serve_availability_yml():
     """Narrow availability-only feed — public, no auth."""
-    return _serve_config("YML_AVAILABILITY_FILENAME")
+    return _serve_file(
+        current_app.config["YML_AVAILABILITY_FILENAME"],
+        label="фид наличия",
+    )
 
 
 @feed_bp.route("/feeds/custom")

@@ -217,13 +217,29 @@ class TestServeSupplierYml:
         assert "<offer" in body
         assert 'id="served-1"' in body
 
-    def test_known_slug_but_missing_file_returns_404(
+    def test_known_slug_but_missing_file_returns_friendly_404(
         self, client, db, yml_output_dir
     ):
-        # Supplier exists but no regen ran → no file on disk
+        # Supplier exists but no regen ran → no file on disk.
+        # Status is still 404 (correct for Horoshop bots), but the body is a
+        # human-readable HTML page with regen instructions.
         _make_supplier(db.session, "Maresto", slug="maresto")
         resp = client.get("/feed/yml/supplier/maresto")
         assert resp.status_code == 404
+        body = resp.get_data(as_text=True)
+        assert "Фид ещё не собран" in body
+        assert "Пересобрать YML" in body
+        assert "labresta-feed-maresto.yml" in body
+        assert "Maresto" in body  # supplier display name in label
+
+    def test_main_feed_missing_file_returns_friendly_404(
+        self, client, db, yml_output_dir
+    ):
+        resp = client.get("/feed/yml")
+        assert resp.status_code == 404
+        body = resp.get_data(as_text=True)
+        assert "Фид ещё не собран" in body
+        assert "главный фид" in body
 
 
 class TestServeCustomYml:
