@@ -420,6 +420,38 @@ def after_brand_remainder(name: str, brand: str | None) -> str:
 # "ATS 12 U" produce the same token set {ats, 12, u}, so slitny and
 # razdelny catalog styles align through the containment gate.
 _TOKEN_SPLIT_RE = re.compile(r"[\s.,:;()/\-]+", re.UNICODE)
+# Article-style dash glue: when a single SKU is written with embedded dashes
+# between uppercase letters/digits (e.g. supplier writes "XEKPT-08EU-C" while
+# catalog writes "XEKPT08EUC"), pre-glue those dashes so both sides tokenize
+# identically through the alnum-boundary split. Restricted to ASCII A-Z/0-9
+# so Cyrillic compounds ("пресс-кип") and lowercase words ("wow-wee") stay
+# split. Applied BEFORE lowercase so the pattern only fires on uppercase
+# article fragments — descriptive text in catalog names is typically not
+# all-caps and stays unaffected.
+#
+# CRITICAL: only glue when the article fragment contains at least one digit.
+# Without that gate, sibling SKUs like "HKN-FNT-M" and "HKN-FNT-A" (pp#3269
+# vs pp#3291) collapse to "hknfntm" / "hknfnta" and the 1-char tail diff is
+# treated as a morphological near-duplicate by _near_duplicate_token,
+# producing false matches between distinct products. Letter-only article
+# fragments (no digits) keep their dash-split tokens so the variant suffix
+# stays as a discriminator. Article fragments that contain at least one
+# digit are real-world SKU codes (XEKPT-08EU-C, XB693-MP, RT-58B-1) where
+# variants typically differ in digits — those don't trigger near_dup.
+_DASHED_ARTICLE_RE = re.compile(r"[A-Z0-9]+(?:-[A-Z0-9]+)+")
+
+
+def _glue_dashed_article(match: re.Match[str]) -> str:
+    """Glue dashes inside an uppercase article fragment iff it has a digit.
+
+    Letter-only fragments (e.g. 'HKN-FNT-M') are preserved with their
+    dashes so the dash-split keeps them as distinct tokens — see comment
+    on _DASHED_ARTICLE_RE for rationale.
+    """
+    s = match.group(0)
+    if any(c.isdigit() for c in s):
+        return s.replace("-", "")
+    return s
 # '+' is kept inside tokens as a first-class character so 'BISTRO+6' does
 # not collapse to 'bistro6' and then split to {bistro, 6} — that bundle
 # marker must stay distinct from the base 'bistro'.
@@ -779,6 +811,11 @@ def meaningful_tokens(text: str) -> set[str]:
     # creates a spurious digit-only diff that the containment gate would
     # reject as a model discriminator.
     pre = _normalize_roman_fractions(text)
+    # Glue article-style dashes between uppercase letters/digits BEFORE the
+    # split-by-dash step. Lets supplier "XEKPT-08EU-C" and catalog
+    # "XEKPT08EUC" produce the same token set {xekpt, 08, euc}. Letter-only
+    # fragments ("HKN-FNT-M") are skipped — see _glue_dashed_article doc.
+    pre = _DASHED_ARTICLE_RE.sub(_glue_dashed_article, pre)
     # Glue short uppercase model prefix to following digits before lowercasing
     # so "R 301" / "IP 3500" / "OGG 4070" become single tokens {r301,ip3500,...}.
     # Must run pre-lowercase because the regex keys on uppercase letters.
