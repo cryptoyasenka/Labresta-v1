@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Tech Debt + Excel Suppliers + Multi-Supplier
 status: maintenance
-stopped_at: 2026-04-29 audit closed (eur_rate logging fix landed; #9-#15 await Yana)
-last_updated: "2026-04-29T00:00:00.000Z"
+stopped_at: 2026-04-29 #9 closed (friendly missing-feed page); #10/#12/#14/#15 still open
+last_updated: "2026-04-29T16:00:00.000Z"
 last_activity: 2026-04-29
 progress:
   total_phases: 7
@@ -34,10 +34,11 @@ Last activity: 2026-04-29 (read-only audit + eur_rate fallback fix)
 - PromProducts: 5683
 - SupplierProducts: 6918
 - Matches: 1861 confirmed + 7 manual + 279 candidate, 0 rejected
-- Tests: 548 green @ commit `c7175d2`
+- Tests: 553 green @ commit `eb22fbf`
 
 ## Recent landed work (2026-04-23 → 2026-04-29)
 
+- 2026-04-29 `eb22fbf` — friendly "Фид ещё не собран" page replaces blank 404 on all 5 public feed routes (closes #9)
 - 2026-04-29 `c7175d2` — `resolve_eur_rate()` helper logs WARNING when supplier rate falls back to 51.15
 - 2026-04-27 `37cdb64` — removed per-match apply-discount endpoint (live store, dead code)
 - 2026-04-27 `76ca146` — visible feed URL + copy button on dashboard
@@ -50,7 +51,7 @@ Last activity: 2026-04-29 (read-only audit + eur_rate fallback fix)
 
 ## Open issues (await Yana decision)
 
-- **#9** Per-supplier YML route returns 404 — feed file generated only on manual regenerate. Decide: A) JIT generation, B) graceful page, or C) hide URLs until generated.
+- **#9** ~~Per-supplier YML route returns 404~~ — closed 2026-04-29 by `eb22fbf` (option B: friendly HTML page with regen instructions, status stays 404 for bots).
 - **#10** SP color/voltage variant collisions auto-confirmed (real for #2650 FW-100 white sibling exists). Needs sibling-aware color gate (analogous to Step 4.85). Cannot fix one-line — symmetric voltage gate would regress 342 confirmed.
 - **#12** 279 candidates remain — manual triage required (CLAUDE.md invariant #3 forbids 100%-bulk-confirm).
 - **#14** Pure-letter SKU substring fast-path bypasses all text gates (deliberate compromise documented in code; voltage/paren/price gates still apply).
