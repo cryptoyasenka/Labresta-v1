@@ -169,7 +169,9 @@ def _parse_price(price_str: str) -> int | None:
     # Comma as decimal separator (European style)
     cleaned = cleaned.replace(",", ".")
     try:
-        return int(float(cleaned) * 100)
+        # round() before int() \u2014 bare int(float("19.99")*100) returns 1998
+        # because 19.99 has no exact IEEE-754 representation.
+        return int(round(float(cleaned) * 100))
     except (ValueError, TypeError):
         return None
 

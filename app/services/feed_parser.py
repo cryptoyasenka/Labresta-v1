@@ -52,7 +52,7 @@ def parse_supplier_feed(raw_bytes: bytes, supplier_id: int) -> list[dict]:
         price_cents = None
         if price_str:
             try:
-                price_cents = int(float(price_str) * 100)
+                price_cents = int(round(float(price_str) * 100))
             except (ValueError, TypeError):
                 pass
 

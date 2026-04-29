@@ -264,7 +264,7 @@ def save_catalog_products(products: list[dict]) -> dict:
         raw_price = product.get("price", "").strip()
         if raw_price:
             try:
-                price = int(float(raw_price) * 100)
+                price = int(round(float(raw_price) * 100))
             except (ValueError, TypeError):
                 price = None
 

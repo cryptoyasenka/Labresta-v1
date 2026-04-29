@@ -344,6 +344,26 @@ class TestParseExcelProducts:
         assert products[0]["price_cents"] == 123456
         assert products[1]["price_cents"] == 123456
 
+    def test_price_19_99_no_lost_cent(self, tmp_path):
+        """Regression: int(float('19.99')*100) returns 1998 due to IEEE-754;
+        round() must restore the cent. Same logic for 0.29, 1.39, etc."""
+        xlsx = tmp_path / "loss.xlsx"
+        _create_xlsx(
+            xlsx,
+            ["Название", "Бренд", "Модель", "Цена"],
+            [
+                ["A", "X", "1", "19.99"],
+                ["B", "X", "2", "0.29"],
+                ["C", "X", "3", "1.39"],
+            ],
+        )
+        products, _ = parse_excel_products(
+            str(xlsx), {0: "name", 1: "brand", 2: "model", 3: "price"}, header_row=0, supplier_id=1
+        )
+        assert products[0]["price_cents"] == 1999
+        assert products[1]["price_cents"] == 29
+        assert products[2]["price_cents"] == 139
+
     def test_default_available_true(self, tmp_path):
         """When no availability column mapped, all products are available=True."""
         xlsx = tmp_path / "no_avail.xlsx"
