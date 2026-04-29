@@ -35,6 +35,7 @@ from app.services.pricing import (
     clamp_discount_for_min_margin,
     is_valid_price,
     resolve_discount_percent,
+    resolve_eur_rate,
 )
 
 logger = logging.getLogger(__name__)
@@ -213,7 +214,7 @@ def _compute_price_eur(match) -> float:
             effective_discount = clamp_discount_for_min_margin(
                 effective_discount,
                 sp.price_cents,
-                float(getattr(supplier, "eur_rate_uah", 51.15) or 51.15),
+                resolve_eur_rate(supplier),
                 min_margin,
                 float(getattr(supplier, "cost_rate", 0.75) or 0.75),
             )

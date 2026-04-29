@@ -231,7 +231,8 @@ def review():
                 continue
             sp = m.supplier_product
             supplier = sp.supplier
-            rate = float(getattr(supplier, "eur_rate_uah", 51.15) or 51.15)
+            from app.services.pricing import resolve_eur_rate
+            rate = resolve_eur_rate(supplier)
             cost_rate_v = float(getattr(supplier, "cost_rate", 0.75) or 0.75)
             retail_eur = sp.price_cents / 100.0
             margin_at_base = retail_eur * (1 - cost_rate_v - p["base_discount"] / 100.0) * rate
@@ -1043,10 +1044,10 @@ def bulk_action():
             if not sp or not sp.price_cents or sp.price_cents <= 0:
                 continue
             supplier = sp.supplier
-            rate = (supplier.eur_rate_uah or 51.15) if supplier else 51.15
+            from app.services.pricing import calculate_auto_discount, resolve_eur_rate
+            rate = resolve_eur_rate(supplier) if supplier else 51.15
             min_margin = float((supplier.min_margin_uah or 500.0) if supplier else 500.0)
             cost_rate_v = float((supplier.cost_rate or 0.75) if supplier else 0.75)
-            from app.services.pricing import calculate_auto_discount
             new_d = float(calculate_auto_discount(
                 sp.price_cents, rate,
                 cost_rate=cost_rate_v, min_margin_uah=min_margin,

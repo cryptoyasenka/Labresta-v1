@@ -5,12 +5,14 @@ import pytest
 from types import SimpleNamespace
 
 from app.services.pricing import (
+    _EUR_RATE_FALLBACK,
     calculate_auto_discount,
     calculate_price_eur,
     clamp_discount_for_min_margin,
     get_effective_discount,
     is_valid_price,
     resolve_discount_percent,
+    resolve_eur_rate,
 )
 
 
@@ -338,3 +340,33 @@ def test_resolve_match_override_zero_wins():
         mode="per_brand", default=17.0, brand_rows=[_brand_row("HURAKAN", 15.0)]
     )
     assert resolve_discount_percent(0.0, s, "HURAKAN") == 0.0
+
+
+# --- resolve_eur_rate: explicit fallback + warning when rate is missing ---
+
+
+def test_resolve_eur_rate_uses_supplier_value():
+    s = SimpleNamespace(eur_rate_uah=44.0, slug="maresto")
+    assert resolve_eur_rate(s) == 44.0
+
+
+def test_resolve_eur_rate_zero_falls_back_with_warning(caplog):
+    s = SimpleNamespace(eur_rate_uah=0.0, slug="kodaki")
+    with caplog.at_level("WARNING", logger="app.services.pricing"):
+        rate = resolve_eur_rate(s)
+    assert rate == _EUR_RATE_FALLBACK
+    assert any("kodaki" in rec.message and "eur_rate_uah" in rec.message for rec in caplog.records)
+
+
+def test_resolve_eur_rate_none_falls_back_with_warning(caplog):
+    s = SimpleNamespace(eur_rate_uah=None, slug="rp-ukrayina")
+    with caplog.at_level("WARNING", logger="app.services.pricing"):
+        rate = resolve_eur_rate(s)
+    assert rate == _EUR_RATE_FALLBACK
+    assert any("rp-ukrayina" in rec.message for rec in caplog.records)
+
+
+def test_resolve_eur_rate_negative_falls_back():
+    s = SimpleNamespace(eur_rate_uah=-1.0, slug="bad")
+    rate = resolve_eur_rate(s)
+    assert rate == _EUR_RATE_FALLBACK

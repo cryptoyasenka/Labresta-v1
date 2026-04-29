@@ -4,7 +4,32 @@ Prices are computed in EUR to 1 decimal place (tenths).
 Discount auto-calc keeps UAH margin >= configured minimum.
 """
 
+import logging
 import math
+
+logger = logging.getLogger(__name__)
+
+_EUR_RATE_FALLBACK = 51.15
+
+
+def resolve_eur_rate(supplier) -> float:
+    """Return supplier eur_rate_uah, or log warning + fall back to _EUR_RATE_FALLBACK.
+
+    The DB column has server_default=51.15, so this fallback should fire only when
+    a supplier row was explicitly set to 0/None. We log loudly because pricing math
+    silently using a stale magic number would mask a misconfigured supplier — see
+    feedback_no_assumed_values: never assume numeric values.
+    """
+    raw = getattr(supplier, "eur_rate_uah", None)
+    rate = float(raw or 0)
+    if rate > 0:
+        return rate
+    name = getattr(supplier, "slug", None) or getattr(supplier, "name", "?")
+    logger.warning(
+        "supplier %r has no eur_rate_uah (got %r), falling back to %s — set explicit rate in supplier form",
+        name, raw, _EUR_RATE_FALLBACK,
+    )
+    return _EUR_RATE_FALLBACK
 
 
 def calculate_price_eur(retail_price_cents: int, discount_percent: float) -> float:
@@ -148,7 +173,7 @@ def compute_match_pricing(match) -> dict | None:
     if sp is None or not is_valid_price(sp.price_cents):
         return None
     supplier = sp.supplier
-    rate = float(getattr(supplier, "eur_rate_uah", 51.15) or 51.15)
+    rate = resolve_eur_rate(supplier)
     cost_rate_v = float(getattr(supplier, "cost_rate", 0.75) or 0.75)
     min_margin = float(getattr(supplier, "min_margin_uah", 0.0) or 0.0)
 
