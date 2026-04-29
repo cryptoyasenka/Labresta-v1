@@ -1828,4 +1828,140 @@
     // Restore on page load
     restoreState();
 
+    // ========== Alternative suppliers (cross-supplier overlap expand) ==========
+
+    function escapeHtml(s) {
+        return String(s == null ? '' : s)
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    function renderAlternatives(alts, currentMatchId, currentStatus) {
+        if (!alts.length) {
+            return '<div class="p-2 text-muted small">Других поставщиков нет.</div>';
+        }
+        var swapsToRebind = currentStatus === 'confirmed' || currentStatus === 'manual';
+        var swapLabel = swapsToRebind ? 'Переподвязать сюда' : 'Подтвердить вместо текущего';
+        var swapAction = swapsToRebind ? 'rebind' : 'confirm';
+        var rows = alts.map(function (a) {
+            var availBadge = a.sp_available
+                ? '<span class="badge bg-success">в наличии</span>'
+                : '<span class="badge bg-secondary">нет</span>';
+            var price = a.sp_price_eur != null
+                ? a.sp_price_eur.toFixed(2) + ' ' + escapeHtml(a.sp_currency)
+                : '&mdash;';
+            var statusBadgeClass = a.status === 'confirmed' ? 'bg-success'
+                : a.status === 'manual' ? 'bg-info' : 'bg-secondary';
+            return '<tr>' +
+                '<td><span class="badge bg-dark">' + escapeHtml(a.supplier_name) + '</span></td>' +
+                '<td>' + escapeHtml(a.sp_name) + '</td>' +
+                '<td>' + price + '</td>' +
+                '<td>' + availBadge + '</td>' +
+                '<td><small>' + a.score.toFixed(0) + '%</small></td>' +
+                '<td><span class="badge ' + statusBadgeClass + '">' + escapeHtml(a.status) + '</span></td>' +
+                '<td class="text-end">' +
+                    '<button class="btn btn-sm btn-outline-info details-btn" data-id="' + a.match_id + '">Детали</button> ' +
+                    '<button class="btn btn-sm btn-outline-primary alt-swap-btn" ' +
+                           'data-current-match-id="' + currentMatchId + '" ' +
+                           'data-alt-match-id="' + a.match_id + '" ' +
+                           'data-alt-sp-id="' + a.sp_id + '" ' +
+                           'data-action="' + swapAction + '">' + swapLabel + '</button> ' +
+                    '<button class="btn btn-sm btn-outline-danger reject-btn" data-id="' + a.match_id + '">Отклонить</button>' +
+                '</td>' +
+            '</tr>';
+        }).join('');
+        return '<div style="background-color:#fff8e1;padding:8px 16px;border-left:4px solid #ffc107;">' +
+            '<table class="table table-sm mb-0"><thead><tr>' +
+                '<th>Поставщик</th><th>Название у поставщика</th><th>Цена</th><th>Наличие</th>' +
+                '<th>Конф.</th><th>Статус</th><th class="text-end">Действия</th>' +
+            '</tr></thead><tbody>' + rows + '</tbody></table></div>';
+    }
+
+    if (matchTable) {
+        matchTable.addEventListener('click', function (e) {
+            var btn = e.target.closest('.alt-badge');
+            if (!btn) return;
+            e.preventDefault();
+            var matchId = btn.dataset.matchId;
+            var parentRow = btn.closest('tr');
+            var existing = parentRow.nextElementSibling;
+            if (existing && existing.classList.contains('alternatives-row') &&
+                existing.dataset.parentMatchId === matchId) {
+                existing.remove();
+                btn.classList.remove('active');
+                return;
+            }
+            // Only one expanded sub-row at a time.
+            document.querySelectorAll('.alternatives-row').forEach(function (r) { r.remove(); });
+            document.querySelectorAll('.alt-badge.active').forEach(function (b) { b.classList.remove('active'); });
+
+            fetch('/matches/' + matchId + '/alternatives', { credentials: 'same-origin' })
+                .then(function (r) { return r.json(); })
+                .then(function (data) {
+                    if (data.status !== 'ok') return;
+                    var subRow = document.createElement('tr');
+                    subRow.className = 'alternatives-row';
+                    subRow.dataset.parentMatchId = matchId;
+                    var td = document.createElement('td');
+                    td.colSpan = 16;
+                    td.className = 'p-0';
+                    td.innerHTML = renderAlternatives(
+                        data.alternatives, data.current_match_id, data.current_match_status
+                    );
+                    subRow.appendChild(td);
+                    parentRow.parentNode.insertBefore(subRow, parentRow.nextSibling);
+                    btn.classList.add('active');
+                });
+        });
+
+        // Swap action: rebind (when current is confirmed/manual) or confirm
+        // (when current is candidate — backend rejects current via 1pp↔1SP
+        // invariant if needed; we explicitly reject the current candidate
+        // first to keep it clean).
+        matchTable.addEventListener('click', function (e) {
+            var btn = e.target.closest('.alt-swap-btn');
+            if (!btn) return;
+            e.preventDefault();
+            var currentId = btn.dataset.currentMatchId;
+            var altId = btn.dataset.altMatchId;
+            var altSpId = btn.dataset.altSpId;
+            var action = btn.dataset.action;
+            btn.disabled = true;
+            btn.textContent = 'Применяю…';
+
+            var promise;
+            if (action === 'rebind') {
+                promise = fetch('/matches/' + currentId + '/rebind', {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ new_supplier_product_id: parseInt(altSpId, 10) }),
+                });
+            } else {
+                // candidate-current: reject current, then confirm alt.
+                promise = fetch('/matches/' + currentId + '/reject', {
+                    method: 'POST', credentials: 'same-origin',
+                }).then(function () {
+                    return fetch('/matches/' + altId + '/confirm', {
+                        method: 'POST', credentials: 'same-origin',
+                    });
+                });
+            }
+            promise.then(function (r) { return r.json ? r.json() : r; })
+                .then(function (data) {
+                    if (data && data.status === 'error') {
+                        alert(data.message || 'Не удалось переключить поставщика');
+                        btn.disabled = false;
+                        btn.textContent = action === 'rebind' ? 'Переподвязать сюда' : 'Подтвердить вместо текущего';
+                        return;
+                    }
+                    window.location.reload();
+                })
+                .catch(function (err) {
+                    alert('Ошибка: ' + err.message);
+                    btn.disabled = false;
+                });
+        });
+    }
+
 })();
