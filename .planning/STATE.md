@@ -1,17 +1,17 @@
 ---
 gsd_state_version: 1.0
 milestone: v1.1
-milestone_name: Tech Debt + Excel Suppliers
-status: executing
-stopped_at: Completed 07-02-PLAN.md (Per-product discount override UI)
-last_updated: "2026-04-10T12:10:00.078Z"
-last_activity: 2026-04-10
+milestone_name: Tech Debt + Excel Suppliers + Multi-Supplier
+status: maintenance
+stopped_at: 2026-04-29 audit closed (eur_rate logging fix landed; #9-#15 await Yana)
+last_updated: "2026-04-29T00:00:00.000Z"
+last_activity: 2026-04-29
 progress:
-  total_phases: 3
-  completed_phases: 3
-  total_plans: 6
-  completed_plans: 6
-  percent: 50
+  total_phases: 7
+  completed_phases: 7
+  total_plans: 18
+  completed_plans: 18
+  percent: 100
 ---
 
 # Project State
@@ -20,69 +20,47 @@ progress:
 
 See: .planning/PROJECT.md (updated 2026-03-01)
 
-**Core value:** Ціни і наявність на prom.ua завжди актуальні — без ручної роботи щодня.
-**Current focus:** Phase 7 — Matching and Pricing Enhancements
+**Core value:** Ціни і наявність на prom.ua/Horoshop завжди актуальні — без ручної роботи щодня.
+**Current focus:** maintenance + audit; multi-supplier rollout (Maresto + НП + Kodaki + РП Україна).
 
 ## Current Position
 
-Phase: 7 of 7 (Matching and Pricing Enhancements)
-Plan: 2 of 2 (Rule matcher auto-apply complete)
-Status: Ready to execute
-Last activity: 2026-04-10
+Status: maintenance / audit-driven fixes. v1.0 + v1.1 plans complete.
+Last activity: 2026-04-29 (read-only audit + eur_rate fallback fix)
 
-Progress: [██████████----------] 50% (1/2 plans in Phase 7)
+## DB snapshot (2026-04-29)
 
-## Performance Metrics
+- Suppliers: 4 — `maresto` (flat), `novyy-proekt` (per_brand), `kodaki` (flat), `rp-ukrayina` (flat)
+- PromProducts: 5683
+- SupplierProducts: 6918
+- Matches: 1861 confirmed + 7 manual + 279 candidate, 0 rejected
+- Tests: 548 green @ commit `c7175d2`
 
-**Velocity:**
+## Recent landed work (2026-04-23 → 2026-04-29)
 
-- Total plans completed: 18 (v1.0)
-- Average duration: ~25 min (v1.0 baseline)
-- Total execution time: ~7.5 hours (v1.0)
+- 2026-04-29 `c7175d2` — `resolve_eur_rate()` helper logs WARNING when supplier rate falls back to 51.15
+- 2026-04-27 `37cdb64` — removed per-match apply-discount endpoint (live store, dead code)
+- 2026-04-27 `76ca146` — visible feed URL + copy button on dashboard
+- 2026-04-27 `f1489a4`/`b1c4d91` — xlsx URL detection + RP parser branch in sync_pipeline
+- 2026-04-27 `ca2e1eb` — РП Україна xlsx parser + pipeline integration
+- 2026-04-26 `4faa73a` — Kodaki feed adapter (OpenCart dwebexporter → YML)
+- 2026-04-26 `6908d11` + `753390d` — asymmetric bracket-token containment gate (Step 4.87) + invariant #15
+- 2026-04-26 — N+1 batch performance fixes across rule_matcher / matcher / matches view
+- 2026-04-23 `cdcf158` — bracket-discriminator gate (Step 4.85)
 
-**By Phase:**
+## Open issues (await Yana decision)
 
-| Phase | Plans | Total | Avg/Plan |
-|-------|-------|-------|----------|
-| v1.0 Phases 1-4 | 18 | ~7.5h | ~25 min |
-| v1.1 Phase 5 Plan 02 | 1 | 2 min | 2 min |
-| v1.1 Phase 5 Plan 01 | 1 | 3 min | 3 min |
-| v1.1 Phase 6 Plan 01 | 1 | 3 min | 3 min |
-| v1.1 Phase 6 Plan 02 | 1 | 56 min | 56 min |
-| v1.1 Phase 7 Plan 01 | 1 | 3 min | 3 min |
+- **#9** Per-supplier YML route returns 404 — feed file generated only on manual regenerate. Decide: A) JIT generation, B) graceful page, or C) hide URLs until generated.
+- **#10** SP color/voltage variant collisions auto-confirmed (real for #2650 FW-100 white sibling exists). Needs sibling-aware color gate (analogous to Step 4.85). Cannot fix one-line — symmetric voltage gate would regress 342 confirmed.
+- **#12** 279 candidates remain — manual triage required (CLAUDE.md invariant #3 forbids 100%-bulk-confirm).
+- **#14** Pure-letter SKU substring fast-path bypasses all text gates (deliberate compromise documented in code; voltage/paren/price gates still apply).
+- **#15** RP candidates `#3546` (SIRMAN TC-12) + `#3569` (UNOX XFT193) score=100 + identical names BUT both PPs already have confirmed maresto matches → 1pp↔1supplier conflict.
 
-*Updated after each plan completion*
-| Phase 07 P02 | 3 min | 2 tasks | 3 files |
+## Blockers/Concerns
 
-## Accumulated Context
-
-### Decisions
-
-All v1.0 decisions archived in PROJECT.md Key Decisions table with outcomes.
-
-- **07-01:** Module-scoped test fixture to avoid APScheduler singleton conflict; Unicode lightning badge for rule indicator (no icon library)
-- **06-02:** Session-based temp file storage for multi-step Excel mapping flow (keyed by supplier_id)
-- **06-02:** Brand and model mapping made optional (only name+price strictly required for import)
-- **06-02:** Fallback preview flow when session temp file expires (re-download or prompt re-upload)
-- **06-01:** Currency default UAH for Excel suppliers (Ukrainian price lists in hryvnias)
-- **06-01:** feed_url made nullable on Supplier model for future file-upload-only suppliers
-- **06-01:** Price parsing strips non-breaking spaces and handles comma-as-decimal
-- **05-02:** Removed @admin_required from notifications() route; use current_user.is_admin in function body for role-based template selection
-- **05-02:** Operator template reuses notifications.js for mark-all-read without code duplication
-- **05-01:** Inline JS in base.html for global badge polling instead of separate file (avoids script load order issues)
-- **05-01:** Badge text node update preserves dismiss button child element
-- [Phase 07]: Eager-load supplier via joinedload chain for discount N+1 prevention; event delegation for dynamic discount input
-
-### Pending Todos
-
-None.
-
-### Blockers/Concerns
-
-- Verify `pricing.py` reads `ProductMatch.discount_percent` with fallback to `Supplier.discount_percent` before building Phase 7 discount UI (research flagged this as must-verify).
+None code-level. All blockers above are decision-level for Yana.
 
 ## Session Continuity
 
-Last session: 2026-04-10T12:10:00.076Z
-Stopped at: Completed 07-02-PLAN.md (Per-product discount override UI)
-Resume file: None
+Last session: 2026-04-29 audit (read-only + 1 fix landed)
+Resume file: pre-compact-prep snapshot in `~/.claude/snapshots/`
