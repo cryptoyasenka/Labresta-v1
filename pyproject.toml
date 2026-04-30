@@ -18,6 +18,8 @@ dependencies = [
     "flask-apscheduler>=1.13.1",
     "flask-login>=0.6",
     "flask-wtf>=1.2",
+    "psycopg2-binary>=2.9",
+    "gunicorn>=22.0",
 ]
 
 [project.optional-dependencies]

@@ -10,7 +10,13 @@ basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 class DefaultConfig:
     SECRET_KEY = os.environ.get("SECRET_KEY", "dev-key-change-me")
-    SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "instance", "labresta.db")
+    _db_url = os.environ.get("DATABASE_URL", "")
+    # Railway provides postgres:// — SQLAlchemy 2.x requires postgresql://
+    if _db_url.startswith("postgres://"):
+        _db_url = _db_url.replace("postgres://", "postgresql://", 1)
+    SQLALCHEMY_DATABASE_URI = _db_url or (
+        "sqlite:///" + os.path.join(basedir, "instance", "labresta.db")
+    )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # Session / remember-me

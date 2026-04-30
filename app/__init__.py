@@ -49,7 +49,8 @@ def create_app(config_name="default"):
 
     # Init extensions
     db.init_app(app)
-    configure_sqlite_wal(app)
+    if app.config["SQLALCHEMY_DATABASE_URI"].startswith("sqlite"):
+        configure_sqlite_wal(app)
     login_manager.init_app(app)
     csrf.init_app(app)
 
