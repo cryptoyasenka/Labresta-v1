@@ -177,6 +177,13 @@
                         {% if product.needs_catalog_add %}
                             <span class="badge bg-warning text-dark ms-1" title="Помечен на добавление в Horoshop">+ Horoshop</span>
                         {% endif %}
+                        {% set claim = claim_info_by_sp.get(product.id) %}
+                        {% if claim %}
+                            <span class="badge bg-warning text-dark ms-1"
+                                  title="Каталожный товар «{{ claim.pp_name }}» (PP#{{ claim.pp_id }}) уже подтверждён за поставщиком — match#{{ claim.match_id }}. Сматчить этот SP не получится.">
+                                Уже у {{ claim.supplier_name }}
+                            </span>
+                        {% endif %}
                     {% endif %}
                 </td>
                 <td>

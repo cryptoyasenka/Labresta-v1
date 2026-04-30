@@ -11,6 +11,7 @@ from app.models.catalog import PromProduct
 from app.models.product_match import ProductMatch
 from app.models.supplier import Supplier
 from app.models.supplier_product import SupplierProduct
+from app.services.matcher import extract_model_from_name, normalize_model
 
 products_bp = Blueprint("products", __name__)
 
@@ -188,6 +189,49 @@ def supplier_list():
             ).scalars().all()
         }
 
+    # Claimed-PP detection: for each unmatched SP on this page, check if its
+    # extracted model matches a catalog PP that's already confirmed/manual to a
+    # DIFFERENT supplier. Operators see "Уже у [Supplier]" badge so they don't
+    # waste time trying to manually match — the slot is taken.
+    sp_brands = {p.brand.lower().strip() for p in products if p.brand}
+    claimed_by_key: dict[tuple[str, str], dict] = {}
+    if sp_brands:
+        rows = db.session.execute(
+            select(ProductMatch, PromProduct, SupplierProduct, Supplier)
+            .join(PromProduct, PromProduct.id == ProductMatch.prom_product_id)
+            .join(SupplierProduct, SupplierProduct.id == ProductMatch.supplier_product_id)
+            .join(Supplier, Supplier.id == SupplierProduct.supplier_id)
+            .where(
+                ProductMatch.status.in_(["confirmed", "manual"]),
+                func.lower(func.trim(PromProduct.brand)).in_(sp_brands),
+            )
+        ).all()
+        for m, pp, claimer_sp, claimer_supp in rows:
+            if not pp.brand:
+                continue
+            model = normalize_model(extract_model_from_name(pp.name, pp.brand))
+            if not model:
+                continue
+            key = (pp.brand.lower().strip(), model)
+            if key not in claimed_by_key:
+                claimed_by_key[key] = {
+                    "pp_id": pp.id, "pp_name": pp.name, "match_id": m.id,
+                    "supplier_id": claimer_sp.supplier_id,
+                    "supplier_name": claimer_supp.name,
+                }
+
+    claim_info_by_sp: dict[int, dict] = {}
+    for sp in products:
+        if not sp.brand:
+            continue
+        model = normalize_model(extract_model_from_name(sp.name, sp.brand))
+        if not model:
+            continue
+        key = (sp.brand.lower().strip(), model)
+        info = claimed_by_key.get(key)
+        if info and info["supplier_id"] != sp.supplier_id:
+            claim_info_by_sp[sp.id] = info
+
     return render_template(
         "products/supplier.html",
         products=products,
@@ -196,6 +240,7 @@ def supplier_list():
         brand=brand_filter,
         matches_by_sp=matches_by_sp,
         pp_by_id=pp_by_id,
+        claim_info_by_sp=claim_info_by_sp,
         total=total,
         page=page,
         per_page=per_page,
