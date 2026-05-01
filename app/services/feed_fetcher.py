@@ -7,12 +7,19 @@ import requests
 from tenacity import (
     before_sleep_log,
     retry,
-    retry_if_exception_type,
+    retry_if_exception,
     stop_after_attempt,
     wait_exponential,
 )
 
 logger = logging.getLogger(__name__)
+
+
+def _is_retryable(exc: BaseException) -> bool:
+    """Retry only on transient errors — never on 4xx (rate limit, auth, not-found)."""
+    if isinstance(exc, requests.HTTPError):
+        return exc.response is not None and exc.response.status_code >= 500
+    return isinstance(exc, (requests.ConnectionError, requests.Timeout))
 
 
 def fetch_feed(url: str, timeout: int = 30) -> bytes:
@@ -58,9 +65,7 @@ def fetch_feed(url: str, timeout: int = 30) -> bytes:
 @retry(
     stop=stop_after_attempt(3),
     wait=wait_exponential(multiplier=2, min=4, max=30),
-    retry=retry_if_exception_type(
-        (requests.ConnectionError, requests.Timeout, requests.HTTPError)
-    ),
+    retry=retry_if_exception(_is_retryable),
     before_sleep=before_sleep_log(logger, logging.WARNING),
     reraise=True,
 )
