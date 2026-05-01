@@ -529,6 +529,40 @@ def unmatched_supplier():
                 "prom_name": row.prom_name,
             }
 
+        # Fallback: for sp_ids still not found, match via normalized article code.
+        # Handles РП dashes: "XB893-MP" and MARESTO "XB893MP" both normalize to "xb893mp".
+        remaining_ids = [i for i in sp_ids if i not in cross_matched]
+        if remaining_ids:
+            from sqlalchemy import text
+            art_rows = db.session.execute(
+                text("""
+                    SELECT DISTINCT ON (sp_u.id)
+                        sp_u.id AS sp_id,
+                        s_c.name AS other_supplier,
+                        pp.name AS prom_name
+                    FROM supplier_products sp_u
+                    JOIN supplier_products sp_c
+                        ON sp_c.supplier_id != sp_u.supplier_id
+                        AND sp_c.article IS NOT NULL
+                        AND REGEXP_REPLACE(LOWER(sp_c.article), '[^a-z0-9]', '', 'g')
+                            = REGEXP_REPLACE(LOWER(sp_u.article), '[^a-z0-9]', '', 'g')
+                        AND LENGTH(REGEXP_REPLACE(LOWER(sp_u.article), '[^a-z0-9]', '', 'g')) >= 4
+                    JOIN product_matches pm
+                        ON pm.supplier_product_id = sp_c.id
+                        AND pm.status IN ('confirmed', 'manual')
+                    JOIN prom_products pp ON pp.id = pm.prom_product_id
+                    JOIN suppliers s_c ON s_c.id = sp_c.supplier_id
+                    WHERE sp_u.id = ANY(:ids)
+                      AND sp_u.article IS NOT NULL
+                """),
+                {"ids": remaining_ids},
+            ).all()
+            for row in art_rows:
+                cross_matched[row.sp_id] = {
+                    "supplier_name": row.other_supplier,
+                    "prom_name": row.prom_name,
+                }
+
     return render_template(
         "products/unmatched_supplier.html",
         products=products,
