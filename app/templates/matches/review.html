@@ -90,6 +90,13 @@
 </div>
 {% endif %}
 
+{% if filters.match_id_filter %}
+<div class="alert alert-warning py-2 mb-2 d-flex align-items-center gap-3">
+    <span>🔍 Показан матч <strong>#{{ filters.match_id_filter }}</strong> из Журнала действий</span>
+    <a href="{{ url_for('matches.review') }}" class="btn btn-sm btn-outline-secondary">✕ Показать все</a>
+</div>
+{% endif %}
+
 <!-- Toolbar: bulk actions, diff toggle, export -->
 <div class="mb-2 d-flex align-items-center gap-2 flex-wrap" id="bulkBar">
     <span class="text-muted">Выделенные: <strong id="selectedCount">0</strong></span>

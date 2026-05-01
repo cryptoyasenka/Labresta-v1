@@ -89,7 +89,9 @@
                 </td>
                 <td>
                     {% if entry.match_id %}
-                        <code>#{{ entry.match_id }}</code>
+                        <a href="{{ url_for('matches.review', match_id=entry.match_id, status='all') }}"
+                           title="Открыть матч в таблице матчинга"
+                           class="text-decoration-none"><code>#{{ entry.match_id }}</code></a>
                     {% elif entry.supplier_product_id %}
                         <span class="text-muted small">SP#{{ entry.supplier_product_id }}</span>
                     {% else %}

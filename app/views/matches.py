@@ -78,6 +78,7 @@ def _cleanup_other_candidates(supplier_product_id: int, keep_match_id: int) -> i
 
 def _build_match_query():
     """Build filtered/sorted match query from request args. Returns (query, filters_dict)."""
+    match_id_filter = request.args.get("match_id", type=int)
     status = request.args.get("status", "all")
     confidence = request.args.get("confidence", "all")
     availability = request.args.get("availability", "all")
@@ -143,6 +144,11 @@ def _build_match_query():
         ProductMatch.supplier_product.has(SupplierProduct.ignored == False)  # noqa: E712
     )
 
+    # Direct match_id lookup: show exactly that one match, bypass status filter
+    if match_id_filter:
+        query = query.filter(ProductMatch.id == match_id_filter)
+        status = "all"
+
     if search:
         search_term = f"%{search}%"
         query = query.join(
@@ -162,7 +168,7 @@ def _build_match_query():
     # a confirmed/manual match. Backend will refuse to confirm them anyway
     # (1 pp ↔ 1 SP invariant), so surfacing them just wastes operator time.
     # Pass ?show_claimed=1 to inspect them (e.g. to bulk-reject).
-    show_claimed = request.args.get("show_claimed", "0") == "1"
+    show_claimed = request.args.get("show_claimed", "0") == "1" or bool(match_id_filter)
     if not show_claimed:
         claimed_pp_ids = db.session.query(ProductMatch.prom_product_id).filter(
             ProductMatch.status.in_(("confirmed", "manual"))
@@ -202,6 +208,7 @@ def _build_match_query():
         "show_claimed": show_claimed,
         "margin_below": margin_below,
         "margin_below_raw": margin_below_raw,
+        "match_id_filter": match_id_filter,
     }
     return query, filters
 
