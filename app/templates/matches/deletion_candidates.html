@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+{% block title %}Кандидати на видалення — LabResta Sync{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Кандидати на видалення з Horoshop</h2>
+    <span class="badge bg-warning text-dark fs-6">{{ matches|length }} товарів</span>
+</div>
+
+<div class="alert alert-warning py-2 mb-3">
+    <strong>Що це?</strong> Підтверджені матчі, де товар зник з прайсу постачальника 2+ синки поспіль.
+    Ці товари зараз показуються в Horoshop як <em>нет в наличии</em>.
+    Якщо постачальник більше не возить — видаліть з Horoshop вручну і натисніть <strong>Видалено</strong>.
+    Якщо товар повернувся — натисніть <strong>Повернувся</strong>.
+</div>
+
+{# Supplier filter #}
+{% if suppliers %}
+<form method="get" class="row g-2 mb-3 align-items-end">
+    <div class="col-auto">
+        <label class="form-label small">Постачальник</label>
+        <select name="supplier_id" class="form-select form-select-sm" onchange="this.form.submit()">
+            <option value="">Всі</option>
+            {% for s in suppliers %}
+            <option value="{{ s.id }}" {% if supplier_id == s.id %}selected{% endif %}>{{ s.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    {% if supplier_id %}
+    <div class="col-auto">
+        <a href="{{ url_for('matches.deletion_candidates') }}" class="btn btn-outline-secondary btn-sm">Скинути</a>
+    </div>
+    {% endif %}
+</form>
+{% endif %}
+
+{% if matches %}
+<div class="table-responsive">
+    <table class="table table-hover table-sm align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Постачальник</th>
+                <th>Товар постачальника</th>
+                <th>Товар Horoshop</th>
+                <th>ID Horoshop</th>
+                <th>Статус матчу</th>
+                <th>Дії</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for match in matches %}
+            {% set sp = match.supplier_product %}
+            {% set pp = match.prom_product %}
+            <tr id="dc-row-{{ match.id }}">
+                <td class="text-nowrap small">{{ sp.supplier.name if sp and sp.supplier else '—' }}</td>
+                <td>
+                    <div class="fw-semibold">{{ sp.name if sp else '—' }}</div>
+                    {% if sp and sp.article %}
+                    <small class="text-muted">{{ sp.article }}</small>
+                    {% endif %}
+                </td>
+                <td>
+                    <div>{{ pp.name if pp else '—' }}</div>
+                    {% if pp and pp.name_ru %}
+                    <small class="text-muted">{{ pp.name_ru }}</small>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if pp %}
+                    <code class="text-secondary">{{ pp.external_id }}</code>
+                    {% else %}—{% endif %}
+                </td>
+                <td>
+                    {% if match.status == 'confirmed' %}
+                    <span class="badge bg-success">підтверджено</span>
+                    {% elif match.status == 'manual' %}
+                    <span class="badge bg-primary">ручний</span>
+                    {% else %}
+                    <span class="badge bg-secondary">{{ match.status }}</span>
+                    {% endif %}
+                </td>
+                <td class="text-nowrap">
+                    <button class="btn btn-sm btn-danger dc-deleted-btn"
+                            data-match-id="{{ match.id }}"
+                            title="Видалено з Horoshop — відхилити матч">
+                        ✓ Видалено
+                    </button>
+                    <button class="btn btn-sm btn-outline-success dc-returned-btn"
+                            data-match-id="{{ match.id }}"
+                            title="Товар повернувся у прайс — відновити матч">
+                        ↩ Повернувся
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="text-center text-muted py-5">
+    <h5>Кандидатів на видалення немає</h5>
+    <p>Якщо товар зникне з прайсу постачальника — він з'явиться тут після наступного синку.</p>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+    function csrfToken() {
+        var m = document.querySelector('meta[name="csrf-token"]');
+        return m ? m.getAttribute('content') : '';
+    }
+
+    function postAction(url, btn) {
+        btn.disabled = true;
+        fetch(url, {
+            method: 'POST',
+            headers: { 'X-CSRFToken': csrfToken(), 'Accept': 'application/json' },
+        })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+            if (data.status === 'ok') {
+                var row = btn.closest('tr');
+                row.style.transition = 'opacity 0.3s';
+                row.style.opacity = '0';
+                setTimeout(function () { row.remove(); updateCount(); }, 320);
+            } else {
+                alert(data.message || 'Помилка');
+                btn.disabled = false;
+            }
+        })
+        .catch(function () { btn.disabled = false; });
+    }
+
+    function updateCount() {
+        var remaining = document.querySelectorAll('tbody tr').length;
+        var badge = document.querySelector('h2 + .badge, .badge.fs-6');
+        if (badge) badge.textContent = remaining + ' товарів';
+        if (remaining === 0) location.reload();
+    }
+
+    document.addEventListener('click', function (e) {
+        var delBtn = e.target.closest('.dc-deleted-btn');
+        var retBtn = e.target.closest('.dc-returned-btn');
+        if (delBtn) {
+            var id = delBtn.dataset.matchId;
+            if (!confirm('Підтвердити видалення з Horoshop? Матч буде відхилено.')) return;
+            postAction('/matches/' + id + '/mark-deleted', delBtn);
+        } else if (retBtn) {
+            var id2 = retBtn.dataset.matchId;
+            postAction('/matches/' + id2 + '/mark-returned', retBtn);
+        }
+    });
+})();
+</script>
+{% endblock %}

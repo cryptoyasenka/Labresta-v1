@@ -9,6 +9,7 @@ from datetime import datetime, timedelta, timezone
 from sqlalchemy import func, select
 
 from app.extensions import db
+from app.models.product_match import ProductMatch
 from app.models.supplier import Supplier
 from app.models.supplier_product import SupplierProduct
 from app.models.sync_run import SyncRun
@@ -323,11 +324,33 @@ def _detect_disappeared(
     ).scalars().all()
 
     count = len(stale_products)
+    deletion_candidates = 0
     for product in stale_products:
         product.available = False
         product.needs_review = True
 
+        # Handle existing matches:
+        # confirmed/manual → mark deletion_candidate (product was live in Horoshop)
+        # candidate         → auto-reject (was never confirmed, nothing to delete)
+        matches = db.session.execute(
+            select(ProductMatch).where(
+                ProductMatch.supplier_product_id == product.id,
+                ProductMatch.status.in_(["confirmed", "manual", "candidate"]),
+            )
+        ).scalars().all()
+        for match in matches:
+            if match.status in ("confirmed", "manual"):
+                match.deletion_candidate = True
+                deletion_candidates += 1
+            else:
+                match.status = "rejected"
+
     if count > 0:
+        logger.info(
+            "Flagged %d deletion candidates for supplier '%s'",
+            deletion_candidates,
+            supplier.name,
+        )
         notify_disappeared_products(supplier.name, count)
         logger.info(
             "Flagged %d disappeared products for supplier '%s'",

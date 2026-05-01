@@ -152,15 +152,24 @@ def create_app(config_name="default"):
                 ).scalar()
                 or 0
             )
+            deletion_count = (
+                db.session.execute(
+                    select(func.count(ProductMatch.id)).where(
+                        ProductMatch.deletion_candidate == True  # noqa: E712
+                    )
+                ).scalar()
+                or 0
+            )
             # Unread notification count for navbar bell
             from app.services.notification_service import get_unread_count
 
             unread_count = get_unread_count()
             return {
                 "pending_review_count": count,
+                "deletion_candidate_count": deletion_count,
                 "unread_notification_count": unread_count,
             }
-        return {"pending_review_count": 0, "unread_notification_count": 0}
+        return {"pending_review_count": 0, "deletion_candidate_count": 0, "unread_notification_count": 0}
 
     # Ensure all models are registered with SQLAlchemy before create_all
     from app.models import (  # noqa: F401

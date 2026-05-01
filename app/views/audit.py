@@ -29,6 +29,8 @@ ACTION_LABELS = {
     "regenerate_feed": "Пересборка загального YML",
     "regenerate_supplier_feed": "Пересборка YML поставщика",
     "feed_name_set": "Перейменування в фіді",
+    "deletion_confirmed": "Видалено з Horoshop",
+    "deletion_cancelled": "Повернувся у прайс",
 }
 
 

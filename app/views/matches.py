@@ -1693,3 +1693,89 @@ def export_xlsx():
         download_name="matches.xlsx",
         mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     )
+
+
+# ---------------------------------------------------------------------------
+# Deletion candidates
+# ---------------------------------------------------------------------------
+
+@matches_bp.route("/deletion-candidates")
+@login_required
+def deletion_candidates():
+    """List confirmed/manual matches flagged as deletion candidates."""
+    from sqlalchemy import select
+    from app.models.supplier import Supplier
+
+    supplier_id = request.args.get("supplier_id", type=int)
+
+    query = (
+        db.session.query(ProductMatch)
+        .join(ProductMatch.supplier_product)
+        .join(ProductMatch.prom_product)
+        .filter(ProductMatch.deletion_candidate == True)  # noqa: E712
+        .options(
+            joinedload(ProductMatch.supplier_product).joinedload(SupplierProduct.supplier),
+            joinedload(ProductMatch.prom_product),
+        )
+        .order_by(ProductMatch.id.desc())
+    )
+    if supplier_id:
+        query = query.filter(SupplierProduct.supplier_id == supplier_id)
+
+    matches = query.all()
+    suppliers = db.session.execute(
+        select(Supplier).order_by(Supplier.name)
+    ).scalars().all()
+
+    return render_template(
+        "matches/deletion_candidates.html",
+        matches=matches,
+        suppliers=suppliers,
+        supplier_id=supplier_id,
+    )
+
+
+@matches_bp.route("/<int:match_id>/mark-deleted", methods=["POST"])
+@login_required
+def mark_deleted_from_horoshop(match_id):
+    """Operator confirmed the product was deleted from Horoshop.
+    Unconfirms the match and clears the deletion_candidate flag.
+    """
+    match = db.session.get(ProductMatch, match_id)
+    if not match or not match.deletion_candidate:
+        return jsonify({"status": "error", "message": "Матч не знайдено або не є кандидатом"}), 404
+
+    old_status = match.status
+    match.status = "rejected"
+    match.deletion_candidate = False
+    log_action(
+        action="deletion_confirmed",
+        match_id=match.id,
+        details={"old_status": old_status, "pp_id": match.prom_product_id},
+    )
+    db.session.commit()
+    return jsonify({"status": "ok"})
+
+
+@matches_bp.route("/<int:match_id>/mark-returned", methods=["POST"])
+@login_required
+def mark_returned_to_stock(match_id):
+    """Operator confirmed the product returned to supplier catalog.
+    Clears deletion_candidate flag; restores sp.available + needs_review.
+    """
+    match = db.session.get(ProductMatch, match_id)
+    if not match or not match.deletion_candidate:
+        return jsonify({"status": "error", "message": "Матч не знайдено або не є кандидатом"}), 404
+
+    match.deletion_candidate = False
+    sp = match.supplier_product
+    if sp:
+        sp.available = True
+        sp.needs_review = False
+    log_action(
+        action="deletion_cancelled",
+        match_id=match.id,
+        details={"pp_id": match.prom_product_id},
+    )
+    db.session.commit()
+    return jsonify({"status": "ok"})

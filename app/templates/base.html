@@ -33,6 +33,14 @@
                             {% endif %}
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('matches.deletion_candidates') }}">
+                            Видалення
+                            {% if deletion_candidate_count %}
+                            <span class="badge bg-warning text-dark">{{ deletion_candidate_count }}</span>
+                            {% endif %}
+                        </a>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                             Товары

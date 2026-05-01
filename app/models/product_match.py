@@ -39,6 +39,7 @@ class ProductMatch(db.Model):
     availability_synced_at = db.Column(db.DateTime, nullable=True)
     in_feed = db.Column(db.Boolean, nullable=False, default=False, server_default="0")
     published = db.Column(db.Boolean, nullable=False, default=True, server_default="1")
+    deletion_candidate = db.Column(db.Boolean, nullable=False, default=False, server_default="0")
 
     supplier_product = db.relationship("SupplierProduct")
     prom_product = db.relationship("PromProduct")
