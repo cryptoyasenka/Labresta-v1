@@ -8,11 +8,37 @@ import chardet
 
 logger = logging.getLogger(__name__)
 from lxml import etree
-from sqlalchemy import select
+from sqlalchemy import func, select
 
 from app.extensions import db
 from app.models.supplier import Supplier
 from app.models.supplier_product import SupplierProduct
+
+
+def _brand_canon_cache() -> dict[str, str]:
+    """Return lowercase → canonical brand mapping (most-common form wins)."""
+    rows = db.session.execute(
+        select(SupplierProduct.brand, func.count(SupplierProduct.id).label("cnt"))
+        .where(SupplierProduct.brand.isnot(None), SupplierProduct.brand != "")
+        .group_by(SupplierProduct.brand)
+        .order_by(func.count(SupplierProduct.id).desc())
+    ).all()
+    cache: dict[str, str] = {}
+    for brand, _cnt in rows:
+        key = brand.strip().lower()
+        if key not in cache:
+            cache[key] = brand.strip()
+    return cache
+
+
+def canonicalize_brand(brand: str | None, cache: dict[str, str]) -> str | None:
+    """Normalize brand string to canonical form from cache, or strip-only if unknown."""
+    if not brand:
+        return brand
+    brand = brand.strip()
+    if not brand:
+        return None
+    return cache.get(brand.lower(), brand)
 
 
 def parse_supplier_feed(raw_bytes: bytes, supplier_id: int) -> list[dict]:
@@ -113,6 +139,11 @@ def save_supplier_products(products: list[dict]) -> dict:
     now = datetime.now(timezone.utc)
     created = 0
     updated = 0
+
+    # Normalize brands to canonical case before upserting
+    canon = _brand_canon_cache()
+    for p in products:
+        p["brand"] = canonicalize_brand(p.get("brand"), canon)
 
     try:
         for p in products:
