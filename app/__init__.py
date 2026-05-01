@@ -144,10 +144,17 @@ def create_app(config_name="default"):
 
             from app.models.product_match import ProductMatch
 
+            # Exclude "dead" candidates — prom_product already claimed by a
+            # confirmed/manual match (backend refuses to confirm them anyway).
+            # Mirrors the hide-claimed filter on the matches review page.
+            claimed_pp_ids = select(ProductMatch.prom_product_id).where(
+                ProductMatch.status.in_(("confirmed", "manual"))
+            )
             count = (
                 db.session.execute(
                     select(func.count(ProductMatch.id)).where(
-                        ProductMatch.status == "candidate"
+                        ProductMatch.status == "candidate",
+                        ProductMatch.prom_product_id.not_in(claimed_pp_ids),
                     )
                 ).scalar()
                 or 0
