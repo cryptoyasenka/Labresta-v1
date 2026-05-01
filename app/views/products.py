@@ -5,7 +5,6 @@ from datetime import datetime, timezone
 from flask import Blueprint, jsonify, render_template, request
 from flask_login import login_required
 from sqlalchemy import func, or_, select
-from sqlalchemy.orm import aliased
 
 from app.extensions import db
 from app.models.catalog import PromProduct
@@ -498,70 +497,43 @@ def unmatched_supplier():
         .order_by(SupplierProduct.brand)
     ).scalars().all()
 
-    # Cross-supplier match indicator: for each unmatched sp on this page,
-    # check if the same prom_product is already confirmed by another supplier.
+    # Cross-supplier match indicator: find unmatched supplier products whose
+    # article code (normalized: lowercase, strip non-alphanumeric) matches another
+    # supplier's product that has a confirmed match in the catalog.
+    # Using article normalization only — candidate-based matching produces false
+    # positives when the matcher creates wrong candidates (e.g. XB693 ≠ XB693MP).
     cross_matched: dict[int, dict] = {}
     sp_ids = [p.id for p in products]
     if sp_ids:
-        pm_cand = aliased(ProductMatch, name="pm_cand")
-        pm_conf = aliased(ProductMatch, name="pm_conf")
-        sp_conf = aliased(SupplierProduct, name="sp_conf")
-        s_conf = aliased(Supplier, name="s_conf")
-        rows = db.session.execute(
-            select(
-                pm_cand.supplier_product_id,
-                s_conf.name.label("other_supplier"),
-                PromProduct.name.label("prom_name"),
-            )
-            .select_from(pm_cand)
-            .join(pm_conf, (pm_conf.prom_product_id == pm_cand.prom_product_id)
-                  & pm_conf.status.in_(["confirmed", "manual"])
-                  & (pm_conf.supplier_product_id != pm_cand.supplier_product_id))
-            .join(sp_conf, sp_conf.id == pm_conf.supplier_product_id)
-            .join(s_conf, s_conf.id == sp_conf.supplier_id)
-            .join(PromProduct, PromProduct.id == pm_cand.prom_product_id)
-            .where(pm_cand.supplier_product_id.in_(sp_ids))
-            .distinct(pm_cand.supplier_product_id)
+        from sqlalchemy import text
+        art_rows = db.session.execute(
+            text("""
+                SELECT DISTINCT ON (sp_u.id)
+                    sp_u.id AS sp_id,
+                    s_c.name AS other_supplier,
+                    pp.name AS prom_name
+                FROM supplier_products sp_u
+                JOIN supplier_products sp_c
+                    ON sp_c.supplier_id != sp_u.supplier_id
+                    AND sp_c.article IS NOT NULL
+                    AND REGEXP_REPLACE(LOWER(sp_c.article), '[^a-z0-9]', '', 'g')
+                        = REGEXP_REPLACE(LOWER(sp_u.article), '[^a-z0-9]', '', 'g')
+                    AND LENGTH(REGEXP_REPLACE(LOWER(sp_u.article), '[^a-z0-9]', '', 'g')) >= 4
+                JOIN product_matches pm
+                    ON pm.supplier_product_id = sp_c.id
+                    AND pm.status IN ('confirmed', 'manual')
+                JOIN prom_products pp ON pp.id = pm.prom_product_id
+                JOIN suppliers s_c ON s_c.id = sp_c.supplier_id
+                WHERE sp_u.id = ANY(:ids)
+                  AND sp_u.article IS NOT NULL
+            """),
+            {"ids": sp_ids},
         ).all()
-        for row in rows:
-            cross_matched[row.supplier_product_id] = {
+        for row in art_rows:
+            cross_matched[row.sp_id] = {
                 "supplier_name": row.other_supplier,
                 "prom_name": row.prom_name,
             }
-
-        # Fallback: for sp_ids still not found, match via normalized article code.
-        # Handles РП dashes: "XB893-MP" and MARESTO "XB893MP" both normalize to "xb893mp".
-        remaining_ids = [i for i in sp_ids if i not in cross_matched]
-        if remaining_ids:
-            from sqlalchemy import text
-            art_rows = db.session.execute(
-                text("""
-                    SELECT DISTINCT ON (sp_u.id)
-                        sp_u.id AS sp_id,
-                        s_c.name AS other_supplier,
-                        pp.name AS prom_name
-                    FROM supplier_products sp_u
-                    JOIN supplier_products sp_c
-                        ON sp_c.supplier_id != sp_u.supplier_id
-                        AND sp_c.article IS NOT NULL
-                        AND REGEXP_REPLACE(LOWER(sp_c.article), '[^a-z0-9]', '', 'g')
-                            = REGEXP_REPLACE(LOWER(sp_u.article), '[^a-z0-9]', '', 'g')
-                        AND LENGTH(REGEXP_REPLACE(LOWER(sp_u.article), '[^a-z0-9]', '', 'g')) >= 4
-                    JOIN product_matches pm
-                        ON pm.supplier_product_id = sp_c.id
-                        AND pm.status IN ('confirmed', 'manual')
-                    JOIN prom_products pp ON pp.id = pm.prom_product_id
-                    JOIN suppliers s_c ON s_c.id = sp_c.supplier_id
-                    WHERE sp_u.id = ANY(:ids)
-                      AND sp_u.article IS NOT NULL
-                """),
-                {"ids": remaining_ids},
-            ).all()
-            for row in art_rows:
-                cross_matched[row.sp_id] = {
-                    "supplier_name": row.other_supplier,
-                    "prom_name": row.prom_name,
-                }
 
     return render_template(
         "products/unmatched_supplier.html",
