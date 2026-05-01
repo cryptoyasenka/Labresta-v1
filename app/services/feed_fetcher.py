@@ -1,6 +1,7 @@
 """HTTP feed fetcher — returns raw bytes to preserve encoding."""
 
 import logging
+from urllib.parse import urlparse
 
 import requests
 from tenacity import (
@@ -32,6 +33,8 @@ def fetch_feed(url: str, timeout: int = 30) -> bytes:
         requests.HTTPError: On non-2xx status codes.
         requests.RequestException: On connection/timeout errors.
     """
+    parsed = urlparse(url)
+    origin = f"{parsed.scheme}://{parsed.netloc}"
     response = requests.get(
         url,
         timeout=timeout,
@@ -44,6 +47,8 @@ def fetch_feed(url: str, timeout: int = 30) -> bytes:
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
             "Accept-Language": "uk-UA,uk;q=0.9,en;q=0.8",
             "Accept-Encoding": "gzip, deflate, br",
+            "Referer": origin + "/",
+            "Connection": "keep-alive",
         },
     )
     response.raise_for_status()
