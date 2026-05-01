@@ -232,6 +232,21 @@
                         {% else %}
                             {{ match.prom_product.name }}
                         {% endif %}
+                        <div class="d-flex align-items-center gap-1 mt-1">
+                            <small class="text-muted name-ru-display"
+                                   data-name-ru="{{ match.prom_product.name_ru or '' }}"
+                                   style="font-size:0.78rem;line-height:1.3;">
+                                {%- if match.prom_product.name_ru -%}
+                                    {{ match.prom_product.name_ru }}
+                                {%- else -%}
+                                    <em class="opacity-50">RU не задано</em>
+                                {%- endif -%}
+                            </small>
+                            <button type="button" class="btn btn-link p-0 edit-name-ru-btn"
+                                    data-match-id="{{ match.id }}"
+                                    title="Редактировать русское название"
+                                    style="font-size:0.72rem;color:#bbb;text-decoration:none;line-height:1.3;">✎</button>
+                        </div>
                         {% set alt_n = alt_counts.get(match.id, 0) %}
                         {% if alt_n > 0 %}
                         <button type="button"
@@ -699,7 +714,7 @@
                 <p class="mb-3 fw-semibold" id="renameFeedCatalogName"></p>
                 <label class="form-label" for="renameFeedInput">Имя для выгрузки <span class="text-muted small">(оставьте пустым — сбросить к каталогу)</span></label>
                 <input type="text" class="form-control" id="renameFeedInput" maxlength="500" placeholder="Введите имя или очистите поле для сброса">
-                <div class="form-text">Это имя используется только в YML-фиде. Каталог Horoshop не изменяется.</div>
+                <div class="form-text">Эта украинская (UA) версия имени пойдёт в <code>&lt;name&gt;</code> YML-фида и обновится в Horoshop при следующем импорте. Внутренний каталог LabResta не меняется.</div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
@@ -771,6 +786,75 @@
     document.getElementById('renameFeedClearBtn').addEventListener('click', function () {
         saveFeedName('');
     });
+})();
+
+// Inline editing of pp.name_ru directly in the review table
+(function () {
+    document.addEventListener('click', function (e) {
+        var btn = e.target.closest('.edit-name-ru-btn');
+        if (!btn) return;
+        var matchId = parseInt(btn.dataset.matchId, 10);
+        var row = document.querySelector('tr[data-match-id="' + matchId + '"]');
+        if (!row) return;
+        var display = row.querySelector('.name-ru-display');
+        if (!display || row.querySelector('.name-ru-input')) return;
+
+        var currentVal = display.dataset.nameRu || '';
+        btn.style.visibility = 'hidden';
+
+        var inp = document.createElement('input');
+        inp.type = 'text';
+        inp.className = 'form-control form-control-sm name-ru-input';
+        inp.value = currentVal;
+        inp.maxLength = 500;
+        inp.style.fontSize = '0.78rem';
+        inp.placeholder = 'Русское название (пусто — очистить)';
+        display.replaceWith(inp);
+        inp.focus();
+        inp.select();
+
+        var committed = false;
+        function commit() {
+            if (committed) return;
+            committed = true;
+            var newVal = inp.value.trim();
+            fetchWithCSRF('/matches/' + matchId + '/update-prom', {
+                method: 'POST',
+                body: JSON.stringify({ name_ru: newVal }),
+            })
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+                var saved = (data.updated && 'name_ru' in data.updated)
+                    ? (data.updated.name_ru || '') : newVal;
+                _replaceInput(inp, btn, saved);
+            })
+            .catch(function () { _replaceInput(inp, btn, currentVal); alert('Сетевая ошибка'); });
+        }
+        function cancel() {
+            if (committed) return;
+            committed = true;
+            _replaceInput(inp, btn, currentVal);
+        }
+        inp.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') { e.preventDefault(); commit(); }
+            if (e.key === 'Escape') { cancel(); }
+        });
+        inp.addEventListener('blur', commit);
+    });
+
+    function _replaceInput(inp, btn, val) {
+        var small = document.createElement('small');
+        small.className = 'text-muted name-ru-display';
+        small.dataset.nameRu = val;
+        small.style.cssText = 'font-size:0.78rem;line-height:1.3;';
+        if (val) {
+            small.textContent = val;
+        } else {
+            small.innerHTML = '<em class="opacity-50">RU не задано</em>';
+        }
+        inp.replaceWith(small);
+        btn.style.visibility = '';
+    }
 })();
 </script>
 {% endblock %}
