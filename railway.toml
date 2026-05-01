@@ -2,7 +2,7 @@
 builder = "nixpacks"
 
 [deploy]
-startCommand = "python scripts/migrate_add_feed_name_pg.py && python scripts/migrate_add_deletion_candidate.py && python scripts/run_brand_normalize.py && gunicorn run:app --bind 0.0.0.0:$PORT --workers 2 --timeout 120"
+startCommand = "python scripts/migrate_add_feed_name_pg.py && python scripts/migrate_add_deletion_candidate.py && gunicorn run:app --bind 0.0.0.0:$PORT --workers 2 --timeout 120"
 healthcheckPath = "/"
 healthcheckTimeout = 30
 restartPolicyType = "on_failure"
