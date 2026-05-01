@@ -139,7 +139,8 @@ def run_job(flask_app, job_id: str) -> None:
 
         try:
             _set(job_id, status="running", phase="backup")
-            backup_path = str(_backup())
+            _backup_result = _backup()
+            backup_path = str(_backup_result) if _backup_result else "skipped (postgresql)"
             _set(job_id, backup=backup_path)
 
             _set(job_id, phase="load_suppliers")

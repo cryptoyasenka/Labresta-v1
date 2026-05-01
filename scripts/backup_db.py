@@ -17,9 +17,9 @@ BACKUP_DIR = PROJECT_ROOT / "backups"
 KEEP_LAST = 20
 
 
-def backup() -> Path:
+def backup() -> Path | None:
     if not SOURCE_DB.exists():
-        raise FileNotFoundError(f"Source DB not found: {SOURCE_DB}")
+        return None  # PostgreSQL environment — no SQLite file to back up
 
     BACKUP_DIR.mkdir(exist_ok=True)
     stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
