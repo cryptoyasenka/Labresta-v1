@@ -1343,10 +1343,15 @@
                 placeholder.style.display = 'none';
                 var html = '';
                 products.forEach(function (p) {
-                    html += '<a href="#" class="list-group-item list-group-item-action catalog-result-item" ' +
-                        'data-product-id="' + p.id + '" data-product-name="' + escapeHtml(p.name) + '">' +
-                        '<div class="d-flex justify-content-between">' +
-                        '  <strong class="text-truncate" style="max-width:60%">' + escapeHtml(p.name) + '</strong>' +
+                    var confirmedBadge = p.confirmed
+                        ? ' <span class="badge bg-secondary ms-1" title="Цей каталожний товар вже підтверджено з іншим постачальником">✓ підтверджено</span>'
+                        : '';
+                    html += '<a href="#" class="list-group-item list-group-item-action catalog-result-item' +
+                        (p.confirmed ? ' list-group-item-secondary' : '') + '" ' +
+                        'data-product-id="' + p.id + '" data-product-name="' + escapeHtml(p.name) + '" ' +
+                        'data-confirmed="' + (p.confirmed ? '1' : '0') + '">' +
+                        '<div class="d-flex justify-content-between align-items-start">' +
+                        '  <strong class="text-truncate" style="max-width:60%">' + escapeHtml(p.name) + confirmedBadge + '</strong>' +
                         '  <span class="text-muted">' + escapeHtml(p.price ? p.price + ' EUR' : '') + '</span>' +
                         '</div>' +
                         '<small class="text-muted">' +

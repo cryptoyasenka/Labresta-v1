@@ -1235,6 +1235,12 @@ def search_catalog():
         .all()
     )
 
+    confirmed_pp_ids = set(
+        r[0] for r in db.session.query(ProductMatch.prom_product_id).filter(
+            ProductMatch.status.in_(("confirmed", "manual"))
+        ).all()
+    )
+
     results = []
     for p in products:
         results.append({
@@ -1244,6 +1250,7 @@ def search_catalog():
             "model": p.model or "",
             "article": p.article or "",
             "price": f"{p.price / 100:.2f}" if p.price else "",
+            "confirmed": p.id in confirmed_pp_ids,
         })
 
     return jsonify(results)
