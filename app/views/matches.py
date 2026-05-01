@@ -555,9 +555,6 @@ def set_feed_name(match_id):
     Only allowed for confirmed/manual matches.
     """
     match = db.get_or_404(ProductMatch, match_id)
-    if match.status not in ("confirmed", "manual"):
-        return jsonify({"status": "error", "message": "Только для confirmed/manual матчей"}), 400
-
     data = request.get_json(silent=True) or request.form
     raw = (data.get("name") or "").strip()
     new_name = raw if raw else None
