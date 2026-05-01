@@ -24,7 +24,7 @@
     <span class="text-muted">Всего: {{ total }} товаров</span>
 </div>
 
-<p class="text-muted mb-3">Товары от поставщика с известным брендом, которых нет в вашем магазине. Рассмотрите возможность добавить их.</p>
+<p class="text-muted mb-3">Товары от поставщика с известным брендом, которых нет в вашем магазине. <span class="badge bg-info text-dark">✓ є матч від іншого</span> — Horoshop вже має цей товар від іншого поставщика.</p>
 
 {# Filter bar #}
 <form method="GET" action="{{ url_for('products.unmatched_supplier') }}" class="row g-2 mb-3 align-items-end">
@@ -83,9 +83,19 @@
         </thead>
         <tbody>
             {% for product in products %}
-            <tr>
+            {% set cm = cross_matched.get(product.id) %}
+            <tr class="{{ 'table-info' if cm else '' }}">
                 <td>{{ product.supplier.name if product.supplier else '-' }}</td>
-                <td>{{ product.name }}</td>
+                <td>
+                    {{ product.name }}
+                    {% if cm %}
+                    <br>
+                    <span class="badge bg-info text-dark mt-1"
+                          title="Horoshop: {{ cm.prom_name }}">
+                        ✓ є матч від {{ cm.supplier_name }}
+                    </span>
+                    {% endif %}
+                </td>
                 <td>{{ product.brand or '-' }}</td>
                 <td>{{ product.model or '-' }}</td>
                 <td>{{ product.article or '-' }}</td>

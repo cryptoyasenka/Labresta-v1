@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 from flask import Blueprint, jsonify, render_template, request
 from flask_login import login_required
 from sqlalchemy import func, or_, select
+from sqlalchemy.orm import aliased
 
 from app.extensions import db
 from app.models.catalog import PromProduct
@@ -497,6 +498,37 @@ def unmatched_supplier():
         .order_by(SupplierProduct.brand)
     ).scalars().all()
 
+    # Cross-supplier match indicator: for each unmatched sp on this page,
+    # check if the same prom_product is already confirmed by another supplier.
+    cross_matched: dict[int, dict] = {}
+    sp_ids = [p.id for p in products]
+    if sp_ids:
+        pm_cand = aliased(ProductMatch, name="pm_cand")
+        pm_conf = aliased(ProductMatch, name="pm_conf")
+        sp_conf = aliased(SupplierProduct, name="sp_conf")
+        s_conf = aliased(Supplier, name="s_conf")
+        rows = db.session.execute(
+            select(
+                pm_cand.supplier_product_id,
+                s_conf.name.label("other_supplier"),
+                PromProduct.name.label("prom_name"),
+            )
+            .select_from(pm_cand)
+            .join(pm_conf, (pm_conf.prom_product_id == pm_cand.prom_product_id)
+                  & pm_conf.status.in_(["confirmed", "manual"])
+                  & (pm_conf.supplier_product_id != pm_cand.supplier_product_id))
+            .join(sp_conf, sp_conf.id == pm_conf.supplier_product_id)
+            .join(s_conf, s_conf.id == sp_conf.supplier_id)
+            .join(PromProduct, PromProduct.id == pm_cand.prom_product_id)
+            .where(pm_cand.supplier_product_id.in_(sp_ids))
+            .distinct(pm_cand.supplier_product_id)
+        ).all()
+        for row in rows:
+            cross_matched[row.supplier_product_id] = {
+                "supplier_name": row.other_supplier,
+                "prom_name": row.prom_name,
+            }
+
     return render_template(
         "products/unmatched_supplier.html",
         products=products,
@@ -511,6 +543,7 @@ def unmatched_supplier():
         search=search,
         supplier_id=supplier_id,
         brand=brand_filter,
+        cross_matched=cross_matched,
     )
 
 
