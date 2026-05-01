@@ -192,7 +192,7 @@ def run_job(flask_app, job_id: str) -> None:
                 ).scalar() or 0
 
                 wipe = db.delete(ProductMatch).where(
-                    ProductMatch.status.in_(("candidate", "rejected")),
+                    ProductMatch.status == "candidate",
                     ProductMatch.supplier_product_id.in_(
                         db.select(SupplierProduct.id).where(SupplierProduct.supplier_id == sup.id)
                     ),

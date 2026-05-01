@@ -18,7 +18,7 @@
                 Обновить всех из источников
             </button>
             <button type="button" class="btn btn-sm btn-outline-warning" id="rematchAllBtn"
-                    title="Стереть candidate+rejected у всех активных поставщиков и прогнать matcher заново. Confirmed/manual не затрагиваются.">
+                    title="Стереть все candidate у всех активных поставщиков и прогнать matcher заново. Rejected и confirmed/manual не затрагиваются.">
                 Перезапустить matcher (все)
             </button>
             <button type="button" class="btn btn-sm btn-outline-primary" id="regenMainBtn"
@@ -167,7 +167,7 @@
                 <button type="button" class="btn btn-sm btn-outline-warning rematch-supplier-btn"
                         data-supplier-id="{{ supplier.id }}"
                         data-supplier-name="{{ supplier.name }}"
-                        title="Стереть candidate+rejected и прогнать matcher заново. Confirmed/manual защищены.">
+                        title="Стереть candidate и прогнать matcher заново. Rejected и confirmed/manual защищены.">
                     Перезапустить matcher
                 </button>
                 <form method="POST" action="{{ url_for('suppliers.supplier_upload', supplier_id=supplier.id) }}"
@@ -509,8 +509,8 @@
             if (!confirm(
                 'Перезапустить matcher для ВСЕХ активных поставщиков?\n\n' +
                 '• backup БД в backups/\n' +
-                '• УДАЛЯТСЯ все candidate и rejected матчи\n' +
-                '• confirmed и manual НЕ затрагиваются\n' +
+                '• УДАЛЯТСЯ все candidate матчи\n' +
+                '• rejected, confirmed и manual НЕ затрагиваются\n' +
                 '• matcher прогонится заново\n\n' +
                 'Это может занять несколько минут. Прогресс будет виден на странице.'
             )) return;
@@ -523,7 +523,7 @@
             var sid = btn.dataset.supplierId;
             var sname = btn.dataset.supplierName || ('#' + sid);
             if (!confirm('Перезапустить matcher для «' + sname + '»?\n\n' +
-                         'candidate+rejected удалятся, confirmed+manual сохранятся. Backup будет создан.')) return;
+                         'candidate удалятся, rejected/confirmed/manual сохранятся. Backup будет создан.')) return;
             kickoffRematch({ supplier_id: parseInt(sid, 10) }, sname);
         });
     });

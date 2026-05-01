@@ -1,7 +1,7 @@
 """Integration tests for `POST /matches/rematch` and its status endpoints.
 
-Guarantees invariant #2: confirmed/manual matches survive a rematch untouched,
-while candidate/rejected matches are wiped and regenerated from the matcher.
+Guarantees invariant #2: confirmed/manual/rejected matches survive a rematch
+untouched, while candidate matches are wiped and regenerated from the matcher.
 Also exercises the background-job wrapper: audit-log start/finish entries,
 progress reporting, 409 Conflict on concurrent start.
 """
@@ -138,7 +138,7 @@ def test_rematch_preserves_confirmed_and_manual(client, session, monkeypatch, tm
     assert len(result["suppliers"]) == 1
     assert result["suppliers"][0]["supplier_id"] == supplier.id
     assert result["suppliers"][0]["protected"] == 2  # confirmed + manual
-    assert result["suppliers"][0]["deleted"] == 2    # candidate + rejected
+    assert result["suppliers"][0]["deleted"] == 1    # only candidate; rejected preserved
 
     session.expire_all()
     assert session.get(ProductMatch, ids["confirmed"]).status == "confirmed"
@@ -146,7 +146,7 @@ def test_rematch_preserves_confirmed_and_manual(client, session, monkeypatch, tm
     rej_row = ProductMatch.query.filter_by(
         supplier_product_id=sps[3].id, prom_product_id=pps[3].id, status="rejected",
     ).first()
-    assert rej_row is None, "rejected match was not wiped"
+    assert rej_row is not None, "rejected match should be preserved across rematch"
 
 
 def test_rematch_writes_audit_start_and_finish(client, session, monkeypatch, tmp_path):
@@ -176,7 +176,7 @@ def test_rematch_all_scope(client, session, monkeypatch, tmp_path):
 
     ids = [r["supplier_id"] for r in job["result"]["suppliers"]]
     assert sup_a.id in ids and sup_b.id in ids
-    assert job["result"]["total_deleted"] >= 4  # both contributed candidate+rejected
+    assert job["result"]["total_deleted"] >= 2  # both contributed at least 1 candidate each
 
 
 def test_rematch_rejects_bad_scope(client, session):
