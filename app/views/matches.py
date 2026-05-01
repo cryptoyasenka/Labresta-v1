@@ -546,6 +546,32 @@ def match_details(match_id):
     })
 
 
+@matches_bp.route("/<int:match_id>/feed-name", methods=["POST"])
+@login_required
+def set_feed_name(match_id):
+    """Set or clear a custom offer name for the Horoshop YML feed.
+
+    POST body (JSON or form): name=<string>  (empty string = clear override).
+    Only allowed for confirmed/manual matches.
+    """
+    match = db.get_or_404(ProductMatch, match_id)
+    if match.status not in ("confirmed", "manual"):
+        return jsonify({"status": "error", "message": "Только для confirmed/manual матчей"}), 400
+
+    data = request.get_json(silent=True) or request.form
+    raw = (data.get("name") or "").strip()
+    new_name = raw if raw else None
+
+    match.feed_name = new_name
+    log_action(
+        action="feed_name_set",
+        match_id=match_id,
+        details={"feed_name": new_name},
+    )
+    db.session.commit()
+    return jsonify({"status": "ok", "feed_name": new_name})
+
+
 def _is_model_token(token: str) -> bool:
     """Return True if token looks like a model/article/size (safe to replace in RU).
 

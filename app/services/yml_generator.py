@@ -92,7 +92,7 @@ def _build_offer_xml(parent_el, match) -> bool:
         id=str(pp.external_id),
         available=avail_str,
     )
-    etree.SubElement(offer, "name").text = pp.name
+    etree.SubElement(offer, "name").text = match.feed_name or pp.name
     if pp.name_ru:
         etree.SubElement(offer, "name_ru").text = pp.name_ru
     if pp.page_url:

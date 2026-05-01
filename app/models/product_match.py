@@ -34,6 +34,7 @@ class ProductMatch(db.Model):
         db.Float, nullable=True
     )  # Per-product override; NULL = use supplier default
     name_synced = db.Column(db.Boolean, default=False, server_default="0")  # Name updated from supplier
+    feed_name = db.Column(db.String(500), nullable=True)  # Override name in Horoshop YML; NULL = use pp.name
     price_synced_at = db.Column(db.DateTime, nullable=True)
     availability_synced_at = db.Column(db.DateTime, nullable=True)
     in_feed = db.Column(db.Boolean, nullable=False, default=False, server_default="0")

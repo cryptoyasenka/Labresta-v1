@@ -196,7 +196,8 @@
                     data-confirmed-by="{{ match.confirmed_by or '' }}"
                     data-discount-percent="{{ match.discount_percent if match.discount_percent is not none else '' }}"
                     data-supplier-available="{{ 'true' if match.supplier_product.available else 'false' }}"
-                    data-supplier-default-discount="{{ match.supplier_product.supplier.discount_percent }}">
+                    data-supplier-default-discount="{{ match.supplier_product.supplier.discount_percent }}"
+                    data-feed-name="{{ match.feed_name or '' }}">
                     <td><input type="checkbox" class="form-check-input row-checkbox" value="{{ match.id }}"></td>
                     <td class="supplier-name-cell">{{ match.supplier_product.name }}</td>
                     <td>
@@ -223,7 +224,14 @@
                         {% endif %}
                     </td>
                     <td class="prom-name-cell">
-                        {{ match.prom_product.name }}
+                        {% if match.feed_name %}
+                            <span class="feed-name-display">{{ match.feed_name }}</span>
+                            <small class="text-muted d-block" title="Оригинал: {{ match.prom_product.name }}">
+                                <span class="badge bg-warning text-dark">&#9998; переименован</span>
+                            </small>
+                        {% else %}
+                            {{ match.prom_product.name }}
+                        {% endif %}
                         {% set alt_n = alt_counts.get(match.id, 0) %}
                         {% if alt_n > 0 %}
                         <button type="button"
@@ -363,6 +371,13 @@
                                 data-pp-brand="{{ match.prom_product.brand or '' }}"
                                 title="Переподвязать этот товар каталога на другого поставщика">
                             Переподвязать
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary rename-feed-btn"
+                                data-match-id="{{ match.id }}"
+                                data-catalog-name="{{ match.prom_product.name }}"
+                                data-feed-name="{{ match.feed_name or '' }}"
+                                title="Задать своё имя товара для выгрузки в Horoshop (не меняет каталог)">
+                            &#9998; Имя в фиде
                         </button>
                         {% endif %}
                         <button class="btn btn-sm btn-outline-info details-btn" data-id="{{ match.id }}"
@@ -671,8 +686,91 @@
         </div>
     </div>
 </div>
+<!-- Rename Feed Modal -->
+<div class="modal fade" id="renameFeedModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Имя товара в фиде Horoshop</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted small mb-1">Каталог:</p>
+                <p class="mb-3 fw-semibold" id="renameFeedCatalogName"></p>
+                <label class="form-label" for="renameFeedInput">Имя для выгрузки <span class="text-muted small">(оставьте пустым — сбросить к каталогу)</span></label>
+                <input type="text" class="form-control" id="renameFeedInput" maxlength="500" placeholder="Введите имя или очистите поле для сброса">
+                <div class="form-text">Это имя используется только в YML-фиде. Каталог Horoshop не изменяется.</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-warning" id="renameFeedClearBtn">Сбросить</button>
+                <button type="button" class="btn btn-primary" id="renameFeedSaveBtn">Сохранить</button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/matches.js') }}"></script>
+<script>
+(function () {
+    var renameFeedModal = new bootstrap.Modal(document.getElementById('renameFeedModal'));
+    var renameFeedMatchId = null;
+
+    document.addEventListener('click', function (e) {
+        var btn = e.target.closest('.rename-feed-btn');
+        if (!btn) return;
+        renameFeedMatchId = parseInt(btn.dataset.matchId, 10);
+        document.getElementById('renameFeedCatalogName').textContent = btn.dataset.catalogName || '';
+        document.getElementById('renameFeedInput').value = btn.dataset.feedName || '';
+        renameFeedModal.show();
+    });
+
+    function saveFeedName(name) {
+        if (!renameFeedMatchId) return;
+        fetchWithCSRF('/matches/' + renameFeedMatchId + '/feed-name', {
+            method: 'POST',
+            body: JSON.stringify({name: name}),
+        })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+            if (data.status !== 'ok') { alert('Ошибка: ' + (data.message || 'неизвестно')); return; }
+            var row = document.querySelector('tr[data-match-id="' + renameFeedMatchId + '"]');
+            if (row) {
+                row.dataset.feedName = data.feed_name || '';
+                var cell = row.querySelector('.prom-name-cell');
+                var catName = row.dataset.promName || '';
+                // Preserve the alt-badge button if it exists.
+                var altBtn = cell.querySelector('.alt-badge');
+                // Rebuild the text portion of the cell.
+                var html = '';
+                if (data.feed_name) {
+                    html = '<span class="feed-name-display">' + _esc(data.feed_name) + '</span>'
+                         + '<small class="text-muted d-block"><span class="badge bg-warning text-dark">&#9998; переименован</span></small>';
+                } else {
+                    html = _esc(catName);
+                }
+                cell.innerHTML = html;
+                if (altBtn) cell.appendChild(altBtn);
+                var renameBtn = row.querySelector('.rename-feed-btn');
+                if (renameBtn) renameBtn.dataset.feedName = data.feed_name || '';
+            }
+            renameFeedModal.hide();
+        })
+        .catch(function () { alert('Сетевая ошибка'); });
+    }
+
+    function _esc(s) {
+        return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    document.getElementById('renameFeedSaveBtn').addEventListener('click', function () {
+        saveFeedName(document.getElementById('renameFeedInput').value.trim());
+    });
+    document.getElementById('renameFeedClearBtn').addEventListener('click', function () {
+        saveFeedName('');
+    });
+})();
+</script>
 {% endblock %}
