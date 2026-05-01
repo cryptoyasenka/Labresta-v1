@@ -17,6 +17,22 @@ cur.execute(
     "ALTER TABLE product_matches ADD COLUMN IF NOT EXISTS "
     "deletion_candidate BOOLEAN NOT NULL DEFAULT FALSE"
 )
+
+# Backfill: confirmed/manual matches where supplier product already disappeared
+# before this feature was introduced (available=False, needs_review=True).
+cur.execute("""
+    UPDATE product_matches pm
+    SET deletion_candidate = TRUE
+    FROM supplier_products sp
+    WHERE pm.supplier_product_id = sp.id
+      AND pm.status IN ('confirmed', 'manual')
+      AND pm.deletion_candidate = FALSE
+      AND sp.available = FALSE
+      AND sp.needs_review = TRUE
+""")
+backfill_count = cur.rowcount
+print(f"deletion_candidate backfill: {backfill_count} matches flagged.", flush=True)
+
 cur.close()
 conn.close()
 print("deletion_candidate migration: done.", flush=True)
