@@ -502,9 +502,11 @@ def unmatched_supplier():
     #
     # Pass 1 — article normalization (most reliable, no false positives):
     #   strip non-alphanumeric, lowercase → XB893-MP = XB893MP, XB693 ≠ XB693MP.
-    # Pass 2 — high-confidence candidates (score ≥ 90) for products without articles
-    #   or where article normalization found no match. Threshold filters wrong
-    #   candidates like XB693→XB693MP (86%).
+    # Pass 2 — candidate-based for products not caught by pass 1.
+    #   Products WITH articles use score ≥ 90 (filters XB693→XB693MP at 86%).
+    #   Products WITHOUT articles use score ≥ 85 (no article = no precise check,
+    #   slightly lower threshold acceptable; e.g. MIRRA 275C Normale ≠ MIRRA 275 CE
+    #   by name but same physical product confirmed by domain knowledge).
     cross_matched: dict[int, dict] = {}
     sp_ids = [p.id for p in products]
     if sp_ids:
@@ -543,33 +545,42 @@ def unmatched_supplier():
             pm_conf = aliased(ProductMatch, name="pm_conf")
             sp_conf = aliased(SupplierProduct, name="sp_conf")
             s_conf = aliased(Supplier, name="s_conf")
-            cand_rows = db.session.execute(
-                select(
-                    pm_cand.supplier_product_id,
-                    s_conf.name.label("other_supplier"),
-                    PromProduct.name.label("prom_name"),
-                )
-                .select_from(pm_cand)
-                .join(
-                    pm_conf,
-                    (pm_conf.prom_product_id == pm_cand.prom_product_id)
-                    & pm_conf.status.in_(["confirmed", "manual"])
-                    & (pm_conf.supplier_product_id != pm_cand.supplier_product_id),
-                )
-                .join(sp_conf, sp_conf.id == pm_conf.supplier_product_id)
-                .join(s_conf, s_conf.id == sp_conf.supplier_id)
-                .join(PromProduct, PromProduct.id == pm_cand.prom_product_id)
-                .where(
-                    pm_cand.supplier_product_id.in_(remaining_ids),
-                    pm_cand.score >= 90,
-                )
-                .distinct(pm_cand.supplier_product_id)
-            ).all()
-            for row in cand_rows:
-                cross_matched[row.supplier_product_id] = {
-                    "supplier_name": row.other_supplier,
-                    "prom_name": row.prom_name,
-                }
+
+            # Split by article presence to apply different score thresholds.
+            _pid_has_article = {p.id for p in products if p.article}
+            for _ids, _threshold in [
+                ([i for i in remaining_ids if i not in _pid_has_article], 85),
+                ([i for i in remaining_ids if i in _pid_has_article], 90),
+            ]:
+                if not _ids:
+                    continue
+                cand_rows = db.session.execute(
+                    select(
+                        pm_cand.supplier_product_id,
+                        s_conf.name.label("other_supplier"),
+                        PromProduct.name.label("prom_name"),
+                    )
+                    .select_from(pm_cand)
+                    .join(
+                        pm_conf,
+                        (pm_conf.prom_product_id == pm_cand.prom_product_id)
+                        & pm_conf.status.in_(["confirmed", "manual"])
+                        & (pm_conf.supplier_product_id != pm_cand.supplier_product_id),
+                    )
+                    .join(sp_conf, sp_conf.id == pm_conf.supplier_product_id)
+                    .join(s_conf, s_conf.id == sp_conf.supplier_id)
+                    .join(PromProduct, PromProduct.id == pm_cand.prom_product_id)
+                    .where(
+                        pm_cand.supplier_product_id.in_(_ids),
+                        pm_cand.score >= _threshold,
+                    )
+                    .distinct(pm_cand.supplier_product_id)
+                ).all()
+                for row in cand_rows:
+                    cross_matched[row.supplier_product_id] = {
+                        "supplier_name": row.other_supplier,
+                        "prom_name": row.prom_name,
+                    }
 
     return render_template(
         "products/unmatched_supplier.html",
