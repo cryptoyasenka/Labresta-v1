@@ -224,6 +224,7 @@
                         {% endif %}
                     </td>
                     <td class="prom-name-cell">
+                        <span class="prom-name-text">
                         {% if match.feed_name %}
                             <span class="feed-name-display">{{ match.feed_name }}</span>
                             <small class="text-muted d-block" title="Оригинал: {{ match.prom_product.name }}">
@@ -232,6 +233,7 @@
                         {% else %}
                             {{ match.prom_product.name }}
                         {% endif %}
+                        </span>
                         <div class="d-flex align-items-center gap-1 mt-1">
                             <small class="text-muted name-ru-display"
                                    data-name-ru="{{ match.prom_product.name_ru or '' }}"
@@ -757,17 +759,15 @@
                 var cell = row.querySelector('.prom-name-cell');
                 var catName = row.dataset.promName || '';
                 // Preserve the alt-badge button if it exists.
-                var altBtn = cell.querySelector('.alt-badge');
-                // Rebuild the text portion of the cell.
-                var html = '';
+                // Rebuild only the .prom-name-text span — preserves name_ru block below it
+                var nameSpan = cell.querySelector('.prom-name-text');
+                if (!nameSpan) { nameSpan = document.createElement('span'); nameSpan.className = 'prom-name-text'; cell.prepend(nameSpan); }
                 if (data.feed_name) {
-                    html = '<span class="feed-name-display">' + _esc(data.feed_name) + '</span>'
-                         + '<small class="text-muted d-block"><span class="badge bg-warning text-dark">&#9998; переименован</span></small>';
+                    nameSpan.innerHTML = '<span class="feed-name-display">' + _esc(data.feed_name) + '</span>'
+                        + '<small class="text-muted d-block"><span class="badge bg-warning text-dark">&#9998; переименован</span></small>';
                 } else {
-                    html = _esc(catName);
+                    nameSpan.textContent = catName;
                 }
-                cell.innerHTML = html;
-                if (altBtn) cell.appendChild(altBtn);
                 var renameBtn = row.querySelector('.rename-feed-btn');
                 if (renameBtn) renameBtn.dataset.feedName = data.feed_name || '';
             }

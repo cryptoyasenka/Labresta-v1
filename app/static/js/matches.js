@@ -1166,7 +1166,10 @@
 
             var result = charDiff(supplierName, promName);
             supplierCell.innerHTML = result.aHtml;
-            promCell.innerHTML = result.bHtml;
+            // Target only the name span to preserve the name_ru block below it
+            var nameSpan = promCell.querySelector('.prom-name-text');
+            if (nameSpan) nameSpan.innerHTML = result.bHtml;
+            else promCell.innerHTML = result.bHtml;
         });
     }
 
@@ -1179,7 +1182,10 @@
             if (!supplierCell || !promCell) return;
 
             supplierCell.textContent = row.getAttribute('data-supplier-name') || '';
-            promCell.textContent = row.getAttribute('data-prom-name') || '';
+            // Target only the name span to preserve the name_ru block below it
+            var nameSpan = promCell.querySelector('.prom-name-text');
+            if (nameSpan) nameSpan.textContent = row.getAttribute('data-prom-name') || '';
+            else promCell.textContent = row.getAttribute('data-prom-name') || '';
         });
     }
 
