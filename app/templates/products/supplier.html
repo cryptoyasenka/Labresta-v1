@@ -237,7 +237,7 @@
                         В наличии
                     </button>
                     {% endif %}
-                    <button class="btn btn-outline-primary btn-sm" onclick="showForcePrice({{ product.id }}, {{ product.price_cents or 0 }})" title="Установить цену">
+                    <button class="btn btn-outline-primary btn-sm" onclick="showForcePrice({{ product.id }}, {{ product.price_cents or 0 }}, '{{ product.currency or "UAH" }}')" title="Установить цену">
                         Цена
                     </button>
                     <button class="btn btn-outline-danger btn-sm" onclick="deleteProduct({{ product.id }})" title="Удалить товар">
@@ -274,8 +274,9 @@
             </div>
             <div class="modal-body">
                 <input type="hidden" id="forcePriceProductId">
+                <input type="hidden" id="forcePriceCurrency" value="UAH">
                 <div class="mb-3">
-                    <label class="form-label">Цена (UAH)</label>
+                    <label class="form-label" id="forcePriceCurrencyLabel">Цена (UAH)</label>
                     <input type="number" class="form-control" id="forcePriceValue" step="0.01" min="0">
                 </div>
             </div>

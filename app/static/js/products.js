@@ -83,8 +83,11 @@ async function markAvailable(productId) {
  * @param {number} productId - Product ID
  * @param {number} currentPriceCents - Current price in cents
  */
-function showForcePrice(productId, currentPriceCents) {
+function showForcePrice(productId, currentPriceCents, currency) {
+    currency = currency || 'UAH';
     document.getElementById('forcePriceProductId').value = productId;
+    document.getElementById('forcePriceCurrency').value = currency;
+    document.getElementById('forcePriceCurrencyLabel').textContent = 'Цена (' + currency + ')';
     document.getElementById('forcePriceValue').value = currentPriceCents > 0
         ? (currentPriceCents / 100).toFixed(2)
         : '';
@@ -97,19 +100,20 @@ function showForcePrice(productId, currentPriceCents) {
  */
 async function submitForcePrice() {
     const productId = document.getElementById('forcePriceProductId').value;
-    const priceUAH = parseFloat(document.getElementById('forcePriceValue').value);
+    const currency = document.getElementById('forcePriceCurrency').value || 'UAH';
+    const priceValue = parseFloat(document.getElementById('forcePriceValue').value);
 
-    if (isNaN(priceUAH) || priceUAH < 0) {
+    if (isNaN(priceValue) || priceValue < 0) {
         alert('Введите корректную цену');
         return;
     }
 
-    const priceCents = Math.round(priceUAH * 100);
+    const priceCents = Math.round(priceValue * 100);
 
     try {
         const resp = await fetchWithCSRF(`/products/supplier/${productId}/force-price`, {
             method: 'POST',
-            body: JSON.stringify({ price_cents: priceCents, currency: 'UAH' }),
+            body: JSON.stringify({ price_cents: priceCents, currency: currency }),
         });
         const data = await resp.json();
         if (resp.ok && data.status === 'ok') {
@@ -124,7 +128,7 @@ async function submitForcePrice() {
                 const cells = row.querySelectorAll('td');
                 const priceCell = cells[5];
                 if (priceCell) {
-                    priceCell.innerHTML = `${priceUAH.toFixed(2)} UAH <span class="badge bg-info">Принудительная</span>`;
+                    priceCell.innerHTML = `${priceValue.toFixed(2)} ${currency} <span class="badge bg-info">Принудительная</span>`;
                 }
             }
         } else {
