@@ -758,6 +758,7 @@ def regenerate_feed():
         "available": result["available"],
         "unavailable": result["unavailable"],
     })
+    db.session.commit()
     return jsonify({"status": "ok", **result})
 
 

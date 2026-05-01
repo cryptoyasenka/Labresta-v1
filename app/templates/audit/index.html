@@ -77,6 +77,12 @@
                         <span class="badge bg-primary">{{ label }}</span>
                     {% elif entry.action == 'set_discount' %}
                         <span class="badge bg-secondary">{{ label }}</span>
+                    {% elif entry.action in ('regenerate_feed', 'regenerate_supplier_feed') %}
+                        <span class="badge bg-info text-dark">{{ label }}</span>
+                    {% elif entry.action == 'feed_name_set' %}
+                        <span class="badge bg-warning text-dark">{{ label }}</span>
+                    {% elif entry.action == 'rematch_error' %}
+                        <span class="badge bg-danger">{{ label }}</span>
                     {% else %}
                         <span class="badge bg-secondary">{{ label }}</span>
                     {% endif %}
@@ -118,6 +124,12 @@
                             {% endif %}
                         {% elif entry.action == 'unconfirm' %}
                             было: {{ d.get('old_status', '') }}
+                        {% elif entry.action == 'regenerate_feed' %}
+                            {{ d.get('total', 0) }} офферів ({{ d.get('available', 0) }} є, {{ d.get('unavailable', 0) }} нема)
+                        {% elif entry.action == 'regenerate_supplier_feed' %}
+                            <strong>{{ d.get('supplier_name', '') }}</strong> — {{ d.get('total', 0) }} офф. ({{ d.get('available', 0) }} є, {{ d.get('unavailable', 0) }} нема)
+                        {% elif entry.action == 'feed_name_set' %}
+                            → <em>{{ d.get('feed_name') or '(скинуто до каталогу)' }}</em>
                         {% else %}
                             {{ entry.details[:60] }}
                         {% endif %}

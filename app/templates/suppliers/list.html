@@ -35,6 +35,8 @@
                        value="{{ url_for('feed.serve_yml', _external=True) }}" readonly>
                 <button type="button" class="btn btn-outline-secondary btn-sm copy-url"
                         data-target="mainFeedUrlInput">Копировать</button>
+                <a href="{{ url_for('feed.serve_yml', _external=True) }}" target="_blank"
+                   class="btn btn-outline-secondary btn-sm" title="Открыть общий YML">Открыть</a>
             </div>
             <span id="globalFeedStatus" class="small text-muted ms-2"></span>
         </div>
@@ -145,6 +147,8 @@
                                 data-target="sup-feed-url-{{ supplier.id }}">
                             Копировать
                         </button>
+                        <a href="{{ sup_feed_url }}" target="_blank" class="btn btn-outline-secondary btn-sm"
+                           title="Открыть YML в новой вкладке">Открыть</a>
                     </div>
                     <span class="small text-muted regen-supplier-status"
                           id="regen-status-{{ supplier.id }}"></span>

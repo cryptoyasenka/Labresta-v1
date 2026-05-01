@@ -603,6 +603,7 @@ def supplier_regenerate_feed(supplier_id):
         "available": result["available"],
         "unavailable": result["unavailable"],
     })
+    db.session.commit()
     return jsonify({"status": "ok", **result})
 
 

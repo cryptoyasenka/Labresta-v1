@@ -26,6 +26,9 @@ ACTION_LABELS = {
     "rematch_start": "Перезапуск matcher (старт)",
     "rematch_finish": "Перезапуск matcher (готово)",
     "rematch_error": "Перезапуск matcher (помилка)",
+    "regenerate_feed": "Пересборка загального YML",
+    "regenerate_supplier_feed": "Пересборка YML поставщика",
+    "feed_name_set": "Перейменування в фіді",
 }
 
 
