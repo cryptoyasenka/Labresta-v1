@@ -2,6 +2,7 @@ import os
 
 from flask import Flask, jsonify, request
 from flask_wtf.csrf import CSRFError
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from app.extensions import configure_sqlite_wal, csrf, db, login_manager
 
@@ -24,6 +25,9 @@ def _wants_json_response() -> bool:
 
 def create_app(config_name="default"):
     app = Flask(__name__, instance_relative_config=True)
+
+    # Trust Railway's reverse proxy for HTTPS scheme + correct host in url_for(_external=True)
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
     # Ensure instance folder exists (Windows-safe, see Research Pitfall 4)
     os.makedirs(app.instance_path, exist_ok=True)
