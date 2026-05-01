@@ -224,16 +224,22 @@
                         {% endif %}
                     </td>
                     <td class="prom-name-cell">
-                        <span class="prom-name-text">
-                        {% if match.feed_name %}
-                            <span class="feed-name-display">{{ match.feed_name }}</span>
-                            <small class="text-muted d-block" title="Оригинал: {{ match.prom_product.name }}">
-                                <span class="badge bg-warning text-dark">&#9998; переименован</span>
-                            </small>
-                        {% else %}
-                            {{ match.prom_product.name }}
-                        {% endif %}
-                        </span>
+                        <div class="d-flex align-items-start gap-1">
+                            <span class="prom-name-text">
+                            {% if match.feed_name %}
+                                <span class="feed-name-display">{{ match.feed_name }}</span>
+                                <small class="text-muted d-block" title="Оригинал: {{ match.prom_product.name }}">
+                                    <span class="badge bg-warning text-dark">&#9998; переименован</span>
+                                </small>
+                            {% else %}
+                                {{ match.prom_product.name }}
+                            {% endif %}
+                            </span>
+                            <button type="button" class="btn btn-link p-0 edit-feed-name-inline-btn flex-shrink-0"
+                                    data-match-id="{{ match.id }}"
+                                    title="Редагувати UA назву в фіді"
+                                    style="font-size:0.78rem;color:#bbb;text-decoration:none;line-height:1.5;">✎</button>
+                        </div>
                         <div class="d-flex align-items-center gap-1 mt-1">
                             <small class="text-muted name-ru-display"
                                    data-name-ru="{{ match.prom_product.name_ru or '' }}"
@@ -388,13 +394,6 @@
                                 data-pp-brand="{{ match.prom_product.brand or '' }}"
                                 title="Переподвязать этот товар каталога на другого поставщика">
                             Переподвязать
-                        </button>
-                        <button class="btn btn-sm btn-outline-secondary rename-feed-btn"
-                                data-match-id="{{ match.id }}"
-                                data-catalog-name="{{ match.prom_product.name }}"
-                                data-feed-name="{{ match.feed_name or '' }}"
-                                title="Задать своё имя товара для выгрузки в Horoshop (не меняет каталог)">
-                            &#9998; Имя в фиде
                         </button>
                         {% endif %}
                         <button class="btn btn-sm btn-outline-info details-btn" data-id="{{ match.id }}"
@@ -703,88 +702,119 @@
         </div>
     </div>
 </div>
-<!-- Rename Feed Modal -->
-<div class="modal fade" id="renameFeedModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Имя товара в фиде Horoshop</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <p class="text-muted small mb-1">Каталог:</p>
-                <p class="mb-3 fw-semibold" id="renameFeedCatalogName"></p>
-                <label class="form-label" for="renameFeedInput">Имя для выгрузки <span class="text-muted small">(оставьте пустым — сбросить к каталогу)</span></label>
-                <input type="text" class="form-control" id="renameFeedInput" maxlength="500" placeholder="Введите имя или очистите поле для сброса">
-                <div class="form-text">Эта украинская (UA) версия имени пойдёт в <code>&lt;name&gt;</code> YML-фида и обновится в Horoshop при следующем импорте. Внутренний каталог LabResta не меняется.</div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-                <button type="button" class="btn btn-warning" id="renameFeedClearBtn">Сбросить</button>
-                <button type="button" class="btn btn-primary" id="renameFeedSaveBtn">Сохранить</button>
-            </div>
-        </div>
-    </div>
-</div>
 {% endblock %}
 
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/matches.js') }}"></script>
 <script>
+// Inline editing of match.feed_name (UA name for YML feed) directly in the review table
 (function () {
-    var renameFeedModal = new bootstrap.Modal(document.getElementById('renameFeedModal'));
-    var renameFeedMatchId = null;
-
-    document.addEventListener('click', function (e) {
-        var btn = e.target.closest('.rename-feed-btn');
-        if (!btn) return;
-        renameFeedMatchId = parseInt(btn.dataset.matchId, 10);
-        document.getElementById('renameFeedCatalogName').textContent = btn.dataset.catalogName || '';
-        document.getElementById('renameFeedInput').value = btn.dataset.feedName || '';
-        renameFeedModal.show();
-    });
-
-    function saveFeedName(name) {
-        if (!renameFeedMatchId) return;
-        fetchWithCSRF('/matches/' + renameFeedMatchId + '/feed-name', {
-            method: 'POST',
-            body: JSON.stringify({name: name}),
-        })
-        .then(function (r) { return r.json(); })
-        .then(function (data) {
-            if (data.status !== 'ok') { alert('Ошибка: ' + (data.message || 'неизвестно')); return; }
-            var row = document.querySelector('tr[data-match-id="' + renameFeedMatchId + '"]');
-            if (row) {
-                row.dataset.feedName = data.feed_name || '';
-                var cell = row.querySelector('.prom-name-cell');
-                var catName = row.dataset.promName || '';
-                // Preserve the alt-badge button if it exists.
-                // Rebuild only the .prom-name-text span — preserves name_ru block below it
-                var nameSpan = cell.querySelector('.prom-name-text');
-                if (!nameSpan) { nameSpan = document.createElement('span'); nameSpan.className = 'prom-name-text'; cell.prepend(nameSpan); }
-                if (data.feed_name) {
-                    nameSpan.innerHTML = '<span class="feed-name-display">' + _esc(data.feed_name) + '</span>'
-                        + '<small class="text-muted d-block"><span class="badge bg-warning text-dark">&#9998; переименован</span></small>';
-                } else {
-                    nameSpan.textContent = catName;
-                }
-                var renameBtn = row.querySelector('.rename-feed-btn');
-                if (renameBtn) renameBtn.dataset.feedName = data.feed_name || '';
-            }
-            renameFeedModal.hide();
-        })
-        .catch(function () { alert('Сетевая ошибка'); });
-    }
-
     function _esc(s) {
         return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     }
 
-    document.getElementById('renameFeedSaveBtn').addEventListener('click', function () {
-        saveFeedName(document.getElementById('renameFeedInput').value.trim());
-    });
-    document.getElementById('renameFeedClearBtn').addEventListener('click', function () {
-        saveFeedName('');
+    function _restoreNameSpan(wrapper, btn, feedName, catalogName) {
+        var span = document.createElement('span');
+        span.className = 'prom-name-text';
+        if (feedName) {
+            span.innerHTML = '<span class="feed-name-display">' + _esc(feedName) + '</span>'
+                + '<small class="text-muted d-block"><span class="badge bg-warning text-dark">&#9998; переименован</span></small>';
+        } else {
+            span.textContent = catalogName;
+        }
+        wrapper.replaceWith(span);
+        btn.style.visibility = '';
+    }
+
+    document.addEventListener('click', function (e) {
+        var btn = e.target.closest('.edit-feed-name-inline-btn');
+        if (!btn) return;
+        var matchId = parseInt(btn.dataset.matchId, 10);
+        var row = document.querySelector('tr[data-match-id="' + matchId + '"]');
+        if (!row) return;
+        var nameSpan = row.querySelector('.prom-name-text');
+        if (!nameSpan || row.querySelector('.feed-name-inline-input')) return;
+
+        var currentFeedName = row.dataset.feedName || '';
+        var catalogName = row.dataset.promName || '';
+        var supplierName = row.dataset.supplierName || '';
+
+        btn.style.visibility = 'hidden';
+
+        var wrapper = document.createElement('div');
+        wrapper.className = 'feed-name-inline-wrapper';
+
+        var inp = document.createElement('input');
+        inp.type = 'text';
+        inp.className = 'form-control form-control-sm feed-name-inline-input';
+        inp.value = currentFeedName;
+        inp.maxLength = 500;
+        inp.placeholder = catalogName;
+        inp.title = 'Enter — зберегти, Escape — скасувати, порожньо — скинути до каталогу';
+        wrapper.appendChild(inp);
+
+        var hints = document.createElement('div');
+        hints.style.cssText = 'font-size:0.72rem;color:#6c757d;margin-top:2px;display:flex;gap:8px;';
+
+        if (supplierName && supplierName !== catalogName) {
+            var spLink = document.createElement('a');
+            spLink.href = '#';
+            spLink.textContent = '↙ від постачальника';
+            spLink.addEventListener('mousedown', function (e) {
+                e.preventDefault();
+                inp.value = supplierName;
+            });
+            hints.appendChild(spLink);
+        }
+
+        var resetLink = document.createElement('a');
+        resetLink.href = '#';
+        resetLink.textContent = '× скинути до каталогу';
+        resetLink.addEventListener('mousedown', function (e) {
+            e.preventDefault();
+            inp.value = '';
+        });
+        hints.appendChild(resetLink);
+        wrapper.appendChild(hints);
+
+        nameSpan.replaceWith(wrapper);
+        inp.focus();
+        if (currentFeedName) inp.select();
+
+        var committed = false;
+        function commit() {
+            if (committed) return;
+            committed = true;
+            var newVal = inp.value.trim();
+            fetchWithCSRF('/matches/' + matchId + '/feed-name', {
+                method: 'POST',
+                body: JSON.stringify({ name: newVal }),
+            })
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+                if (data.status !== 'ok') {
+                    alert('Помилка: ' + (data.message || 'невідомо'));
+                    _restoreNameSpan(wrapper, btn, currentFeedName, catalogName);
+                    return;
+                }
+                row.dataset.feedName = data.feed_name || '';
+                _restoreNameSpan(wrapper, btn, data.feed_name || '', catalogName);
+            })
+            .catch(function () {
+                _restoreNameSpan(wrapper, btn, currentFeedName, catalogName);
+                alert('Мережева помилка');
+            });
+        }
+        function cancel() {
+            if (committed) return;
+            committed = true;
+            _restoreNameSpan(wrapper, btn, currentFeedName, catalogName);
+        }
+        inp.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') { e.preventDefault(); commit(); }
+            if (e.key === 'Escape') { cancel(); }
+        });
+        inp.addEventListener('blur', commit);
     });
 })();
 

@@ -313,7 +313,10 @@
                             : [row];
                         siblings.forEach(function (r) {
                             var promCell = r.querySelector('.prom-name-cell');
-                            if (promCell) promCell.textContent = data.new_name;
+                            if (promCell && !r.dataset.feedName) {
+                                var ns = promCell.querySelector('.prom-name-text');
+                                if (ns) ns.textContent = data.new_name;
+                            }
                             r.setAttribute('data-prom-name', data.new_name);
                         });
                     }
@@ -730,7 +733,10 @@
                             : (currentRow ? [currentRow] : []);
                         rowsToUpdate.forEach(function (r) {
                             var promCell = r.querySelector('.prom-name-cell');
-                            if (promCell) promCell.textContent = data.updated.name;
+                            if (promCell && !r.dataset.feedName) {
+                                var ns = promCell.querySelector('.prom-name-text');
+                                if (ns) ns.textContent = data.updated.name;
+                            }
                             r.setAttribute('data-prom-name', data.updated.name);
                         });
                     }
