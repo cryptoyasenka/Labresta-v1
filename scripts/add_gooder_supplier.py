@@ -40,7 +40,7 @@ def main():
         supplier = Supplier(
             name="Гудер",
             feed_url="https://gooder.kiev.ua/xml.xml",
-            discount_percent=10.0,
+            discount_percent=5.0,
             pricing_mode="flat",
             eur_rate_uah=EUR_RATE_UAH,
             cost_rate=COST_RATE,
