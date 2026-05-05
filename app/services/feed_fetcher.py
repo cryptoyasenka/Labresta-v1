@@ -53,7 +53,7 @@ def fetch_feed(url: str, timeout: int = 30) -> bytes:
             ),
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
             "Accept-Language": "uk-UA,uk;q=0.9,en;q=0.8",
-            "Accept-Encoding": "gzip, deflate, br",
+            "Accept-Encoding": "gzip, deflate",
             "Referer": origin + "/",
             "Connection": "keep-alive",
         },

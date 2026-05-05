@@ -18,8 +18,8 @@ from app.extensions import db
 from app.models.supplier import Supplier
 
 # ── Config — confirm with Yana before running ──────────────────────────────
-EUR_RATE_UAH = None   # e.g. 45.0 — set actual rate!
-COST_RATE    = None   # e.g. 0.80 — what fraction of Gooder retail we pay
+EUR_RATE_UAH = 45.0   # EUR/UAH rate for margin calculations
+COST_RATE    = 0.85   # 15% supplier discount → we pay 85% of their retail
 # ──────────────────────────────────────────────────────────────────────────
 
 def main():
