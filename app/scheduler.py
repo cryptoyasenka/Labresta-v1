@@ -22,7 +22,8 @@ def scheduled_sync():
     logger.info("Scheduled sync triggered")
     from app.services.sync_pipeline import run_full_sync
 
-    run_full_sync()
+    with scheduler.app.app_context():
+        run_full_sync()
     logger.info("Scheduled sync completed")
 
 
