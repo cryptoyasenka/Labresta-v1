@@ -1353,9 +1353,21 @@ def find_match_candidates(
                     and any(c.isalpha() for c in sp_model_key)
                     and any(c.isdigit() for c in sp_model_key)
                 ):
+                    # Also try stripping trailing brand token (e.g. Gooder appends
+                    # its name to the <model> field → article="BX-1290 Cube Gooder"
+                    # → norm="bx1290cubegooder"; stripped="bx1290cube" IS in PP).
+                    sp_key_stripped = re.sub(r"gooder$", "", sp_model_key)
+                    if len(sp_key_stripped) < 4:
+                        sp_key_stripped = sp_model_key
                     model_in_pp = (
-                        (prom_name_norm_for_model and sp_model_key in prom_name_norm_for_model)
-                        or (prom_display_norm and sp_model_key in prom_display_norm)
+                        (prom_name_norm_for_model and (
+                            sp_model_key in prom_name_norm_for_model
+                            or sp_key_stripped in prom_name_norm_for_model
+                        ))
+                        or (prom_display_norm and (
+                            sp_model_key in prom_display_norm
+                            or sp_key_stripped in prom_display_norm
+                        ))
                     )
                     if not model_in_pp:
                         logger.debug(
