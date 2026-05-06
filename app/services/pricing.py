@@ -174,6 +174,10 @@ def compute_match_pricing(match) -> dict | None:
         return None
     supplier = sp.supplier
     rate = resolve_eur_rate(supplier)
+    # When price_cents are UAH (not EUR), treat rate=1 so all math stays in UAH:
+    # retail_"eur" → retail_uah, margin_"uah" = margin_uah * 1 = margin_uah ✓
+    if getattr(sp, "currency", "EUR") == "UAH":
+        rate = 1.0
     cost_rate_v = float(getattr(supplier, "cost_rate", 0.75) or 0.75)
     min_margin = float(getattr(supplier, "min_margin_uah", 0.0) or 0.0)
 

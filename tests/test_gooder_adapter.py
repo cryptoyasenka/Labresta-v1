@@ -116,26 +116,28 @@ class TestGooderToYml:
         assert by_id["102"].get("available") == "false"
         assert by_id["103"].get("available") == "false"
 
-    def test_price_eur_used_not_uah(self):
+    def test_uah_price_used_not_eur(self):
+        """UAH <price> is used as primary; EUR price is ignored."""
         out = gooder_to_yml(SYNTHETIC)
         root = etree.fromstring(out)
         by_id = {o.get("id"): o for o in root.findall("./shop/offers/offer")}
-        # EUR price 2574.00, not UAH 115830.00
-        assert by_id["101"].find("price").text == "2574.00"
-        assert by_id["102"].find("price").text == "12.00"
+        # UAH price 115830.00, not EUR 2574.00
+        assert by_id["101"].find("price").text == "115830.00"
+        assert by_id["102"].find("price").text == "540.00"
 
-    def test_zero_eur_price_drops_price_element(self):
-        """price_eur=0.00 must not produce a <price> element — zero-price offers are broken."""
+    def test_uah_price_present_even_when_eur_zero(self):
+        """offer 105: price_eur=0 but price=1000 UAH → price element present."""
         out = gooder_to_yml(SYNTHETIC)
         root = etree.fromstring(out)
         by_id = {o.get("id"): o for o in root.findall("./shop/offers/offer")}
-        assert by_id["105"].find("price") is None
+        assert by_id["105"].find("price") is not None
+        assert by_id["105"].find("price").text == "1000.00"
 
-    def test_currency_id_is_eur(self):
+    def test_currency_id_is_uah(self):
         out = gooder_to_yml(SYNTHETIC)
         root = etree.fromstring(out)
         offers = root.findall("./shop/offers/offer")
-        assert all(o.find("currencyId").text == "EUR" for o in offers)
+        assert all(o.find("currencyId").text == "UAH" for o in offers)
 
     def test_manufacturer_maps_to_vendor(self):
         out = gooder_to_yml(SYNTHETIC)
@@ -179,10 +181,12 @@ class TestGooderToYml:
         assert params["Вага"] == "280 кг"
         assert "Розмір (ДХШХВ)" in params
 
-    def test_uah_price_not_in_output(self):
-        """UAH value (115830) must never appear in the YML price element."""
+    def test_eur_price_not_used_as_price(self):
+        """EUR value (2574) must not appear as the price — UAH is used."""
         out = gooder_to_yml(SYNTHETIC)
-        assert b"115830" not in out
+        root = etree.fromstring(out)
+        by_id = {o.get("id"): o for o in root.findall("./shop/offers/offer")}
+        assert by_id["101"].find("price").text != "2574.00"
 
 
 class TestGooderVoltageInjection:
@@ -261,52 +265,63 @@ class TestGooderFeedParserIntegration:
         assert vitrina["brand"] == "Gooder"
         assert vitrina["model"] == "МХМКУПЕЦ1"
         assert vitrina["article"] == "МХМКУПЕЦ1"
-        assert vitrina["currency"] == "EUR"
+        assert vitrina["currency"] == "UAH"
         assert vitrina["available"] is True
-        assert vitrina["price_cents"] == 257400  # 2574.00 EUR * 100
+        assert vitrina["price_cents"] == 11583000  # 115830.00 UAH * 100
 
         gn = next(p for p in products if p["external_id"] == "102")
         assert gn["available"] is False
-        assert gn["price_cents"] == 1200  # 12.00 EUR
+        assert gn["price_cents"] == 54000  # 540.00 UAH * 100
 
-    def test_zero_eur_price_yields_none_price_cents(self):
+    def test_uah_price_present_in_feed_parser(self):
+        """offer 105: UAH price=1000 → price_cents=100000, not None."""
         yml = gooder_to_yml(SYNTHETIC)
         products = parse_supplier_feed(yml, supplier_id=999)
-        zero_item = next(p for p in products if p["external_id"] == "105")
-        assert zero_item["price_cents"] is None
+        zero_eur_item = next(p for p in products if p["external_id"] == "105")
+        assert zero_eur_item["price_cents"] == 100000  # 1000.00 UAH * 100
 
-    def test_all_currencies_are_eur(self):
+    def test_all_currencies_are_uah(self):
         yml = gooder_to_yml(SYNTHETIC)
         products = parse_supplier_feed(yml, supplier_id=999)
-        assert all(p["currency"] == "EUR" for p in products)
+        assert all(p["currency"] == "UAH" for p in products)
 
 
 class TestGooderUahFallback:
-    """price_eur=0 with UAH price → falls back to uah/rate when eur_rate given."""
+    """UAH is primary; EUR*rate is fallback when UAH=0."""
 
-    def test_no_rate_zero_eur_gives_none_price(self):
-        """Without eur_rate, zero EUR price still yields price_cents=None."""
+    def test_uah_primary_no_rate_needed(self):
+        """UAH price works without eur_rate — offer 105 (price=1000 UAH) → 100000 cents."""
         yml = gooder_to_yml(SYNTHETIC)  # no eur_rate
         products = parse_supplier_feed(yml, supplier_id=999)
-        zero_item = next(p for p in products if p["external_id"] == "105")
-        assert zero_item["price_cents"] is None
+        item = next(p for p in products if p["external_id"] == "105")
+        assert item["price_cents"] == 100000  # 1000.00 UAH * 100
 
-    def test_with_rate_uah_price_converted_to_eur(self):
-        """With eur_rate=45, offer 105 (price=1000 UAH) → ~2222 cents (22.22 EUR)."""
+    def test_eur_rate_fallback_when_uah_zero(self):
+        """When UAH=0 but EUR>0, fallback = EUR * eur_rate."""
+        feed = b"""<?xml version="1.0" encoding="UTF-8"?>
+<offers>
+    <offer id="200">
+        <name>EUR only product</name>
+        <manufacturer>Gooder</manufacturer>
+        <in_stock>yes</in_stock>
+        <price>0.00</price>
+        <price_eur>100.00</price_eur>
+    </offer>
+</offers>
+"""
+        yml = gooder_to_yml(feed, eur_rate=45.0)
+        products = parse_supplier_feed(yml, supplier_id=999)
+        # 100 EUR * 45 = 4500 UAH → 450000 cents
+        assert products[0]["price_cents"] == 450000
+
+    def test_currency_is_uah_always(self):
+        """currencyId=UAH regardless of whether eur_rate was used for fallback."""
         yml = gooder_to_yml(SYNTHETIC, eur_rate=45.0)
         products = parse_supplier_feed(yml, supplier_id=999)
-        zero_item = next(p for p in products if p["external_id"] == "105")
-        # 1000 UAH / 45.0 = 22.222... EUR → 2222 cents
-        assert zero_item["price_cents"] == 2222
+        assert all(p["currency"] == "UAH" for p in products)
 
-    def test_fallback_currency_is_still_eur(self):
-        """UAH-fallback price must still carry currencyId=EUR."""
-        yml = gooder_to_yml(SYNTHETIC, eur_rate=45.0)
-        products = parse_supplier_feed(yml, supplier_id=999)
-        assert all(p["currency"] == "EUR" for p in products)
-
-    def test_zero_uah_still_no_price(self):
-        """price_eur=0 AND price_uah=0 → no price even with eur_rate."""
+    def test_zero_uah_and_zero_eur_no_price(self):
+        """Both UAH=0 and EUR=0 → no price element."""
         feed = b"""<?xml version="1.0" encoding="UTF-8"?>
 <offers>
     <offer id="999">

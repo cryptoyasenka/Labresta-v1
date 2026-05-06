@@ -103,7 +103,8 @@ def _build_offer_xml(parent_el, match) -> bool:
     # its own "Знижка %" product-card field, preventing double-discount.
     if retail_eur > price_eur + 0.05:
         etree.SubElement(offer, "oldprice").text = f"{retail_eur:.1f}"
-    etree.SubElement(offer, "currencyId").text = "EUR"
+    currency_id = (sp.currency or "EUR") if sp.currency in ("EUR", "UAH") else "EUR"
+    etree.SubElement(offer, "currencyId").text = currency_id
     etree.SubElement(offer, "vendorCode").text = str(pp.external_id)
     if pp.brand:
         etree.SubElement(offer, "vendor").text = pp.brand
@@ -181,6 +182,7 @@ def _shop_skeleton():
     etree.SubElement(shop, "url").text = "https://labresta.com"
     currencies = etree.SubElement(shop, "currencies")
     etree.SubElement(currencies, "currency", id="EUR", rate="1")
+    etree.SubElement(currencies, "currency", id="UAH", rate="1")
     offers_el = etree.SubElement(shop, "offers")
     return root, offers_el
 
@@ -367,7 +369,8 @@ def sync_prices(match_ids: list[int] | None = None) -> dict:
         )
         etree.SubElement(offer, "vendorCode").text = str(pp.external_id)
         etree.SubElement(offer, "price").text = f"{price_eur:.1f}"
-        etree.SubElement(offer, "currencyId").text = "EUR"
+        sp_curr = match.supplier_product.currency
+        etree.SubElement(offer, "currencyId").text = (sp_curr or "EUR") if sp_curr in ("EUR", "UAH") else "EUR"
         synced_ids.append(match.id)
 
     yml_dir = current_app.config["YML_OUTPUT_DIR"]

@@ -250,28 +250,29 @@ def gooder_to_yml(raw_bytes: bytes, eur_rate: float | None = None) -> bytes:
             etree.SubElement(new_offer, "model").text = model
             etree.SubElement(new_offer, "vendorCode").text = model
 
-        # <price> in Gooder is UAH — prefer <price_eur>; fall back to UAH/rate
-        # when price_eur=0 (half the Gooder catalog has EUR prices missing).
-        price_val = 0.0
-        price_eur_raw = _text(offer, "price_eur")
-        if price_eur_raw:
+        # Gooder prices: use UAH <price> as primary (sent to Horoshop directly
+        # so Horoshop doesn't re-convert at its own EUR rate). Fallback to
+        # EUR * eur_rate when UAH field is missing or zero.
+        price_uah = 0.0
+        uah_raw = _text(offer, "price")
+        if uah_raw:
             try:
-                price_val = float(price_eur_raw)
+                price_uah = float(uah_raw)
             except (ValueError, TypeError):
-                price_val = 0.0
-        if price_val <= 0 and eur_rate and eur_rate > 0:
-            uah_raw = _text(offer, "price")
-            if uah_raw:
+                price_uah = 0.0
+        if price_uah <= 0 and eur_rate and eur_rate > 0:
+            eur_raw = _text(offer, "price_eur")
+            if eur_raw:
                 try:
-                    uah_val = float(uah_raw)
-                    if uah_val > 0:
-                        price_val = uah_val / eur_rate
+                    eur_val = float(eur_raw)
+                    if eur_val > 0:
+                        price_uah = eur_val * eur_rate
                 except (ValueError, TypeError):
                     pass
-        if price_val > 0:
-            etree.SubElement(new_offer, "price").text = f"{price_val:.2f}"
+        if price_uah > 0:
+            etree.SubElement(new_offer, "price").text = f"{price_uah:.2f}"
 
-        etree.SubElement(new_offer, "currencyId").text = "EUR"
+        etree.SubElement(new_offer, "currencyId").text = "UAH"
 
         image = _text(offer, "image")
         if image:
