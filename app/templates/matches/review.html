@@ -364,11 +364,11 @@
                     </td>
                     <td class="action-cell" id="actions-{{ match.id }}">
                         {% if match.status in ('candidate', 'manual') %}
-                        <button class="btn btn-sm btn-outline-success confirm-btn" data-id="{{ match.id }}">
+                        <button class="btn btn-sm btn-success confirm-btn" data-id="{{ match.id }}">
                             Подтвердить
                         </button>
                         {% if match.supplier_product.name != match.prom_product.name %}
-                        <button class="btn btn-sm btn-success confirm-update-btn" data-id="{{ match.id }}"
+                        <button class="btn btn-sm btn-outline-success confirm-update-btn" data-id="{{ match.id }}"
                                 title="Подтвердить и обновить название каталога по поставщику">
                             Подтвердить + обновить
                         </button>
