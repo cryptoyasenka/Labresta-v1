@@ -47,4 +47,9 @@ nul
 # graphify knowledge graph output (структура кода — не утаскивать в git)
 graphify-out/
 .tmp_rp/
-.tmp/*.csv
+.tmp/
+
+# One-off diagnostic scripts in scripts/ (check_*, diag_*, regen_*)
+scripts/check_*.py
+scripts/diag_*.py
+scripts/regen_*.py
