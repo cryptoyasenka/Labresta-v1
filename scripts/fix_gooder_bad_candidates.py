@@ -63,7 +63,8 @@ with app.app_context():
         pp_norm = normalize_model(pp.name or "")
         pp_disp_norm = normalize_model(pp.display_article or "")
 
-        norm_stripped = re.sub(r"gooder$", "", norm_key)
+        brand_norm = normalize_model(sp.brand or "")
+        norm_stripped = norm_key[: -len(brand_norm)] if brand_norm and norm_key.endswith(brand_norm) else norm_key
         if len(norm_stripped) < 4:
             norm_stripped = norm_key
         model_in_pp = (

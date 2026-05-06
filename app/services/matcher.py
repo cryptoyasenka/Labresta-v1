@@ -1353,10 +1353,14 @@ def find_match_candidates(
                     and any(c.isalpha() for c in sp_model_key)
                     and any(c.isdigit() for c in sp_model_key)
                 ):
-                    # Also try stripping trailing brand token (e.g. Gooder appends
-                    # its name to the <model> field → article="BX-1290 Cube Gooder"
-                    # → norm="bx1290cubegooder"; stripped="bx1290cube" IS in PP).
-                    sp_key_stripped = re.sub(r"gooder$", "", sp_model_key)
+                    # Some suppliers append their brand to the <model> field
+                    # (e.g. article="BX-1290 Cube Gooder" → norm="bx1290cubegooder",
+                    # or "SnaigeSGL011P"). Strip the normalized supplier brand from
+                    # the end of the key and retry so correct same-model pairs pass.
+                    _brand_norm = normalize_model(supplier_brand or "")
+                    sp_key_stripped = sp_model_key
+                    if _brand_norm and sp_model_key.endswith(_brand_norm):
+                        sp_key_stripped = sp_model_key[: -len(_brand_norm)]
                     if len(sp_key_stripped) < 4:
                         sp_key_stripped = sp_model_key
                     model_in_pp = (
