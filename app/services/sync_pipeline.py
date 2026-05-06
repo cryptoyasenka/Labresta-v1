@@ -184,7 +184,10 @@ def _sync_single_supplier(supplier: Supplier) -> str:
                     "Проверьте маппинг колонок." % (len(errors), len(products))
                 )
         else:
-            raw_bytes = apply_supplier_adapter(raw_bytes, supplier.feed_url)
+            raw_bytes = apply_supplier_adapter(
+                raw_bytes, supplier.feed_url,
+                eur_rate=float(supplier.eur_rate_uah or 0) or None,
+            )
             products = parse_supplier_feed(raw_bytes, supplier.id)
 
         sync_run.products_fetched = len(products)

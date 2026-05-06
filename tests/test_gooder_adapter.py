@@ -279,3 +279,45 @@ class TestGooderFeedParserIntegration:
         yml = gooder_to_yml(SYNTHETIC)
         products = parse_supplier_feed(yml, supplier_id=999)
         assert all(p["currency"] == "EUR" for p in products)
+
+
+class TestGooderUahFallback:
+    """price_eur=0 with UAH price → falls back to uah/rate when eur_rate given."""
+
+    def test_no_rate_zero_eur_gives_none_price(self):
+        """Without eur_rate, zero EUR price still yields price_cents=None."""
+        yml = gooder_to_yml(SYNTHETIC)  # no eur_rate
+        products = parse_supplier_feed(yml, supplier_id=999)
+        zero_item = next(p for p in products if p["external_id"] == "105")
+        assert zero_item["price_cents"] is None
+
+    def test_with_rate_uah_price_converted_to_eur(self):
+        """With eur_rate=45, offer 105 (price=1000 UAH) → ~2222 cents (22.22 EUR)."""
+        yml = gooder_to_yml(SYNTHETIC, eur_rate=45.0)
+        products = parse_supplier_feed(yml, supplier_id=999)
+        zero_item = next(p for p in products if p["external_id"] == "105")
+        # 1000 UAH / 45.0 = 22.222... EUR → 2222 cents
+        assert zero_item["price_cents"] == 2222
+
+    def test_fallback_currency_is_still_eur(self):
+        """UAH-fallback price must still carry currencyId=EUR."""
+        yml = gooder_to_yml(SYNTHETIC, eur_rate=45.0)
+        products = parse_supplier_feed(yml, supplier_id=999)
+        assert all(p["currency"] == "EUR" for p in products)
+
+    def test_zero_uah_still_no_price(self):
+        """price_eur=0 AND price_uah=0 → no price even with eur_rate."""
+        feed = b"""<?xml version="1.0" encoding="UTF-8"?>
+<offers>
+    <offer id="999">
+        <name>No price at all</name>
+        <manufacturer>Gooder</manufacturer>
+        <in_stock>yes</in_stock>
+        <price>0.00</price>
+        <price_eur>0.00</price_eur>
+    </offer>
+</offers>
+"""
+        yml = gooder_to_yml(feed, eur_rate=45.0)
+        products = parse_supplier_feed(yml, supplier_id=999)
+        assert products[0]["price_cents"] is None

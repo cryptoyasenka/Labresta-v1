@@ -125,12 +125,16 @@ def kodaki_to_yml(raw_bytes: bytes, currency: str = "EUR") -> bytes:
     return etree.tostring(yml_root, encoding="utf-8", xml_declaration=True)
 
 
-def apply_supplier_adapter(raw_bytes: bytes, feed_url: str | None) -> bytes:
+def apply_supplier_adapter(
+    raw_bytes: bytes,
+    feed_url: str | None,
+    eur_rate: float | None = None,
+) -> bytes:
     """Apply per-supplier feed-format adapter if URL matches a known non-YML source."""
     if is_kodaki_url(feed_url):
         return kodaki_to_yml(raw_bytes)
     if is_gooder_url(feed_url):
-        return gooder_to_yml(raw_bytes)
+        return gooder_to_yml(raw_bytes, eur_rate=eur_rate)
     return raw_bytes
 
 
@@ -193,8 +197,12 @@ def _voltage_from_params(offer: etree._Element) -> str | None:
     return None
 
 
-def gooder_to_yml(raw_bytes: bytes) -> bytes:
-    """Transform Гудер (gooder.kiev.ua) XML into YML-spec bytes for feed_parser."""
+def gooder_to_yml(raw_bytes: bytes, eur_rate: float | None = None) -> bytes:
+    """Transform Гудер (gooder.kiev.ua) XML into YML-spec bytes for feed_parser.
+
+    eur_rate: EUR/UAH rate used to convert UAH-only prices when price_eur=0.
+    Without it, half the Gooder feed has no price (price_eur=0 but price=UAH > 0).
+    """
     parser = etree.XMLParser(
         recover=True,
         resolve_entities=False,
@@ -242,15 +250,26 @@ def gooder_to_yml(raw_bytes: bytes) -> bytes:
             etree.SubElement(new_offer, "model").text = model
             etree.SubElement(new_offer, "vendorCode").text = model
 
-        # <price> in Gooder is UAH — use <price_eur> as the working currency
+        # <price> in Gooder is UAH — prefer <price_eur>; fall back to UAH/rate
+        # when price_eur=0 (half the Gooder catalog has EUR prices missing).
+        price_val = 0.0
         price_eur_raw = _text(offer, "price_eur")
         if price_eur_raw:
             try:
                 price_val = float(price_eur_raw)
-                if price_val > 0:
-                    etree.SubElement(new_offer, "price").text = f"{price_val:.2f}"
             except (ValueError, TypeError):
-                pass
+                price_val = 0.0
+        if price_val <= 0 and eur_rate and eur_rate > 0:
+            uah_raw = _text(offer, "price")
+            if uah_raw:
+                try:
+                    uah_val = float(uah_raw)
+                    if uah_val > 0:
+                        price_val = uah_val / eur_rate
+                except (ValueError, TypeError):
+                    pass
+        if price_val > 0:
+            etree.SubElement(new_offer, "price").text = f"{price_val:.2f}"
 
         etree.SubElement(new_offer, "currencyId").text = "EUR"
 
