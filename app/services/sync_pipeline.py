@@ -80,18 +80,6 @@ def _sync_single_supplier(supplier: Supplier) -> str:
     """
     logger.info("Starting sync for supplier '%s' (id=%d)", supplier.name, supplier.id)
 
-    # Skip re-sync if the supplier was successfully synced within the last 2 hours.
-    # Prevents IP-based rate limiting on suppliers like MARESTO that block frequent requests.
-    _COOLDOWN = timedelta(hours=2)
-    if supplier.last_fetched_at and supplier.last_fetch_status == "success":
-        _age = datetime.now(timezone.utc) - supplier.last_fetched_at.replace(tzinfo=timezone.utc)
-        if _age < _COOLDOWN:
-            logger.info(
-                "Skipping '%s' — synced successfully %s ago (cooldown 2h)",
-                supplier.name, _age,
-            )
-            return "skipped"
-
     sync_run = SyncRun(
         supplier_id=supplier.id,
         started_at=datetime.now(timezone.utc),
