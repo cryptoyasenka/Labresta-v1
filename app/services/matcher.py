@@ -1403,6 +1403,9 @@ def find_match_candidates(
                             candidate["prom_product_id"],
                         )
                         continue
+                    # Model confirmed in PP name — price in catalog may be stale.
+                    # Flag so price plausibility gate doesn't block the candidate.
+                    candidate["_model_contained"] = True
 
             if has_both and exact:
                 candidate["score"] = min(
@@ -1836,7 +1839,7 @@ def find_match_candidates(
                 if p["id"] == candidate["prom_product_id"]:
                     prom_price = p.get("price")
                     break
-            if prom_price and prom_price > 0:
+            if prom_price and prom_price > 0 and not candidate.get("_model_contained"):
                 ratio = max(supplier_price_cents / prom_price, prom_price / supplier_price_cents)
                 if ratio > MAX_PRICE_RATIO:
                     logger.debug(
@@ -1849,6 +1852,7 @@ def find_match_candidates(
 
     for c in output:
         c.pop("_skip_post_gates", None)
+        c.pop("_model_contained", None)
     return output
 
 
