@@ -1934,17 +1934,36 @@ def run_matching_for_supplier(supplier_id: int, progress_cb=None) -> int:
 
     # Step 3.5: Preload existing (sp_id, pp_id) pairs for this supplier in ONE
     # query — avoids an N+1 SELECT per candidate inside the matching loop.
+    # IMPORTANT: use explicit (row[0], row[1]) tuple conversion — SQLAlchemy Row
+    # objects have a different __hash__ than Python tuples in SA 2.x, so
+    # `set(rows)` followed by `(int, int) in set` would silently miss every hit.
     sp_ids = [sp.id for sp in unmatched_products]
     existing_pairs: set[tuple[int, int]] = set()
+    rejected_pairs: set[tuple[int, int]] = set()
     if sp_ids:
-        existing_pairs = set(
-            db.session.execute(
+        existing_pairs = {
+            (row[0], row[1])
+            for row in db.session.execute(
                 select(
                     ProductMatch.supplier_product_id,
                     ProductMatch.prom_product_id,
                 ).where(ProductMatch.supplier_product_id.in_(sp_ids))
             ).all()
-        )
+        }
+        # Explicitly track rejected pairs so user-rejected candidates are never
+        # recreated even if the existing_pairs lookup has edge-case hash issues.
+        rejected_pairs = {
+            (row[0], row[1])
+            for row in db.session.execute(
+                select(
+                    ProductMatch.supplier_product_id,
+                    ProductMatch.prom_product_id,
+                ).where(
+                    ProductMatch.supplier_product_id.in_(sp_ids),
+                    ProductMatch.status == "rejected",
+                )
+            ).all()
+        }
 
     # Step 3.6: Preload PP ids already claimed by ANY non-rejected match from
     # this supplier. This guards the 1pp ↔ 1 supplier invariant at the source:
@@ -1978,7 +1997,7 @@ def run_matching_for_supplier(supplier_id: int, progress_cb=None) -> int:
         )
         for c in candidates:
             pair = (sp.id, c["prom_product_id"])
-            if pair in existing_pairs:
+            if pair in existing_pairs or pair in rejected_pairs:
                 continue
             if c["prom_product_id"] in claimed_pp_ids:
                 logger.debug(
