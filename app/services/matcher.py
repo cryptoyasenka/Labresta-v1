@@ -1278,6 +1278,28 @@ def find_match_candidates(
                                 or (pp_name_norm and sp_model_norm in pp_name_norm)
                             ):
                                 bypass = True
+                            elif supplier_brand:
+                                # Some feeds append/prepend their brand name to
+                                # the model field (e.g. "XC-58L Gooder" →
+                                # "xc58lgooder", "SnaigeSGL011P" → "snaigesgl011p").
+                                # Strip brand suffix or prefix and retry so a
+                                # correct same-SKU pair isn't blocked by the type gate.
+                                _bn = normalize_model(supplier_brand)
+                                _stripped_candidates = []
+                                if _bn and sp_model_norm.endswith(_bn):
+                                    _stripped_candidates.append(sp_model_norm[: -len(_bn)])
+                                if _bn and sp_model_norm.startswith(_bn):
+                                    _stripped_candidates.append(sp_model_norm[len(_bn):])
+                                for _stripped in _stripped_candidates:
+                                    if len(_stripped) >= 4 and (
+                                        _stripped == pp_article_norm
+                                        or _stripped == pp_model_field_norm
+                                        or _stripped == pp_display_norm
+                                        or (pp_name_norm and _stripped in pp_name_norm)
+                                    ):
+                                        bypass = True
+                                        sp_model_norm = _stripped
+                                        break
                         if bypass:
                             logger.debug(
                                 "Type gate bypass (model=%r): '%s' vs '%s' prom_id=%d",
