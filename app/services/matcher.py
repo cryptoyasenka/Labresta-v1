@@ -1302,15 +1302,27 @@ def find_match_candidates(
     # Step 4.6: Model field gate — when both sides have the same field (article
     # or model) populated, require exact literal equality. Mismatch = reject.
     # Match = small score boost.
+    #
+    # Extension (containment sub-rule): when the PP has no explicit model/article
+    # but the SP carries a meaningful SKU (len≥4, both letters+digits), require
+    # that the normalized SP model appears somewhere in the normalized PP name or
+    # display_article. Without this, WRatio fuzzy-matching on name alone can
+    # score "VRX2000/330" against "VRX1200/330" at ~88% because the descriptor
+    # words ("Вітрина саладетта Gooder") are identical — the model number is the
+    # only discriminator and it must be present in the PP.
     if sup_model or sup_article:
         kept = []
         for candidate in fuzzy_output:
             prom_model = ""
             prom_article = ""
+            prom_name_norm_for_model = ""
+            prom_display_norm = ""
             for p in candidates_pool:
                 if p["id"] == candidate["prom_product_id"]:
                     prom_model = normalize_model(p.get("model"))
                     prom_article = normalize_model(p.get("article"))
+                    prom_name_norm_for_model = normalize_model(p.get("name") or "")
+                    prom_display_norm = normalize_model(p.get("display_article") or "")
                     break
 
             has_both = False
@@ -1329,6 +1341,31 @@ def find_match_candidates(
                     candidate["prom_product_id"],
                 )
                 continue
+
+            # Containment sub-rule: PP has no explicit model/article field, but
+            # SP has a meaningful SKU — require the normalized SKU to appear
+            # somewhere in the PP name or display_article.
+            if not has_both:
+                sp_model_key = sup_article or sup_model  # already normalized
+                if (
+                    sp_model_key
+                    and len(sp_model_key) >= 4
+                    and any(c.isalpha() for c in sp_model_key)
+                    and any(c.isdigit() for c in sp_model_key)
+                ):
+                    model_in_pp = (
+                        (prom_name_norm_for_model and sp_model_key in prom_name_norm_for_model)
+                        or (prom_display_norm and sp_model_key in prom_display_norm)
+                    )
+                    if not model_in_pp:
+                        logger.debug(
+                            "Model containment rejected: sp_model=%r not in pp name=%r prom_id=%d",
+                            sp_model_key,
+                            prom_name_norm_for_model[:60],
+                            candidate["prom_product_id"],
+                        )
+                        continue
+
             if has_both and exact:
                 candidate["score"] = min(
                     100.0, round(candidate["score"] + MODEL_BOOST_POINTS, 2)
