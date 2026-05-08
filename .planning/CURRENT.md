@@ -1,17 +1,21 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
-**Last touched:** 2026-05-08 (поздний вечер — Phase 8 Tasks 1+2 done)
-**Status:** Phase 8 Task 1 (orphan_detector + 11 tests, `51d274c`) done. Task 2 (wire-in fetch-all + `flask flag-orphans` CLI, `11aa107`) done. 656/656 passed, working tree clean. Next: Task 3 (UI tab) **или** прод-прогон `flag-orphans --dry-run`.
+**Last touched:** 2026-05-08 (поздний вечер — Phase 8 ALL TASKS done)
+**Status:** Phase 8 завершён. Task 1 (`51d274c`) + Task 2 (`11aa107`) + Task 3 (`cd1e91b`). 656/656 passed, working tree clean. Бренд freshness — оставлено «любые записи в БД» (выбор Yana). UI: tab nav + brand filter + 3 действия (Видалено/Залишити/Запит).
 
 ## Open files
-- `.planning/phases/08-orphan-pp-deletion/08-01-PLAN.md` — execution plan, Task 3 ещё не начат
-- (next, Task 3) `app/views/matches.py`, `app/templates/matches/deletion_candidates.html`
+- (none — Phase 8 ready for prod test)
 
 ## Next step
-1. **Task 3 (UI):** расширить `/matches/deletion-candidates` — `?tab=orphan` + endpoint `clear_orphan_pp_flag` + tab nav в шаблоне.
-2. **ИЛИ** прогнать `flag-orphans --dry-run` на проде (Postgres public proxy URL ниже) чтоб увидеть число PP с реальным prod-data.
-3. Yana вручную отклоняет 3 wrong Astim candidates (m=6620, 6618, 6611) и подтверждает остальные 7.
-4. (опционально) Связаться с MARESTO: whitelist Railway egress IP, либо локальный import-from-local скрипт.
+1. **Прод-прогон dry-run** (рекомендую первым шагом):
+   ```bash
+   cd "C:/Projects/labresta-sync" && DATABASE_URL="postgresql://postgres:nEUfFuRsrHEjIQbhpBxlEqEPewUCKALC@switchyard.proxy.rlwy.net:40821/railway" PYTHONPATH=. PYTHONIOENCODING=utf-8 ".venv/Scripts/python.exe" -m flask flag-orphans --dry-run
+   ```
+2. **Если число разумное** (audit ожидал ~17 Hendi PP) — снять `--dry-run` и применить, либо дождаться следующего `fetch-all` который сам вызовет Stage 4.5.
+3. **UI прод-проверка:** залогиниться в админку, открыть `/matches/deletion-candidates?tab=orphan` — увидеть таблицу + dropdown «Бренд».
+4. Yana вручную отклоняет 3 wrong Astim candidates (m=6620, 6618, 6611) и подтверждает остальные 7.
+5. (опционально) Связаться с MARESTO: whitelist Railway egress IP, либо локальный import-from-local скрипт.
+6. (опционально) Создать `08-01-SUMMARY.md` после прод-проверки.
 
 ## Prod audit (2026-05-08, scripts/verify_prod.py)
 - Astim: 487 confirmed, 10 candidates (3 display_art_dup, 7 fuzzy false-pos)
