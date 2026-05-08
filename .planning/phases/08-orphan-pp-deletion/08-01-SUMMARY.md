@@ -2,7 +2,7 @@
 phase: 8
 plan: 1
 type: summary
-status: applied-to-prod
+status: applied-to-prod-with-followup-fix
 date: 2026-05-08
 ---
 
@@ -21,7 +21,7 @@ Stage 4.5 implemented end-to-end: service + CLI + UI tab with brand filter. **Ap
 | 3 — UI tab + brand filter + clear endpoint | `cd1e91b` | smoke | `app/views/matches.py`, `app/templates/matches/deletion_candidates.html` |
 | Fix — prod-driven hardening | `3f9f07a` | 13/13 (+2) | `app/services/orphan_detector.py`, `app/cli.py`, `tests/test_orphan_detector.py` |
 
-**Final test count:** 658/658 passed.
+**Final test count:** 661/661 passed (after follow-up fix below).
 
 ## Prod-driven fixes (from `3f9f07a`)
 
@@ -61,6 +61,38 @@ Idempotency verified: re-run yields `flagged=0 cleared=0`.
 | 1 | Bartscher | Новый Проект |
 
 (Detailed list in commit `3f9f07a` description / pre-compact snapshot.)
+
+## Post-apply fix — false-positive triage (Yana caught it)
+
+After the apply, Yana spotted that brands like Rational, Robot Coupe and Bartscher were flagged despite MARESTO carrying them too. Logic bug: `--exclude-dead-suppliers` was excluding MARESTO from BOTH the drop-check AND the brand-anchor count. Brands carried by MARESTO + another supplier looked like single-supplier (the other one) → false orphans.
+
+**Brand reality (verified in prod DB):**
+
+| Brand | Suppliers | Verdict |
+|---|---|---|
+| Rational (×9) | MARESTO + Кодаки | should NOT flag — MARESTO covers |
+| Robot Coupe (×6) | MARESTO + Новый Проект | should NOT flag |
+| Bartscher (×1) | MARESTO + Новый Проект | should NOT flag |
+| FROSTY (×6) | only Кодаки | correct flag |
+| GI.Metal (×4) | only Кодаки | correct flag |
+
+So 16 of the 26 were false-positives; only 10 are legitimate orphans.
+
+**Fix (commit pending):** `--exclude-dead-suppliers` now affects ONLY the drop-check. Dead suppliers REMAIN in the brand-anchor count — a brand carried by a temporarily-dead supplier is still considered "covered". Additionally, brands whose ONLY supplier is dead are now excluded entirely (their stale article list can't reliably classify orphans). And the clear-logic was extended: when a brand stops being single-supplier (e.g. a 2nd supplier joins, or the previously-dead one comes back), or when a previously-flagged PP gets a confirmed match, the auto-flag is cleared on next run.
+
+**Tests added (3):**
+- `test_clears_when_brand_no_longer_single_supplier` — 2nd supplier added → clear
+- `test_clears_when_pp_gets_confirmed_match` — confirmed match appears → clear
+- `test_skips_brand_only_at_dead_supplier` — only dead supplier carries brand → skip
+
+`test_exclude_dead_suppliers_unblocks_run` rewritten: with 2-supplier brand (1 dead + 1 live), `flagged==0` (Hendi has 2 suppliers, not single).
+
+**Verification path (deferred to Yana with Railway credentials):**
+1. `flask flag-orphans --dry-run --exclude-dead-suppliers` → expect `flagged=0, cleared=16`.
+2. Re-run without `--dry-run` to actually clear the 16 stale auto-flags.
+3. Verify in prod DB: `SELECT COUNT(*) WHERE operator_decision='needs_delete' AND operator_decision_note='auto:phase8_orphan'` → 10 rows (FROSTY 6 + GI.Metal 4).
+
+(Note: as of this writing MARESTO has recovered — 4490/4510 fresh SPs in local DB, no longer dead. So `--exclude-dead-suppliers` may now be a no-op. The fix still matters for any future MARESTO-403 episodes and for the clear-on-recovery semantics.)
 
 ## Operational notes
 

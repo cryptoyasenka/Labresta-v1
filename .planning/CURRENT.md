@@ -1,23 +1,33 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
-**Last touched:** 2026-05-08 (ночь — Phase 8 APPLIED to prod)
-**Status:** Phase 8 завершён и применён. **26 PP помечены `auto:phase8_orphan`** на проде (Rational ×9, Robot Coupe ×6, FROSTY ×6, GI.Metal ×4, Bartscher ×1). Идемпотентность проверена. 658/658 tests. Прод dry-run выявил 2 бага → починено в `3f9f07a`: PP без display_article теперь skip (не flag), и `--exclude-dead-suppliers` обходит MARESTO 403 sanity guard. Полный отчёт в `.planning/phases/08-orphan-pp-deletion/08-01-SUMMARY.md`.
+**Last touched:** 2026-05-08 (ночь — Phase 8 follow-up fix committed, prod re-apply pending)
+**Status:** Phase 8 завершён, применён, потом найден post-apply баг. Yana заметила: бренды что есть у MARESTO + другого поставщика (Rational ×9, Robot Coupe ×6, Bartscher ×1) ошибочно помечены — MARESTO их покрывает, не должны быть orphan. Только FROSTY (6) + GI.Metal (4) = 10 настоящих orphans. **Фикс закоммичен:** `--exclude-dead-suppliers` теперь влияет ТОЛЬКО на drop-check; мёртвые поставщики остаются в brand-anchor count; бренды у которых ТОЛЬКО мёртвый поставщик — skip; auto-flag очищается когда бренд перестал быть single-supplier ИЛИ PP получил confirmed match. **661/661 tests** (+3 новых). MARESTO ожил локально (4490/4510 fresh) — `--exclude-dead-suppliers` сейчас no-op, но фикс важен на будущее и для clear-логики. Полный отчёт в `.planning/phases/08-orphan-pp-deletion/08-01-SUMMARY.md`.
 
 ## Open files
 - (none — Phase 8 closed)
 
 ## Next step
-1. **Yana — UI триаж:** открыть `/matches/deletion-candidates?tab=orphan` (badge=26), фильтровать по бренду, для каждой строки выбрать: Видалено / Залишити / Запит. После клика строка исчезает, флаг снимается.
-2. **Manual Astim review** (carry-over): отклонить m=6620, 6618, 6611 + подтвердить 7 fuzzy candidates на `/matches/?supplier_id=8&status=candidate`.
-3. **MARESTO unblock** (опционально, не блокирует): whitelist Railway egress IP через support, либо local-fetch скрипт. Пока не починится — `flask flag-orphans` без `--exclude-dead-suppliers` блокируется sanity guard'ом, и `suppliers_fetch_all` тоже скипает Stage 4.5.
-4. **Open question:** должен ли `suppliers_fetch_all` тоже передавать `exclude_dead_suppliers=True`? Сейчас OFF (safe default). Решение оставлено за Yana — описано в SUMMARY.
+1. **Yana — re-run prod с фикcом** (нужен её DATABASE_URL для Railway, я из shell не достучусь):
+   ```bash
+   cd C:/Projects/labresta-sync
+   .venv/Scripts/python.exe -m flask flag-orphans --dry-run --exclude-dead-suppliers
+   # Ожидаю: flagged=0, cleared=16  (16 ложных пометок очистятся)
+   .venv/Scripts/python.exe -m flask flag-orphans --exclude-dead-suppliers
+   # Verify: ровно 10 PP с note='auto:phase8_orphan' (FROSTY 6 + GI.Metal 4)
+   ```
+   Если MARESTO ожил на проде тоже — флаг `--exclude-dead-suppliers` не нужен, обычный run сработает.
+2. **Yana — UI триаж 10 настоящих orphans:** `/matches/deletion-candidates?tab=orphan`, выбрать Видалено / Залишити / Запит для каждого.
+3. **Manual Astim review** (carry-over): отклонить m=6620, 6618, 6611 + подтвердить 7 fuzzy candidates на `/matches/?supplier_id=8&status=candidate`.
+4. **MARESTO unblock** (опционально): на проде ситуация может отличаться от локалки — проверь `flask flag-orphans` без флага. Если sanity guard срабатывает — MARESTO ещё мёртв на Railway, юзай флаг.
+5. **Open question:** должен ли `suppliers_fetch_all` тоже передавать `exclude_dead_suppliers=True`? Сейчас OFF (safe default). Решение за Yana — описано в SUMMARY.
 
 ## Phase 8 commits (today)
 - `51d274c` Task 1 — service + 11 tests
 - `11aa107` Task 2 — wire-in + CLI
 - `cd1e91b` Task 3 — UI tab + brand filter + clear-flag endpoint
 - `3f9f07a` fix — skip no-display-article + `--exclude-dead-suppliers`
-- (next commit) SUMMARY + CURRENT update
+- `d27a7e0` SUMMARY (initial)
+- (next commit) follow-up fix: keep dead in anchor + clear-on-recovery + 3 new tests
 
 ## Prod audit (2026-05-08, scripts/verify_prod.py)
 - Astim: 487 confirmed, 10 candidates (3 display_art_dup, 7 fuzzy false-pos)

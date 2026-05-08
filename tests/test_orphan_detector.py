@@ -221,8 +221,10 @@ def test_disabled_supplier_excluded_from_brand_count(db):
 
 def test_exclude_dead_suppliers_unblocks_run(db):
     """If a supplier has 0 fresh SPs (broken feed), exclude_dead_suppliers=True
-    should drop it from anchor + skip drop-check, letting other suppliers' brands
-    be evaluated normally."""
+    bypasses the drop-check sanity guard for that supplier. Dead suppliers
+    REMAIN in the brand-anchor count: a brand carried by a temporarily-dead
+    supplier is still considered 'covered' (we don't false-flag PPs whose
+    intended supplier is just temporarily broken)."""
     s_dead = _mk_supplier(db, "BrokenFeed")  # all stale
     s_live = _mk_supplier(db, "Astim")
     # Dead supplier: 11 stale SPs, 0 fresh — total>10 so drop check would trip
@@ -239,13 +241,90 @@ def test_exclude_dead_suppliers_unblocks_run(db):
     assert "drop" in blocked["skipped_reason"].lower()
 
     result = flag_orphan_pps(exclude_dead_suppliers=True)
-    assert result["flagged"] == 1
+    # Drop-check bypassed (no skipped_reason), dead supplier listed,
+    # but Hendi has 2 suppliers (BrokenFeed + Astim) → NOT single-supplier
+    # → no orphans flagged.
+    assert result["flagged"] == 0
+    assert result["skipped_reason"] == ""
     assert s_dead.id in result["dead_supplier_ids"]
+    assert result["brand_single_supplier_count"] == 0
     db.session.refresh(pp_orphan)
     db.session.refresh(pp_kept)
-    assert pp_orphan.operator_decision == "needs_delete"
-    assert pp_orphan.operator_decision_note == AUTO_NOTE
+    assert pp_orphan.operator_decision is None
     assert pp_kept.operator_decision is None
+
+
+def test_skips_brand_only_at_dead_supplier(db):
+    """If a brand's only supplier is dead (broken feed), we cannot reliably
+    classify its PPs as orphan — skip rather than flag using stale data."""
+    s_dead = _mk_supplier(db, "BrokenFeed")
+    # 11 stale SPs → counts as dead (recent==0, total>0)
+    for i in range(11):
+        _mk_sp(db, s_dead.id, "Hendi", f"old{i}", fresh=False)
+    pp = _mk_pp(db, "Hendi", "999")
+    db.session.commit()
+
+    result = flag_orphan_pps(exclude_dead_suppliers=True)
+    assert result["flagged"] == 0
+    assert s_dead.id in result["dead_supplier_ids"]
+    assert result["brand_single_supplier_count"] == 0
+    db.session.refresh(pp)
+    assert pp.operator_decision is None
+
+
+def test_clears_when_brand_no_longer_single_supplier(db):
+    """If a brand was single-supplier (auto-flagged orphan) but a 2nd supplier
+    is added later that also carries the brand, the auto-flag must clear on
+    next run — same reversibility guarantee as 'PP returns to feed'."""
+    s1 = _mk_supplier(db, "Astim")
+    _mk_sp(db, s1.id, "Hendi", "111")
+    pp = _mk_pp(
+        db, "Hendi", "999",
+        operator_decision="needs_delete",
+        operator_decision_note=AUTO_NOTE,
+    )
+    db.session.commit()
+
+    # Simulate a second supplier joining with the same brand.
+    s2 = _mk_supplier(db, "Maresto")
+    _mk_sp(db, s2.id, "Hendi", "222")
+    db.session.commit()
+
+    result = flag_orphan_pps()
+    assert result["flagged"] == 0
+    assert result["cleared"] == 1
+    db.session.refresh(pp)
+    assert pp.operator_decision is None
+    assert pp.operator_decision_note is None
+
+
+def test_clears_when_pp_gets_confirmed_match(db):
+    """If a PP was auto-flagged but later got a confirmed match, the auto-flag
+    must clear on next run."""
+    s = _mk_supplier(db, "Astim")
+    sp = _mk_sp(db, s.id, "Hendi", "111")
+    pp = _mk_pp(
+        db, "Hendi", "999",
+        operator_decision="needs_delete",
+        operator_decision_note=AUTO_NOTE,
+    )
+    db.session.commit()
+
+    # A confirmed match appears between runs.
+    db.session.add(ProductMatch(
+        supplier_product_id=sp.id,
+        prom_product_id=pp.id,
+        status="confirmed",
+        score=100,
+    ))
+    db.session.commit()
+
+    result = flag_orphan_pps()
+    assert result["flagged"] == 0
+    assert result["cleared"] == 1
+    db.session.refresh(pp)
+    assert pp.operator_decision is None
+    assert pp.operator_decision_note is None
 
 
 def test_exclude_dead_does_not_skip_partial_drop(db):

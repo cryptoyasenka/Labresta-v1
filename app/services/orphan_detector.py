@@ -176,11 +176,20 @@ def flag_orphan_pps(*, dry_run: bool = False, exclude_dead_suppliers: bool = Fal
             "dead_supplier_ids": sorted(dead_ids),
         }
 
-    brand_supps = _brand_supplier_counts(exclude_supplier_ids=dead_ids)
+    # IMPORTANT: dead suppliers are excluded ONLY from the drop-check above,
+    # NOT from the brand-anchor count below. A brand carried by a (possibly dead)
+    # supplier is still considered "covered" — we don't want to false-flag PPs
+    # whose intended supplier is just temporarily broken.
+    #
+    # But: if a brand's ONLY supplier is dead, we cannot reliably classify its
+    # PPs as orphan (its article list is stale). Skip those brands entirely.
+    brand_supps = _brand_supplier_counts()
     matched_pp_ids = _pps_with_confirmed_match()
 
     single_supp_brands = {
-        b: sids[0] for b, sids in brand_supps.items() if len(sids) == 1
+        b: sids[0]
+        for b, sids in brand_supps.items()
+        if len(sids) == 1 and sids[0] not in dead_ids
     }
     article_index: dict[int, set[str]] = {}
     for sup_id in set(single_supp_brands.values()):
@@ -195,15 +204,32 @@ def flag_orphan_pps(*, dry_run: bool = False, exclude_dead_suppliers: bool = Fal
     cleared = 0
     L1_orphans: list[int] = []
 
+    def _clear_auto_flag(pp) -> bool:
+        """Clear our auto-flag if it's still set. Returns True if cleared."""
+        if pp.operator_decision == "needs_delete" and pp.operator_decision_note == AUTO_NOTE:
+            if not dry_run:
+                pp.operator_decision = None
+                pp.operator_decision_note = None
+                pp.operator_decision_at = now
+            return True
+        return False
+
     for pp in pps:
         brand_l = (pp.brand or "").lower().strip()
         if not brand_l:
             continue
         sup_id = single_supp_brands.get(brand_l)
         if sup_id is None:
-            continue  # brand has 0 or N>1 suppliers — out of L1 scope
+            # Brand no longer single-supplier (or has 0) — clear stale auto-flag
+            # if we previously set it (e.g. a 2nd supplier was added since).
+            if _clear_auto_flag(pp):
+                cleared += 1
+            continue
         if pp.id in matched_pp_ids:
-            continue  # has confirmed match — not orphan
+            # PP got a confirmed match since we flagged it — clear stale auto-flag.
+            if _clear_auto_flag(pp):
+                cleared += 1
+            continue
 
         disp = (pp.display_article or "").lower().strip()
         if not disp:
@@ -228,11 +254,7 @@ def flag_orphan_pps(*, dry_run: bool = False, exclude_dead_suppliers: bool = Fal
                     flagged += 1
         else:
             # PP is back in feed — clear ONLY our own auto-flag.
-            if current == "needs_delete" and note_is_ours:
-                if not dry_run:
-                    pp.operator_decision = None
-                    pp.operator_decision_note = None
-                    pp.operator_decision_at = now
+            if _clear_auto_flag(pp):
                 cleared += 1
 
     if not dry_run:
