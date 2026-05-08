@@ -1,17 +1,19 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
-**Last touched:** 2026-05-09 (Full matching audit + article-anchor verify; 4 manual rule-violations отозваны на проде)
+**Last touched:** 2026-05-09 (Night audit closed clean; TODO-NEXT.md saved for tomorrow's per-row work)
 
-## Audit results (2026-05-09)
+## Audit results (2026-05-09 — night session)
 - `.planning/matching-audit-report.md` (commit `fc466f7`): A=0 B=13 B-rev=9 C=0 D=267 E=0 F=0 G=0 H=11
 - `.planning/article-anchor-verify.md` (commit `ee914d6`): 487 three-way + 417 two-way + **4 rule violations** + 1641 no-anchor (fuzzy/manual)
 - 4 violations отозваны (все были `confirmed_by='Admin'` manual): match#6611 (Hendi щепа 250г vs 150г SP), #6383 (Hendi цитрус-пресс), #1100 (Sirman STORM VV), #1102 (Sirman CICLONE 36 VT). Re-verify: 0 violations осталось, total confirmed 2549→2545.
+- `.planning/no-anchor-verify.md` (commit `cce9cac`): **1641 confirmed без article-anchor — clean**. 1636/1641 OK по brand+voltage+model-token; 0 brand mismatches, 0 voltage disjoint, 5 no_model_token все вручную проверены — все валидные (Rational SCC→iCC rebrand с display_article anchor на PP-стороне; Sirman 1/2 vs I/2 typo; Ugolini MINIGEL с переставленными словами).
 
-## Next concrete steps (audit follow-up)
-1. **AD46-series в БД чистая** (`scripts/check_ad46_state.py` 2026-05-09): 3 confirmed (DI/M/MI ECO ↔ свои SP), AD46D/DV/MV unmatched и rejected/candidate записей вокруг них нет. Никто кривой матч не сделал. Действие — **catalog hygiene**: PP#1007 (AD46MV), PP#1015 (AD46DV), PP#1008 (AD46D) убрать из Horoshop (товара нет у поставщика).
-2. **Cat H — 11 cross-brand display_article дублей** — почистить каталог Horoshop вручную (особенно Hendi-articles в FROSTY/Spidocook/Fimar/Roller Grill PPs)
-3. **1641 confirmed без article-anchor** — большая зона: name-fuzzy матчи. Решить нужна ли узкая верификация (model + brand + voltage)
-4. Cat B sibling (13 шт.) — per-row review через UI
+## TODO для Yana завтра
+См. **`.planning/TODO-NEXT.md`** (commit `3d6d640`). Приоритет:
+1. Cat H — 11 cross-brand display_article дублей в Horoshop (catalog hygiene, ручками)
+2. Catalog cleanup — 3 AD46 PPs (PP#1007/1015/1008) убрать из Horoshop
+3. Cat B sibling (13 шт.) — per-row через `/matches/` UI
+4. Cat B-reverse (8 шт.) — per-row решение
 
 **Status:** Прозвонены 14 URL-вариантов np.com.ua/dealer-export (`scripts/_probe_np_url_variants.py` — temp, удалён). Финальный вывод: **поставщик np.com.ua не выгружает APL/APKE/AFM 02-03 ни в одном формате/параметре**. Любой из {`filetype=xlsx|csv|xml|yml`} × {без `platform`, `platform=prom|opencart|woocommerce|horoshop`} × {`with_all=1|with_full=1|include_disabled=1|include_unavailable=1`} = тот же набор 690 уникальных SKU. `platform=horoshop` режет вдвое (691 строк) только потому что фильтрует одну локаль (UA), без него — 1382 строки = 690 RU + 691 UA версий тех же товаров. Apach = 158 уникальных (316 RU+UA). APL: 0 hit. APKE: 0 hit. AFM 02/03: 0 hit. AD46: только AD46MI ECO / AD46M ECO / AD46DI ECO (AD46MV/DV отсутствуют — Yana подтвердила). **Проблема НЕ в URL и НЕ в парсере. Поставщик технически не экспортирует часть каталога**. Phase M apply остаётся ЗАБЛОКИРОВАН.
 
