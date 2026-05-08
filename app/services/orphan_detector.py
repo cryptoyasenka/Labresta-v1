@@ -1,0 +1,205 @@
+"""Stage 4.5: flag PromProducts as orphan-deletion candidates.
+
+Runs after fetch-all completes. Identifies PPs whose brand is carried by
+exactly one enabled supplier, but that supplier's feed does not contain a
+SupplierProduct with article matching pp.display_article. Such PPs are
+de-facto out of stock — flagged via operator_decision='needs_delete'.
+
+Sanity guards:
+  - If any single supplier's recent SP-recency dropped >50%, skip the
+    whole run (broken-feed protection — same logic as Stage 4).
+  - Never overwrites operator_decision if it was set manually (note != AUTO_NOTE).
+  - Idempotent: re-running with the same data produces no changes.
+  - Reversible: if a PP returns to feed, the auto-flag is cleared.
+"""
+from __future__ import annotations
+
+import logging
+from datetime import datetime, timedelta, timezone
+
+from sqlalchemy import func, select
+
+from app.extensions import db
+from app.models.catalog import PromProduct
+from app.models.product_match import ProductMatch
+from app.models.supplier import Supplier
+from app.models.supplier_product import SupplierProduct
+
+logger = logging.getLogger(__name__)
+
+AUTO_NOTE = "auto:phase8_orphan"
+
+
+def _now_naive() -> datetime:
+    return datetime.now(timezone.utc).replace(tzinfo=None)
+
+
+def _stale_window() -> timedelta:
+    """How fresh `last_seen_at` must be to count as 'this sync'.
+    4h cron interval + 1h buffer."""
+    return timedelta(hours=5)
+
+
+def _brand_supplier_counts() -> dict[str, list[int]]:
+    """Return {lower(brand): [supplier_id, ...]} for enabled suppliers
+    that have at least one SP with that brand."""
+    rows = db.session.execute(
+        select(
+            func.lower(SupplierProduct.brand),
+            SupplierProduct.supplier_id,
+        )
+        .join(Supplier, Supplier.id == SupplierProduct.supplier_id)
+        .where(
+            Supplier.is_enabled.is_(True),
+            SupplierProduct.brand.isnot(None),
+        )
+        .distinct()
+    ).all()
+    out: dict[str, list[int]] = {}
+    for brand_lower, sup_id in rows:
+        if not brand_lower:
+            continue
+        out.setdefault(brand_lower, []).append(sup_id)
+    return out
+
+
+def _pp_articles_in_supplier(supplier_id: int) -> set[str]:
+    """Return set of SP.article (lower-cased) for one supplier, non-null."""
+    rows = db.session.execute(
+        select(func.lower(SupplierProduct.article)).where(
+            SupplierProduct.supplier_id == supplier_id,
+            SupplierProduct.article.isnot(None),
+        )
+    ).all()
+    return {a for (a,) in rows if a}
+
+
+def _pps_with_confirmed_match() -> set[int]:
+    """Return PP ids that already have a confirmed/manual match."""
+    rows = db.session.execute(
+        select(ProductMatch.prom_product_id)
+        .where(ProductMatch.status.in_(["confirmed", "manual"]))
+        .distinct()
+    ).all()
+    return {pid for (pid,) in rows}
+
+
+def _feed_drop_check() -> tuple[bool, str]:
+    """Skip orphan run if any enabled supplier lost >50% of its SP rows
+    in the latest sync window. Heuristic: count `last_seen_at >= now-5h`
+    vs total SPs for that supplier."""
+    enabled = db.session.execute(
+        select(Supplier.id, Supplier.name).where(Supplier.is_enabled.is_(True))
+    ).all()
+    cutoff = _now_naive() - _stale_window()
+    for sup_id, sup_name in enabled:
+        total = db.session.execute(
+            select(func.count(SupplierProduct.id)).where(
+                SupplierProduct.supplier_id == sup_id
+            )
+        ).scalar() or 0
+        recent = db.session.execute(
+            select(func.count(SupplierProduct.id)).where(
+                SupplierProduct.supplier_id == sup_id,
+                SupplierProduct.last_seen_at >= cutoff,
+            )
+        ).scalar() or 0
+        if total > 10 and recent < total * 0.5:
+            return False, (
+                f"supplier {sup_name!r}: only {recent}/{total} SPs seen "
+                "in last sync window (>50% drop) — skipping orphan run"
+            )
+    return True, ""
+
+
+def flag_orphan_pps(*, dry_run: bool = False) -> dict:
+    """Flag orphan PPs (Stage 4.5).
+
+    Args:
+        dry_run: If True, don't write to DB — just return what WOULD change.
+
+    Returns:
+        dict with keys: flagged, cleared, skipped_reason (or empty string),
+        L1_total, brand_single_supplier_count.
+    """
+    ok, reason = _feed_drop_check()
+    if not ok:
+        logger.warning("Stage 4.5 skipped: %s", reason)
+        return {
+            "flagged": 0,
+            "cleared": 0,
+            "skipped_reason": reason,
+            "L1_total": 0,
+            "brand_single_supplier_count": 0,
+        }
+
+    brand_supps = _brand_supplier_counts()
+    matched_pp_ids = _pps_with_confirmed_match()
+
+    single_supp_brands = {
+        b: sids[0] for b, sids in brand_supps.items() if len(sids) == 1
+    }
+    article_index: dict[int, set[str]] = {}
+    for sup_id in set(single_supp_brands.values()):
+        article_index[sup_id] = _pp_articles_in_supplier(sup_id)
+
+    pps = db.session.execute(
+        select(PromProduct).where(PromProduct.brand.isnot(None))
+    ).scalars().all()
+
+    now = _now_naive()
+    flagged = 0
+    cleared = 0
+    L1_orphans: list[int] = []
+
+    for pp in pps:
+        brand_l = (pp.brand or "").lower().strip()
+        if not brand_l:
+            continue
+        sup_id = single_supp_brands.get(brand_l)
+        if sup_id is None:
+            continue  # brand has 0 or N>1 suppliers — out of L1 scope
+        if pp.id in matched_pp_ids:
+            continue  # has confirmed match — not orphan
+
+        disp = (pp.display_article or "").lower().strip()
+        articles = article_index.get(sup_id, set())
+        # No display_article → cannot be matched → treat as orphan.
+        is_orphan = (not disp) or (disp not in articles)
+
+        note_is_ours = pp.operator_decision_note == AUTO_NOTE
+        current = pp.operator_decision
+
+        if is_orphan:
+            L1_orphans.append(pp.id)
+            # Flag only if currently NULL/pending OR previously auto-set by us.
+            if current in (None, "pending") or note_is_ours:
+                if not (current == "needs_delete" and note_is_ours):
+                    if not dry_run:
+                        pp.operator_decision = "needs_delete"
+                        pp.operator_decision_note = AUTO_NOTE
+                        pp.operator_decision_at = now
+                    flagged += 1
+        else:
+            # PP is back in feed — clear ONLY our own auto-flag.
+            if current == "needs_delete" and note_is_ours:
+                if not dry_run:
+                    pp.operator_decision = None
+                    pp.operator_decision_note = None
+                    pp.operator_decision_at = now
+                cleared += 1
+
+    if not dry_run:
+        db.session.commit()
+
+    logger.info(
+        "Stage 4.5 done: flagged=%d cleared=%d L1_total=%d single_supplier_brands=%d",
+        flagged, cleared, len(L1_orphans), len(single_supp_brands),
+    )
+    return {
+        "flagged": flagged,
+        "cleared": cleared,
+        "skipped_reason": "",
+        "L1_total": len(L1_orphans),
+        "brand_single_supplier_count": len(single_supp_brands),
+    }
