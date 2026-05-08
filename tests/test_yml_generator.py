@@ -151,6 +151,57 @@ class TestYmlGenerator:
                 f"vendorCode must equal offer id for Horoshop matching"
             )
 
+    def test_uah_supplier_min_margin_uses_rate_one(self, session, yml_output_dir):
+        """UAH supplier prices must clamp margin in UAH, not through eur_rate."""
+        supplier = Supplier(
+            name="Astim-like",
+            feed_url="https://astim.in.ua/toDealers.xml",
+            discount_percent=19.0,
+            eur_rate_uah=51.15,
+            cost_rate=0.75,
+            min_margin_uah=500.0,
+            is_enabled=True,
+        )
+        session.add(supplier)
+        session.flush()
+
+        pp = PromProduct(
+            external_id="PP-UAH",
+            name="Hendi item",
+            brand="Hendi",
+            price=100000,
+        )
+        sp = SupplierProduct(
+            supplier_id=supplier.id,
+            external_id="SP-UAH",
+            name="Hendi item",
+            brand="Hendi",
+            article="525630",
+            price_cents=100000,  # 1000 UAH
+            currency="UAH",
+            available=True,
+            needs_review=False,
+        )
+        session.add_all([pp, sp])
+        session.flush()
+        session.add(ProductMatch(
+            supplier_product_id=sp.id,
+            prom_product_id=pp.id,
+            score=100.0,
+            status="confirmed",
+            confirmed_by="test",
+        ))
+        session.commit()
+
+        result = regenerate_yml_feed()
+        offer = etree.parse(result["path"]).find(".//offer")
+        assert offer.findtext("currencyId") == "UAH"
+        # With rate=1, 1000 UAH retail cannot keep 500 UAH margin at any
+        # discount, so discount clamps to 0%. The old bug used eur_rate=51.15
+        # and incorrectly emitted 810.0.
+        assert offer.findtext("price") == "1000.0"
+        assert offer.find("oldprice") is None
+
     def test_xml_structure_is_valid_yml(self, session, yml_output_dir):
         """Generated file must be a well-formed YML catalog."""
         _seed_confirmed_match(

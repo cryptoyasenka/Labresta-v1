@@ -215,10 +215,13 @@ def _compute_price_eur(match) -> float:
     if match.discount_percent is None and supplier is not None:
         min_margin = float(getattr(supplier, "min_margin_uah", 0.0) or 0.0)
         if min_margin > 0:
+            rate = resolve_eur_rate(supplier)
+            if getattr(sp, "currency", "EUR") == "UAH":
+                rate = 1.0
             effective_discount = clamp_discount_for_min_margin(
                 effective_discount,
                 sp.price_cents,
-                resolve_eur_rate(supplier),
+                rate,
                 min_margin,
                 float(getattr(supplier, "cost_rate", 0.75) or 0.75),
             )
