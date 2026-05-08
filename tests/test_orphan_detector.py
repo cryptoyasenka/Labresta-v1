@@ -39,12 +39,14 @@ def _mk_sp(db, supplier_id, brand, article, *, fresh=True):
 
 
 def _mk_pp(db, brand, display_article, **kwargs):
+    name = kwargs.pop("name", None) or f"PP-{display_article}"
+    extid_suffix = kwargs.pop("extid_suffix", "")
     pp = PromProduct(
-        external_id=f"pp-{display_article or 'none'}-{kwargs.get('extid_suffix', '')}",
-        name=f"PP-{display_article}",
+        external_id=f"pp-{display_article or 'none'}-{extid_suffix or name[:8]}",
+        name=name,
         brand=brand,
         display_article=display_article,
-        **{k: v for k, v in kwargs.items() if k != "extid_suffix"},
+        **kwargs,
     )
     db.session.add(pp)
     db.session.flush()
@@ -191,19 +193,19 @@ def test_sanity_guard_skips_on_feed_drop(db):
     assert "drop" in result["skipped_reason"].lower()
 
 
-def test_pp_without_display_article_is_skipped(db):
-    """Safety: PP without display_article cannot be reliably classified — skip
-    rather than false-flag (operator should fill display_article first). Prevents
-    bulk-flagging a brand whose Horoshop cards have no display_article filled."""
+def test_pp_without_display_article_falls_back_to_name_scan(db):
+    """PP without display_article: Phase M fallback scans pp.name for any
+    SP article from the supplier. With the helper-default name 'PP-None'
+    no SP article is contained → orphan."""
     s = _mk_supplier(db, "Astim")
-    _mk_sp(db, s.id, "Hendi", "111")
+    _mk_sp(db, s.id, "Hendi", "111111")
     pp = _mk_pp(db, "Hendi", None)
     db.session.commit()
 
     result = flag_orphan_pps()
-    assert result["flagged"] == 0
+    assert result["flagged"] == 1
     db.session.refresh(pp)
-    assert pp.operator_decision is None
+    assert pp.operator_decision == "needs_delete"
 
 
 def test_disabled_supplier_excluded_from_brand_count(db):
@@ -340,3 +342,92 @@ def test_exclude_dead_does_not_skip_partial_drop(db):
     result = flag_orphan_pps(exclude_dead_suppliers=True)
     assert result["flagged"] == 0
     assert "drop" in result["skipped_reason"].lower()
+
+
+# ---------------------------------------------------------------------------
+# Phase M: fallback for PPs without display_article — SKU inside pp.name
+# (Hurakan/Apach NP rows; catalog has no Horoshop article column filled)
+# ---------------------------------------------------------------------------
+def test_no_display_flag_orphan_when_no_sp_article_in_name(db):
+    """PP without display_article and no matching SP article in pp.name → orphan."""
+    s = _mk_supplier(db, "Новый Проект")
+    _mk_sp(db, s.id, "Hurakan", "HKN-DHD10GM")  # supplier carries different SKU
+    pp_orphan = _mk_pp(db, "Hurakan", None, name="Кип'ятильник Hurakan HKN-HVN10")
+    db.session.commit()
+
+    result = flag_orphan_pps()
+    assert result["flagged"] == 1
+    db.session.refresh(pp_orphan)
+    assert pp_orphan.operator_decision == "needs_delete"
+    assert pp_orphan.operator_decision_note == AUTO_NOTE
+
+
+def test_no_display_keeps_pp_when_sp_article_present_in_name(db):
+    """PP without display_article but pp.name contains an SP article → not orphan."""
+    s = _mk_supplier(db, "Новый Проект")
+    _mk_sp(db, s.id, "Hurakan", "HKN-J45SN2V")
+    pp_kept = _mk_pp(
+        db, "Hurakan", None,
+        name="Тістоміс Hurakan HKN-J45SN2V на 45 л (380B)",
+    )
+    db.session.commit()
+
+    result = flag_orphan_pps()
+    assert result["flagged"] == 0
+    db.session.refresh(pp_kept)
+    assert pp_kept.operator_decision is None
+
+
+def test_no_display_dash_suffix_is_different_sku(db):
+    """SP 'HKN-GXSD2GN' must NOT save a PP whose name has 'HKN-GXSD2GN-SC' —
+    they are different SKUs (matcher fast-path rejects same boundary case)."""
+    s = _mk_supplier(db, "Новый Проект")
+    _mk_sp(db, s.id, "Hurakan", "HKN-GXSD2GN")
+    pp_orphan = _mk_pp(
+        db, "Hurakan", None,
+        name="Шафа холодильна HURAKAN HKN-GXSD2GN-SC",
+    )
+    db.session.commit()
+
+    result = flag_orphan_pps()
+    assert result["flagged"] == 1
+    db.session.refresh(pp_orphan)
+    assert pp_orphan.operator_decision == "needs_delete"
+
+
+def test_no_display_short_or_pure_letter_sp_article_ignored(db):
+    """SP articles below len 5 or pure-letter no-structure must not save
+    PPs (too weak a signal — same gate as matcher fast-path)."""
+    s = _mk_supplier(db, "Новый Проект")
+    _mk_sp(db, s.id, "Hurakan", "ABCD")          # too short — ignored
+    _mk_sp(db, s.id, "Hurakan", "HKNFNTMNEW")    # pure letters, no structure — ignored
+    pp_orphan = _mk_pp(
+        db, "Hurakan", None,
+        name="Гриль HURAKAN ABCD контактний HKNFNTMNEW",
+    )
+    db.session.commit()
+
+    result = flag_orphan_pps()
+    assert result["flagged"] == 1
+    db.session.refresh(pp_orphan)
+    assert pp_orphan.operator_decision == "needs_delete"
+
+
+def test_no_display_back_in_feed_clears_auto_flag(db):
+    """When PP without display gets an SP article (back in feed),
+    a previously auto-set 'needs_delete' is cleared."""
+    s = _mk_supplier(db, "Новый Проект")
+    pp = _mk_pp(
+        db, "Hurakan", None,
+        name="ДЕГІДРАТОР HURAKAN HKN-DHD10G",
+        operator_decision="needs_delete",
+        operator_decision_note=AUTO_NOTE,
+    )
+    _mk_sp(db, s.id, "Hurakan", "HKN-DHD10G")
+    db.session.commit()
+
+    result = flag_orphan_pps()
+    assert result["cleared"] == 1
+    db.session.refresh(pp)
+    assert pp.operator_decision is None
+    assert pp.operator_decision_note is None

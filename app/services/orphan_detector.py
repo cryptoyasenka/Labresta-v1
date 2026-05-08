@@ -5,6 +5,10 @@ exactly one enabled supplier, but that supplier's feed does not contain a
 SupplierProduct with article matching pp.display_article. Such PPs are
 de-facto out of stock — flagged via operator_decision='needs_delete'.
 
+When pp.display_article is empty, fall back to scanning pp.name for any
+SP article from that supplier (mirrors matcher fast-path for catalogs
+where the SKU lives only inside the product name — Hurakan/Apach NP rows).
+
 Sanity guards:
   - If any single supplier's recent SP-recency dropped >50%, skip the
     whole run (broken-feed protection — same logic as Stage 4).
@@ -15,6 +19,7 @@ Sanity guards:
 from __future__ import annotations
 
 import logging
+import re
 from datetime import datetime, timedelta, timezone
 
 from sqlalchemy import func, select
@@ -25,6 +30,7 @@ from app.models.product_match import ProductMatch
 from app.models.supplier import Supplier
 from app.models.supplier_product import SupplierProduct
 from app.services.brand_supplier_overrides import is_excluded as _brand_supplier_excluded
+from app.services.matcher import _fix_cyrillic_homoglyphs
 
 logger = logging.getLogger(__name__)
 
@@ -104,6 +110,77 @@ def _pp_articles_in_supplier(supplier_id: int) -> set[str]:
         )
     ).all()
     return {a for (a,) in rows if a}
+
+
+def _supplier_article_strings(supplier_id: int) -> list[str]:
+    """Raw SP article strings (preserve case+spacing) for in-name boundary scan."""
+    rows = db.session.execute(
+        select(SupplierProduct.article).where(
+            SupplierProduct.supplier_id == supplier_id,
+            SupplierProduct.article.isnot(None),
+            SupplierProduct.article != "",
+        )
+    ).all()
+    seen: set[str] = set()
+    out: list[str] = []
+    for (art,) in rows:
+        if not art:
+            continue
+        key = art.strip()
+        if not key or key in seen:
+            continue
+        seen.add(key)
+        out.append(key)
+    return out
+
+
+def _build_sp_article_boundary_re(raw_article: str) -> re.Pattern | None:
+    """Compile a word-boundary regex for an SP article in pp.name.
+
+    Mirrors matcher.py:1217-1221 fast-path: requires len>=5, has digit OR
+    non-alphanumeric structure (skip pure-letter weak signals like
+    "HKNFNTMNEW"); rejects dash-suffix continuation so 'HKN-GXSD2GN' won't
+    falsely match 'HKN-GXSD2GN-SC'.
+    """
+    if not raw_article or len(raw_article) < 5:
+        return None
+    has_digit = any(c.isdigit() for c in raw_article)
+    has_structure = any(not c.isalnum() for c in raw_article)
+    if not (has_digit or has_structure):
+        return None
+    raw_article_fixed = _fix_cyrillic_homoglyphs(raw_article)
+    escaped = re.escape(raw_article_fixed)
+    escaped = re.sub(r"(\\[ \t])+", r"\\s+", escaped)
+    if not any(c.isspace() for c in raw_article_fixed):
+        escaped = re.sub(
+            r"(?<=[A-Za-zА-Яа-яЁёІіЇїЄєҐґ])(?=\d)"
+            r"|(?<=\d)(?=[A-Za-zА-Яа-яЁёІіЇїЄєҐґ])",
+            r"\\s*",
+            escaped,
+        )
+    return re.compile(
+        rf"(?<![0-9A-Za-zА-Яа-яЁёІіЇїЄєҐґ]){escaped}"
+        rf"(?![0-9A-Za-zА-Яа-яЁёІіЇїЄєҐґ]|-[0-9A-Za-zА-Яа-яЁёІіЇїЄєҐґ])",
+        re.IGNORECASE | re.UNICODE,
+    )
+
+
+def _any_sp_article_in_pp_name(pp_name: str | None, sp_articles: list[str]) -> bool:
+    """True if at least one SP article appears (word-boundary) inside pp.name.
+
+    Used as fallback orphan check for PPs without display_article — the SKU
+    lives inside the name (HURAKAN HKN-DHD10G in 'ДЕГІДРАТОР HURAKAN HKN-DHD10G').
+    """
+    if not pp_name:
+        return False
+    name_fixed = _fix_cyrillic_homoglyphs(pp_name)
+    for art in sp_articles:
+        rx = _build_sp_article_boundary_re(art)
+        if rx is None:
+            continue
+        if rx.search(name_fixed):
+            return True
+    return False
 
 
 def _pps_with_confirmed_match() -> set[int]:
@@ -195,8 +272,10 @@ def flag_orphan_pps(*, dry_run: bool = False, exclude_dead_suppliers: bool = Fal
         if len(sids) == 1 and sids[0] not in dead_ids
     }
     article_index: dict[int, set[str]] = {}
+    article_raw_index: dict[int, list[str]] = {}
     for sup_id in set(single_supp_brands.values()):
         article_index[sup_id] = _pp_articles_in_supplier(sup_id)
+        article_raw_index[sup_id] = _supplier_article_strings(sup_id)
 
     pps = db.session.execute(
         select(PromProduct).where(PromProduct.brand.isnot(None))
@@ -235,12 +314,17 @@ def flag_orphan_pps(*, dry_run: bool = False, exclude_dead_suppliers: bool = Fal
             continue
 
         disp = (pp.display_article or "").lower().strip()
-        if not disp:
-            # No display_article → cannot reliably determine orphan status.
-            # Skip rather than false-flag (operator should fill display_article first).
-            continue
         articles = article_index.get(sup_id, set())
-        is_orphan = disp not in articles
+        if disp:
+            is_orphan = disp not in articles
+        else:
+            # Fallback for catalogs whose SKU lives only in pp.name (Hurakan/
+            # Apach NP rows have no Horoshop article/display field): scan
+            # pp.name for any SP article from this supplier with the same
+            # word-boundary regex matcher fast-path uses. If none of the
+            # supplier's articles is present in the name, the PP is orphan.
+            sp_arts = article_raw_index.get(sup_id, [])
+            is_orphan = not _any_sp_article_in_pp_name(pp.name, sp_arts)
 
         note_is_ours = pp.operator_decision_note == AUTO_NOTE
         current = pp.operator_decision
