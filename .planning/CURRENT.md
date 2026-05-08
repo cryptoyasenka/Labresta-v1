@@ -1,21 +1,23 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
-**Last touched:** 2026-05-08 (поздний вечер — Phase 8 ALL TASKS done)
-**Status:** Phase 8 завершён. Task 1 (`51d274c`) + Task 2 (`11aa107`) + Task 3 (`cd1e91b`). 656/656 passed, working tree clean. Бренд freshness — оставлено «любые записи в БД» (выбор Yana). UI: tab nav + brand filter + 3 действия (Видалено/Залишити/Запит).
+**Last touched:** 2026-05-08 (ночь — Phase 8 APPLIED to prod)
+**Status:** Phase 8 завершён и применён. **26 PP помечены `auto:phase8_orphan`** на проде (Rational ×9, Robot Coupe ×6, FROSTY ×6, GI.Metal ×4, Bartscher ×1). Идемпотентность проверена. 658/658 tests. Прод dry-run выявил 2 бага → починено в `3f9f07a`: PP без display_article теперь skip (не flag), и `--exclude-dead-suppliers` обходит MARESTO 403 sanity guard. Полный отчёт в `.planning/phases/08-orphan-pp-deletion/08-01-SUMMARY.md`.
 
 ## Open files
-- (none — Phase 8 ready for prod test)
+- (none — Phase 8 closed)
 
 ## Next step
-1. **Прод-прогон dry-run** (рекомендую первым шагом):
-   ```bash
-   cd "C:/Projects/labresta-sync" && DATABASE_URL="postgresql://postgres:nEUfFuRsrHEjIQbhpBxlEqEPewUCKALC@switchyard.proxy.rlwy.net:40821/railway" PYTHONPATH=. PYTHONIOENCODING=utf-8 ".venv/Scripts/python.exe" -m flask flag-orphans --dry-run
-   ```
-2. **Если число разумное** (audit ожидал ~17 Hendi PP) — снять `--dry-run` и применить, либо дождаться следующего `fetch-all` который сам вызовет Stage 4.5.
-3. **UI прод-проверка:** залогиниться в админку, открыть `/matches/deletion-candidates?tab=orphan` — увидеть таблицу + dropdown «Бренд».
-4. Yana вручную отклоняет 3 wrong Astim candidates (m=6620, 6618, 6611) и подтверждает остальные 7.
-5. (опционально) Связаться с MARESTO: whitelist Railway egress IP, либо локальный import-from-local скрипт.
-6. (опционально) Создать `08-01-SUMMARY.md` после прод-проверки.
+1. **Yana — UI триаж:** открыть `/matches/deletion-candidates?tab=orphan` (badge=26), фильтровать по бренду, для каждой строки выбрать: Видалено / Залишити / Запит. После клика строка исчезает, флаг снимается.
+2. **Manual Astim review** (carry-over): отклонить m=6620, 6618, 6611 + подтвердить 7 fuzzy candidates на `/matches/?supplier_id=8&status=candidate`.
+3. **MARESTO unblock** (опционально, не блокирует): whitelist Railway egress IP через support, либо local-fetch скрипт. Пока не починится — `flask flag-orphans` без `--exclude-dead-suppliers` блокируется sanity guard'ом, и `suppliers_fetch_all` тоже скипает Stage 4.5.
+4. **Open question:** должен ли `suppliers_fetch_all` тоже передавать `exclude_dead_suppliers=True`? Сейчас OFF (safe default). Решение оставлено за Yana — описано в SUMMARY.
+
+## Phase 8 commits (today)
+- `51d274c` Task 1 — service + 11 tests
+- `11aa107` Task 2 — wire-in + CLI
+- `cd1e91b` Task 3 — UI tab + brand filter + clear-flag endpoint
+- `3f9f07a` fix — skip no-display-article + `--exclude-dead-suppliers`
+- (next commit) SUMMARY + CURRENT update
 
 ## Prod audit (2026-05-08, scripts/verify_prod.py)
 - Astim: 487 confirmed, 10 candidates (3 display_art_dup, 7 fuzzy false-pos)
