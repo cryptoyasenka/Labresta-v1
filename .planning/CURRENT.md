@@ -8,8 +8,17 @@
 - 4 violations отозваны (все были `confirmed_by='Admin'` manual): match#6611 (Hendi щепа 250г vs 150г SP), #6383 (Hendi цитрус-пресс), #1100 (Sirman STORM VV), #1102 (Sirman CICLONE 36 VT). Re-verify: 0 violations осталось, total confirmed 2549→2545.
 - `.planning/no-anchor-verify.md` (commit `cce9cac`): **1641 confirmed без article-anchor — clean**. 1636/1641 OK по brand+voltage+model-token; 0 brand mismatches, 0 voltage disjoint, 5 no_model_token все вручную проверены — все валидные (Rational SCC→iCC rebrand с display_article anchor на PP-стороне; Sirman 1/2 vs I/2 typo; Ugolini MINIGEL с переставленными словами).
 
+## Per-row dossiers (commit `02318e3`)
+**`.planning/dossiers/INDEX.md`** — 42 dossier-файла собраны из прода:
+- `cat-h/` 11 шт. — каждый duplicate display_article с обоими PP, фото, ценами, описаниями
+- `cat-b/` 13 шт. — PP + suffix-кандидат-SP с voltage check
+- `cat-b-rev/` 9 шт. (был 8, prod refresh +1)
+- `astim-fuzzy/` 9 шт. (был 7, prod refresh +2)
+
+Регенерация: `.venv/Scripts/python.exe scripts/build_dossiers.py --cat all`
+
 ## TODO для Yana завтра
-См. **`.planning/TODO-NEXT.md`** (commit `3d6d640`). Приоритет:
+См. **`.planning/TODO-NEXT.md`** (commit `7c96966`+). Приоритет:
 1. Cat H — 11 cross-brand display_article дублей в Horoshop (catalog hygiene, ручками)
 2. Catalog cleanup — 3 AD46 PPs (PP#1007/1015/1008) убрать из Horoshop
 3. Cat B sibling (13 шт.) — per-row через `/matches/` UI
