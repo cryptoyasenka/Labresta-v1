@@ -4,8 +4,111 @@
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h2>Кандидати на видалення з Horoshop</h2>
+    {% if tab == 'orphan' %}
+    <span class="badge bg-warning text-dark fs-6">{{ orphan_pps|length }} товарів</span>
+    {% else %}
     <span class="badge bg-warning text-dark fs-6">{{ matches|length }} товарів</span>
+    {% endif %}
 </div>
+
+<ul class="nav nav-tabs mb-3">
+    <li class="nav-item">
+        <a class="nav-link {% if tab != 'orphan' %}active{% endif %}"
+           href="{{ url_for('matches.deletion_candidates', tab='disappeared', supplier_id=supplier_id) }}">
+            Зниклі матчі <span class="badge bg-secondary ms-1">{{ matches|length }}</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {% if tab == 'orphan' %}active{% endif %}"
+           href="{{ url_for('matches.deletion_candidates', tab='orphan') }}">
+            Сирітські товари <span class="badge bg-secondary ms-1">{{ orphan_pps|length }}</span>
+        </a>
+    </li>
+</ul>
+
+{% if tab == 'orphan' %}
+<div class="alert alert-info py-2 mb-3">
+    <strong>Що це?</strong> Товари каталогу Horoshop, у яких бренд возить лише один активний постачальник,
+    і артикулу <code>display_article</code> немає в його прайсі. Stage 4.5 автоматично пропонує їх до видалення.
+    Дії: <strong>Видалено</strong> — вже прибрав з Horoshop; <strong>Залишити</strong> — поки не чіпати;
+    <strong>Запит</strong> — попросити постачальника додати SKU.
+</div>
+
+{% if orphan_brands %}
+<form method="get" class="row g-2 mb-3 align-items-end">
+    <input type="hidden" name="tab" value="orphan">
+    <div class="col-auto">
+        <label class="form-label small">Бренд</label>
+        <select name="brand" class="form-select form-select-sm" onchange="this.form.submit()">
+            <option value="">Всі ({{ orphan_brands|length }})</option>
+            {% for b in orphan_brands %}
+            <option value="{{ b }}" {% if brand_filter == b %}selected{% endif %}>{{ b }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    {% if brand_filter %}
+    <div class="col-auto">
+        <a href="{{ url_for('matches.deletion_candidates', tab='orphan') }}" class="btn btn-outline-secondary btn-sm">Скинути</a>
+    </div>
+    {% endif %}
+</form>
+{% endif %}
+
+{% if orphan_pps %}
+<div class="table-responsive">
+    <table class="table table-hover table-sm align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Бренд</th>
+                <th>Назва</th>
+                <th>display_article</th>
+                <th>ID Horoshop</th>
+                <th>Дії</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pp in orphan_pps %}
+            <tr id="orphan-row-{{ pp.id }}">
+                <td class="small">{{ pp.brand or '—' }}</td>
+                <td>
+                    <div class="fw-semibold">{{ pp.name }}</div>
+                    {% if pp.name_ru %}<small class="text-muted">{{ pp.name_ru }}</small>{% endif %}
+                </td>
+                <td><code>{{ pp.display_article or '—' }}</code></td>
+                <td>
+                    {% if pp.page_url %}
+                    <a href="{{ pp.page_url }}" target="_blank" rel="noopener" class="small">{{ pp.external_id }}</a>
+                    {% else %}
+                    <span class="small">{{ pp.external_id }}</span>
+                    {% endif %}
+                </td>
+                <td class="text-nowrap">
+                    <button class="btn btn-sm btn-danger orphan-action"
+                            data-pp-id="{{ pp.id }}" data-action="deleted"
+                            title="Я вже видалив товар з Horoshop">✓ Видалено</button>
+                    <button class="btn btn-sm btn-outline-secondary orphan-action"
+                            data-pp-id="{{ pp.id }}" data-action="keep"
+                            title="Поки не чіпати, шукаю іншого постачальника">↻ Залишити</button>
+                    <button class="btn btn-sm btn-outline-info orphan-action"
+                            data-pp-id="{{ pp.id }}" data-action="request"
+                            title="Попросити постачальника додати SKU">? Запит</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-success">
+    {% if brand_filter %}
+    Немає сирітських товарів для бренду <strong>{{ brand_filter }}</strong>.
+    {% else %}
+    Немає сирітських товарів — каталог чистий.
+    {% endif %}
+</div>
+{% endif %}
+
+{% else %}
 
 <div class="alert alert-warning py-2 mb-3">
     <strong>Що це?</strong> Підтверджені матчі, де товар зник з прайсу постачальника 2+ синки поспіль.
@@ -14,9 +117,9 @@
     Якщо товар повернувся — натисніть <strong>Повернувся</strong>.
 </div>
 
-{# Supplier filter #}
 {% if suppliers %}
 <form method="get" class="row g-2 mb-3 align-items-end">
+    <input type="hidden" name="tab" value="disappeared">
     <div class="col-auto">
         <label class="form-label small">Постачальник</label>
         <select name="supplier_id" class="form-select form-select-sm" onchange="this.form.submit()">
@@ -28,7 +131,7 @@
     </div>
     {% if supplier_id %}
     <div class="col-auto">
-        <a href="{{ url_for('matches.deletion_candidates') }}" class="btn btn-outline-secondary btn-sm">Скинути</a>
+        <a href="{{ url_for('matches.deletion_candidates', tab='disappeared') }}" class="btn btn-outline-secondary btn-sm">Скинути</a>
     </div>
     {% endif %}
 </form>
@@ -102,6 +205,8 @@
     <p>Якщо товар зникне з прайсу постачальника — він з'явиться тут після наступного синку.</p>
 </div>
 {% endif %}
+
+{% endif %}
 {% endblock %}
 
 {% block scripts %}
@@ -112,25 +217,28 @@
         return m ? m.getAttribute('content') : '';
     }
 
-    function postAction(url, btn) {
+    function postAction(url, btn, body) {
         btn.disabled = true;
-        fetch(url, {
-            method: 'POST',
-            headers: { 'X-CSRFToken': csrfToken(), 'Accept': 'application/json' },
-        })
-        .then(function (r) { return r.json(); })
-        .then(function (data) {
-            if (data.status === 'ok') {
-                var row = btn.closest('tr');
-                row.style.transition = 'opacity 0.3s';
-                row.style.opacity = '0';
-                setTimeout(function () { row.remove(); updateCount(); }, 320);
-            } else {
-                alert(data.message || 'Помилка');
-                btn.disabled = false;
-            }
-        })
-        .catch(function () { btn.disabled = false; });
+        var headers = { 'X-CSRFToken': csrfToken(), 'Accept': 'application/json' };
+        var opts = { method: 'POST', headers: headers };
+        if (body !== undefined) {
+            headers['Content-Type'] = 'application/json';
+            opts.body = JSON.stringify(body);
+        }
+        fetch(url, opts)
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+                if (data.status === 'ok') {
+                    var row = btn.closest('tr');
+                    row.style.transition = 'opacity 0.3s';
+                    row.style.opacity = '0';
+                    setTimeout(function () { row.remove(); updateCount(); }, 320);
+                } else {
+                    alert(data.message || 'Помилка');
+                    btn.disabled = false;
+                }
+            })
+            .catch(function () { btn.disabled = false; });
     }
 
     function updateCount() {
@@ -143,6 +251,7 @@
     document.addEventListener('click', function (e) {
         var delBtn = e.target.closest('.dc-deleted-btn');
         var retBtn = e.target.closest('.dc-returned-btn');
+        var orphanBtn = e.target.closest('.orphan-action');
         if (delBtn) {
             var id = delBtn.dataset.matchId;
             if (!confirm('Підтвердити видалення з Horoshop? Матч буде відхилено.')) return;
@@ -150,6 +259,12 @@
         } else if (retBtn) {
             var id2 = retBtn.dataset.matchId;
             postAction('/matches/' + id2 + '/mark-returned', retBtn);
+        } else if (orphanBtn) {
+            var ppId = orphanBtn.dataset.ppId;
+            var action = orphanBtn.dataset.action;
+            var labels = { deleted: 'видаленим з Horoshop', keep: 'залишеним', request: 'запитом постачальнику' };
+            if (!confirm('Позначити товар ' + labels[action] + '?')) return;
+            postAction('/matches/orphan-pp/' + ppId + '/clear', orphanBtn, { action: action });
         }
     });
 })();

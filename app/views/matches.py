@@ -1702,13 +1702,15 @@ def export_xlsx():
 @matches_bp.route("/deletion-candidates")
 @login_required
 def deletion_candidates():
-    """List confirmed/manual matches flagged as deletion candidates."""
+    """List deletion candidates: disappeared matches (Stage 4) + orphan PPs (Stage 4.5)."""
     from sqlalchemy import select
-    from app.models.supplier import Supplier
+    from app.services.orphan_detector import AUTO_NOTE
 
     supplier_id = request.args.get("supplier_id", type=int)
+    tab = request.args.get("tab", "disappeared")
+    brand_filter = (request.args.get("brand") or "").strip()
 
-    query = (
+    matches_query = (
         db.session.query(ProductMatch)
         .join(ProductMatch.supplier_product)
         .join(ProductMatch.prom_product)
@@ -1720,9 +1722,34 @@ def deletion_candidates():
         .order_by(ProductMatch.id.desc())
     )
     if supplier_id:
-        query = query.filter(SupplierProduct.supplier_id == supplier_id)
+        matches_query = matches_query.filter(SupplierProduct.supplier_id == supplier_id)
+    matches = matches_query.all()
 
-    matches = query.all()
+    orphan_query = (
+        select(PromProduct)
+        .where(
+            PromProduct.operator_decision == "needs_delete",
+            PromProduct.operator_decision_note == AUTO_NOTE,
+        )
+        .order_by(PromProduct.brand, PromProduct.id.desc())
+    )
+    if brand_filter:
+        orphan_query = orphan_query.where(PromProduct.brand == brand_filter)
+    orphan_pps = db.session.execute(orphan_query).scalars().all()
+
+    orphan_brands = [
+        b for (b,) in db.session.execute(
+            select(PromProduct.brand)
+            .where(
+                PromProduct.operator_decision == "needs_delete",
+                PromProduct.operator_decision_note == AUTO_NOTE,
+                PromProduct.brand.isnot(None),
+            )
+            .distinct()
+            .order_by(PromProduct.brand)
+        ).all() if b
+    ]
+
     suppliers = db.session.execute(
         select(Supplier).order_by(Supplier.name)
     ).scalars().all()
@@ -1730,8 +1757,12 @@ def deletion_candidates():
     return render_template(
         "matches/deletion_candidates.html",
         matches=matches,
+        orphan_pps=orphan_pps,
+        orphan_brands=orphan_brands,
         suppliers=suppliers,
         supplier_id=supplier_id,
+        tab=tab,
+        brand_filter=brand_filter,
     )
 
 
@@ -1776,6 +1807,49 @@ def mark_returned_to_stock(match_id):
         action="deletion_cancelled",
         match_id=match.id,
         details={"pp_id": match.prom_product_id},
+    )
+    db.session.commit()
+    return jsonify({"status": "ok"})
+
+
+@matches_bp.route("/orphan-pp/<int:pp_id>/clear", methods=["POST"])
+@login_required
+def clear_orphan_pp_flag(pp_id):
+    """Resolve an auto-flagged orphan PP.
+
+    JSON body { "action": "deleted" | "keep" | "request" }:
+      - "deleted" — PP removed from Horoshop manually; mark reviewed.
+      - "keep"    — keep PP visible; switch to keep_searching.
+      - "request" — ask supplier to add SKU; switch to needs_request.
+
+    Refuses to act if note != 'auto:phase8_orphan' (won't touch manual decisions).
+    """
+    from app.services.orphan_detector import AUTO_NOTE
+
+    pp = db.session.get(PromProduct, pp_id)
+    if not pp or pp.operator_decision_note != AUTO_NOTE:
+        return jsonify({"status": "error", "message": "PP не знайдено або не є auto-orphan"}), 404
+
+    data = request.get_json(silent=True) or {}
+    action = data.get("action", "deleted")
+    today = datetime.now(timezone.utc).date()
+
+    if action == "deleted":
+        pp.operator_decision = "reviewed"
+        pp.operator_decision_note = f"orphan: deleted from Horoshop {today}"
+    elif action == "keep":
+        pp.operator_decision = "keep_searching"
+        pp.operator_decision_note = "orphan: operator chose to keep"
+    elif action == "request":
+        pp.operator_decision = "needs_request"
+        pp.operator_decision_note = "orphan: ask supplier"
+    else:
+        return jsonify({"status": "error", "message": "Unknown action"}), 400
+
+    pp.operator_decision_at = datetime.now(timezone.utc).replace(tzinfo=None)
+    log_action(
+        action="orphan_pp_resolved",
+        details={"pp_id": pp.id, "decision": pp.operator_decision},
     )
     db.session.commit()
     return jsonify({"status": "ok"})
