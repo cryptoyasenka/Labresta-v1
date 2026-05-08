@@ -1,4 +1,4 @@
-"""Kodaki + Gooder feed adapters.
+"""Kodaki + Gooder + Astim feed adapters.
 
 Both suppliers export non-YML XML. Each adapter rewrites the feed
 in-memory into YML so that the standard feed_parser pipeline works
@@ -32,6 +32,17 @@ Map:
     <image>             → <picture>
     <param>             → <param> (passed through)
     <param name="Напруга"> → voltage suffix in <name> if not already present
+
+--- Astim (astim.in.ua/toDealers.xml) ---
+Map:
+    <article>           → id + <vendorCode>
+    <in_stock>так/ні    → available="true" | "false"
+    <name>/<name_ru>    → <name> (UA preferred, RU fallback)
+    Hendi in name       → <vendor>Hendi</vendor>
+    <price>             → <price>
+    -                   → <currencyId>UAH</currencyId>
+    <description>       → <description>
+    barcode/category    → <param> values for operator context
 """
 
 import hashlib
@@ -135,6 +146,8 @@ def apply_supplier_adapter(
         return kodaki_to_yml(raw_bytes)
     if is_gooder_url(feed_url):
         return gooder_to_yml(raw_bytes, eur_rate=eur_rate)
+    if is_astim_url(feed_url):
+        return astim_to_yml(raw_bytes)
     return raw_bytes
 
 
@@ -180,6 +193,17 @@ def is_gooder_url(url: str | None) -> bool:
     except (ValueError, TypeError):
         return False
     return host == "gooder.kiev.ua" or host.endswith(".gooder.kiev.ua")
+
+
+def is_astim_url(url: str | None) -> bool:
+    """True if URL host is astim.in.ua (or a subdomain)."""
+    if not url:
+        return False
+    try:
+        host = (urlparse(url).hostname or "").lower()
+    except (ValueError, TypeError):
+        return False
+    return host == "astim.in.ua" or host.endswith(".astim.in.ua")
 
 
 def _voltage_from_params(offer: etree._Element) -> str | None:
@@ -286,5 +310,94 @@ def gooder_to_yml(raw_bytes: bytes, eur_rate: float | None = None) -> bytes:
                 new_param = etree.SubElement(new_offer, "param")
                 new_param.set("name", param_name)
                 new_param.text = param_text
+
+    return etree.tostring(yml_root, encoding="utf-8", xml_declaration=True)
+
+
+# ---------------------------------------------------------------------------
+# Astim adapter
+# ---------------------------------------------------------------------------
+
+def _astim_available(value: str | None) -> str:
+    raw = (value or "").strip().lower()
+    return "true" if raw in {"так", "yes", "true", "1"} else "false"
+
+
+def _astim_brand_from_name(*parts: str | None) -> str | None:
+    """Conservative brand extraction for Astim.
+
+    Hendi is the high-confidence case: Horoshop stores the manufacturer SKU
+    in display_article, and Astim <article> is the same SKU. We intentionally
+    avoid short tokens such as ATA/SAN because they collide with materials and
+    ordinary words in Astim descriptions.
+    """
+    blob = " ".join(part for part in parts if part)
+    if re.search(r"\bHENDI\b", blob, re.IGNORECASE):
+        return "Hendi"
+    return None
+
+
+def astim_to_yml(raw_bytes: bytes) -> bytes:
+    """Transform Astim dealer XML into YML-spec bytes for feed_parser."""
+    parser = etree.XMLParser(
+        recover=True,
+        resolve_entities=False,
+        no_network=True,
+        huge_tree=False,
+    )
+    src = etree.fromstring(raw_bytes, parser=parser)
+
+    yml_root = etree.Element("yml_catalog")
+    shop = etree.SubElement(yml_root, "shop")
+    offers_el = etree.SubElement(shop, "offers")
+
+    for offer in src.iter("offer"):
+        article = _text(offer, "article")
+        if not article:
+            continue
+
+        name = _text(offer, "name") or _text(offer, "name_ru")
+        if not name:
+            continue
+
+        new_offer = etree.SubElement(offers_el, "offer")
+        new_offer.set("id", article)
+        new_offer.set("available", _astim_available(_text(offer, "in_stock")))
+
+        etree.SubElement(new_offer, "name").text = name
+
+        brand = _astim_brand_from_name(
+            _text(offer, "name"),
+            _text(offer, "name_ru"),
+        )
+        if brand:
+            etree.SubElement(new_offer, "vendor").text = brand
+
+        price_raw = _text(offer, "price")
+        if price_raw:
+            try:
+                price_val = float(price_raw.replace(",", "."))
+                if price_val > 0:
+                    etree.SubElement(new_offer, "price").text = f"{price_val:.2f}"
+            except (ValueError, TypeError):
+                pass
+
+        etree.SubElement(new_offer, "currencyId").text = "UAH"
+        etree.SubElement(new_offer, "vendorCode").text = article
+
+        description = _text(offer, "description")
+        if description:
+            etree.SubElement(new_offer, "description").text = description
+
+        for source_tag, param_name in (
+            ("barcode", "barcode"),
+            ("category", "category"),
+            ("subcategory", "subcategory"),
+        ):
+            value = _text(offer, source_tag)
+            if value:
+                param = etree.SubElement(new_offer, "param")
+                param.set("name", param_name)
+                param.text = value
 
     return etree.tostring(yml_root, encoding="utf-8", xml_declaration=True)
