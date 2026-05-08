@@ -638,6 +638,33 @@
 <input type="hidden" id="rebindPpBrand" value="">
 <input type="hidden" id="rebindNewSpId" value="">
 
+<!-- Conflict Resolution Modal (Phase L) -->
+<div class="modal fade" id="conflictResolveModal" tabindex="-1" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Разрешите конфликты подтверждения</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted small mb-3">
+                    Эти каталожные товары уже подтверждены другим поставщиком. Для каждого выберите:
+                    <strong>Оставить</strong> текущего поставщика (кандидат будет отклонён) или
+                    <strong>Переключить</strong> на нового кандидата (текущий матч уйдёт в кандидаты).
+                </p>
+                <div id="conflictRowsContainer"></div>
+                <div id="conflictResolveFeedback" class="alert d-none mb-0 mt-3" role="alert"></div>
+            </div>
+            <div class="modal-footer">
+                <span class="text-muted small me-auto" id="conflictResolveSummary"></span>
+                <button type="button" class="btn btn-secondary" id="conflictResolveCloseBtn" data-bs-dismiss="modal">
+                    Закрыть и перезагрузить
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Details Comparison Modal -->
 <div class="modal fade" id="detailsModal" tabindex="-1">
     <div class="modal-dialog modal-xl">

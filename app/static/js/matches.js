@@ -788,11 +788,28 @@
             })
             .then(function (data) {
                 if (data.status === 'ok') {
-                    if (data.skipped_claimed && data.skipped_claimed.length > 0) {
+                    var skipped = data.skipped_claimed || [];
+                    var hasEnriched = skipped.length > 0 && skipped[0].candidate;
+                    if (hasEnriched) {
+                        // Phase L: actionable per-conflict modal.
+                        if (data.processed > 0) {
+                            showAlert(
+                                'Применено: ' + data.processed +
+                                '. Конфликтов требуют решения: ' + skipped.length + '.',
+                                'success'
+                            );
+                        }
+                        populateConflictModal(skipped);
+                        var modalEl = document.getElementById('conflictResolveModal');
+                        if (modalEl && window.bootstrap) {
+                            window.bootstrap.Modal.getOrCreateInstance(modalEl).show();
+                        }
+                    } else if (skipped.length > 0) {
+                        // Backward-compat: pre-Phase-L payload shape (no .candidate).
                         showAlert(
                             'Применено: ' + data.processed +
                             '. Пропущено из-за занятого каталожного товара: ' +
-                            data.skipped_claimed.length + '. Страница обновится.',
+                            skipped.length + '. Страница обновится.',
                             'warning'
                         );
                         setTimeout(function () { window.location.reload(); }, 2500);
@@ -808,6 +825,159 @@
                 if (bulkConfirmBtn) bulkConfirmBtn.disabled = selectedIds.size === 0;
                 if (bulkRejectBtn) bulkRejectBtn.disabled = selectedIds.size === 0;
             });
+    }
+
+    // ========== Phase L: conflict resolution modal ==========
+
+    function buildConflictRow(entry) {
+        var row = document.createElement('div');
+        row.className = 'card mb-3';
+        row.dataset.candidateMatchId = String(entry.match_id);
+
+        var body = document.createElement('div');
+        body.className = 'card-body py-2';
+
+        var ppHeader = document.createElement('div');
+        ppHeader.className = 'small text-muted mb-2';
+        ppHeader.innerHTML = '<strong>Каталог:</strong> ' + escapeHtml(entry.pp_name || '');
+        body.appendChild(ppHeader);
+
+        function makeSide(label, info, action, btnClass) {
+            var side = document.createElement('div');
+            side.className = 'd-flex align-items-center gap-2 mb-1';
+            var text = document.createElement('div');
+            text.className = 'flex-grow-1 small';
+            text.innerHTML =
+                '<span class="text-muted">' + escapeHtml(label) + ':</span> ' +
+                '<strong>' + escapeHtml(info.supplier_name || '—') + '</strong> — ' +
+                escapeHtml(info.sp_name || '') +
+                ' <span class="text-muted">(арт. ' + escapeHtml(info.sp_article || '—') +
+                (info.score != null ? ', ' + Math.round(info.score) + '%' : '') + ')</span>';
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'btn btn-sm ' + btnClass;
+            btn.dataset.action = action;
+            btn.textContent = action === 'keep' ? 'Оставить' : 'Переключить';
+            side.appendChild(text);
+            side.appendChild(btn);
+            return side;
+        }
+
+        body.appendChild(
+            makeSide('Сейчас', entry.existing || {}, 'keep', 'btn-outline-secondary')
+        );
+        body.appendChild(
+            makeSide('Кандидат', entry.candidate || {}, 'switch', 'btn-outline-primary')
+        );
+
+        var status = document.createElement('div');
+        status.className = 'small mt-1 d-none';
+        body.appendChild(status);
+
+        row.appendChild(body);
+
+        body.querySelectorAll('button[data-action]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                resolveConflict(entry.match_id, btn.dataset.action, row, status);
+            });
+        });
+
+        return row;
+    }
+
+    function populateConflictModal(skipped) {
+        var container = document.getElementById('conflictRowsContainer');
+        if (!container) return;
+        container.innerHTML = '';
+        skipped.forEach(function (entry) {
+            container.appendChild(buildConflictRow(entry));
+        });
+        updateConflictSummary();
+        var feedback = document.getElementById('conflictResolveFeedback');
+        if (feedback) {
+            feedback.className = 'alert d-none mb-0 mt-3';
+            feedback.textContent = '';
+        }
+    }
+
+    function updateConflictSummary() {
+        var container = document.getElementById('conflictRowsContainer');
+        var summary = document.getElementById('conflictResolveSummary');
+        if (!container || !summary) return;
+        var total = container.querySelectorAll('[data-candidate-match-id]').length;
+        var resolved = container.querySelectorAll('[data-candidate-match-id].is-resolved').length;
+        summary.textContent = 'Решено: ' + resolved + ' из ' + total;
+    }
+
+    function resolveConflict(candidateMatchId, action, rowEl, statusEl) {
+        var btns = rowEl.querySelectorAll('button[data-action]');
+        btns.forEach(function (b) { b.disabled = true; });
+        if (statusEl) {
+            statusEl.classList.remove('d-none', 'text-danger', 'text-success');
+            statusEl.classList.add('text-muted');
+            statusEl.textContent = 'Применяю...';
+        }
+        fetchWithCSRF('/matches/resolve-conflict', {
+            method: 'POST',
+            body: JSON.stringify({
+                candidate_match_id: candidateMatchId,
+                action: action,
+            }),
+        })
+            .then(function (resp) {
+                return resp.json().then(function (data) {
+                    data.__status = resp.status;
+                    return data;
+                });
+            })
+            .then(function (data) {
+                if (data.status === 'ok') {
+                    rowEl.classList.add('is-resolved');
+                    rowEl.style.transition = 'opacity 0.4s';
+                    rowEl.style.opacity = '0.5';
+                    if (statusEl) {
+                        statusEl.classList.remove('text-muted', 'text-danger');
+                        statusEl.classList.add('text-success');
+                        statusEl.textContent =
+                            action === 'keep' ? 'Кандидат отклонён.' : 'Переключено на нового поставщика.';
+                    }
+                    updateConflictSummary();
+                } else if (data.__status === 409) {
+                    rowEl.classList.add('is-resolved');
+                    rowEl.style.opacity = '0.5';
+                    if (statusEl) {
+                        statusEl.classList.remove('text-muted');
+                        statusEl.classList.add('text-danger');
+                        statusEl.textContent =
+                            'Уже разрешено в другом окне (статус: ' +
+                            (data.current_status || '?') + ').';
+                    }
+                    updateConflictSummary();
+                } else {
+                    throw new Error(data.message || ('HTTP ' + (data.__status || '?')));
+                }
+            })
+            .catch(function (err) {
+                btns.forEach(function (b) { b.disabled = false; });
+                if (statusEl) {
+                    statusEl.classList.remove('text-muted', 'text-success');
+                    statusEl.classList.add('text-danger');
+                    statusEl.textContent = 'Ошибка: ' + err.message;
+                }
+                var feedback = document.getElementById('conflictResolveFeedback');
+                if (feedback) {
+                    feedback.className = 'alert alert-danger mb-0 mt-3';
+                    feedback.textContent = 'Не удалось применить решение: ' + err.message;
+                }
+            });
+    }
+
+    var conflictCloseBtn = document.getElementById('conflictResolveCloseBtn');
+    if (conflictCloseBtn) {
+        conflictCloseBtn.addEventListener('click', function () {
+            // data-bs-dismiss handles the modal hide; reload after to refresh table state.
+            setTimeout(function () { window.location.reload(); }, 250);
+        });
     }
 
     if (bulkConfirmBtn) {
