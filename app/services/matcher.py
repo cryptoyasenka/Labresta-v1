@@ -933,6 +933,7 @@ def find_match_candidates(
     score_cutoff: float = SCORE_CUTOFF,
     limit: int = MATCH_LIMIT,
     supplier_price_cents: int | None = None,
+    supplier_currency: str | None = None,
     supplier_model: str | None = None,
     supplier_article: str | None = None,
 ) -> list[dict]:
@@ -949,6 +950,7 @@ def find_match_candidates(
         score_cutoff: Minimum score threshold (default 60%).
         limit: Maximum candidates to return (default 3).
         supplier_price_cents: Supplier product price in cents (optional).
+        supplier_currency: Supplier product currency (optional).
         supplier_model: Supplier product model field (optional).
         supplier_article: Supplier product article/vendorCode (optional).
 
@@ -959,6 +961,58 @@ def find_match_candidates(
     """
     if not prom_products or not supplier_product_name:
         return []
+
+    # Step 0a: Exact supplier-article anchors against catalog identifiers.
+    # Priority anchor (Astim-safe and globally conservative):
+    #   supplier_article == display_article
+    #   AND that exact code appears in catalog title (UA or RU)
+    # This resolves duplicate display_article collisions by preferring the row
+    # that explicitly carries the code in the title text.
+    # Fallback anchor:
+    #   supplier_article equals catalog article/display_article, but only when
+    #   the catalog code is unique.
+    sup_article_norm = normalize_model(supplier_article)
+    if sup_article_norm:
+        display_title_exact = []
+        for p in prom_products:
+            pp_display = normalize_model(p.get("display_article"))
+            if pp_display != sup_article_norm:
+                continue
+            pp_name_blob = " ".join(
+                x for x in (
+                    normalize_model(p.get("name")),
+                    normalize_model(p.get("name_ru")),
+                ) if x
+            )
+            if pp_name_blob and sup_article_norm in pp_name_blob:
+                display_title_exact.append(p)
+        if len(display_title_exact) == 1:
+            only = display_title_exact[0]
+            return [
+                {
+                    "prom_product_id": only["id"],
+                    "score": 100.0,
+                    "prom_name": only["name"],
+                    "confidence": "high",
+                }
+            ]
+
+        exact_pp = []
+        for p in prom_products:
+            pp_article = normalize_model(p.get("article"))
+            pp_display = normalize_model(p.get("display_article"))
+            if sup_article_norm and (sup_article_norm == pp_article or sup_article_norm == pp_display):
+                exact_pp.append(p)
+        if len(exact_pp) == 1:
+            only = exact_pp[0]
+            return [
+                {
+                    "prom_product_id": only["id"],
+                    "score": 100.0,
+                    "prom_name": only["name"],
+                    "confidence": "high",
+                }
+            ]
 
     # Step 0: Model-identifier gate. SP names that carry only generic
     # category tokens ('Вітрина холодильна', 'Льодогенератор') fuzzy-match
@@ -1027,7 +1081,7 @@ def find_match_candidates(
     fast_match_ids = set()
     fast_matches = []
     sup_model = normalize_model(supplier_model)
-    sup_article = normalize_model(supplier_article)
+    sup_article = sup_article_norm
     # Strip "/PL" packaging suffix from the raw article too (normalize_model
     # already strips it, but the boundary-regex fast-paths below compare
     # against the raw form, so they need the stripped value as well).
@@ -1835,11 +1889,23 @@ def find_match_candidates(
         plausible = []
         for candidate in output:
             prom_price = None
+            prom_currency = None
             for p in candidates_pool:
                 if p["id"] == candidate["prom_product_id"]:
                     prom_price = p.get("price")
+                    prom_currency = p.get("currency")
                     break
-            if prom_price and prom_price > 0 and not candidate.get("_model_contained"):
+            currencies_comparable = (
+                not supplier_currency
+                or not prom_currency
+                or supplier_currency == prom_currency
+            )
+            if (
+                prom_price
+                and prom_price > 0
+                and currencies_comparable
+                and not candidate.get("_model_contained")
+            ):
                 ratio = max(supplier_price_cents / prom_price, prom_price / supplier_price_cents)
                 if ratio > MAX_PRICE_RATIO:
                     logger.debug(
@@ -1876,7 +1942,7 @@ def find_match_for_product(
 
     exclude_set = set(exclude_prom_ids or [])
     prom_list = [
-        {"id": p.id, "name": p.name, "brand": p.brand, "price": p.price,
+        {"id": p.id, "name": p.name, "name_ru": p.name_ru, "brand": p.brand, "price": p.price, "currency": p.currency,
          "model": p.model, "article": p.article, "display_article": p.display_article}
         for p in prom_all
         if p.id not in exclude_set
@@ -1890,6 +1956,7 @@ def find_match_for_product(
         supplier_product.brand,
         prom_list,
         supplier_price_cents=supplier_product.price_cents,
+        supplier_currency=supplier_product.currency,
         supplier_model=supplier_product.model,
         supplier_article=supplier_product.article,
         limit=1,
@@ -1962,7 +2029,7 @@ def run_matching_for_supplier(supplier_id: int, progress_cb=None) -> int:
     # Step 3: Load all prom products
     prom_all = db.session.execute(select(PromProduct)).scalars().all()
     prom_list = [
-        {"id": p.id, "name": p.name, "brand": p.brand, "price": p.price,
+        {"id": p.id, "name": p.name, "name_ru": p.name_ru, "brand": p.brand, "price": p.price, "currency": p.currency,
          "model": p.model, "article": p.article, "display_article": p.display_article}
         for p in prom_all
     ]
@@ -2034,6 +2101,7 @@ def run_matching_for_supplier(supplier_id: int, progress_cb=None) -> int:
         candidates = find_match_candidates(
             sp.name, sp.brand, prom_list,
             supplier_price_cents=sp.price_cents,
+            supplier_currency=sp.currency,
             supplier_model=sp.model,
             supplier_article=sp.article,
         )

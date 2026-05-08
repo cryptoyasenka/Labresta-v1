@@ -12,10 +12,12 @@ from app.services.matcher import (
 
 
 def _make_prom(id, name, brand="TestBrand", price=10000, model=None, article=None,
-               display_article=None):
+               display_article=None, currency="EUR", name_ru=None):
     return {
         "id": id, "name": name, "brand": brand, "price": price,
         "model": model, "article": article, "display_article": display_article,
+        "name_ru": name_ru,
+        "currency": currency,
     }
 
 
@@ -46,6 +48,22 @@ class TestDisplayArticleFastPath:
             supplier_article="30142502",
         )
         assert len(result) == 1
+        assert result[0]["score"] == 100.0
+
+    def test_no_supplier_brand_exact_display_article_still_matches(self):
+        """Brandless supplier row can still match by unique manufacturer SKU."""
+        prom = [
+            _make_prom(1, "Щітка для чищення печей Hendi 525630", "Hendi",
+                       price=4795, display_article="525630"),
+        ]
+        result = find_match_candidates(
+            "Щітка для чищення печей 525630", None, prom,
+            supplier_price_cents=4795,
+            supplier_currency="UAH",
+            supplier_article="525630",
+        )
+        assert len(result) == 1
+        assert result[0]["prom_product_id"] == 1
         assert result[0]["score"] == 100.0
 
     def test_paren_code_mismatch_rejects_despite_fuzzy_100(self):
@@ -190,6 +208,20 @@ class TestPricePlausibility:
         ids = [r["prom_product_id"] for r in result]
         assert 1 not in ids, "Tray at 135 EUR should be rejected"
         assert 2 in ids, "Oven at 1073 EUR should be kept"
+
+    def test_skips_price_gate_on_currency_mismatch(self):
+        """Price gate must not compare UAH supplier cents against EUR catalog cents."""
+        prom = [
+            _make_prom(1, "Щітка для печі Hendi 525630", "Hendi", 4795, display_article="525630", currency="EUR"),
+        ]
+        result = find_match_candidates(
+            "Щітка для печі Hendi 525630", "Hendi", prom,
+            supplier_price_cents=4795,
+            supplier_currency="UAH",
+            supplier_article="525630",
+        )
+        assert len(result) == 1
+        assert result[0]["prom_product_id"] == 1
 
 
 class TestTypeGate:
@@ -1682,3 +1714,34 @@ class TestArticleSuffixCross:
             supplier_article="HKN-GXSD2GN",
         )
         assert any(r["prom_product_id"] == 1 for r in result)
+
+
+class TestAstimDisplayArticleRule:
+    def test_duplicate_display_article_prefers_name_with_article(self):
+        prom = [
+            _make_prom(
+                1,
+                "Плита індукційна Hendi Вок 3500 Profi Line 239766",
+                "Hendi",
+                price=45465,
+                display_article="239766",
+            ),
+            _make_prom(
+                2,
+                "Плита індукційна Fimar PFD27",
+                "Fimar",
+                price=21200,
+                display_article="239766",
+            ),
+        ]
+        result = find_match_candidates(
+            "Плита індукційна Вок Profi Line 3500",
+            None,
+            prom,
+            supplier_price_cents=2397883,
+            supplier_currency="UAH",
+            supplier_article="239766",
+        )
+        assert len(result) == 1
+        assert result[0]["prom_product_id"] == 1
+        assert result[0]["score"] == 100.0
