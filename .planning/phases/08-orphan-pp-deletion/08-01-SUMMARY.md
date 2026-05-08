@@ -87,23 +87,34 @@ So 16 of the 26 were false-positives; only 10 are legitimate orphans.
 
 `test_exclude_dead_suppliers_unblocks_run` rewritten: with 2-supplier brand (1 dead + 1 live), `flagged==0` (Hendi has 2 suppliers, not single).
 
-**Verification path (deferred to Yana with Railway credentials):**
-1. `flask flag-orphans --dry-run --exclude-dead-suppliers` → expect `flagged=0, cleared=16`.
-2. Re-run without `--dry-run` to actually clear the 16 stale auto-flags.
-3. Verify in prod DB: `SELECT COUNT(*) WHERE operator_decision='needs_delete' AND operator_decision_note='auto:phase8_orphan'` → 10 rows (FROSTY 6 + GI.Metal 4).
+**Apply result (`fb89ace`, 2026-05-08 21:46 Kyiv):**
 
-(Note: as of this writing MARESTO has recovered — 4490/4510 fresh SPs in local DB, no longer dead. So `--exclude-dead-suppliers` may now be a no-op. The fix still matters for any future MARESTO-403 episodes and for the clear-on-recovery semantics.)
+Run via `railway run` + `DATABASE_PUBLIC_URL` (Railway auto-deployed the fix in 7s after push):
+
+```
+[APPLY] Stage 4.5 orphan detection:
+  flagged: 0
+  cleared: 16
+  L1_total: 10
+  brand_single_supplier_count: 34
+  dead_supplier_ids excluded: [1]   # MARESTO still dead on prod
+```
+
+Verified in prod PG: exactly **10 auto-flagged PPs remain** — FROSTY ×6, GI.Metal ×4. Rational/Robot Coupe/Bartscher cleared (they have MARESTO covering them).
+
+(Local SQLite shows MARESTO as alive, but on Railway it's still 403 — fix matters today, not just for future episodes.)
 
 ## Operational notes
 
 - **`suppliers_fetch_all` view does NOT pass `exclude_dead_suppliers=True`.** This is intentional: by default the sanity guard remains strict — partial drops AND dead-supplier presence both block the run. Phase 8 auto-stage only fires once MARESTO recovers (or is disabled). Manual CLI invocation with the flag is the authoritative re-run path until then.
+- **Apply against prod uses `DATABASE_PUBLIC_URL` from Railway Postgres service vars** (internal `postgres.railway.internal` only resolves inside Railway network). Recipe: `railway variables --service Postgres` → grab `DATABASE_PUBLIC_URL` → `DATABASE_URL=<that> python -m flask flag-orphans ...`. Or use `railway run` from inside Railway's deployed container (TODO: verify works for `flask` CLI).
 - **Adding/disabling a supplier rebalances anchors.** Enabling a second supplier of an orphan brand will auto-clear our flag on next run (logic already covers this).
 - **Manual operator decisions are immune.** Logic checks `note != AUTO_NOTE` before overwriting, and the `clear_orphan_pp_flag` endpoint refuses to act on non-auto rows.
 
 ## Next actions for Yana (UI side)
 
-1. Open `/matches/deletion-candidates?tab=orphan` (badge will show 26).
-2. Use brand dropdown to triage one brand at a time (Rational, Robot Coupe, FROSTY, GI.Metal, Bartscher).
+1. Open `/matches/deletion-candidates?tab=orphan` (badge will show **10**).
+2. Use brand dropdown to triage: only **FROSTY (×6)** and **GI.Metal (×4)** remain (the other three brands' false-flags were cleared by the follow-up fix).
 3. For each row choose:
    - **Видалено** → already removed from Horoshop (decision = `reviewed`).
    - **Залишити** → keep visible, hunt other suppliers (decision = `keep_searching`).
