@@ -649,16 +649,40 @@ def suppliers_fetch_all():
             })
             failed += 1
 
+    orphan_result = {"flagged": 0, "cleared": 0, "skipped_reason": "no successful syncs"}
+    if ok > 0:
+        try:
+            from app.services.orphan_detector import flag_orphan_pps
+            orphan_result = flag_orphan_pps()
+            logger.info(
+                "Stage 4.5 (orphan PP): flagged=%d cleared=%d skipped=%r",
+                orphan_result["flagged"],
+                orphan_result["cleared"],
+                orphan_result["skipped_reason"],
+            )
+        except Exception as exc:
+            logger.exception("Stage 4.5 (orphan detection) failed")
+            orphan_result = {
+                "flagged": 0,
+                "cleared": 0,
+                "skipped_reason": f"error: {exc}",
+            }
+
     log_action("fetch_all_suppliers", details={
         "total": len(enabled),
         "ok": ok,
         "failed": failed,
+        "orphan_flagged": orphan_result["flagged"],
+        "orphan_cleared": orphan_result["cleared"],
     })
 
     return jsonify({
         "status": "ok",
         "summary": {"total": len(enabled), "ok": ok, "failed": failed},
         "results": results,
+        "orphan_flagged": orphan_result["flagged"],
+        "orphan_cleared": orphan_result["cleared"],
+        "orphan_skipped": orphan_result["skipped_reason"],
     })
 
 

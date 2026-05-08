@@ -32,6 +32,33 @@ def sync_command(supplier_id, verbose):
     click.echo("Sync complete.")
 
 
+@click.command("flag-orphans")
+@click.option("--dry-run", is_flag=True, help="Show what would change without writing to DB")
+@with_appcontext
+def flag_orphans_command(dry_run):
+    """Run Stage 4.5 orphan-PP detection manually.
+
+    Flags PromProducts whose brand is carried by a single enabled supplier
+    when that supplier's feed does not contain the SKU. Reversible: if the
+    PP returns to feed, the auto-flag is cleared.
+
+    Examples:
+        flask flag-orphans --dry-run
+        flask flag-orphans
+    """
+    from app.services.orphan_detector import flag_orphan_pps
+
+    result = flag_orphan_pps(dry_run=dry_run)
+    mode = "DRY-RUN" if dry_run else "APPLY"
+    click.echo(f"[{mode}] Stage 4.5 orphan detection:")
+    click.echo(f"  flagged: {result['flagged']}")
+    click.echo(f"  cleared: {result['cleared']}")
+    click.echo(f"  L1_total: {result['L1_total']}")
+    click.echo(f"  brand_single_supplier_count: {result['brand_single_supplier_count']}")
+    if result["skipped_reason"]:
+        click.echo(f"  skipped: {result['skipped_reason']}")
+
+
 @click.command("create-admin")
 @click.option("--email", prompt="Admin email")
 @click.option("--password", prompt=True, hide_input=True, confirmation_prompt=True)

@@ -129,10 +129,11 @@ def create_app(config_name="default"):
         return e, 500
 
     # Register CLI commands
-    from app.cli import create_admin_command, sync_command
+    from app.cli import create_admin_command, flag_orphans_command, sync_command
 
     app.cli.add_command(sync_command)
     app.cli.add_command(create_admin_command)
+    app.cli.add_command(flag_orphans_command)
 
     # Context processor for pending review badge count
     @app.context_processor
