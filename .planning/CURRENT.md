@@ -1,7 +1,7 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
-**Last touched:** 2026-05-08 (ночь — Phase L + Phase M реализованы автономно)
-**Status:** Phase L (bulk-confirm conflict modal) и Phase M (orphan flag for PP without display_article) запушены. Phase L: backend `7f442d7` + frontend `14367b4`. Phase M: `0b9b5e2`. **677/677 tests green** (21/21 orphan_detector). **Phase L и Phase M live smoke-test pending — нужны глаза Yana**: (1) `/matches/?supplier_id=4` для conflict modal, (2) запустить `flask flag-orphans --apply` на проде для сбора Phase M orphans (Hurakan/Apach без display_article).
+**Last touched:** 2026-05-08 (ночь — Phase L + Phase M + Phase N diag реализованы автономно)
+**Status:** Phase L + Phase M запушены. Phase N — диагностический скрипт готов (`bdaca6c`), решение по матчер-изменению отложено до прод-данных. **677/677 tests green** (21/21 orphan_detector). **Phase L, Phase M, Phase N diag live runs pending — нужны глаза Yana**: (1) Phase L `/matches/?supplier_id=4` conflict modal, (2) Phase M `flask flag-orphans` на проде, (3) Phase N `railway run python scripts/diagnose_sibling_gap.py --brand Hurakan --supplier-id 4` для оценки масштаба.
 
 ## Open files
 - (none — Phase L и Phase M закрыты at commit level, awaits manual smoke-test)
@@ -9,7 +9,7 @@
 ## Next step
 1. **Yana — Phase L smoke-test:** открыть `/matches/?supplier_id=4`, выделить 5-10 НП кандидатов, нажать «Подтвердить». Должен появиться `#conflictResolveModal` с per-row кнопками **Оставить** / **Переключить** вместо старого toast'а. По каждой строке клик → должна faded'нуться + статус «Кандидат отклонён» / «Переключено». Закрыть → reload.
 2. **Yana — Phase M smoke-test на проде:** `railway run flask flag-orphans --dry-run` чтобы посмотреть сколько новых orphans Phase M найдёт (теперь покрываются Hurakan/Apach без display_article). Затем `--apply` если число выглядит разумно. На локалке Hurakan тест-кейс показал что 22 НП-out-of-stock PPs теперь должны попасть в `/matches/deletion-candidates?tab=orphan`.
-3. **Phase N (autonomous candidate, не критично):** sibling-aware downgrade в matcher для Категории B (9 Hurakan PP — DL800/DL775/DHD10G→GM/CFV60→M/TR65→M/HBH850M PRO COVER/BLW2 grey). Создавать candidate с низким score когда SP article = pp_name_part + suffix. Сложнее Phase M, требует тщательных guards против ложных кандидатов.
+3. **Phase N — diagnostic step done, matcher change deferred:** скрипт `scripts/diagnose_sibling_gap.py` (commit `bdaca6c`) классифицирует unmatched PP в 4 категории: Cat A (exact-anchor SP — gate filtered), Cat B (SP=anchor+suffix), Cat B-reverse (PP=SP+suffix), Cat None (no nearby SP). На local-DB Hurakan/supplier_id=2 (stale): 4/5/4/18. **Yana — прогнать на проде:** `railway run python scripts/diagnose_sibling_gap.py --brand Hurakan --supplier-id 4` чтобы увидеть реальные числа и решить — стоит ли матчер модифицировать. Локалка показала важный сюрприз: некоторые Cat A SPs **уже привязаны к другим PP** (duplicate Horoshop card problem — PP#3864 vs PP#3902), что матчер-изменение НЕ решит. Для них нужен другой workflow (rebind или slim card cleanup).
 2. **Yana — UI триаж 10 настоящих orphans Phase 8:** `/matches/deletion-candidates?tab=orphan` (badge=10), фильтр по бренду, **Видалено / Залишити / Запит**.
 3. **Manual Astim review** (carry-over): отклонить m=6620, 6618, 6611 + подтвердить 7 fuzzy candidates на `/matches/?supplier_id=8&status=candidate`.
 4. **MARESTO unblock** (опционально): MARESTO всё ещё 0/4509 fresh на проде (id=1 в `dead_supplier_ids`). Whitelist Railway egress IP через support, либо local-fetch скрипт.
@@ -18,6 +18,13 @@
 ## Phase L commits (тонкая ночь)
 - `7f442d7` backend — `_build_conflict_payload` + enriched `skipped_claimed` + `POST /matches/resolve-conflict` (keep/switch) + 11 tests
 - `14367b4` frontend — `#conflictResolveModal` в `review.html` + `populateConflictModal/resolveConflict/buildConflictRow` в `matches.js`. Backward-compat fallback на старый toast если payload без `entry.candidate`.
+
+## Phase N diag commit (после M)
+- `bdaca6c` — `scripts/diagnose_sibling_gap.py` read-only классификатор unmatched PP. Local Hurakan/sup_id=2 baseline: 4 Cat A (DL800/DL775 silver+black/HBH850M PRO COVER/BLW2 grey — но 3/4 SP уже в другом PP), 5 Cat B (DHD10G/12G/16G→GM, CFV60→M, TR65→M — но TR65 SP уже в PP#3934), 4 Cat B-reverse (IP40FM/WNC160CDW/ISV5P×2), 18 Cat None.
+
+## Phase M commit
+- `0b9b5e2` — `feat(phase-M): orphan flag for PP without display_article via name scan`. Helpers `_supplier_article_strings` / `_build_sp_article_boundary_re` / `_any_sp_article_in_pp_name` + fallback ветка в `flag_orphan_pps` когда `disp` пуст. 5 новых тестов. Total 21/21 orphan_detector + 677/677 suite.
+- `938ed00` docs(planning) — CURRENT update Phase M done.
 
 ## Phase 8 commits (today)
 - `51d274c` Task 1 — service + 11 tests
@@ -70,7 +77,7 @@
 - Proper fix > workaround: clean data via merge/delete scripts, не оставлять сирот
 - 491 tests at commit `6908d11`
 
-**Last commit:** 2026-05-08 — `feat(phase-L): conflict resolution modal + JS handlers` (`14367b4`)
+**Last commit:** 2026-05-08 — `feat(phase-N): diagnostic script for sibling-gap analysis` (`bdaca6c`)
 **Memory pointers:**
 - `~/.claude/projects/C--Users-Yana/memory/project_labresta.md`
 - `~/.claude/projects/C--Users-Yana/memory/project_labresta_horoshop_import.md`
