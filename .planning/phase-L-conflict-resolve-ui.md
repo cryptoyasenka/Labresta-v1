@@ -1,6 +1,7 @@
 # Phase L — Supplier conflict resolution UX
 
-**Status:** planned, not started  
+**Status:** ✅ DONE 2026-05-08 (commits `7f442d7` backend + `14367b4` frontend, 84/84 tests).
+**Live UI smoke-test:** still pending — needs Yana on `/matches/?supplier_id=4`.
 **Trigger:** 2026-04-22. Yana bulk-confirmed 20 НП candidates, 5 silently skipped because their PP was already confirmed by MARESTO. No dialog, just a toast that flashed for 2.5s. She asked for proper UX.
 
 ## Goal

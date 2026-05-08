@@ -1,16 +1,21 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
-**Last touched:** 2026-05-08 (ночь — Phase 8 + Hendi exclusion APPLIED to prod)
-**Status:** Phase 8 + post-apply фикс + Hendi×Кодаки exclusion применены. Yana указала "Hendi только у Астима" — у Кодаки 2 Hendi корзины (sp_id=6076, 6160), мешали detection. Захардкожен `BRAND_SUPPLIER_EXCLUSIONS = {"hendi": {3}}` в `app/services/brand_supplier_overrides.py`, применён в orphan_detector + matcher + rule_matcher. После apply: **27 orphans на проде** — Hendi 17, FROSTY 6, GI.Metal 4. **661/661 tests**. Все коммиты запушены, Railway auto-deploys.
+**Last touched:** 2026-05-08 (ночь — Phase L conflict resolution UX DONE автономно)
+**Status:** Phase L (bulk-confirm conflict modal) реализована и запушена ночным auto-continue. Backend `7f442d7` + frontend `14367b4`. 84/84 tests green (73 existing + 11 Phase L). Phase 8 (orphan detection) ранее закрыта — 10 orphans на проде ждут Yana UI триажа. **Live UI smoke-test Phase L deferred — нужны глаза Yana на `/matches/?supplier_id=4`** (там 22 НП↔MARESTO конфликта по STATE.md).
 
 ## Open files
-- (none — Phase 8 closed)
+- (none — Phase L closed at commit level, awaits manual smoke-test)
 
 ## Next step
-1. **Yana — UI триаж 10 настоящих orphans:** `/matches/deletion-candidates?tab=orphan` (badge=10), фильтр по бренду, для каждой строки выбрать **Видалено / Залишити / Запит**.
-2. **Manual Astim review** (carry-over): отклонить m=6620, 6618, 6611 + подтвердить 7 fuzzy candidates на `/matches/?supplier_id=8&status=candidate`.
-3. **MARESTO unblock** (опционально): MARESTO всё ещё 0/4509 fresh на проде (id=1 в `dead_supplier_ids`). Whitelist Railway egress IP через support, либо local-fetch скрипт. Пока не починится — `flask flag-orphans` без `--exclude-dead-suppliers` блокируется sanity guard'ом, и `suppliers_fetch_all` тоже скипает Stage 4.5.
-4. **Open question:** должен ли `suppliers_fetch_all` тоже передавать `exclude_dead_suppliers=True`? Сейчас OFF (safe default). Решение за Yana — описано в SUMMARY.
+1. **Yana — Phase L smoke-test:** открыть `/matches/?supplier_id=4`, выделить 5-10 НП кандидатов, нажать «Подтвердить». Должен появиться `#conflictResolveModal` с per-row кнопками **Оставить** / **Переключить** вместо старого toast'а. По каждой строке клик → должна faded'нуться + статус «Кандидат отклонён» / «Переключено». Закрыть → reload.
+2. **Yana — UI триаж 10 настоящих orphans Phase 8:** `/matches/deletion-candidates?tab=orphan` (badge=10), фильтр по бренду, **Видалено / Залишити / Запит**.
+3. **Manual Astim review** (carry-over): отклонить m=6620, 6618, 6611 + подтвердить 7 fuzzy candidates на `/matches/?supplier_id=8&status=candidate`.
+4. **MARESTO unblock** (опционально): MARESTO всё ещё 0/4509 fresh на проде (id=1 в `dead_supplier_ids`). Whitelist Railway egress IP через support, либо local-fetch скрипт.
+5. **Open question (deferred):** должен ли `suppliers_fetch_all` передавать `exclude_dead_suppliers=True`? Решение за Yana — risk decision (auto-cron должен ли стрелять пока MARESTO навсегда мёртв?). Текущий код — OFF (safe default). НЕ автономно.
+
+## Phase L commits (тонкая ночь)
+- `7f442d7` backend — `_build_conflict_payload` + enriched `skipped_claimed` + `POST /matches/resolve-conflict` (keep/switch) + 11 tests
+- `14367b4` frontend — `#conflictResolveModal` в `review.html` + `populateConflictModal/resolveConflict/buildConflictRow` в `matches.js`. Backward-compat fallback на старый toast если payload без `entry.candidate`.
 
 ## Phase 8 commits (today)
 - `51d274c` Task 1 — service + 11 tests
@@ -63,7 +68,7 @@
 - Proper fix > workaround: clean data via merge/delete scripts, не оставлять сирот
 - 491 tests at commit `6908d11`
 
-**Last commit:** 2026-05-08 — `feat(bulk_auto_confirm): R0 article anchor rule`
+**Last commit:** 2026-05-08 — `feat(phase-L): conflict resolution modal + JS handlers` (`14367b4`)
 **Memory pointers:**
 - `~/.claude/projects/C--Users-Yana/memory/project_labresta.md`
 - `~/.claude/projects/C--Users-Yana/memory/project_labresta_horoshop_import.md`
