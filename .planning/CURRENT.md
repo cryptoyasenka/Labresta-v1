@@ -8,7 +8,7 @@
 - 4 violations отозваны (все были `confirmed_by='Admin'` manual): match#6611 (Hendi щепа 250г vs 150г SP), #6383 (Hendi цитрус-пресс), #1100 (Sirman STORM VV), #1102 (Sirman CICLONE 36 VT). Re-verify: 0 violations осталось, total confirmed 2549→2545.
 
 ## Next concrete steps (audit follow-up)
-1. **Cat B-rev `match: AD46MV → AD46M ECO`** — отозвать (Yana правило: AD46DV ≠ AD46M)
+1. **AD46-series в БД чистая** (`scripts/check_ad46_state.py` 2026-05-09): 3 confirmed (DI/M/MI ECO ↔ свои SP), AD46D/DV/MV unmatched и rejected/candidate записей вокруг них нет. Никто кривой матч не сделал. Действие — **catalog hygiene**: PP#1007 (AD46MV), PP#1015 (AD46DV), PP#1008 (AD46D) убрать из Horoshop (товара нет у поставщика).
 2. **Cat H — 11 cross-brand display_article дублей** — почистить каталог Horoshop вручную (особенно Hendi-articles в FROSTY/Spidocook/Fimar/Roller Grill PPs)
 3. **1641 confirmed без article-anchor** — большая зона: name-fuzzy матчи. Решить нужна ли узкая верификация (model + brand + voltage)
 4. Cat B sibling (13 шт.) — per-row review через UI
