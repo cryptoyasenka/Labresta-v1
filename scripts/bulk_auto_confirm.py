@@ -30,6 +30,7 @@ from app.models.catalog import PromProduct
 from app.models.product_match import ProductMatch
 from app.models.supplier_product import SupplierProduct
 from app.services.matcher import after_brand_remainder, meaningful_tokens
+from app.services.matcher import normalize_model
 
 
 PRICE_BAND = 0.05  # ±5%
@@ -77,7 +78,39 @@ def _pair_tokens(sp, pp):
 def classify_single(match: ProductMatch) -> str | None:
     sp: SupplierProduct = match.supplier_product
     pp: PromProduct = match.prom_product
-    if not sp or not pp or not _same_brand(sp, pp):
+    if not sp or not pp:
+        return None
+
+    # R0: hard article anchor for Horoshop cards.
+    # Auto-confirm when either:
+    #   A) sp.article == pp.article == pp.display_article
+    # or
+    #   B) sp.article == pp.display_article and article is present in catalog
+    #      UA/RU name.
+    sp_article = normalize_model(sp.article)
+    pp_article = normalize_model(pp.article)
+    pp_display_article = normalize_model(pp.display_article)
+    pp_name = normalize_model(pp.name)
+    pp_name_ru = normalize_model(pp.name_ru)
+    names_blob = " ".join(x for x in (pp_name, pp_name_ru) if x)
+    if (
+        sp_article
+        and pp_article
+        and pp_display_article
+        and sp_article == pp_article == pp_display_article
+    ):
+        return "R0:article+display+catalog_article"
+
+    if (
+        sp_article
+        and pp_display_article
+        and sp_article == pp_display_article
+        and names_blob
+        and sp_article in names_blob
+    ):
+        return "R0:article-name+display_article"
+
+    if not _same_brand(sp, pp):
         return None
     sup, prom = _pair_tokens(sp, pp)
     if not sup or not prom:
@@ -150,6 +183,51 @@ def _find_r4_bundle_sibling_candidates() -> list[int]:
     return to_reject
 
 
+def _find_r0_article_anchor_candidates(claimed_pp_ids: set[int]) -> list[int]:
+    """Return candidate IDs eligible for R0 hard article anchor confirmation.
+
+    Rule:
+      A) sp.article == pp.article == pp.display_article (normalized), or
+      B) sp.article == pp.display_article (normalized) and appears in
+         catalog UA/RU name.
+    """
+    out: list[int] = []
+    rows = ProductMatch.query.filter(ProductMatch.status == "candidate").all()
+    for m in rows:
+        if m.prom_product_id in claimed_pp_ids:
+            continue
+        sp = m.supplier_product
+        pp = m.prom_product
+        if not sp or not pp:
+            continue
+        sp_article = normalize_model(sp.article)
+        pp_article = normalize_model(pp.article)
+        pp_display = normalize_model(pp.display_article)
+        pp_name = normalize_model(pp.name)
+        pp_name_ru = normalize_model(pp.name_ru)
+        names_blob = " ".join(x for x in (pp_name, pp_name_ru) if x)
+        if (
+            sp_article
+            and pp_article
+            and pp_display
+            and sp_article == pp_article == pp_display
+        ):
+            out.append(m.id)
+            claimed_pp_ids.add(m.prom_product_id)
+            continue
+
+        if (
+            sp_article
+            and pp_display
+            and sp_article == pp_display
+            and names_blob
+            and sp_article in names_blob
+        ):
+            out.append(m.id)
+            claimed_pp_ids.add(m.prom_product_id)
+    return out
+
+
 def classify_multi(candidates: list[ProductMatch]) -> tuple[ProductMatch, list[ProductMatch]] | None:
     """Return (winner, losers) when exactly one candidate has tokens-equal
     AND the others are strict subsets (loser tokens ⊂ winner tokens or
@@ -220,7 +298,15 @@ def apply_rules(apply: bool, confirmed_by: str = "rule:bulk_auto_confirm") -> di
     reject_ids: list[int] = []
     skipped_claimed = 0
 
+    # R0 first: strongest article anchor, works for both single/multi candidates.
+    r0_confirms = _find_r0_article_anchor_candidates(claimed)
+    r0_ids = set(r0_confirms)
+    if r0_confirms:
+        confirm_buckets["R0:article-name+display_article"] = r0_confirms
+
     for m in singles:
+        if m.id in r0_ids:
+            continue
         if m.prom_product_id in claimed:
             skipped_claimed += 1
             continue

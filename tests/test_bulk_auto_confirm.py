@@ -58,6 +58,38 @@ class TestClassifySingleIdentityRule:
             assert classify_single(m) is None
             db.session.rollback()
 
+    def test_r0_article_anchor_confirms(self, app, db):
+        with app.app_context():
+            m = _pair(
+                db.session,
+                "Some Supplier Product",
+                "Hendi 282588 sausage filler",
+                sp_brand="",
+                pp_brand="",
+            )
+            m.supplier_product.article = "282588"
+            m.prom_product.article = "282588"
+            m.prom_product.display_article = "282588"
+            db.session.flush()
+            assert classify_single(m) == "R0:article+display+catalog_article"
+            db.session.rollback()
+
+    def test_r0_requires_article_in_catalog_name(self, app, db):
+        with app.app_context():
+            m = _pair(
+                db.session,
+                "Some Supplier Product",
+                "Hendi sausage filler",
+                sp_brand="",
+                pp_brand="",
+            )
+            m.supplier_product.article = "282588"
+            m.prom_product.article = "111111"
+            m.prom_product.display_article = "282588"
+            db.session.flush()
+            assert classify_single(m) is None
+            db.session.rollback()
+
     def test_zippy_2_vs_faby_cream_2_rejected(self, app, db):
         """Second historical misfire — both had score=100 via fuzzy."""
         with app.app_context():
