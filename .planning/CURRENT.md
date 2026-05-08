@@ -1,13 +1,15 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
-**Last touched:** 2026-05-08 (ночь — Phase L conflict resolution UX DONE автономно)
-**Status:** Phase L (bulk-confirm conflict modal) реализована и запушена ночным auto-continue. Backend `7f442d7` + frontend `14367b4`. 84/84 tests green (73 existing + 11 Phase L). Phase 8 (orphan detection) ранее закрыта — 10 orphans на проде ждут Yana UI триажа. **Live UI smoke-test Phase L deferred — нужны глаза Yana на `/matches/?supplier_id=4`** (там 22 НП↔MARESTO конфликта по STATE.md).
+**Last touched:** 2026-05-08 (ночь — Phase L + Phase M реализованы автономно)
+**Status:** Phase L (bulk-confirm conflict modal) и Phase M (orphan flag for PP without display_article) запушены. Phase L: backend `7f442d7` + frontend `14367b4`. Phase M: `0b9b5e2`. **677/677 tests green** (21/21 orphan_detector). **Phase L и Phase M live smoke-test pending — нужны глаза Yana**: (1) `/matches/?supplier_id=4` для conflict modal, (2) запустить `flask flag-orphans --apply` на проде для сбора Phase M orphans (Hurakan/Apach без display_article).
 
 ## Open files
-- (none — Phase L closed at commit level, awaits manual smoke-test)
+- (none — Phase L и Phase M закрыты at commit level, awaits manual smoke-test)
 
 ## Next step
 1. **Yana — Phase L smoke-test:** открыть `/matches/?supplier_id=4`, выделить 5-10 НП кандидатов, нажать «Подтвердить». Должен появиться `#conflictResolveModal` с per-row кнопками **Оставить** / **Переключить** вместо старого toast'а. По каждой строке клик → должна faded'нуться + статус «Кандидат отклонён» / «Переключено». Закрыть → reload.
+2. **Yana — Phase M smoke-test на проде:** `railway run flask flag-orphans --dry-run` чтобы посмотреть сколько новых orphans Phase M найдёт (теперь покрываются Hurakan/Apach без display_article). Затем `--apply` если число выглядит разумно. На локалке Hurakan тест-кейс показал что 22 НП-out-of-stock PPs теперь должны попасть в `/matches/deletion-candidates?tab=orphan`.
+3. **Phase N (autonomous candidate, не критично):** sibling-aware downgrade в matcher для Категории B (9 Hurakan PP — DL800/DL775/DHD10G→GM/CFV60→M/TR65→M/HBH850M PRO COVER/BLW2 grey). Создавать candidate с низким score когда SP article = pp_name_part + suffix. Сложнее Phase M, требует тщательных guards против ложных кандидатов.
 2. **Yana — UI триаж 10 настоящих orphans Phase 8:** `/matches/deletion-candidates?tab=orphan` (badge=10), фильтр по бренду, **Видалено / Залишити / Запит**.
 3. **Manual Astim review** (carry-over): отклонить m=6620, 6618, 6611 + подтвердить 7 fuzzy candidates на `/matches/?supplier_id=8&status=candidate`.
 4. **MARESTO unblock** (опционально): MARESTO всё ещё 0/4509 fresh на проде (id=1 в `dead_supplier_ids`). Whitelist Railway egress IP через support, либо local-fetch скрипт.
