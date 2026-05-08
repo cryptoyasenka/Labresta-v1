@@ -43,6 +43,39 @@ def _pp_already_claimed(prom_product_id: int, exclude_match_id: int | None = Non
     return q.first()
 
 
+def _build_conflict_payload(candidate: ProductMatch, existing: ProductMatch) -> dict:
+    """Phase L: shape the skipped-by-claim record into something the
+    conflict-resolution modal can render without extra round-trips.
+
+    Caller is responsible for eager-loading both matches' supplier_product
+    + supplier and the candidate's prom_product (see bulk_action()).
+    """
+    pp = candidate.prom_product
+    cand_sp = candidate.supplier_product
+    cand_sup = cand_sp.supplier if cand_sp else None
+    exist_sp = existing.supplier_product
+    exist_sup = exist_sp.supplier if exist_sp else None
+    return {
+        "match_id": candidate.id,
+        "prom_product_id": candidate.prom_product_id,
+        "existing_match_id": existing.id,
+        "pp_name": pp.name if pp else "",
+        "existing": {
+            "match_id": existing.id,
+            "supplier_name": exist_sup.name if exist_sup else "",
+            "sp_name": exist_sp.name if exist_sp else "",
+            "sp_article": exist_sp.article if exist_sp else "",
+            "score": existing.score,
+        },
+        "candidate": {
+            "supplier_name": cand_sup.name if cand_sup else "",
+            "sp_name": cand_sp.name if cand_sp else "",
+            "sp_article": cand_sp.article if cand_sp else "",
+            "score": candidate.score,
+        },
+    }
+
+
 def _pp_claim_error(existing: ProductMatch) -> tuple:
     sp = existing.supplier_product
     sp_name = sp.name if sp else f"sp#{existing.supplier_product_id}"
@@ -1068,10 +1101,11 @@ def bulk_action():
         return jsonify({"status": "error", "message": "No matches selected"}), 400
 
     dry_run = bool(data.get("dry_run"))
-    # Eager-load sp + supplier to avoid lazy SELECT per match in the loop
-    # (recalc_discount / clamp_margin / supplier_product_name on skip).
+    # Eager-load sp + supplier + pp to avoid lazy SELECT per match in the loop
+    # (recalc_discount / clamp_margin / Phase L conflict enrichment).
     matches = ProductMatch.query.options(
         joinedload(ProductMatch.supplier_product).joinedload(SupplierProduct.supplier),
+        joinedload(ProductMatch.prom_product),
     ).filter(ProductMatch.id.in_(ids)).all()
     processed = 0
     skipped_claimed: list[dict] = []
@@ -1087,8 +1121,13 @@ def bulk_action():
         sp_ids = {m.supplier_product_id for m in matches}
 
         # Single SELECT for all "is some other confirmed/manual match
-        # already claiming any of these pp_ids?" lookups.
-        claimed_rows = ProductMatch.query.filter(
+        # already claiming any of these pp_ids?" lookups. Eager-load the
+        # existing match's sp+supplier so the conflict-resolution modal
+        # can show "Сейчас у: <supplier> — <sp_name> (<article>)" without
+        # firing N more queries on the way out.
+        claimed_rows = ProductMatch.query.options(
+            joinedload(ProductMatch.supplier_product).joinedload(SupplierProduct.supplier),
+        ).filter(
             ProductMatch.prom_product_id.in_(pp_ids),
             ProductMatch.status.in_(("confirmed", "manual")),
             ProductMatch.id.notin_(match_ids),
@@ -1113,11 +1152,7 @@ def bulk_action():
         if action == "confirm":
             existing = claimed_by_pp.get(match.prom_product_id)
             if existing is not None and existing.id != match.id:
-                skipped_claimed.append({
-                    "match_id": match.id,
-                    "prom_product_id": match.prom_product_id,
-                    "existing_match_id": existing.id,
-                })
+                skipped_claimed.append(_build_conflict_payload(match, existing))
                 continue
             match.status = "confirmed"
             match.confirmed_at = datetime.now(timezone.utc)
@@ -1209,6 +1244,101 @@ def bulk_action():
         "processed": processed,
         "skipped_claimed": skipped_claimed,
         "preview": preview if action == "clamp_margin" else [],
+    })
+
+
+@matches_bp.route("/resolve-conflict", methods=["POST"])
+@login_required
+def resolve_conflict():
+    """Phase L: resolve a single PP-claimed conflict from bulk-confirm.
+
+    Body: {"candidate_match_id": int, "action": "keep" | "switch"}
+      - keep   → reject candidate (existing match untouched).
+      - switch → unconfirm existing + confirm candidate. Per Yana
+                 2026-04-22: do NOT copy existing.discount_percent — each
+                 supplier owns its own margins, so the new match starts
+                 from supplier defaults.
+
+    Idempotency: returns 409 if the candidate is already
+    confirmed/manual/rejected (someone else got there first).
+    """
+    data = request.get_json() or {}
+    candidate_match_id = data.get("candidate_match_id")
+    action = data.get("action")
+
+    if action not in ("keep", "switch"):
+        return jsonify({"status": "error", "message": "Invalid action"}), 400
+    if not candidate_match_id:
+        return jsonify({"status": "error", "message": "candidate_match_id required"}), 400
+
+    candidate = db.session.get(ProductMatch, candidate_match_id)
+    if not candidate:
+        return jsonify({"status": "error", "message": "Candidate match not found"}), 404
+
+    if candidate.status != "candidate":
+        return jsonify({
+            "status": "error",
+            "code": "candidate_not_in_candidate_state",
+            "message": f"Candidate already in status '{candidate.status}'",
+            "current_status": candidate.status,
+        }), 409
+
+    existing = _pp_already_claimed(
+        candidate.prom_product_id, exclude_match_id=candidate.id
+    )
+    now = datetime.now(timezone.utc)
+
+    if action == "keep":
+        # Reject candidate; existing match is untouched.
+        candidate.status = "rejected"
+        candidate.confirmed_at = now
+        candidate.confirmed_by = f"conflict-keep:{current_user.name}"
+        log_action("conflict_keep", details={
+            "candidate_match_id": candidate.id,
+            "existing_match_id": existing.id if existing else None,
+            "prom_product_id": candidate.prom_product_id,
+        })
+        db.session.commit()
+        return jsonify({
+            "status": "ok",
+            "candidate_match_id": candidate.id,
+            "existing_match_id": existing.id if existing else None,
+            "new_status": "rejected",
+        })
+
+    # action == "switch"
+    if existing is not None:
+        existing.status = "candidate"
+        existing.confirmed_at = None
+        existing.confirmed_by = None
+
+    candidate.status = "confirmed"
+    candidate.confirmed_at = now
+    candidate.confirmed_by = current_user.name
+    if hasattr(current_user, "matches_processed"):
+        current_user.matches_processed += 1
+
+    # Cleanup other candidate matches on the same SP (1 SP ↔ 1 PP).
+    other_orphans = ProductMatch.query.filter(
+        ProductMatch.supplier_product_id == candidate.supplier_product_id,
+        ProductMatch.status == "candidate",
+        ProductMatch.id != candidate.id,
+    ).all()
+    for orphan in other_orphans:
+        db.session.delete(orphan)
+
+    log_action("conflict_switch", details={
+        "candidate_match_id": candidate.id,
+        "existing_match_id": existing.id if existing else None,
+        "prom_product_id": candidate.prom_product_id,
+        "orphans_cleaned": len(other_orphans),
+    })
+    db.session.commit()
+    return jsonify({
+        "status": "ok",
+        "candidate_match_id": candidate.id,
+        "existing_match_id": existing.id if existing else None,
+        "new_status": "confirmed",
     })
 
 
