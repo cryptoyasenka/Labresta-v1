@@ -34,8 +34,14 @@ def sync_command(supplier_id, verbose):
 
 @click.command("flag-orphans")
 @click.option("--dry-run", is_flag=True, help="Show what would change without writing to DB")
+@click.option(
+    "--exclude-dead-suppliers",
+    is_flag=True,
+    help="Exclude suppliers with 0 fresh SPs (e.g. permanent 403 feeds) from both "
+    "the drop-check and brand-anchor count. Use when a supplier is known-broken.",
+)
 @with_appcontext
-def flag_orphans_command(dry_run):
+def flag_orphans_command(dry_run, exclude_dead_suppliers):
     """Run Stage 4.5 orphan-PP detection manually.
 
     Flags PromProducts whose brand is carried by a single enabled supplier
@@ -45,16 +51,22 @@ def flag_orphans_command(dry_run):
     Examples:
         flask flag-orphans --dry-run
         flask flag-orphans
+        flask flag-orphans --dry-run --exclude-dead-suppliers
     """
     from app.services.orphan_detector import flag_orphan_pps
 
-    result = flag_orphan_pps(dry_run=dry_run)
+    result = flag_orphan_pps(
+        dry_run=dry_run,
+        exclude_dead_suppliers=exclude_dead_suppliers,
+    )
     mode = "DRY-RUN" if dry_run else "APPLY"
     click.echo(f"[{mode}] Stage 4.5 orphan detection:")
     click.echo(f"  flagged: {result['flagged']}")
     click.echo(f"  cleared: {result['cleared']}")
     click.echo(f"  L1_total: {result['L1_total']}")
     click.echo(f"  brand_single_supplier_count: {result['brand_single_supplier_count']}")
+    if result.get("dead_supplier_ids"):
+        click.echo(f"  dead_supplier_ids excluded: {result['dead_supplier_ids']}")
     if result["skipped_reason"]:
         click.echo(f"  skipped: {result['skipped_reason']}")
 

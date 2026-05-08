@@ -40,9 +40,36 @@ def _stale_window() -> timedelta:
     return timedelta(hours=5)
 
 
-def _brand_supplier_counts() -> dict[str, list[int]]:
+def _dead_supplier_ids() -> set[int]:
+    """Return ids of enabled suppliers with 0 SPs in latest sync window.
+
+    'Dead' = consistently broken feed (e.g. external 403 / DNS failure),
+    not a one-off transient drop. Used to optionally exclude such suppliers
+    from brand-anchor count + drop-check."""
+    cutoff = _now_naive() - _stale_window()
+    rows = db.session.execute(
+        select(
+            Supplier.id,
+            func.count(SupplierProduct.id).filter(
+                SupplierProduct.last_seen_at >= cutoff
+            ).label("recent"),
+            func.count(SupplierProduct.id).label("total"),
+        )
+        .join(SupplierProduct, SupplierProduct.supplier_id == Supplier.id, isouter=True)
+        .where(Supplier.is_enabled.is_(True))
+        .group_by(Supplier.id)
+    ).all()
+    return {sid for sid, recent, total in rows if total > 0 and (recent or 0) == 0}
+
+
+def _brand_supplier_counts(exclude_supplier_ids: set[int] | None = None) -> dict[str, list[int]]:
     """Return {lower(brand): [supplier_id, ...]} for enabled suppliers
-    that have at least one SP with that brand."""
+    that have at least one SP with that brand.
+
+    Args:
+        exclude_supplier_ids: supplier ids to skip (e.g. dead suppliers).
+    """
+    excluded = exclude_supplier_ids or set()
     rows = db.session.execute(
         select(
             func.lower(SupplierProduct.brand),
@@ -58,6 +85,8 @@ def _brand_supplier_counts() -> dict[str, list[int]]:
     out: dict[str, list[int]] = {}
     for brand_lower, sup_id in rows:
         if not brand_lower:
+            continue
+        if sup_id in excluded:
             continue
         out.setdefault(brand_lower, []).append(sup_id)
     return out
@@ -84,15 +113,22 @@ def _pps_with_confirmed_match() -> set[int]:
     return {pid for (pid,) in rows}
 
 
-def _feed_drop_check() -> tuple[bool, str]:
-    """Skip orphan run if any enabled supplier lost >50% of its SP rows
-    in the latest sync window. Heuristic: count `last_seen_at >= now-5h`
-    vs total SPs for that supplier."""
+def _feed_drop_check(exclude_supplier_ids: set[int] | None = None) -> tuple[bool, str]:
+    """Skip orphan run if any enabled supplier had a *partial* drop
+    (>50% of SPs disappeared in last sync window).
+
+    A *fully dead* supplier (recent=0) is treated separately: pass
+    `exclude_supplier_ids={dead_ids}` to skip them from this check
+    (they are also excluded from brand-anchor counting).
+    """
+    excluded = exclude_supplier_ids or set()
     enabled = db.session.execute(
         select(Supplier.id, Supplier.name).where(Supplier.is_enabled.is_(True))
     ).all()
     cutoff = _now_naive() - _stale_window()
     for sup_id, sup_name in enabled:
+        if sup_id in excluded:
+            continue
         total = db.session.execute(
             select(func.count(SupplierProduct.id)).where(
                 SupplierProduct.supplier_id == sup_id
@@ -112,17 +148,23 @@ def _feed_drop_check() -> tuple[bool, str]:
     return True, ""
 
 
-def flag_orphan_pps(*, dry_run: bool = False) -> dict:
+def flag_orphan_pps(*, dry_run: bool = False, exclude_dead_suppliers: bool = False) -> dict:
     """Flag orphan PPs (Stage 4.5).
 
     Args:
         dry_run: If True, don't write to DB — just return what WOULD change.
+        exclude_dead_suppliers: If True, suppliers with 0 fresh SPs (broken
+            feeds, e.g. permanent 403) are excluded from both the drop-check
+            and brand-anchor count. Use when one supplier is known-broken
+            but others are fine.
 
     Returns:
         dict with keys: flagged, cleared, skipped_reason (or empty string),
-        L1_total, brand_single_supplier_count.
+        L1_total, brand_single_supplier_count, dead_supplier_ids.
     """
-    ok, reason = _feed_drop_check()
+    dead_ids = _dead_supplier_ids() if exclude_dead_suppliers else set()
+
+    ok, reason = _feed_drop_check(exclude_supplier_ids=dead_ids)
     if not ok:
         logger.warning("Stage 4.5 skipped: %s", reason)
         return {
@@ -131,9 +173,10 @@ def flag_orphan_pps(*, dry_run: bool = False) -> dict:
             "skipped_reason": reason,
             "L1_total": 0,
             "brand_single_supplier_count": 0,
+            "dead_supplier_ids": sorted(dead_ids),
         }
 
-    brand_supps = _brand_supplier_counts()
+    brand_supps = _brand_supplier_counts(exclude_supplier_ids=dead_ids)
     matched_pp_ids = _pps_with_confirmed_match()
 
     single_supp_brands = {
@@ -163,9 +206,12 @@ def flag_orphan_pps(*, dry_run: bool = False) -> dict:
             continue  # has confirmed match — not orphan
 
         disp = (pp.display_article or "").lower().strip()
+        if not disp:
+            # No display_article → cannot reliably determine orphan status.
+            # Skip rather than false-flag (operator should fill display_article first).
+            continue
         articles = article_index.get(sup_id, set())
-        # No display_article → cannot be matched → treat as orphan.
-        is_orphan = (not disp) or (disp not in articles)
+        is_orphan = disp not in articles
 
         note_is_ours = pp.operator_decision_note == AUTO_NOTE
         current = pp.operator_decision
@@ -202,4 +248,5 @@ def flag_orphan_pps(*, dry_run: bool = False) -> dict:
         "skipped_reason": "",
         "L1_total": len(L1_orphans),
         "brand_single_supplier_count": len(single_supp_brands),
+        "dead_supplier_ids": sorted(dead_ids),
     }

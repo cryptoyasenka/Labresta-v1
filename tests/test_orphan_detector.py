@@ -191,18 +191,19 @@ def test_sanity_guard_skips_on_feed_drop(db):
     assert "drop" in result["skipped_reason"].lower()
 
 
-def test_pp_without_display_article_treated_as_orphan(db):
-    """Edge case: PP with brand but no display_article cannot be matched → orphan."""
+def test_pp_without_display_article_is_skipped(db):
+    """Safety: PP without display_article cannot be reliably classified — skip
+    rather than false-flag (operator should fill display_article first). Prevents
+    bulk-flagging a brand whose Horoshop cards have no display_article filled."""
     s = _mk_supplier(db, "Astim")
     _mk_sp(db, s.id, "Hendi", "111")
     pp = _mk_pp(db, "Hendi", None)
     db.session.commit()
 
     result = flag_orphan_pps()
-    assert result["flagged"] == 1
+    assert result["flagged"] == 0
     db.session.refresh(pp)
-    assert pp.operator_decision == "needs_delete"
-    assert pp.operator_decision_note == AUTO_NOTE
+    assert pp.operator_decision is None
 
 
 def test_disabled_supplier_excluded_from_brand_count(db):
@@ -216,3 +217,47 @@ def test_disabled_supplier_excluded_from_brand_count(db):
     db.session.refresh(pp)
     assert pp.operator_decision is None
     assert result["brand_single_supplier_count"] == 0
+
+
+def test_exclude_dead_suppliers_unblocks_run(db):
+    """If a supplier has 0 fresh SPs (broken feed), exclude_dead_suppliers=True
+    should drop it from anchor + skip drop-check, letting other suppliers' brands
+    be evaluated normally."""
+    s_dead = _mk_supplier(db, "BrokenFeed")  # all stale
+    s_live = _mk_supplier(db, "Astim")
+    # Dead supplier: 11 stale SPs, 0 fresh — total>10 so drop check would trip
+    for i in range(11):
+        _mk_sp(db, s_dead.id, "Hendi", f"old{i}", fresh=False)
+    # Live supplier: fresh SPs only
+    _mk_sp(db, s_live.id, "Hendi", "111", fresh=True)
+    pp_orphan = _mk_pp(db, "Hendi", "999")
+    pp_kept = _mk_pp(db, "Hendi", "111")
+    db.session.commit()
+
+    blocked = flag_orphan_pps()
+    assert blocked["flagged"] == 0
+    assert "drop" in blocked["skipped_reason"].lower()
+
+    result = flag_orphan_pps(exclude_dead_suppliers=True)
+    assert result["flagged"] == 1
+    assert s_dead.id in result["dead_supplier_ids"]
+    db.session.refresh(pp_orphan)
+    db.session.refresh(pp_kept)
+    assert pp_orphan.operator_decision == "needs_delete"
+    assert pp_orphan.operator_decision_note == AUTO_NOTE
+    assert pp_kept.operator_decision is None
+
+
+def test_exclude_dead_does_not_skip_partial_drop(db):
+    """exclude_dead only excludes recent==0 suppliers. A supplier with PARTIAL
+    drop (recent>0 but <50%) must still trip the sanity guard."""
+    s = _mk_supplier(db, "FlakySupplier")
+    for i in range(20):
+        _mk_sp(db, s.id, "Hendi", f"old{i}", fresh=False)
+    _mk_sp(db, s.id, "Hendi", "fresh1", fresh=True)
+    _mk_pp(db, "Hendi", "999")
+    db.session.commit()
+
+    result = flag_orphan_pps(exclude_dead_suppliers=True)
+    assert result["flagged"] == 0
+    assert "drop" in result["skipped_reason"].lower()
