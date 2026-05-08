@@ -1,17 +1,17 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
-**Last touched:** 2026-05-08 (вечер — prod audit + 3 fixes)
-**Status:** Astim deploy ✅. Prod audit done. Problem 1 (YML 404) FIXED. Problem 2 (MARESTO) — внешний 403 от mrst.com.ua на Railway IP, документировано как known issue. Problem 3 (Stage 4) — корректное поведение, не баг. Дальше Phase 8 plan + 10 Astim manual confirms.
+**Last touched:** 2026-05-08 (поздний вечер — Phase 8 Tasks 1+2 done)
+**Status:** Phase 8 Task 1 (orphan_detector + 11 tests, `51d274c`) done. Task 2 (wire-in fetch-all + `flask flag-orphans` CLI, `11aa107`) done. 656/656 passed, working tree clean. Next: Task 3 (UI tab) **или** прод-прогон `flag-orphans --dry-run`.
 
 ## Open files
-- `.planning/phases/08-orphan-pp-deletion/08-CONTEXT.md` — created, ready to plan
-- (next) `.planning/phases/08-orphan-pp-deletion/08-01-PLAN.md` — needs writing
+- `.planning/phases/08-orphan-pp-deletion/08-01-PLAN.md` — execution plan, Task 3 ещё не начат
+- (next, Task 3) `app/views/matches.py`, `app/templates/matches/deletion_candidates.html`
 
 ## Next step
-1. Yana вручную отклоняет 3 wrong Astim candidates (m=6620, 6618, 6611 — display_article duplicates, R0 path B failure).
-2. Yana подтверждает остальные 7 fuzzy candidates вручную в `/matches/?supplier_id=8&status=candidate`.
-3. Создать `08-01-PLAN.md` для orphan-PP deletion фазы — оформить L1 trigger в Stage 4.5 после fetch-all sync.
-4. (опционально) Связаться с MARESTO попросить whitelist Railway egress IP, или написать ручной import-from-local скрипт.
+1. **Task 3 (UI):** расширить `/matches/deletion-candidates` — `?tab=orphan` + endpoint `clear_orphan_pp_flag` + tab nav в шаблоне.
+2. **ИЛИ** прогнать `flag-orphans --dry-run` на проде (Postgres public proxy URL ниже) чтоб увидеть число PP с реальным prod-data.
+3. Yana вручную отклоняет 3 wrong Astim candidates (m=6620, 6618, 6611) и подтверждает остальные 7.
+4. (опционально) Связаться с MARESTO: whitelist Railway egress IP, либо локальный import-from-local скрипт.
 
 ## Prod audit (2026-05-08, scripts/verify_prod.py)
 - Astim: 487 confirmed, 10 candidates (3 display_art_dup, 7 fuzzy false-pos)
