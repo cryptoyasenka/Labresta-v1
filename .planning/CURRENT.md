@@ -1,7 +1,7 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
-**Last touched:** 2026-05-08 (ночь — Phase 8 follow-up fix APPLIED to prod)
-**Status:** Phase 8 завершён + post-apply баг починен и применён. Yana поймала: бренды у которых есть MARESTO + другой поставщик (Rational ×9, Robot Coupe ×6, Bartscher ×1) ошибочно помечались — MARESTO их покрывает. Фикс `fb89ace` запушен, Railway auto-deployed, прод-apply через `railway run`+`DATABASE_PUBLIC_URL`: **flagged=0, cleared=16, осталось ровно 10 настоящих orphans (FROSTY 6 + GI.Metal 4)**, верифицировано прямой query в Railway PG. MARESTO на проде всё ещё dead (id=1, в `dead_supplier_ids excluded`), `--exclude-dead-suppliers` нужен. **661/661 tests** (+3 новых). Полный отчёт в `.planning/phases/08-orphan-pp-deletion/08-01-SUMMARY.md`.
+**Last touched:** 2026-05-08 (ночь — Phase 8 + Hendi exclusion APPLIED to prod)
+**Status:** Phase 8 + post-apply фикс + Hendi×Кодаки exclusion применены. Yana указала "Hendi только у Астима" — у Кодаки 2 Hendi корзины (sp_id=6076, 6160), мешали detection. Захардкожен `BRAND_SUPPLIER_EXCLUSIONS = {"hendi": {3}}` в `app/services/brand_supplier_overrides.py`, применён в orphan_detector + matcher + rule_matcher. После apply: **27 orphans на проде** — Hendi 17, FROSTY 6, GI.Metal 4. **661/661 tests**. Все коммиты запушены, Railway auto-deploys.
 
 ## Open files
 - (none — Phase 8 closed)

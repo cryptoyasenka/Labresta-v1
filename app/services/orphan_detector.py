@@ -24,6 +24,7 @@ from app.models.catalog import PromProduct
 from app.models.product_match import ProductMatch
 from app.models.supplier import Supplier
 from app.models.supplier_product import SupplierProduct
+from app.services.brand_supplier_overrides import is_excluded as _brand_supplier_excluded
 
 logger = logging.getLogger(__name__)
 
@@ -88,6 +89,8 @@ def _brand_supplier_counts(exclude_supplier_ids: set[int] | None = None) -> dict
             continue
         if sup_id in excluded:
             continue
+        if _brand_supplier_excluded(brand_lower, sup_id):
+            continue  # hardcoded blocklist (e.g. Hendi at Кодаки)
         out.setdefault(brand_lower, []).append(sup_id)
     return out
 

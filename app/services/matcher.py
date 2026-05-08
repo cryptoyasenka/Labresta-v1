@@ -2095,9 +2095,12 @@ def run_matching_for_supplier(supplier_id: int, progress_cb=None) -> int:
     )
 
     # Step 4: Match each unmatched product
+    from app.services.brand_supplier_overrides import is_excluded as _bs_excluded
     total_candidates = 0
     sp_total = len(unmatched_products)
     for idx, sp in enumerate(unmatched_products, start=1):
+        if _bs_excluded(sp.brand, sp.supplier_id):
+            continue  # hardcoded brand×supplier blocklist (e.g. Hendi at Кодаки)
         candidates = find_match_candidates(
             sp.name, sp.brand, prom_list,
             supplier_price_cents=sp.price_cents,

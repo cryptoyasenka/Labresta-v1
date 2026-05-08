@@ -10,6 +10,7 @@ from app.models.catalog import PromProduct
 from app.models.match_rule import MatchRule
 from app.models.product_match import ProductMatch
 from app.models.supplier_product import SupplierProduct
+from app.services.brand_supplier_overrides import is_excluded as _bs_excluded
 
 logger = logging.getLogger(__name__)
 
@@ -95,6 +96,8 @@ def apply_match_rules(supplier_id: int) -> int:
     count = 0
 
     for sp in eligible_products:
+        if _bs_excluded(sp.brand, sp.supplier_id):
+            continue  # hardcoded brand×supplier blocklist (e.g. Hendi at Кодаки)
         for rule in rules:
             # Check name match (exact)
             if sp.name != rule.supplier_product_name_pattern:
