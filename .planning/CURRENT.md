@@ -2,7 +2,29 @@
 
 **Last touched:** 2026-05-09 (auto_sync_enabled per-supplier flag shipped; MARESTO removed from cron)
 
-## Session 2026-05-09 — auto_sync_enabled (commits `1e91fcc`, `9f3b3bc`)
+## ⏸ STOPPED HERE — 2026-05-09 (Yana перегружает комп)
+
+**Где мы остановились:**
+- Auto_sync_enabled полностью закрыт (см. ниже секцию). Прод OK, тесты OK.
+- Ни одна follow-up задача не в работе. Уходим с чистым tree (только `.planning/night-pytest.log` untracked, не критично).
+
+**Что обсудили перед перезагрузкой:**
+1. Yana хотела next-приоритет — я предложила Phase L smoke-test (bulk-confirm conflict modal)
+2. Yana попыталась single «Отклонить» → увидела жёлтый toast `Матч отклонен. Найден новый кандидат — обновите страницу.` → подумала что ошибка
+3. Я объяснила: жёлтый = НЕ ошибка, это нормальный info-message. Phase L modal срабатывает только при **bulk** действии (галки в чекбоксах + «Подтвердить выбранные»), не при per-row кнопке.
+4. У НП кандидатов 0 → smoke test там невозможен. Нужен Астим (10 candidates) или другой supplier с кандидатами.
+
+**Когда вернётся — спросить у неё:**
+- Хочет всё-таки сделать Phase L smoke-test на Астиме? (3-5 чекбоксов → «Подтвердить выбранные» → жди модалку)
+- Или next = AD46 cleanup в Horoshop (удалить PP #1007/1015/1008 — Apach AD46MV/DV/M, которых физически нет у np.com.ua)?
+- Или Cat H (11 cross-brand дубликатов через `.planning/dossiers/cat-h/INDEX.md`)?
+- Или вообще другая задача?
+
+**Не начинать ничего автономно** — она хочет 1 решение за раз.
+
+---
+
+## Session 2026-05-09 — auto_sync_enabled (commits `1e91fcc`, `9f3b3bc`, `a0d6599`)
 - **Кнопка «Обновить данные» удалена** с дашборда (только перерисовывала виджеты, путала оператора). Page и так auto-poll'ит.
 - **`Supplier.auto_sync_enabled`** (bool, default True, NOT NULL) + Postgres миграция `migrate_add_supplier_auto_sync_pg.py` в `railway.toml` startCommand. Прод: миграция отработала, в логах `auto_sync_enabled migration: done.`
 - **`run_full_sync(supplier_id=None, *, manual=False)`** — крон (`manual=False`) фильтрует `auto_sync_enabled=True`; ручные кнопки (`manual=True`) и per-supplier path игнорируют флаг.
