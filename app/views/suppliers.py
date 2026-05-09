@@ -263,6 +263,24 @@ def supplier_toggle(supplier_id):
     return redirect(url_for("suppliers.supplier_list"))
 
 
+@suppliers_bp.route("/<int:supplier_id>/toggle-auto-sync", methods=["POST"])
+@login_required
+def supplier_toggle_auto_sync(supplier_id):
+    supplier = db.session.get(Supplier, supplier_id)
+    if not supplier:
+        flash("Поставщик не найден.", "error")
+        return redirect(url_for("suppliers.supplier_list"))
+
+    supplier.auto_sync_enabled = not supplier.auto_sync_enabled
+    db.session.commit()
+    status = "включена" if supplier.auto_sync_enabled else "отключена"
+    flash(
+        f"Автосинхронизация для '{supplier.name}' {status}.",
+        "success",
+    )
+    return redirect(url_for("suppliers.supplier_list"))
+
+
 @suppliers_bp.route("/<int:supplier_id>/delete", methods=["POST"])
 @login_required
 def supplier_delete(supplier_id):

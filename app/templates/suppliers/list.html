@@ -113,6 +113,9 @@
                 {% else %}
                     <span class="badge bg-secondary">Выключен</span>
                 {% endif %}
+                {% if not supplier.auto_sync_enabled %}
+                    <span class="badge bg-warning text-dark" title="Крон пропускает этого поставщика. Ручной запуск работает.">Авто-синк OFF</span>
+                {% endif %}
             </td>
             <td>
                 {% if supplier.last_fetched_at %}
@@ -160,6 +163,13 @@
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <button type="submit" class="btn btn-sm btn-outline-{{ 'warning' if supplier.is_enabled else 'success' }}">
                         {{ 'Выключить' if supplier.is_enabled else 'Включить' }}
+                    </button>
+                </form>
+                <form method="POST" action="{{ url_for('suppliers.supplier_toggle_auto_sync', supplier_id=supplier.id) }}" class="d-inline">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn btn-sm btn-outline-{{ 'secondary' if supplier.auto_sync_enabled else 'info' }}"
+                            title="{{ 'Отключить автосинк (крон будет пропускать). Ручной запуск останется доступен.' if supplier.auto_sync_enabled else 'Включить автосинк (крон снова начнёт обновлять).' }}">
+                        {{ 'Авто-синк OFF' if supplier.auto_sync_enabled else 'Авто-синк ON' }}
                     </button>
                 </form>
                 {% if supplier.feed_url %}

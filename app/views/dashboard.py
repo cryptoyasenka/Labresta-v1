@@ -295,7 +295,7 @@ def _run_sync_in_context(app):
         from app.services.sync_pipeline import run_full_sync
 
         try:
-            run_full_sync()
+            run_full_sync(manual=True)
         except Exception:
             logger.exception("Background sync failed")
         finally:

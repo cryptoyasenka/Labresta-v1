@@ -414,10 +414,6 @@
         var syncBtn = document.getElementById('triggerSyncBtn');
         if (syncBtn) syncBtn.addEventListener('click', triggerSync);
 
-        // Refresh button
-        var refreshBtn = document.getElementById('refreshBtn');
-        if (refreshBtn) refreshBtn.addEventListener('click', fetchDashboardData);
-
         // Start polling
         pollTimer = setInterval(fetchDashboardData, POLL_INTERVAL_NORMAL);
 

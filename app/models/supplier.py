@@ -56,6 +56,15 @@ class Supplier(db.Model):
     # Parser type for xlsx/Sheets feeds: 'auto' (default, generic excel) or 'rp' (РП Україна section-grouped).
     parser_type = db.Column(db.String(20), nullable=False, default="auto", server_default="auto")
     is_enabled = db.Column(db.Boolean, default=True)
+    # Whether the scheduled cron should auto-sync this supplier.
+    # Manual UI triggers (dashboard "Запустить синхронизацию", per-supplier
+    # "Загрузить фид") always run regardless of this flag.
+    auto_sync_enabled = db.Column(
+        db.Boolean,
+        default=True,
+        server_default="true",
+        nullable=False,
+    )
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     updated_at = db.Column(
         db.DateTime,

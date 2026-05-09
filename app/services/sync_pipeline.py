@@ -33,11 +33,15 @@ from app.views.dashboard import SyncProgress
 logger = logging.getLogger(__name__)
 
 
-def run_full_sync(supplier_id: int | None = None):
+def run_full_sync(supplier_id: int | None = None, *, manual: bool = False):
     """Run the full sync pipeline for one or all enabled suppliers.
 
     Args:
-        supplier_id: If given, sync only this supplier. Otherwise sync all enabled.
+        supplier_id: If given, sync only this supplier (auto_sync_enabled ignored).
+        manual: If True (UI-triggered), sync ALL enabled suppliers including those
+            with auto_sync_enabled=False. If False (cron), skip suppliers whose
+            auto_sync_enabled flag is unset — used for permanently-broken feeds
+            (e.g. MARESTO blocked by Cloudflare from Railway egress).
     """
     if supplier_id is not None:
         supplier = db.session.get(Supplier, supplier_id)
@@ -46,9 +50,10 @@ def run_full_sync(supplier_id: int | None = None):
             return
         suppliers = [supplier]
     else:
-        suppliers = db.session.execute(
-            select(Supplier).where(Supplier.is_enabled == True)  # noqa: E712
-        ).scalars().all()
+        query = select(Supplier).where(Supplier.is_enabled == True)  # noqa: E712
+        if not manual:
+            query = query.where(Supplier.auto_sync_enabled == True)  # noqa: E712
+        suppliers = db.session.execute(query).scalars().all()
 
     if not suppliers:
         logger.info("No enabled suppliers to sync")
