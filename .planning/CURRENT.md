@@ -1,6 +1,14 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
-**Last touched:** 2026-05-09 (Night audit closed clean; TODO-NEXT.md saved for tomorrow's per-row work)
+**Last touched:** 2026-05-09 (auto_sync_enabled per-supplier flag shipped; MARESTO removed from cron)
+
+## Session 2026-05-09 — auto_sync_enabled (commits `1e91fcc`, `9f3b3bc`)
+- **Кнопка «Обновить данные» удалена** с дашборда (только перерисовывала виджеты, путала оператора). Page и так auto-poll'ит.
+- **`Supplier.auto_sync_enabled`** (bool, default True, NOT NULL) + Postgres миграция `migrate_add_supplier_auto_sync_pg.py` в `railway.toml` startCommand. Прод: миграция отработала, в логах `auto_sync_enabled migration: done.`
+- **`run_full_sync(supplier_id=None, *, manual=False)`** — крон (`manual=False`) фильтрует `auto_sync_enabled=True`; ручные кнопки (`manual=True`) и per-supplier path игнорируют флаг.
+- **Toggle endpoint** `POST /suppliers/<id>/toggle-auto-sync` + badge `Авто-синк OFF` (warning) + кнопка «Авто-синк OFF/ON» в `/suppliers/`.
+- **MARESTO snapped on prod** через UI (`auto_sync_enabled=False`) — крон больше не дёргает 403'ящий feed. Verified в БД: `(1, 'MARESTO', True, False)`, остальные `True`.
+- **Tests**: 6 в `tests/test_sync_pipeline_auto_sync.py` (cron skip, manual include, per-supplier ignore, is_enabled=False guard, toggle endpoint flip + 404). Suite 677→683 passed.
 
 ## Audit results (2026-05-09 — night session)
 - `.planning/matching-audit-report.md` (commit `fc466f7`): A=0 B=13 B-rev=9 C=0 D=267 E=0 F=0 G=0 H=11
