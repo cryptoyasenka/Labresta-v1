@@ -58,6 +58,8 @@
 
 **Рекомендация Yana утром:** проверить np.com.ua вручную (логин дилера) — у них товар `/ovocherezka-tm-inox-s-komplektom-dyskov/` точно имеет какой-то код. Либо у Maresto спросить артикул "TM INOX + DSK". Если не найдётся — поставить пометку `40752102P-K1` (labresta-internal) у PP#3276 чтобы снять коллизию, или **очистить** display_article у одного из двух.
 
+**Update 2026-05-13:** WebFetch трёх UA-магазинов (technofood, kiy-v, primus-shop) не показал отдельный Sirman SKU для disc-set версии — только магазинные internal номера (например technofood: `4557447739`). **Финальное решение:** либо Yana заходит в np.com.ua dealer portal руками, либо ставим labresta-internal код `40752102P-K1` у PP#3276 (PP#3275 остаётся `40752102P` — официальный Sirman).
+
 ### #9 — `40802852F`: Sirman IP 20 M vs IP 10 M ✅ RESOLVED
 
 **Источник:** sirman.com официальный каталог (страница `/en-GB/food-processing/meat-processing/ip-20-m/40802852F` подтверждает + page показывает IP 10 M code).
