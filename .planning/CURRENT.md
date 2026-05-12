@@ -1,26 +1,37 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
-**Last touched:** 2026-05-09 (auto_sync_enabled per-supplier flag shipped; MARESTO removed from cron)
+**Last touched:** 2026-05-12 (ночная сессия — Cat H diagnosis ready by autonomous run)
 
-## ⏸ STOPPED HERE — 2026-05-09 (Yana перегружает комп)
+## ⏸ STOPPED HERE — 2026-05-12 ночь (Cat H diagnosis done, Horoshop edits ждут Yana)
 
-**Где мы остановились:**
-- Auto_sync_enabled полностью закрыт (см. ниже секцию). Прод OK, тесты OK.
-- Ни одна follow-up задача не в работе. Уходим с чистым tree (только `.planning/night-pytest.log` untracked, не критично).
+**Что сделано автономно за ночь:**
+- Yana выбрала Cat H (11 cross-brand display_article дублей) → я прочла все 11 dossier'ов, разделила на Группу A (7 Hendi vs не-Hendi) и Группу B (5 same-brand пар)
+- Написала `scripts/lookup_cat_h_wrong_owners.py` (read-only prod-DB lookup) — для каждой WRONG-PP нашла SP-кандидата в feed'ах поставщиков по model-token из имени
+- WebFetch sirman.com — добили #9 (IP 10 M = `40802652F`)
+- Главный артефакт: `.planning/dossiers/cat-h/ANSWERS.md` — operator cheat sheet с точными `display_article` для каждой правки
 
-**Что обсудили перед перезагрузкой:**
-1. Yana хотела next-приоритет — я предложила Phase L smoke-test (bulk-confirm conflict modal)
-2. Yana попыталась single «Отклонить» → увидела жёлтый toast `Матч отклонен. Найден новый кандидат — обновите страницу.` → подумала что ошибка
-3. Я объяснила: жёлтый = НЕ ошибка, это нормальный info-message. Phase L modal срабатывает только при **bulk** действии (галки в чекбоксах + «Подтвердить выбранные»), не при per-row кнопке.
-4. У НП кандидатов 0 → smoke test там невозможен. Нужен Астим (10 candidates) или другой supplier с кандидатами.
+**Итог по 11 кейсам:**
 
-**Когда вернётся — спросить у неё:**
-- Хочет всё-таки сделать Phase L smoke-test на Астиме? (3-5 чекбоксов → «Подтвердить выбранные» → жди модалку)
-- Или next = AD46 cleanup в Horoshop (удалить PP #1007/1015/1008 — Apach AD46MV/DV/M, которых физически нет у np.com.ua)?
-- Или Cat H (11 cross-brand дубликатов через `.planning/dossiers/cat-h/INDEX.md`)?
-- Или вообще другая задача?
+| Группа | # | Статус | Что делать Yana |
+|---|---|---|---|
+| A | 2,4,5,6,7,11 | ✅ DIAGNOSIS READY | 7 правок display_article в Horoshop (3 set value, 4 clear) |
+| B | 1 | ✅ DONE | PP#3261 SPM 70 → `0830.00070.02` |
+| B | 3 | ✅ DONE | Оба FROSTY VP закрыть в `/matches/deletion-candidates?tab=orphan` (уже phase8_orphan) |
+| B | 9 | ✅ DONE | PP#3455 IP 10 M → `40802652F` (sirman.com) |
+| B | 8 | ⚠️ PARTIAL | TM INOX disc-set SKU — np.com.ua dealer portal вручную / решение Yana |
+| B | 10 | ⚠️ DEFERRED | CICLONE A35/A25 packs — решение Yana как кодировать |
 
-**Не начинать ничего автономно** — она хочет 1 решение за раз.
+**Открой утром:** `.planning/dossiers/cat-h/ANSWERS.md` — там точные значения для каждой правки.
+
+**Commits ночи (pushed):** `ef29a1c` lookup script + initial ANSWERS, `028689b` final sirman.com sourced answers.
+
+**Не закрыто:** Tasks в TaskList — pending до Horoshop CMS правки (диагноз готов, физическая правка за Yana).
+
+---
+
+## Session 2026-05-09 — auto_sync_enabled (commits `1e91fcc`, `9f3b3bc`, `a0d6599`)
+
+---
 
 ---
 
