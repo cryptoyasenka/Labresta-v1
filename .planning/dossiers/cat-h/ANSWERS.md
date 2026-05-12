@@ -58,7 +58,7 @@
 
 **Рекомендация Yana утром:** проверить np.com.ua вручную (логин дилера) — у них товар `/ovocherezka-tm-inox-s-komplektom-dyskov/` точно имеет какой-то код. Либо у Maresto спросить артикул "TM INOX + DSK". Если не найдётся — поставить пометку `40752102P-K1` (labresta-internal) у PP#3276 чтобы снять коллизию, или **очистить** display_article у одного из двух.
 
-**Update 2026-05-13:** WebFetch трёх UA-магазинов (technofood, kiy-v, primus-shop) не показал отдельный Sirman SKU для disc-set версии — только магазинные internal номера (например technofood: `4557447739`). **Финальное решение:** либо Yana заходит в np.com.ua dealer portal руками, либо ставим labresta-internal код `40752102P-K1` у PP#3276 (PP#3275 остаётся `40752102P` — официальный Sirman).
+**Update 2026-05-13:** WebFetch трёх UA-магазинов (technofood, kiy-v, primus-shop) не показал отдельный Sirman SKU для disc-set версии — только магазинные internal номера (например technofood: `4557447739`). **Yana 2026-05-13:** проверит np.com.ua dealer portal руками (логин дилера), найдёт реальный SKU для версии с дисками и впишет в PP#3276. PP#3275 остаётся `40752102P` — официальный Sirman.
 
 ### #9 — `40802852F`: Sirman IP 20 M vs IP 10 M ✅ RESOLVED
 
@@ -71,16 +71,16 @@
 
 Паттерн: `408028**52**F` (20kg) vs `408026**52**F` (10kg) — Sirman кодирует размер позицией 5-6.
 
-### #10 — `66520502K1.2`: Sirman CICLONE 28 VT + A35 vs + A25 ⚠️ DEFERRED
+### #10 — `66520502K1.2`: Sirman CICLONE 28 VT + A35 vs + A25 ✅ RESOLVED (suffix-style 2026-05-13)
 
 **Источник:** sirman.com + premiumgastro.pl + mattysequipment.com.au подтверждают: `66520502` — официальный Sirman SKU для **базового** CICLONE 28 VT 250mm shaft. **A35/A25 — отдельные подрібнювачі** (Sirman не продаёт их как один SKU, это собственные комплекты labresta).
 
 | PP | модель | новый `display_article` |
 |---|---|---|
-| **PP#3108** | CICLONE 28 VT + подрібнювач A35 | предложение: `66520502-A35` (labresta-internal) или `66520502` без `K1.2` |
-| **PP#3109** | CICLONE 28 VT + подрібнювач A25 | предложение: `66520502-A25` или другой |
+| **PP#3108** | CICLONE 28 VT + подрібнювач A35 | `66520502-A35` |
+| **PP#3109** | CICLONE 28 VT + подрібнювач A25 | `66520502-A25` |
 
-`66520502K1.2` — labresta-internal маркировка пакета (не Sirman SKU). Решение полностью **за Yana** — она решит как разделять комплекты. Если у магазина нет нужды кодировать комплекты артикулом — можно **очистить** display_article у одного из двух.
+**Yana 2026-05-13:** выбран suffix-style. Базовый Sirman SKU `66520502` сохраняется как корень (для будущей привязки если появится в feed'е), `-A35`/`-A25` отличают комплекты для matcher Step 0a и для покупателя.
 
 ---
 
