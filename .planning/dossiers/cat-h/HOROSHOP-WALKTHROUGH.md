@@ -1,125 +1,79 @@
-# Horoshop CMS — чек-лист правок Cat H (11 кейсов)
+# Horoshop CMS — чек-лист правок Cat H (7 кейсов)
 
-**Цель:** убрать коллизии `display_article` между разными брендами/моделями, чтобы matcher Step 0a больше не пропускал автоматч.
+**Цель:** убрать коллизии `display_article` между Hendi и не-Hendi карточками, чтобы matcher Step 0a больше не пропускал автоматч из-за дубля артикула.
+
+**Правило (Yana 2026-05-13):** правим **только** там где Hendi-артикул случайно попал в карточку другого бренда. Внутри-бренда коллизии (Ozti↔Ozti, Sirman↔Sirman, FROSTY↔FROSTY) **не трогаем** — там display_article это ручные коды Yana, и для Sirman/Ozti они могут совпасть с будущим feed'ом, когда поставщика подключим.
 
 **Поле которое правим:** в карточке товара Horoshop оно называется **«Артикул на сайті»** (это `display_article` в нашей БД).
 
-**Как открыть карточку в админке:** Horoshop admin → **Каталог → Товари** → в поиске вставить ссылку (или название из колонки «Что искать») → клик по строке → откроется редактор карточки. Поле «Артикул на сайті» обычно сверху в первой вкладке. После правки — **Зберегти**.
+**Как открыть карточку в админке:** Horoshop admin → **Каталог → Товари** → в поиске вставить slug из URL (или название) → клик по строке → откроется редактор. Поле «Артикул на сайті» обычно сверху в первой вкладке. После правки — **Зберегти**.
+
+**Почему чистим, а не вписываем своё значение:** Maresto/Кодаки/локальные feed'ы этих 7 брендов не передают `<artikul>` в YML — правильного значения для display_article у нас нет. Очистка снимает коллизию с Hendi, существующие matches остаются живы (они confirmed через `bulk:identical-name` или score, не зависят от display_article).
+
+**Verification source:** `scripts/verify_cat_h_article_ownership.py` (read-only prod-DB lookup) подтвердил что все 7 артикулов ниже реально приходят из Астим (бренд-распределитель Hendi) — значит Hendi-карточки законные владельцы.
 
 ---
 
-## ⚡ ОДИН РАЗ: подсказка по навигации
+## 🧹 7 правок — ОЧИСТИТЬ поле «Артикул на сайті»
 
-У каждой строки ниже есть ссылка на **публичную страницу товара**. Можешь сначала кликнуть, убедиться что это правильный товар (увидишь фото и название), потом в админке ищешь по slug из URL или по названию.
-
-Slug = последняя часть URL после `labresta.com.ua/`. Например для `https://labresta.com.ua/kuter-dlia-khumusa-ozti-spm-20-fc/` slug = `kuter-dlia-khumusa-ozti-spm-20-fc`.
-
----
-
-## 🟢 7 правок где поле НУЖНО ВПИСАТЬ конкретное значение
-
-### #1a Ozti SPM 70 FC → `0830.00070.02`
-- 🔗 https://labresta.com.ua/kuter-dlia-khumusa-ozti-spm-70-fc/
-- Сейчас в поле «Артикул на сайті»: `0830.00020.00` (неправильно — это код SPM 20)
-- Вписать: **`0830.00070.02`** (источник: Maresto feed SP#327)
-- Сохранить
-
-### #6 FROSTY RC-30 → `000006797`
-- 🔗 https://labresta.com.ua/rysovarka-frosty-rc-30/
-- Сейчас: `240403` (это код Hendi 5.4L)
-- Вписать: **`000006797`** (источник: Кодаки SP#6504)
-- Сохранить
-
-### #7a FROSTY IC80A → `000006955`
-- 🔗 https://labresta.com.ua/podribniuvach-lodu-frosty-ic80a/
-- Сейчас: `271599` (это код Hendi)
-- Вписать: **`000006955`** (источник: Кодаки SP#6316)
-- Сохранить
-
-### #8b Sirman TM INOX з дисками (набір 1) → `40752102P-K1`
-- 🔗 https://labresta.com.ua/ovocherizka-sirman-tm-inox-z-dyskamy-nabir-1/
-- Сейчас: `40752102P` (тот же что у базовой версии без дисков — коллизия)
-- Вписать: **`40752102P-K1`** (K = Komplekt, 1 = набір 1)
-- Сохранить
-
-### #9b Sirman IP 10 M → `40802652F`
-- 🔗 https://labresta.com.ua/farshemishalka-sirman-ip-10-m/
-- Сейчас: `40802852F` (это код IP 20 M — больший)
-- Вписать: **`40802652F`** (источник: sirman.com)
-- Сохранить
-
-### #10a Sirman CICLONE 28 VT + A35 → `66520502-A35`
-- 🔗 https://labresta.com.ua/mikser-zanuriuvalnyi-sirman-ciclone-28-vt-podribniuvach-a35/
-- Сейчас: `66520502K1.2`
-- Вписать: **`66520502-A35`**
-- Сохранить
-
-### #10b Sirman CICLONE 28 VT + A25 → `66520502-A25`
-- 🔗 https://labresta.com.ua/mikser-zanuriuvalnyi-sirman-ciclone-28-vt-podribniuvach-a25/
-- Сейчас: `66520502K1.2` (та же коллизия что и #10a)
-- Вписать: **`66520502-A25`**
-- Сохранить
-
----
-
-## 🧹 5 правок где поле НУЖНО ОЧИСТИТЬ (стереть, оставить пустым)
-
-Почему чистим: Maresto/локальные feed'ы этих брендов не передают `<artikul>` — правильного значения у нас нет. Очистка снимает коллизию с Hendi и даёт нормальному match'у работать через имя+бренд.
-
-### #2 Spidocook SP300
+### #1 Spidocook SP300
 - 🔗 https://labresta.com.ua/poverkhnia-dlia-smazhennia-spidocook-sp300-sklokerymika/
-- Сейчас: `203149` (это Hendi)
-- Очистить поле «Артикул на сайті» (пусто)
-- Сохранить
+- Сейчас: `203149` (это Hendi Blue Line)
+- **Очистить → пусто → Зберегти**
 
-### #4 Fimar PFD27
+### #2 Fimar PFD27
 - 🔗 https://labresta.com.ua/plyta-induktsiina-fimar-pfd27/
-- Сейчас: `239766` (это Hendi)
-- Очистить
-- Сохранить
+- Сейчас: `239766` (это Hendi Profi Line Вок)
+- **Очистить → пусто → Зберегти**
 
-### #5 Roller Grill PIS 30
+### #3 Roller Grill PIS 30
 - 🔗 https://labresta.com.ua/plyta-induktsiina-roller-grill-pis-30/
 - Сейчас: `239780` (это Hendi)
-- Очистить
-- Сохранить
+- **Очистить → пусто → Зберегти**
 
-### #7b GoodFood ICE777
+### #4 FROSTY RC-30
+- 🔗 https://labresta.com.ua/rysovarka-frosty-rc-30/
+- Сейчас: `240403` (это Hendi рисоварка 5.4л)
+- **Очистить → пусто → Зберегти**
+
+### #5 FROSTY IC80A
+- 🔗 https://labresta.com.ua/podribniuvach-lodu-frosty-ic80a/
+- Сейчас: `271599` (это Hendi млин для льоду)
+- **Очистить → пусто → Зберегти**
+
+### #6 GoodFood ICE777
 - 🔗 https://labresta.com.ua/lodopodribniuvach-goodfood-ice777/
-- Сейчас: `271599` (это Hendi)
-- Очистить
-- Сохранить
+- Сейчас: `271599` (это Hendi, тот же что у #5)
+- **Очистить → пусто → Зберегти**
 
-### #11 Saro SKZ-12
+### #7 Saro SKZ-12
 - 🔗 https://labresta.com.ua/supnytsia-saro-skz-12/
-- Сейчас: `860526` (это Hendi)
-- Очистить
-- Сохранить
-
----
-
-## 🗑️ #3 — НЕ в Horoshop, а в нашем UI
-
-PP#4371 FROSTY VP-81 и PP#4372 FROSTY VP-2Y40 уже помечены `phase8_orphan` системой. В Horoshop **ничего не трогать**, только в нашем UI:
-
-1. Открыть [localhost:5000/matches/deletion-candidates?tab=orphan](http://localhost:5000/matches/deletion-candidates?tab=orphan) (или прод-URL приложения)
-2. Фильтр по бренду: **FROSTY**
-3. Найти PP#4371 (VP-81) и PP#4372 (VP-2Y40)
-4. По каждому нажать **«Видалено»** (или «Залишити» если решишь что нужны)
+- Сейчас: `860526` (это Hendi супниця UNIQ)
+- **Очистить → пусто → Зберегти**
 
 ---
 
 ## ✅ Что НЕ трогать (оставить как есть)
 
-Эти PP — правильные владельцы артикулов, ничего не правим:
+**Hendi-карточки** с этими артикулами — законные владельцы:
+- PP#337 Hendi Blue Line поверхня (`203149`) ✓
+- PP#3859 Hendi Profi Line Вок (`239766`) ✓
+- PP#2218 Hendi плита (`239780`) ✓
+- PP#? Hendi рисоварка 5.4л (`240403`) ✓
+- PP#? Hendi млин для льоду (`271599`) ✓
+- PP#? Hendi супниця UNIQ (`860526`) ✓
 
-- PP#3237 Ozti SPM 20 FC = `0830.00020.00` ✓
-- PP#3275 Sirman TM INOX (220) Normale = `40752102P` ✓
-- PP#3439 Sirman IP 20 M = `40802852F` ✓
-- Все PP Hendi с этими артикулами (337/3859/2218 и т.д.) — оставить как есть, Hendi был законным владельцем
+**Внутри-бренда коллизии — НЕ трогаем по правилу Yana 2026-05-13:**
+- Ozti SPM 20 FC ↔ SPM 70 FC (`0830.00020.00`) — оба Ozti, ждём feed
+- Sirman TM INOX Normale ↔ з дисками (`40752102P`) — оба Sirman, ждём feed
+- Sirman IP 20 M ↔ IP 10 M (`40802852F`) — оба Sirman, ждём feed
+- Sirman CICLONE + A35 ↔ + A25 (`66520502K1.2`) — оба Sirman, ждём feed
+- FROSTY VP-81 ↔ VP-2Y40 (`212004`) — оба FROSTY, не Hendi-коллизия
+
+> **Note про FROSTY VP-81/VP-2Y40:** обе карточки уже помечены системой `phase8_orphan`. Если решишь удалить — отдельно через `/matches/deletion-candidates?tab=orphan` → бренд FROSTY → «Видалено». Это **отдельная задача**, не часть Cat H walkthrough.
 
 ---
 
-## После того как все правки в Horoshop сохранены
+## После того как все 7 правок в Horoshop сохранены
 
-Скажи мне в чате «Cat H готово в Horoshop» — я обновлю TaskList (отмечу #1-11 как completed), запушу финальный коммит и мы перейдём к следующей задаче из бэклога (AD46 cleanup / Cat B sibling / Cat B-rev / Phase L smoke-test / Manual Astim review).
+Скажи мне в чате «Cat H готово в Horoshop» — обновлю TaskList (отмечу 7 пунктов completed), запушу финальный коммит, перейдём к следующей задаче из бэклога (AD46 cleanup / Cat B sibling / Cat B-rev / Phase L smoke-test / Manual Astim review).

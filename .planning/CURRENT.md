@@ -1,21 +1,32 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
-**Last touched:** 2026-05-13 (Cat H ПОЛНОСТЬЮ ЗАКРЫТ диагнозом — все 11 кейсов готовы к правкам в Horoshop)
+**Last touched:** 2026-05-13 (Cat H финализирован — clear-only план, 7 правок в Horoshop ждут Yana)
 
-## ⏸ STOPPED HERE — 2026-05-13 (Cat H closed, Horoshop CMS pass ждёт Yana)
+## ⏸ STOPPED HERE — 2026-05-13 (Cat H plan rewritten, Horoshop pass ждёт Yana)
 
-**Cat H закрыт полностью.** Все 11 кейсов имеют конкретный `display_article` или решение через UI. Финальная таблица в **`.planning/dossiers/cat-h/ANSWERS.md`** внизу — открыть утром и пройти по ней в Horoshop.
+**Cat H финализирован.** Правило Yana 2026-05-13: правим **только** Hendi-vs-не-Hendi коллизии. Внутри-бренда (Ozti↔Ozti, Sirman↔Sirman, FROSTY↔FROSTY) НЕ ТРОГАТЬ — там display_article это ручные коды, для Sirman/Ozti они могут совпасть с будущим feed'ом когда подключим поставщика.
 
-**Резолюции:**
-- #1 Ozti, #6 RC-30, #7a IC80A, #9 IP 10 M → set value (из feed'ов / sirman.com)
-- #2 Spidocook, #4 Fimar, #5 Roller Grill, #7b GoodFood, #11 Saro → clear display_article
-- #3 FROSTY VP-81/VP-2Y40 → deletion-candidates UI (оба phase8_orphan)
-- #8 TM INOX з дисками → `40752102P-K1` (suffix, подтверждён через torgoborud.com.ua)
-- #10 CICLONE A35/A25 → `66520502-A35` / `66520502-A25` (suffix)
+**Финальный план — 7 правок (clear display_article):**
+- PP#347 Spidocook SP300 (`203149` Hendi) → очистить
+- PP#80 Fimar PFD27 (`239766` Hendi) → очистить
+- PP#154 Roller Grill PIS 30 (`239780` Hendi) → очистить
+- PP#958 FROSTY RC-30 (`240403` Hendi) → очистить
+- PP#3933 FROSTY IC80A (`271599` Hendi) → очистить
+- PP#3932 GoodFood ICE777 (`271599` Hendi) → очистить
+- PP#4179 Saro SKZ-12 (`860526` Hendi) → очистить
 
-**Commits:** `ef29a1c` lookup script, `028689b` sirman.com, `d52733e` CURRENT update, `d88777c` #8 UA shops, `dc46ca3` #10 suffix, `92bb23f` #8 closed.
+**Verification:** `scripts/verify_cat_h_article_ownership.py` (2026-05-13, read-only prod-DB) — все 6 артикулов реально из Астим feed (Hendi distributor); 5 внутри-бренда артикулов нет ни у одного поставщика (Yana-entered).
 
-**Не закрыто:** Tasks в TaskList — pending до физической правки в Horoshop CMS (диагноз готов, action за Yana).
+**Не трогаем:** Ozti `0830.00020.00`, Sirman `40752102P` / `40802852F` / `66520502K1.2`, FROSTY `212004` — внутри-бренда коллизии. FROSTY VP-81/VP-2Y40 уже phase8_orphan, отдельная UI-задача (не Cat H).
+
+**Файлы (commit pending):**
+- `.planning/dossiers/cat-h/HOROSHOP-WALKTHROUGH.md` — переписан под 7 clear-only
+- `.planning/dossiers/cat-h/ANSWERS.md` — переписан под финальный план
+- `scripts/verify_cat_h_article_ownership.py` — новый verify-скрипт
+
+**Предыдущие commits на ветке (suffix-style план, теперь obsolete):** `ef29a1c` lookup, `028689b` sirman.com, `d52733e` CURRENT, `d88777c` UA shops, `dc46ca3` #10 suffix, `92bb23f` #8 closed, `bed9fb7` CURRENT update, `6f64c17` HOROSHOP-WALKTHROUGH (suffix). Не откатываю — следующий коммит просто фиксирует финальный план.
+
+**Не закрыто:** Tasks в TaskList — pending до физической правки 7 PPs в Horoshop CMS (диагноз готов, action за Yana).
 
 **Следующее после Horoshop pass** (выбор Yana из TODO-NEXT.md):
 1. AD46 cleanup — 3 PPs убрать (PP#1007/1015/1008)
