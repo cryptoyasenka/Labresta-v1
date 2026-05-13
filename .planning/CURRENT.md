@@ -1,31 +1,28 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
-**Last touched:** 2026-05-12 (ночная сессия — Cat H diagnosis ready by autonomous run)
+**Last touched:** 2026-05-13 (Cat H ПОЛНОСТЬЮ ЗАКРЫТ диагнозом — все 11 кейсов готовы к правкам в Horoshop)
 
-## ⏸ STOPPED HERE — 2026-05-12 ночь (Cat H diagnosis done, Horoshop edits ждут Yana)
+## ⏸ STOPPED HERE — 2026-05-13 (Cat H closed, Horoshop CMS pass ждёт Yana)
 
-**Что сделано автономно за ночь:**
-- Yana выбрала Cat H (11 cross-brand display_article дублей) → я прочла все 11 dossier'ов, разделила на Группу A (7 Hendi vs не-Hendi) и Группу B (5 same-brand пар)
-- Написала `scripts/lookup_cat_h_wrong_owners.py` (read-only prod-DB lookup) — для каждой WRONG-PP нашла SP-кандидата в feed'ах поставщиков по model-token из имени
-- WebFetch sirman.com — добили #9 (IP 10 M = `40802652F`)
-- Главный артефакт: `.planning/dossiers/cat-h/ANSWERS.md` — operator cheat sheet с точными `display_article` для каждой правки
+**Cat H закрыт полностью.** Все 11 кейсов имеют конкретный `display_article` или решение через UI. Финальная таблица в **`.planning/dossiers/cat-h/ANSWERS.md`** внизу — открыть утром и пройти по ней в Horoshop.
 
-**Итог по 11 кейсам:**
+**Резолюции:**
+- #1 Ozti, #6 RC-30, #7a IC80A, #9 IP 10 M → set value (из feed'ов / sirman.com)
+- #2 Spidocook, #4 Fimar, #5 Roller Grill, #7b GoodFood, #11 Saro → clear display_article
+- #3 FROSTY VP-81/VP-2Y40 → deletion-candidates UI (оба phase8_orphan)
+- #8 TM INOX з дисками → `40752102P-K1` (suffix, подтверждён через torgoborud.com.ua)
+- #10 CICLONE A35/A25 → `66520502-A35` / `66520502-A25` (suffix)
 
-| Группа | # | Статус | Что делать Yana |
-|---|---|---|---|
-| A | 2,4,5,6,7,11 | ✅ DIAGNOSIS READY | 7 правок display_article в Horoshop (3 set value, 4 clear) |
-| B | 1 | ✅ DONE | PP#3261 SPM 70 → `0830.00070.02` |
-| B | 3 | ✅ DONE | Оба FROSTY VP закрыть в `/matches/deletion-candidates?tab=orphan` (уже phase8_orphan) |
-| B | 9 | ✅ DONE | PP#3455 IP 10 M → `40802652F` (sirman.com) |
-| B | 8 | ⚠️ PARTIAL | TM INOX disc-set SKU — np.com.ua dealer portal вручную / решение Yana |
-| B | 10 | ⚠️ DEFERRED | CICLONE A35/A25 packs — решение Yana как кодировать |
+**Commits:** `ef29a1c` lookup script, `028689b` sirman.com, `d52733e` CURRENT update, `d88777c` #8 UA shops, `dc46ca3` #10 suffix, `92bb23f` #8 closed.
 
-**Открой утром:** `.planning/dossiers/cat-h/ANSWERS.md` — там точные значения для каждой правки.
+**Не закрыто:** Tasks в TaskList — pending до физической правки в Horoshop CMS (диагноз готов, action за Yana).
 
-**Commits ночи (pushed):** `ef29a1c` lookup script + initial ANSWERS, `028689b` final sirman.com sourced answers.
-
-**Не закрыто:** Tasks в TaskList — pending до Horoshop CMS правки (диагноз готов, физическая правка за Yana).
+**Следующее после Horoshop pass** (выбор Yana из TODO-NEXT.md):
+1. AD46 cleanup — 3 PPs убрать (PP#1007/1015/1008)
+2. Cat B sibling (13 шт.) — per-row через UI
+3. Cat B-reverse (8 шт.) — per-row
+4. Phase L smoke-test
+5. Manual Astim review (7 fuzzy + 3 reject)
 
 ---
 
