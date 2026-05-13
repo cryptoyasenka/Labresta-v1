@@ -47,18 +47,26 @@
 
 **Действие:** закрыть оба через `/matches/deletion-candidates?tab=orphan` → бренд FROSTY → «Видалено» по обоим.
 
-### #8 — `40752102P`: Sirman TM INOX Normale vs з дисками (набір 1) ⚠️ PARTIAL
+### #8 — `40752102P`: Sirman TM INOX Normale vs з дисками (набір 1) ✅ RESOLVED (suffix-style 2026-05-13)
 
-**Источник:** sirman.com `/ru-RU/.../vegetable-cutter/tm-inox/40752102P` + altekpro.ru показывают `40752102P 119983` для базового TM INOX 220V CE. **`40752102P` — официальный код базы.**
+**Источник:** sirman.com подтверждает `40752102P` как базовый Sirman SKU. WebSearch + WebFetch на `torgoborud.com.ua/ua/.../ovocherizka-sirman-tm-inox-z-komplektom-diskiv` **подтвердил**: украинский магазин публикует тот же артикул `40752102P` для версии с комплектом дисків. **Sirman продаёт обе версии под одним SKU** — диски (DF3, DF8, DT3, PS8, DQ8) идут как accessories, отдельного SKU для bundle нет.
+
+**Это значит:** PP#3275 и PP#3276 имеют одинаковый официальный Sirman артикул. Коллизия — внутренняя проблема labresta-каталога, не Sirman.
 
 | PP | модель | новый `display_article` |
 |---|---|---|
-| **PP#3275** | TM INOX (220) Normale | `40752102P` — **правильный владелец** (база без комплекта дисков) |
-| **PP#3276** | TM INOX з дисками (набір 1) | ❓ **код для версии с дисками не найден** — sirman.com не показывает отдельный SKU, np.com.ua вернул 403. Гипотеза: тот же `40752102P` + bundle на стороне магазина, или внутренний labresta-код для пакета. |
+| **PP#3275** | TM INOX (220) Normale | `40752102P` — **правильный владелец, не трогать** (база) |
+| **PP#3276** | TM INOX з дисками (набір 1) | `40752102P-K1` |
 
-**Рекомендация Yana утром:** проверить np.com.ua вручную (логин дилера) — у них товар `/ovocherezka-tm-inox-s-komplektom-dyskov/` точно имеет какой-то код. Либо у Maresto спросить артикул "TM INOX + DSK". Если не найдётся — поставить пометку `40752102P-K1` (labresta-internal) у PP#3276 чтобы снять коллизию, или **очистить** display_article у одного из двух.
+**Yana 2026-05-13:** выбран suffix-style по аналогии с #10 CICLONE. Базовый Sirman SKU `40752102P` остаётся как корень (для будущей привязки к feed'у Sirman/Maresto если появится), `-K1` (Komplekt 1) различает bundle для matcher Step 0a и для покупателя на карточке.
 
-**Update 2026-05-13:** WebFetch трёх UA-магазинов (technofood, kiy-v, primus-shop) не показал отдельный Sirman SKU для disc-set версии — только магазинные internal номера (например technofood: `4557447739`). **Yana 2026-05-13:** проверит np.com.ua dealer portal руками (логин дилера), найдёт реальный SKU для версии с дисками и впишет в PP#3276. PP#3275 остаётся `40752102P` — официальный Sirman.
+**История проверок:**
+- sirman.com — официальный каталог не показывает отдельный SKU для bundle (Sirman продаёт диски как accessories)
+- technofood.com.ua → `4557447739` (магазинный internal код, не Sirman)
+- kiy-v.ua → нет 4075-кода, только модель
+- primus-shop → 429 rate-limit
+- np.com.ua прямой WebFetch → 403 Cloudflare (нужен логин-дилера, в `apach-missing-list.md` подтверждено что Yana видела портал руками)
+- torgoborud.com.ua → `40752102P` (тот же базовый артикул)
 
 ### #9 — `40802852F`: Sirman IP 20 M vs IP 10 M ✅ RESOLVED
 
@@ -93,4 +101,26 @@
 
 ## 📌 Утром Yana
 
-Открыть этот файл первым. По нему пройти 7 правок Группы A + 2 в Группе B (Ozti #1) в Horoshop CMS. Для Группы B #3 — `/matches/deletion-candidates?tab=orphan` UI. Для #8/#9/#10 — ждать пока я не вернусь с sirman.com результатами (или сделать самостоятельно по знанию каталога).
+Открыть этот файл первым. **Все 11 кейсов закрыты** (10 прямых правок display_article + 1 deletion-candidates через UI). Пройти по таблицам сверху вниз в Horoshop CMS.
+
+**Сводка финальных значений display_article:**
+
+| # | PP | новый `display_article` | действие |
+|---|---|---|---|
+| 1 | PP#3237 Ozti SPM 20 FC | `0830.00020.00` | не трогать |
+| 1 | PP#3261 Ozti SPM 70 FC | `0830.00070.02` | вписать |
+| 2 | PP#347 Spidocook | (пусто) | очистить |
+| 3a | PP#4371 FROSTY VP-81 | — | UI deletion |
+| 3b | PP#4372 FROSTY VP-2Y40 | — | UI deletion |
+| 4 | PP#80 Fimar | (пусто) | очистить |
+| 5 | PP#154 Roller Grill | (пусто) | очистить |
+| 6 | PP#958 FROSTY RC-30 | `000006797` | вписать |
+| 7a | PP#3933 FROSTY IC80A | `000006955` | вписать |
+| 7b | PP#3932 GoodFood ICE777 | (пусто) | очистить |
+| 8a | PP#3275 Sirman TM INOX Normale | `40752102P` | не трогать |
+| 8b | PP#3276 Sirman TM INOX з дисками | `40752102P-K1` | вписать |
+| 9a | PP#3439 Sirman IP 20 M | `40802852F` | не трогать |
+| 9b | PP#3455 Sirman IP 10 M | `40802652F` | вписать |
+| 10a | PP#3108 CICLONE 28 + A35 | `66520502-A35` | вписать |
+| 10b | PP#3109 CICLONE 28 + A25 | `66520502-A25` | вписать |
+| 11 | PP#4179 Saro SKZ-12 | (пусто) | очистить |
