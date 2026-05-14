@@ -1,8 +1,41 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
-**Last touched:** 2026-05-13 (Cat H финализирован — clear-only план, 7 правок в Horoshop ждут Yana)
+**Last touched:** 2026-05-14 03:00 (Cat H DB cleared, CSRF fix pushed, awaits Yana XLSX upload)
 
-## ⏸ STOPPED HERE — 2026-05-13 (Cat H plan rewritten, Horoshop pass ждёт Yana)
+## ⏸ STOPPED HERE — 2026-05-14 (XLSX upload blocked by CSRF fix redeploy + Yana awake)
+
+**CSRF fix pushed (commit `d9a53a5`):** `app/templates/catalog/import.html` form was missing
+`<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">`. Every POST /catalog/import
+failed with "The CSRF token is missing" — that template hadn't been used in months. Fix is one
+line, pushed to main, Railway redeploys ~1-2 min after push.
+
+**Post-upload verifier (commit `cfafb8d`):** `scripts/verify_after_catalog_import.py` —
+read-only check after Yana's upload. Confirms 7 Cat H PPs still NULL, counts unchanged
+(PPs ≥ 5683, matches = 2689, suppliers = 6), spot-checks fields. Points to restore command
+if anything fails.
+
+**Backup taken pre-upload (commit `e9fed2a`):** `backups/pre-catalog-import_2026-05-13_1658.json`
+— 5683 PPs + 2689 matches, 20.8 MB. Restore via `scripts/restore_pp_from_backup.py`.
+
+**Cat H DB clears already applied (commit `44279fe`):** 7 PPs cleared in DB. Yana also cleared
+the Horoshop cards (her words 2026-05-13). If both halves done correctly, post-upload verifier
+will pass.
+
+**Next concrete actions:**
+1. Yana retries XLSX upload via `/catalog/import` (fresh page load to pick up new csrf_token)
+2. If 200 OK: Yana runs `.venv/Scripts/python.exe scripts/verify_after_catalog_import.py`
+3. If verifier passes: I close tasks #2/#4/#5/#6/#7/#11 (Cat H done)
+4. If verifier fails: restore via `scripts/restore_pp_from_backup.py backups/pre-catalog-import_2026-05-13_1658.json --apply`
+
+**Файлы (committed, deployed):**
+- `app/templates/catalog/import.html` — CSRF token added
+- `scripts/verify_after_catalog_import.py` — new post-upload verifier
+- `scripts/backup_before_catalog_import.py` + `scripts/restore_pp_from_backup.py` — pre-import safety
+- `scripts/clear_cat_h_hendi_display_articles.py` — Cat H clear script (already applied)
+
+---
+
+## ⏸ Prior session — 2026-05-13 (Cat H plan rewritten, Horoshop pass ждёт Yana)
 
 **Cat H финализирован.** Правило Yana 2026-05-13: правим **только** Hendi-vs-не-Hendi коллизии. Внутри-бренда (Ozti↔Ozti, Sirman↔Sirman, FROSTY↔FROSTY) НЕ ТРОГАТЬ — там display_article это ручные коды, для Sirman/Ozti они могут совпасть с будущим feed'ом когда подключим поставщика.
 
