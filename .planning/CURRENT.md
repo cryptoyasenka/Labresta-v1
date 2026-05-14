@@ -1,6 +1,6 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
-**Last touched:** 2026-05-15 — **chunk-005 in progress 8/84** (last commits `1d4f0df` SKU 1-4 ATA + `326a9d7` SKU 5-8 [awaiting Yana review]). chunk-004 DONE 65/65 (`c5f9a5b`), chunk-003 DONE 69/69 (`a91f98d`), chunk-002 DONE 74/74 (`259a943`). chunk-001 still blocked by 8 Yana-questions. SKU 5-8 RU was full UA copy — translated per term list, flagged in `.planning/translation-audit/chunks/chunk-005-questions.md` (`e92a762`). Next: chunk-005 SKU 9-16 dump+apply.
+**Last touched:** 2026-05-15 — **chunk-005 in progress 32/84** (last commits `354aa6b` SKU 25-32 Apach combo griddle+FROSTY griddles+Silver/Isikgaz · `b64d1d1` SKU 17-24 Unox/Apach розстоєчні шафи [awaiting Yana review] · `0070dc1` SKU 9-16 FROSTY/Kogast/EWT INOX/GoodFood/Unox · `326a9d7` SKU 5-8 [awaiting Yana review] · `1d4f0df` SKU 1-4 ATA). chunk-004 DONE 65/65 (`c5f9a5b`), chunk-003 DONE 69/69 (`a91f98d`), chunk-002 DONE 74/74 (`259a943`). chunk-001 still blocked by 8 Yana-questions. Multiple chunk-005 SKU had RU=UA full copy — translated per locked term list, flagged in `.planning/translation-audit/chunks/chunk-005-questions.md` (`e92a762`). HTML structural defects (SKU 26/27 FROSTY GH-550/760) flagged manual, no auto-fix. Next: chunk-005 SKU 33-40 dump+apply.
 
 ## ✅ DONE 2026-05-14 — Cat H closed + clean Horoshop XLSX upload + DB hygiene
 
