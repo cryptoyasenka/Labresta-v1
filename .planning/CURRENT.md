@@ -1,6 +1,6 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
-**Last touched:** 2026-05-14 06:10 — Cat H ✅, XLSX upload ✅, bench_pp cleanup ✅
+**Last touched:** 2026-05-14 — Translation pilot 20 SKU done; backlog добавлен: UA→RU чистка каталога + починка зачёркнутых характеристик в Horoshop CMS
 
 ## ✅ DONE 2026-05-14 — Cat H closed + clean Horoshop XLSX upload + DB hygiene
 
@@ -28,12 +28,14 @@
 - 12890 SupplierProducts
 
 ## Backlog (следующее)
-1. **Прогресс-бар на /catalog/import** — UX улучшение. Корень: catalog_import делает 5632 индивидуальных SELECT+UPDATE round-trip через Railway proxy ~80-120 сек, впритык gunicorn timeout 120s. Решение: `INSERT ... ON CONFLICT DO UPDATE` одной операцией → импорт упадёт до ~5-10 сек, прогресс-бар не нужен.
-2. **AD46 cleanup** — 3 PPs убрать из Horoshop (PP#1007/1015/1008). Apach AD46MV/DV/D ≠ AD46M/MI/DI ECO.
-3. **Cat B sibling (13 шт.)** — per-row через `/matches/` UI.
-4. **Cat B-reverse (8 шт.)** — per-row решение.
-5. **Phase L smoke-test** — `/matches/?supplier_id=4`, выделить 5-10 НП кандидатов, подтвердить, проверить #conflictResolveModal.
-6. **Manual Astim review** (7 fuzzy + 3 reject).
+1. **UA→RU перевод каталога** — IN PROGRESS 2026-05-14. Пилот 20 SKU готов (`.planning/translation-audit/pilot-20-result.md`, commit `003787b`+`a57a6f5`). Yana дала ТЗ: проверить ВСЕ операторские поля (10 пар UA/RU) в обоих языках на лексику/грамматику/синтаксис, точный перевод (шкаф ≠ витрина), технические сокращения, сомнения — спрашивать. Workflow: разбиение `horoshop-export 13.05.26.xlsx` на чанки по 30-50 SKU (отдельные XLSX-файлы) → один чат = один чанк → `scripts/merge_chunks_to_master.py` собирает обратно. Pending: ответы Yana на 4 уточнения (поля Раздел/Цвет/Гарантия, приоритет identical_ua_ru, voltage-варианты, supplier-фиды).
+2. **Починка характеристик в Horoshop CMS** — NEXT после перевода. На странице товара (пример: `labresta.com.ua/ru/parokonvektomat-unox-xevc0711e1rm-liniia-one/`) 4 свойства отображаются **зачёркнутыми**: `Номінальна напруга`, `Страна производитель`, `Вид обладнання`, `Номінальна споживана потужність`. Причина: свойства в Horoshop CMS помечены как архивные/неактивные (значения остались привязанными к товарам, но Property labels выведены из активного списка). Также часть свойств UA-only без RU-перевода имени. Скоуп: пройти **Каталог → Свойства товаров** в Horoshop, восстановить активный статус + дозаполнить UA+RU имена для всех зачёркнутых свойств. Рекомендованный вариант A (unarchive + переименование) безопаснее B (создать новые + перепривязать значения). Подзадача-помощь от меня: когда будем чистить описания товаров в XLSX-чанках — отдельно собрать таблицу всех уникальных `Характеристика → значение` из HTML-описаний с готовыми UA+RU вариантами как референс для импорта свойств в CMS.
+3. **Прогресс-бар на /catalog/import** — UX улучшение. Корень: catalog_import делает 5632 индивидуальных SELECT+UPDATE round-trip через Railway proxy ~80-120 сек, впритык gunicorn timeout 120s. Решение: `INSERT ... ON CONFLICT DO UPDATE` одной операцией → импорт упадёт до ~5-10 сек, прогресс-бар не нужен.
+4. **AD46 cleanup** — 3 PPs убрать из Horoshop (PP#1007/1015/1008). Apach AD46MV/DV/D ≠ AD46M/MI/DI ECO.
+5. **Cat B sibling (13 шт.)** — per-row через `/matches/` UI.
+6. **Cat B-reverse (8 шт.)** — per-row решение.
+7. **Phase L smoke-test** — `/matches/?supplier_id=4`, выделить 5-10 НП кандидатов, подтвердить, проверить #conflictResolveModal.
+8. **Manual Astim review** (7 fuzzy + 3 reject).
 
 ## Memory rule установлено
 - `feedback_labresta_backup_before_catalog_import.md` — перед каждой XLSX загрузкой backup + offer restore.
