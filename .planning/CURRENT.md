@@ -1,6 +1,6 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
-**Last touched:** 2026-05-14 — Translation pilot 20 SKU done; backlog добавлен: UA→RU чистка каталога + починка зачёркнутых характеристик в Horoshop CMS
+**Last touched:** 2026-05-15 — chunk-001 source audit COMPLETE 83/83 (commit `9a4ad78`). Next: apply patches → chunk-001-fixed.xlsx + surface 8 open questions to Yana.
 
 ## ✅ DONE 2026-05-14 — Cat H closed + clean Horoshop XLSX upload + DB hygiene
 
