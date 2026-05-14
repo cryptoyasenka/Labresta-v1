@@ -1,6 +1,6 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
-**Last touched:** 2026-05-15 — chunk-001 source audit COMPLETE 83/83 (commit `9a4ad78`). Next: apply patches → chunk-001-fixed.xlsx + surface 8 open questions to Yana.
+**Last touched:** 2026-05-15 — **chunk-002 source audit COMPLETE 74/74** (last commit `259a943`). Chunk-001 still blocked by 8 Yana-questions. Next: chunk-003 (load + dump SKU batch + per-batch diff append + commit per 5-8 SKU).
 
 ## ✅ DONE 2026-05-14 — Cat H closed + clean Horoshop XLSX upload + DB hygiene
 
@@ -28,7 +28,7 @@
 - 12890 SupplierProducts
 
 ## Backlog (следующее)
-1. **UA→RU перевод каталога** — IN PROGRESS 2026-05-14. Пилот 20 SKU готов (`.planning/translation-audit/pilot-20-result.md`, commit `003787b`+`a57a6f5`). Yana дала ТЗ: проверить ВСЕ операторские поля (10 пар UA/RU) в обоих языках на лексику/грамматику/синтаксис, точный перевод (шкаф ≠ витрина), технические сокращения, сомнения — спрашивать. Workflow: разбиение `horoshop-export 13.05.26.xlsx` на чанки по 30-50 SKU (отдельные XLSX-файлы) → один чат = один чанк → `scripts/merge_chunks_to_master.py` собирает обратно. Pending: ответы Yana на 4 уточнения (поля Раздел/Цвет/Гарантия, приоритет identical_ua_ru, voltage-варианты, supplier-фиды).
+1. **UA→RU перевод каталога** — IN PROGRESS 2026-05-15. **Chunk-001:** 83/83 source audit done, ЗАБЛОКИРОВАН 8 вопросами Yana в `.planning/translation-audit/chunks/chunk-001-questions.md`. **Chunk-002:** 74/74 source audit DONE (last commit `259a943`, 9 SKU batches). **Chunk-003:** PENDING (next). Workflow per batch: `python -c "..."` dump 5-8 SKU из `chunk-NNN.json` → Read `.planning/scratch_skubatch.txt` → Edit-append `chunk-NNN-diff.md` перед final `---` → commit. После всех чанков (003-085): `scripts/apply_chunk_diff.py` (openpyxl, key Артикул) собирает master-fixed.xlsx → drift check vs fresh Horoshop re-export → Yana ручная загрузка `/catalog/import` + `backup_before_catalog_import.py` сначала.
 2. **Починка характеристик в Horoshop CMS** — NEXT после перевода. На странице товара (пример: `labresta.com.ua/ru/parokonvektomat-unox-xevc0711e1rm-liniia-one/`) 4 свойства отображаются **зачёркнутыми**: `Номінальна напруга`, `Страна производитель`, `Вид обладнання`, `Номінальна споживана потужність`. Причина: свойства в Horoshop CMS помечены как архивные/неактивные (значения остались привязанными к товарам, но Property labels выведены из активного списка). Также часть свойств UA-only без RU-перевода имени. Скоуп: пройти **Каталог → Свойства товаров** в Horoshop, восстановить активный статус + дозаполнить UA+RU имена для всех зачёркнутых свойств. Рекомендованный вариант A (unarchive + переименование) безопаснее B (создать новые + перепривязать значения). Подзадача-помощь от меня: когда будем чистить описания товаров в XLSX-чанках — отдельно собрать таблицу всех уникальных `Характеристика → значение` из HTML-описаний с готовыми UA+RU вариантами как референс для импорта свойств в CMS.
 3. **Прогресс-бар на /catalog/import** — UX улучшение. Корень: catalog_import делает 5632 индивидуальных SELECT+UPDATE round-trip через Railway proxy ~80-120 сек, впритык gunicorn timeout 120s. Решение: `INSERT ... ON CONFLICT DO UPDATE` одной операцией → импорт упадёт до ~5-10 сек, прогресс-бар не нужен.
 4. **AD46 cleanup** — 3 PPs убрать из Horoshop (PP#1007/1015/1008). Apach AD46MV/DV/D ≠ AD46M/MI/DI ECO.
