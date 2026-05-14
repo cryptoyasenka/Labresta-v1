@@ -1,6 +1,6 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
-**Last touched:** 2026-05-15 — **chunk-002 source audit COMPLETE 74/74** (last commit `259a943`). Chunk-001 still blocked by 8 Yana-questions. Next: chunk-003 (load + dump SKU batch + per-batch diff append + commit per 5-8 SKU).
+**Last touched:** 2026-05-15 — **chunk-005 in progress 8/84** (last commits `1d4f0df` SKU 1-4 ATA + `326a9d7` SKU 5-8 [awaiting Yana review]). chunk-004 DONE 65/65 (`c5f9a5b`), chunk-003 DONE 69/69 (`a91f98d`), chunk-002 DONE 74/74 (`259a943`). chunk-001 still blocked by 8 Yana-questions. SKU 5-8 RU was full UA copy — translated per term list, flagged in `.planning/translation-audit/chunks/chunk-005-questions.md` (`e92a762`). Next: chunk-005 SKU 9-16 dump+apply.
 
 ## ✅ DONE 2026-05-14 — Cat H closed + clean Horoshop XLSX upload + DB hygiene
 
