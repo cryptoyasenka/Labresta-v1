@@ -1,8 +1,47 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
-**Last touched:** 2026-05-14 03:00 (Cat H DB cleared, CSRF fix pushed, awaits Yana XLSX upload)
+**Last touched:** 2026-05-14 06:10 — Cat H ✅, XLSX upload ✅, bench_pp cleanup ✅
 
-## ⏸ STOPPED HERE — 2026-05-14 (XLSX upload blocked by CSRF fix redeploy + Yana awake)
+## ✅ DONE 2026-05-14 — Cat H closed + clean Horoshop XLSX upload + DB hygiene
+
+**Cat H (11 коллизий) — закрыт:**
+- 7 Hendi-vs-non-Hendi очищены в БД + Horoshop CMS (Yana). Tasks #2/#4/#5/#6/#7/#11 completed.
+- 4 внутри-бренда (Ozti, Sirman ×3, FROSTY) оставлены — это ручные коды, могут совпасть с будущим feed'ом.
+- Verification: `scripts/verify_cat_h_article_ownership.py` (commit `d45b510`) — 6 артикулов реально в Астим feed (Hendi distributor).
+
+**XLSX upload 13.05.26 — успешно:**
+- CSRF fix (commit `d9a53a5`): template `app/templates/catalog/import.html` теперь содержит `<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">`. Раньше форма была без токена, любой POST падал.
+- Backup сделан до загрузки: `backups/pre-catalog-import_2026-05-13_1658.json` (5683 PPs + 2689 matches, 20.8 MB).
+- Импорт: 5632 строк → 0 новых, 5632 обновлено, 0 пропущено.
+- Verifier `scripts/verify_after_catalog_import.py` (commit `cfafb8d`): все 9 проверок green. 7 Cat H PPs остались display_article=NULL post-import.
+
+**bench_pp* мусор удалён:**
+- 50 синтетических строк (IDs 5684-5733, brand=Sirman, name="Sirman Mantegna NN", price=1000 EUR, created 2026-04-26 20:29:13 одной транзакцией) — артефакт perf-benchmark скрипта, прогнавшегося против прода. Не в Horoshop, 0 matches.
+- Audit `scripts/audit_bench_pp_pollution.py` (commit `5d8277d`) → подтвердил scope.
+- Delete `scripts/delete_bench_pp_pollution.py` (commit `a5a6a56`) → 50 удалено с --apply (2026-05-14 06:10).
+- Total PromProducts: 5683 → **5633**. Verifier baseline скорректирован.
+
+**Текущее состояние БД:**
+- 5633 PromProducts (всё реальный Horoshop каталог)
+- 2689 ProductMatches (2546 confirmed/manual)
+- 6 suppliers: MARESTO 861, НП 373, Кодаки 559, РП 187, Гудер 79, Астим 487 (= 2546 total)
+- 12890 SupplierProducts
+
+## Backlog (следующее)
+1. **Прогресс-бар на /catalog/import** — UX улучшение. Корень: catalog_import делает 5632 индивидуальных SELECT+UPDATE round-trip через Railway proxy ~80-120 сек, впритык gunicorn timeout 120s. Решение: `INSERT ... ON CONFLICT DO UPDATE` одной операцией → импорт упадёт до ~5-10 сек, прогресс-бар не нужен.
+2. **AD46 cleanup** — 3 PPs убрать из Horoshop (PP#1007/1015/1008). Apach AD46MV/DV/D ≠ AD46M/MI/DI ECO.
+3. **Cat B sibling (13 шт.)** — per-row через `/matches/` UI.
+4. **Cat B-reverse (8 шт.)** — per-row решение.
+5. **Phase L smoke-test** — `/matches/?supplier_id=4`, выделить 5-10 НП кандидатов, подтвердить, проверить #conflictResolveModal.
+6. **Manual Astim review** (7 fuzzy + 3 reject).
+
+## Memory rule установлено
+- `feedback_labresta_backup_before_catalog_import.md` — перед каждой XLSX загрузкой backup + offer restore.
+- TODO: добавить memory "не запускать perf-benchmark против прода без явного флага" (после bench_pp инцидента).
+
+---
+
+## ⏸ Prior session — 2026-05-13 (Cat H plan rewritten, Horoshop pass ждёт Yana)
 
 **CSRF fix pushed (commit `d9a53a5`):** `app/templates/catalog/import.html` form was missing
 `<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">`. Every POST /catalog/import

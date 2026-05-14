@@ -18,8 +18,9 @@ from sqlalchemy import func
 
 sys.stdout.reconfigure(encoding="utf-8")
 
-# Baseline from pre-import backup (2026-05-13 16:58 UTC)
-BASELINE_PPS = 5683
+# Baseline after first clean Horoshop XLSX upload + bench_pp cleanup (2026-05-14)
+# Was 5683 in pre-import backup; -50 bench_pp* synthetic rows deleted.
+BASELINE_PPS = 5633
 BASELINE_MATCHES = 2689
 BASELINE_SUPPLIERS = 6
 
