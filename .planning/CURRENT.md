@@ -1,6 +1,14 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
-**Last touched:** 2026-05-15 — **chunk-005 in progress 32/84** (last commits `354aa6b` SKU 25-32 Apach combo griddle+FROSTY griddles+Silver/Isikgaz · `b64d1d1` SKU 17-24 Unox/Apach розстоєчні шафи [awaiting Yana review] · `0070dc1` SKU 9-16 FROSTY/Kogast/EWT INOX/GoodFood/Unox · `326a9d7` SKU 5-8 [awaiting Yana review] · `1d4f0df` SKU 1-4 ATA). chunk-004 DONE 65/65 (`c5f9a5b`), chunk-003 DONE 69/69 (`a91f98d`), chunk-002 DONE 74/74 (`259a943`). chunk-001 still blocked by 8 Yana-questions. Multiple chunk-005 SKU had RU=UA full copy — translated per locked term list, flagged in `.planning/translation-audit/chunks/chunk-005-questions.md` (`e92a762`). HTML structural defects (SKU 26/27 FROSTY GH-550/760) flagged manual, no auto-fix. Next: chunk-005 SKU 33-40 dump+apply.
+**Last touched:** 2026-05-15 — **chunk-005 in progress 48/84 + retro v1+v2 applied**. Last commits: `62dd2aa` retro v2 + MANUAL-REVIEW.md (Yana 2026-05-15 META-vs-Title + brand-from-Название + жаркова→жарочна global + supplier-research-first rules), `c7d2c7d` retro v1, `a7aa03f` SKU 41-48, `ca6160d` SKU 33-40, `354aa6b` SKU 25-32, `b64d1d1` SKU 17-24, `0070dc1` SKU 9-16, `326a9d7` SKU 5-8, `1d4f0df` SKU 1-4. chunk-004 DONE 65/65, chunk-003 DONE 69/69, chunk-002 DONE 74/74. chunk-001 blocked by 8 Yana-questions.
+
+**Waiting on Yana (2 decisions in MANUAL-REVIEW.md):**
+1. SKU 24 APTE-47PR Название: гладка → ребриста (supplier+body согласны)? Y/N
+2. SKU 26/27/44 HTML structural defects: перестроить `<li>` блоки или оставить?
+
+Plus 8 auto-applied retro-fixes для подтверждения (SKU 19/25/32/35/38/52/53 + SKU 9 watts).
+
+**STILL BLOCKED от SKU 49-56 batch** до решения Yana или explicit go-ahead. Файл `.planning/translation-audit/chunks/chunk-005-MANUAL-REVIEW.md` — единая точка входа для её обзора.
 
 ## ✅ DONE 2026-05-14 — Cat H closed + clean Horoshop XLSX upload + DB hygiene
 
