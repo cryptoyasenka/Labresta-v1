@@ -18,7 +18,7 @@
 
 | # | File | SKU | Chars | First Артикул | Last Артикул | Brands | Status |
 |--:|---|--:|--:|---|---|---|---|
-| 001 | `chunk-001.xlsx` | 83 | 150,203 | `624348659` | `2176570515` | Airhot, Apach, Bartscher, FROSTY… | pending |
+| 001 | `chunk-001.xlsx` | 83 | 150,203 | `624348659` | `2176570515` | Airhot, Apach, Bartscher, FROSTY… | diff-drafted, awaiting Q's (`chunk-001-questions.md`) |
 | 002 | `chunk-002.xlsx` | 74 | 150,956 | `2177174504` | `2073651788` | Airhot, Apach, Bartscher, Casta… | pending |
 | 003 | `chunk-003.xlsx` | 69 | 151,509 | `2073655694` | `2440518198` | ATA, Ozti, Pimak, Ефес | pending |
 | 004 | `chunk-004.xlsx` | 65 | 150,758 | `2440521644` | `2444232115` | ATA | pending |
