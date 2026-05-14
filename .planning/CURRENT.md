@@ -1,6 +1,6 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
-**Last touched:** 2026-05-15 — **chunk-005 in progress 56/84 + retro v1+v2 applied** (night mode). Last commits: `88420e2` SKU 49-56 (Kogast/REEDNEE/GoodFood/Silver/Hurakan/Spidocook + MANUAL-REVIEW дополнение), `a68289f` CURRENT 48/84, `62dd2aa` retro v2 + MANUAL-REVIEW initial, `c7d2c7d` retro v1. chunk-004 DONE 65/65, chunk-003 DONE 69/69, chunk-002 DONE 74/74. chunk-001 blocked by 8 Yana-questions.
+**Last touched:** 2026-05-15 — **chunk-005 in progress 64/84 + retro v1+v2 applied** (night mode). Last commits: `88420e2` SKU 49-56 (Kogast/REEDNEE/GoodFood/Silver/Hurakan/Spidocook + MANUAL-REVIEW дополнение), `a68289f` CURRENT 48/84, `62dd2aa` retro v2 + MANUAL-REVIEW initial, `c7d2c7d` retro v1. SKU 57-64 батч добавлен (Frosty FGE552 clean + 4×FGET full RU translations + GoodFood EG55BCS lead-абзац fix + 2×Hurakan UA-meta typo cleanup) — pending commit. chunk-004 DONE 65/65, chunk-003 DONE 69/69, chunk-002 DONE 74/74. chunk-001 blocked by 8 Yana-questions.
 
 **Night-mode workflow (Yana 2026-05-15):** "пиши все что требует моего потверждения в файл на русском языке, собирай такие проблемы - я завтра утром изучу. А ты продолжай работать над поиском ошибьок и их исправлением дальше, делай переводы." → не блокироваться на ambiguity, всё в `chunk-005-MANUAL-REVIEW.md` (русский), продолжать SKU 57-84 + global sweep.
 
