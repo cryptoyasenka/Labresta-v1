@@ -1,6 +1,8 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
-**Last touched:** 2026-05-15 — **chunk-005 in progress 48/84 + retro v1+v2 applied**. Last commits: `62dd2aa` retro v2 + MANUAL-REVIEW.md (Yana 2026-05-15 META-vs-Title + brand-from-Название + жаркова→жарочна global + supplier-research-first rules), `c7d2c7d` retro v1, `a7aa03f` SKU 41-48, `ca6160d` SKU 33-40, `354aa6b` SKU 25-32, `b64d1d1` SKU 17-24, `0070dc1` SKU 9-16, `326a9d7` SKU 5-8, `1d4f0df` SKU 1-4. chunk-004 DONE 65/65, chunk-003 DONE 69/69, chunk-002 DONE 74/74. chunk-001 blocked by 8 Yana-questions.
+**Last touched:** 2026-05-15 — **chunk-005 in progress 56/84 + retro v1+v2 applied** (night mode). Last commits: `88420e2` SKU 49-56 (Kogast/REEDNEE/GoodFood/Silver/Hurakan/Spidocook + MANUAL-REVIEW дополнение), `a68289f` CURRENT 48/84, `62dd2aa` retro v2 + MANUAL-REVIEW initial, `c7d2c7d` retro v1. chunk-004 DONE 65/65, chunk-003 DONE 69/69, chunk-002 DONE 74/74. chunk-001 blocked by 8 Yana-questions.
+
+**Night-mode workflow (Yana 2026-05-15):** "пиши все что требует моего потверждения в файл на русском языке, собирай такие проблемы - я завтра утром изучу. А ты продолжай работать над поиском ошибьок и их исправлением дальше, делай переводы." → не блокироваться на ambiguity, всё в `chunk-005-MANUAL-REVIEW.md` (русский), продолжать SKU 57-84 + global sweep.
 
 **Waiting on Yana (2 decisions in MANUAL-REVIEW.md):**
 1. SKU 24 APTE-47PR Название: гладка → ребриста (supplier+body согласны)? Y/N
