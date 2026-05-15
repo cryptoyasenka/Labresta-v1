@@ -179,19 +179,10 @@ def create_app(config_name="default"):
             }
         return {"pending_review_count": 0, "deletion_candidate_count": 0, "unread_notification_count": 0}
 
-    # Ensure all models are registered with SQLAlchemy before create_all
-    from app.models import (  # noqa: F401
-        PromProduct,
-        Supplier,
-        SupplierProduct,
-        ProductMatch,
-        SyncRun,
-        User,
-        MatchRule,
-        NotificationRule,
-        Notification,
-    )
-    from app.models.audit_log import AuditLog  # noqa: F401
+    # Ensure all models are registered with SQLAlchemy before create_all.
+    # Importing the package runs app/models/__init__.py, which imports every
+    # model module for its registration side effect.
+    import app.models  # noqa: F401
 
     # Create tables on first run
     with app.app_context():

@@ -122,7 +122,7 @@ def main() -> int:
                 print(f"    ... and {len(rows)-30} more")
 
         print(f"\n{'='*78}")
-        print(f"SUMMARY")
+        print("SUMMARY")
         print(f"{'='*78}")
         print(f"  Path A (Phase 8 display-based):  {total_disp:>4} PPs across {len(by_brand_disp)} brands")
         print(f"  Path B (Phase M name-scan):      {total_name:>4} PPs across {len(by_brand_name)} brands  <- NEW")

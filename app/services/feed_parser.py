@@ -5,14 +5,14 @@ import logging
 from datetime import datetime, timezone
 
 import chardet
-
-logger = logging.getLogger(__name__)
 from lxml import etree
 from sqlalchemy import func, select
 
 from app.extensions import db
 from app.models.supplier import Supplier
 from app.models.supplier_product import SupplierProduct
+
+logger = logging.getLogger(__name__)
 
 
 def _brand_canon_cache() -> dict[str, str]:

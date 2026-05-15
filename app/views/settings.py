@@ -7,7 +7,7 @@ from flask_login import current_user, login_required
 from sqlalchemy import select
 
 from app.extensions import db
-from app.models.notification_rule import NotificationRule, Notification
+from app.models.notification_rule import NotificationRule
 from app.models.user import User
 from app.services.notification_service import (
     get_recent_notifications,

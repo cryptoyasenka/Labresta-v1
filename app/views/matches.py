@@ -21,7 +21,6 @@ from app.services.matcher import (
     CONFIDENCE_HIGH,
     CONFIDENCE_MEDIUM,
     find_match_for_product,
-    run_matching_for_supplier,
 )
 
 matches_bp = Blueprint("matches", __name__)
@@ -1213,7 +1212,6 @@ def bulk_action():
             if p is None:
                 continue
             new_d = float(p["effective_discount"])
-            old_d = match.discount_percent
             preview.append({
                 "match_id": match.id,
                 "supplier_product_name": match.supplier_product.name if match.supplier_product else "",

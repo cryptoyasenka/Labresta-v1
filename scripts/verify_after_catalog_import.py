@@ -72,7 +72,7 @@ def main() -> int:
             any_fail = True
             print(f"\n  >> {cat_h_fail}/7 Cat H PPs FAILED — display_article repopulated")
         else:
-            print(f"\n  >> All 7 Cat H PPs clean")
+            print("\n  >> All 7 Cat H PPs clean")
 
         # 2) PP count — should be >= baseline (new SKUs in XLSX add, don't delete)
         hr("2. PromProduct count")
@@ -166,9 +166,9 @@ def main() -> int:
         hr("FINAL VERDICT")
         if any_fail:
             print(f"  [{FAIL}] One or more checks failed. Inspect output above.")
-            print(f"         Restore: .venv/Scripts/python.exe "
-                  f"scripts/restore_pp_from_backup.py "
-                  f"backups/pre-catalog-import_2026-05-13_1658.json")
+            print("         Restore: .venv/Scripts/python.exe "
+                  "scripts/restore_pp_from_backup.py "
+                  "backups/pre-catalog-import_2026-05-13_1658.json")
             return 1
         print(f"  [{OK}] Import successful — Cat H clean, counts intact.")
         return 0
