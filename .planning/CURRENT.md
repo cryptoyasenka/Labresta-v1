@@ -12,7 +12,7 @@
 >
 > **chunk-008 Q1/Q2/Q4/Q5 (веса) → RESOLVED политикой A.** Q3 (SKU 39 ZL1-8L 270 vs 275мм) → раунд 2.
 >
-> **RETRO-СВИП PENDING** для chunk-005..008: B/C → `.planning/translation-audit/GLOBAL-SWEEP-format-bc.md` (по образцу `GLOBAL-SWEEP-zharkova.md`, детерминированный, применяется при сборке master-fixed.xlsx ко всем полям всех чанков); A → diff-entries для chunk-005 SKU 61/72/73/74 · chunk-006 SKU 9 · chunk-007 SKU 44 · chunk-008 SKU 7/25/41/50; F → per-SKU chunk-005 26/27/44 · chunk-006 11/14/48/49/52 · chunk-007 9. Коммит после каждого чанка.
+> **RETRO-СВИП:** ✅ **A/B/C → спека готова** `.planning/translation-audit/GLOBAL-SWEEP-format.md` (универсальный детерминированный assembly-time pass, НЕ per-SKU diff — плотность B=592/C=299/A=139 в 001-008 только). Применяется `apply_chunk_diff.py` при сборке master-xlsx ко всем полям всех 85 чанков; требование+юнит-тесты в спеке. ⏳ **Осталось F** (структурный, per-SKU, зеркалить чистую сторону): chunk-005 SKU 26/27/44 · chunk-006 SKU 11/14/48/49/52 · chunk-007 SKU 9. Коммит после каждого чанка.
 >
 > **РАУНД 2 открытых вопросов (НЕ решены):** E фактура R-код vs «гладкая» (chunk-005 SKU 24 / chunk-006 SKU 46 / chunk-007 SKU 7/40) · D chunk-008 SKU 39 · G chunk-006 SKU 51/55/56/54 · H chunk-006 SKU 23/25/26/27 Ozti объём (сверить supplier_products) · J точечные (chunk-007 SKU 8/13/17/18/26/37/52/53/54 + chunk-008 SKU 74 Kogast). Презентовать классами как раунд 1.
 >
