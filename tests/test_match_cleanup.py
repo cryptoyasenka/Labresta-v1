@@ -140,7 +140,7 @@ class TestConfirmAndUpdateName:
         assert data["new_name"] == "Тестовый товар V2"
 
         # Verify catalog product name updated
-        updated = PromProduct.query.get(proms[0].id)
+        updated = db.session.get(PromProduct, proms[0].id)
         assert updated.name == "Тестовый товар V2"
 
     def test_confirm_update_applies_diff_to_ru_name(self, client, db):
