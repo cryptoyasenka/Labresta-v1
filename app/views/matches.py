@@ -1480,7 +1480,7 @@ def manual_match():
         cleaned = ProductMatch.query.filter(
             ProductMatch.supplier_product_id == supplier_product_id,
             ProductMatch.status == "candidate",
-        ).delete()
+        ).delete(synchronize_session="fetch")
         db.session.commit()
         return jsonify({
             "status": "already_matched",
@@ -1492,11 +1492,14 @@ def manual_match():
             "match_id": existing_pair.id,
         }), 409
 
-    # Delete all existing candidate matches for this supplier product
+    # Delete all existing candidate matches for this supplier product.
+    # synchronize_session="fetch" purges the deleted rows from the session
+    # identity map, so the manual match inserted below cannot collide with
+    # a stale identity when SQLite reuses a freed rowid.
     ProductMatch.query.filter(
         ProductMatch.supplier_product_id == supplier_product_id,
         ProductMatch.status == "candidate",
-    ).delete()
+    ).delete(synchronize_session="fetch")
     db.session.flush()
 
     # Create manual match
