@@ -1,6 +1,6 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
-**Last touched:** 2026-05-15 — **chunk-005 COMPLETE 84/84 ✅ + chunk-006 COMPLETE 62/62 ✅ + chunk-007 COMPLETE 60/60 ✅ + chunk-008 COMPLETE 86/86 ✅**.
+**Last touched:** 2026-05-15 — **chunk-005..008 COMPLETE ✅ + ретро-свип F: chunk-007 SKU 9 ✅, chunk-006 SKU 11/14/48/49/52 ✅; осталось chunk-005 SKU 26/27/44**.
 
 > **RECOVERY 2026-05-15:** Yana случайно закрыла терминал в самом конце chunk-008. Финальный батч SKU 81-86 уже был дописан в `chunk-008-diff.md` на диске (некоммичен, +92 строки), но MANUAL-REVIEW-секция, заголовки `80/86→86/86` и коммит не были сделаны. Контент сверен против locked-правил перевода (консистентен), доделан прерванный атомарный шаг: MANUAL-REVIEW SKU 81-86 + закрытие chunk-008 + оба заголовка → COMPLETE 86/86 ✅ + commit+push. **NEXT: chunk-009** — `.venv/Scripts/python.exe scripts/chunk_to_json.py 009` → mirror header chunk-008 (locked-паттерны + FLAG-правила) → loop ~8 SKU/batch. SKIP chunk-001 (заблокирован 8 вопросами Yana). Открытые вопросы chunk-008 = Q1-Q5 (веса `NN.00` + габариты SKU 39) в `chunk-008-MANUAL-REVIEW.md` — ждут Yana, не блокируют chunk-009.
 
@@ -12,7 +12,7 @@
 >
 > **chunk-008 Q1/Q2/Q4/Q5 (веса) → RESOLVED политикой A.** Q3 (SKU 39 ZL1-8L 270 vs 275мм) → раунд 2.
 >
-> **RETRO-СВИП:** ✅ **A/B/C → спека готова** `.planning/translation-audit/GLOBAL-SWEEP-format.md` (универсальный детерминированный assembly-time pass, НЕ per-SKU diff — плотность B=592/C=299/A=139 в 001-008 только). Применяется `apply_chunk_diff.py` при сборке master-xlsx ко всем полям всех 85 чанков; требование+юнит-тесты в спеке. ⏳ **Осталось F** (структурный, per-SKU, зеркалить чистую сторону): chunk-005 SKU 26/27/44 · chunk-006 SKU 11/14/48/49/52 · chunk-007 SKU 9. Коммит после каждого чанка.
+> **RETRO-СВИП:** ✅ **A/B/C → спека готова** `.planning/translation-audit/GLOBAL-SWEEP-format.md` (универсальный детерминированный assembly-time pass, НЕ per-SKU diff — плотность B=592/C=299/A=139 в 001-008 только). Применяется `apply_chunk_diff.py` при сборке master-xlsx ко всем полям всех 85 чанков; требование+юнит-тесты в спеке. **F (структурный, per-SKU, зеркалить чистую сторону):** ✅ chunk-007 SKU 9 (commit `3560dfe`) · ✅ chunk-006 SKU 11/14/48/49/52 (диф+MANUAL-REVIEW обновлены, SKU 49 = split+восстановление хвоста по sibling) · ⏳ **Осталось chunk-005 SKU 26/27/44.** Коммит после каждого чанка.
 >
 > **РАУНД 2 открытых вопросов (НЕ решены):** E фактура R-код vs «гладкая» (chunk-005 SKU 24 / chunk-006 SKU 46 / chunk-007 SKU 7/40) · D chunk-008 SKU 39 · G chunk-006 SKU 51/55/56/54 · H chunk-006 SKU 23/25/26/27 Ozti объём (сверить supplier_products) · J точечные (chunk-007 SKU 8/13/17/18/26/37/52/53/54 + chunk-008 SKU 74 Kogast). Презентовать классами как раунд 1.
 >
