@@ -2118,19 +2118,17 @@
 
             var promise;
             if (action === 'rebind') {
-                promise = fetch('/matches/' + currentId + '/rebind', {
+                promise = fetchWithCSRF('/matches/' + currentId + '/rebind', {
                     method: 'POST',
-                    credentials: 'same-origin',
-                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ new_supplier_product_id: parseInt(altSpId, 10) }),
                 });
             } else {
                 // candidate-current: reject current, then confirm alt.
-                promise = fetch('/matches/' + currentId + '/reject', {
-                    method: 'POST', credentials: 'same-origin',
+                promise = fetchWithCSRF('/matches/' + currentId + '/reject', {
+                    method: 'POST',
                 }).then(function () {
-                    return fetch('/matches/' + altId + '/confirm', {
-                        method: 'POST', credentials: 'same-origin',
+                    return fetchWithCSRF('/matches/' + altId + '/confirm', {
+                        method: 'POST',
                     });
                 });
             }
