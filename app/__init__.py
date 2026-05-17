@@ -181,8 +181,11 @@ def create_app(config_name="default"):
 
     # Ensure all models are registered with SQLAlchemy before create_all.
     # Importing the package runs app/models/__init__.py, which imports every
-    # model module for its registration side effect.
-    import app.models  # noqa: F401
+    # model module for its registration side effect. Bind to an alias: a bare
+    # `import app.models` would rebind the local name `app` (this function's
+    # Flask instance) to the `app` package module, breaking the
+    # `app.app_context()` call immediately below.
+    import app.models as _models  # noqa: F401
 
     # Create tables on first run
     with app.app_context():
