@@ -11,7 +11,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from app import create_app
-from app.extensions import db
 from app.models import PromProduct, ProductMatch
 
 sys.stdout.reconfigure(encoding="utf-8")

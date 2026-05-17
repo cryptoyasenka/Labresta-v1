@@ -22,7 +22,7 @@ from datetime import datetime, timezone
 from flask import current_app
 from lxml import etree
 from sqlalchemy import select, true
-from sqlalchemy.orm import joinedload, selectinload
+from sqlalchemy.orm import joinedload
 
 from app.extensions import db
 from app.models.catalog import PromProduct  # noqa: F401 — needed for joinedload

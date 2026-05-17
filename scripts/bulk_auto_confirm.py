@@ -397,12 +397,6 @@ def run(apply: bool) -> None:
         for rule, cnt in stats["per_rule"].items():
             print(f"  {rule}: confirm {cnt}")
         total_confirm = sum(stats["per_rule"].values())
-        r3_side = sum(
-            cnt for rule, cnt in stats["per_rule"].items()
-            if rule.startswith("R3")
-        )
-        # R3 reject side-effect count is equal to (total rejected - r4); kept for parity
-        # with prior output, but no longer strictly tracked separately.
         print(f"  R4:reject-bundle-of-confirmed: reject {stats['r4_rejects']}")
         print(f"Total confirmed: {total_confirm}, rejected: {stats['confirmed'] + stats['rejected'] if apply else '?'}")
         if not apply:

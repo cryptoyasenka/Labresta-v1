@@ -18,8 +18,6 @@ from datetime import datetime, timezone
 sys.stdout.reconfigure(encoding="utf-8")
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-from sqlalchemy import select
-
 from app import create_app
 from app.extensions import db
 from app.models.product_match import ProductMatch

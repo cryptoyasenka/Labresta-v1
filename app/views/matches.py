@@ -21,7 +21,6 @@ from app.services.matcher import (
     CONFIDENCE_HIGH,
     CONFIDENCE_MEDIUM,
     find_match_for_product,
-    run_matching_for_supplier,
 )
 
 matches_bp = Blueprint("matches", __name__)
@@ -135,30 +134,30 @@ def _build_match_query():
     if per_page not in (25, 50, 100):
         per_page = 25
 
-    query = ProductMatch.query.options(
+    query = db.select(ProductMatch).options(
         joinedload(ProductMatch.supplier_product).joinedload(SupplierProduct.supplier),
         joinedload(ProductMatch.prom_product),
     )
 
     if status and status != "all":
-        query = query.filter(ProductMatch.status == status)
+        query = query.where(ProductMatch.status == status)
 
     if confidence and confidence != "all":
         if confidence == "high":
-            query = query.filter(ProductMatch.score >= CONFIDENCE_HIGH)
+            query = query.where(ProductMatch.score >= CONFIDENCE_HIGH)
         elif confidence == "medium":
-            query = query.filter(
+            query = query.where(
                 ProductMatch.score >= CONFIDENCE_MEDIUM,
                 ProductMatch.score < CONFIDENCE_HIGH,
             )
         elif confidence == "low":
-            query = query.filter(ProductMatch.score < CONFIDENCE_MEDIUM)
+            query = query.where(ProductMatch.score < CONFIDENCE_MEDIUM)
 
     if availability and availability != "all":
         if availability == "available":
-            query = query.filter(ProductMatch.supplier_product.has(SupplierProduct.available == True))  # noqa: E712
+            query = query.where(ProductMatch.supplier_product.has(SupplierProduct.available == True))  # noqa: E712
         elif availability == "unavailable":
-            query = query.filter(ProductMatch.supplier_product.has(SupplierProduct.available == False))  # noqa: E712
+            query = query.where(ProductMatch.supplier_product.has(SupplierProduct.available == False))  # noqa: E712
 
     if supplier_id and supplier_id != "all":
         try:
@@ -166,20 +165,20 @@ def _build_match_query():
         except (TypeError, ValueError):
             sid = None
         if sid is not None:
-            query = query.filter(
+            query = query.where(
                 ProductMatch.supplier_product.has(SupplierProduct.supplier_id == sid)
             )
 
     # Always hide matches whose SP is ignored — operator explicitly opted them
     # out of the catalog. /products/supplier?show_ignored=1 stays the only
     # surface where they're visible.
-    query = query.filter(
+    query = query.where(
         ProductMatch.supplier_product.has(SupplierProduct.ignored == False)  # noqa: E712
     )
 
     # Direct match_id lookup: show exactly that one match, bypass status filter
     if match_id_filter:
-        query = query.filter(ProductMatch.id == match_id_filter)
+        query = query.where(ProductMatch.id == match_id_filter)
         status = "all"
 
     if search:
@@ -188,7 +187,7 @@ def _build_match_query():
             SupplierProduct, ProductMatch.supplier_product_id == SupplierProduct.id
         ).join(
             PromProduct, ProductMatch.prom_product_id == PromProduct.id
-        ).filter(
+        ).where(
             db.or_(
                 SupplierProduct.name.ilike(search_term),
                 SupplierProduct.article.ilike(search_term),
@@ -203,10 +202,10 @@ def _build_match_query():
     # Pass ?show_claimed=1 to inspect them (e.g. to bulk-reject).
     show_claimed = request.args.get("show_claimed", "0") == "1" or bool(match_id_filter)
     if not show_claimed:
-        claimed_pp_ids = db.session.query(ProductMatch.prom_product_id).filter(
+        claimed_pp_ids = db.select(ProductMatch.prom_product_id).where(
             ProductMatch.status.in_(("confirmed", "manual"))
         )
-        query = query.filter(
+        query = query.where(
             db.or_(
                 ProductMatch.status != "candidate",
                 ~ProductMatch.prom_product_id.in_(claimed_pp_ids),
@@ -261,7 +260,7 @@ def review():
         # Filter by margin at BASE discount (pre-clamp) so the operator sees all
         # items where the min-margin rule triggered or would trigger, not just
         # the ones the clamp couldn't save.
-        all_items = query.all()
+        all_items = db.session.execute(query).unique().scalars().all()
         threshold = float(filters["margin_below"])
         kept: list = []
         pricing_map: dict[int, dict] = {}
@@ -1213,7 +1212,6 @@ def bulk_action():
             if p is None:
                 continue
             new_d = float(p["effective_discount"])
-            old_d = match.discount_percent
             preview.append({
                 "match_id": match.id,
                 "supplier_product_name": match.supplier_product.name if match.supplier_product else "",
@@ -1482,7 +1480,7 @@ def manual_match():
         cleaned = ProductMatch.query.filter(
             ProductMatch.supplier_product_id == supplier_product_id,
             ProductMatch.status == "candidate",
-        ).delete()
+        ).delete(synchronize_session="fetch")
         db.session.commit()
         return jsonify({
             "status": "already_matched",
@@ -1494,11 +1492,14 @@ def manual_match():
             "match_id": existing_pair.id,
         }), 409
 
-    # Delete all existing candidate matches for this supplier product
+    # Delete all existing candidate matches for this supplier product.
+    # synchronize_session="fetch" purges the deleted rows from the session
+    # identity map, so the manual match inserted below cannot collide with
+    # a stale identity when SQLite reuses a freed rowid.
     ProductMatch.query.filter(
         ProductMatch.supplier_product_id == supplier_product_id,
         ProductMatch.status == "candidate",
-    ).delete()
+    ).delete(synchronize_session="fetch")
     db.session.flush()
 
     # Create manual match
@@ -1741,7 +1742,8 @@ def rules():
     """Match rules management page."""
     page = request.args.get("page", 1, type=int)
     query = (
-        MatchRule.query.filter_by(is_active=True)
+        db.select(MatchRule)
+        .where(MatchRule.is_active.is_(True))
         .options(joinedload(MatchRule.prom_product))
         .order_by(MatchRule.created_at.desc())
     )
@@ -1797,7 +1799,7 @@ def export_csv():
     from app.services.export_service import export_matches_csv
 
     query, _filters = _build_match_query()
-    matches = query.all()
+    matches = db.session.execute(query).unique().scalars().all()
     output = export_matches_csv(matches)
 
     return Response(
@@ -1814,7 +1816,7 @@ def export_xlsx():
     from app.services.export_service import export_matches_xlsx
 
     query, _filters = _build_match_query()
-    matches = query.all()
+    matches = db.session.execute(query).unique().scalars().all()
     buf = export_matches_xlsx(matches)
 
     return send_file(
