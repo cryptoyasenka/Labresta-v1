@@ -1,7 +1,7 @@
 # CURRENT-w2 — LabResta translation audit (W2 параллельный воркер)
 
-**Last touched:** 2026-05-18 (батч 2 SKU 9-16)
-**Status:** chunk-055 батч 2 (SKU 9-16) COMMITTED 16/86, Открытый вопрос #1 (SKU 10 модель-код), next батч SKU 17-24
+**Last touched:** 2026-05-18 (батч 3 SKU 17-24)
+**Status:** chunk-055 батч 3 (SKU 17-24) COMMITTED 24/86, Открытый вопрос #1 (SKU 10 модель-код), next батч SKU 25-32
 
 ## Диапазон W2
 - ТОЛЬКО chunk-055 … chunk-085. НИКОГДА не трогать chunk-≤054 (W1) и не редактировать main.
@@ -14,8 +14,9 @@
 - [x] chunk-055.xlsx source скопирован в W2 (gitignored, read-only)
 - [x] chunk-055 батч SKU 1-8 → 8/86 (blknochg 4 / blk триплет 2 / blknotrip 2 / SKIP-НП 0; OQ 0)
 - [x] chunk-055 батч SKU 9-16 → 16/86 (blknotrip 4 / blk триплет 2 / blknochg 2 / SKIP-НП 0; OQ#1 SKU 10 модель-код)
-- [ ] chunk-055 батч SKU 17-24 (next)
-- [ ] chunk-055 батчи 25-86 (батч = 8 SKU)
+- [x] chunk-055 батч SKU 17-24 → 24/86 (blknochg 3 / blk триплет 5 / blknotrip 0 / SKIP-НП 0; OQ 0, кумул. OQ#1 SKU 10)
+- [ ] chunk-055 батч SKU 25-32 (next)
+- [ ] chunk-055 батчи 33-86 (батч = 8 SKU)
 - [ ] chunk-056 … chunk-085
 
 ## chunk-055 факты
@@ -31,7 +32,7 @@
 - `.planning/translation-audit/chunks/chunk-055-fixed.xlsx` — ещё не создан (создаётся при первом батче)
 
 ## Next step
-chunk-055 батч SKU 17-24. Дамп: `C:/Projects/labresta-sync/.venv/Scripts/python.exe` + openpyxl, range(17,25) по `.planning/translation-audit/chunks/chunk-055.xlsx`. Для каждого SKU: SKIP-НП-чек бренда (Hurakan/Apach/Fagor/Tatra/Cold/PROJECT SYSTEMS/Astoria/Arris/Maxima — case-insensitive, лат+кир; **KT/Fimar/Dadaux/GoodFood и пр. НЕ в списке → обычная обработка**) → если в списке пометить «SKIP-НП (brand=X…)» в MANUAL-REVIEW, ячейки fixed.xlsx не менять, считать отд. категорией; иначе W1-методология: `desc UA==RU` False→blknochg (genuine, LIVE не переписывать) / True→полный тег-в-tag RU-перевод (blk триплет если Назв.мод RU=nm_ua UA-leak а Назв RU genuine; blknotrip если Назв/Назв.мод бренд+код language-neutral). META keywords всегда faithful (RU genuine). Модель-код Назв UA↔genuine-RU рассинхрон → нумерованный Открытый вопрос (НЕ авто-фикс LIVE, прецедент SKU 10 OQ#1 / W1 chunk-021). **decimal: реальные дроби `N.N`→`N,N` обе локали ТОЛЬКО UA-копии (blk/blknotrip); вес `NN.00` = формат-политика A глобально → verbatim, НЕ диффать/НЕ флипать per-SKU.** Латин.x габариты глоб.B verbatim; кир.х множители no-op. **fixed.xlsx: load СУЩЕСТВУЮЩИЙ chunk-055-fixed.xlsx (НЕ копировать из source — затрёт прошлые батчи), edit by Артикул, save, verify.** + chunk-055-diff.md (entries + batch-summary, Status header N/86) + chunk-055-MANUAL-REVIEW.md (Status, OQ если есть, Last updated) + chunk-glossary-w2.md (новые термины, proposed) + .planning/CURRENT-w2.md. После батча: контент-коммит (diff/MR/glossary, НЕ fixed.xlsx/НЕ CURRENT-w2) → коммит CURRENT-w2 маркер → push origin translation-audit/w2.
+chunk-055 батч SKU 25-32. Дамп: `C:/Projects/labresta-sync/.venv/Scripts/python.exe` + openpyxl, range(25,33) по `.planning/translation-audit/chunks/chunk-055.xlsx`. Для каждого SKU: SKIP-НП-чек бренда (Hurakan/Apach/Fagor/Tatra/Cold/PROJECT SYSTEMS/Astoria/Arris/Maxima — case-insensitive, лат+кир; **KT/Fimar/Dadaux/GoodFood и пр. НЕ в списке → обычная обработка**) → если в списке пометить «SKIP-НП (brand=X…)» в MANUAL-REVIEW, ячейки fixed.xlsx не менять, считать отд. категорией; иначе W1-методология: `desc UA==RU` False→blknochg (genuine, LIVE не переписывать) / True→полный тег-в-tag RU-перевод (blk триплет если Назв.мод RU=nm_ua UA-leak а Назв RU genuine; blknotrip если Назв/Назв.мод бренд+код language-neutral). META keywords всегда faithful (RU genuine). Модель-код Назв UA↔genuine-RU рассинхрон → нумерованный Открытый вопрос (НЕ авто-фикс LIVE, прецедент SKU 10 OQ#1 / W1 chunk-021). **decimal: реальные дроби `N.N`→`N,N` обе локали ТОЛЬКО UA-копии (blk/blknotrip); вес `NN.00` = формат-политика A глобально → verbatim, НЕ диффать/НЕ флипать per-SKU.** Латин.x габариты глоб.B verbatim; кир.х множители no-op. **fixed.xlsx: load СУЩЕСТВУЮЩИЙ chunk-055-fixed.xlsx (НЕ копировать из source — затрёт прошлые батчи), edit by Артикул, save, verify.** + chunk-055-diff.md (entries + batch-summary, Status header N/86) + chunk-055-MANUAL-REVIEW.md (Status, OQ если есть, Last updated) + chunk-glossary-w2.md (новые термины, proposed) + .planning/CURRENT-w2.md. После батча: контент-коммит (diff/MR/glossary, НЕ fixed.xlsx/НЕ CURRENT-w2) → коммит CURRENT-w2 маркер → push origin translation-audit/w2.
 
 ## Workflow напоминание
 - Источник: `chunk-NN.xlsx` (read-only, копируется из `C:/Projects/labresta-sync/.planning/translation-audit/chunks/` — gitignored). Python: `C:/Projects/labresta-sync/.venv/Scripts/python.exe` (в W2 .venv нет).
