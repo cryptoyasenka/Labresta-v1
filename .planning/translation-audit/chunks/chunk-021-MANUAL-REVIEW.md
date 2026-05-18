@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-021 (49 SKU)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 49/49
+**Status:** ГОТОВ 49/49
 
 Здесь собираю всё, что требует твоего подтверждения (не авто-фиксы). Авто-фиксы по locked-паттернам перечислены в сводках по батчам, отдельного подтверждения не требуют. Открытые вопросы накапливаются в нумерованный список и финализируются при закрытии chunk-021.
 
@@ -250,7 +250,27 @@
 
 ---
 
-## Открытые вопросы chunk-021
+## chunk-021 — ЗАКРЫТ (49/49)
+
+**Все 49 SKU обработаны.** Diff: `chunk-021-diff.md` (Status `COMPLETE 49/49`, секция `## chunk-021 — ИТОГ`). Apply key — `Артикул` (scoped per row). **Diff НЕ применяется к live Horoshop без явного go-ahead Yana + safe mode.**
+
+**Семейства (продолжение chunk-020):** Аппараты/шкафы шоковой заморозки Frosty BCF40/BCF60·Tecnodom ATT05/ATT10/ATT15·Brillis VBL5/VBL7/VBL10-R290·GEMM BCB05/BCB10 NC/BCB10E/BCB15/BCB15 R290/BCE05·Sagi TC101L·Tefcold BLC10·Apach ASH05K; Камеры холодильные Tehma КХ-6.48…КХ-17.28 (10 шт); Моноблоки Picoblock ML/MM·Gooder SGM/SGL·Tehma TT1L/TR1M/TT1M; Пароконвектомат Unox XV1093 Cheflux; Печи конвекционные Frosty EN-30A/EСS·GoodFood ROBERTA·Unox XESW·XEFT VITTORIA; Стол холодильный Brillis BMN155-R290.
+
+**Итог авто-применённого (locked, подтверждения не требует):**
+- 🔴 RU=UA full translate + Назв.мод (RU) UA-leak → корр. Название (RU) триплетом (blk): **13 из 49**. Описание RU = укр. копия → самостоятельный RU тег-в-tag; Назв.мод-leak (char-level укр.`іїєґ` либо word-level укр. операторный термин) → триплет к корр. «Название (RU)» (модель-коды language-neutral нетронуты).
+- 🔴 RU=UA full translate, БЕЗ триплета (blknotrip; Назв.мод уже чистый русский): **2 из 49** (Gooder SGM008P/SGM012P).
+- blknochg (обе локали без изменений; RU genuine ≠ UA verbatim): **34 из 49**. genuine RU НЕ переписывается (LIVE-магазин). Все 10 камер Tehma КХ, моноблоки Picoblock/Tehma/Gooder SGL011P, Brillis VBL/Tecnodom ATT05·ATT15/Sagi/Tefcold/Apach ASH05K, Frosty EСS/GoodFood/Unox XESW·XEFT печи, Стол Brillis BMN155-R290.
+- Реальная дробь `.`→`,` в авторском blk RU; blknochg genuine RU не правится. Индексы камер `КХ-6.48`…`КХ‐17.28`, `1/3-150`, модель-коды — точка/дефис verbatim, НЕ десятичное.
+
+**Faithful (locked, не тронуто):** напряжение/voltage везде — значение НИКОГДА (метки переведены; SKU 49 косметический пробел `220 /50Hz`↔`220/50Hz` identical-both, НЕ десинк); META всегда; Cyrillic х/Х 0x445 (`600х400`, `1/3х150`) no-op verbatim идентично UA↔RU; латинская `x` 0x78 в брендах/габаритах annotate-verbatim; индексы камер Tehma `КХ-N.NN` (вкл. non-breaking-hyphen `КХ‐14.40`/`КХ‐8.64`) verbatim; габариты `1550/800/1280`/`1630/870/1300`/`630 мм`/`R290`/`227`/`237 кг` идентичны обеим локалям; сущности `&ndash;`/`&deg;`/`&#39;`/`&rsquo;` источника сохранены; эмодзи/literal/trailing-space артефакты источника 1:1.
+
+**Открытые вопросы chunk-021 = 1** (#1 SKU 39 Артикул `2226833939` GEMM BCB10 NC — UA Назв «…GEMM BCB10» без NC ↔ genuine RU «…GEMM BCB10 NC» с NC, тело обеих локалей с NC, customer-facing рассинхрон модель-кода; НЕ обнулён при закрытии, требует решения Yana, ниже сохранён дословно). **Следующее:** chunk-022 (chunk-001 — SKIP навсегда).
+
+---
+
+## Открытые вопросы chunk-021 (финализированы при закрытии чанка)
+
+_(финализировано при закрытии: chunk-021 — **1 Открытый вопрос**, СОХРАНЁН ниже дословно (НЕ обнулён). **#1 SKU 39 (Артикул `2226833939`, Аппарат шоковой заморозки GEMM BCB10 NC)** — «Название (UA)» = `Апарат шокової заморозки GEMM BCB10` без суффикса `NC`; genuine «Название (RU)» = `Аппарат шоковой заморозки GEMM BCB10 NC` с `NC`; тело «Описание» в обеих локалях (RU = дословная UA-копия) содержит `GEMM BCB10 NC`. NC присутствует в genuine RU Назв и теле обеих локалей, отсутствует только в UA Назв → customer-facing рассинхрон модель-кода (не UA↔RU-идентичная ошибка) → нумерованный вопрос, требует решения Yana, на LIVE-магазине без явного go-ahead не правится. Остальное по 49 SKU без нумерованных вопросов: blk 13 = авто-перевод укр. копии + Назв.мод-leak триплет (НЕ customer-facing, модель-коды language-neutral); blknotrip 2 (Gooder SGM008P/SGM012P) — Назв.мод уже корректен, БЕЗ триплета; blknochg 34 — RU genuine ≠ UA, обе локали без изменений; реальная `.`-дробь авторского blk RU — per-batch; Cyrillic-х `600х400`/`1/3х150` no-op verbatim идентично UA↔RU; индексы камер Tehma `КХ-N.NN` (вкл. non-breaking-hyphen `КХ‐14.40`/`КХ‐8.64`) — коды verbatim, НЕ десятичные; voltage разные значения = разные модели, НЕ десинк; SKU 49 темп `-2...-+8` + voltage косметический пробел identical-both (артефакт источника UA==RU), SKU 38 GEMM BCB05 тело содержит `BCB05 NC` но Назв UA↔RU обе без NC консистентны — faithful soft, не нумеруются, genuine RU не переписывается. Применять diff к live Horoshop — только с явным go-ahead Yana + safe mode.)_
 
 ### 1. SKU 39 (Артикул `2226833939`, Аппарат шоковой заморозки GEMM BCB10 NC) — Назв UA «…GEMM BCB10» (без NC) ↔ genuine Назв RU «…GEMM BCB10 NC» (с NC): customer-facing рассинхрон модель-кода
 
@@ -265,4 +285,4 @@
 
 ---
 
-**Last updated:** 2026-05-18 — chunk-021 батч SKU 49 (49/49, **ФИНАЛЬНЫЙ батч**): Стол холодильный (пиццерийный) Brillis BMN155-R290 — **blknochg 1 из 1** (SKU 49 `desc UA==RU` False 2290≠2273, genuine отдельный RU, `nm_ru==nazv_ru` = `Стол холодильный Brillis BMN155-R290` чистый рус., укр-leak нет, НЕ переписывается LIVE) + **blk 0 / blknotrip 0**, авторского RU нет. Locked: кир.х 0x445 `600х400`/`1/3х150` verbatim, латин.x нет; `1/3-150` дефис ASCII U+002D; габариты `1550/800/1280`/`1630/870/1300`/`630 мм`/`50`/`380`/`R290`/`227`/`237 кг` идентичны обеим локалям verbatim; сущности genuine RU `&deg;`/`&ndash;` источника verbatim. Voltage value `220`+`50Hz` не тронут (лейбл `Напруга, В`→`Напряжение, В`, разница лишь косметический пробел `220 /50Hz`↔`220/50Hz`). META always faithful. soft (не нумеровано): темп `-2...-+8` identical-both (артефакт источника), voltage косметический пробел identical-both; genuine RU не переписывается LIVE. Открытых вопросов chunk-021 = 1 (без новых, OQ#1 SKU39 из b5). chunk-021 = 49/49 (все SKU). NEXT: закрытие chunk-021.
+**Last updated:** 2026-05-18 — **chunk-021 ЗАКРЫТ 49/49.** Все 49 SKU обработаны (Frosty/Tecnodom/Brillis/GEMM/Sagi/Tefcold/Apach шокеры + Tehma КХ камеры ×10 + Picoblock/Gooder/Tehma моноблоки + Unox XV1093 Cheflux + Frosty/GoodFood/Unox печи + Стол Brillis BMN155-R290). **Открытые вопросы chunk-021 финализированы: 1 (НЕ обнулён) — #1 SKU 39 (Артикул `2226833939`, GEMM BCB10 NC): UA Назв «…GEMM BCB10» без NC vs genuine RU «…GEMM BCB10 NC» с NC, тело обеих локалей с NC → customer-facing рассинхрон модель-кода, требует решения Yana, на LIVE-магазине без go-ahead не правится.** Итог по чанку: blk 13/49; blknotrip 2/49; blknochg 34/49. diff Status `COMPLETE 49/49` + `## chunk-021 — ИТОГ`; MR Status `ГОТОВ 49/49` + `## chunk-021 — ЗАКРЫТ (49/49)` + ретайтл Открытых вопросов (OQ#1 сохранён дословно) + финализирующий italic + заменённый Last updated. (Батчи: 1-8; 9-16; 17-24; 25-32; 33-40; 41-48; 49 финальный.) NEXT: chunk-022 (scaffold; chunk-001 — SKIP навсегда).
