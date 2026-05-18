@@ -28,25 +28,30 @@
 - [ ] chunk-056 scaffold (W2, продолжение chunk-055) — next
 - [ ] chunk-056 … chunk-085
 
-## chunk-055 факты
-- 86 SKU. Первый: Артикул `2204681685` Sirman `Ковбасний шприц Sirman IS V 15 IDRA (220В)`. Последний: `2134945850` Fimar `Диск для овочерізки FIMAR E8`.
-- Бренды: FROSTY 33, Fimar 19, Sirman 11, Dadaux 8, Hendi 5, GoodFood 5, **Hurakan 2 (SKIP-НП)**, KT 1, Fama 1, Airhot 1.
-- SKIP-НП в этом чанке: 2 × Hurakan (RU не трогать, пометить в MANUAL-REVIEW, считать отдельной категорией в N/N).
+## chunk-055 итог (ЗАКРЫТ)
+- 86/86. blknochg 36 / blk триплет 42 / blknotrip 6 / SKIP-НП 2 (Hurakan SKU 27/29). Открытых вопросов 1 (OQ#1 SKU 10 Hendi 843468/843499 — ждёт ответа Yana, не блокирует).
+
+## chunk-056 факты
+- 91 SKU (openpyxl rows 2..92). Первый: Артикул `2134947110` Fimar `Диск для овочерізки FIMAR E10`. Последний: `902235891` Hendi `Кавомашина Hendi TOP LINE BY WEGA 208939 (2 гр.)`.
+- Бренды: Robot Coupe 39, Fimar 14, Hendi 12, Nuova Simonelli 9, FROSTY 7, Bezzera 4, GGM Gastro International 4, Bartscher 1, Saro 1.
+- **SKIP-НП брендов нет** — ни один не в НП-списке → ожидается SKIP-НП 0, все обрабатываются обычно. Батч = 8 SKU, 12 батчей (последний SKU 89-91 = 3 SKU).
 
 ## Open files
-- `.planning/translation-audit/chunks/chunk-055-diff.md` — diff (DONE 86/86, chunk-055 закрыт)
-- `.planning/translation-audit/chunks/chunk-055-MANUAL-REVIEW.md` — ручная проверка (DONE 86/86, OQ#1 SKU 10 ждёт Yana)
-- `.planning/translation-audit/chunks/chunk-055-fixed.xlsx` — output (gitignored, 86/86 применено+verified)
+- `.planning/translation-audit/chunks/chunk-056-diff.md` — diff (IN PROGRESS 0/91)
+- `.planning/translation-audit/chunks/chunk-056-MANUAL-REVIEW.md` — ручная проверка (IN PROGRESS 0/91)
+- `.planning/translation-audit/chunks/chunk-056.xlsx` — source (read-only, gitignored)
+- `.planning/translation-audit/chunks/chunk-056-fixed.xlsx` — ещё не создан (создаётся при первом батче chunk-056: cp из source → edit)
 - `.planning/translation-audit/chunks/chunk-glossary-w2.md` — сводный глоссарий W2 (общий накопительный, 47 строк после chunk-055)
-- next: `chunk-056-diff.md` + `chunk-056-MANUAL-REVIEW.md` + `chunk-056.xlsx` (scaffold chunk-056)
+- chunk-055 (ЗАКРЫТ): chunk-055-diff.md / chunk-055-MANUAL-REVIEW.md DONE 86/86; chunk-055-fixed.xlsx 86/86 verified; OQ#1 SKU 10 ждёт Yana
 
 ## Next step
-**chunk-055 ЗАКРЫТ 86/86.** Сначала закоммитить+запушить батч 11 (контент-коммит diff/MR/glossary → коммит CURRENT-w2 маркер «CURRENT-w2: chunk-055 батч 81-86 COMMITTED 86/86 ЗАКРЫТ, next scaffold chunk-056» → push origin translation-audit/w2). Затем **scaffold chunk-056** (отдельный scaffold-коммит «chunk-056 scaffold (W2, продолжение chunk-055)»):
-1. Узнать размер chunk-056: скопировать `chunk-056.xlsx` из `C:/Projects/labresta-sync/.planning/translation-audit/chunks/chunk-056.xlsx` в `.planning/translation-audit/chunks/chunk-056.xlsx` (gitignored, read-only); python+openpyxl → N SKU, первый/последний Артикул+название, бренд-состав.
-2. Создать `chunk-056-diff.md` (header по шаблону chunk-055-diff.md, Status `IN PROGRESS 0/<N>`, Worker W2, состав) + `chunk-056-MANUAL-REVIEW.md` (header по шаблону, Status `IN PROGRESS 0/<N>`, разделы SKIP-НП / Открытые вопросы пустые). chunk-glossary-w2.md — общий накопительный, НЕ пересоздавать.
-3. Обновить CURRENT-w2.md: chunk-056 факты, Open files → chunk-056, Next step → «chunk-056 батч SKU 1-8 range(2,10)».
-4. Scaffold-коммит (diff/MR + CURRENT-w2) → push.
-5. Дальше chunk-056 батч SKU 1-8 по W1-методологии (та же, что для chunk-055): SKIP-НП-чек бренда (Hurakan/Apach/Fagor/Tatra/Cold/PROJECT SYSTEMS/Astoria/Arris/Maxima — case-insensitive, лат+кир) → если в списке пометить «SKIP-НП» в MANUAL-REVIEW, fixed.xlsx не менять, отд. категория; иначе `desc UA==RU` False→blknochg (genuine, LIVE не переписывать) / True→полный тег-в-tag RU-перевод (blk триплет если Назв.мод RU=nm_ua UA-leak а Назв RU genuine; blknotrip если бренд+код language-neutral). META keywords faithful. Модель-код Назв UA↔genuine-RU рассинхрон → нумерованный Открытый вопрос (НЕ авто-фикс, прецедент OQ#1 SKU 10). decimal: реальные дроби `N.N`→`N,N` ТОЛЬКО UA-копии; вес `NN.00` политика A verbatim. Латин.x габариты глоб.B verbatim; кир.х no-op. fixed.xlsx: при первом батче chunk-056 создаётся load source→edit→save (для chunk-056 первый раз можно копию source; далее load существующий chunk-056-fixed.xlsx). После каждого батча: контент-коммит → CURRENT-w2 маркер → push. **НЕПРЕРЫВНЫЙ режим — не останавливаться, пока весь диапазон 055-085 не закрыт или не нужен ответ Yana.**
+**chunk-056 scaffold готов (diff/MR созданы IN PROGRESS 0/91, chunk-056.xlsx скопирован, факты записаны).** Закоммитить scaffold (`git add chunk-056-diff.md chunk-056-MANUAL-REVIEW.md CURRENT-w2.md` → `chunk-056 scaffold (W2, продолжение chunk-055)` → push origin translation-audit/w2), затем **chunk-056 батч SKU 1-8** (openpyxl rows 2..9, range(2,10)) по `.planning/translation-audit/chunks/chunk-056.xlsx`.
+
+Методология (та же W1, что chunk-055): для каждого SKU дамп UA/RU name+nm+desc+kw в UTF-8-файл. SKIP-НП-чек бренда (HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA — case-insens, лат+кир; **бренд-состав chunk-056 = Robot Coupe/Fimar/Hendi/Nuova Simonelli/FROSTY/Bezzera/GGM/Bartscher/Saro — НИ ОДИН не в списке → все обычная обработка, SKIP-НП 0 ожидается**) → если бы был в списке: пометить «SKIP-НП» в MANUAL-REVIEW, fixed.xlsx не менять, отд. категория. Иначе: `desc UA==RU` False→**blknochg** (genuine рус., LIVE НЕ переписывать, «Было/Стало: без изменений»; совпадение длин при разном контенте всё равно blknochg — прец. SKU 35/53/54/85) / True→полный тег-в-tag RU-перевод (**blk триплет** если Назв.мод RU=nm_ua UA-leak а Назв RU genuine→ставим Назв.мод RU=nazv_ru; **blknotrip** если Назв/Назв.мод бренд+код language-neutral). META keywords всегда faithful. Апостроф `&#39;`/`'`→0 RU. Реальные дроби `N.N`→`N,N` ТОЛЬКО UA-копии (blk/blknotrip). Вес `NN.00` политика A verbatim. Латин.x(0x78) габариты глоб.B verbatim; кир.х(0x445) no-op. `&delta;`/`&ndash;`/`(Д*Ш*В)`/disc-коды/voltage language-neutral verbatim. Source-typo в UA-копии (переводится) → авто-норма + glossary note. Source-typo/расхождение значения в genuine RU (blknochg) → soft-note в MANUAL-REVIEW НЕ нумеровать (прец. SKU 18/38/39/85). Модель-код в NAME UA↔genuine-RU рассинхрон → нумерованный Открытый вопрос НЕ авто-фикс (прец. OQ#1 SKU 10).
+
+**fixed.xlsx (chunk-056 ПЕРВЫЙ батч):** `cp .planning/translation-audit/chunks/chunk-056.xlsx .planning/translation-audit/chunks/chunk-056-fixed.xlsx` (один раз при б1), затем edit by Артикул, save, reopen read_only VERIFY booleans. Со 2-го батча — load СУЩЕСТВУЮЩИЙ chunk-056-fixed.xlsx (НЕ копировать source). Scratch `_w2_*` удалять после.
+
+После батча: контент-коммит (chunk-056-diff.md entries+summary Status N/91 + chunk-056-MANUAL-REVIEW.md + chunk-glossary-w2.md новые термины; НЕ fixed.xlsx/НЕ CURRENT-w2) → коммит CURRENT-w2 маркер «CURRENT-w2: chunk-056 батч X-Y COMMITTED N/91» → push origin translation-audit/w2. Обновлять CURRENT-w2 каждый батч. **НЕПРЕРЫВНЫЙ режим — не останавливаться, пока весь диапазон 055-085 не закрыт или не нужен ответ Yana (тогда зафиксировать OQ и идти дальше по остальным SKU). 12 батчей chunk-056, последний SKU 89-91 (3 SKU).**
 
 ## Workflow напоминание
 - Источник: `chunk-NN.xlsx` (read-only, копируется из `C:/Projects/labresta-sync/.planning/translation-audit/chunks/` — gitignored). Python: `C:/Projects/labresta-sync/.venv/Scripts/python.exe` (в W2 .venv нет).
