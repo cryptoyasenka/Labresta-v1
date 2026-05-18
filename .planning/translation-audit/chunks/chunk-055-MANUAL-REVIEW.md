@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-055 (86 SKU)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 16/86 (blknochg 6 / blk триплет 4 / blknotrip 6 / SKIP-НП 0; Открытых вопросов 1)
+**Status:** IN PROGRESS 24/86 (blknochg 9 / blk триплет 9 / blknotrip 6 / SKIP-НП 0; Открытых вопросов 1)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085)
 
 Здесь собираю всё, что требует твоего подтверждения (не авто-фиксы). Авто-фиксы по locked-паттернам перечислены в сводках по батчам, отдельного подтверждения не требуют. Открытые вопросы накапливаются в нумерованный список и финализируются при закрытии chunk-055. SKIP-НП SKU (Hurakan и др. НП-эксклюзивные бренды) перечисляются отдельным списком — тело придёт из фида НП позже, RU не трогается.
@@ -11,7 +11,7 @@
 
 ## SKIP-НП chunk-055 (НП-эксклюзивные бренды — RU не переписан)
 
-_(батч 1 SKU 1-8 — Hurakan нет; батч 2 SKU 9-16 — Hurakan нет, бренд KT SKU 14 НЕ в НП-списке → обработан обычно; ожидается ~2 Hurakan дальше в чанке)_
+_(батч 1 SKU 1-8 — Hurakan нет; батч 2 SKU 9-16 — Hurakan нет, бренд KT SKU 14 НЕ в НП-списке → обработан обычно; батч 3 SKU 17-24 — Hurakan нет (FROSTY/Fimar/Fama/Sirman; FAMA≠FAGOR → обработан обычно); ожидается ~2 Hurakan дальше в чанке)_
 
 ---
 
@@ -36,4 +36,4 @@ _(батч 1 SKU 1-8 — Hurakan нет; батч 2 SKU 9-16 — Hurakan нет,
 
 ---
 
-**Last updated:** 2026-05-18 — chunk-055 батч 2 (SKU 9-16) COMMITTED 16/86. Hendi тендерайзеры (9-11) + FROSTY/Sirman/KT тендерайзеры/пила (12-16). blknotrip 4 (SKU 9/10/11/12 RU=UA → перевод, Назв language-neutral, без триплета) / blk триплет 2 (SKU 13/14 RU=UA → перевод + Назв.мод nm_ua→nazv_ru `(мясорыхлитель)`) / blknochg 2 (SKU 15/16 genuine RU, LIVE не переписан) / SKIP-НП 0 (KT SKU 14 НЕ в НП-списке → обычная обработка). **Открытый вопрос #1 добавлен: SKU 10 модель-код Hendi 843499 (genuine-RU) ≠ 843468 (UA/Назв.мод) — на LIVE без go-ahead не правится.** Кумулятивно Открытых вопросов chunk-055 = 1. NEXT: батч SKU 17-24.
+**Last updated:** 2026-05-18 — chunk-055 батч 3 (SKU 17-24) COMMITTED 24/86. Ленточные пилы FROSTY/Fimar/Fama/Sirman. blknochg 3 (SKU 17/18/19 FROSTY SO202VECO/JG-210/JG-280 — genuine RU, `desc UA==RU` False, `nm_ru==nazv_ru`, LIVE не переписан) / blk триплет 5 (SKU 20 Fimar SE1830 / 21 Fama FSG103 / 22 Sirman SO1650F3 / 23 Sirman SO1840F3 / 24 FROSTY DQ-210 — `desc UA==RU` True → тег-в-tag RU-перевод + Назв.мод RU nm_ua→nazv_ru; Назв RU уже genuine, не тронут) / blknotrip 0 / SKIP-НП 0 (Fama≠FAGOR, FROSTY/Fimar/Sirman не в НП-списке → обычная обработка). Авто-фиксы батча: SKU 23 `об\хв`→`об/мин` (укр. хв→рус. мин + нормализация разделителя, очевидная опечатка); SKU 22 source-typo `аннодированного`→`анодированного` (обе локали были RU=UA-копия). Real-fraction `N.N`→`N,N` где встречалось в UA-копиях; вес `NN.00` (SKU 24 `46.00`, SKU 17 `48.00`) = формат-политика A → verbatim, НЕ флипнут. Латин. `x` габариты глоб. policy B verbatim; кир. `х` множители no-op. Апостроф `&#39;`/`'`→0 в RU. **Новых Открытых вопросов нет.** Кумулятивно Открытых вопросов chunk-055 = 1 (только #1 SKU 10). NEXT: батч SKU 25-32.
