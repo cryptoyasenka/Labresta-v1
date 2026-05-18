@@ -2,9 +2,9 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-056 (91 SKU)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 16/91 (blknochg 4 / blk триплет 12 / blknotrip 0 / SKIP-НП 0; Открытых вопросов 0)
+**Status:** IN PROGRESS 24/91 (blknochg 4 / blk триплет 20 / blknotrip 0 / SKIP-НП 0; Открытых вопросов 0)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085)
-**Last updated:** батч 2 (SKU 9-16, Fimar Z-диски + Frosty D-кубики + Robot Coupe диски) — авто-фиксы по locked-паттернам, подтверждения не требуется; 1 soft-note (SKU 13 Frosty D8 genuine RU `магневый`, НЕ нумерованный OQ)
+**Last updated:** батч 3 (SKU 17-24, Robot Coupe диски 28004-28058 для CL 50…CL 60) — все 8 blk триплет, авто-фиксы по locked-паттернам, подтверждения не требуется; soft-note 0; Открытых вопросов 0
 
 Здесь собираю всё, что требует твоего подтверждения (не авто-фиксы). Авто-фиксы по locked-паттернам перечислены в сводках по батчам, отдельного подтверждения не требуют. Открытые вопросы накапливаются в нумерованный список и финализируются при закрытии chunk-056. SKIP-НП SKU (НП-эксклюзивные бренды) перечисляются отдельным списком — тело придёт из фида НП позже, RU не трогается.
 
@@ -12,7 +12,7 @@
 
 ## SKIP-НП chunk-056 (НП-эксклюзивные бренды — RU не переписан)
 
-_(пусто. Бренд-состав chunk-056: Robot Coupe 39 / Fimar 14 / Hendi 12 / Nuova Simonelli 9 / FROSTY 7 / Bezzera 4 / GGM Gastro International 4 / Bartscher 1 / Saro 1 — ни один не в НП-списке HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA → ожидается SKIP-НП 0. Список обновляется per-батч при подтверждении бренда по `Название`. **Батч 1 (SKU 1-8): подтверждён бренд Fimar по `Название` (Диск для овочерізки FIMAR …) — НЕ в НП-списке, обработан обычно, SKIP-НП 0. Батч 2 (SKU 9-16): подтверждены Fimar (Z3/Z4/Z7/Z2), FROSTY (D8/D10), Robot Coupe (27070/27164) по `Бренд`/`Название` — НИ ОДИН не в НП-списке, SKIP-НП 0.**)_
+_(пусто. Бренд-состав chunk-056: Robot Coupe 39 / Fimar 14 / Hendi 12 / Nuova Simonelli 9 / FROSTY 7 / Bezzera 4 / GGM Gastro International 4 / Bartscher 1 / Saro 1 — ни один не в НП-списке HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA → ожидается SKIP-НП 0. Список обновляется per-батч при подтверждении бренда по `Название`. **Батч 1 (SKU 1-8): подтверждён бренд Fimar по `Название` (Диск для овочерізки FIMAR …) — НЕ в НП-списке, обработан обычно, SKIP-НП 0. Батч 2 (SKU 9-16): подтверждены Fimar (Z3/Z4/Z7/Z2), FROSTY (D8/D10), Robot Coupe (27070/27164) по `Бренд`/`Название` — НИ ОДИН не в НП-списке, SKIP-НП 0. Батч 3 (SKU 17-24): подтверждён бренд Robot Coupe (диски 28004/28016/28051/28052/28053/28054/28057/28058) по `Бренд`/`Название` — НЕ в НП-списке, обработан обычно, SKIP-НП 0.**)_
 
 | # | SKU | Артикул | Бренд | Название (UA) | Статус |
 |---|---|---|---|---|---|
