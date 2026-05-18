@@ -1,7 +1,7 @@
 # CURRENT-w2 — LabResta translation audit (W2 параллельный воркер)
 
-**Last touched:** 2026-05-18 (chunk-057 scaffold — продолжение chunk-056)
-**Status:** **chunk-057 scaffold** (chunk-057-diff.md + chunk-057-MANUAL-REVIEW.md созданы, source скопирован+прозондирован 54 SKU; 0/54); chunk-056 ЗАКРЫТ 91/91; chunk-055 ЗАКРЫТ 86/86; OQ#1 chunk-055 (SKU 10 модель-код) + OQ#1 chunk-056 (SKU 67) ждут ответа Yana (не блокируют); next: scaffold-коммит + push → СРАЗУ chunk-057 батч 1 SKU 1-8 (НЕПРЕРЫВНЫЙ режим)
+**Last touched:** 2026-05-18 (chunk-057 батч 1 SKU 1-8 → 8/54)
+**Status:** **chunk-057 IN PROGRESS 8/54** (батч 1 SKU 1-8 применён+верифицирован `=== ALL OK ===`; blk триплет 3 / blknotrip 1 / blknochg 4 / SKIP-НП 0); chunk-056 ЗАКРЫТ 91/91; chunk-055 ЗАКРЫТ 86/86; OQ#1 chunk-055 (SKU 10 модель-код) + OQ#1 chunk-056 (SKU 67) ждут ответа Yana (не блокируют); next: коммит батча 1 + push → СРАЗУ chunk-057 батч 2 SKU 9-16 (НЕПРЕРЫВНЫЙ режим)
 
 > **РЕЖИМ: НЕПРЕРЫВНЫЙ НОЧНОЙ (Yana 2026-05-18).** НЕ останавливаться после одного батча. После коммита+push сразу следующий батч (range +8), пока весь диапазон chunk-055…085 не закрыт. Контекст переполнился → снапшот+auto-compact+restore из этого файла, продолжать. Cron 15m = только страховка на смерть сессии. Стоп только: весь диапазон готов, ИЛИ нужен ответ Yana (тогда зафиксировать OQ и идти дальше по остальным SKU). См. memory `feedback-w2-continuous-night-mode`.
 
@@ -39,7 +39,9 @@
 - [x] chunk-056 батч SKU 81-88 → 88/91 (blk триплет 3 (Hendi 211472/Bartscher 190193/Hendi PROFI LINE 208533 replace-from-source) / blknochg 5 (Nuova Simonelli Oscar Mood Tank/Saro ECO/GGM KC2W/KC3S/KC3W genuine RU descUA!=descRU LIVE не переписан) / blknotrip 0 / SKIP-НП 0; реальн. дроби SKU83 6.5→6,5/7.82→7,82, UA-уже-запятая 1,8 SKU88; UA_MARK false-pos сняты Перколятор(идент.UA/RU)+Контрольна(префикс RU Контрольная); 3 soft-note НЕ нумер. (SKU82 рассогл. тело Кавоварку/имя Кавомашина UA-копии / SKU85-87 GGM genuine RU изляция→изоляция / SKU81 genuine тело кофеварка); новых нумер. OQ НЕТ; OQ chunk-056=1 (#1 SKU67), кумул OQ#1 SKU10 chunk-055; +10 строк глоссария кумул 143)
 - [x] chunk-056 батч SKU 89-91 → 91/91 (blk триплет 3 (Hendi 208304 проточная кофеварка / TOP LINE BY WEGA 208915 1гр. / 208939 2гр. replace-from-source) / blknochg 0 / blknotrip 0 / SKIP-НП 0; габариты 200х385х430 кир.х(0445) / 530x555x515 / 740x555x515 лат.x(0078) dim-integrity byte-точно; UA-апостроф об'єму/кип'ятку/Об'єм SKU90→0; UA-уже-запятая 1,8×2/2,9/10,5/3,7 сохранены, реальных .-дробей нет; 1 soft-note НЕ нумер. (SKU91 смешанная UA/RU UA-копия — уже-RU строки byte-точно, переведены только UA-сегменты); `Тенів`→`ТЭНов` note глоссарий; новых нумер. OQ НЕТ; OQ chunk-056=1 (#1 SKU67), кумул OQ#1 SKU10 chunk-055; +11 строк глоссария кумул 154) — **chunk-056 ЗАКРЫТ**
 - [x] scaffold chunk-057 (W2, продолжение chunk-056): chunk-057-diff.md + chunk-057-MANUAL-REVIEW.md созданы; source скопирован, прозондирован (54 SKU); chunk-glossary-w2.md НЕ пересоздан (общий, 154 строки, продолжается)
-- [ ] scaffold-коммит chunk-057 + CURRENT-w2 маркер + push → chunk-057 батч 1 SKU 1-8 → … chunk-085
+- [x] scaffold-коммит chunk-057 + CURRENT-w2 маркер + push (b98ee2b / 8a263fb)
+- [x] chunk-057 батч SKU 1-8 → 8/54 (blk триплет 3 (Hendi кофемашина 208991 mixed UA/RU + нок-бокс круглый 208618 + подставка кофемолки 208694) / blknotrip 1 (Hendi нок-бокс GN1/6 208335) / blknochg 4 (Victoria Arduino Black Eagle Maverick Gravimetric/Volumetric 2GR/3GR genuine RU) / SKIP-НП 0; faithful-фикс `Зроблений/зроблений`→`Сделан/сделан` НЕ `Изготовлен`; норм. SKU1 `208991серии`→`208991 серии`+`3-120 з`→`3-120 с`; UA grammar quirk SKU3 `Прогумоване підставу`; 3 soft-note НЕ нумер. (SKU1 mixed UA/RU UA-копия / SKU5-8 Latin Volumentric / SKU8 UA-остаток T3 Genius); новых OQ нет, кумул. OQ#1 SKU10 c055 + OQ#1 SKU67 c056; +12 строк глоссария кумул 166)
+- [ ] chunk-057 батч SKU 9-16 → … chunk-085
 
 ## chunk-055 итог (ЗАКРЫТ)
 - 86/86. blknochg 36 / blk триплет 42 / blknotrip 6 / SKIP-НП 2 (Hurakan SKU 27/29). Открытых вопросов 1 (OQ#1 SKU 10 Hendi 843468/843499 — ждёт ответа Yana, не блокирует).
@@ -54,20 +56,20 @@
 - Батч = 8 SKU, 7 батчей (последний батч 7 = SKU 49-54 = 6 SKU).
 
 ## Open files
-- `.planning/translation-audit/chunks/chunk-057-diff.md` — diff (scaffold, **IN PROGRESS 0/54**)
-- `.planning/translation-audit/chunks/chunk-057-MANUAL-REVIEW.md` — ручная проверка (scaffold, **IN PROGRESS 0/54**)
+- `.planning/translation-audit/chunks/chunk-057-diff.md` — diff (**IN PROGRESS 8/54**, SKU 1-8 entries+summary внесены)
+- `.planning/translation-audit/chunks/chunk-057-MANUAL-REVIEW.md` — ручная проверка (**IN PROGRESS 8/54**, батч 1 detail+soft-notes внесены)
 - `.planning/translation-audit/chunks/chunk-057.xlsx` — source (read-only, gitignored, скопирован из main worktree)
-- `.planning/translation-audit/chunks/chunk-057-fixed.xlsx` — НЕ создан (создаётся при батче 1: `cp chunk-057.xlsx chunk-057-fixed.xlsx` один раз)
-- `.planning/translation-audit/chunks/chunk-glossary-w2.md` — сводный глоссарий W2 (общий накопительный, **154 строки**; chunk-057 продолжает, НЕ пересоздан)
+- `.planning/translation-audit/chunks/chunk-057-fixed.xlsx` — создан (batch 1: SKU1-4 col5/col36 применён, SKU5-8 blknochg untouched, verified `=== ALL OK ===`; gitignored)
+- `.planning/translation-audit/chunks/chunk-glossary-w2.md` — сводный глоссарий W2 (общий накопительный, **166 строк** после chunk-057 б1; продолжается, НЕ пересоздан)
 - chunk-056 (ЗАКРЫТ): chunk-056-diff.md / chunk-056-MANUAL-REVIEW.md DONE 91/91; chunk-056-fixed.xlsx 91/91 verified `=== ALL OK ===`; chunk-056-questions.md OQ#1 SKU67 ждёт Yana
 - chunk-055 (ЗАКРЫТ): chunk-055-diff.md / chunk-055-MANUAL-REVIEW.md DONE 86/86; chunk-055-fixed.xlsx 86/86 verified; OQ#1 SKU 10 ждёт Yana
 
 ## Next step
-**chunk-057 scaffold готов** (chunk-057-diff.md + chunk-057-MANUAL-REVIEW.md созданы, source скопирован+прозондирован 54 SKU). Далее без остановки (НЕПРЕРЫВНЫЙ режим):
-1. Очистить scratch `_w2_probe_057.py` / `_w2_probe_057.txt`.
-2. **scaffold-коммит** (контент: новые `chunk-057-diff.md` + `chunk-057-MANUAL-REVIEW.md`) автор LabResta `chunk-057 scaffold (W2, продолжение chunk-056)` → затем CURRENT-w2 маркер-коммит `CURRENT-w2: chunk-057 scaffold (W2, продолжение chunk-056)` → push origin translation-audit/w2.
-3. **СРАЗУ chunk-057 батч 1 SKU 1-8** (rows 2..9, openpyxl `range(2,10)` / SKU `range(1,9)`): дамп → SKIP-НП-чек бренда по `Название` → категоризация (blk триплет / blknochg / blknotrip / SKIP-НП) → `_w2_apply_057_b1.py` (ПЕРВЫЙ батч chunk-057: `cp chunk-057.xlsx chunk-057-fixed.xlsx` ОДИН раз, затем edit by Артикул; SURV для chunk-057 стартует с нуля — анкеры b1.. свои) → `=== ALL OK ===` → 4 артефакта (diff entries+summary Status N/54 + MANUAL-REVIEW + glossary новые термины + CURRENT-w2) → 2 коммита (контент+маркер) автор LabResta → push.
-4. Затем батчи 2-7 chunk-057 (батч 7 = SKU 49-54 = 6 SKU, SKU54 Apach → SKIP-НП), затем chunk-058 … chunk-085. НЕ останавливаться (НЕПРЕРЫВНЫЙ режим), пока весь диапазон не закрыт или не нужен ответ Yana.
+**chunk-057 батч 1 (SKU 1-8) применён+верифицирован, 4 артефакта внесены.** Осталось закрыть батч 1 и сразу батч 2 (НЕПРЕРЫВНЫЙ режим):
+1. **2 коммита автор LabResta:** (a) контент `git add chunk-057-diff.md chunk-057-MANUAL-REVIEW.md chunk-glossary-w2.md` msg `chunk-057 батч SKU 1-8 (8/54): blk триплет 3 (Hendi кофемашина 208991 mixed UA/RU + нок-бокс круглый 208618 + подставка кофемолки 208694) + blknotrip 1 (Hendi нок-бокс GN1/6 208335) + blknochg 4 (Victoria Arduino Black Eagle Maverick 2GR/3GR Grav/Vol genuine RU); faithful Зроблений→Сделан; 3 soft-note НЕ нумер.; новых OQ нет; +12 строк глоссария кумул 166`; (b) `git add .planning/CURRENT-w2.md` msg `CURRENT-w2: chunk-057 батч 1-8 COMMITTED 8/54, next батч SKU 9-16`. Затем `git push --quiet origin translation-audit/w2`.
+2. Очистить scratch: `_w2_dump_057_b1.py/.txt` `_w2_apply_057_b1.py` `_w2_b1_result.txt` `_w2_diffsrc_057_b1.py/.txt` `_w2_gloc.py` `_w2_gmid.txt` `_w2_gtail.txt` (glob `_w2_*b1*` МИНУЕТ `_w2_b1_result.txt` — удалять явно). `git status --porcelain` пусто (только коммиты).
+3. **СРАЗУ chunk-057 батч 2 SKU 9-16** (rows 10..17, openpyxl `range(10,18)` / SKU `range(9,17)`): дамп → SKIP-НП-чек бренда по `Название` → категоризация → `_w2_apply_057_b2.py` (load СУЩЕСТВУЮЩИЙ chunk-057-fixed.xlsx, НЕ копировать source; SURV-анкеры chunk-057 свои) → `=== ALL OK ===` → 4 артефакта → 2 коммита автор LabResta → push.
+4. Затем батчи 3-7 chunk-057 (батч 7 = SKU 49-54 = 6 SKU, SKU54 Apach → SKIP-НП), затем chunk-058 … chunk-085. НЕ останавливаться (НЕПРЕРЫВНЫЙ режим), пока весь диапазон не закрыт или не нужен ответ Yana.
 
 Методология (та же W1, что chunk-055/056): для каждого SKU дамп UA/RU name+nm+desc+kw в UTF-8-файл. SKIP-НП-чек бренда по `Название` (HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA — case-insens, лат+кир; **chunk-057: зонд → SKU54 Apach в НП-списке → SKIP-НП при батче 7; прочие (Hendi, Victoria Arduino, …) НЕ в списке → обычная обработка, подтверждается per-батч**) → если бренд в списке: пометить «SKIP-НП» в MANUAL-REVIEW, fixed.xlsx не менять, отд. категория, только вперёд. Иначе: `desc UA==RU` False→**blknochg** (genuine рус., LIVE НЕ переписывать, «Было/Стало: без изменений»; совпадение длин при разном контенте всё равно blknochg — прец. SKU 35/53/54/85) / True→полный тег-в-tag RU-перевод (**blk триплет** если Назв.мод RU=nm_ua UA-leak а Назв RU genuine→ставим Назв.мод RU=nazv_ru; **blknotrip** если Назв/Назв.мод бренд+код language-neutral). META keywords всегда faithful. Апостроф `&#39;`/`'`→0 RU. Реальные дроби `N.N`→`N,N` ТОЛЬКО UA-копии (blk/blknotrip). Вес `NN.00` политика A verbatim. Латин.x(0x78) габариты глоб.B verbatim; кир.х(0x445) no-op. `&delta;`/`&ndash;`/`(Д*Ш*В)`/disc-коды/voltage language-neutral verbatim. Source-typo в UA-копии (переводится) → авто-норма + glossary note. Source-typo/расхождение значения в genuine RU (blknochg) → soft-note в MANUAL-REVIEW НЕ нумеровать (прец. SKU 18/38/39/85). Модель-код в NAME UA↔genuine-RU рассинхрон → нумерованный Открытый вопрос НЕ авто-фикс (прец. OQ#1 SKU 10).
 
