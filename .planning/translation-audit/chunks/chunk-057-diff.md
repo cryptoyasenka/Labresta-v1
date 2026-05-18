@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-057 (54 SKU)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 16/54 (blk триплет 3 / blknochg 12 / blknotrip 1 / SKIP-НП 0; Открытых вопросов 0)
+**Status:** IN PROGRESS 24/54 (blk триплет 3 / blknochg 20 / blknotrip 1 / SKIP-НП 0; Открытых вопросов 0)
 **Worker:** W2 (параллельный воркер, диапазон chunk-055 … chunk-085; W1 ведёт chunk-001 … chunk-054)
 
 **Состав (по типу товара):** первый SKU — Артикул `902327287`, бренд Hendi (`Кавомашина Hendi PROFI LINE XXL 208991 (автомат)`); последний — Артикул `525346665`, бренд **Apach** (`Соковижималка для цитрусових Apach ACS1 ECO`). Колонка `Бренд` в источнике дублирует `Артикул` (числовой) — бренд определяется по `Название` per-SKU при аудите батча. Тип товара определяется per-SKU. **SKIP-НП:** SKU54 (Артикул `525346665`) `Соковижималка для цитрусових Apach ACS1 ECO` — **APACH** в НП-списке → SKIP-НП (тело придёт из фида НП позже, RU не трогается); остальные бренды (Hendi, Victoria Arduino, …) НЕ в НП-списке — обрабатываются обычно, подтверждается per-батч по `Название`. Батч = 8 SKU; 7 батчей (последний SKU 49-54 = 6 SKU). openpyxl rows 2..55 (row = SKU + 1).
@@ -272,5 +272,89 @@
 ---
 
 **Наблюдения по батчу SKU 9-16 (батч 2).** Все 8 — кофемашины **Victoria Arduino** (Black Eagle VA388 Gravimetric/Volumetric 2GR/3GR · Eagle One 2GR/3GR · Eagle Tempo T3 2GR/3GR); подтверждено по `Название` — ни один не в НП-списке HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA, SKIP-НП 0. **8 blknochg** (все `descUA==descRU` False — RU genuine отдельный самостоятельный русский текст; `nmRU==nazvRU` True — Назв.мод RU(col5) == genuine Назв RU(col7), UA-leak нет; LIVE genuine RU не переписываем, fixed.xlsx не трогаем — остаётся как в источнике). blk триплет 0 / blknotrip 0 / SKIP-НП 0. Переводимых UA-копий в батче нет → реальных `.`-дробей не нормализовали, новых glossary-терминов не извлекали (genuine RU не переписывается). META keywords не трогались. **2 soft-note НЕ нумер.** (genuine RU не переписываем — только заметка): SKU9 UA-остаток-фрагмент 3-й `<p>3 бойлери: 1 паровий - 11 л + бойлер на кожну групу - 0,6 л + ТЕН у кожній групі.</p>` внутри самостоятельного genuine RU (descUA отличается; UA-источник тот же абзац с `шкірну/шкірній` — UA source-mistranslation «each», RU зеркалит корректное `кожну/кожній`); SKU14 дублирование модели `Eagle One Eagle One` в открывающем `<p>` — консистентно в UA и genuine RU (language-neutral source-quirk). Мелкие наблюдения (НЕ soft-note, UA col35 не трогается): SKU13/15 UA-источник `Потужність, квт N.0` строчное `квт` при корректном genuine RU `Мощность, кВт N.0`. Новых нумерованных Открытых вопросов в батче НЕТ; Открытых вопросов 0 (кумул. ждут Yana: OQ#1 SKU10 chunk-055; OQ#1 SKU67 chunk-056 — отдельная нумерация). +0 строк глоссария (батч полностью blknochg — genuine RU не переписывается, термины не извлекались; кумул. 166 без изменений).
+
+---
+
+## SKU 17/54 — Кофемашина Victoria Arduino Eagle Tempo Digit 2GR (Артикул 2099947801) — blknochg
+
+**Поле:** Описание товара (RU) · Название модификации (RU)
+**Было/Стало:** без изменений
+
+*(blknochg — desc UA==RU False (lenUA=1017 lenRU=1063): RU genuine — отдельный самостоятельный русский текст (`<p>Eagle Tempo - это профессиональная кофеварка для приготовления эспрессо…</p>`, полностью переведён, ASCII `-` вместо UA `&ndash;`). Назв.мод RU(col5) == Назв RU(col7) = genuine `Кофемашина … Eagle Tempo Digit 2GR` (nmRU==nazvRU True, UA-leak нет). LIVE genuine RU не переписываем; fixed.xlsx не трогаем. UA-остатков в genuine RU нет — чистый blknochg.)*
+*(scoped к row Артикул=2099947801)*
+
+---
+
+## SKU 18/54 — Кофемашина Victoria Arduino Eagle Tempo Digit 3GR (Артикул 2099954011) — blknochg
+
+**Поле:** Описание товара (RU) · Название модификации (RU)
+**Было/Стало:** без изменений
+
+*(blknochg — desc UA==RU False (lenUA=1018 lenRU=1068): RU genuine отдельный (`<p>Eagle Tempo &ndash; это профессиональная кофеварка…</p>`, полностью переведён). Назв.мод RU == Назв RU genuine `Кофемашина … Eagle Tempo Digit 3GR`. LIVE genuine RU не трогаем. UA-остатков нет — чистый blknochg. (Мелкое наблюдение, НЕ soft-note: глиф `<li>Дисплей ✓</li>`/`<li>Счетчик порций ✓</li>` — символ `✓` (U+2713) language-neutral, идентичен в UA-источнике (`Дисплей ✓`/`Лічильник порцій ✓`) и genuine RU; UA-источник `<li>Напруга, 220/380</li>` без `В`, genuine RU корректно `Напряжение, В 220/380`; UA col35 не трогается, blknochg.))*
+*(scoped к row Артикул=2099954011)*
+
+---
+
+## SKU 19/54 — Кофемашина Victoria Arduino 358 White Eagle Leva 2GR (Артикул 2099959774) — blknochg
+
+**Поле:** Описание товара (RU) · Название модификации (RU)
+**Было/Стало:** без изменений
+
+*(blknochg — desc UA==RU False (lenUA=967 lenRU=1018): RU genuine отдельный (`<p>White Eagle Leva &ndash; это машина, в которой Victoria Arduino соединила…</p>`, полностью переведён). Назв.мод RU == Назв RU genuine `Кофемашина … 358 White Eagle Leva 2GR`. LIVE genuine RU не трогаем. UA-остатков нет — чистый blknochg. (Мелкое наблюдение, НЕ soft-note: UA-источник col35 `<li>Потужність, квт 3.0</li>` строчное `квт` + `<li>Напруга, 220/380</li>` без `В`; genuine RU корректно `Мощность, кВт 3.0`/`Напряжение, В 220/380`; UA col35 не трогается, blknochg.))*
+*(scoped к row Артикул=2099959774)*
+
+---
+
+## SKU 20/54 — Кофемашина Victoria Arduino 358 White Eagle Leva 3GR (Артикул 2099964151) — blknochg
+
+**Поле:** Описание товара (RU) · Название модификации (RU)
+**Было/Стало:** без изменений
+
+*(blknochg — desc UA==RU False (lenUA=970 lenRU=1025): RU genuine отдельный (`<p>White Eagle Leva &ndash; это машина, в которой Victoria Arduino объединила…</p>`, полностью переведён). Назв.мод RU == Назв RU genuine `Кофемашина … 358 White Eagle Leva 3GR`. LIVE genuine RU не трогаем. UA-остатков нет — чистый blknochg. (Мелкое наблюдение, НЕ soft-note: в UA-источнике col35 RU-протечка в теле `<p>…зварити цю чудову чашку кофе.</p>` — `кофе` вместо UA `кави` в UA-источнике; genuine RU корректно `чашку кофе`; UA col35 не трогается, blknochg.))*
+*(scoped к row Артикул=2099964151)*
+
+---
+
+## SKU 21/54 — Кофемашина Victoria Arduino Adonis 2GR (Артикул 2099967417) — blknochg
+
+**Поле:** Описание товара (RU) · Название модификации (RU)
+**Было/Стало:** без изменений
+
+*(blknochg — desc UA==RU False (lenUA=1493 lenRU=1508): RU genuine отдельный (`<p>Традиционная автоматическая кофемашина Victoria Arduino Adonis 2 Gr используется…</p>`, полностью переведён включая 13 хвостовых `<li>` спецификаций). Назв.мод RU == Назв RU genuine `Кофемашина … Adonis 2GR`. LIVE genuine RU не трогаем. UA-остатков нет — чистый blknochg. (Мелкое наблюдение, НЕ soft-note: UA-источник `<li>Напруга, 220/380</li>` без `В`, genuine RU корректно `Напряжение, В 220/380`; UA col35 не трогается.))*
+*(scoped к row Артикул=2099967417)*
+
+---
+
+## SKU 22/54 — Кофемашина Victoria Arduino Adonis 3GR (Артикул 2099972758) — blknochg
+
+**Поле:** Описание товара (RU) · Название модификации (RU)
+**Было/Стало:** без изменений
+
+*(blknochg — desc UA==RU False (lenUA=1492 lenRU=1508): RU genuine отдельный (`<p>Традиционная автоматическая кофемашина Victoria Arduino Adonis 3 Gr используется…</p>`, полностью переведён). Назв.мод RU == Назв RU genuine `Кофемашина … Adonis 3GR`. LIVE genuine RU не трогаем. UA-остатков нет — чистый blknochg. (Мелкое наблюдение, НЕ soft-note: UA-источник `<li>Дисплей ✓</li>`/`<li>Лічильник порцій ✓</li>` глиф `✓` → genuine RU перевёл в `<li>Дисплей Да</li>`/`<li>Счетчик порций Да</li>` (genuine отдельный RU, не глиф-копия); genuine RU `<li>Вес кг 98</li>` без запятой при общем шаблоне `Вес, кг` — мелкий quirk самостоятельного RU; blknochg не переписываем.))*
+*(scoped к row Артикул=2099972758)*
+
+---
+
+## SKU 23/54 — Кофемашина Victoria Arduino Adonis 1905 2GR (Артикул 2101027669) — blknochg
+
+**Поле:** Описание товара (RU) · Название модификации (RU)
+**Было/Стало:** без изменений
+
+*(blknochg — desc UA==RU False (lenUA=1518 lenRU=1534): RU genuine отдельный (полностью переведён включая 14 хвостовых `<li>` спецификаций). Назв.мод RU == Назв RU genuine `Кофемашина … Adonis 1905 2GR`. LIVE genuine RU не трогаем. **Soft-note НЕ нумер.**: тело-описание — generic копия (не специфично для Adonis 1905): в UA-источнике тело открывается `Victoria Arduino Adonis 3 Gr`, в genuine RU — `Victoria Arduino Adonis 2 Gr`, тогда как ИМЯ (Назв/Назв.мод UA и RU, col4-7) консистентно = `Adonis 1905 2GR`. Это рассинхрон model-кода тело↔имя в generic-копии тела (genuine RU тоже несёт его), НЕ нумерованный OQ (имена col4-7 консистентны UA↔RU; рассинхрон — внутри generic-копии тела, genuine RU не переписываем — фиксируется только заметкой). META kw RU обрезано в источнике `…Кофеварки Victori` — META не трогается, наблюдение.)*
+*(scoped к row Артикул=2101027669)*
+
+---
+
+## SKU 24/54 — Кофемашина Victoria Arduino Adonis 1905 3GR (Артикул 2101029092) — blknochg
+
+**Поле:** Описание товара (RU) · Название модификации (RU)
+**Было/Стало:** без изменений
+
+*(blknochg — desc UA==RU False (lenUA=1508 lenRU=1524): RU genuine отдельный (полностью переведён). Назв.мод RU == Назв RU genuine `Кофемашина … Adonis 1905 3GR`. LIVE genuine RU не трогаем. **Soft-note НЕ нумер.**: тело-описание — generic копия: и UA-источник, и genuine RU тело открывают `Victoria Arduino Adonis 3 Gr` (без `1905`), тогда как ИМЯ (col4-7, консистентно UA↔RU) = `Adonis 1905 3GR`. Рассинхрон model-кода тело↔имя в generic-копии (консистентен UA/RU), НЕ нумерованный OQ (имена консистентны, genuine RU не переписываем). META kw RU обрезано в источнике `…Кофеварки Victori` — META не трогается, наблюдение.)*
+*(scoped к row Артикул=2101029092)*
+
+---
+
+**Наблюдения по батчу SKU 17-24 (батч 3).** Все 8 — кофемашины **Victoria Arduino** (Eagle Tempo Digit 2GR/3GR · 358 White Eagle Leva 2GR/3GR · Adonis 2GR/3GR · Adonis 1905 2GR/3GR); подтверждено по `Название` — ни один не в НП-списке HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA, SKIP-НП 0. **8 blknochg** (все `descUA==descRU` False — RU genuine отдельный самостоятельный русский текст; `nmRU==nazvRU` True — Назв.мод RU(col5) == genuine Назв RU(col7), UA-leak нет; LIVE genuine RU не переписываем, fixed.xlsx не трогаем — остаётся как в источнике/как после батча 1). blk триплет 0 / blknotrip 0 / SKIP-НП 0. Переводимых UA-копий в батче нет → реальных `.`-дробей не нормализовали, новых glossary-терминов не извлекали (genuine RU не переписывается). META keywords не трогались. **2 soft-note НЕ нумер.** (genuine RU не переписываем — только заметка): SKU23 (Артикул 2101027669) и SKU24 (Артикул 2101029092) — generic-копия тела-описания с рассинхроном model-кода тело↔имя (SKU23 тело UA `Adonis 3 Gr` / genuine RU `Adonis 2 Gr` при имени `Adonis 1905 2GR`; SKU24 тело UA+RU `Adonis 3 Gr` без `1905` при имени `Adonis 1905 3GR`). НЕ нумерованный OQ: имена (col4-7) консистентны UA↔RU, рассинхрон внутри generic-копии тела, genuine RU не переписываем. Мелкие наблюдения (НЕ soft-note, UA col35 / META не трогаются): SKU18/22 глиф `✓` (U+2713) language-neutral для Дисплей/Лічильник (SKU18 идентичен UA/RU; SKU22 genuine RU перевёл в `Да`); SKU19 UA-источник `Потужність, квт 3.0` строчное `квт`; SKU20 RU-протечка `чашку кофе` в UA-источнике (вместо `кави`); SKU18/19/21 UA-источник `Напруга, 220/380` без `В`; SKU22 genuine RU `Вес кг 98` без запятой; SKU23/24 META kw RU обрезано `…Кофеварки Victori` — всё в genuine RU/UA-источнике корректно/не критично, blknochg не переписываем. Новых нумерованных Открытых вопросов в батче НЕТ; Открытых вопросов 0 (кумул. ждут Yana: OQ#1 SKU10 chunk-055; OQ#1 SKU67 chunk-056 — отдельная нумерация). +0 строк глоссария (батч полностью blknochg — genuine RU не переписывается, термины не извлекались; кумул. 166 без изменений).
 
 ---
