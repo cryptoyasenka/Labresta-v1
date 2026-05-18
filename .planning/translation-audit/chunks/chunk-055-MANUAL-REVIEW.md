@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-055 (86 SKU)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 24/86 (blknochg 9 / blk триплет 9 / blknotrip 6 / SKIP-НП 0; Открытых вопросов 1)
+**Status:** IN PROGRESS 32/86 (blknochg 12 / blk триплет 12 / blknotrip 6 / SKIP-НП 2; Открытых вопросов 1)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085)
 
 Здесь собираю всё, что требует твоего подтверждения (не авто-фиксы). Авто-фиксы по locked-паттернам перечислены в сводках по батчам, отдельного подтверждения не требуют. Открытые вопросы накапливаются в нумерованный список и финализируются при закрытии chunk-055. SKIP-НП SKU (Hurakan и др. НП-эксклюзивные бренды) перечисляются отдельным списком — тело придёт из фида НП позже, RU не трогается.
@@ -11,7 +11,12 @@
 
 ## SKIP-НП chunk-055 (НП-эксклюзивные бренды — RU не переписан)
 
-_(батч 1 SKU 1-8 — Hurakan нет; батч 2 SKU 9-16 — Hurakan нет, бренд KT SKU 14 НЕ в НП-списке → обработан обычно; батч 3 SKU 17-24 — Hurakan нет (FROSTY/Fimar/Fama/Sirman; FAMA≠FAGOR → обработан обычно); ожидается ~2 Hurakan дальше в чанке)_
+_(батч 1 SKU 1-8 — Hurakan нет; батч 2 SKU 9-16 — Hurakan нет, бренд KT SKU 14 НЕ в НП-списке → обработан обычно; батч 3 SKU 17-24 — Hurakan нет (FROSTY/Fimar/Fama/Sirman; FAMA≠FAGOR → обработан обычно); батч 4 SKU 25-32 — **2 Hurakan найдены** (см. список ниже); FROSTY/Airhot/Dadaux НЕ в НП-списке → обработаны обычно. Ожидаемые 2 Hurakan чанка-055 закрыты._
+
+| # | SKU | Артикул | Бренд | Название (UA) | Статус |
+|---|---|---|---|---|---|
+| 1 | 27/86 | 2060698639 | Hurakan | Пила для м'яса HURAKAN HKN-SE1650M2 | SKIP-НП (brand=Hurakan, тело из фида НП позже) — RU не переписан, ячейки fixed.xlsx не тронуты |
+| 2 | 29/86 | 2807599999 | Hurakan | Пила для м'яса HURAKAN HKN-SE1260 | SKIP-НП (brand=Hurakan, тело из фида НП позже) — RU не переписан, ячейки fixed.xlsx не тронуты |
 
 ---
 
@@ -36,4 +41,6 @@ _(батч 1 SKU 1-8 — Hurakan нет; батч 2 SKU 9-16 — Hurakan нет,
 
 ---
 
-**Last updated:** 2026-05-18 — chunk-055 батч 3 (SKU 17-24) COMMITTED 24/86. Ленточные пилы FROSTY/Fimar/Fama/Sirman. blknochg 3 (SKU 17/18/19 FROSTY SO202VECO/JG-210/JG-280 — genuine RU, `desc UA==RU` False, `nm_ru==nazv_ru`, LIVE не переписан) / blk триплет 5 (SKU 20 Fimar SE1830 / 21 Fama FSG103 / 22 Sirman SO1650F3 / 23 Sirman SO1840F3 / 24 FROSTY DQ-210 — `desc UA==RU` True → тег-в-tag RU-перевод + Назв.мод RU nm_ua→nazv_ru; Назв RU уже genuine, не тронут) / blknotrip 0 / SKIP-НП 0 (Fama≠FAGOR, FROSTY/Fimar/Sirman не в НП-списке → обычная обработка). Авто-фиксы батча: SKU 23 `об\хв`→`об/мин` (укр. хв→рус. мин + нормализация разделителя, очевидная опечатка); SKU 22 source-typo `аннодированного`→`анодированного` (обе локали были RU=UA-копия). Real-fraction `N.N`→`N,N` где встречалось в UA-копиях; вес `NN.00` (SKU 24 `46.00`, SKU 17 `48.00`) = формат-политика A → verbatim, НЕ флипнут. Латин. `x` габариты глоб. policy B verbatim; кир. `х` множители no-op. Апостроф `&#39;`/`'`→0 в RU. **Новых Открытых вопросов нет.** Кумулятивно Открытых вопросов chunk-055 = 1 (только #1 SKU 10). NEXT: батч SKU 25-32.
+**Last updated (батч 3):** 2026-05-18 — chunk-055 батч 3 (SKU 17-24) COMMITTED 24/86. Ленточные пилы FROSTY/Fimar/Fama/Sirman. blknochg 3 (SKU 17/18/19 FROSTY SO202VECO/JG-210/JG-280 — genuine RU, `desc UA==RU` False, `nm_ru==nazv_ru`, LIVE не переписан) / blk триплет 5 (SKU 20 Fimar SE1830 / 21 Fama FSG103 / 22 Sirman SO1650F3 / 23 Sirman SO1840F3 / 24 FROSTY DQ-210 — `desc UA==RU` True → тег-в-tag RU-перевод + Назв.мод RU nm_ua→nazv_ru; Назв RU уже genuine, не тронут) / blknotrip 0 / SKIP-НП 0 (Fama≠FAGOR, FROSTY/Fimar/Sirman не в НП-списке → обычная обработка). Авто-фиксы батча: SKU 23 `об\хв`→`об/мин` (укр. хв→рус. мин + нормализация разделителя, очевидная опечатка); SKU 22 source-typo `аннодированного`→`анодированного` (обе локали были RU=UA-копия). Real-fraction `N.N`→`N,N` где встречалось в UA-копиях; вес `NN.00` (SKU 24 `46.00`, SKU 17 `48.00`) = формат-политика A → verbatim, НЕ флипнут. Латин. `x` габариты глоб. policy B verbatim; кир. `х` множители no-op. Апостроф `&#39;`/`'`→0 в RU. **Новых Открытых вопросов нет.** Кумулятивно Открытых вопросов chunk-055 = 1 (только #1 SKU 10). NEXT: батч SKU 25-32.
+
+**Last updated (батч 4):** 2026-05-18 — chunk-055 батч 4 (SKU 25-32) COMMITTED 32/86. Ленточные пилы для мяса FROSTY DQ / Hurakan / Airhot / Dadaux SX. blk триплет 3 (SKU 25 Frosty DQ-280 / 26 Frosty DQ-310 / 28 Airhot HSL-1650A — `desc UA==RU` True → тег-в-tag RU-перевод + Назв.мод RU nm_ua→nazv_ru; Назв RU уже genuine, не тронут) / blknochg 3 (SKU 30 Dadaux SX 400 S / 31 SX 400 / 32 SX 350 S — `desc UA==RU` False, genuine отдельный RU, LIVE не переписан) / **SKIP-НП 2 (SKU 27 Hurakan HKN-SE1650M2 / 29 Hurakan HKN-SE1260 — ожидаемые 2 Hurakan чанка-055 найдены и закрыты; RU не тронут, тело из фида НП позже)**. Авто-фикс батча: SKU 28 `Потужність 0.75`→`Мощность 0,75` (реальная дробь в UA-копии). Новые термины: `підлогова`→`напольная` (SKU 26); `висота різу`→`высота реза`, `товщина нарізки`→`толщина нарезки`, `полотно для пилки`→`полотно для пилы` (SKU 28). Вес `48.00`/`87.00` = политика A verbatim. **Новых Открытых вопросов нет.** Кумулятивно Открытых вопросов chunk-055 = 1 (только #1 SKU 10). NEXT: батч SKU 33-40.
