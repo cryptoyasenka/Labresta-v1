@@ -1,7 +1,7 @@
 # CURRENT-w2 — LabResta translation audit (W2 параллельный воркер)
 
 **Last touched:** 2026-05-18
-**Status:** chunk-055 scaffold готов, next батч SKU 1-8
+**Status:** chunk-055 батч 1 (SKU 1-8) COMMITTED 8/86, next батч SKU 9-16
 
 ## Диапазон W2
 - ТОЛЬКО chunk-055 … chunk-085. НИКОГДА не трогать chunk-≤054 (W1) и не редактировать main.
@@ -12,8 +12,9 @@
 - [x] CURRENT-w2.md создан (первый заход W2)
 - [x] chunk-055 scaffold: `chunk-055-diff.md` + `chunk-055-MANUAL-REVIEW.md` + `chunk-glossary-w2.md`
 - [x] chunk-055.xlsx source скопирован в W2 (gitignored, read-only)
-- [ ] chunk-055 батч SKU 1-8 (next)
-- [ ] chunk-055 батчи 9-86 (батч = 8 SKU)
+- [x] chunk-055 батч SKU 1-8 → 8/86 (blknochg 4 / blk триплет 2 / blknotrip 2 / SKIP-НП 0; OQ 0)
+- [ ] chunk-055 батч SKU 9-16 (next)
+- [ ] chunk-055 батчи 17-86 (батч = 8 SKU)
 - [ ] chunk-056 … chunk-085
 
 ## chunk-055 факты
@@ -29,7 +30,7 @@
 - `.planning/translation-audit/chunks/chunk-055-fixed.xlsx` — ещё не создан (создаётся при первом батче)
 
 ## Next step
-chunk-055 батч SKU 1-8 (Артикул `2204681685` Sirman … вперёд). Прочитать memory `feedback_labresta_ua_ru_translation_rules`, эталон формата chunk-019-MANUAL-REVIEW.md + chunk-019-diff.md. Для каждого SKU: SKIP-НП-чек бренда → если в списке (Hurakan и др.) пометить SKIP-НП и дальше; иначе аудит UA+RU по правилам, запись в chunk-055-fixed.xlsx + chunk-055-diff.md + chunk-055-MANUAL-REVIEW.md. После батча: контент-коммит + CURRENT-w2 маркер + push origin translation-audit/w2.
+chunk-055 батч SKU 9-16. Дамп: `C:/Projects/labresta-sync/.venv/Scripts/python.exe` + openpyxl, range(9,17) по `.planning/translation-audit/chunks/chunk-055.xlsx`. Для каждого SKU: SKIP-НП-чек бренда (Hurakan/Apach/Fagor/Tatra/Cold/PROJECT SYSTEMS/Astoria/Arris/Maxima — case-insensitive, лат+кир) → если в списке пометить «SKIP-НП (brand=X…)» в MANUAL-REVIEW, ячейки fixed.xlsx не менять, считать отд. категорией; иначе W1-методология: `desc UA==RU` False→blknochg (genuine, LIVE не переписывать) / True→полный тег-в-tag RU-перевод (blk триплет если Назв.мод RU=nm_ua UA-leak; blknotrip если Назв бренд+код language-neutral). META keywords всегда faithful. decimal `N.N`→`N,N` обе локали только UA-копии реальные дроби. Запись в chunk-055-fixed.xlsx (load DST, edit by Артикул, save) + chunk-055-diff.md + chunk-055-MANUAL-REVIEW.md + glossary при новых терминах. После батча: контент-коммит + CURRENT-w2 маркер + push origin translation-audit/w2.
 
 ## Workflow напоминание
 - Источник: `chunk-NN.xlsx` (read-only, копируется из `C:/Projects/labresta-sync/.planning/translation-audit/chunks/` — gitignored). Python: `C:/Projects/labresta-sync/.venv/Scripts/python.exe` (в W2 .venv нет).
