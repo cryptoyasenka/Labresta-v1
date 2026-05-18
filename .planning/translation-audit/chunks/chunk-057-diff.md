@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-057 (54 SKU)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 32/54 (blk триплет 3 / blknochg 28 / blknotrip 1 / SKIP-НП 0; Открытых вопросов 0)
+**Status:** IN PROGRESS 40/54 (blk триплет 3 / blknochg 36 / blknotrip 1 / SKIP-НП 0; Открытых вопросов 0)
 **Worker:** W2 (параллельный воркер, диапазон chunk-055 … chunk-085; W1 ведёт chunk-001 … chunk-054)
 
 **Состав (по типу товара):** первый SKU — Артикул `902327287`, бренд Hendi (`Кавомашина Hendi PROFI LINE XXL 208991 (автомат)`); последний — Артикул `525346665`, бренд **Apach** (`Соковижималка для цитрусових Apach ACS1 ECO`). Колонка `Бренд` в источнике дублирует `Артикул` (числовой) — бренд определяется по `Название` per-SKU при аудите батча. Тип товара определяется per-SKU. **SKIP-НП:** SKU54 (Артикул `525346665`) `Соковижималка для цитрусових Apach ACS1 ECO` — **APACH** в НП-списке → SKIP-НП (тело придёт из фида НП позже, RU не трогается); остальные бренды (Hendi, Victoria Arduino, …) НЕ в НП-списке — обрабатываются обычно, подтверждается per-батч по `Название`. Батч = 8 SKU; 7 батчей (последний SKU 49-54 = 6 SKU). openpyxl rows 2..55 (row = SKU + 1).
@@ -440,5 +440,89 @@
 ---
 
 **Наблюдения по батчу SKU 25-32 (батч 4).** Все 8 — кофемашины: **Victoria Arduino** SKU 25-31 (Eagle One Prima PRO/EXP/Prima · 358 White Eagle Digit 2GR/3GR · 358 White Eagle T3 2GR/3GR) + **Nuova Simonelli** SKU32 (Musica Standart AD); подтверждено по `Название` — ни один не в НП-списке HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA, SKIP-НП 0. **8 blknochg** (все `descUA==descRU` False — RU genuine отдельный самостоятельный русский текст; `nmRU==nazvRU` True — Назв.мод RU(col5) == genuine Назв RU(col7), UA-leak нет; LIVE genuine RU не переписываем, fixed.xlsx не трогаем — остаётся как в источнике/как после батча 1). blk триплет 0 / blknotrip 0 / SKIP-НП 0. Переводимых UA-копий в батче нет → реальных `.`-дробей не нормализовали, новых glossary-терминов не извлекали (genuine RU не переписывается). META keywords не трогались. **1 soft-note НЕ нумер.** (genuine RU не переписываем — только заметка): SKU32 (Артикул 2101838139, Nuova Simonelli Musica Standart AD) — genuine RU короче UA, опускает строку-заголовок списка UA `<li>Оснащення бойлера:</li>`; структурное расхождение внутри genuine отдельного RU при консистентных именах col4-7 → НЕ нумерованный OQ. Мелкие наблюдения (НЕ soft-note, UA col35 / META не трогаются): SKU25/26/28 UA-источник `Напруга, 220`|`220/380` без `В`; SKU26/27 UA-источник строчное `квт`; SKU27 genuine RU разговорное `из нержавейки` (авторский стиль, НЕ рассинхрон); SKU32 набор META KW.RU ≠ KW.UA — всё в genuine RU/UA-источнике корректно/не критично, blknochg не переписываем. Новых нумерованных Открытых вопросов в батче НЕТ; Открытых вопросов 0 (кумул. ждут Yana: OQ#1 SKU10 chunk-055; OQ#1 SKU67 chunk-056 — отдельная нумерация). +0 строк глоссария (батч полностью blknochg — genuine RU не переписывается, термины не извлекались; кумул. 166 без изменений).
+
+---
+
+## SKU 33/54 — Кофемашина Nuova Simonelli Musica Lux (Артикул 2101876085) — blknochg
+
+**Поле:** Описание товара (RU) · Название модификации (RU)
+**Было/Стало:** без изменений
+
+*(blknochg — desc UA==RU False (lenUA=1674 lenRU=1668): RU genuine отдельный самостоятельный русский текст; nmRU==nazvRU True — Назв.мод RU(col5) == genuine Назв RU(col7) `Кофемашина Nuova Simonelli Musica Lux`, UA-leak нет. LIVE genuine RU не переписываем, fixed.xlsx не трогаем — остаётся как в источнике. Бренд Nuova Simonelli — НЕ в НП-списке, обрабатывается обычно. Чистый blknochg, genuine RU полностью переведён; 27 `<li>` параллельны UA↔RU (включая `Оснащение бойлера:`), genuine RU на 6 символов короче — мелкая компрессия формулировок, НЕ структурный пропуск, НЕ soft-note.)*
+*(scoped к row Артикул=2101876085)*
+
+---
+
+## SKU 34/54 — Кофемашина Nuova Simonelli Appia Life XT 2 Gr V (Артикул 2101904174) — blknochg
+
+**Поле:** Описание товара (RU) · Название модификации (RU)
+**Было/Стало:** без изменений
+
+*(blknochg — desc UA==RU False (lenUA=1071 lenRU=1065): RU genuine отдельный самостоятельный русский текст; nmRU==nazvRU True — Назв.мод RU(col5) == genuine Назв RU(col7) `Кофемашина Nuova Simonelli Appia Life XT 2 Gr V`, UA-leak нет. LIVE genuine RU не переписываем, fixed.xlsx не трогаем — остаётся как в источнике. Чистый blknochg, genuine RU полностью переведён, претензий нет.)*
+*(scoped к row Артикул=2101904174)*
+
+---
+
+## SKU 35/54 — Кофемашина Nuova Simonelli Appia Life 3 Gr S (Артикул 2101924559) — blknochg
+
+**Поле:** Описание товара (RU) · Название модификации (RU)
+**Было/Стало:** без изменений
+
+*(blknochg — desc UA==RU False (lenUA=1052 lenRU=1043): RU genuine отдельный самостоятельный русский текст; nmRU==nazvRU True — Назв.мод RU(col5) == genuine Назв RU(col7) `Кофемашина Nuova Simonelli Appia Life 3 Gr S`, UA-leak нет. LIVE genuine RU не переписываем, fixed.xlsx не трогаем — остаётся как в источнике. Чистый blknochg, genuine RU полностью переведён, претензий нет.)*
+*(scoped к row Артикул=2101924559)*
+
+---
+
+## SKU 36/54 — Кофемашина Nuova Simonelli Appia Life 3 Gr V (Артикул 2101964051) — blknochg
+
+**Поле:** Описание товара (RU) · Название модификации (RU)
+**Было/Стало:** без изменений
+
+*(blknochg — desc UA==RU False (lenUA=1354 lenRU=1357): RU genuine отдельный самостоятельный русский текст; nmRU==nazvRU True — Назв.мод RU(col5) == genuine Назв RU(col7) `Кофемашина Nuova Simonelli Appia Life 3 Gr V`, UA-leak нет. LIVE genuine RU не переписываем, fixed.xlsx не трогаем — остаётся как в источнике. Чистый blknochg. Мелкое наблюдение (НЕ soft-note, UA col35 не трогается): UA-источник `Колір чорний` без двоеточия, genuine RU `Цвет: Черный` нормализовано — авторский стиль genuine RU.)*
+*(scoped к row Артикул=2101964051)*
+
+---
+
+## SKU 37/54 — Кофемашина Nuova Simonelli Aurelia Wave 2 Gr S (Артикул 2102355365) — blknochg
+
+**Поле:** Описание товара (RU) · Название модификации (RU)
+**Было/Стало:** без изменений
+
+*(blknochg — desc UA==RU False (lenUA=1142 lenRU=1149): RU genuine отдельный самостоятельный русский текст; nmRU==nazvRU True — Назв.мод RU(col5) == genuine Назв RU(col7) `Кофемашина Nuova Simonelli Aurelia Wave 2 Gr S`, UA-leak нет. LIVE genuine RU не переписываем, fixed.xlsx не трогаем — остаётся как в источнике. Чистый blknochg. Мелкое наблюдение (НЕ soft-note): UA-источник `Напруга, 220` без `В`; genuine RU корректно `Напряжение, В 220`, UA col35 не трогается.)*
+*(scoped к row Артикул=2102355365)*
+
+---
+
+## SKU 38/54 — Кофемашина Nuova Simonelli Aurelia Wave 2 Gr V (Артикул 2102370466) — blknochg
+
+**Поле:** Описание товара (RU) · Название модификации (RU)
+**Было/Стало:** без изменений
+
+*(blknochg — desc UA==RU False (lenUA=1570 lenRU=1587): RU genuine отдельный самостоятельный русский текст; nmRU==nazvRU True — Назв.мод RU(col5) == genuine Назв RU(col7) `Кофемашина Nuova Simonelli Aurelia Wave 2 Gr V`, UA-leak нет. LIVE genuine RU не переписываем, fixed.xlsx не трогаем — остаётся как в источнике. Чистый blknochg. Мелкое наблюдение (НЕ soft-note): UA-источник `Напруга, 230-380` без `В`; genuine RU корректно `Напряжение, В 230-380`.)*
+*(scoped к row Артикул=2102370466)*
+
+---
+
+## SKU 39/54 — Кофемашина Nuova Simonelli Aurelia Wave T3 2 Gr (Артикул 2102403518) — blknochg
+
+**Поле:** Описание товара (RU) · Название модификации (RU)
+**Было/Стало:** без изменений
+
+*(blknochg — desc UA==RU False (lenUA=1788 lenRU=1805): RU genuine отдельный самостоятельный русский текст; nmRU==nazvRU True — Назв.мод RU(col5) == genuine Назв RU(col7) `Кофемашина Nuova Simonelli Aurelia Wave T3 2 Gr`, UA-leak нет. LIVE genuine RU не переписываем, fixed.xlsx не трогаем — остаётся как в источнике. Чистый blknochg. Мелкое наблюдение (НЕ soft-note): UA-источник `Напруга, 230-380` без `В`; genuine RU корректно `Напряжение, В 230-380`.)*
+*(scoped к row Артикул=2102403518)*
+
+---
+
+## SKU 40/54 — Кофемашина Nuova Simonelli Aurelia Wave T3 3 Gr (Артикул 2102410277) — blknochg
+
+**Поле:** Описание товара (RU) · Название модификации (RU)
+**Было/Стало:** без изменений
+
+*(blknochg — desc UA==RU False (lenUA=1736 lenRU=1754): RU genuine отдельный самостоятельный русский текст; nmRU==nazvRU True — Назв.мод RU(col5) == genuine Назв RU(col7) `Кофемашина Nuova Simonelli Aurelia Wave T3 3 Gr`, UA-leak нет. LIVE genuine RU не переписываем, fixed.xlsx не трогаем — остаётся как в источнике. Чистый blknochg. Мелкое наблюдение (НЕ soft-note): UA-источник `Напруга, 230-380` без `В` (genuine RU `Напряжение, В 230-380`); UA опускает строку `Габарити в упаковці` консистентно UA↔RU — НЕ рассинхрон, НЕ soft-note.)*
+*(scoped к row Артикул=2102410277)*
+
+---
+
+**Наблюдения по батчу SKU 33-40 (батч 5).** Все 8 — кофемашины **Nuova Simonelli** (Musica Lux · Appia Life XT 2Gr V / 3Gr S / 3Gr V · Aurelia Wave 2Gr S/V · Aurelia Wave T3 2Gr/3Gr); подтверждено по `Название` — Nuova Simonelli НЕ в НП-списке HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA, SKIP-НП 0. **8 blknochg** (все `descUA==descRU` False — RU genuine отдельный самостоятельный русский текст; `nmRU==nazvRU` True — Назв.мод RU(col5) == genuine Назв RU(col7), UA-leak нет; LIVE genuine RU не переписываем, fixed.xlsx не трогаем — остаётся как в источнике/как после батча 1). blk триплет 0 / blknotrip 0 / SKIP-НП 0. Переводимых UA-копий в батче нет → реальных `.`-дробей не нормализовали, новых glossary-терминов не извлекали (genuine RU не переписывается). META keywords не трогались. **0 soft-note** — имена col4-7 консистентны UA↔RU во всех 8, рассинхрона model-кода нет, структурных пропусков нет (SKU33 genuine RU короче на 6 символов = мелкая компрессия, 27 `<li>` параллельны). Мелкие наблюдения (НЕ soft-note, UA col35 / META не трогаются): SKU37 UA-источник `Напруга, 220` без `В`; SKU38/39/40 UA-источник `Напруга, 230-380` без `В` (genuine RU корректно `Напряжение, В …`); SKU33/36/38/39/40 genuine RU `<li>обратный клапан</li>` строчное «обратный» (авторский стиль genuine RU); SKU36 UA `Колір чорний` без двоеточия — всё в genuine RU корректно, blknochg не переписываем. Новых нумерованных Открытых вопросов в батче НЕТ; Открытых вопросов 0 (кумул. ждут Yana: OQ#1 SKU10 chunk-055; OQ#1 SKU67 chunk-056 — отдельная нумерация). +0 строк глоссария (батч полностью blknochg — genuine RU не переписывается, термины не извлекались; кумул. 166 без изменений).
 
 ---
