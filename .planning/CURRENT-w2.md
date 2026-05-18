@@ -1,7 +1,7 @@
 # CURRENT-w2 — LabResta translation audit (W2 параллельный воркер)
 
-**Last touched:** 2026-05-18 (chunk-056 батч 1 SKU 1-8 — 8/91)
-**Status:** chunk-056 IN PROGRESS 8/91 (батч 1 SKU 1-8 COMMITTED; blknochg 2 / blk триплет 6 / blknotrip 0 / SKIP-НП 0); chunk-055 ЗАКРЫТ 86/86; Открытый вопрос #1 chunk-055 (SKU 10 модель-код) ждёт ответа Yana; next: chunk-056 батч 2 SKU 9-16
+**Last touched:** 2026-05-18 (chunk-056 батч 2 SKU 9-16 — 16/91)
+**Status:** chunk-056 IN PROGRESS 16/91 (батч 2 SKU 9-16 COMMITTED; blknochg 4 / blk триплет 12 / blknotrip 0 / SKIP-НП 0); chunk-055 ЗАКРЫТ 86/86; Открытый вопрос #1 chunk-055 (SKU 10 модель-код) ждёт ответа Yana; next: chunk-056 батч 3 SKU 17-24
 
 > **РЕЖИМ: НЕПРЕРЫВНЫЙ НОЧНОЙ (Yana 2026-05-18).** НЕ останавливаться после одного батча. После коммита+push сразу следующий батч (range +8), пока весь диапазон chunk-055…085 не закрыт. Контекст переполнился → снапшот+auto-compact+restore из этого файла, продолжать. Cron 15m = только страховка на смерть сессии. Стоп только: весь диапазон готов, ИЛИ нужен ответ Yana (тогда зафиксировать OQ и идти дальше по остальным SKU). См. memory `feedback-w2-continuous-night-mode`.
 
@@ -27,7 +27,8 @@
 - [x] chunk-055 батч SKU 81-86 → 86/86 (blk триплет 5 (FIMAR D20x20/E1/E4/E5/E8) / blknochg 1 (FIMAR E6 genuine RU, soft-note δ=5 vs 6) / blknotrip 0 / SKIP-НП 0; OQ 0, кумул. OQ#1 SKU 10; +0 терминов, кумул. 47) — **chunk-055 ЗАКРЫТ**
 - [x] chunk-056 scaffold (W2, продолжение chunk-055) — COMMITTED fbca2e0
 - [x] chunk-056 батч SKU 1-8 → 8/91 (blk триплет 6 (Fimar E10/E14/H 2.5/H 4/H 8/V) / blknochg 2 (Fimar H 6/H10 genuine RU) / blknotrip 0 / SKIP-НП 0; реальная дробь SKU3 2.5→2,5; OQ 0, кумул. OQ#1 SKU 10 chunk-055; +7 строк глоссария, кумул. 54)
-- [ ] chunk-056 батч SKU 9-16 → next
+- [x] chunk-056 батч SKU 9-16 → 16/91 (blk триплет 6 (Fimar Z3/Z4/Z7/Z2 + RC 27070/27164) / blknochg 2 (Frosty D8/D10 genuine RU) / blknotrip 0 / SKIP-НП 0; реальные дроби веса SKU15 0.64/0.7, SKU16 0.5; soft-note SKU13 `магневый` genuine RU; OQ 0, кумул. OQ#1 SKU 10 chunk-055; +6 строк глоссария, кумул. 60)
+- [ ] chunk-056 батч SKU 17-24 → next
 - [ ] chunk-056 (остаток) … chunk-085
 
 ## chunk-055 итог (ЗАКРЫТ)
@@ -39,15 +40,15 @@
 - **SKIP-НП брендов нет** — ни один не в НП-списке → ожидается SKIP-НП 0, все обрабатываются обычно. Батч = 8 SKU, 12 батчей (последний SKU 89-91 = 3 SKU).
 
 ## Open files
-- `.planning/translation-audit/chunks/chunk-056-diff.md` — diff (IN PROGRESS 8/91)
-- `.planning/translation-audit/chunks/chunk-056-MANUAL-REVIEW.md` — ручная проверка (IN PROGRESS 8/91)
+- `.planning/translation-audit/chunks/chunk-056-diff.md` — diff (IN PROGRESS 16/91)
+- `.planning/translation-audit/chunks/chunk-056-MANUAL-REVIEW.md` — ручная проверка (IN PROGRESS 16/91)
 - `.planning/translation-audit/chunks/chunk-056.xlsx` — source (read-only, gitignored)
-- `.planning/translation-audit/chunks/chunk-056-fixed.xlsx` — СОЗДАН (gitignored); батч 1 8/91 applied + verified `=== ALL OK ===`. Со 2-го батча load существующий (НЕ копировать source).
-- `.planning/translation-audit/chunks/chunk-glossary-w2.md` — сводный глоссарий W2 (общий накопительный, 54 строки после chunk-056 б1)
+- `.planning/translation-audit/chunks/chunk-056-fixed.xlsx` — СОЗДАН (gitignored); батч 1+2 16/91 applied + verified `=== ALL OK ===` (батч-1 survival проверен). Load существующий (НЕ копировать source).
+- `.planning/translation-audit/chunks/chunk-glossary-w2.md` — сводный глоссарий W2 (общий накопительный, 60 строк после chunk-056 б2)
 - chunk-055 (ЗАКРЫТ): chunk-055-diff.md / chunk-055-MANUAL-REVIEW.md DONE 86/86; chunk-055-fixed.xlsx 86/86 verified; OQ#1 SKU 10 ждёт Yana
 
 ## Next step
-**chunk-056 батч 1 (SKU 1-8) COMMITTED 8/91 (контент + CURRENT-w2 маркер + push).** Далее без остановки → **chunk-056 батч 2 SKU 9-16** (openpyxl rows 10..17, range(10,18)) по `.planning/translation-audit/chunks/chunk-056.xlsx`. Дамп SKU 9-16 UA/RU name+nm+desc+kw в UTF-8 → SKIP-НП-чек бренда (Fimar 14 всего — первые 8 в б1, остаток Fimar + переход к др. брендам; ни один не в НП-списке) → категоризация blknochg/blk триплет/blknotrip → load существующий chunk-056-fixed.xlsx (НЕ копировать source!) → apply by Артикул → verify booleans `=== ALL OK ===` → 4 артефакта (diff Status 16/91 + 8 entries + summary, MANUAL-REVIEW Status 16/91 + Last updated б2, glossary новые/footer, CURRENT-w2 чекбокс+next батч 3 SKU 17-24 range(18,26)) → 2 коммита (контент → CURRENT-w2 маркер, автор LabResta, без следов AI) → push origin translation-audit/w2 → СРАЗУ батч 3 (НЕПРЕРЫВНЫЙ режим).
+**chunk-056 батч 2 (SKU 9-16) COMMITTED 16/91 (контент + CURRENT-w2 маркер + push).** Далее без остановки → **chunk-056 батч 3 SKU 17-24** (openpyxl rows 18..25, range(18,26)) по `.planning/translation-audit/chunks/chunk-056.xlsx`. Дамп SKU 17-24 UA/RU name+nm+desc+kw в UTF-8 → SKIP-НП-чек бренда (по `Бренд`/`Название`; бренд-состав chunk-056 = Robot Coupe/Fimar/Hendi/Nuova Simonelli/FROSTY/Bezzera/GGM/Bartscher/Saro — ни один не в НП-списке) → категоризация blknochg/blk триплет/blknotrip → load существующий chunk-056-fixed.xlsx (НЕ копировать source!) → apply by Артикул → verify booleans `=== ALL OK ===` + батч-1/2 survival → 4 артефакта (diff Status 24/91 + 8 entries + summary, MANUAL-REVIEW Status 24/91 + Last updated б3, glossary новые/footer, CURRENT-w2 чекбокс+next батч 4 SKU 25-32 range(26,34)) → 2 коммита (контент → CURRENT-w2 маркер, автор LabResta, без следов AI) → push origin translation-audit/w2 → СРАЗУ батч 4 (НЕПРЕРЫВНЫЙ режим).
 
 Методология (та же W1, что chunk-055): для каждого SKU дамп UA/RU name+nm+desc+kw в UTF-8-файл. SKIP-НП-чек бренда (HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA — case-insens, лат+кир; **бренд-состав chunk-056 = Robot Coupe/Fimar/Hendi/Nuova Simonelli/FROSTY/Bezzera/GGM/Bartscher/Saro — НИ ОДИН не в списке → все обычная обработка, SKIP-НП 0 ожидается**) → если бы был в списке: пометить «SKIP-НП» в MANUAL-REVIEW, fixed.xlsx не менять, отд. категория. Иначе: `desc UA==RU` False→**blknochg** (genuine рус., LIVE НЕ переписывать, «Было/Стало: без изменений»; совпадение длин при разном контенте всё равно blknochg — прец. SKU 35/53/54/85) / True→полный тег-в-tag RU-перевод (**blk триплет** если Назв.мод RU=nm_ua UA-leak а Назв RU genuine→ставим Назв.мод RU=nazv_ru; **blknotrip** если Назв/Назв.мод бренд+код language-neutral). META keywords всегда faithful. Апостроф `&#39;`/`'`→0 RU. Реальные дроби `N.N`→`N,N` ТОЛЬКО UA-копии (blk/blknotrip). Вес `NN.00` политика A verbatim. Латин.x(0x78) габариты глоб.B verbatim; кир.х(0x445) no-op. `&delta;`/`&ndash;`/`(Д*Ш*В)`/disc-коды/voltage language-neutral verbatim. Source-typo в UA-копии (переводится) → авто-норма + glossary note. Source-typo/расхождение значения в genuine RU (blknochg) → soft-note в MANUAL-REVIEW НЕ нумеровать (прец. SKU 18/38/39/85). Модель-код в NAME UA↔genuine-RU рассинхрон → нумерованный Открытый вопрос НЕ авто-фикс (прец. OQ#1 SKU 10).
 
