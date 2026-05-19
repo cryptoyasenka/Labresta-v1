@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-058 (78 SKU)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 64/78 (blk триплет 29 / blknochg 28 / blknotrip 0 / SKIP-НП 7; Открытых вопросов 1)
+**Status:** IN PROGRESS 72/78 (blk триплет 29 / blknochg 36 / blknotrip 0 / SKIP-НП 7; Открытых вопросов 1)
 **Worker:** W2 (параллельный воркер, диапазон chunk-055 … chunk-085; W1 ведёт chunk-001 … chunk-054)
 
 **Состав (по типу товара):** первый SKU — Артикул `667275373` (`Преc ручний для цитрусових Remta PS08`); последний — Артикул `1104474099`, бренд **Apach** (`Міксер для молочних коктейлів Apach AMX2 ECO`). Колонка `Бренд` в источнике дублирует `Артикул` (числовой) — бренд определяется по `Название` per-SKU при аудите батча. Тип товара определяется per-SKU (преимущественно соковыжималки/прессы + кофемолки + миксеры). **SKIP-НП (зонд по `Название`): 9 NP-suspect** — Hurakan ×6 (SKU3 Арт `1147746219` · SKU23 `1168646756` · SKU27 `2059483074` · SKU28 `2059491212` · SKU33 `2503667792` · SKU34 `2503722319`) + Apach ×3 (SKU54 `659271594` · SKU77 `1104472736` · SKU78 `1104474099`) — **HURAKAN/APACH** в НП-списке → SKIP-НП (тело придёт из фида НП позже, RU не трогается; вносятся в таблицу при обработке соответствующих батчей). Остальные бренды (Remta, Thielmann, Bartscher, Frosty, Fimar, Sirman, CanCan, Hendi, GoodFood, Ceado, Robot Coupe, Vema, Quamar, Hamilton Beach, Zumex, Bezzera, Nuova Simonelli, Victoria Arduino, …) НЕ в НП-списке — обрабатываются обычно, подтверждается per-батч по `Название`. Батч = 8 SKU; 10 батчей (последний SKU 73-78 = 6 SKU). openpyxl rows 2..79 (row = SKU + 1).
@@ -903,5 +903,89 @@
 ---
 
 **Наблюдения по батчу SKU 57-64 (батч 8).** 8 SKU: **3 blk триплет** (SKU58 Quamar M80 Auto Арт 494532228 · SKU59 Quamar M80D Арт 494532229 · SKU62 Quamar M80E Арт 1408104814 — `descUA==descRU` True UA-копия; Назв.мод RU(col5)=Назв.мод UA(col4) UA-leak `Кавомолка Quamar…` → genuine Назв RU(col7) `Кофемолка Quamar…`; полный тег-в-tag RU-перевод descRU col36) + **5 blknochg** (SKU57 BEZZERA BB004 Арт 2417617787 · SKU60 NUOVA SIMONELLI AMM GRINTA Арт 515254111 · SKU61 Nuova Simonelli MDXS Арт 985269525 · SKU63 Nuova Simonelli GX85W Арт 2019250224 · SKU64 Nuova Simonelli MDXS CORE 23 Арт 2094536451 — `descUA==descRU` False, RU genuine отдельный; `nmRU==nazvRU` True; имена col4-7 консистентны UA↔RU; LIVE genuine RU не переписываем, fixed.xlsx не трогаются == source) + **SKIP-НП 0** (новых НП-брендов нет; все 8 — BEZZERA/Quamar/Nuova Simonelli по `Название` НЕ в НП-списке; оставшиеся НП-suspects chunk-058 = Apach SKU77 Арт 1104472736 / SKU78 Арт 1104474099 в батче 10, Hurakan ×6 + Apach SKU54 исчерпаны). blknotrip 0. fixed.xlsx — загружен СУЩЕСТВУЮЩИЙ chunk-058-fixed.xlsx (source НЕ копировался повторно), edit SKU58/59/62 col5+col36 by Артикул rows 59/60/63, save, reopen read_only VERIFY → `=== ALL OK ===` (col5=genuine col7, col36=RU, апострофы `Об'єм`/`Під'єднання`→`Объем`/`Подключение` blk, габариты слайсом из source DSCUA byte-точно через {D0}, структура `\n`/`<li>`/`<ul>`/`<p>`/`<h2>` поштучно == source; SKU57/60/61/63/64 blknochg не тронуты == source; persistence: PRE_DIFF самовыведен diff fixed↔source = 26 prior-blk rows b1-b7 `[3,5,7,12,13,14,17,18,21,22,23,25,26,27,33,37,40,42,45,46,47,48,49,50,51,56]` сохранились, POST_DIFF = 26 ∪ {row59 SKU58, row60 SKU59, row63 SKU62} = 29 rows). **Единицы измерения** приведены к RU: `об./хв`→`об./мин` (SKU58 ×1, SKU59 ×1, SKU62 ×1). Габариты byte-точно слайсом через {D0}: SKU58/59/62 все `160 х 290 х 510` — кириллическая `х`(U+0445) с пробелами no-op verbatim. `Ø`(U+00D8) символ в blk-описаниях verbatim. iframe в blk батча нет (iframe в genuine SKU61 blknochg `E1CEId7ppSk` не трогается). **Реальных `N.N`-дробей в blk нет** (`1,2`/`0,28`/`0,33`/`0,42` уже запятая verbatim). Апострофы blk UA `Об'єм`/`Під'єднання` → переведены `Объем`/`Подключение` (SKU58/59/62). **4 soft-note НЕ нумер.** (не OQ, genuine RU не переписываем; в глоссарий как термины не вносятся): (1) SKU57 genuine RU `Электропитание 2220&ndash;240/50&ndash;60Гц` — лишняя цифра `2` (UA `220&ndash;240`); (2) SKU61 genuine RU `Рекомендованая производительность дневная` — `Рекомендованая` (одна `н`); (3) SKU63 genuine RU `плоскопарареленными жерновами` (корр. `плоскопараллельными`); (4) SKU64 genuine RU `Рекомендованая` (одна `н`, группа с SKU61). Все 4 — source-typo самостоятельного RU blknochg при консистентном имени col4-7, genuine RU не переписываем (прец. soft-note SKU52/53 б7). SKU60 genuine RU чистый. META keywords не трогались (faithful). Новых нумерованных Открытых вопросов в батче НЕТ; **Открытых вопросов chunk-058 итого 1** (#1 SKU31 из б4; кумул. ждут Yana, отдельная нумерация: OQ#1 SKU10 chunk-055; OQ#1 SKU67 chunk-056). +10 строк глоссария (9 proposed blk триплет SKU58/59/62 новые UA→RU термины + 1 note SKU57/61/63/64; кумул. 236 → 246).
+
+---
+
+## SKU 65/78 — Кофемолка Victoria Arduino Mythos MYONE (Артикул 2101041728) — blknochg
+
+**Поле:** Описание товара (RU) · Название модификации (RU)
+**Было/Стало:** без изменений (`descUA==descRU` False — genuine отдельный RU)
+
+*(blknochg — `descUA==descRU` False (`len UA=1029` ≠ `len RU=1051`); RU genuine — самостоятельный корректный перевод (`<p>Mythos был создан, чтобы определить абсолютный контроль и точность помола кофе…</p>` + `<p><strong>Технические характеристики:</strong></p> <ul>` параллельно UA-структуре, `Электронный дозатор с мгновенным помолом`/`Система CLIMA PRO`). `nmRU==nazvRU` True (`Кофемолка Victoria Arduino Mythos MYONE`), имя col4-7 консистентно UA↔RU. LIVE genuine RU НЕ переписываем, fixed.xlsx == source. Бренд Victoria Arduino — НЕ в НП-списке. Габариты `(195x479x395)` латинская `x`(U+0078) verbatim (genuine — глоб-B). `&ndash;` сущность verbatim. Bunker `1.5`/вес `23.7` точка source-as-is в genuine RU (blknochg значения не нормируем, faithful). `Продуктивність 15 кг/год`→genuine RU `Производительность 15 кг/ч` (самостоятельный RU). genuine RU самодостаточен — добавляет ед. `В` где UA `Напруга, 110/220` без неё (норм. для blknochg). META keywords faithful. soft-note нет (genuine RU чистый, `<li>` параллельны UA, имена консистентны).)*
+*(scoped к row Артикул=2101041728)*
+
+---
+
+## SKU 66/78 — Кофемолка Victoria Arduino Mythos MY75 (Артикул 2101048987) — blknochg
+
+**Поле:** Описание товара (RU) · Название модификации (RU)
+**Было/Стало:** без изменений (`descUA==descRU` False — genuine отдельный RU)
+
+*(blknochg — `descUA==descRU` False (`len UA=1029` ≠ `len RU=1051`); RU genuine — самостоятельный корректный перевод, идентичная Mythos-структура SKU65 (`<p>Mythos был создан…</p>` + `<ul>` параллельно UA), отличие только модель `MY75` и вес `23.8`. `nmRU==nazvRU` True (`Кофемолка Victoria Arduino Mythos MY75`), имя col4-7 консистентно UA↔RU. LIVE genuine RU НЕ переписываем, fixed.xlsx == source. Бренд Victoria Arduino — НЕ в НП-списке. Габариты `(195x479x395)` латинская `x`(U+0078) verbatim. `&ndash;` сущность verbatim. Bunker `1.5`/вес `23.8` точка source-as-is genuine RU (не нормируем). genuine RU добавляет ед. `В` где UA `Напруга, 110/220` без неё (норм.). META keywords faithful. soft-note нет.)*
+*(scoped к row Артикул=2101048987)*
+
+---
+
+## SKU 67/78 — Кофемолка Victoria Arduino Mythos MY85 (Артикул 2101049507) — blknochg
+
+**Поле:** Описание товара (RU) · Название модификации (RU)
+**Было/Стало:** без изменений (`descUA==descRU` False — genuine отдельный RU)
+
+*(blknochg — `descUA==descRU` False (`len UA=1073` ≠ `len RU=1093`); RU genuine — самостоятельный корректный перевод, Mythos-структура с доп. `<li>Микрометрическая настройка помола</li>`, модель `MY85`, ріжки `85` мм, потужність `700/750`, вес `24.5`. `nmRU==nazvRU` True (`Кофемолка Victoria Arduino Mythos MY85`), имя col4-7 консистентно UA↔RU. LIVE genuine RU НЕ переписываем, fixed.xlsx == source. Бренд Victoria Arduino — НЕ в НП-списке. Габариты `(195x479x395)` латинская `x`(U+0078) verbatim. `&ndash;` сущность verbatim. Bunker `1.5`/вес `24.5` точка source-as-is genuine RU (не нормируем). UA `Напруга, В 110/220` (ед. есть) → RU `Напряжение, В 110/220`. META keywords faithful. soft-note нет.)*
+*(scoped к row Артикул=2101049507)*
+
+---
+
+## SKU 68/78 — Кофемолка Victoria Arduino Mythos MYG75 (Артикул 2101050154) — blknochg
+
+**Поле:** Описание товара (RU) · Название модификации (RU)
+**Было/Стало:** без изменений (`descUA==descRU` False — genuine отдельный RU)
+
+*(blknochg — `descUA==descRU` False (`len UA=1134` ≠ `len RU=1152`); RU genuine — самостоятельный корректный перевод, Mythos-структура с доп. `<li>Технология Clumb Crusher</li>`/`<li>Отсрочка старта</li>`/`<li>Микрометрическая настройка помола</li>`, модель `MYG75`, Gravitech `Так/Да`, вес `24.0`. `nmRU==nazvRU` True (`Кофемолка Victoria Arduino Mythos MYG75`), имя col4-7 консистентно UA↔RU. LIVE genuine RU НЕ переписываем, fixed.xlsx == source. Бренд Victoria Arduino — НЕ в НП-списке. Габариты `(195x479x395)` латинская `x`(U+0078) verbatim. `&ndash;` сущность verbatim. `Clumb Crusher` (source-написание брендового термина) language-neutral verbatim. Bunker `1.5`/вес `24.0` точка source-as-is genuine RU (не нормируем). genuine RU добавляет ед. `В` где UA `Напруга, 110/220` без неё (норм.). META keywords faithful. soft-note нет.)*
+*(scoped к row Артикул=2101050154)*
+
+---
+
+## SKU 69/78 — Кофемолка Victoria Arduino Mythos MYG85 (Артикул 2101050995) — blknochg
+
+**Поле:** Описание товара (RU) · Название модификации (RU)
+**Было/Стало:** без изменений (`descUA==descRU` False — genuine отдельный RU)
+
+*(blknochg — `descUA==descRU` False (`len UA=1135` ≠ `len RU=1151`); RU genuine — самостоятельный корректный перевод, Mythos-структура (как SKU68 + `Clumb Crusher`/`Отсрочка старта`/`Микрометрическая настройка`), модель `MYG85`, ріжки `85` мм, потужність `700/750`, вес `24.7`. `nmRU==nazvRU` True (`Кофемолка Victoria Arduino Mythos MYG85`), имя col4-7 консистентно UA↔RU. LIVE genuine RU НЕ переписываем, fixed.xlsx == source. Бренд Victoria Arduino — НЕ в НП-списке. Габариты `(195x479x395)` латинская `x`(U+0078) verbatim. `&ndash;` сущность verbatim. `Clumb Crusher` language-neutral verbatim. Bunker `1.5`/вес `24.7` точка source-as-is genuine RU (не нормируем). UA `Напруга, В 110/220` → RU `Напряжение, В 110/220`. META keywords faithful. soft-note нет.)*
+*(scoped к row Артикул=2101050995)*
+
+---
+
+## SKU 70/78 — Кофемолка Victoria Arduino Atom (Артикул 2101051224) — blknochg
+
+**Поле:** Описание товара (RU) · Название модификации (RU)
+**Было/Стало:** без изменений (`descUA==descRU` False — genuine отдельный RU)
+
+*(blknochg — `descUA==descRU` False (`len UA=691` ≠ `len RU=698`); RU genuine — самостоятельный корректный перевод (`<p>Предназначена для дома, офисов, общепита, ресторанов, баров, кафе…</p>` + `<ul>` параллельно UA, `Программа Hands-Free`/`Фиксация портофильтров`). `nmRU==nazvRU` True (`Кофемолка Victoria Arduino Atom`), имя col4-7 консистентно UA↔RU. LIVE genuine RU НЕ переписываем, fixed.xlsx == source. Бренд Victoria Arduino — НЕ в НП-списке. Габариты `(180x440x227)` латинская `x`(U+0078) verbatim (genuine — глоб-B). Bunker `0.5`/вес `9.5` точка source-as-is genuine RU (не нормируем). `Hands-Free` language-neutral verbatim. genuine RU самостоятелен — `Одна из самых тихих кофемолок` (UA `Одна з тихих кавомолок` — genuine RU чуть выразительнее, отдельный RU, не наша правка); добавляет ед. `В` где UA `Напруга, 110/220` без неё (норм.). META keywords faithful. soft-note нет.)*
+*(scoped к row Артикул=2101051224)*
+
+---
+
+## SKU 71/78 — Кофемолка Nuova Simonelli MDJ (Артикул 2101327912) — blknochg
+
+**Поле:** Описание товара (RU) · Название модификации (RU)
+**Было/Стало:** без изменений (`descUA==descRU` False — genuine отдельный RU)
+
+*(blknochg — `descUA==descRU` False (`len UA=1034` ≠ `len RU=1055`); RU genuine — самостоятельный корректный перевод (`<p>Компания Nuova Simonelli представила две новые версии своих кофемолок MDJ и MDXS.</p>` + `<ul>` параллельно UA, `Long Life &Oslash; = 75 мм`/`Переменная скорость`). `nmRU==nazvRU` True (`Кофемолка Nuova Simonelli MDJ`), имя col4-7 консистентно UA↔RU. LIVE genuine RU НЕ переписываем, fixed.xlsx == source. Бренд Nuova Simonelli — НЕ в НП-списке. Габариты `215х290х605` кириллическая `х`(U+0445) verbatim. `&Oslash;` сущность verbatim. Апостроф UA `об&#39;єму` → genuine RU `объема` (без апострофа, корр. самостоятельный RU). Дробь `1,6` запятая, целые `5`/`6`/`15`/`75` source-as-is. META keywords faithful. **soft-note НЕ нумер.:** genuine RU содержит внутреннее расхождение значения — текст `MDJ on-demand … способен помолоть 6 килограмм кофе в день` vs спецификация `<li>Максимальная суточная производительность: 5 кг;</li>` (6 vs 5). Расхождение идентично присутствует и в UA-описании (source-internal, консистентно UA↔RU), genuine RU не переписываем, НЕ нормируем (прец. soft-note SKU37 б5 внутри-RU quirk).)*
+*(scoped к row Артикул=2101327912)*
+
+---
+
+## SKU 72/78 — Кофемолка BEZZERA M80A (Артикул 2460095829) — blknochg
+
+**Поле:** Описание товара (RU) · Название модификации (RU)
+**Было/Стало:** без изменений (`descUA==descRU` False — genuine отдельный RU)
+
+*(blknochg — `descUA==descRU` False (`len UA=660` ≠ `len RU=677`); RU genuine — самостоятельный корректный перевод (`<p>Автоматическая версия с автоматической активацией и остановкой помола.</p>` + `<ul>` параллельно UA, `Мощность двигателя 420 Вт`/`Плоские жернова &Oslash; 63мм`/`Об/мин 1600/60`). `nmRU==nazvRU` True (`Кофемолка BEZZERA M80A`), имя col4-7 консистентно UA↔RU. LIVE genuine RU НЕ переписываем, fixed.xlsx == source. Бренд BEZZERA — НЕ в НП-списке. Габариты `225х340х580`/`300х500х600` кириллическая `х`(U+0445) verbatim. `&Oslash;` сущность verbatim. UA `Об/хв`→genuine RU `Об/мин` (genuine уже корр.). Вес `11,4`/`13` запятая/целое source-as-is. META keywords faithful. **soft-note НЕ нумер.:** genuine RU первый `<li>Електроживлення 220-240В/50-60Гц</li>` — UA-остаток (не переведено в genuine RU; корр. `Электропитание`), остальные `<li>` переведены (`Мощность двигателя`/`Об/мин`/`Плоские жернова`/`Габариты`/`Вес`/`Страна происхождения`). source-quirk самостоятельного RU blknochg при консистентном имени col4-7, genuine RU не переписываем, НЕ нормируем (прец. UA-остаток в genuine RU SKU8 chunk-057).)*
+*(scoped к row Артикул=2460095829)*
+
+---
+
+**Наблюдения по батчу SKU 65-72 (батч 9).** 8 SKU: **8 blknochg** (SKU65 Victoria Arduino Mythos MYONE Арт 2101041728 · SKU66 Mythos MY75 Арт 2101048987 · SKU67 Mythos MY85 Арт 2101049507 · SKU68 Mythos MYG75 Арт 2101050154 · SKU69 Mythos MYG85 Арт 2101050995 · SKU70 Victoria Arduino Atom Арт 2101051224 · SKU71 Nuova Simonelli MDJ Арт 2101327912 · SKU72 BEZZERA M80A Арт 2460095829 — `descUA==descRU` False во всех 8, RU genuine отдельный самостоятельный перевод; `nmRU==nazvRU` True; имена col4-7 консистентны UA↔RU (рассинхрона модель-кода нет → нумерованных OQ нет); LIVE genuine RU не переписываем, fixed.xlsx не трогается == source). **blk триплет 0 · blknotrip 0 · SKIP-НП 0** (новых НП-брендов нет; все 8 — Victoria Arduino ×6 / Nuova Simonelli / BEZZERA по `Название` НЕ в НП-списке HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA; оставшиеся НП-suspects chunk-058 = Apach SKU77 Арт 1104472736 / SKU78 Арт 1104474099 в батче 10, Hurakan ×6 + Apach SKU54 исчерпаны). **Весь батч blknochg → apply-скрипт НЕ запускался, chunk-058-fixed.xlsx не создавался/не трогался** (остаётся как после б8: prior-blk b1-b8 26+3=29 rows, POST_DIFF 29 без изменений). SKU65-69 — серия Victoria Arduino Mythos с почти идентичной genuine-RU структурой (отличия: модель-код, ріжки 75/85 мм, потужність, вес, у MY85/MYG75/MYG85 доп. `<li>`); SKU70 Atom компактная; SKU71 MDJ Nuova Simonelli; SKU72 M80A BEZZERA. Габариты в genuine RU verbatim: SKU65-70 `(195x479x395)`/`(180x440x227)` латинская `x`(U+0078) глоб-B; SKU71 `215х290х605` / SKU72 `225х340х580`/`300х500х600` кириллическая `х`(U+0445) — genuine RU не переписываем. `&ndash;`(SKU65-70 `Производительность &ndash; 15 кг/ч`) / `&Oslash;`(SKU71 `Long Life &Oslash; = 75 мм`, SKU72 `&Oslash; 63мм`) сущности genuine RU verbatim. Числа `1.5`/`23.7`/`23.8`/`24.0`/`24.5`/`24.7`/`9.5`/`0.5` с точкой — genuine RU (blknochg) значения НЕ нормируем (faithful, прец. SKU60 б8 `0.5 кг/день`). Апостроф UA `об&#39;єму` SKU71 → genuine RU `объема` (корр. самостоятельный RU). genuine RU самодостаточен и местами полнее UA (добавляет ед. `В` где UA `Напруга, 110/220` без неё SKU65/66/68/70; SKU70 `Одна из самых тихих` vs UA `Одна з тихих`) — норм. для blknochg, не дефект. **2 soft-note НЕ нумер.** (не OQ, genuine RU не переписываем; в глоссарий как термины не вносятся): (1) SKU72 genuine RU первый `<li>Електроживлення 220-240В/50-60Гц</li>` — UA-остаток (не переведено; корр. `Электропитание`), прочие `<li>` переведены — source-quirk самостоятельного RU blknochg при консистентном имени (прец. UA-остаток в genuine RU SKU8 chunk-057); (2) SKU71 genuine RU внутреннее расхождение значения `способен помолоть 6 килограмм кофе в день` vs спец `Максимальная суточная производительность: 5 кг` (6 vs 5) — расхождение идентично в UA-описании (source-internal, консистентно UA↔RU), НЕ нормируем (прец. soft-note SKU37 б5). META keywords не трогались (faithful). Новых нумерованных Открытых вопросов в батче НЕТ; **Открытых вопросов chunk-058 итого 1** (#1 SKU31 из б4; кумул. ждут Yana, отдельная нумерация: OQ#1 SKU10 chunk-055; OQ#1 SKU67 chunk-056). **+0 строк глоссария** (весь батч blknochg — genuine RU не переписывался, переводимых UA-копий нет; кумул. без изменений 246).
 
 ---
