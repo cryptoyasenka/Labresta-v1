@@ -2,9 +2,9 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-063 (88 SKU)
 **Apply key:** `Артикул` (col1, scoped per row)
-**Status:** b10 DONE 80/88 (b11 remain; batch=8)
+**Status:** b11 DONE 88/88 — chunk-063 ЗАКРЫТ
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-062
-**Last updated:** chunk-063 b10 (W2)
+**Last updated:** chunk-063 b11 (W2) — ЗАКРЫТ
 
 Эталон формата: chunk-019-MANUAL-REVIEW.md / chunk-062-MANUAL-REVIEW.md. Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Кумул. OQ закрыты (ОВ-1..ОВ-4 remediation c71341f).
 
@@ -232,4 +232,25 @@ _(нумерация отдельная, начинается с #1; пока н
 
 **Открытых вопросов b10:** нет (blk триплет SKU 73: col5←c7 verbatim incl. en-dash, col36 faithful RU skel==UA, UA-clean; blknochg SKU 74-80: c5==c7 genuine RU, c35≠c36 уже переведено, fixed НЕ тронут; soft-notes pre-existing genuine RU для merge-ревью, не OQ).
 
-<!-- Сводка по батчу b11 ниже. -->
+## b11 (SKU 81-88) — DONE 88/88 — chunk-063 ЗАКРЫТ
+
+**Категории:** blk триплет 3 (SKU 83,84,88) · blknotrip 3 (SKU 85,86,87) · blknochg 2 (SKU 81,82) · SKIP-НП 0.
+
+| SKU | row | ART | Бренд | Категория | Действие |
+|---|---|---|---|---|---|
+| 81 | 82 | 2331821398 | SARO | blknochg | c5==c7 genuine RU «Электросупница SARO SKZ-12»; c36 уже переведён (c35≠c36), fixed НЕ тронут. Soft-note: c36 «Подключение, в 220 В» (UA «Підключення, в 220») / «50&deg;С до 98&deg;С.» vs UA «50 &deg; С до 98 &deg; С» / первый заголовок без `<strong>` — pre-existing genuine RU, не правим |
+| 82 | 83 | 2331843799 | SARO | blknochg | c5==c7 genuine RU «Мармит SARO BMH 210»; c36 уже переведён, fixed НЕ тронут. Soft-note: первый заголовок `<p>Технические характеристики:</p>` без `<strong>` (UA `<strong>`) — pre-existing, не правим |
+| 83 | 84 | 2434365116 | AIRHOT | blk триплет | col5←c7 «Мармит для супа АIRHOT SB-5700S»; col36← faithful RU (skel==UA c35; `&mdash;` verbatim, `5`/`220`/`0.3`/`3.4`/`4.0`/`285x285x352`/`300x300x395` лат.x verbatim; UA-апостроф «об'єм»→«объем») |
+| 84 | 85 | 2434373120 | AIRHOT | blk триплет | col5←c7 «Мармит для супа АIRHOT SB-6000S»; col36← faithful RU (skel==UA c35; `&mdash;` verbatim, `12`/`9`/`220`/`0.4`/`4.6`/`5.5`/`385x385x366`/`340x340x395` лат.x; UA «Країн-виробник»→RU «Страна-производитель») |
+| 85 | 86 | 2464192575 | Bartscher | blknotrip | имя lang-neutral (c5==c7 «Термос Bartscher 150992») — col5 НЕ тронут; col36← faithful RU (skel==UA c35; `3`/`150`/`295`/`1.6`/`170`/`170`/`375`/`1.8`/`180`/`180`/`390` verbatim) |
+| 86 | 87 | 2464194869 | Bartscher | blknotrip | имя lang-neutral (c5==c7 «Термос Bartscher 150993») — col5 НЕ тронут; col36← faithful RU (skel==UA c35; `5`/`370`/`150`/`2.4`/`181`/`245`/`428`/`2.65`/`220`/`220`/`445`; UA «Німеччина»→RU «Германия») |
+| 87 | 88 | 2565697144 | Bartscher | blknotrip | имя lang-neutral (c5==c7 «Термос Bartscher 190117») — col5 НЕ тронут; col36← faithful RU (skel==UA c35; `190117`/`1.9`/`150`/`1.3`/`150`/`200`/`335`/`1.5`/`180`/`180`/`335`) |
+| 88 | 89 | 2567549749 | Bartscher | blk триплет | col5←c7 «Витрина нейтральная Bartscher 700355»; col36← faithful RU (skel==UA c35; `700355`/`2`/`13.2`/`360`/`600`/`515`/`15.5`/`627`/`389`/`546`; «2 фиксированных уровня») |
+
+**Verify:** 161 PASS / 0 FAIL (88 ART + blk триплет 3×12 + blknotrip 3×11 + blknochg/UNCH 2×2; col5←c7 для триплета, col5 НЕ тронут для blknotrip, skel(col36)==skel(UA c35), UA-clean, без ё, dims==).
+
+**Глоссарий b11 (новые UA→RU):** внутрішня поверхня що легко виймається для миття→внутренняя поверхность легко вынимается для мытья · застосовується у складі ліній самообслуговування→применяется в составе линий самообслуживания · технологічних кухонних ліній→технологических кухонных линий · обертовий→поворотный · ручки для перенесення→ручки для переноски · кришка з механікою виливання→крышка с механикой слива · висота під зливним краном→высота под сливным краном · запобіжник кришки насоса→предохранитель крышки насоса · вітрина нейтральна→витрина нейтральная · не потребують підігріву або охолодження→не требуют подогрева или охлаждения. Reuse: марміт→мармит / нержавіюча сталь→нержавеющая сталь / цільнотягнута ємність→цельнотянутая емкость / термін гарантії→срок гарантии / країн-виробник→страна-производитель.
+
+**Открытых вопросов b11:** нет (blk триплет SKU 83/84/88: col5←c7 verbatim, col36 faithful RU skel==UA, UA-clean, `&mdash;` verbatim; blknotrip SKU 85/86/87: c5==c7 lang-neutral, col5 НЕ тронут, col36 faithful RU; blknochg SKU 81/82: c5==c7 genuine RU, c35≠c36 уже переведено, fixed НЕ тронут; soft-notes pre-existing genuine RU для merge-ревью, не OQ).
+
+**chunk-063 ЗАКРЫТ: 88/88 SKU (b1..b11). Открытых вопросов 0. SKIP-НП: SKU 1/3/54. Все правки в chunk-063-fixed.xlsx (gitignored).**
