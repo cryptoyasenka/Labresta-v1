@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-025 (64 SKU)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 56/64
+**Status:** IN PROGRESS 64/64
 
 Здесь собираю всё, что требует твоего подтверждения (не авто-фиксы). Авто-фиксы по locked-паттернам перечислены в сводках по батчам, отдельного подтверждения не требуют. Открытые вопросы накапливаются в нумерованный список и финализируются при закрытии chunk-025. SKIP-НП SKU (НП-эксклюзивные бренды) помечаются здесь и не переписываются.
 
@@ -282,6 +282,44 @@
 
 ---
 
+## Батч SKU 57-64 (64/64)
+
+Артикулы: `2212186835` (Стол холодильный GoodFood GF-GN2100TN-HC — **blknochg**, GoodFood НЕ НП-эксклюзив, du!=dr 828/859, genuine отдельный рус. перевод поставщика, LIVE НЕ переписываем; код идентичен UA↔RU → NON-FLIP), `2212207629` (Стол холодильный GoodFood GF-GN3100TN-HC — **blknochg**, 826/857), `2212214335` (Стол холодильный GoodFood GF-SNACK2100TN-HC — **blknochg**, 831/842), `2212218035` (Стол холодильный GoodFood GF-SNACK3100TN-HC — **blknochg**, 833/865), `2212706960` (Стол холодильный GoodFood GF-S903TOP-HC — **blknochg**, 849/878), `2226838746` (Стол холодильный GEMM TG7130 — **blk триплет**, Gemm НЕ НП-эксклюзив, desc UA==RU True 788/788 🔴 RU=UA + nm_ru укр.-leak `і`, AUTO Назв.мод RU = genuine nazv_ru + Описание RU полный перевод тег-в-tag), `2239396030` (Стол холодильный GoodFood GF-S451-H6C — **blknochg**, 869/877), `2352423600` (Стол холодильный FROSTY PA 3100TN — **blk триплет**, True 561/561, glyph-critical С Cyrillic/C latin). Батч b57 chunk-025 — столы холодильные (blk триплет 2 + blknotrip 0 + blknochg 6 + blknochgeq 0 + SKIP-НП 0). ЗАКРЫВАЮЩИЙ батч 64/64. Продолжение chunk-024 (закрыт 74/74).
+
+### Стандартно применено (locked-паттерны, отдельного подтверждения не требуют)
+
+- **blk триплет — 2.** SKU 62 `2226838746` Gemm GEMM TG7130 `desc UA==RU` **True** 788/788; SKU 64 `2352423600` FROSTY PA 3100TN **True** 561/561 (оба 🔴 RU=UA, `nm_ru`==`nm_ua` укр.-leak `і`, `nm_ru`!=`nazv_ru` genuine). **GEMM/FROSTY НЕ ∈ НП-эксклюзивный список** → обычная обработка. AUTO: Назв.мод (RU) → genuine `nazv_ru`; Описание (RU) полный перевод тег-в-tag (SKU 62 0h2/3p/0strong/2ul/18li/0br/no img; SKU 64 0h2/2p/0strong/1ul/8li/0br/no img; переводы строк зеркально). Коды GEMM TG7130 / FROSTY PA 3100TN идентичны UA↔RU → customer-facing рассинхрона НЕТ → **NON-FLIP**. SOFT (не нумеровано): SKU 62 `&#39;`/U+0027 укр.-апостроф ×2 в `Об'єм`/`Об'єм:` → DROP (`Объём`), `&deg;` ×0 / `&ndash;` ×0, `-2...+8С ,` С Cyrillic U+0421 (БЕЗ `&deg;`) verbatim вкл. пробел перед `,`, `GN1/1` (без пробела) / `220V` (latin V) / литеральный `<` в `< 300` / trailing-пробелы `950 `/`упаковке ` verbatim, `0.28`→`0,28` десят. запятая, `Холодоагент`→`Хладагент`, `Без борту`→`Без борта`, latin x ×0; SKU 64 **glyph-critical** `&deg;` ×3 entity, `-2&deg;С`/`+43&deg;С` С Cyrillic U+0421, `+8&deg;C` C latin U+0043 verbatim, dims `2020мм x 800мм x 850мм` latin x U+0078 ×2 → Cyrillic х U+0445, `Д*Ш*В` звёздочки ASCII verbatim (НЕ x-конверсия), `220В` (Cyrillic В) / `0,30` (запятая уже в источнике) verbatim, `&#39;` ×1 → DROP (`Объём`), `Без борту`→`Без борта`.
+- **blknochg — 6 (LIVE-магазин, genuine RU НЕ переписываем).** SKU 57 `2212186835` GoodFood GF-GN2100TN-HC `desc UA==RU` **False** 828/859; SKU 58 `2212207629` GF-GN3100TN-HC **False** 826/857; SKU 59 `2212214335` GF-SNACK2100TN-HC **False** 831/842; SKU 60 `2212218035` GF-SNACK3100TN-HC **False** 833/865; SKU 61 `2212706960` GF-S903TOP-HC **False** 849/878; SKU 63 `2239396030` GF-S451-H6C **False** 869/877. У всех `nm_ru`==`nazv_ru` чистый рус. (char-level UA-leak і/ї/є/ґ НЕТ), `nm_ru`!=`nm_ua` (укр. leak только в `nm_ua`), в RU-описании отдельный корректный русский перевод поставщика (НЕ укр. копия). **GoodFood НЕ ∈ НП-эксклюзивный список.** RU уже корректный русский — **LIVE-магазин Horoshop**, genuine RU-тело перезаписывать НЕЛЬЗЯ без явного go-ahead Yana → Назв.мод (RU) и Описание (RU) НЕ трогаем (ячейки без изменений). Коды `GoodFood GF-*` идентичны UA↔RU genuine → customer-facing рассинхрона кода НЕТ → **NON-FLIP**.
+- **SKIP-НП — 0 (кумул. chunk-025 = 8).** В батче SKU 57-64 нет НП-эксклюзивных брендов (GoodFood/Gemm/FROSTY НЕ ∈ список HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA; word-boundary np_hit). Кумулятивно SKIP-НП chunk-025 = 8 (b1 0 + b9 0 + b17 0 + b25 2 + b33 3 + b41 2 + b49 1 + b57 0).
+- **Классификация по `desc UA==RU`.** **blk триплет 2. blknotrip 0. blknochg 6. blknochgeq 0. SKIP-НП 0.**
+- **META keywords (SKU 57-64):** оставлены faithful со всеми артефактами источника (META UA!=RU genuine). META по правилу всегда faithful.
+
+### Заслуживает внимания — Открытых вопросов 0 в батче (NON-FLIP; chunk-025 кумул. = 1 — OQ#1 SKU 31 от b25, в этом батче НЕ меняется)
+
+- **NON-FLIP.** В батче SKU 57-64 нет UA↔genuine-RU customer-facing рассинхрона кода модели → нумерованных Открытых вопросов НЕТ. chunk-025 кумулятивно остаётся **1** (Открытый вопрос #1 SKU 31 `1090687473` Tecnodom P-TF03MIDGN× от батча b25 — НЕ трогаем, placeholder уже потреблён b25). Прочие замечания (SKU 62/64 soft + SKU 57-61/63 genuine LIVE) UA↔genuine-RU рассинхрона названия не порождают.
+- **SKU 62/64 `&#39;`/U+0027 укр.-апостроф** в `Об'єм`/`Об'єм:` → DROP в авторском RU (`Объём`) → soft, не нумеруется.
+- **SKU 62 `-2...+8С ,`** — С = Cyrillic U+0421 (источник, БЕЗ `&deg;`), mirrored verbatim вкл. пробел перед `,`; `&deg;` ×0 / `&ndash;` ×0; `GN1/1`/`220V` (latin V) / литеральный `<` в `< 300` / trailing-пробелы `950 `/`упаковке ` verbatim; `0.28`→`0,28`; `Холодоагент`→`Хладагент`; `Без борту`→`Без борта` → soft, не нумеруется.
+- **SKU 64 glyph-critical** — `-2&deg;С` и `+43&deg;С` С = Cyrillic U+0421; `+8&deg;C` C = **latin U+0043** (источник латин. C) verbatim; dims `2020мм x 800мм x 850мм` latin x U+0078 ×2 → Cyrillic х U+0445; `Д*Ш*В` звёздочки ASCII verbatim (НЕ x-конверсия); `220В` (Cyrillic В) / `0,30` (запятая в источнике) verbatim; `Без борту`→`Без борта` → soft, не нумеруется.
+- **SKU 57-61/63 blknochg `desc UA==RU` False — genuine отдельный русский перевод поставщика** — `nm_ru`==`nazv_ru` чистый рус., `nm_ru`!=`nm_ua`; LIVE-магазин Horoshop, genuine RU-тело и Назв.мод НЕ переписываем без go-ahead Yana (ячейки без изменений); коды `GoodFood GF-*` идентичны UA↔RU → customer-facing рассинхрона НЕТ → soft, не нумеруется.
+- **SKU 57-64: META RU частично укр./смешанные формы / META UA!=RU genuine** — META по правилу всегда faithful → soft, не нумеруется.
+
+### Сводка батча
+
+| SKU | Артикул | Тип | Назв.мод | Прочее |
+|---|---|---|---|---|
+| 57 | 2212186835 | **blknochg** | без изменений (genuine RU корректен) | GoodFood НЕ НП-эксклюзив; `desc UA==RU` **False** 828/859 genuine отдельный рус. перевод; `nm_ru`==`nazv_ru` чистый рус. `nm_ru`!=`nm_ua` → LIVE-магазин: НЕ переписываем, ячейки chunk-025-fixed НЕ трогаем; код `GoodFood GF-GN2100TN-HC` идентичен UA↔RU → **NON-FLIP** |
+| 58 | 2212207629 | **blknochg** | без изменений (genuine RU корректен) | GoodFood НЕ НП-эксклюзив; `desc UA==RU` **False** 826/857 genuine; код `GF-GN3100TN-HC` идентичен UA↔RU → **NON-FLIP** |
+| 59 | 2212214335 | **blknochg** | без изменений (genuine RU корректен) | GoodFood НЕ НП-эксклюзив; `desc UA==RU` **False** 831/842 genuine; код `GF-SNACK2100TN-HC` идентичен UA↔RU → **NON-FLIP** |
+| 60 | 2212218035 | **blknochg** | без изменений (genuine RU корректен) | GoodFood НЕ НП-эксклюзив; `desc UA==RU` **False** 833/865 genuine; код `GF-SNACK3100TN-HC` идентичен UA↔RU → **NON-FLIP** |
+| 61 | 2212706960 | **blknochg** | без изменений (genuine RU корректен) | GoodFood НЕ НП-эксклюзив; `desc UA==RU` **False** 849/878 genuine; код `GF-S903TOP-HC` идентичен UA↔RU → **NON-FLIP** |
+| 62 | 2226838746 | **blk триплет** | `Стіл холодильний GEMM TG7130` → `Стол холодильный GEMM TG7130` (genuine nazv_ru) | Gemm НЕ НП-эксклюзив; `desc UA==RU` **True** 788/788 🔴 RU=UA + `nm_ru` укр.-leak `і`; Описание RU тег-в-tag (0h2/3p/0strong/2ul/18li/0br/no img; заканч. `</ul>`); `&deg;`×0/`&ndash;`×0, `&#39;`×2→DROP, `-2...+8С ,` С Cyrillic U+0421 (БЕЗ `&deg;`), `GN1/1`/`220V`/`<` в `< 300`, `0.28`→`0,28`, `Холодоагент`→`Хладагент`, `Без борту`→`Без борта` (SOFT); код идентичен UA↔RU |
+| 63 | 2239396030 | **blknochg** | без изменений (genuine RU корректен) | GoodFood НЕ НП-эксклюзив; `desc UA==RU` **False** 869/877 genuine; код `GF-S451-H6C` идентичен UA↔RU → **NON-FLIP** |
+| 64 | 2352423600 | **blk триплет** | `Стіл холодильний FROSTY PA 3100TN` → `Стол холодильный FROSTY PA 3100TN` (genuine nazv_ru) | FROSTY НЕ НП-эксклюзив; `desc UA==RU` **True** 561/561 🔴 RU=UA + `nm_ru` укр.-leak `і`; Описание RU тег-в-tag (0h2/2p/0strong/1ul/8li/0br/no img; заканч. `</ul>`); **glyph-critical** `&deg;`×3 entity, `-2&deg;С`/`+43&deg;С` С Cyrillic U+0421, `+8&deg;C` C latin U+0043 verbatim, dims `2020мм x 800мм x 850мм` latin x ×2 → Cyrillic х, `Д*Ш*В` звёздочки ASCII verbatim, `220В`/`0,30`, `&#39;`×1→DROP, `Без борту`→`Без борта` (SOFT); код идентичен UA↔RU; батч 64/64 ЗАКРЫВАЮЩИЙ |
+
+Открытых вопросов по батчу: **0** (NON-FLIP — в батче SKU 57-64 нет UA↔genuine-RU customer-facing рассинхрона кода модели; нумерованный Открытый вопрос #1 SKU 31 `1090687473` от батча b25 НЕ меняется, см. «Открытые вопросы chunk-025 #1»). 2 blk триплет авто-перевод укр. копии + Назв.мод-leak триплет к genuine nazv_ru; 6 blknochg GoodFood (genuine LIVE НЕ переписываем); blknotrip 0; blknochgeq 0; SKIP-НП 0; soft-замечания SKU 62/64 + SKU 57-61/63 без UA↔genuine-RU рассинхрона названия, решения не требуют. Кумулятивно по chunk-025: **1** (#1 SKU 31 от b25, NON-FLIP — без изменений). Кумулятивно SKIP-НП по chunk-025: **8** (b1 0 + b9 0 + b17 0 + b25 2 + b33 3 + b41 2 + b49 1 + b57 0). **chunk-025 — 64/64 — ЗАКРЫВАЮЩИЙ батч; далее close chunk-025 + scaffold chunk-026.**
+
+---
+
 ## Открытые вопросы chunk-025
 
 ### 1. SKU 31 (Артикул `1090687473`, Стол холодильный Tecnodom P-TF03MIDGN×) — Назв UA «Стіл холодильний Tecnodom P-TF03MIDGN» (без `×`) ↔ genuine Назв RU «Стол холодильный Tecnodom P-TF03MIDGN×» (хвостовой `×` U+00D7): customer-facing рассинхрон кода модели
@@ -298,4 +336,4 @@
 
 ---
 
-**Last updated:** 2026-05-19 — chunk-025 батч SKU 49-56 (56/64): Forcold G-S903TOP-FC + Forcold G-SNACK2100TN-FC + Forcold G-SNACK3100TN-FC + REEDNEE S903 TOP S/S + Gooder GN2100TN (blk триплет ×5) + Hurakan HKN-GXRC3GN (SKIP-НП ×1) + Tefcold BK210 пекарский / Tefcold SA910 (blknochg ×2 genuine LIVE НЕ переписываем) — **blk триплет 5 + blknotrip 0 + blknochg 2 + blknochgeq 0 + SKIP-НП 1**. SKU 49-52/56 AUTO: Назв.мод RU = genuine nazv_ru + Описание RU полный перевод тег-в-tag (коды идентичны UA↔RU → NON-FLIP); SKU 53 Hurakan SKIP-НП (ячейки НЕ трогаем, тело из фида НП позже); SKU 54/55 blknochg genuine отдельный рус. перевод поставщика — НЕ переписываем (LIVE-магазин; SKU 54 nazv_ua «пекарський» описательный, код идентичен → NON-FLIP). NON-FLIP — нумерованных Открытых вопросов в батче нет. META always faithful. Открытых вопросов chunk-025 = 1. Кумулятивно SKIP-НП chunk-025 = 8. chunk-025 = 56/64. NEXT: батч SKU 57-64.
+**Last updated:** 2026-05-19 — chunk-025 батч SKU 57-64 (64/64 — ЗАКРЫВАЮЩИЙ): GoodFood GF-GN2100TN-HC + GF-GN3100TN-HC + GF-SNACK2100TN-HC + GF-SNACK3100TN-HC + GF-S903TOP-HC + GF-S451-H6C (blknochg ×6 genuine LIVE НЕ переписываем) + GEMM TG7130 + FROSTY PA 3100TN (blk триплет ×2) — **blk триплет 2 + blknotrip 0 + blknochg 6 + blknochgeq 0 + SKIP-НП 0**. SKU 62/64 AUTO: Назв.мод RU = genuine nazv_ru + Описание RU полный перевод тег-в-tag (коды идентичны UA↔RU → NON-FLIP); SKU 57-61/63 GoodFood blknochg genuine отдельный рус. перевод поставщика — НЕ переписываем (LIVE-магазин; коды идентичны → NON-FLIP). NON-FLIP — нумерованных Открытых вопросов в батче нет. META always faithful. Открытых вопросов chunk-025 = 1. Кумулятивно SKIP-НП chunk-025 = 8. chunk-025 = 64/64. NEXT: закрытие chunk-025 + chunk-026.
