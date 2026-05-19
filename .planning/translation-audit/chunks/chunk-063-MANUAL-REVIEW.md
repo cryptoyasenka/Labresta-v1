@@ -2,9 +2,9 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-063 (88 SKU)
 **Apply key:** `Артикул` (col1, scoped per row)
-**Status:** b9 DONE 72/88 (b10..b11 remain; batch=8)
+**Status:** b10 DONE 80/88 (b11 remain; batch=8)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-062
-**Last updated:** chunk-063 b9 (W2)
+**Last updated:** chunk-063 b10 (W2)
 
 Эталон формата: chunk-019-MANUAL-REVIEW.md / chunk-062-MANUAL-REVIEW.md. Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Кумул. OQ закрыты (ОВ-1..ОВ-4 remediation c71341f).
 
@@ -211,4 +211,25 @@ _(нумерация отдельная, начинается с #1; пока н
 
 **Открытых вопросов b9:** нет (blknotrip SKU 69/70: имя c5==c7 lang-neutral, col5 НЕ тронут по правилу; всё verbatim/faithful, замечаний для merge-ревью нет).
 
-<!-- Сводки по батчам b10..b11 ниже. -->
+## b10 (SKU 73-80) — DONE 80/88
+
+**Категории:** blk триплет 1 (SKU 73) · blknotrip 0 · blknochg 7 (SKU 74,75,76,77,78,79,80) · SKIP-НП 0.
+
+| SKU | row | ART | Бренд | Категория | Действие |
+|---|---|---|---|---|---|
+| 73 | 74 | 2208547539 | HENDI | blk триплет | col5←c7 «Топливо HENDI 193686 упаковка 24 шт для мармитов с фитилем – банка 200 г, диэтиленгликоль» (en-dash `–` U+2013 verbatim); col36← faithful RU (skel==UA c35; `200`/`24` verbatim, `<br />` verbatim; UA-апостроф «полум'я»→RU «пламени», «об'ємом»→«объемом»; HENDI 193686 не НП-бренд) |
+| 74 | 75 | 2239380745 | GoodFood | blknochg | c5==c7 genuine RU «Аппарат для подогрева готовых блюд GoodFood BM2»; c36 уже переведён (c35≠c36), fixed НЕ тронут. Soft-note: первый заголовок `<p>Технические характеристики:</p>` без `<strong>` (UA `<strong>`); «30-110 С» без `&deg;` — pre-existing genuine RU, не правим |
+| 75 | 76 | 2239386120 | GoodFood | blknochg | c5==c7 genuine RU «… GoodFood BM6G»; c36 уже переведён, fixed НЕ тронут. Soft-note: c36 «Мармит укоплектоварн стеклянной витриной» — typo (укомплектован) совпадает с UA «укоплектоварн»; первый заголовок без `<strong>` — pre-existing, не правим |
+| 76 | 77 | 2239390757 | GoodFood | blknochg | c5==c7 genuine RU «… GoodFood FW4»; c36 уже переведён, fixed НЕ тронут. Soft-note: c36 «Термостата 30-80 С» (UA «Термоста») + первый заголовок без `<strong>` — pre-existing, не правим |
+| 77 | 78 | 2263095288 | GoodFood | blknochg | c5==c7 genuine RU «… GoodFood FW2»; c36 уже переведён, fixed НЕ тронут. Soft-note: c36 «Термостата 30-80 С» (UA «Термоста») — pre-existing, не правим |
+| 78 | 79 | 2263101922 | GoodFood | blknochg | c5==c7 genuine RU «… GoodFood FW3»; c36 уже переведён (UA «неіржавна сталь»→RU «нержавеющая сталь»), fixed НЕ тронут. Soft-notes нет |
+| 79 | 80 | 2276599435 | GoodFood | blknochg | c5==c7 genuine RU «… GoodFood BM6»; c36 уже переведён, fixed НЕ тронут. Soft-note: c36 «Регулировка температуры воды 30-110&deg;С» vs UA «30&ndash;110&deg;С» — pre-existing genuine RU, не правим |
+| 80 | 81 | 2276603401 | GoodFood | blknochg | c5==c7 genuine RU «… GoodFood BM4»; c36 уже переведён, fixed НЕ тронут. Soft-note: c36 «Регулировка температуры воды 30-110&deg;С» vs UA «30&ndash;110&deg;С» — pre-existing genuine RU, не правим |
+
+**Verify:** 114 PASS / 0 FAIL (88 ART + blk триплет 1×12 + blknochg/UNCH 7×2; col5←c7, skel(col36)==skel(UA c35), UA-clean, без ё, dims==).
+
+**Глоссарий b10 (новые UA→RU):** паливо для мармітів (чафингдишей)→топливо для мармитов (чафингдишей) · з гнотом→с фитилем · діетиленгліколь→диэтиленгликоль · без кіптяви→без копоти · температуру полум'я→температуру пламени · процесу горіння→процесса горения · завдяки спеціальному ковпачку→благодаря специальному колпачку · використовувати багаторазово→использовать многократно. Reuse: марміт→мармит / нержавіюча сталь→нержавеющая сталь / банку об'ємом→банка объемом / зберігати→хранить / транспортувати→транспортировать.
+
+**Открытых вопросов b10:** нет (blk триплет SKU 73: col5←c7 verbatim incl. en-dash, col36 faithful RU skel==UA, UA-clean; blknochg SKU 74-80: c5==c7 genuine RU, c35≠c36 уже переведено, fixed НЕ тронут; soft-notes pre-existing genuine RU для merge-ревью, не OQ).
+
+<!-- Сводка по батчу b11 ниже. -->
