@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-062 (81 SKU)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 56/81 (blk триплет 20 / blknochg 32 / blknotrip 1 / SKIP-НП 3; Открытых вопросов 0)
+**Status:** IN PROGRESS 64/81 (blk триплет 22 / blknochg 38 / blknotrip 1 / SKIP-НП 3; Открытых вопросов 0)
 **Worker:** W2 (параллельный воркер, диапазон chunk-055 … chunk-085; W1 ведёт chunk-001 … chunk-054)
 **Scaffold:** chunk-062 scaffold (W2, продолжение chunk-061). chunk-061 ЗАКРЫТ 67/67 (blk триплет 29 / blknochg 34 / blknotrip 0 / SKIP-НП 4; OQ 0). chunk-062 = 81 SKU, openpyxl rows 2..82; первый SKU1 ART2424757446 «Гриль контактний SARO PG 1B», последний SKU81 ART2059507443 «Теплова вітрина Hurakan WD-120L». 11 батчей (б1-10 ×8 = 80, б11 = SKU81 ×1 финальный). SKIP-НП зонд по `Название` (NP-список HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA — Lat+Cyr): **6 hits — все HURAKAN**: SKU34 (ART736117487 «Гриль роликовий HURAKAN HKN-GW7M»), SKU53 (ART2375841678 «Гриль роликовий HURAKAN HKN-GW11M»), SKU54 (ART2375848556 «Гриль роликовий HURAKAN HKN-GW9M»), SKU66 (ART901422138 «Теплова вітрина HURAKAN HKN-WD2»), SKU67 (ART1168676811 «Теплова вітрина HURAKAN HKN-WD3M»), SKU81 (ART2059507443 «Теплова вітрина Hurakan WD-120L»). Эти SKU → SKIP-НП (тело из фида НП позже), вносятся в таблицу при обработке батчей б5 (SKU34) / б7 (SKU53/54) / б9 (SKU66/67) / б11 (SKU81). Прочие бренды (SARO и др.) НЕ в НП-списке — обрабатываются обычно.
 
@@ -168,5 +168,19 @@
 **SKIP-НП 2:** SKU53 HURAKAN HKN-GW11M (row54, Артикул 2375841678) #2 / SKU54 HURAKAN HKN-GW9M (row55, Артикул 2375848556) #3 — НП-эксклюзив forward-only, RU НЕ переписан, fixed rows 54/55 НЕ тронуты==source, тело из НП-фида позже.
 
 chunk-062-fixed.xlsx правлен rows 50/51/52 (blk триплет col5←col7+col36); rows 53/54/55/56/57 НЕ тронуты. reopen-verify VERIFY_062_B7 ALL PASS 56 чеков (b7 + REGR b1 SKU4 / b2 SKU9-16 / b3 SKU21·SKU24 / b4 SKU25-32 / b5 SKU33-40 / b6 SKU41-48 — все intact, col36-UA 0, skeleton==src). Открытых вопросов батч не дал. Глоссарий: б7 +2 net-new (кумул 485).
+
+---
+
+## Батч 8 (SKU 57-64, openpyxl rows 58-65) — 64/81
+
+**blk триплет 2:** SKU58 Fimar Easy Line FY011 (row59) / SKU59 EWT INOX HDRG-E7-2 (row60) — descUA==descRU True + col5==col4 UA-leak «роликовий» + col7 genuine RU «роликовый» → col5←col7 + col36 tag-в-tag RU перевод source col35 replace-on-source. SKU58 Fimar: `&#39;` сняты (рум&#39;яної→румяной, м&#39;ясних→мясных), `Подвійний термостат`→`Двойной термостат`, `Підключення до електромережі: 220V`→`Подключение к электросети: 220V` (220V verbatim), `Потужність електрична, кВт: 2.2` точка verbatim, секция «Розміри в упаковці»→«Размеры в упаковке» (Глибина→Глубина), Ширина==Ширина не трогалась. SKU59 EWT: `1,4 кВт` запятая verbatim, `Габарити: Ш 325 х Г 550 х В 175 мм`→`Габариты:` (кир.х U+0445 + Ш/Г/В метки verbatim), len36 279→279.
+
+**blknotrip 0.**
+
+**blknochg 6:** SKU57 Roller Grill RG 11 (row58) / SKU60 GoodFood HDRG11 RED (row61) / SKU61 GoodFood HDRG14 RED (row62) / SKU62 Комплект стекла GoodFood HDRG9 (row63) / SKU63 Frosty RTR-97L-2 (row64) / SKU64 Frosty RTR-158L (row65) — descUA!=descRU, col5 genuine RU==col7, col36 отдельное чистое RU, fixed rows 58/61/62/63/64/65 НЕ тронуты==source. Soft-notes (НЕ нумеруются): SKU57 Roller Grill `&Oslash;` entity verbatim, RU «съёмный» с ё (house-style no-ё, но blknochg НЕ трогаем); SKU63/64 Frosty RU артефакты «вращяющиеся» (SKU63/64) / «обьем» (SKU64) — pre-existing genuine RU, blknochg НЕ трогаем.
+
+**SKIP-НП 0.**
+
+chunk-062-fixed.xlsx правлен rows 59/60 (blk триплет col5←col7+col36); rows 58/61/62/63/64/65 НЕ тронуты. reopen-verify VERIFY_062_B8 ALL PASS 78 чеков (b8 + REGR b1 SKU4 / b2 SKU9-16 / b3 SKU21·SKU24 / b4 SKU25-32 / b5 SKU33-40 / b6 SKU41-48 / b7 SKU49-57 — все intact, col36-UA 0, skeleton==src). Открытых вопросов батч не дал. Глоссарий: б8 +2 net-new (кумул 487).
 
 ---
