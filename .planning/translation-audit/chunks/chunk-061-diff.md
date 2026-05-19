@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-061 (67 SKU)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 16/67 (blk триплет 13 / blknochg 3 / blknotrip 0 / SKIP-НП 0; Открытых вопросов 0)
+**Status:** IN PROGRESS 24/67 (blk триплет 13 / blknochg 11 / blknotrip 0 / SKIP-НП 0; Открытых вопросов 0)
 **Worker:** W2 (параллельный воркер, диапазон chunk-055 … chunk-085; W1 ведёт chunk-001 … chunk-054)
 
 **Состав (по типу товара):** первый SKU — Артикул `2309189086` (`Гриль контактний Frosty EGS-44`); последний SKU67 — Артикул `2424751163` (`Гриль-тостер SARO BUSSO T1`). Колонка `Бренд` в источнике дублирует `Артикул` (числовой) — бренд определяется по `Название` per-SKU при аудите батча. Тип: преимущественно грили контактні + тостери / гриль-тостери. **SKIP-НП (зонд по `Название`): 4 NP-suspect** — все в НП-списке → SKIP-НП (тело придёт из фида НП позже, RU не трогается; вносятся в таблицу при обработке соответствующих батчей): **HURAKAN ×3** — SKU28 Арт `1147792135` (`Гриль контактний HURAKAN HKN-PE22R`) · SKU29 Арт `1147801726` (`Гриль контактний Hurakan HKN-PE34R`) · SKU30 Арт `1147802158` (`Гриль контактний HURAKAN HKN-PE44R`); **TATRA ×1** — SKU48 Арт `2062003333` (`Гриль контактний TATRA EMP.102`). Прочие бренды (Frosty, SARO, …) НЕ в НП-списке — обрабатываются обычно, подтверждается per-батч по `Название`. Батч = 8 SKU; 9 батчей (67/8 → б1-8 по 8 SKU = 64, б9 = SKU 65-67 = 3 SKU). openpyxl rows 2..68 (row = SKU + 1).
@@ -89,5 +89,37 @@ blk триплет 6 (SKU9/10/12/13/14/15) · blknochg 2 (SKU11/16) · blknotrip
 - SILVER НЕ в НП-списке. col4 UA / col5==col7 уже genuine RU `Гриль контактный SILVER 2129`. descUA!=descRU (len 568≠583): отдельное чистое genuine RU (`<p>Контактный гриль идеально подойдёт … точки фаст-фуда. Вместит 2 шаурмы …</p>` … `&deg;С` entity) — LIVE НЕ переписывается, fixed row 17 НЕ тронут. Было/Стало: без изменений. Soft-note (НЕ нумеруется): genuine RU использует ё («подойдёт») и `&deg;С` entity где UA `°С`; модель-код SILVER 2129 согласован, рассинхрона нет.
 
 **Глоссарий батч 2:** новые контактные-гриль термины — в `chunk-glossary-w2.md` (б2 блок). Soft-notes (НЕ строки): genuine-RU артефакты `&times;`/`&deg;С`/typo `положениии` (SKU11 blknochg) и ё `подойдёт`/`&deg;С` (SKU16 blknochg) — fixed НЕ тронут.
+
+---
+
+## Батч 3 — SKU 17-24 (openpyxl rows 18-25) — весь blknochg
+
+**Категории:** blk триплет 0 / blknotrip 0 / **blknochg 8** / SKIP-НП 0. Кумулятив chunk-061: 24/67 (blk триплет 13 / blknochg 11 / blknotrip 0 / SKIP-НП 0; Открытых вопросов 0).
+
+Весь батч — линейка SILVER 21xx (×7) + Spidocook SP020P (×1). Ни один бренд НЕ в списке НП (SILVER/Spidocook обрабатываются обычно; Spidocook прецедент — SKU4 chunk-061 б1). У каждого SKU: col5/col7 уже genuine RU (UA-marker False), col5 != col4 (col4 — UA-форма), descUA != descRU (col36 — отдельное чистое genuine-RU описание). Категория blknochg → **chunk-061-fixed.xlsx НЕ тронут** (строки 18-25 не редактировались), перевод не выполнялся, артефакты/опечатки genuine-RU — soft-note, НЕ нумеруются.
+
+| SKU | row | ART | NAME (RU=col5=col7) | Категория | Действие |
+|---|---|---|---|---|---|
+| 17 | 18 | 671718468 | Гриль контактный SILVER 2130 | blknochg | без изменений |
+| 18 | 19 | 671719357 | Гриль контактный SILVER 2131 | blknochg | без изменений |
+| 19 | 20 | 671728356 | Гриль контактный SILVER 2132 | blknochg | без изменений |
+| 20 | 21 | 671730314 | Гриль контактный SILVER 2134 | blknochg | без изменений |
+| 21 | 22 | 671731626 | Гриль контактный SILVER 2139 | blknochg | без изменений |
+| 22 | 23 | 671758169 | Гриль контактный SILVER LPG 2135 газовый | blknochg | без изменений |
+| 23 | 24 | 808728332 | Гриль контактный SILVER 2133 | blknochg | без изменений |
+| 24 | 25 | 971533499 | Гриль контактный Spidocook SP020P (стеклокерамика) | blknochg | без изменений |
+
+**Пер-SKU (Было / Стало: без изменений — LIVE genuine RU не переписан):**
+
+- **SKU17 SILVER 2130** — col5==col7 «Гриль контактный SILVER 2130», descRU отдельное чистое RU (lenUA=539 lenRU=554). Soft-note (НЕ нумеруется): genuine-RU col36 использует entity `&deg;С` (`+50...+300&deg;С`) там, где UA col35 — реальный `°С`; artefact LIVE, fixed не тронут.
+- **SKU18 SILVER 2131** — col5==col7 «Гриль контактный SILVER 2131», descRU отдельное чистое RU (lenUA=550 lenRU=567). Soft-note: `&deg;С` entity в genuine-RU (как SKU17).
+- **SKU19 SILVER 2132** — col5==col7 «Гриль контактный SILVER 2132», descRU отдельное чистое RU (lenUA=619 lenRU=645). Soft-note 1: `&deg;С` entity. Soft-note 2: в UA col35 затесалось RU-слово «Верхние» («...автономно один від одного. Верхние поверхні фіксуються...») — артефакт исходной UA-копии; категория blknochg → fixed НЕ тронут, перевод не выполнялся, НЕ нумеруется.
+- **SKU20 SILVER 2134** — col5==col7 «Гриль контактный SILVER 2134», descRU отдельное чистое RU (lenUA=417 lenRU=431). Soft-note: `&deg;С` entity; UA «Потужність — 1,3 кВт» / RU «Мощность 1,3 кВт» (тире LIVE-RU отсутствует) — genuine-RU как есть.
+- **SKU21 SILVER 2139** — col5==col7 «Гриль контактный SILVER 2139», descRU отдельное чистое RU (lenUA=441 lenRU=456). Soft-note: `&deg;С` entity (как SKU20).
+- **SKU22 SILVER LPG 2135 газовый** — col5==col7 «Гриль контактный SILVER LPG 2135 газовый», descRU отдельное чистое RU (lenUA=423 lenRU=431). Soft-note: genuine-RU col36 использует entity `&sup3;` («Расход газа: 0,9 м&sup3;/час») там, где UA — `м3/год`; artefact LIVE, fixed не тронут, НЕ нумеруется.
+- **SKU23 SILVER 2133** — col5==col7 «Гриль контактный SILVER 2133», descRU отдельное чистое RU (lenUA=597 lenRU=620). Soft-note 1: `&deg;С` entity. Soft-note 2: в UA col35 «Верхние поверхні фіксуються...» — RU-слово в UA-копии (как SKU19); blknochg → fixed НЕ тронут, НЕ нумеруется.
+- **SKU24 Spidocook SP020P (стеклокерамика)** — col5==col7 «Гриль контактный Spidocook SP020P (стеклокерамика)», descRU объёмное отдельное чистое RU (lenUA=1809 lenRU=1851), iframe YouTube byte-exact UA==RU. Прецедент SKU4 chunk-061 б1. Soft-notes (НЕ нумеруются): UA `<br>` / RU `<br />`; UA `800 °C`·`400 °C` (реальный ° + лат. C) / RU `800 &deg; С`·`400&deg;С` (entity + кир. С); genuine-RU artefacts, fixed не тронут.
+
+**Модель-коды:** все согласованы UA↔RU (SILVER 2130/2131/2132/2134/2139/LPG 2135/2133; Spidocook SP020P) — нет рассинхрона имени, нет неверного товара. Открытых вопросов по батчу 3 нет; chunk-061 OQ=0.
 
 ---
