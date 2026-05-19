@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-025 (64 SKU)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 64/64
+**Status:** ГОТОВ 64/64
 
 Здесь собираю всё, что требует твоего подтверждения (не авто-фиксы). Авто-фиксы по locked-паттернам перечислены в сводках по батчам, отдельного подтверждения не требуют. Открытые вопросы накапливаются в нумерованный список и финализируются при закрытии chunk-025. SKIP-НП SKU (НП-эксклюзивные бренды) помечаются здесь и не переписываются.
 
@@ -320,7 +320,30 @@
 
 ---
 
-## Открытые вопросы chunk-025
+## chunk-025 — ЗАКРЫТ (64/64)
+
+**Все 64 SKU обработаны.** Diff: `chunk-025-diff.md` (Status `COMPLETE 64/64`, секция `## chunk-025 — ИТОГ`). Apply key — `Артикул` (scoped per row). **Diff НЕ применяется к live Horoshop без явного go-ahead Yana + safe mode.**
+
+**Семейства (продолжение chunk-024):** раздел `Холодильне та морозильне обладнання/Столи холодильні` — столы холодильные FROSTY (GN4100TN … PA 3100TN) / GoodFood (GF-GN/GF-SNACK/GF-S-серии) / GEMM (TG7130) / Forcold / REEDNEE / Gooder / Tefcold / Tecnodom (P-TF03MIDGN/TF02MIDGN); НП-эксклюзив **Hurakan / TATRA / Fagor** (SKIP-НП ×8, тело из фида НП позже).
+
+**Итог авто-применённого (locked, подтверждения не требует):**
+- 🔴 RU=UA full translate + Назв.мод (RU) UA-leak → корр. Название (RU) триплетом (blk): **28 из 64**. Описание RU = укр. копия → самостоятельный RU тег-в-tag; Назв.мод-leak (char-level укр.`іїєґ`, напр. `Стіл`→`Стол`) → триплет к корр. «Название (RU)» (модель-коды FROSTY/GoodFood/GEMM/Forcold/REEDNEE/Gooder language-neutral нетронуты). Авторский RU: literal ° → `&deg;`; латин. `x`→Cyrillic х в габаритах; `Холодоагент`/`холодоагент`→`Хладагент`/`хладагент` SOFT; `Без борту`→`Без борта` SOFT; реальная `.`→`,` дробь.
+- 🔴 RU=UA full translate, БЕЗ триплета (blknotrip; Назв.мод уже чистый русский): **0 из 64** (в chunk-025 не встретилось).
+- blknochg (обе локали без изменений; RU genuine ≠ UA verbatim): **28 из 64**. genuine RU НЕ переписывается (LIVE-магазин). blknochgeq-специальный (`desc UA==RU` False, но `nm_ru==nm_ua==nazv_ru`) — **0 в chunk-025**.
+- SKIP-НП (НП-эксклюзивный бренд — тело из фида НП позже, ячейки fixed.xlsx не тронуты): **8 из 64** — бренды **Hurakan ×4** (HKN-GXRC2GN/HKN-GXS2GN/HKN-GXS3GN/HKN-GXRC3GN) / **TATRA ×2** (TRC03TN/TRC02TN) / **Fagor ×2** (MFP-135/MFP-180 EXP HC Neo Concept). RU не переписан, зонды/scratch не делались (forward-only правило SKIP-НП, перекрывает blk-паттерн даже при `desc UA==RU` True); считается отдельной категорией в 64/64.
+
+**Faithful (locked, не тронуто):** напряжение/voltage везде — значение НИКОГДА (метки переведены; `220В`/`220 В`/`220V` нетронуто; где в UA voltage нет — НЕ фабрикуется; разные значения = разные модели НЕ десинк); META всегда (genuine META UA!=RU faithful); Cyrillic х/Х U+0445 (`355х404х590`, множители) — обычная рус. буква, no-op verbatim идентично UA↔RU; латин. `x` U+0078 источника в authored RU габаритах → Cyrillic х; literal ° только в UA-источнике (authored RU → `&deg;`); UA-апостроф `&#39;`/U+0027/`&rsquo;` в authored RU дроп; `&deg;`/`&ndash;`/`&brvbar;`-энтити и literal U+2014 `—` источника зеркалятся 1:1; `AISI 304`/`GN1/1` verbatim; эмодзи/literal/trailing-space артефакты источника 1:1; src-typo `Холодоагент`/`холодоагент`→`Хладагент`/`хладагент` / `Без борту`→`Без борта` SOFT — рассогласование источника, НЕ перевод-десинк, не нумеруются.
+
+**Открытые вопросы chunk-025 = 1** (НЕ обнулён при закрытии — передан как есть, требует решения Yana, на LIVE-магазине без явного go-ahead не правится, ниже сохранён дословно):
+- **#1 SKU 31** (Артикул `1090687473`, Стол холодильный Tecnodom P-TF03MIDGN×) — Назв UA «…Tecnodom P-TF03MIDGN» без `×` ↔ genuine Назв RU «…Tecnodom P-TF03MIDGN×» с хвостовым `×` U+00D7; тело обеих локалей без `×` → customer-facing рассинхрон кода модели (паттерн идентичен chunk-023 «Открытый вопрос #1» Tefcold SS7300-P и chunk-022 «Открытый вопрос #2» Tefcold GS92/SA920).
+
+**Следующее:** chunk-026 (chunk-001 — SKIP навсегда; chunk-≤024 закрыты).
+
+---
+
+## Открытые вопросы chunk-025 (финализированы при закрытии чанка)
+
+_(финализировано при закрытии: chunk-025 — **1 Открытый вопрос**, СОХРАНЁН ниже дословно (НЕ обнулён). **#1 SKU 31 (Артикул `1090687473`, Стол холодильный Tecnodom P-TF03MIDGN×)** — «Название (UA)»/«Название модификации (UA)» = `Стіл холодильний Tecnodom P-TF03MIDGN` без хвостового `×`; genuine «Название (RU)»/«Название модификации (RU)» (`nm_ru == nazv_ru`, чистый рус.) = `Стол холодильный Tecnodom P-TF03MIDGN×` с хвостовым `×` U+00D7; тело «Описание» в обеих локалях (UA и genuine RU) — без `×` → символ `×` только в genuine RU-названии, customer-facing рассинхрон кода модели (не UA↔RU-идентичная ошибка; паттерн идентичен chunk-023 «Открытый вопрос #1» Tefcold SS7300-P и chunk-022 «Открытый вопрос #2» Tefcold GS92/SA920). Нумерованный вопрос, требует решения Yana, на LIVE-магазине без явного go-ahead не правится. Остальное по 64 SKU без нумерованных вопросов: blk 28 = авто-перевод укр. копии + Назв.мод-leak триплет (НЕ customer-facing, модель-коды FROSTY/GoodFood/GEMM/Forcold/REEDNEE/Gooder language-neutral); blknotrip 0 (не встретилось); blknochg 28 — RU genuine ≠ UA, обе локали без изменений (blknochgeq 0); SKIP-НП 8 — Hurakan ×4 / TATRA ×2 / Fagor ×2, НП-эксклюзив, тело из фида НП позже, ячейки не тронуты, forward-only, перекрывает blk даже при `desc UA==RU` True; Cyrillic-х `355х404х590`/множители no-op verbatim идентично UA↔RU; voltage разные значения = разные модели НЕ десинк, где в UA нет voltage — НЕ фабрикуется; literal ° UA-источника → authored RU `&deg;`; латин. `x`→Cyrillic х; `&deg;`/`&ndash;`/`&brvbar;`-энтити и literal U+2014 `—` зеркалятся 1:1; `Холодоагент`/`холодоагент`→`Хладагент`/`хладагент` / `Без борту`→`Без борта` — SOFT faithful, не нумеруются, genuine RU не переписывается. Кумулятивно SKIP-НП chunk-025 = 8. Применять diff к live Horoshop — только с явным go-ahead Yana + safe mode.)_
 
 ### 1. SKU 31 (Артикул `1090687473`, Стол холодильный Tecnodom P-TF03MIDGN×) — Назв UA «Стіл холодильний Tecnodom P-TF03MIDGN» (без `×`) ↔ genuine Назв RU «Стол холодильный Tecnodom P-TF03MIDGN×» (хвостовой `×` U+00D7): customer-facing рассинхрон кода модели
 
@@ -336,4 +359,4 @@
 
 ---
 
-**Last updated:** 2026-05-19 — chunk-025 батч SKU 57-64 (64/64 — ЗАКРЫВАЮЩИЙ): GoodFood GF-GN2100TN-HC + GF-GN3100TN-HC + GF-SNACK2100TN-HC + GF-SNACK3100TN-HC + GF-S903TOP-HC + GF-S451-H6C (blknochg ×6 genuine LIVE НЕ переписываем) + GEMM TG7130 + FROSTY PA 3100TN (blk триплет ×2) — **blk триплет 2 + blknotrip 0 + blknochg 6 + blknochgeq 0 + SKIP-НП 0**. SKU 62/64 AUTO: Назв.мод RU = genuine nazv_ru + Описание RU полный перевод тег-в-tag (коды идентичны UA↔RU → NON-FLIP); SKU 57-61/63 GoodFood blknochg genuine отдельный рус. перевод поставщика — НЕ переписываем (LIVE-магазин; коды идентичны → NON-FLIP). NON-FLIP — нумерованных Открытых вопросов в батче нет. META always faithful. Открытых вопросов chunk-025 = 1. Кумулятивно SKIP-НП chunk-025 = 8. chunk-025 = 64/64. NEXT: закрытие chunk-025 + chunk-026.
+**Last updated:** 2026-05-19 — **chunk-025 ЗАКРЫТ 64/64.** Все 64 SKU обработаны (раздел Столи холодильні: столы холодильные FROSTY GN4100TN…PA 3100TN / GoodFood / GEMM / Forcold / REEDNEE / Gooder / Tefcold / Tecnodom + Hurakan/TATRA/Fagor SKIP-НП ×8). **Открытые вопросы chunk-025 финализированы: 1 (НЕ обнулён) — #1 SKU 31 (Артикул `1090687473`, Стол холодильный Tecnodom P-TF03MIDGN×): UA Назв «…P-TF03MIDGN» без `×` vs genuine RU «…P-TF03MIDGN×» с хвостовым `×` U+00D7, тело обеих локалей без `×` → customer-facing рассинхрон кода модели (паттерн идентичен chunk-023 OQ#1 Tefcold SS7300-P и chunk-022 OQ#2 Tefcold GS92/SA920), требует решения Yana, на LIVE-магазине без go-ahead не правится.** Итог по чанку: blk 28/64; blknotrip 0/64; blknochg 28/64 (blknochgeq 0); SKIP-НП 8/64 (Hurakan ×4 / TATRA ×2 / Fagor ×2). Кумулятивно SKIP-НП chunk-025 = 8. diff Status `COMPLETE 64/64` + `## chunk-025 — ИТОГ`; MR Status `ГОТОВ 64/64` + `## chunk-025 — ЗАКРЫТ (64/64)` + ретайтл Открытых вопросов (OQ#1 сохранён дословно) + финализирующий italic + заменённый Last updated. (Батчи: 1-8; 9-16; 17-24; 25-32; 33-40; 41-48; 49-56; 57-64.) NEXT: chunk-026 (scaffold; chunk-001 — SKIP навсегда; chunk-≤024 закрыты).
