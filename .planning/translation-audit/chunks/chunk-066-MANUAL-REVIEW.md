@@ -2,9 +2,9 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-066 (90 SKU, rows 2..91; ART 2496038149 … 2153078504)
 **Apply key:** `Артикул` (col1, scoped per row)
-**Status:** b1 DONE 8/90 (b2 предстоит; batch=8 b1..b11 по 8 + b12=SKU89-90 2 SKU = 90)
+**Status:** b2 DONE 16/90 (b3 предстоит; batch=8 b1..b11 по 8 + b12=SKU89-90 2 SKU = 90)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-065
-**Last updated:** chunk-066 b1 (W2)
+**Last updated:** chunk-066 b2 (W2)
 
 Эталон формата: chunk-019-MANUAL-REVIEW.md / chunk-065-MANUAL-REVIEW.md. Категории: blk триплет / blknotrip / blknochg / SKIP-НП.
 
@@ -55,3 +55,32 @@ _(нет)_
 ### SKIP-НП 1
 SKU6 r7 ART 2784069485 HURAKAN HKN-GES300 NUT (горішниця, для половинок горішків з згущеним молоком) — fixed row 7 НЕ тронут, тело из фида НП позже. Promoted prelim → confirmed #1 (см. SKIP-НП таблицу выше).
 
+
+
+## b2 — SKU 9-16 (rows 10-17)
+
+**Verify:** REGR 8 (b1 rows 2-9) + ART 90 + TRIP 3 + BLKNOCHG 5 = 106 PASS / 0 FAIL.
+
+### blk триплет 3
+
+| SKU | row | ART | Название | Действие |
+|---|---|---|---|---|
+| 9 | 10 | 823914812 | Вафельниця Hendi 212134 "серця" (форма у вигляді квітки, 5 сердець) | c5←c7 genuine RU `Вафельница Hendi 212134 "сердца"` (ASCII " ×2 preserved); c36 ← faithful RU тело (skel==UA, dims 5×, × U+00D7 mult ×2, х Cyr ×4); ASCII apos `'` ×2 «п'яти/з'єднаних» → strip RU «пяти/соединенных» (ё avoided) |
+| 14 | 15 | 2447939241 | Вафельниця EWT INOX WB30N (об'ємні кондитерські горішки) | c5←c7 genuine RU «Вафельница EWT INOX WB30N»; c36 ← faithful RU тело (skel==UA, dims 14×, &#39; ×1 в `об&#39;ємних` → RU «объемных» энтити удалена по факту, символьно «объемных»); preserved «Однопостовая,» в bullet и «220V» Lat verbatim |
+| 16 | 17 | 630863406 | Вафельниця EWT INOX FY1 для бельгійських (об'ємних) вафель | c5←c7 genuine RU «Вафельница EWT INOX FY1 для бельгийских вафель»; c36 ← faithful RU тело (skel==UA, dims 5×, ° U+00B0 ×1, х Cyr ×8); source typo «Термоература» → RU «Температура» (UA-опечатка) |
+
+### blknotrip 0
+_(нет)_
+
+### blknochg 5
+
+| SKU | row | ART | Название | Замечание |
+|---|---|---|---|---|
+| 10 | 11 | 1149698386 | Вафельница Roller Grill GES 10 | c5==c7 genuine RU (Latin brand+model); c35!=c36 (758/763) — fixed строка НЕ тронута; soft-note для merge-ревью: c36 source длиннее на 5 символов |
+| 11 | 12 | 1149704682 | Вафельница Roller Grill GES 20 | c5==c7 genuine RU; c35!=c36 (749/754) — fixed строка НЕ тронута; soft-note +5 символов |
+| 12 | 13 | 1149705731 | Вафельница Roller Grill GES 40 | c5==c7 genuine RU; c35==c36 (781/781, идентично) — fixed строка НЕ тронута |
+| 13 | 14 | 1149728461 | Вафельница Roller Grill GED 40 (двопостова для тонких вафель) | c5==c7 genuine RU; c35!=c36 (807/816) — fixed строка НЕ тронута; soft-note +9 символов |
+| 15 | 16 | 476389250 | Вафельница для бельгийских вафель GoodFood WB1S | c5==c7 genuine RU; c35!=c36 (581/604) — fixed строка НЕ тронута; soft-note +23 символа |
+
+### SKIP-НП 0
+_(нет в b2)_

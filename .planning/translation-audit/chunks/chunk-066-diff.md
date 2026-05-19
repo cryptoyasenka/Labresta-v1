@@ -3,7 +3,7 @@
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-066 (90 SKU, rows 2..91; ART 2496038149 … 2153078504)
 **Apply key:** `Артикул` (col1, scoped per row)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-065
-**Status:** b1 DONE 8/90 (b2 предстоит; b1..b11 по 8 SKU + b12=SKU89-90 2 SKU)
+**Status:** b2 DONE 16/90 (b3 предстоит; b1..b11 по 8 SKU + b12=SKU89-90 2 SKU)
 
 Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Формат — как chunk-065-diff.md.
 
@@ -34,3 +34,26 @@ _(нет)_
 ### SKIP-НП 1
 - **SKU 6 r7 ART 2784069485** HURAKAN HKN-GES300 NUT (горішниця): fixed row 7 НЕ тронут, тело из фида НП позже. prelim→confirmed #1.
 
+
+
+## b2 — SKU 9-16 (rows 10-17) — DONE 16/16 (cum)
+
+**Verify:** REGR 8 (b1) + ART 90 + TRIP 3 + BLKNOCHG 5 = 106 PASS / 0 FAIL.
+
+### blk триплет 3
+- **SKU 9 r10 ART 823914812** Вафельниця Hendi 212134 "серця" (квітка з 5 сердець): c5←c7 genuine RU `Вафельница Hendi 212134 "сердца"` (ASCII " ×2 preserved); c36 ← faithful RU (skel==UA; dims c35==c36 5×; × U+00D7 mult ×2; х Cyr ×4; \n ×12; ASCII apos `'` ×2 «п'яти/з'єднаних» → strip RU «пяти/соединенных», ё avoided).
+- **SKU 14 r15 ART 2447939241** Вафельниця EWT INOX WB30N (об'ємні кондитерські горішки, 30 шт.): c5 ← genuine RU, c36 ← faithful RU (dims 14× включая `30` из WB30N; &#39; ×1 в `об&#39;ємних` → RU «объемных» (entity исчезает); «Однопостовая,» и `220V` Lat verbatim preserved).
+- **SKU 16 r17 ART 630863406** Вафельниця EWT INOX FY1 для бельгійських (об'ємних) вафель: c5 ← genuine RU, c36 ← faithful RU (dims 5×; ° U+00B0 ×1; х Cyr ×8); source typo «Термоература» → RU «Температура» (UA-опечатка как в b1 SKU7).
+
+### blknotrip 0
+_(нет)_
+
+### blknochg 5
+- **SKU 10 r11 ART 1149698386** Roller Grill GES 10 (бельгійські вафлі): c5==c7 genuine RU (Latin brand+model); c35!=c36 (758/763) — fixed НЕ тронут; soft-note +5.
+- **SKU 11 r12 ART 1149704682** Roller Grill GES 20 (бельгійські вафлі): c5==c7 genuine RU; c35!=c36 (749/754) — fixed НЕ тронут; soft-note +5.
+- **SKU 12 r13 ART 1149705731** Roller Grill GES 40 (плоскі вафлі): c5==c7 genuine RU; c35==c36 (781/781 идентично) — fixed НЕ тронут.
+- **SKU 13 r14 ART 1149728461** Roller Grill GED 40 (двопостова для тонких вафель): c5==c7 genuine RU; c35!=c36 (807/816) — fixed НЕ тронут; soft-note +9.
+- **SKU 15 r16 ART 476389250** GoodFood WB1S (для бельгийских вафель — c5/c7 уже genuine RU): c5==c7 genuine RU; c35!=c36 (581/604) — fixed НЕ тронут; soft-note +23.
+
+### SKIP-НП 0
+_(нет в b2)_

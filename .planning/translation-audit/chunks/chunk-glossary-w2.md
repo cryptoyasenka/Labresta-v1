@@ -722,3 +722,43 @@ Soft-note: chunk-065 ЗАКРЫТ 81/81 (b1..b11). Финальный b11 = ед
 - автоматический тайминг (reuse)
 
 Soft-note: chunk-066 OPEN. b1 без новых OQ. SKU1 Roller Grill blknochg c35!=c36 (фиксированный длиннее) — soft-note для merge-ревью, не блок. SKU4 Frosty WBS-1UH blknochg: source c35 lead ссылается на WBS-21W при SKU=WBS-1UH (copy-paste артефакт исходника), body про UFO burger как у SKU5 — soft-note. SKU6 HURAKAN HKN-GES300 NUT (горішниця) — SKIP-НП #1 confirmed (prelim promoted), fixed row 7 НЕ тронут.
+
+## chunk-066 b2 (SKU 9-16, rows 10-17) — 16/90 — глоссарий +8 net-new (cum 880→888)
+
+**Net-new b2:**
+- профессиональная (вафельница) <- професійна
+- форма в виде цветка <- форма у вигляді квітки
+- состоит из пяти сердец, соединенных вместе <- складається з п'яти сердець, з'єднаних разом
+- "сердца" (RU фигурное название продукта, ASCII " ×2 preserved) <- "серця"
+- для выпекания (объемных) кондитерских орешков <- для випікання (об'ємних) кондитерських горішків
+- рифленая, прямоугольная (рабочая поверхность) <- рифлена, прямокутна
+- двопостовая для тонких вафель (Roller Grill GED 40) <- двопостова для тонких вафель (soft-note: «двопостовая» UA-калька в RU исходнике у Roller Grill, blknochg НЕ правим)
+- плоские вафли <- плоскі вафлі (Roller Grill GES 40)
+
+**Reuse from earlier batches (b2):**
+- Hendi NNNNNN (brand+model verbatim) (reuse b1 SKU8)
+- EWT INOX NNNN (brand+model verbatim) (reuse b1 SKU7, b11)
+- Roller Grill GES/GED NN (brand+model verbatim, Latin) (reuse b1 SKU1)
+- GoodFood WBNN (brand+model verbatim) (reuse b1, chunk-055..065)
+- однопостовая / двопостовая (Roller Grill) (reuse)
+- для бельгийских вафель (reuse b1)
+- объемные (бельгийские) вафли (reuse b1)
+- чугунная антипригарная поверхность (reuse b1 SKU8/SKU9)
+- термостат с плавной регулировкой температуры (reuse b1)
+- вилка для вафель / изолированная ручка / съемный лоток для стока (reuse b1)
+- мощность ТЭНа N кВт (reuse b1)
+- напряжение: 220 В (reuse b1)
+- габариты: 320×437×(H)277 мм (reuse b1 SKU8 SKU9 same dims)
+- вес: NN кг (reuse b1)
+- технические характеристики (reuse)
+- корпус выполнен из нержавеющей стали (reuse b1)
+- рабочая поверхность чугун, с антипригарным покрытием (reuse b1)
+- нагрев осуществляется одновременно сверху и снизу (reuse b1)
+- температура выпекания 250 °C (reuse b1 SKU7; source typo «Термоература» → норм. «Температура»)
+- автоматический тайминг / устойчивое основание (reuse b1)
+- терморегулятор 50-300 град. (новый, hyphenated range)
+- вес/длина/ширина/высота (нетто) / в упаковке (reuse b1)
+- 220V Lat preserved (reuse)
+- страна производитель: Китай (reuse)
+
+Soft-note b2: чистый раунд без OQ. SKU13 Roller Grill GED 40 source «двопостова» — это UA в обоих локалях c5/c7, но genuine RU c7 это «Вафельница» (Cyr RU «Вафельница» сохраняется). blknochg для всех 5 Roller Grill/GoodFood — fixed НЕ тронут, source c35/c36 длины могут различаться (soft-notes указаны).
