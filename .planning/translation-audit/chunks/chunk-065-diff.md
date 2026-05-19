@@ -3,7 +3,7 @@
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-065 (81 SKU, rows 2..82; ART 2121426618 … 2447469404)
 **Apply key:** `Артикул` (col1, scoped per row)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-064
-**Status:** b10 DONE 80/81 (b11 предстоит; b1-b10 по 8 SKU + b11=SKU81 1 SKU)
+**Status:** b11 DONE 81/81 (chunk-065 ЗАКРЫТ; b1-b10 по 8 SKU + b11=SKU81 1 SKU)
 
 Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Формат — как chunk-064-diff.md.
 
@@ -274,3 +274,34 @@ SKIP-НП prelim (HURAKAN, forward-only, тело из фида НП позже)
 ---
 
 <!-- Сводка по батчу b11 ниже. -->
+<!-- b11 marker -->
+
+## b11 — diff (SKU 81, row 82), 81/81 — ФИНАЛ chunk-065
+
+**Категории:** blk триплет 1 · blknotrip 0 · blknochg 0 · SKIP-НП 0 = 1.
+
+### blk триплет (1)
+- **SKU 81** (r82, ART 2447469404, EWT INOX FY4 для бельгийских вафель): col5 `Вафельниця EWT INOX FY4 для бельгійських вафель` → `Вафельница EWT INOX FY4 для бельгийских вафель`; col36 UA-leak (c35==c36) → faithful RU (skel==c35 c `\n` ×19, dims==c35 после numeric-entity-strip; no `&deg;` (текст «градусов»), `&#39;` ASCII apos снят в RU «объемных», XCH Cyr х в поверхность/характеристики/100х170, DASH `-` ×2 в bullet-разделителях, `220V` Lat V verbatim; UA «Однопостовий»→RU «Однопостовый», UA «Робоча поверхня з антипригарним покриттям»→RU «Рабочая поверхность с антипригарным покрытием»; source c35 лидер «Вафельниця бельгійська GoodFood WB4S» при ART/имя EWT INOX FY4 — RU faithful preserve copy-paste artifact как «Вафельница бельгийская GoodFood WB4S»).
+
+### blknotrip (0)
+— нет.
+
+### blknochg (0)
+— нет.
+
+### SKIP-НП (0)
+— нет.
+
+**Codepoint findings:** SKU81 no `&deg;` (использован текст «250 градусов» вместо энтити); `&#39;` ×1 в UA «об&#39;ємних» → RU «объемных» entity снят; XCH Cyr х ×6-7 в русских словах поверхность/характеристики/объемных/бельгийских/100х170; DASH `-` ×2 в bullet-разделителях.
+
+**Verify:** 162 PASS / 0 FAIL (REGR 80 + ART 81 + TRIP 1 = 162).
+
+---
+
+## ИТОГ chunk-065 (b1..b11)
+
+**Всего:** 81 SKU. **Категории cum:** blk триплет 27 · blknotrip 0 · blknochg 51 · SKIP-НП 3.
+**SKIP-НП:** SKU64 HURAKAN HKN-GES2M (b8 #1), SKU69 HURAKAN HKN-GES2L (b9 #2), SKU70 HURAKAN HKN-GES5HK (b9 #3) — тело из фида НП позже.
+**Глоссарий:** 757 → 867 (+110 по chunk-065). OQ 0. Все батчи PASS / 0 FAIL.
+
+---

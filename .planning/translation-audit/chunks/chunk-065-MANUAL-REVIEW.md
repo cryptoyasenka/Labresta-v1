@@ -2,9 +2,9 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-065 (81 SKU)
 **Apply key:** `Артикул` (col1, scoped per row)
-**Status:** b10 DONE 80/81 (b11 предстоит; batch=8, b11=SKU81 1 SKU)
+**Status:** b11 DONE 81/81 (chunk-065 ЗАКРЫТ; batch=8 + b11=SKU81 1 SKU)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-064
-**Last updated:** chunk-065 b10 (W2)
+**Last updated:** chunk-065 b11 (W2)
 
 Эталон формата: chunk-019-MANUAL-REVIEW.md / chunk-064-MANUAL-REVIEW.md. Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Кумул. OQ закрыты.
 
@@ -320,3 +320,36 @@ _(нумерация отдельная, начинается с #1; пока н
 ---
 
 <!-- Сводка по батчу b11 ниже. -->
+<!-- b11 marker -->
+
+## b11 — SKU 81 (row 82), 81/81 — ФИНАЛ chunk-065
+
+**Категории:** blk триплет 1 · blknotrip 0 · blknochg 0 · SKIP-НП 0 = 1.
+
+| # | SKU | Артикул | Бренд / модель | Категория | Действие |
+|---|---|---|---|---|---|
+| 1 | 81 | 2447469404 | EWT INOX FY4 вафельница для бельгийских вафель | blk триплет | col5 ← c7 (`Вафельница EWT INOX FY4 для бельгийских вафель`); col36 — faithful RU (skel==c35 c `\n` ×19, dims==c35 после numeric-entity-strip: WB4S/100х170/250/440/305/225/1.55/220/8/470/360/330; codepoint no DEG (текст «градусов» вместо `&deg;`), `&#39;` ×1 в UA «об&#39;ємних» → RU «объемных» entity снят, XCH Cyr х ×6 в RU (поверхность ×2 + характеристики + объемных + бельгийских + 100х170; UA cp.txt сообщает 7 -- одна форма в UA-конкретном падеже), DASH `-` ×2 в «Корпус - нержавеющая сталь»/«Рабочая поверхность - чугун», `220V` Lat V verbatim) |
+
+**Verify:** 162 PASS / 0 FAIL (REGR 80 + ART 81 + TRIP 1 = 162).
+
+**Глоссарий b11:** см. `chunk-glossary-w2.md` (860 → 867).
+
+**Codepoint findings (TRIP):**
+- SKU81 r82 (EWT INOX FY4, len 786): no `&deg;` (использован текст «250 градусов» вместо энтити); `&#39;` ASCII apos ×1 в UA «об&#39;ємних» → RU «объемных» entity снят; XCH Cyr х ×6-7 в обычных русских словах + 100х170; DASH `-` ×2 в bullet-формате «Корпус - нержавеющая сталь»; trailing space `Розміри в упаковці ` preserved в `Размеры в упаковке `.
+
+**Soft-notes (pre-existing в c35/c36, не наша правка):** SKU81 c35 лидер-абзац начинается с «Вафельниця бельгійська GoodFood WB4S» при том что SKU = EWT INOX FY4 (source copy-paste inconsistency, ART/имя ≠ тело) — RU faithful preserve «Вафельница бельгийская GoodFood WB4S» verbatim. UA «Однопостовий» (masc) → RU «Однопостовый» (masc preserved). UA «Робоча поверхня з антипригарним покриттям» → RU «Рабочая поверхность с антипригарным покрытием». UA «Рифлена, прямокутна» → RU «Рифленая, прямоугольная» (fem to match поверхность).
+
+**Открытых вопросов b11:** нет.
+
+---
+
+## ИТОГ chunk-065 (b1..b11)
+
+**Всего:** 81 SKU (b1-b10 по 8 + b11=1 SKU = 81).
+**Категории:** blk триплет 27 · blknotrip 0 · blknochg 51 · SKIP-НП 3.
+**SKIP-НП cum:** SKU64 (HURAKAN HKN-GES2M, b8 #1), SKU69 (HURAKAN HKN-GES2L, b9 #2), SKU70 (HURAKAN HKN-GES5HK, b9 #3).
+**Глоссарий:** 757 → 867 (+110 по chunk-065).
+**Открытых вопросов:** 0.
+**Verify cumulative b1..b11:** все батчи PASS / 0 FAIL.
+
+---
