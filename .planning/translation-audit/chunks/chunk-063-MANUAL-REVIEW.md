@@ -1,0 +1,25 @@
+# chunk-063 — manual review (W2)
+
+**Source:** `horoshop-export 13.05.26.xlsx` chunk-063 (88 SKU)
+**Apply key:** `Артикул` (col1, scoped per row)
+**Status:** SCAFFOLD 0/88 (batch=8 → b1..b11)
+**Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-062
+**Last updated:** chunk-063 scaffold (W2, продолжение chunk-062)
+
+Эталон формата: chunk-019-MANUAL-REVIEW.md / chunk-062-MANUAL-REVIEW.md. Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Кумул. OQ закрыты (ОВ-1..ОВ-4 remediation c71341f).
+
+## SKIP-НП (НП-эксклюзивные бренды, forward-only, тело из фида НП позже)
+
+| # | SKU | Артикул | Бренд | Название (UA) | Примечание |
+|---|---|---|---|---|---|
+| _(prelim)_ | 1 | 2059513121 | HURAKAN | Теплова вітрина Hurakan HKN WD-165L | подтвердить в b1 |
+| _(prelim)_ | 3 | 2176575775 | HURAKAN | Вітрина теплова HURAKAN HKN WD-160L | подтвердить в b1 |
+| _(prelim)_ | 54 | 1148895671 | HURAKAN | Супниця HURAKAN HKN-FWP | подтвердить в b7 |
+
+## Открытые вопросы chunk-063
+
+_(нумерация отдельная, начинается с #1; пока нет)_
+
+---
+
+<!-- Сводки по батчам b1..b11 ниже. -->
