@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-062 (81 SKU)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 48/81 (blk триплет 17 / blknochg 29 / blknotrip 1 / SKIP-НП 1; Открытых вопросов 0)
+**Status:** IN PROGRESS 56/81 (blk триплет 20 / blknochg 32 / blknotrip 1 / SKIP-НП 3; Открытых вопросов 0)
 **Worker:** W2 (параллельный воркер, диапазон chunk-055 … chunk-085; W1 ведёт chunk-001 … chunk-054)
 **Scaffold:** chunk-062 scaffold (W2, продолжение chunk-061). chunk-061 ЗАКРЫТ 67/67 (blk триплет 29 / blknochg 34 / blknotrip 0 / SKIP-НП 4; OQ 0). chunk-062 = 81 SKU, openpyxl rows 2..82; первый SKU1 ART2424757446 «Гриль контактний SARO PG 1B», последний SKU81 ART2059507443 «Теплова вітрина Hurakan WD-120L». 11 батчей (б1-10 ×8 = 80, б11 = SKU81 ×1 финальный). SKIP-НП зонд по `Название` (NP-список HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA — Lat+Cyr): **6 hits — все HURAKAN**: SKU34 (ART736117487 «Гриль роликовий HURAKAN HKN-GW7M»), SKU53 (ART2375841678 «Гриль роликовий HURAKAN HKN-GW11M»), SKU54 (ART2375848556 «Гриль роликовий HURAKAN HKN-GW9M»), SKU66 (ART901422138 «Теплова вітрина HURAKAN HKN-WD2»), SKU67 (ART1168676811 «Теплова вітрина HURAKAN HKN-WD3M»), SKU81 (ART2059507443 «Теплова вітрина Hurakan WD-120L»). Эти SKU → SKIP-НП (тело из фида НП позже), вносятся в таблицу при обработке батчей б5 (SKU34) / б7 (SKU53/54) / б9 (SKU66/67) / б11 (SKU81). Прочие бренды (SARO и др.) НЕ в НП-списке — обрабатываются обычно.
 
@@ -156,5 +156,17 @@
 | 48 | 49 | 2193257140 | AIRHOT RG-9 | blk триплет | col5←col7 + col36 797→794 |
 
 **blk триплет 7 + blknochg 1.** descUA==descRU True + col5==col4 UA-leak «роликовий» + col7 genuine RU «роликовый» → col5←col7 + col36 tag-в-tag RU перевод source col35 (replace-on-source). byte-exact PER-SKU: AIRHOT RG-7 `0,15 кВт` ЗАПЯТАЯ (lead) vs `1.05 кВт` ТОЧКА (li) · `(°С)` U+00B0+кир.С · `580х330х215` · Frosty R2-7/R2-9 reuse b3 SKU24 R2-5 tmpl (`t&deg;`/`&deg;C`/`1,16`·`1,50 кВт` ЗАПЯТАЯ/`220 В`/Latin x `585мм x …`/Вес dot `14.00`·`16.00`) · Frosty WY-011 `2,06 кВт/ 220В` склеен/Latin x `590мм x 480мм x 420мм`/`17.00` · REEDNEE HDRG-E11-2/E7-2 веса dot (`12.6`/`13`/`9.5`/`10.5`)/`220V` склеен/`Размеры в упаковке`-секция · AIRHOT RG-9 отд. суб-tmpl `+50...+300, &deg;С`/`1.65, кВт`/Latin x `560x410x178`·`610x440x210`. SKIP-НП 0 (следующий НП SKU53/54 в б7). Soft-notes (НЕ нумеруются): SKU42 GoodFood HDRG9 RED genuine RU добавляет clause «выдержит длительные нагрузки» vs UA — NAME консистентен, blknochg fixed НЕ тронут. OQ 0.
+
+---
+
+## Батч 7 (SKU 49-56, openpyxl rows 50-57) — 56/81
+
+**blk триплет 3:** SKU49 AIRHOT RG-11 (row50) / SKU50 AIRHOT RG-5S із захисним екраном (row51) / SKU51 AIRHOT RG-7S із захисним екраном (row52) — descUA==descRU True + col5==col4 UA-leak «роликовий» + col7 genuine RU «роликовый» → col5←col7 + col36 tag-в-tag RU перевод source col35 (replace-on-source). Byte-exact PER-SKU: RG-11 reuse RG-9 (b6) структурный шаблон `+50...+300, &deg;С` / `1.65, кВт` / Latin x `560x485x178`·`610x530x210`, `(6 ролики)`→`(6 роликов)` / `(5 ролика)`→`(5 роликов)`; RG-5S/RG-7S «із захисним екраном»→«с защитным экраном», `+50...+250, &deg;С`, `Роздільне регулювання передніх та задніх роликів`, RG-5S `0.96 кВт` ТОЧКА 8.2/9.5 кг Latin x `580x250x420`·`620x320x460` / RG-7S `1.33 кВт` 10/12 кг Latin x `580x330x420`·`620x390x460`; `&#39;` сняты в lead.
+
+**blknotrip 0** · **blknochg 3:** SKU52 GoodFood GLASS HDRG11 (row53) / SKU55 GGM HDGJ5 (row56) / SKU56 Roller Grill RG 7 (row57) — descUA!=descRU, col5 genuine RU==col7, col36 отдельное чистое RU (Roller Grill `&Oslash;` entity verbatim), fixed rows 53/56/57 НЕ тронуты==source.
+
+**SKIP-НП 2:** SKU53 HURAKAN HKN-GW11M (row54, Артикул 2375841678) #2 / SKU54 HURAKAN HKN-GW9M (row55, Артикул 2375848556) #3 — НП-эксклюзив forward-only, RU НЕ переписан, fixed rows 54/55 НЕ тронуты==source, тело из НП-фида позже.
+
+chunk-062-fixed.xlsx правлен rows 50/51/52 (blk триплет col5←col7+col36); rows 53/54/55/56/57 НЕ тронуты. reopen-verify VERIFY_062_B7 ALL PASS 56 чеков (b7 + REGR b1 SKU4 / b2 SKU9-16 / b3 SKU21·SKU24 / b4 SKU25-32 / b5 SKU33-40 / b6 SKU41-48 — все intact, col36-UA 0, skeleton==src). Открытых вопросов батч не дал. Глоссарий: б7 +2 net-new (кумул 485).
 
 ---
