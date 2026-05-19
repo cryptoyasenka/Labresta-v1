@@ -860,3 +860,34 @@ Soft-note b4: чистый раунд без OQ. SKU30 r31 ECM-1 source artifact
 - однопостовая (UA-RU mix preserve в c5/c7 — note: уже в источнике как c7 verbatim)
 
 Soft-note b5: чистый раунд без OQ. SKU37 r38 Hendi 212028 source c5/c7 содержат UA-RU mix «однопостовая» — preserve verbatim (этот вариант уже в c7 как «genuine»). Источник body первая строка «Електрична млинниця» (UA word order) → faithful RU «Электрическая блинница» в первом параграфе (можно и «Блинница электрическая», выбрано preserve source word order для прозы). SKU40 r41 Roller Grill CDE 400 «2х400 мм» с Cyrillic х — preserve verbatim (genuine RU c5/c7). 5 blknochg все GoodFood/GGM/Roller Grill — genuine RU c5/c7. SKIP-НП #2 HURAKAN HKN-CSE400P подтверждён, тело из фида НП позже.
+
+
+## chunk-066 b6 (SKU 41-48, rows 42-49) — 48/90 — глоссарий +11 net-new (cum 915→926)
+
+**Net-new b6:**
+- La Monferrina (brand Latin verbatim, новый в W2-диапазоне)
+- Oztiryakiler OKM1 (brand+model verbatim Latin, новый бренд)
+- Аппарат блинный <- Апарат млинцевий (new product type — vs «Блинница», для автоматических машин с лентой теста)
+- автоматическая машина для изготовления блинов <- автоматична машина для виготовлення млинців
+- круглой или прямоугольной формы (от сладких до острых видов)
+- из муки любого сорта <- з борошна будь-якого сорту
+- бачок для теста вместимостью N литра/литров <- бачка для тіста місткістю N літри
+- жарочный барабан с защитной сеткой <- жаркого барабана із захисною сіткою (new)
+- пульт управления с селектором функции и цифровым дисплеем для контроля температуры <- пульта керування з селектором функції та цифровим дисплеєм для контролю
+- Регулируемая длина (ленты теста) <- Регульована довжина
+- ловник (термин preserve Cyrillic, контейнер для сладкой ваты — note new term)
+- термоголовка с лопастями <- термоголівка з лопатями
+- окрашен в розовый цвет / окрашенная сталь <- пофарбований у рожевий колір / пофарбована сталь
+- Производительность N м/ч шт./ч (комбинированная м+шт) / N порций в час (новая единица «порций в час» — variant)
+
+**Reuse from earlier batches (b6):**
+- AIRHOT CF-1 (brand reuse b4 AIRHOT BE-1/BE-2)
+- EWT INOX SWC-520 (brand reuse b1/b2/b3/b4/b5)
+- GoodFood CFM52 (brand reuse b1/b2/b3/b4/b5)
+- Аппарат для приготовления сахарной/сладкой ваты <- Апарат для приготування цукрової/солодкої вати (cum patterns; «сахарной»=AIRHOT, «сладкой»=EWT/GoodFood)
+- диаметр чаши 520 мм (reuse cum)
+- mm.160/mm.200 единицы preserve verbatim (Latin)
+- iframe-блок YouTube preserved verbatim с ASCII " ×12 (reuse pattern для embedded video)
+- ASCII apos в UA «Об'єм» → strip в RU «Объем» (reuse pattern b1/b2/b3)
+
+Soft-note b6: чистый раунд без OQ. SKU42-44 r43-45 La Monferrina — три SKU с длинными body (1082/954/954) включая YouTube iframe. iframe-блок preserved verbatim (URL params `wmode=transparent&rel=0&loop=0&autoplay=0&controls=1&showinfo=1&disablekb=0&modestbranding=0/1` — `0` и `1` различаются по SKU). Source artifact: SKU43/44 dash в body «C1/320 - 320 мм» это HMin (не Em) — preserve verbatim. SKU41 Oztiryakiler — genuine c5/c7 с UA-RU mix «однопостовая», fixed НЕ тронут. 2 blknochg все Oztiryakiler/GoodFood — genuine RU c5/c7. SKIP-НП #3 HURAKAN HKN-C1 подтверждён, тело из фида НП позже.
