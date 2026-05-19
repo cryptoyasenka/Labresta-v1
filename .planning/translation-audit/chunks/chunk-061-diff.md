@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-061 (67 SKU)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 64/67 (blk триплет 29 / blknochg 31 / blknotrip 0 / SKIP-НП 4; Открытых вопросов 0)
+**Status:** ЗАКРЫТ 67/67 (blk триплет 29 / blknochg 34 / blknotrip 0 / SKIP-НП 4; Открытых вопросов 0)
 **Worker:** W2 (параллельный воркер, диапазон chunk-055 … chunk-085; W1 ведёт chunk-001 … chunk-054)
 
 **Состав (по типу товара):** первый SKU — Артикул `2309189086` (`Гриль контактний Frosty EGS-44`); последний SKU67 — Артикул `2424751163` (`Гриль-тостер SARO BUSSO T1`). Колонка `Бренд` в источнике дублирует `Артикул` (числовой) — бренд определяется по `Название` per-SKU при аудите батча. Тип: преимущественно грили контактні + тостери / гриль-тостери. **SKIP-НП (зонд по `Название`): 4 NP-suspect** — все в НП-списке → SKIP-НП (тело придёт из фида НП позже, RU не трогается; вносятся в таблицу при обработке соответствующих батчей): **HURAKAN ×3** — SKU28 Арт `1147792135` (`Гриль контактний HURAKAN HKN-PE22R`) · SKU29 Арт `1147801726` (`Гриль контактний Hurakan HKN-PE34R`) · SKU30 Арт `1147802158` (`Гриль контактний HURAKAN HKN-PE44R`); **TATRA ×1** — SKU48 Арт `2062003333` (`Гриль контактний TATRA EMP.102`). Прочие бренды (Frosty, SARO, …) НЕ в НП-списке — обрабатываются обычно, подтверждается per-батч по `Название`. Батч = 8 SKU; 9 батчей (67/8 → б1-8 по 8 SKU = 64, б9 = SKU 65-67 = 3 SKU). openpyxl rows 2..68 (row = SKU + 1).
@@ -279,5 +279,24 @@ blk триплет 6 (SKU9/10/12/13/14/15) · blknochg 2 (SKU11/16) · blknotrip
 **SKIP-НП (0):** в батче 8 NP-suspect нет (Silver/Frosty/MARS/SARO НЕ в НП-списке). SKIP-НП таблица без изменений (остаётся 4: HURAKAN×3 б4 + TATRA×1 SKU48 б6).
 
 **Модель-коды:** все согласованы UA↔genuine-RU (Silver SS-20/SS-20DН; Frosty EGS-18FF/EGS-36DF/EGS-44DF; MARS MTS-12G/MTS-20G; SARO PG 1). Soft-notes (НЕ нумер.): SKU57 Silver `<strong>`-drop + `Тип поверхности ребриста` UA-форма genuine-RU / SKU63 MARS MTS-20G genuine RU опускает хвост `Поверхні ребристі`+`Однопостовий.` — NAME консистентен → НЕ рассинхрон, НЕ Открытый вопрос. Открытых вопросов по батчу 8 нет; chunk-061 OQ=0.
+
+---
+
+## Батч 9 (SKU 65-67, openpyxl rows 66-68) — 67/67 ЗАКРЫТ
+
+| SKU | Артикул | Название (UA) | Бренд | Категория | Действие |
+|---|---|---|---|---|---|
+| 65 | 2331737254 | Гриль контактний електричний SARO PG 2 | SARO | blknochg | без изменений (genuine RU) |
+| 66 | 2424551138 | Гриль-тостер SARO BUSSO T2 | SARO | blknochg | без изменений (genuine RU) |
+| 67 | 2424751163 | Гриль-тостер SARO BUSSO T1 | SARO | blknochg | без изменений (genuine RU) |
+
+**blknochg (3) — fixed НЕ тронут (descUA!=descRU, col5 уже genuine/lang-neutral RU==col7, отдельное чистое RU; reopen-verify rows 66/67/68 fixed==source c5+c36, UA-marker col36 0; B1-B8 intact):**
+- **SKU65 SARO PG 2 (row66)** — col5 «Гриль контактный электрический SARO PG 2» genuine RU (col5!=col4, col5==col7). descUA!=descRU (951≠983). genuine RU чистый (Cyrillic-х `440x230` / `580x410x190` Latin-x + `2x(215x215)` byte-exact). Soft-note (НЕ нумер., прец. SKU56 б7 / SKU57 б8 / SKU27 б4 / SKU35 б5): genuine-RU `<p>Технические характеристики:</p>` (UA `<p><strong>Технічні характеристики:</strong></p>` — `<strong>` опущен) + `<li>Подключение, в 220 В</li>` (UA `<li>Підключення, в 220</li>` — genuine RU добавил « В»). NAME консистентен UA↔RU → структурное расхождение genuine RU, НЕ рассинхрон, НЕ Открытый вопрос. SARO НЕ в НП-списке.
+- **SKU66 SARO BUSSO T2 (row67)** — col5==col4==col7 «Гриль-тостер SARO BUSSO T2» (lang-neutral: «Гриль-тостер» совпадает UA/RU, бренд+код SARO BUSSO T2; UA-MARK regex False — НЕ UA-leak). descUA!=descRU (668≠678). genuine RU чистый, структура параллельна (`<p><strong>Технические характеристики:</strong></p>` сохранён; `&deg;C` entity byte-exact; `440x260x380` Latin-x). NAME согласован. SARO НЕ в НП-списке.
+- **SKU67 SARO BUSSO T1 (row68)** — col5==col4==col7 «Гриль-тостер SARO BUSSO T1» (lang-neutral, как T2). descUA!=descRU (667≠679). genuine RU чистый (`&deg;C` entity byte-exact; `440x260x250` Latin-x). Soft-note (НЕ нумер.): `<li>Подключение, в 220 В</li>` (UA `<li>Підключення, в 220</li>` — genuine RU добавил « В») — структурная вариативность genuine RU, NAME консистентен → НЕ рассинхрон, НЕ Открытый вопрос. SARO НЕ в НП-списке.
+
+**SKIP-НП (0):** в батче 9 NP-suspect нет (SARO НЕ в НП-списке). SKIP-НП таблица без изменений (остаётся 4: HURAKAN×3 б4 + TATRA×1 SKU48 б6).
+
+**Модель-коды:** все согласованы UA↔genuine-RU (SARO PG 2; SARO BUSSO T2/T1). Soft-notes (НЕ нумер.): SKU65 SARO PG 2 `<strong>`-drop + `Подключение, в 220 В` / SKU67 SARO BUSSO T1 `Подключение, в 220 В` — genuine-RU вариативность, NAME консистентен → НЕ рассинхрон, НЕ Открытый вопрос. Открытых вопросов по батчу 9 нет; chunk-061 OQ=0. **chunk-061 ЗАКРЫТ: 67/67 (blk триплет 29 / blknochg 34 / blknotrip 0 / SKIP-НП 4; Открытых вопросов 0). Все 67 SKU обработаны (rows 2..68). chunk-061-fixed.xlsx: blk триплет rows исправлены (col5←col7+col36), blknochg НЕ тронуты==source, SKIP-НП 4 (тело из фида НП позже). Кумул. OQ из других chunk (НЕ блокируют): OQ#1 SKU10 c055 / OQ#1 SKU67 c056 / OQ#1 SKU31 c058 / OQ#1 SKU89 c059.**
 
 ---
