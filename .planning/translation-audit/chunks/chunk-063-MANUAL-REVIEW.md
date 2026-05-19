@@ -2,9 +2,9 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-063 (88 SKU)
 **Apply key:** `Артикул` (col1, scoped per row)
-**Status:** b3 DONE 24/88 (b4..b11 remain; batch=8)
+**Status:** b4 DONE 32/88 (b5..b11 remain; batch=8)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-062
-**Last updated:** chunk-063 b3 (W2)
+**Last updated:** chunk-063 b4 (W2)
 
 Эталон формата: chunk-019-MANUAL-REVIEW.md / chunk-062-MANUAL-REVIEW.md. Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Кумул. OQ закрыты (ОВ-1..ОВ-4 remediation c71341f).
 
@@ -85,4 +85,25 @@ _(нумерация отдельная, начинается с #1; пока н
 
 **Открытых вопросов b3:** нет (опечатка «укоплектоварн стекляной» в SKU 24 — пред-существующий дефект источника в genuine RU, blknochg не правим; замечание для Yana, не OQ).
 
-<!-- Сводки по батчам b4..b11 ниже. -->
+## b4 (SKU 25-32) — DONE 32/88
+
+**Категории:** blk триплет 6 (SKU 26,27,29,30,31,32) · blknotrip 1 (SKU 28) · blknochg 1 (SKU 25) · SKIP-НП 0.
+
+| SKU | row | ART | Бренд | Категория | Действие |
+|---|---|---|---|---|---|
+| 25 | 26 | 593856839 | GoodFood | blknochg | c5==c7 genuine RU «Мармит электрический GoodFood BM3», c36 переведён (c35!=c36); fixed НЕ тронут |
+| 26 | 27 | 648142042 | HENDI | blk триплет | col5←c7 «Электросупница 8 л HENDI 860083 KITCHEN LINE»; col36← faithful RU (skel==UA c35; `°C`-литералов нет, `0,435 кВт`/`340`/`360` verbatim) |
+| 27 | 28 | 659138198 | Hendi | blk триплет | col5←c7 «Термоконтейнер для пиццы Hendi 707975»; col36← faithful RU (`-20°C`/`+110°C` литералы, `350х350х175`/`410х410х240` verbatim) |
+| 28 | 29 | 659207301 | Hendi | blknotrip | name lang-neutral «Термоконтейнер Hendi 707906 (GN1/1)» c5==c7 (col5 НЕ тронут); col36← faithful RU (c35==c36 UA-leak; `538х338х234`/`600х410х320` verbatim) |
+| 29 | 30 | 659310459 | Hendi | blk триплет | col5←c7 «Термосумка для пиццы Hendi (350x350 мм) 709825»; col36← faithful RU (`350х350` verbatim) |
+| 30 | 31 | 659315703 | Hendi | blk триплет | col5←c7 «Термосумка для пиццы Hendi (450x450 мм) 709818»; col36← faithful RU (`450х450` verbatim) |
+| 31 | 32 | 660854999 | EWT INOX | blk триплет | col5←c7 «Электросупница EWT INOX SK6000 (9 л)»; col36← faithful RU (`+70 °C`/`+90 °C` литералы, `340х340х305`/`0,4 кВт` verbatim) |
+| 32 | 33 | 682956337 | Hendi | blk триплет | col5←c7 «Мармит со сливным краном Hendi Kitchen Line (GN 1/1) 238912»; col36← faithful RU (multi-line `\n`; `85ºC` литерал º verbatim, `340х540х250`/`1,2 кВт`/`GN 1/1` verbatim) |
+
+**Verify:** 172 PASS / 0 FAIL — 88 ART (apply key) unchanged + 6 blk триплет ×{col5==src c7, col36 skeleton==c35, UA-clean, без ё, dims verbatim incl. кир. х, col4/6/7/35 untouched} + 1 blknotrip SKU28 {col36==RU skel==c35 UA-clean без ё dims==, col5==src (НЕ тронут), col4/6/7/35 untouched} + 1 blknochg SKU25 col5/col36==src.
+
+**Глоссарий b4 (новые UA→RU):** термоконтейнер для піци→термоконтейнер для пиццы · термосумка для піци→термосумка для пиццы · зливний кран→сливной кран · гастроємність→гастроемкость · кишеня→карман · застібка→застежка · термостійкість→термостойкость · поліпропілен→полипропилен · ергономічні→эргономичные · профільовані→профилированные · смакові якості→вкусовые качества. Reuse: електросупниця→электросупница · вставка-каструля→вставка-кастрюля · відкидна кришка→откидная крышка · марміт→мармит · нержавіюча сталь→нержавеющая сталь · потужність→мощность.
+
+**Открытых вопросов b4:** нет.
+
+<!-- Сводки по батчам b5..b11 ниже. -->
