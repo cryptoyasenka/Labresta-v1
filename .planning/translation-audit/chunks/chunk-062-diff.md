@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-062 (81 SKU)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 16/81 (blk триплет 1 / blknochg 15 / blknotrip 0 / SKIP-НП 0; Открытых вопросов 0)
+**Status:** IN PROGRESS 24/81 (blk триплет 2 / blknochg 21 / blknotrip 1 / SKIP-НП 0; Открытых вопросов 0)
 **Worker:** W2 (параллельный воркер, диапазон chunk-055 … chunk-085; W1 ведёт chunk-001 … chunk-054)
 **Scaffold:** chunk-062 scaffold (W2, продолжение chunk-061). chunk-061 ЗАКРЫТ 67/67 (blk триплет 29 / blknochg 34 / blknotrip 0 / SKIP-НП 4; OQ 0). chunk-062 = 81 SKU, openpyxl rows 2..82; первый SKU1 ART2424757446 «Гриль контактний SARO PG 1B», последний SKU81 ART2059507443 «Теплова вітрина Hurakan WD-120L». 11 батчей (б1-10 ×8 = 80, б11 = SKU81 ×1 финальный). SKIP-НП зонд по `Название` (NP-список HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA — Lat+Cyr): **6 hits — все HURAKAN**: SKU34 (ART736117487 «Гриль роликовий HURAKAN HKN-GW7M»), SKU53 (ART2375841678 «Гриль роликовий HURAKAN HKN-GW11M»), SKU54 (ART2375848556 «Гриль роликовий HURAKAN HKN-GW9M»), SKU66 (ART901422138 «Теплова вітрина HURAKAN HKN-WD2»), SKU67 (ART1168676811 «Теплова вітрина HURAKAN HKN-WD3M»), SKU81 (ART2059507443 «Теплова вітрина Hurakan WD-120L»). Эти SKU → SKIP-НП (тело из фида НП позже), вносятся в таблицу при обработке батчей б5 (SKU34) / б7 (SKU53/54) / б9 (SKU66/67) / б11 (SKU81). Прочие бренды (SARO и др.) НЕ в НП-списке — обрабатываются обычно.
 
@@ -57,5 +57,33 @@
 - SKU12 MARS MTS-20: имя расширено в RU — col5/col7 `Гриль контактный электрический MARS MTS-20` (UA `Гриль контактний MARS MTS-20`, +«электрический»); модель-код MTS-20 консистентен col5==col7 → soft-note НЕ OQ. source-RU дубль `<li>Индикатор включения; Индикатор включения.</li>` (UA одна `Індикатор увімкнення.`).
 - SKU13 Spidocook SP010PR: genuine-RU склейки как в source — `Поверхности:верхняя` (UA `Поверхні: верхня`), `нижняягладкая` (source UA тоже склеено `нижнягладка`); `<br>`→`<br />`; энтити-вариативность `800 °C`→`800 &deg; С`, `400 °C`→`400&deg;С` byte-exact как в source RU. NAME консистентен.
 - SKU16 Sirman PD LR-RR: genuine-RU редундантность `Регулируемые верхние плиты с регулировкой` (UA `Регульовані верхні плити` — RU добавляет `с регулировкой`); `<li>Підключення, в 220</li>`→`<li>Подключение, в 220 В</li>` (RU добавляет ` В`, прец. SKU1 б1). NAME консистентен.
+
+---
+
+## Батч 3 (SKU 17-24, openpyxl rows 18-25) — 24/81
+
+**Категории:** blk триплет 1 · blknotrip 1 · blknochg 6 · SKIP-НП 0 · OQ 0.
+
+| SKU | row | ART | Имя (UA→RU) | Категория | fixed.xlsx |
+|---|---|---|---|---|---|
+| 17 | 18 | 2330328269 | Гриль контактний→контактный електричний→электрический PIMAK М071-2-X | blknochg (descUA≠descRU, col5==col7 genuine RU) | НЕ тронут (==src) |
+| 18 | 19 | 971514822 | Гриль контактний→контактный Spidocook SP020R (склокераміка→стеклокерамика) | blknochg | НЕ тронут (==src) |
+| 19 | 20 | 971527924 | Гриль контактний→контактный Spidocook SP010PT (склокераміка→стеклокерамика) | blknochg | НЕ тронут (==src) |
+| 20 | 21 | 1577135536 | Гриль контактний→контактный SIRMAN CORT LR однопостовой | blknochg | НЕ тронут (==src) |
+| 21 | 22 | 2566545482 | Гриль саламандра Bartscher 101552 (lang-neutral) | **blknotrip** (descUA==descRU True, имя lang-neutral) | **только col36 ← RU перевод (851→847); col5 НЕ тронут** |
+| 22 | 23 | 675290475 | Гриль контактний→контактный GoodFood ECG11 Panini | blknochg | НЕ тронут (==src) |
+| 23 | 24 | 2429608904 | Гриль саламандра GoodFood GS650L (lang-neutral) | blknochg (descUA≠descRU genuine RU) | НЕ тронут (==src) |
+| 24 | 25 | 2042441371 | Гриль роликовий Frosty R2-5 → Гриль роликовый Frosty R2-5 | **blk триплет** (descUA==descRU True, col5==col4 UA-leak `роликовий`, col7 genuine RU `роликовый`) | **col5←col7 + col36 tag-в-tag RU (688→685)** |
+
+**blk триплет SKU24 Frosty R2-5:** col5←col7 `Гриль роликовый Frosty R2-5`; col36 = полный tag-в-tag RU перевод source col35 (688→685). Byte-exact: `t&deg;` / `+50/+250&deg;C` энтити verbatim, `0,85 кВт/ 220 В` (запятая-десятич + spacing), `Д * Ш * В`, `585мм x 270мм x 380мм` (Latin x U+0078), `Вес: 12.00` (точка-десятич policy-A), `L=430 мм`. `&#39;` (`рум&#39;яної`/`м&#39;ясних`) → RU plain (`румяной`/`мясных`). skeleton==src, UA-маркеров 0.
+
+**blknotrip SKU21 Bartscher 101552:** имя lang-neutral `Гриль саламандра Bartscher 101552` (col5==col4==col7, без UA-символов) → col5 НЕ тронут; col36 ← полный tag-в-tag RU перевод source col35 (851→847; descUA==descRU был полный UA). Byte-exact: `400х304`/`400х570х515` (кир. х), `1/3` (size-fraction), `3 кВт, 220 В`, `65%`, `41 кг`. `&#39;` (`м&#39;яса`/`пам&#39;яті`) → RU plain. skeleton==src, UA-маркеров 0.
+
+**Soft-notes (genuine-RU вариативность / артефакты source — НЕ нумеруются, НЕ OQ; blknochg → fixed НЕ тронут, LIVE НЕ переписан):**
+- SKU18 Spidocook SP020R: genuine-RU `<br>`→`<br />`; энтити-вариативность `800 °C`→`800 &deg; С`, `400 °C`→`400&deg;С` byte как в source RU; source-RU опечатка `рифленная` (двойн. н). NAME консистентен (col5==col7).
+- SKU19 Spidocook SP010PT: genuine-RU `<br>`→`<br />`; энтити `800 °C`→`800 &deg; С`, `400 °C`→`400&deg;С`. NAME консистентен.
+- SKU20 SIRMAN CORT LR: genuine-RU обёртка `<li><b>…</b></li>` (UA plain `<li>…</li>`) на строке плит; `&ndash;` сохранён обеими сторонами; имя содержит lowercase `однопостовой` (консистентно UA/RU col5==col7). NAME консистентен.
+- SKU22 GoodFood ECG11 Panini: genuine-RU энтити-вариативность `50°С-300°С`→`50&deg;С-300&deg;С`. NAME консистентен.
+- SKU23 GoodFood GS650L: genuine-RU (descUA≠descRU, col36 чистый RU); имя lang-neutral `Гриль саламандра GoodFood GS650L` (col5==col4==col7). blknochg → fixed НЕ тронут.
 
 ---
