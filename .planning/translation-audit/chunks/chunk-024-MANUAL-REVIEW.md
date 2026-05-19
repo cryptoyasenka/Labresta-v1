@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-024 (74 SKU)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 72/74
+**Status:** IN PROGRESS 74/74
 
 Здесь собираю всё, что требует твоего подтверждения (не авто-фиксы). Авто-фиксы по locked-паттернам перечислены в сводках по батчам, отдельного подтверждения не требуют. Открытые вопросы накапливаются в нумерованный список и финализируются при закрытии chunk-024. SKIP-НП SKU (НП-эксклюзивные бренды) помечаются здесь и не переписываются.
 
@@ -350,10 +350,36 @@
 
 ---
 
+## Батч SKU 73-74 (74/74)
+
+Артикулы: `595397993` (Стол холодильный FAGOR NEO CONCEPT CMFP-135-GN — **SKIP-НП**, бренд Fagor НП-эксклюзив, desc UA!=RU 1125/1161, тело из фида НП позже), `595397994` (Стол холодильный FAGOR NEO CONCEPT CMFP-180-GN — **SKIP-НП**, бренд Fagor НП-эксклюзив, desc UA==RU True 1125/1125 + nm_ru укр.-leak `і` НО SKIP-НП forward-only перекрывает blk-паттерн, тело из фида НП позже). Батч 10 = **ФИНАЛЬНЫЙ** chunk-024 — столы холодильные Fagor (blk триплет 0 + blknotrip 0 + blknochg 0 + blknochgeq 0 + SKIP-НП ×2). Продолжение chunk-024 батч 9. **chunk-024 закрывается 74/74.**
+
+### Стандартно применено (locked-паттерны, отдельного подтверждения не требуют)
+- **SKIP-НП — 2 (кумул. chunk-024 = 19).** SKU 73/74 — бренд **Fagor** ∈ НП-эксклюзивный список (HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA, без регистра, латиница И кириллица). Forward-only SKIP-правило (приоритет над переводом, перекрывает blk-паттерн даже при `desc UA==RU` True у SKU 74): RU НЕ переписываем, зонд-скрипты/scratch-дамп/xhigh-анализ НЕ делаем, ячейки `Стол холодильный FAGOR NEO CONCEPT CMFP-135-GN`/`CMFP-180-GN` (Назв.мод RU) и Описание (RU) в chunk-024-fixed НЕ трогаем — тело придёт из фида НП позже. Кумулятивно SKIP-НП chunk-024 = 19 (b1 SKU 4-8 Apach ×5 + b9 SKU 9/11 Apach ×2 + b17 SKU 20/21/22 Apach ×3 + b25 0 + b33 SKU 35/39/40 Apach ×3 + b41 SKU 42 Apach ×1 + b49 0 + b57 0 + b65 SKU 70/71/72 Apach ×3 + b73 SKU 73/74 Fagor ×2).
+- **Классификация по `desc UA==RU`.** **blk триплет — 0. blknotrip — 0. blknochg — 0. blknochgeq — 0.** Оба SKU — SKIP-НП (бренд Fagor НП-эксклюзив). SKU 74 имеет `desc UA==RU` True + `nm_ru` укр.-leak `і` (формально blk-паттерн), НО SKIP-НП forward-only перекрывает blk: RU НЕ переписываем, тело из фида НП позже.
+- **Коды language-neutral:** `FAGOR NEO CONCEPT CMFP-135-GN` / `FAGOR NEO CONCEPT CMFP-180-GN` присутствуют одинаково в Назв UA и Назв RU → customer-facing рассинхрона НЕТ → SKIP-НП = тело из фида НП позже; новых нумерованных Открытых вопросов НЕ порождает.
+- **META keywords (SKU 73-74):** оставлены faithful со всеми артефактами источника (META UA!=RU genuine; часть META частично содержит укр. формы — артефакт источника). META по правилу всегда faithful.
+
+### Заслуживает внимания (soft, без блокировки) — Открытых вопросов 0 (новых нумерованных в батче нет; NON-FLIP)
+- **SKU 74 `desc UA==RU` True + `nm_ru` укр.-leak `і`** — формально blk-триплет-паттерн, НО бренд Fagor ∈ НП-эксклюзив → forward-only SKIP-правило имеет приоритет над переводом и перекрывает blk-паттерн: ячейки НЕ трогаем, тело из фида НП позже → soft, не нумеруется (прецедент chunk-023 SKIP-НП перекрывает blk-паттерн при `desc UA==RU` True).
+- **SKU 73/74 Fagor SKIP-НП** — бренд НП-эксклюзив, forward-only SKIP; ячейки не трогаем, тело из фида НП позже; считается в N/N отдельной категорией → soft, не нумеруется.
+- **SKU 73-74: META RU частично укр. формы / META UA!=RU genuine** — META по правилу всегда faithful → soft, не нумеруется.
+
+### Сводка батча
+
+| SKU | Артикул | Тип | Назв.мод | Прочее |
+|---|---|---|---|---|
+| 73 | 595397993 | **SKIP-НП** (бренд НП-эксклюзив) | не трогаем (тело из фида НП позже) | Бренд **Fagor** ∈ НП-эксклюзив список → forward-only SKIP: RU НЕ переписываем, зонд/scratch/xhigh НЕ делаем, ячейки `Стол холодильный FAGOR NEO CONCEPT CMFP-135-GN` НЕ трогаем; `desc UA==RU` **False** (1125/1161); считается в N/N отдельной категорией SKIP-НП |
+| 74 | 595397994 | **SKIP-НП** | не трогаем (тело из фида НП позже) | Бренд **Fagor** ∈ НП-эксклюзив → forward-only SKIP перекрывает blk-паттерн (`desc UA==RU` **True** 1125/1125 + `nm_ru` укр.-leak `і`, НО SKIP-НП приоритет): ячейки `Стол холодильный FAGOR NEO CONCEPT CMFP-180-GN` НЕ трогаем; категория SKIP-НП; батч 74/74 (финальный) |
+
+Открытых вопросов по батчу: **0** (новых нумерованных нет; NON-FLIP — placeholder остаётся; 2 SKIP-НП Fagor тело из фида НП позже; коды FAGOR NEO CONCEPT CMFP-135-GN/CMFP-180-GN language-neutral идентичны UA↔RU; SKU 74 `desc UA==RU` True + укр.-leak `і` перекрыт forward-only SKIP-правилом — customer-facing рассинхрона названия/кода не порождает). blk триплет 0; blknotrip 0; blknochg 0; blknochgeq 0; SKIP-НП 2 (SKU 73/74 Fagor — тело из фида НП позже). Кумулятивно по chunk-024: **0** (новых нумерованных Открытых вопросов нет; placeholder остаётся). Кумулятивно SKIP-НП по chunk-024: **19** (b1 SKU 4-8 Apach ×5 + b9 SKU 9/11 Apach ×2 + b17 SKU 20/21/22 Apach ×3 + b25 0 + b33 SKU 35/39/40 Apach ×3 + b41 SKU 42 Apach ×1 + b49 0 + b57 0 + b65 SKU 70/71/72 Apach ×3 + b73 SKU 73/74 Fagor ×2). **chunk-024 — 74/74 (ФИНАЛЬНЫЙ батч) → закрытие chunk-024 + scaffold chunk-025.**
+
+---
+
 ## Открытые вопросы chunk-024
 
 _(пока пусто — наполняется при аудите батчей)_
 
 ---
 
-**Last updated:** 2026-05-19 — chunk-024 батч SKU 65-72 (72/74): NTF SLF190A (blknochg) / NTF SL50A R290 (blknochg) / GoodFood IM20F (blknochgeq) / GoodFood IM26F (blknochgeq) / GoodFood IM18C (blknochgeq) / Apach AFM 02 (SKIP-НП) / Apach AFM 03 (SKIP-НП) / Apach AFM 04 (SKIP-НП) — **blk триплет 0 + blknotrip 0** + **blknochg 2** (SKU 65/66: desc UA!=RU 1401/1425, 423/424, genuine отдельный RU-перевод поставщика, LIVE → НЕ трогаем) + **blknochgeq 3** (SKU 67/68/69: desc UA!=RU 624/597, 624/597, 584/584 НО все 4 поля имени идентичны чистый RU `Льдогенератор GoodFood IMxxx` → действие ИДЕНТИЧНО blknochg, НЕ трогаем; категория только в аннотации) + **SKIP-НП 3** (SKU 70/71/72 Apach AFM 02/03/04 — бренд НП-эксклюзив, forward-only SKIP, тело из фида НП позже, ячейки НЕ трогаем). Коды NTF SLF190A/SL50A R290/GoodFood IM20F/IM26F/IM18C/Apach AFM 02/03/04 идентичны UA↔RU — customer-facing рассинхрона НЕТ. SOFT (не нумеровано): SKU 66 genuine `SL50А` кириллическая А U+0410 (артефакт источника, LIVE НЕ трогаем); SKU 65 genuine backslash-разделитель `кг\сутки` verbatim. META always faithful. Открытых вопросов chunk-024 = 0. Кумулятивно SKIP-НП chunk-024 = 17. chunk-024 = 72/74. NEXT: батч SKU 73-74.
+**Last updated:** 2026-05-19 — chunk-024 батч SKU 73-74 (74/74, ФИНАЛЬНЫЙ): Fagor NEO CONCEPT CMFP-135-GN (SKIP-НП) / Fagor NEO CONCEPT CMFP-180-GN (SKIP-НП) — **blk триплет 0 + blknotrip 0 + blknochg 0 + blknochgeq 0** + **SKIP-НП 2** (SKU 73/74 — бренд **Fagor** НП-эксклюзив, forward-only SKIP перекрывает blk-паттерн даже при `desc UA==RU` True у SKU 74, тело из фида НП позже, ячейки НЕ трогаем). Коды FAGOR NEO CONCEPT CMFP-135-GN/CMFP-180-GN language-neutral — customer-facing рассинхрона НЕТ. META always faithful. Открытых вопросов chunk-024 = 0. Кумулятивно SKIP-НП chunk-024 = 19. chunk-024 = 74/74. NEXT: закрытие chunk-024 + scaffold chunk-025.
