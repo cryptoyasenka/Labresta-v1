@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-025 (64 SKU)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 32/64
+**Status:** IN PROGRESS 40/64
 
 Здесь собираю всё, что требует твоего подтверждения (не авто-фиксы). Авто-фиксы по locked-паттернам перечислены в сводках по батчам, отдельного подтверждения не требуют. Открытые вопросы накапливаются в нумерованный список и финализируются при закрытии chunk-025. SKIP-НП SKU (НП-эксклюзивные бренды) помечаются здесь и не переписываются.
 
@@ -161,6 +161,46 @@
 
 ---
 
+## Батч SKU 33-40 (40/64)
+
+Артикулы: `1188785152` (Стол холодильный Tecnodom TF04MIDGN — **blk триплет**, Tecnodom НЕ НП-эксклюзив, desc UA==RU True 786/786 🔴 RU=UA + nm_ru укр.-leak `і`, AUTO Назв.мод RU = genuine nazv_ru + Описание RU полный перевод тег-в-tag), `1500757106` (Стол холодильный TATRA TRC03TN — **SKIP-НП**, бренд TATRA ∈ НП-эксклюзив, ячейки НЕ трогаем, тело из фида НП позже), `1501482357` (Стол холодильный TATRA TRC02TN — **SKIP-НП**), `1522287146` (Стол холодильный Hurakan HKN-GXS3GN — **SKIP-НП**, бренд Hurakan ∈ НП-эксклюзив), `2047000907` (Энергоэффективный стол холодильный BRILLIS BGN2-R290-EF 2-дверный — **blknochg**, du!=dr 2359/2371, genuine отдельный рус. перевод поставщика, LIVE НЕ переписываем), `2053008143` (Стол холодильный Tefcold SK6210/+SP — **blknochg**, 1267/1266), `2053013217` (Стол холодильный Tefcold SK6210 — **blknochg**, 1329/1261), `2053399328` (Стол холодильный Tefcold SK6310 /+SP — **blknochg**, 1304/1306). Батч b33 chunk-025 — столы холодильные (blk триплет 1 + blknotrip 0 + blknochg 4 + blknochgeq 0 + SKIP-НП 3). Продолжение chunk-024 (закрыт 74/74).
+
+### Стандартно применено (locked-паттерны, отдельного подтверждения не требуют)
+
+- **blk триплет — 1.** SKU 33 `1188785152` Tecnodom TF04MIDGN `desc UA==RU` **True** 786/786 (🔴 RU=UA, `nm_ru`==`nm_ua` укр.-leak `і`, `nm_ru`!=`nazv_ru` genuine). **Tecnodom НЕ ∈ НП-эксклюзивный список** → обычная обработка. AUTO: Назв.мод (RU) → genuine `nazv_ru` (`Стол холодильный Tecnodom TF04MIDGN`); Описание (RU) полный перевод тег-в-tag (0 `<h2>`/3 `<p>`/1 `<ul>`/9 `<li>`/0 `<br>`/no `<img>`; переводы строк зеркально). Код Tecnodom TF04MIDGN идентичен UA↔RU → customer-facing рассинхрона НЕТ. SOFT (не нумеровано): **U+2014 `—` ×3 ЛИТЕРАЛЬНЫЙ em-dash verbatim** (источник — литеральный U+2014, НЕ `&mdash;` entity → зеркалим как литеральный EMD ×3) + литер. ° U+00B0 ×3 в `+43 °C`/`-0° C`/`+10 °C` → `&deg;` + `&#39;`/U+0027 укр.-апостроф ×2 в `об'єм`/`Під'єднання` → DROP (`объём`/`Подключение`) + latin x U+0078 ×2 `2320x700x850` → Cyrillic х БЕЗ пробела (НЕТ `<img>` → latin x ×0) + src-typo `Tecnom TF04MIDGNбез борту` → корректный RU `Tecnodom TF04MIDGN без борта` (both-locale faithful). `GN1/1`(без пробелов)/`AISI 304`(с пробелом)/`0,495 кВт.`(запятая)/`220 В`(Cyrillic В) verbatim.
+- **SKIP-НП — 3 (кумул. chunk-025 = 5).** SKU 34 `1500757106` TATRA TRC03TN, SKU 35 `1501482357` TATRA TRC02TN — бренд **TATRA** ∈ НП-эксклюзивный список (TATRA/Tatra/Татра, без регистра, латиница И кириллица; word-boundary np_hit); SKU 36 `1522287146` Hurakan HKN-GXS3GN — бренд **Hurakan** ∈ НП-эксклюзивный список (HURAKAN/Hurakan/Хуракан). Forward-only SKIP-правило (приоритет над переводом): RU НЕ переписываем, зонд/scratch/xhigh НЕ тратим, ячейки `chunk-025-fixed.xlsx` для этих SKU НЕ меняем — тело из фида НП позже. Считается в N/N закрытия как отдельная категория SKIP-НП.
+- **blknochg — 4 (LIVE-магазин, genuine RU НЕ переписываем).** SKU 37 `2047000907` Brillis BGN2-R290-EF `desc UA==RU` **False** 2359/2371; SKU 38 `2053008143` Tefcold SK6210/+SP **False** 1267/1266; SKU 39 `2053013217` Tefcold SK6210 **False** 1329/1261; SKU 40 `2053399328` Tefcold SK6310 /+SP **False** 1304/1306. У всех `nm_ru`==`nazv_ru` чистый рус. (char-level UA-leak і/ї/є/ґ НЕТ), `nm_ru`!=`nm_ua` (укр. leak только в `nm_ua`), в RU-описании отдельный корректный русский перевод поставщика (НЕ укр. копия). **Brillis/Tefcold НЕ ∈ НП-эксклюзивный список.** RU уже корректный русский — **LIVE-магазин Horoshop**, genuine RU-тело перезаписывать НЕЛЬЗЯ без явного go-ahead Yana → Назв.мод (RU) и Описание (RU) НЕ трогаем (ячейки без изменений). Коды BRILLIS BGN2-R290-EF / Tefcold SK6210/+SP / SK6210 / SK6310 /+SP идентичны UA↔RU genuine → customer-facing рассинхрона НЕТ.
+- **Классификация по `desc UA==RU`.** **blk триплет 1. blknotrip 0. blknochg 4. blknochgeq 0. SKIP-НП 3.**
+- **META keywords (SKU 33-40):** оставлены faithful со всеми артефактами источника (META UA!=RU genuine). META по правилу всегда faithful.
+
+### Заслуживает внимания — Открытых вопросов 0 в батче (NON-FLIP; chunk-025 кумул. = 1 — OQ#1 SKU 31 от b25, в этом батче НЕ меняется)
+
+- **NON-FLIP.** В батче SKU 33-40 нет UA↔genuine-RU customer-facing рассинхрона кода модели → нумерованных Открытых вопросов НЕТ. chunk-025 кумулятивно остаётся **1** (Открытый вопрос #1 SKU 31 `1090687473` Tecnodom P-TF03MIDGN× от батча b25 — НЕ трогаем, placeholder уже потреблён b25). Прочие замечания (SKU 33 soft + SKU 37-40 genuine LIVE) UA↔genuine-RU рассинхрона названия не порождают.
+- **SKU 33 U+2014 `—` ×3 ЛИТЕРАЛЬНЫЙ em-dash** (`Товщина ізоляції — 60 мм` / `Ширина стола — 700 мм` / `регулювання ніжок —`) — источник литеральный U+2014 (НЕ `&mdash;` entity) → зеркалим как литеральный EMD verbatim (НЕ DROP, НЕ заменяем на entity) → soft, не нумеруется.
+- **SKU 33 литер. ° U+00B0 ×3** (`+43 °C`/`-0° C`/`+10 °C`) — в авторском RU литеральный градус НЕ пишем → `&deg;`; spacing/буква после градуса зеркальны источнику → soft, не нумеруется.
+- **SKU 33 апострофы U+0027 ×2** в `об'єм`/`Під'єднання` → DROP в авторском RU (`объём`/`Подключение`) → soft, не нумеруется.
+- **SKU 33 latin x U+0078 в dims** `2320x700x850` → Cyrillic х U+0445 БЕЗ пробела (homoglyph-разделитель, spacing источника зеркально); `<img>` нет → latin x ×0 → soft, не нумеруется.
+- **SKU 33 `Tecnom TF04MIDGNбез борту` → `Tecnodom TF04MIDGN без борта`** (укр. src-typo + run-on → корректный RU, both-locale faithful) → soft, не нумеруется.
+- **SKU 37-40 blknochg `desc UA==RU` False — genuine отдельный русский перевод поставщика** — `nm_ru`==`nazv_ru` чистый рус., `nm_ru`!=`nm_ua`; LIVE-магазин Horoshop, genuine RU-тело и Назв.мод НЕ переписываем без go-ahead Yana (ячейки без изменений); коды идентичны UA↔RU → customer-facing рассинхрона НЕТ → soft, не нумеруется.
+- **SKU 33-40: META RU частично укр./смешанные формы / META UA!=RU genuine** — META по правилу всегда faithful → soft, не нумеруется.
+
+### Сводка батча
+
+| SKU | Артикул | Тип | Назв.мод | Прочее |
+|---|---|---|---|---|
+| 33 | 1188785152 | **blk триплет** | `Стіл холодильний Tecnodom TF04MIDGN` → `Стол холодильный Tecnodom TF04MIDGN` (genuine nazv_ru) | Tecnodom НЕ НП-эксклюзив; `desc UA==RU` **True** 786/786 🔴 RU=UA + `nm_ru` укр.-leak `і`; Описание RU тег-в-tag (0 h2/3 p/1 ul/9 li/0 br/no img); **U+2014 `—` ×3 ЛИТЕРАЛ verbatim**, ° U+00B0 ×3→`&deg;`, U+0027 ×2→DROP, latin x ×2→Cyrillic х, `GN1/1`/`AISI 304`/`0,495 кВт.`/`220 В` verbatim, src-typo→корр. RU (SOFT); код идентичен UA↔RU |
+| 34 | 1500757106 | **SKIP-НП** | не трогаем (тело из фида НП позже) | Бренд **TATRA** ∈ НП-эксклюзив (word-boundary np_hit); forward-only SKIP; ячейки fixed.xlsx НЕ меняем |
+| 35 | 1501482357 | **SKIP-НП** | не трогаем (тело из фида НП позже) | Бренд **TATRA** ∈ НП-эксклюзив; forward-only SKIP; ячейки fixed.xlsx НЕ меняем |
+| 36 | 1522287146 | **SKIP-НП** | не трогаем (тело из фида НП позже) | Бренд **Hurakan** ∈ НП-эксклюзив; forward-only SKIP; ячейки fixed.xlsx НЕ меняем |
+| 37 | 2047000907 | **blknochg** | без изменений (genuine RU корректен) | Brillis НЕ НП-эксклюзив; `desc UA==RU` **False** 2359/2371 genuine отдельный рус. перевод; `nm_ru`==`nazv_ru` чистый рус. `nm_ru`!=`nm_ua` → LIVE-магазин: НЕ переписываем, ячейки chunk-025-fixed НЕ трогаем; код `BRILLIS BGN2-R290-EF` идентичен UA↔RU |
+| 38 | 2053008143 | **blknochg** | без изменений (genuine RU корректен) | Tefcold НЕ НП-эксклюзив; `desc UA==RU` **False** 1267/1266 genuine; `nm_ru`==`nazv_ru` `nm_ru`!=`nm_ua` → LIVE: НЕ переписываем; код `Tefcold SK6210/+SP` идентичен UA↔RU |
+| 39 | 2053013217 | **blknochg** | без изменений (genuine RU корректен) | Tefcold НЕ НП-эксклюзив; `desc UA==RU` **False** 1329/1261 genuine; `nm_ru`==`nazv_ru` `nm_ru`!=`nm_ua` → LIVE: НЕ переписываем; код `Tefcold SK6210` идентичен UA↔RU |
+| 40 | 2053399328 | **blknochg** | без изменений (genuine RU корректен) | Tefcold НЕ НП-эксклюзив; `desc UA==RU` **False** 1304/1306 genuine; `nm_ru`==`nazv_ru` `nm_ru`!=`nm_ua` → LIVE: НЕ переписываем; код `Tefcold SK6310 /+SP` идентичен UA↔RU; батч 40/64 |
+
+Открытых вопросов по батчу: **0** (NON-FLIP — в батче SKU 33-40 нет UA↔genuine-RU customer-facing рассинхрона кода модели; нумерованный Открытый вопрос #1 SKU 31 `1090687473` от батча b25 НЕ меняется, см. «Открытые вопросы chunk-025 #1»). 1 blk триплет авто-перевод укр. копии + Назв.мод-leak триплет к genuine nazv_ru; 3 SKIP-НП TATRA×2/Hurakan (ячейки НЕ трогаем); 4 blknochg Brillis/Tefcold (genuine LIVE НЕ переписываем); blknotrip 0; blknochgeq 0; soft-замечания SKU 33 + SKU 37-40 без UA↔genuine-RU рассинхрона названия, решения не требуют. Кумулятивно по chunk-025: **1** (#1 SKU 31 от b25, NON-FLIP — без изменений). Кумулятивно SKIP-НП по chunk-025: **5** (b1 0 + b9 0 + b17 0 + b25 2 + b33 3). **chunk-025 — 40/64, далее батч SKU 41-48.**
+
+---
+
 ## Открытые вопросы chunk-025
 
 ### 1. SKU 31 (Артикул `1090687473`, Стол холодильный Tecnodom P-TF03MIDGN×) — Назв UA «Стіл холодильний Tecnodom P-TF03MIDGN» (без `×`) ↔ genuine Назв RU «Стол холодильный Tecnodom P-TF03MIDGN×» (хвостовой `×` U+00D7): customer-facing рассинхрон кода модели
@@ -177,4 +217,4 @@
 
 ---
 
-**Last updated:** 2026-05-19 — chunk-025 батч SKU 25-32 (32/64): REEDNEE GN2100TN + FROSTY S901/S903T + Tecnodom TF02MIDGN NEW/P-TF03MIDGN + REEDNEE S901 (blk триплет ×6) + Hurakan HKN-GXRC2GN/HKN-GXS2GN (SKIP-НП ×2) — **blk триплет 6 + blknotrip 0 + blknochg 0 + blknochgeq 0 + SKIP-НП 2**. SKU 25/28/29/30/31/32 AUTO: Назв.мод RU = genuine nazv_ru + Описание RU полный перевод тег-в-tag; SKU 26/27 Hurakan SKIP-НП (ячейки НЕ трогаем, тело из фида НП позже). **FLIP — Открытый вопрос #1**: SKU 31 genuine nazv_ru `Стол холодильный Tecnodom P-TF03MIDGN×` хвостовой `×` U+00D7 ↔ Назв UA / артикул / тело без `×` — customer-facing рассинхрон кода модели (placeholder заменён на OQ #1; Назв.мод RU = genuine VERBATIM incl `×`, НЕ удаляем без go-ahead LIVE). META always faithful. Открытых вопросов chunk-025 = 1. Кумулятивно SKIP-НП chunk-025 = 2. chunk-025 = 32/64. NEXT: батч SKU 33-40.
+**Last updated:** 2026-05-19 — chunk-025 батч SKU 33-40 (40/64): Tecnodom TF04MIDGN (blk триплет ×1) + TATRA TRC03TN/TRC02TN + Hurakan HKN-GXS3GN (SKIP-НП ×3) + Brillis BGN2-R290-EF + Tefcold SK6210/+SP·SK6210·SK6310 /+SP (blknochg ×4 genuine LIVE НЕ переписываем) — **blk триплет 1 + blknotrip 0 + blknochg 4 + blknochgeq 0 + SKIP-НП 3**. SKU 33 AUTO: Назв.мод RU = genuine nazv_ru + Описание RU полный перевод тег-в-tag; SKU 34/35/36 TATRA/Hurakan SKIP-НП (ячейки НЕ трогаем, тело из фида НП позже); SKU 37-40 blknochg genuine отдельный рус. перевод поставщика — НЕ переписываем (LIVE-магазин). NON-FLIP — нумерованных Открытых вопросов в батче нет. META always faithful. Открытых вопросов chunk-025 = 1. Кумулятивно SKIP-НП chunk-025 = 5. chunk-025 = 40/64. NEXT: батч SKU 41-48.
