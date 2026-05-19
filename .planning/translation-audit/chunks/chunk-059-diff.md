@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-059 (96 SKU)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 24/96 (blk триплет 18 / blknochg 6 / blknotrip 0 / SKIP-НП 0; Открытых вопросов 0)
+**Status:** IN PROGRESS 32/96 (blk триплет 18 / blknochg 12 / blknotrip 0 / SKIP-НП 2; Открытых вопросов 0)
 **Worker:** W2 (параллельный воркер, диапазон chunk-055 … chunk-085; W1 ведёт chunk-001 … chunk-054)
 
 **Состав (по типу товара):** первый SKU — Артикул `2464184031` (`Міксер молочний Bartscher 135102`); последний SKU96 — Артикул `635596865` (`Блендер Sirman DRAGONE`). Колонка `Бренд` в источнике дублирует `Артикул` (числовой) — бренд определяется по `Название` per-SKU при аудите батча. Тип: преимущественно молочные миксеры (SKU1-37) + диспенсеры/термосы/сокоохладители (SKU38-78) + блендеры (SKU79-96). **SKIP-НП (зонд по `Название`): 3 NP-suspect** — Hurakan ×3 (SKU25 Арт `2503655839` `Міксер для молочних коктейлів HURAKAN HKN-FR1GD` · SKU26 Арт `2503663450` `Міксер для молочних коктейлів HURAKAN HKN-FR2GD` · SKU91 Арт `2373825799` `Блендер Hurakan HKN-HBH850M PRO COVER`) — **HURAKAN** в НП-списке → SKIP-НП (тело придёт из фида НП позже, RU не трогается; вносятся в таблицу при обработке соответствующих батчей). Остальные бренды (Bartscher, Frosty, EWT INOX, Hamilton Beach, Sirman, CEADO, JAU, Goodfood, Fimar, Hendi, GGM, Vema, Quamar, SARO, UGOLINI, CAB, …) НЕ в НП-списке — обрабатываются обычно, подтверждается per-батч по `Название`. Батч = 8 SKU; 12 батчей (96/8 ровно). openpyxl rows 2..97 (row = SKU + 1).
@@ -346,5 +346,107 @@
 ---
 
 **Наблюдения по батчу SKU 17-24 (батч 3).** Бренды: Goodfood ×2 (SKU17/18), Sirman ×3 (SKU19/20/23), Hendi (SKU21), Hamilton Beach (SKU22), Bartscher (SKU24) — ни один НЕ в НП-списке (HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA), обычная обработка; НП-зонд Hurakan ×3 впереди (SKU25/26 батч 4 — следующий, SKU91 батч 12). **4 blk триплет** (SKU21 Hendi 221617 · SKU22 Hamilton Beach HMD400RCE · SKU23 Sirman Sirio 2 VV ХРОМ 900CC · SKU24 Bartscher 135105 — `descUA==descRU` True UA-копия в RU-описании, `nmRU==nazvRU` False: col5 = UA-leak, col7 = genuine RU → триплет col5←col7 genuine, col36 = полный тег-в-tag RU-перевод по шаблону молочного миксера) + **4 blknochg** (SKU17 Goodfood MFD33 трехпостовой · SKU18 Goodfood MFD44 · SKU19 Sirman Sirio 1 CC 900 · SKU20 Sirman Sirio 2 900CC — `descUA==descRU` False, genuine отдельный RU, `nmRU==nazvRU` True, LIVE НЕ переписан, fixed.xlsx не трогается == source). blknotrip 0 / SKIP-НП 0. blk dims байт-точно слайсом из source (dims НЕ в find, заменяется только ведущее слово-label): SKU23 `300х195х530` кир. х U+0445 (label-only `<li>габарити `→`<li>габариты `); SKU21 размерных `NхNхN` токенов нет (числа `196`/`490` без сепаратора verbatim). `&divide;` (SKU23) сущность verbatim; trailing-space packaging-блок `<p>Розміри в упаковці </p>`→`<p>Размеры в упаковке </p>` (SKU22/24) байт-точно. Апостроф-сущность снята в переводимых UA-копиях: `об&#39;єм`/`Об&#39;єм`→`объем`/`Объем` (SKU23/24); `об/хв`→`об/мин` (SKU21/22/23/24). **Реальные `.`-дроби** в переводимой UA-копии → `,`: SKU21 `4.76`→`4,76`; SKU22 `16.3`/`0.9`/`17.7`→`,`; SKU24 `6.22`/`0.4`→`,` (прочие `0,12`/`0,9`/`0,95`/`0,65` уже запятая verbatim). chunk-059-fixed.xlsx загружен **СУЩЕСТВУЮЩИЙ** (создан b1, source НЕ копировался повторно) + 4 blk rows col5+col36 by Артикул (rows 22/23/24/25, row = SKU+1), SKU17-20 blknochg + b1/b2 не тронуты; reopen-verify `=== ALL OK ===` (fixed.col36≠src ровно 18 ARTs = 8 b1 + 6 b2 + 4 b3, col5 ровно 18, col35/DSCUA не тронут 0 diffs, b3 residUA=[] — украинских остатков нет). **Soft-note НЕ нумер. ~4** (genuine RU не переписываем / имя консистентно, термином не вносятся): SKU17/18 genuine RU `<li>Обьем стакана : …</li>` — `Обьем` (мягкий знак вместо твёрдого) + пробел перед `:` (общая со SKU12/16 b2; + SKU18 внутр. genuine RU `<p>` vs UA `<h2>` — blknochg НЕ переписываем); SKU20 имя `CC 900`↔`900CC` (перестановка токенов модели, консистентно внутри языка); SKU23 `CC 900`↔`900CC` + `CE` только в перезаписываемой UA-leak col5 / META KW — все НЕ нумерованные OQ (прец. chunk-058 SKU24 KW-alt + chunk-059 SKU12/16). SKU19 чистый genuine RU без quirk. META keywords (col24/25) faithful, не трогались (KWUA≠KWRU genuine RU). Soft-note ~4; новых нумерованных Открытых вопросов нет; **Открытых вопросов chunk-059 итого 0** (кумул. ждут Yana, отдельная нумерация: OQ#1 SKU10 chunk-055 / OQ#1 SKU67 chunk-056 / OQ#1 SKU31 chunk-058). Глоссарий W2 пополнен (см. footer chunk-glossary-w2.md). Следующий: батч SKU 25-32 (openpyxl rows 26..33) — **SKU25 Арт 2503655839 + SKU26 Арт 2503663450 = HURAKAN → SKIP-НП**.
+
+---
+
+## SKU 25/96 — Миксер для молочных коктейлей HURAKAN HKN-FR1GD (Артикул 2503655839) — SKIP-НП
+
+**Поле:** — (не трогается)
+**Было:** LIVE как есть: col5 = UA-leak `Міксер для молочних коктейлів Hurakan HKN-FR1GD однопостовий`, col7 = genuine RU `Миксер для молочных коктейлей HURAKAN HKN-FR1GD`, col36 = UA-копия (`descUA==descRU` True, `nmRU==nazvRU` False).
+**Стало:** без изменений — **SKIP-НП (brand=HURAKAN, тело придёт из фида НП позже)**. RU НЕ переписан, chunk-059-fixed.xlsx НЕ трогается.
+
+- Бренд **HURAKAN** ∈ НП-список (HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA), подтверждён по `Название` (`Міксер для молочних коктейлів HURAKAN HKN-FR1GD`). Forward-only: распознан → тег → следующий SKU; зонд-скрипты/перевод/scratch-дамп RU НЕ применяются, ячейки не меняются. Учтён в N/N отдельной категорией SKIP-НП.
+*(SKIP-НП — НП-эксклюзивный бренд; RU остаётся как есть, тело придёт из фида НП позже.)*
+*(scoped к row Артикул=2503655839)*
+
+---
+
+## SKU 26/96 — Миксер для молочных коктейлей HURAKAN HKN-FR2GD (Артикул 2503663450) — SKIP-НП
+
+**Поле:** — (не трогается)
+**Было:** LIVE как есть: col5 = UA-leak `Міксер для молочних коктейлів Hurakan HKN-FR2GD двопостовий`, col7 = genuine RU `Миксер для молочных коктейлей HURAKAN HKN-FR2GD`, col36 = UA-копия (`descUA==descRU` True, `nmRU==nazvRU` False).
+**Стало:** без изменений — **SKIP-НП (brand=HURAKAN, тело придёт из фида НП позже)**. RU НЕ переписан, chunk-059-fixed.xlsx НЕ трогается.
+
+- Бренд **HURAKAN** ∈ НП-список, подтверждён по `Название` (`Міксер для молочних коктейлів HURAKAN HKN-FR2GD`). Forward-only SKIP-НП: распознан → тег → следующий SKU; RU/перевод/зонд не применяются, ячейки не меняются. Учтён в N/N отдельной категорией.
+*(SKIP-НП — НП-эксклюзивный бренд; RU остаётся как есть, тело придёт из фида НП позже.)*
+*(scoped к row Артикул=2503663450)*
+
+---
+
+## SKU 27/96 — Миксер молочный GGM SML1, 3 скорости (Артикул 508329227) — blknochg
+
+**Поле:** — (без изменений)
+**Было:** genuine отдельный RU (`descUA==descRU` False; col36 ≠ col35; `nmRU==nazvRU` True — col5 уже genuine RU `Миксер молочный GGM SML1, 3 скорости`).
+**Стало:** без изменений (LIVE genuine RU НЕ переписан; в chunk-059-fixed.xlsx строка не трогается == source).
+
+- `descUA != descRU`: col36 — самостоятельный корректный русский перевод (`Миксер для молочных коктейлей однопостовой. Корпус из нержавеющей стали. Чаша и детали, соприкасающиеся с продуктами — нержавеющая сталь… <li>объем: 750 мл</li> … <li>скорость 0,30 кВт</li> <li>напряжение 220 В</li>`), независимый от UA col35 (`Міксер для молочних коктейлів однопостової…`). Имя col4(UA `3 швидкості`)↔col5/7(RU `3 скорости`) консистентно. genuine RU `Объем:` (твёрдый знак Ъ, корректно) — quirk SKU17/18 (`Обьем`) здесь нет. dims genuine RU verbatim (не трогаем).
+*(blknochg — genuine отдельный RU, LIVE не переписан, fixed.xlsx не трогается == source.)*
+*(scoped к row Артикул=508329227)*
+
+---
+
+## SKU 28/96 — Миксер молочный GGM SML3, 3 скорости (Артикул 508329228) — blknochg
+
+**Поле:** — (без изменений)
+**Было:** genuine отдельный RU (`descUA==descRU` False; col36 ≠ col35; `nmRU==nazvRU` True — col5 уже genuine RU `Миксер молочный GGM SML3, 3 скорости`).
+**Стало:** без изменений (LIVE genuine RU НЕ переписан; в chunk-059-fixed.xlsx строка не трогается == source).
+
+- `descUA != descRU`: col36 — самостоятельный корректный русский перевод (`Миксер для молочных коктейлей трехпостовой. Корпус из нержавеющей стали… <li>три стакана из нержавеющей стали</li> <li>объем: 3 х 750 мл</li> … <li>напряжение 220 В</li>`), независимый от UA col35 (`Міксер для молочних коктейлів трипостової…`). Имя col4(UA `трипостовий`/`3 швидкості`)↔col5/7(RU `трехпостовой`/`3 скорости`) консистентно. genuine RU `Объем:` (Ъ, корректно). dims genuine RU verbatim (не трогаем).
+*(blknochg — genuine отдельный RU, LIVE не переписан, fixed.xlsx не трогается == source.)*
+*(scoped к row Артикул=508329228)*
+
+---
+
+## SKU 29/96 — Миксер молочный Vema FL2005/L (Артикул 524929657) — blknochg
+
+**Поле:** — (без изменений)
+**Было:** genuine отдельный RU (`descUA==descRU` False; col36 ≠ col35; `nmRU==nazvRU` True — col5 уже genuine RU `Миксер молочный Vema FL2005/L`).
+**Стало:** без изменений (LIVE genuine RU НЕ переписан; в chunk-059-fixed.xlsx строка не трогается == source).
+
+- `descUA != descRU`: col36 — самостоятельный корректный русский перевод (`Миксер для молочных коктейлей однопостовой. Корпус алюминиевый… <li>скорость 16000 об/мин.</li> <li>материал: алюминий</li> … <li>напряжение 220 В</li>`), независимый от UA col35 (`Міксер для молочних коктейлів однопостової… <li>швидкість 16000 об/хв.</li>…`). genuine RU уже `об/мин` (не наша правка — LIVE как есть). Имя col4↔col5/7 (`Vema FL2005/L`) консистентно. dims genuine RU verbatim (не трогаем).
+*(blknochg — genuine отдельный RU, LIVE не переписан, fixed.xlsx не трогается == source.)*
+*(scoped к row Артикул=524929657)*
+
+---
+
+## SKU 30/96 — Миксер молочный Quamar T2 inox (0,5 л) (Артикул 1160094133) — blknochg
+
+**Поле:** — (без изменений)
+**Было:** genuine отдельный RU (`descUA==descRU` False; col36 ≠ col35; `nmRU==nazvRU` True — col5 уже genuine RU `Миксер молочный Quamar T2 inox (0,5 л)`).
+**Стало:** без изменений (LIVE genuine RU НЕ переписан; в chunk-059-fixed.xlsx строка не трогается == source).
+
+- `descUA != descRU`: col36 — самостоятельный корректный русский перевод (`<h2>Миксер молочный Quamar T2 inox объемом 0,5 л.</h2> … <li>объем стакана: 0,5 л</li> <li>скорость 15 000 об/мин.</li> <li>материал корпуса: алюминий</li> … <li>напряжение 220 В</li>`), независимый от UA col35 (`<h2>Міксер молочний Quamar T2 inox об'ємом 0,5 л.</h2>…`). Имя col4↔col5/7 (`Quamar T2 inox (0,5 л)`) консистентно. dims genuine RU verbatim (не трогаем).
+- **soft-note НЕ нумер.**: META keywords (col24/25) faithful UA↔RU содержат ключи чужой модели `Vema FL2006/L` внутри Quamar-товара (SEO-стаффинг, не покупателю; META никогда не переписывается/не анализируется) — общая note со SKU31; не нумерованный OQ.
+*(blknochg — genuine отдельный RU, LIVE не переписан, fixed.xlsx не трогается == source.)*
+*(scoped к row Артикул=1160094133)*
+
+---
+
+## SKU 31/96 — Миксер молочный Quamar T22 inox (2х0,5 л) (Артикул 1160105593) — blknochg
+
+**Поле:** — (без изменений)
+**Было:** genuine отдельный RU (`descUA==descRU` False; col36 ≠ col35; `nmRU==nazvRU` True — col5 уже genuine RU `Миксер молочный Quamar T22 inox (2х0,5 л)`).
+**Стало:** без изменений (LIVE genuine RU НЕ переписан; в chunk-059-fixed.xlsx строка не трогается == source).
+
+- `descUA != descRU`: col36 — самостоятельный корректный русский перевод (`<h2>Миксер молочный Quamar T22 inox с двумя стаканами объемом по 0,5 л.</h2> … <li>2 стакана из нержавеющей стали</li> <li>объем стакана: 0,5 л</li> <li>скорость 15 000 об/мин.</li> … <li>напряжение 220 В</li>`), независимый от UA col35 (`<h2>Міксер молочний Quamar T22 inox з двома склянками об'ємом по 0,5 л.</h2>…`). Имя col4↔col5/7 (`Quamar T22 inox (2х0,5 л)`) консистентно (`2х0,5` кир. х verbatim). dims genuine RU verbatim (не трогаем).
+- **soft-note НЕ нумер.**: META keywords (col24/25) faithful UA↔RU содержат ключи чужой модели `Vema FL2006/L` внутри Quamar-товара — та же note со SKU30 (META не покупателю, не переписывается); не нумерованный OQ.
+*(blknochg — genuine отдельный RU, LIVE не переписан, fixed.xlsx не трогается == source.)*
+*(scoped к row Артикул=1160105593)*
+
+---
+
+## SKU 32/96 — Миксер для молочных коктейлей Hamilton Beach HMD400CE (Артикул 1205750702) — blknochg
+
+**Поле:** — (без изменений)
+**Было:** genuine отдельный RU (`descUA==descRU` False; col36 ≠ col35; `nmRU==nazvRU` True — col5 уже genuine RU `Миксер для молочных коктейлей Hamilton Beach HMD400CE`).
+**Стало:** без изменений (LIVE genuine RU НЕ переписан; в chunk-059-fixed.xlsx строка не трогается == source).
+
+- `descUA != descRU`: col36 — самостоятельный корректный русский перевод (`<p>Миксер молочный Hamilton Beach HMD400CE используется для приготовления коктейлей разной консистенции, смешивания различных напитков, шейков и мороженого, взбивания сливок. Скоростей: 3 + импульсный режим.</p> … <li>три стакана из нержавеющей стали</li> <li>отдельный двигатель на каждый стакан</li> <li>объем: 950 мл</li> … <li>напряжение 220 В</li>`), независимый от UA col35 (`<p>Міксер молочний Hamilton Beach HMD400CE використовується…</p>…`). Имя col4↔col5/7 (`Hamilton Beach HMD400CE`) консистентно. dims genuine RU verbatim (не трогаем). META keywords (col24/25) faithful UA↔RU (стаффинг вариаций `hmd400ce`/`hmd 400 ce`/`hmd 400`) — не переписывались.
+*(blknochg — genuine отдельный RU, LIVE не переписан, fixed.xlsx не трогается == source.)*
+*(scoped к row Артикул=1205750702)*
+
+---
+
+**Наблюдения по батчу SKU 25-32 (батч 4).** Бренды: HURAKAN ×2 (SKU25/26 — **в НП-списке**), GGM ×2 (SKU27/28), Vema (SKU29), Quamar ×2 (SKU30/31), Hamilton Beach (SKU32). **2 SKIP-НП** (SKU25 Арт 2503655839 `Міксер для молочних коктейлів HURAKAN HKN-FR1GD` · SKU26 Арт 2503663450 `Міксер для молочних коктейлів HURAKAN HKN-FR2GD` — бренд **HURAKAN** ∈ НП-список HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA, подтверждён по `Название`; forward-only: распознан → тег → следующий SKU, RU/перевод/зонд НЕ применялись, ячейки не менялись; тело придёт из фида НП позже). **6 blknochg** (SKU27 GGM SML1 · SKU28 GGM SML3 · SKU29 Vema FL2005/L · SKU30 Quamar T2 inox 0,5 л · SKU31 Quamar T22 inox 2х0,5 л · SKU32 Hamilton Beach HMD400CE — все `descUA==descRU` False, genuine отдельный самостоятельный RU, `nmRU==nazvRU` True col5==col7 genuine, LIVE НЕ переписан, в chunk-059-fixed.xlsx строки не трогаются == source). blk триплет 0 / blknotrip 0. **chunk-059-fixed.xlsx НЕ трогался** этим батчем (нет blk/blknotrip — apply не выполнялся, verify не требуется; файл остаётся 18 blk rows = 8 b1 + 6 b2 + 4 b3 как после b3). **Soft-note НЕ нумер. ~1**: SKU30/31 META keywords (col24/25) faithful UA↔RU содержат ключи чужой модели `Vema FL2006/L` внутри Quamar-товаров (SEO-стаффинг, не покупателю, META никогда не переписывается/не анализируется) — не нумерованный OQ; genuine RU SKU27/28 `Объем:` твёрдый знак Ъ корректно (quirk `Обьем` SKU12/16/17/18 здесь отсутствует); SKU29 genuine RU уже `об/мин` (LIVE как есть, не наша правка); SKU32 genuine RU чистый. META keywords (col24/25) faithful, не трогались. Новых нумерованных Открытых вопросов нет; **Открытых вопросов chunk-059 итого 0** (кумул. ждут Yana, отдельная нумерация: OQ#1 SKU10 chunk-055 / OQ#1 SKU67 chunk-056 / OQ#1 SKU31 chunk-058). Глоссарий W2: 0 net-new (SKIP-НП + blknochg не порождают применённых UA→RU терминов — кумул. 276 без изменений, см. footer chunk-glossary-w2.md). Следующий: батч SKU 33-40 (openpyxl rows 34..41).
 
 ---
