@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-026 (70 SKU)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 16/70
+**Status:** IN PROGRESS 24/70
 
 Здесь собираю всё, что требует твоего подтверждения (не авто-фиксы). Авто-фиксы по locked-паттернам перечислены в сводках по батчам, отдельного подтверждения не требуют. Открытые вопросы накапливаются в нумерованный список и финализируются при закрытии chunk-026. SKIP-НП SKU (НП-эксклюзивные бренды) помечаются здесь и не переписываются.
 
@@ -80,6 +80,41 @@
 
 ---
 
+## Батч SKU 17-24 (24/70)
+
+Артикулы: `482287829` (Холодильный стол GGM KTS147AND#2T (-2…+8°С) 1,36х0,7 м — **blknochg**, GGM Gastro International НЕ НП-эксклюзив, genuine отдельный корректный рус. перевод поставщика, LIVE-магазин НЕ переписываем), `676001812` (Холодильный стол 2 двери и 2 ящика (1860х600 мм) Tehma — **blknochg**, Tehma, genuine RU LIVE-магазин), `676001813` (Холодильный стол 2 двери и 2 ящика (1860х700 мм) Tehma — **blknochg**, Tehma, genuine RU LIVE-магазин), `2602529960` (Холодильный стол 6 ящиков (1400х600 мм) Tehma — **blknochg**, Tehma, genuine RU LIVE-магазин), `2602533499` (Холодильный стол 6 ящиков (1400х700 мм) Tehma — **blknochg**, Tehma, genuine RU LIVE-магазин), `2396380249` (Холодильный стол GGM Gastro SAG147END — **blknochg**, GGM Gastro International, длинное genuine RU описание ~2301 симв.), `595398005` (Холодильный стол GGM KTS227AND#4T (-2…+8°С) 2,23х0,7 м — **blknochg**, GGM Gastro International, genuine RU LIVE-магазин), `676001809` (Холодильный стол 1 дверь и 2 ящика (1400х600 мм) Tehma — **blknochg**, Tehma, genuine RU LIVE-магазин). Батч 3 chunk-026 — столы холодильные (blk триплет 0 + blknotrip 0 + blknochg 8 + blknochgeq 0 + SKIP-НП 0). Продолжение chunk-025 (закрыт 64/64).
+
+### Стандартно применено (locked-паттерны, отдельного подтверждения не требуют)
+- **blknochg — 8 (LIVE-магазин Horoshop, genuine RU НЕ переписываем).** SKU 17 `482287829` GGM Gastro KTS147AND#2T, SKU 18 `676001812` Tehma 2дв+2ящ 1860х600, SKU 19 `676001813` Tehma 2дв+2ящ 1860х700, SKU 20 `2602529960` Tehma 6ящ 1400х600, SKU 21 `2602533499` Tehma 6ящ 1400х700, SKU 22 `2396380249` GGM Gastro SAG147END, SKU 23 `595398005` GGM KTS227AND#4T, SKU 24 `676001809` Tehma 1дв+2ящ 1400х600: `desc UA==RU` **False** (в RU отдельный корректный русский перевод поставщика, НЕ укр. копия), `nm_ru`==`nazv_ru` чистый рус. (char-level UA-leak і/ї/є/ґ НЕТ), `nm_ru`!=`nm_ua` (укр. leak только в `nm_ua`). Бренды **GGM Gastro International / Tehma НЕ ∈ НП-эксклюзивный список** (NP-brand? False ×8 probe-confirmed) → обычная обработка, НЕ SKIP-НП. RU уже корректный русский — genuine RU-тело перезаписывать НЕЛЬЗЯ без явного go-ahead Yana + safe mode → Назв.мод (RU) и Описание (RU) НЕ трогаем (ячейки chunk-026-fixed без изменений). genuine RU faithful: разделитель размеров `х` **Cyrillic U+0445** (SKU 17/18/19/20/21/23/24 probe-confirmed `[('х','0x445')]`), SKU 17/23 название `(-2…+8°С)` — `…` U+2026 + `°С` genuine источника, SKU 22 GGM Gastro SAG147END без размеров; в телах latin x U+0078 / `&deg; C` / `&mdash;` / `220 В` (Cyrillic В) / decimal `,` — артефакты источника 1:1, НЕ трогаем (genuine формат НЕ диффаем). Коды GGM KTS147AND#2T / Tehma-варианты / GGM Gastro SAG147END / GGM KTS227AND#4T идентичны UA↔RU genuine в названии → customer-facing рассинхрона названия НЕТ.
+- **Классификация по `desc UA==RU`.** **blk триплет 0. blkv 0. blknotrip 0. blknochg 8. blknochgeq 0. SKIP-НП 0.**
+- **META keywords (SKU 17-24):** оставлены faithful со всеми артефактами источника (META UA!=RU genuine; SKU 17 `META_ru` содержит укр.-копию хвоста — META по правилу всегда faithful).
+
+### Заслуживает внимания (soft, без блокировки) — Открытых вопросов 0 (NON-FLIP — OQ#1 SKU 15 из b2 сохранён без изменений, новых нет)
+- **SKU 17-24 genuine RU ≠ UA** — `desc UA==RU` False, genuine отдельный корректный русский перевод поставщика; LIVE-магазин → genuine RU НЕ переписываем, ячейки без изменений → soft, не нумеруется.
+- **SKU 17/18/19/20/21/23/24 genuine `nazv_ru` разделитель размеров `х` Cyrillic U+0445** (probe-confirmed) — genuine RU LIVE-магазин faithful, НЕ трогаем → soft, не нумеруется.
+- **SKU 17/23 название `(-2…+8°С)`** — `…` U+2026 + `°С` genuine источника, зеркалится verbatim (blknochg — НЕ переписываем) → soft, не нумеруется.
+- **SKU 22 GGM Gastro SAG147END** — длинное genuine RU описание (~2301 симв., du!=dr), название без размеров; genuine LIVE НЕ трогаем → soft, не нумеруется.
+- **SKU 17-24 в телах latin x U+0078 / `&deg; C` / `&mdash;` / `220 В` / decimal `,`** — артефакты источника genuine, blknochg НЕ диффаем → soft, не нумеруется.
+- **SKU 17-24: META RU артефакты источника / META UA!=RU genuine** (SKU 17 META_ru укр.-копия хвоста) — META по правилу всегда faithful → soft, не нумеруется.
+- **NON-FLIP:** ни одного customer-facing UA↔genuine-RU рассинхрона названия и ни одного body↔name code/article desync — новых нумерованных Открытых вопросов в батче нет. OQ#1 SKU 15 (Артикул `2783176307`, из b2) сохранён без изменений.
+
+### Сводка батча
+
+| SKU | Артикул | Тип | Назв.мод | Прочее |
+|---|---|---|---|---|
+| 17 | 482287829 | **blknochg** | без изменений (genuine чистый рус.) | GGM Gastro International НЕ НП-эксклюзив; `desc UA==RU` **False** (du 974/dr 966); genuine RU LIVE НЕ трогаем; назв. `(-2…+8°С) 1,36х0,7 м` `…` U+2026 + `х` Cyrillic U+0445; код `GGM KTS147AND#2T` идентичен UA↔RU |
+| 18 | 676001812 | **blknochg** | без изменений | Tehma НЕ НП-эксклюзив; `desc UA==RU` **False** (916/927); genuine RU LIVE НЕ трогаем; `(1860х600 мм)` `х` Cyrillic U+0445; идентично UA↔RU |
+| 19 | 676001813 | **blknochg** | без изменений | Tehma; `desc UA==RU` **False** (914/928); genuine RU LIVE НЕ трогаем; `(1860х700 мм)` `х` Cyrillic U+0445; идентично UA↔RU |
+| 20 | 2602529960 | **blknochg** | без изменений | Tehma; `desc UA==RU` **False** (750/766); genuine RU LIVE НЕ трогаем; `(1400х600 мм)` `х` Cyrillic U+0445; идентично UA↔RU |
+| 21 | 2602533499 | **blknochg** | без изменений | Tehma; `desc UA==RU` **False** (750/766); genuine RU LIVE НЕ трогаем; `(1400х700 мм)` `х` Cyrillic U+0445; идентично UA↔RU |
+| 22 | 2396380249 | **blknochg** | без изменений | GGM Gastro International; `desc UA==RU` **False** (2193/2301); genuine RU LIVE НЕ трогаем; SAG147END без размеров; идентично UA↔RU |
+| 23 | 595398005 | **blknochg** | без изменений | GGM Gastro International; `desc UA==RU` **False** (952/972); genuine RU LIVE НЕ трогаем; `(-2…+8°С) 2,23х0,7 м` `…` U+2026 + `х` Cyrillic U+0445; код `GGM KTS227AND#4T` идентичен UA↔RU |
+| 24 | 676001809 | **blknochg** | без изменений | Tehma; `desc UA==RU` **False** (891/925); genuine RU LIVE НЕ трогаем; `(1400х600 мм)` `х` Cyrillic U+0445 (probe `_probe026_sku24.py`); идентично UA↔RU; батч 24/70 |
+
+Открытых вопросов по батчу: **0** (NON-FLIP — ни одного customer-facing UA↔genuine-RU рассинхрона названия и ни одного body↔name code/article desync; новых нумерованных Открытых вопросов нет; OQ#1 SKU 15 Артикул `2783176307` из b2 сохранён без изменений). blk триплет 0; blkv 0; blknotrip 0; blknochg 8 (SKU 17-24 GGM Gastro International / Tehma genuine RU ≠ UA LIVE-магазин НЕ переписываем, ячейки без изменений); blknochgeq 0; SKIP-НП 0; soft-замечания SKU 17-24 (genuine артефакты источника `х` U+0445 / `…` / latin x в теле / `&deg; C` / META) без UA↔genuine-RU рассинхрона названия, решения не требуют. Кумулятивно по chunk-026: **1** (OQ#1 SKU 15 из b2 — NON-FLIP, без изменений). Кумулятивно SKIP-НП по chunk-026: **1** (b1 0 + b2 1 + b3 0). **chunk-026 — 24/70, далее батч SKU 25-32.**
+
+---
+
 ## Открытые вопросы chunk-026
 
 ### 1. SKU 15 (Артикул `2783176307`, Холодильный стол COOLEQ GN3200TN с бортом) — тело «Описание товара» `<h2>` модель-код «COOLEQ GN2200TN» ↔ Название (UA)/genuine Название (RU)/Назв.мод (UA)/артикул = «GN3200TN»: customer-facing рассинхрон кода модели в теле
@@ -96,4 +131,4 @@
 
 ---
 
-**Last updated:** 2026-05-19 — chunk-026 батч SKU 9-16 (16/70): Gooder GN2TN/GN3TN/GN4TN + Tehma 1дв+4ящ левый агрегат + Desmon TSM3 (blknochg ×5, genuine RU LIVE-магазин НЕ переписываем) + Hurakan HKN-GXRC4GN (SKIP-НП ×1 — бренд НП-эксклюзив, ячейки НЕ трогаем, тело из фида НП позже) + Cooleq GN2200TN + Cooleq GN3200TN (blk триплет ×2 standard) — **blk триплет 2 + blknotrip 0 + blknochg 5 + blknochgeq 0 + SKIP-НП 1**. SKU 14,15 AUTO: Назв.мод RU = genuine nazv_ru + Описание RU полный перевод тег-в-tag (1 h2/1 ul/7 li); SKU 9,10,11,13,16 genuine RU LIVE-магазин НЕ переписываем (ячейки без изменений; SKU 13 разделитель `1860х700` `х` Cyrillic U+0445 probe-confirmed faithful). Коды Gooder GN2TN/GN3TN/GN4TN/Tehma-агрегат/Desmon TSM3/COOLEQ GN2200TN/GN3200TN идентичны UA↔RU в названии — рассинхрона названия НЕТ. **FLIP Открытый вопрос #1** (SKU 15 `2783176307` — тело `<h2>` модель-код `COOLEQ GN2200TN` ≠ Назв/Назв.мод/артикул `GN3200TN`: customer-facing рассинхрон кода модели в теле, копипаст соседнего SKU 14; авторское RU зеркалит UA VERBATIM, на LIVE НЕ правим без go-ahead Yana). META always faithful. Открытых вопросов chunk-026 = 1 (FLIP — placeholder заменён на OQ#1). Кумулятивно SKIP-НП chunk-026 = 1. chunk-026 = 16/70. NEXT: батч SKU 17-24.
+**Last updated:** 2026-05-19 — chunk-026 батч SKU 17-24 (24/70): GGM Gastro KTS147AND#2T + Tehma 2дв+2ящ 1860х600/1860х700 + Tehma 6ящ 1400х600/1400х700 + GGM Gastro SAG147END + GGM KTS227AND#4T + Tehma 1дв+2ящ 1400х600 (blknochg ×8 — genuine RU LIVE-магазин Horoshop НЕ переписываем, ячейки chunk-026-fixed не трогаем, helper печатает 2× «без изменений») — **blk триплет 0 + blknotrip 0 + blknochg 8 + blknochgeq 0 + SKIP-НП 0**. Бренды GGM Gastro International / Tehma НЕ ∈ НП-эксклюзивный список → обычная обработка. SKU 17,23 название `(-2…+8°С) ...х0,7 м` (`…` U+2026 + `°С` + разделитель `х` Cyrillic U+0445 probe-confirmed); SKU 18,19,20,21,24 разделитель `х` Cyrillic U+0445; SKU 22 GGM Gastro SAG147END без размеров. genuine RU тела faithful (latin x в теле / `&deg; C` / `&mdash;` / `220 В` / decimal `,` — артефакты источника 1:1, НЕ трогаем). Коды GGM KTS147AND#2T / Tehma-варианты / GGM Gastro SAG147END / GGM KTS227AND#4T идентичны UA↔RU в названии — рассинхрона названия НЕТ. **NON-FLIP** — новых нумерованных Открытых вопросов нет; OQ#1 SKU 15 из b2 сохранён без изменений. META always faithful. Открытых вопросов chunk-026 = 1 (NON-FLIP — без изменений). Кумулятивно SKIP-НП chunk-026 = 1 (b1 0 + b2 1 + b3 0). chunk-026 = 24/70. NEXT: батч SKU 25-32.
