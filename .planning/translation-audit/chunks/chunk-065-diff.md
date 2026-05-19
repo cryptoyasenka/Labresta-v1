@@ -163,3 +163,30 @@ SKIP-НП prelim (HURAKAN, forward-only, тело из фида НП позже)
 ---
 
 <!-- Сводка по батчу b7 ниже. -->
+<!-- b7 marker -->
+
+## b7 — diff (SKU 49-56, rows 50-57), 56/81
+
+**Категории:** blk триплет 3 · blknotrip 0 · blknochg 5 · SKIP-НП 0 = 8.
+
+### blk триплет (3)
+- **SKU 49** (r50, ART 2301293860, Frosty WBS-2C): col5 `Вафельниця Frosty WBS-2C` → `Вафельница Frosty WBS-2C`; col36 UA-leak → faithful RU (skel==c35 c `\n`, dims==c35: 1/210/7х7/0/300/0/5/2,4/220/500/340/265/11.50, deg `&deg;C` ×2 **Lat U+0043** entity verbatim, XCH Cyr х в `7х7`, DASH `-` U+002D в `1-постова`, `&Oslash;` entity verbatim; шаблон-сиблинг WBS-1C SKU48 b6).
+- **SKU 53** (r54, ART 545492965, AIRHOT WS-1 корн-дог): col5 `Вафельниця для корн-догов AIRHOT WS-1` → `Вафельница для корн-догов AIRHOT WS-1`; col36 UA-leak → faithful RU (skel==c35 без `\n`, dims==c35: 5/2/3/295х185/140х40х15/220/1,5/410x385x315/8, no DEG, XCH Cyr х ×3 + Lat x ×2 source-mix verbatim, DASH `-` U+002D + `—` U+2014 em-dash в `корн-догів —` preserved).
+- **SKU 54** (r55, ART 545492966, AIRHOT WE-1B бельгийская): col5 `Вафельниця для бельгійських вафель AIRHOT WE-1B` → `Вафельница для бельгийских вафель AIRHOT WE-1B`; col36 UA-leak → faithful RU (skel==c35 c `\n`, dims==c35: 1/1/4/185х185/12/2/3/220/1,6/382х305х233/7, no DEG, XCH Cyr х ×3 verbatim, DASH `-` U+002D ×2, Lat B в `WE-1B`).
+
+### blknotrip (0)
+— нет.
+
+### blknochg (5)
+- **SKU 50** (GoodFood WB-1HK Bubble гонконгская) / **SKU 51** (GoodFood WB1P Lolly Waffle ёлочка) / **SKU 52** (GoodFood DM6 аппарат для донатсов) / **SKU 55** (GoodFood WB1CF CREAM FISH) / **SKU 56** (GoodFood WB1SA бельгийская квадратная, source-typo `бельгийськая`): c5==c7 genuine RU, c35!=c36.
+
+### SKIP-НП (0)
+— нет.
+
+**Codepoint findings:** SKU49 `&deg;C` Lat ×2 entity + XCH Cyr х в `7х7` + DASH `-` U+002D + `&Oslash;`; SKU53 no DEG + XCH Cyr х ×3 + Lat x ×2 source-mix + em-dash `—` U+2014; SKU54 no DEG + XCH Cyr х ×3 + DASH `-` U+002D ×2 + Lat B в `WE-1B`.
+
+**Verify:** 137 PASS / 0 FAIL (REGR 48 + ART 81 + TRIP 3 + blknochg 5).
+
+---
+
+<!-- Сводка по батчу b8 ниже. -->

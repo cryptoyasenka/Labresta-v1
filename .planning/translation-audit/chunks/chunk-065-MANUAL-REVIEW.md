@@ -189,3 +189,36 @@ _(нумерация отдельная, начинается с #1; пока н
 ---
 
 <!-- Сводка по батчу b7 ниже. -->
+<!-- b7 marker -->
+
+## b7 — SKU 49-56 (rows 50-57), 56/81
+
+**Категории:** blk триплет 3 · blknotrip 0 · blknochg 5 · SKIP-НП 0 = 8.
+
+| # | SKU | Артикул | Бренд / модель | Категория | Действие |
+|---|---|---|---|---|---|
+| 1 | 49 | 2301293860 | Frosty WBS-2C вафельница 1-постовая круглые | blk триплет | col5 ← c7 (`Вафельница Frosty WBS-2C`); col36 — faithful RU (skel==c35 c `\n`, dims==c35: 1/210/7х7/0/300/0/5/2,4/220/500/340/265/11.50, deg `&deg;C` ×2 Lat U+0043 entity verbatim; XCH Cyr х в `7х7`; DASH `-` U+002D в `1-постова`; `&Oslash;` entity verbatim; шаблон-сиблинг WBS-1C SKU48 b6) |
+| 2 | 50 | 476343879 | GoodFood WB-1HK Bubble гонконгская | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+| 3 | 51 | 476356084 | GoodFood WB1P Lolly Waffle (ёлочка) | blknochg | c5==c7 genuine RU (ё verbatim), c35!=c36 — fixed НЕ тронут |
+| 4 | 52 | 476383537 | GoodFood DM6 аппарат для донатсов | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+| 5 | 53 | 545492965 | AIRHOT WS-1 вафельница для корн-догов | blk триплет | col5 ← c7 (`Вафельница для корн-догов AIRHOT WS-1`); col36 — faithful RU (skel==c35 без `\n`, dims==c35: 5/2/3/295х185/140х40х15/220/1,5/410x385x315/8, no DEG; XCH Cyr х ×3 (`295х185`, `140х40х15`) + Lat x ×2 (`410x385x315`) verbatim; DASH `-` U+002D + `—` U+2014 em-dash в `корн-догів —` preserved) |
+| 6 | 54 | 545492966 | AIRHOT WE-1B вафельница бельгийская | blk триплет | col5 ← c7 (`Вафельница для бельгийских вафель AIRHOT WE-1B`); col36 — faithful RU (skel==c35 c `\n`, dims==c35: 1/1/4/185х185/12/2/3/220/1,6/382х305х233/7, no DEG; XCH Cyr х ×3 (`185х185`, `382х305х233`) verbatim; DASH `-` U+002D ×2 (`WE-1B`, `2-3`); Lat B в модели `WE-1B`) |
+| 7 | 55 | 593826052 | GoodFood WB1CF CREAM FISH рыбки | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+| 8 | 56 | 593843443 | GoodFood WB1SA бельгийская квадратная (source-typo c5/c7 «бельгийськая») | blknochg | c5==c7 genuine RU verbatim (source-typo `бельгийськая` сохранён), c35!=c36 — fixed НЕ тронут |
+
+**Verify:** 137 PASS / 0 FAIL (REGR 48 + ART 81 + TRIP 3 + blknochg 5).
+
+**Глоссарий b7:** см. `chunk-glossary-w2.md` (816 → +N).
+
+**Codepoint findings (TRIP):**
+- SKU49 r50: `&deg;C` Lat U+0043 entity ×2, XCH Cyr х U+0445 в `7х7`, DASH `-` U+002D в `1-постова`, `&Oslash;` entity, skel содержит `\n`. Шаблон-сиблинг WBS-1C (b6 SKU48).
+- SKU53 r54: NO DEG, XCH Cyr х U+0445 ×3 (`295х185`, `140х40х15`) + Lat x U+0078 ×2 (`410x385x315`) verbatim (source-mix), DASH `-` U+002D в `корн-догів` + `—` U+2014 em-dash в `корн-догів —` preserved, no `\n`.
+- SKU54 r55: NO DEG, XCH Cyr х U+0445 ×3 (`185х185`, `382х305х233`) verbatim, DASH `-` U+002D ×2 (`WE-1B` + `2-3`), Lat B U+0042 в модели `WE-1B`, skel содержит `\n`.
+
+**Soft-notes (pre-existing в c36, не наша правка):** SKU50/52/55 — c36 уже RU (fixed НЕ тронут). SKU51 (Lolly Waffle ёлочка) — c5 и c7 содержат `ё` verbatim («ёлочка»). SKU56 — c5/c7 имеют source-typo «бельгийськая» (RU + UA hybrid), col5 NMRU сохранён verbatim (genuine RU + источниковая опечатка). SKU53 — source-mix Cyr х и Lat x в размерах preserved. SKU54 — модель `WE-1B` с Lat B preserved.
+
+**Открытых вопросов b7:** нет.
+
+---
+
+<!-- Сводка по батчу b8 ниже. -->
