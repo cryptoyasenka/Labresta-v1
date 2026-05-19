@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-059 (96 SKU)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 32/96 (blk триплет 18 / blknochg 12 / blknotrip 0 / SKIP-НП 2; Открытых вопросов 0)
+**Status:** IN PROGRESS 40/96 (blk триплет 22 / blknochg 16 / blknotrip 0 / SKIP-НП 2; Открытых вопросов 0)
 **Worker:** W2 (параллельный воркер, диапазон chunk-055 … chunk-085; W1 ведёт chunk-001 … chunk-054)
 
 **Состав (по типу товара):** первый SKU — Артикул `2464184031` (`Міксер молочний Bartscher 135102`); последний SKU96 — Артикул `635596865` (`Блендер Sirman DRAGONE`). Колонка `Бренд` в источнике дублирует `Артикул` (числовой) — бренд определяется по `Название` per-SKU при аудите батча. Тип: преимущественно молочные миксеры (SKU1-37) + диспенсеры/термосы/сокоохладители (SKU38-78) + блендеры (SKU79-96). **SKIP-НП (зонд по `Название`): 3 NP-suspect** — Hurakan ×3 (SKU25 Арт `2503655839` `Міксер для молочних коктейлів HURAKAN HKN-FR1GD` · SKU26 Арт `2503663450` `Міксер для молочних коктейлів HURAKAN HKN-FR2GD` · SKU91 Арт `2373825799` `Блендер Hurakan HKN-HBH850M PRO COVER`) — **HURAKAN** в НП-списке → SKIP-НП (тело придёт из фида НП позже, RU не трогается; вносятся в таблицу при обработке соответствующих батчей). Остальные бренды (Bartscher, Frosty, EWT INOX, Hamilton Beach, Sirman, CEADO, JAU, Goodfood, Fimar, Hendi, GGM, Vema, Quamar, SARO, UGOLINI, CAB, …) НЕ в НП-списке — обрабатываются обычно, подтверждается per-батч по `Название`. Батч = 8 SKU; 12 батчей (96/8 ровно). openpyxl rows 2..97 (row = SKU + 1).
@@ -448,5 +448,69 @@
 ---
 
 **Наблюдения по батчу SKU 25-32 (батч 4).** Бренды: HURAKAN ×2 (SKU25/26 — **в НП-списке**), GGM ×2 (SKU27/28), Vema (SKU29), Quamar ×2 (SKU30/31), Hamilton Beach (SKU32). **2 SKIP-НП** (SKU25 Арт 2503655839 `Міксер для молочних коктейлів HURAKAN HKN-FR1GD` · SKU26 Арт 2503663450 `Міксер для молочних коктейлів HURAKAN HKN-FR2GD` — бренд **HURAKAN** ∈ НП-список HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA, подтверждён по `Название`; forward-only: распознан → тег → следующий SKU, RU/перевод/зонд НЕ применялись, ячейки не менялись; тело придёт из фида НП позже). **6 blknochg** (SKU27 GGM SML1 · SKU28 GGM SML3 · SKU29 Vema FL2005/L · SKU30 Quamar T2 inox 0,5 л · SKU31 Quamar T22 inox 2х0,5 л · SKU32 Hamilton Beach HMD400CE — все `descUA==descRU` False, genuine отдельный самостоятельный RU, `nmRU==nazvRU` True col5==col7 genuine, LIVE НЕ переписан, в chunk-059-fixed.xlsx строки не трогаются == source). blk триплет 0 / blknotrip 0. **chunk-059-fixed.xlsx НЕ трогался** этим батчем (нет blk/blknotrip — apply не выполнялся, verify не требуется; файл остаётся 18 blk rows = 8 b1 + 6 b2 + 4 b3 как после b3). **Soft-note НЕ нумер. ~1**: SKU30/31 META keywords (col24/25) faithful UA↔RU содержат ключи чужой модели `Vema FL2006/L` внутри Quamar-товаров (SEO-стаффинг, не покупателю, META никогда не переписывается/не анализируется) — не нумерованный OQ; genuine RU SKU27/28 `Объем:` твёрдый знак Ъ корректно (quirk `Обьем` SKU12/16/17/18 здесь отсутствует); SKU29 genuine RU уже `об/мин` (LIVE как есть, не наша правка); SKU32 genuine RU чистый. META keywords (col24/25) faithful, не трогались. Новых нумерованных Открытых вопросов нет; **Открытых вопросов chunk-059 итого 0** (кумул. ждут Yana, отдельная нумерация: OQ#1 SKU10 chunk-055 / OQ#1 SKU67 chunk-056 / OQ#1 SKU31 chunk-058). Глоссарий W2: 0 net-new (SKIP-НП + blknochg не порождают применённых UA→RU терминов — кумул. 276 без изменений, см. footer chunk-glossary-w2.md). Следующий: батч SKU 33-40 (openpyxl rows 34..41).
+
+---
+
+## SKU 33/96 — Миксер молочный двухпостовой SARO SOTUS 2 (Артикул 2538721329) — blknochg
+
+**Бренд:** SARO — НЕ в НП-списке (подтверждён по `Название`).
+**Категория:** blknochg. `descUA==descRU` False (genuine отдельный самостоятельный RU), `nmRU==nazvRU` True (col5==col7 genuine RU `Миксер молочный двухпостовой SARO SOTUS 2`), имя col4-7 консистентно UA↔RU.
+**Было/Стало:** без изменений. LIVE genuine RU НЕ переписан; в chunk-059-fixed.xlsx строка не трогается == source.
+- META keywords (col24/25) faithful UA↔RU, не трогались. Genuine RU чистый (`объемом 0,75 л`, `&ndash;` сепараторы verbatim, `Размеры`/`Вес` корректны).
+
+## SKU 34/96 — Миксер молочный однопостовой SARO SOTUS 1 (Артикул 2538737411) — blknochg
+
+**Бренд:** SARO — НЕ в НП-списке.
+**Категория:** blknochg. `descUA==descRU` False (genuine отдельный RU), `nmRU==nazvRU` True (col5==col7 genuine RU `Миксер молочный однопостовой SARO SOTUS 1`), имя col4-7 консистентно.
+**Было/Стало:** без изменений. LIVE НЕ переписан; chunk-059-fixed.xlsx не трогается == source.
+- **soft-note НЕ нумер.** (genuine RU не переписываем, термином не вносится): genuine RU лид `<p>Миксер молочный двухпостовой SARO SOTUS 1 …</p>` — `двухпостовой` рассинхрон с именем `однопостовой` (та же расинхр. в UA-копии descUA `двохпостовий SARO SOTUS 1`, source-internal в обоих языках) + строка `<li>В комплекте чаша из нержавеющей стали объемом 0,75 л, **которые переключаются отдельно**</li>` — хвост `которые переключаются отдельно` скопирован из контекста SOTUS 2 (одночашевый прибор), source-internal genuine RU. Имена col4-7 консистентны → НЕ нумерованный OQ (прец. SKU 18/38/39/85 chunk-055).
+
+## SKU 35/96 — Миксер молочный Goodfood MFD11, объем 1,0 литр (Артикул 805975107) — blknochg
+
+**Бренд:** Goodfood — НЕ в НП-списке.
+**Категория:** blknochg. `descUA==descRU` False (genuine отдельный RU), `nmRU==nazvRU` True (col5==col7 genuine RU), имя col4-7 консистентно (UA `об'єм` ↔ RU `объем`).
+**Было/Стало:** без изменений. LIVE НЕ переписан; chunk-059-fixed.xlsx не трогается == source.
+- **soft-note НЕ нумер.** (genuine RU не переписываем): genuine RU `<li>Обьем стакана : 1,0 литр</li>` — `Обьем` (мягкий знак вместо твёрдого, корр. `Объём/Объем`) + пробел перед `:` — source-quirk самостоятельного RU при консистентном имени; та же quirk SKU 12/16/17/18 chunk-059. META keywords faithful, не трогались.
+
+## SKU 36/96 — GoodFood Комплект насадок-венчиков для миксера молочного MFD (Артикул 1161437792) — blknochg
+
+**Бренд:** GoodFood — НЕ в НП-списке.
+**Категория:** blknochg. `descUA==descRU` False (genuine отдельный RU), `nmRU==nazvRU` True (col5==col7 genuine RU `…насадок-венчиков…`), имя col4-7 консистентно (UA `насадок-вінчиків` ↔ RU `насадок-венчиков`).
+**Было/Стало:** без изменений. LIVE НЕ переписан; chunk-059-fixed.xlsx не трогается == source.
+- Genuine RU чистый перевод (`Стандартная`/`Турбо`/`Кофе (конус)`, `<br />`+`\n` verbatim в source). META keywords faithful, не трогались.
+
+## SKU 37/96 — Миксер молочный EWT INOX BL018 (Артикул 1205314667) — blk триплет
+
+**Бренд:** EWT INOX — НЕ в НП-списке.
+**Категория:** blk триплет. `descUA==descRU` True (UA-копия в RU-описании), `nmRU==nazvRU` False: col5 = UA-leak `Міксер молочний EWT INOX BL018` (== col4 NMUA), col7 = genuine RU `Миксер молочный EWT INOX BL018`.
+**Было:** col5 = UA-leak `Міксер молочний EWT INOX BL018`; col36 = UA-копия (`descUA==descRU` True).
+**Стало:** col5 ← col7 genuine `Миксер молочный EWT INOX BL018`; col36 = полный тег-в-tag RU-перевод.
+- `Міксер молочний … для коктейлів двопостової`→`Миксер молочный … для коктейлей двухпостовой`; `Технічні характеристики:`→`Технические характеристики:`; `дві склянки з неіржавкої сталі`→`два стакана из нержавеющей стали`; `об'єм однієї склянки:`→`объем одного стакана:` (апостроф `'` U+0027 снят); `швидкість перемішування`→`скорость перемешивания`; `об/хв.`→`об/мин.`; `матеріал: алюміній`→`материал: алюминий`; `габарити `→`габариты ` (label-only; dims `330х160х500` кир. х U+0445 verbatim байт-точно); `потужність `→`мощность ` (`0,60` policy-A verbatim); `напруга 220 В`→`напряжение 220 В`. Структура `<ul>\n<li>…</li>\n…\n</ul>` (переводы строк) verbatim. Термины уже в глоссарии (059 б1 EWT INOX EMM10/EMM20 шаблон).
+
+## SKU 38/96 — Диспенсер для шоколада UGOLINI DELICE 3 gold (Артикул 471707576) — blk триплет
+
+**Бренд:** UGOLINI — НЕ в НП-списке.
+**Категория:** blk триплет. `descUA==descRU` True (UA-копия в RU-описании), `nmRU==nazvRU` False: col5 = UA-leak `Диспенсер для шоколаду UGOLINI DELICE 3 gold` (== col4 NMUA, `шоколаду`), col7 = genuine RU `Диспенсер для шоколада UGOLINI DELICE 3 gold` (`шоколада`).
+**Было:** col5 = UA-leak `Диспенсер для шоколаду UGOLINI DELICE 3 gold`; col36 = UA-копия.
+**Стало:** col5 ← col7 genuine `Диспенсер для шоколада UGOLINI DELICE 3 gold`; col36 = полный тег-в-tag RU-перевод.
+- `Диспенсер для гарячого шоколаду призначений для змішування й роздавання щільного шоколаду та інших гарячих напоїв.`→`Диспенсер для горячего шоколада предназначен для смешивания и раздачи густого шоколада и других горячих напитков.`; `Технічні характеристики:`→`Технические характеристики:`; `об'єм колби: 3 л`→`объем колбы: 3 л` (апостроф снят); `температура напою: від +30 до +90 °C `→`температура напитка: от +30 до +90 °C ` (`°C ` + завершающий пробел verbatim); `тип перемішування напою: весло`→`тип перемешивания напитка: весло`; `габарити: 260х290х410 мм`→`габариты: 260х290х410 мм` (кир. х U+0445 verbatim); `потужність: 0,8 кВт<br> </li>`→`мощность: 0,8 кВт<br> </li>` (нестанд. `<br> ` + пробел verbatim). Однострочная структура (пробелы между тегами) byte-точно.
+
+## SKU 39/96 — Диспенсер для шоколада UGOLINI DELICE 5 gold (Артикул 471712786) — blk триплет
+
+**Бренд:** UGOLINI — НЕ в НП-списке.
+**Категория:** blk триплет. `descUA==descRU` True, `nmRU==nazvRU` False: col5 = UA-leak `Диспенсер для шоколаду UGOLINI DELICE 5 gold`, col7 = genuine RU `Диспенсер для шоколада UGOLINI DELICE 5 gold`.
+**Было:** col5 = UA-leak; col36 = UA-копия.
+**Стало:** col5 ← col7 genuine `Диспенсер для шоколада UGOLINI DELICE 5 gold`; col36 = полный RU-перевод (как SKU38, отличия: `объем колбы: 5 л`, `габариты: 260х320х495 мм` кир. х verbatim). Терминология/правила идентичны SKU38.
+
+## SKU 40/96 — Диспенсер для шоколада UGOLINI DELICE 5 black (Артикул 471713353) — blk триплет
+
+**Бренд:** UGOLINI — НЕ в НП-списке.
+**Категория:** blk триплет. `descUA==descRU` True, `nmRU==nazvRU` False: col5 = UA-leak `Диспенсер для шоколаду UGOLINI DELICE 5 black`, col7 = genuine RU `Диспенсер для шоколада UGOLINI DELICE 5 black`.
+**Было:** col5 = UA-leak; col36 = UA-копия.
+**Стало:** col5 ← col7 genuine `Диспенсер для шоколада UGOLINI DELICE 5 black`; col36 = полный RU-перевод (как SKU39: `объем колбы: 5 л`, `габариты: 260х320х495 мм`). Терминология/правила идентичны SKU38/39.
+
+---
+
+**Наблюдения по батчу SKU 33-40 (батч 5).** Бренды: SARO ×2 (SKU33/34), Goodfood/GoodFood ×2 (SKU35/36), EWT INOX (SKU37), UGOLINI ×3 (SKU38/39/40) — ни один НЕ в НП-списке (HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA), подтверждено по `Название`; НП-зонд chunk-059 — следующий и последний NP-suspect SKU91 (Hurakan) в батче 12. **4 blknochg** (SKU33 SARO SOTUS 2 · SKU34 SARO SOTUS 1 · SKU35 Goodfood MFD11 · SKU36 GoodFood комплект насадок MFD — все `descUA==descRU` False, genuine отдельный самостоятельный RU, `nmRU==nazvRU` True col5==col7, имена col4-7 консистентны UA↔RU, LIVE НЕ переписан, в chunk-059-fixed.xlsx строки не трогаются == source). **4 blk триплет** (SKU37 EWT INOX BL018 миксер молочный · SKU38 UGOLINI DELICE 3 gold · SKU39 DELICE 5 gold · SKU40 DELICE 5 black диспенсеры для шоколада — `descUA==descRU` True UA-копия в RU-описании, `nmRU==nazvRU` False col5=UA-leak col7=genuine RU → триплет col5←col7 genuine, col36 = полный тег-в-tag RU-перевод). blknotrip 0 / SKIP-НП 0. blk dims байт-точно (label-only замена ведущего слова, `х` кир. U+0445 verbatim): SKU37 `330х160х500`, SKU38 `260х290х410`, SKU39/40 `260х320х495`. Апостроф-сущность/символ снят в переводимых UA-копиях (`об'єм`→`объем`); `об/хв`→`об/мин` (SKU37); нестанд. `<br> `+пробел / `°C `+завершающий пробел verbatim (SKU38/39/40). Реальных `.`-дробей в переводимых UA-копиях нет (`0,60`/`0,8`/`0,75`/`1,0` уже запятая policy-A verbatim). chunk-059-fixed.xlsx загружен **СУЩЕСТВУЮЩИЙ** (создан b1, source НЕ копировался повторно) + 4 blk rows col5+col36 by Артикул (rows 38/39/40/41, row = SKU+1), SKU33-36 blknochg + b1/b2/b3 не тронуты; reopen-verify `=== ALL OK ===` (fixed.col5==src.col7 ровно 4 b5 ARTs, col5≠UA, col35/DSCUA не тронут == source, col36≠col35 переведён, без украинских букв і/ї/є; всего 22 blk rows = 8 b1 + 6 b2 + 4 b3 + 4 b5, 96 data rows). **Soft-note НЕ нумер. ~2** (genuine RU не переписываем / имя консистентно, термином не вносятся): SKU34 genuine RU лид `двухпостовой`↔имя `однопостовой` + хвост `которые переключаются отдельно` (source-internal, та же расинхр. в UA-копии); SKU35 genuine RU `<li>Обьем стакана : 1,0 литр</li>` `Обьем` Ь + пробел перед `:` (прец. SKU 12/16/17/18 chunk-059). META keywords (col24/25) faithful UA↔RU, не трогались. Новых нумерованных Открытых вопросов нет; **Открытых вопросов chunk-059 итого 0** (кумул. ждут Yana, отдельная нумерация: OQ#1 SKU10 chunk-055 / OQ#1 SKU67 chunk-056 / OQ#1 SKU31 chunk-058). Глоссарий W2 пополнен +7 net-new (UGOLINI диспенсер для шоколада — новый тип; EWT INOX миксер 0 net-new, термины из 059 б1) кумул. 283, см. footer chunk-glossary-w2.md. Следующий: батч SKU 41-48 (openpyxl rows 42..49).
 
 ---
