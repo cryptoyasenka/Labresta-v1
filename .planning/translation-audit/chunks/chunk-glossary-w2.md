@@ -891,3 +891,30 @@ Soft-note b5: чистый раунд без OQ. SKU37 r38 Hendi 212028 source c
 - ASCII apos в UA «Об'єм» → strip в RU «Объем» (reuse pattern b1/b2/b3)
 
 Soft-note b6: чистый раунд без OQ. SKU42-44 r43-45 La Monferrina — три SKU с длинными body (1082/954/954) включая YouTube iframe. iframe-блок preserved verbatim (URL params `wmode=transparent&rel=0&loop=0&autoplay=0&controls=1&showinfo=1&disablekb=0&modestbranding=0/1` — `0` и `1` различаются по SKU). Source artifact: SKU43/44 dash в body «C1/320 - 320 мм» это HMin (не Em) — preserve verbatim. SKU41 Oztiryakiler — genuine c5/c7 с UA-RU mix «однопостовая», fixed НЕ тронут. 2 blknochg все Oztiryakiler/GoodFood — genuine RU c5/c7. SKIP-НП #3 HURAKAN HKN-C1 подтверждён, тело из фида НП позже.
+
+
+## chunk-066 b7 (SKU 49-56, rows 50-57) — 56/90 — глоссарий +7 net-new (cum 926→933)
+
+**Net-new b7:**
+- Bartscher A120409 (brand+model verbatim Latin, reuse Bartscher brand cum, новая модель)
+- AIRHOT HDS-04 штыревой (hot-dog штыревой вариант, новый суффикс)
+- Аппарат для хот-догов / Аппарат для хот-дога / Аппарат для поп-корна <- Апарат для хот-догів / Апарат для хот-дога / Апарат для попкорну / Апарат для поп-корна (поп-корн с дефисом — формат из c7 genuine RU)
+- стержни для булочек (стрижні для булочок — hot-dog accessory)
+- штыри для подогрева булочек (штирі для підігрівання булочок)
+- подогревающее дно / закаленное стекло с 4 сторон / съемный котел (поп-корн machine — подогревающее дно/закаленное стекло/съемный котел)
+- анодированный алюминий (стойки) <- анодований алюміній
+
+**Reuse from earlier batches (b7):**
+- Roller Grill HD 4 (brand reuse b1/b5)
+- GoodFood HDW10/HDW20/PCM10 (brand reuse cum)
+- EWT INOX PCM-826Y (brand reuse cum)
+- AIRHOT POP-6 (brand reuse cum, новая модель)
+- Корпус выполнен из нержавеющей стали (reuse cum)
+- предприятий общественного питания (reuse cum)
+- регулятор температуры — от N °C до N °C (reuse cum)
+- безопасный в эксплуатации (reuse cum)
+- съемный поддон для сбора жира (reuse cum)
+- Производительность N порций по N г в час (reuse cum b6 «N порций в час» + variant)
+- ` °C` real ° preserved verbatim (reuse cum)
+
+Soft-note b7: чистый раунд без OQ. SKU49 r50 Bartscher source typos UA «нерівної сталі» (для «нержавіючої») и «Працьова» (для «Робоча») + «хот-догов» (RU-leak в UA) — RU faithful normalize («нержавеющей»/«Рабочая») / «хот-догов» preserve (genuine RU-вариант уже в UA). SKU55/56 AIRHOT/EWT поп-корн — c5/c7 «поп-корна» с дефисом (формат RU c7 genuine). 4 blknochg все GoodFood/Roller Grill — genuine RU c5/c7. SKIP-НП 0 в b7. Next SKIP-НП prelim в b8: SKU57 HURAKAN HKN-PCORN попкорн.
