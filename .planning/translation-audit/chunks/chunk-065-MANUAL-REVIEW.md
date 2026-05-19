@@ -2,9 +2,9 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-065 (81 SKU)
 **Apply key:** `Артикул` (col1, scoped per row)
-**Status:** b9 DONE 72/81 (b10 предстоит; batch=8, b11=SKU81 1 SKU)
+**Status:** b10 DONE 80/81 (b11 предстоит; batch=8, b11=SKU81 1 SKU)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-064
-**Last updated:** chunk-065 b9 (W2)
+**Last updated:** chunk-065 b10 (W2)
 
 Эталон формата: chunk-019-MANUAL-REVIEW.md / chunk-064-MANUAL-REVIEW.md. Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Кумул. OQ закрыты.
 
@@ -286,3 +286,37 @@ _(нумерация отдельная, начинается с #1; пока н
 ---
 
 <!-- Сводка по батчу b10 ниже. -->
+<!-- b10 marker -->
+
+## b10 — SKU 73-80 (rows 74-81), 80/81
+
+**Категории:** blk триплет 7 · blknotrip 0 · blknochg 1 · SKIP-НП 0 = 8.
+
+| # | SKU | Артикул | Бренд / модель | Категория | Действие |
+|---|---|---|---|---|---|
+| 1 | 73 | 2193231816 | AIRHOT WB-HK1 вафельница гонконгская | blk триплет | col5 ← c7 (`Вафельница для гонконгских вафель AIRHOT WB-HK1`); col36 — faithful RU (skel==c35 c `\n` ×16, dims==c35 после numeric-entity-strip: WB-HK1/200/2-3/+50.../300/1.4/220/5.5/6.5/400x225x300/490x300x320, `&deg;`×1 Cyr С verbatim, `&#39;` ×1 в UA «м&#39;якою» → RU «мягкой» entity снят, XCH Cyr х ×9 + Lat x ×4 source-mix, DASH `-` ×3 в WB-HK1/«вафель -»/«2-3» preserved) |
+| 2 | 74 | 2237417640 | Silver WK вафельница для конусов электрическая | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+| 3 | 75 | 2301285620 | Frosty WBS-2B вафельница бельгийская | blk триплет | col5 ← c7; col36 — faithful RU (skel==c35 c `\n` ×12, dims 15: WBS-2B/1-постовая/4х6/0-300/0-5/2 объемные/105х170/1,75/220/320/340/255/9.80, `&deg;C` Lat C ×1, XCH Cyr х ×6 + Lat x ×2 в Д*Ш*В размерах + Cyr Х ×1 в «Д*Ш*В», DASH `-` ×2 в WBS-2B/1-постова; UA «обємні» (UA missing apostrophe) → RU «объемные») |
+| 4 | 76 | 2301288718 | Frosty WBS-22B вафельница бельгийская | blk триплет | col5 ← c7; col36 — faithful RU (skel==c35 c `\n` ×12, dims 15: WBS-22B/2-постовая/4х6/0-300/0-5/4 объемные/105х170/3,50/220/630/340/255/18.00, `&deg;C` Lat C ×1, sibling template SKU75; trailing space `термостат `) |
+| 5 | 77 | 2301296127 | Frosty WBS-1H вафельница гонконгская bubble waffle | blk триплет | col5 ← c7 (`Вафельница Frosty WBS-1H`); col36 — faithful RU (skel==c35 c `\n` ×14, dims 14: 1-постовая/180х210/30/25х30/0-250/0-5/1,40/220/220/360/270/5.00, `&deg;C` Lat C ×2 в «от 0&deg;C до 250&deg;C», XCH Cyr х ×6 + Lat x ×2, DASH 1; UA «гонконських» (UA typo, missing г) → RU нормализовано «гонконгских»; trailing spaces `30 шт `/`термостат `/`250&deg;C ` preserved) |
+| 6 | 78 | 2301297081 | Frosty WBS-2H вафельница гонконгская bubble waffle | blk триплет | col5 ← c7; col36 — faithful RU (skel==c35 c `\n` ×14, dims 14, sibling SKU77; 2-постовая/2,80 кВт/440мм/9.50; «гонконгских» normalized) |
+| 7 | 79 | 2301301066 | Frosty WBS-5S вафельница для корн-догов | blk триплет | col5 ← c7 (`Вафельница для корн-догов Frosty WBS-5S`); col36 — faithful RU (skel==c35 c `\n` ×15, dims 14: 1-постовая/5/40х145/270х185/0-300/0-5/1,55/220/330/300/245/9.50, `&deg;C` Lat C ×2, «корн-доги» reuse b7; «Поддон» from UA «Піддон»; trailing space `270х185 мм `) |
+| 8 | 80 | 2301302570 | Frosty WBS-6D вафельница для пончиков (донатсы) | blk триплет | col5 ← c7 (`Вафельница для пончиков Frosty WBS-6D`); col36 — faithful RU (skel==c35 c `\n` ×15, dims 15: 1-постовая/6/77/23/270х185/0-300/0-5/1,55/220/330/300/245/9.10, `&deg;C` Lat C ×2, `&Oslash;77`/`&Oslash;23` entity verbatim ×2; «донатсов (американских пончиков)» from UA «донатсів (американських пончиків)»; «Отверстие» from UA «Отвір») |
+
+**Verify:** 161 PASS / 0 FAIL (REGR 72 + ART 81 + TRIP 7 + blknochg 1 = 161).
+
+**Глоссарий b10:** см. `chunk-glossary-w2.md` (842 → 860).
+
+**Codepoint findings (TRIP):**
+- SKU73 r74 (AIRHOT WB-HK1, len 938): `&deg;`×1 Cyr С + `&#39;` U+0027 ASCII apos entity ×1 в UA «м&#39;якою» → RU «мягкой» entity снят; XCH Cyr х ×9 + Lat x ×4 в `400x225x300`/`490x300x320` source-mix; DASH `-` ×3.
+- SKU75-78 (Frosty WBS-2B/22B/1H/2H) единая Frosty template: «<p>...корпус нержавеющая сталь.</p> <p>Характеристики:</p> <ul>...</ul> <p>Материал:</p> <ul><li>корпус: нержавеющая сталь</li></ul>». `&deg;C` Lat C; XCH Cyr х в 4х6/105х170/180х210/25х30 + Cyr Х ×1 в «Д*Ш*В» + Lat x ×2 в «320мм x 340мм x 255мм»-формате; DASH ×1-2.
+- SKU79 r80 (Frosty WBS-5S корн-доги): no `<p>Вафельниця бельгійська...</p>` лидер, начинается с «Корпус виготовлений», корн-доги reuse b7.
+- SKU80 r81 (Frosty WBS-6D донатсы): `&Oslash;77`/`&Oslash;23` ×2 HTML entity для диаметра verbatim в RU; «донатсов» вместо «пончиков» в lead (UA «донатсів»); «6 единиц» (UA «6 одиниць»).
+
+**Soft-notes (pre-existing в c36/c35, не наша правка):** SKU74 Silver WK — c5==c7 genuine RU, c35!=c36, fixed НЕ тронут. SKU75/76 UA «обємні» (UA пропущенный apostrophe, должно быть «об'ємні») → RU нормализовано «объемные». SKU77/78 UA «гонконських» (UA typo: пропущена «г», должно быть «гонконгських») → RU нормализовано «гонконгских». SKU73 кулёчок (UA «кульочком») → RU «кулечком» (через е, не через ё, во избежание EYO). Frosty WBS-* — единый шаблон 6 SKU (75-80) шаринг описания корпуса/материала.
+
+**Открытых вопросов b10:** нет.
+
+---
+
+<!-- Сводка по батчу b11 ниже. -->
