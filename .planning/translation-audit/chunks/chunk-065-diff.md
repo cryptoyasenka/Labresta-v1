@@ -3,7 +3,7 @@
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-065 (81 SKU, rows 2..82; ART 2121426618 … 2447469404)
 **Apply key:** `Артикул` (col1, scoped per row)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-064
-**Status:** b8 DONE 64/81 (b9 предстоит; b1-b10 по 8 SKU + b11=SKU81 1 SKU)
+**Status:** b9 DONE 72/81 (b10 предстоит; b1-b10 по 8 SKU + b11=SKU81 1 SKU)
 
 Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Формат — как chunk-064-diff.md.
 
@@ -216,3 +216,30 @@ SKIP-НП prelim (HURAKAN, forward-only, тело из фида НП позже)
 ---
 
 <!-- Сводка по батчу b9 ниже. -->
+<!-- b9 marker -->
+
+## b9 — diff (SKU 65-72, rows 66-73), 72/81
+
+**Категории:** blk триплет 2 · blknotrip 0 · blknochg 4 · SKIP-НП 2 = 8.
+
+### blk триплет (2)
+- **SKU 68** (r69, ART 1755774485, AIRHOT WE-1 вафельница бельгийская): col5 `Вафельниця для бельгійських вафель AIRHOT WE-1` → `Вафельница для бельгийских вафель AIRHOT WE-1`; col36 UA-leak → faithful RU (skel==c35 c `\n` ×13, dims==c35: `<h2>`2/WE-1/4/1./4/`</h2>`2/175/12/2/3/220/1,2/250x350x260/6, no DEG, XCH Cyr х ×5 + Lat x ×2 в `250x350x260` source-mix verbatim, Cyr В ×4 в «Вафельница/220 В/кВт/Вес» preserved; sibling SKU54 AIRHOT WE-1B шаблон).
+- **SKU 71** (r72, ART 2085217160, EWT INOX MT100 аппарат для пончиков): col5 `Апарат для приготування пончиків EWT INOX MT100` → `Аппарат для приготовления пончиков EWT INOX MT100`; col36 UA-leak → faithful RU (skel==c35 c `\n` ×17, dims==c35 с расширенным numeric-entity-strip (`&(?:[a-zA-Z]+|#\d+);`), no DEG, XCH Cyr х ×3 + Lat X в `INOX`, `&#39;` U+0027 numeric-entity ×2 в UA «Об&#39;єм» → RU «Объем» без апострофа/энтити, `220V` без пробела verbatim).
+
+### blknotrip (0)
+— нет.
+
+### blknochg (4)
+- **SKU 65** (r66, Roller Grill GED 10 вафельница) / **SKU 66** (r67, Roller Grill GED 20 вафельница) / **SKU 67** (r68, GoodFood WB4B вафельница-тарталетница) / **SKU 72** (r73, GoodFood WB1FL вафельница цветок): c5==c7 genuine RU, c35!=c36.
+
+### SKIP-НП (2)
+- **SKU 69** (r70, ART 2059494027, HURAKAN HKN-GES2L вафельница) — НП-эксклюзив, fixed row70 НЕ тронут (тело из фида НП позже). SKIP-НП #2 для chunk-065.
+- **SKU 70** (r71, ART 2059501393, HURAKAN HKN-GES5HK вафельница гонконгская) — НП-эксклюзив, fixed row71 НЕ тронут (тело из фида НП позже). SKIP-НП #3 для chunk-065.
+
+**Codepoint findings:** SKU68 no DEG + XCH Cyr х ×5 + Lat x ×2 в `250x350x260` source-mix + Cyr В ×4 + `<h2>`/`</h2>` digits 2 учтены в dims; SKU71 no DEG + XCH Cyr х ×3 + Lat X в `INOX` + `&#39;` numeric-entity ×2 → RU без апострофа (dims-strip расширен на numeric entities).
+
+**Verify:** 153 PASS / 0 FAIL (REGR 64 + ART 81 + TRIP 2 + blknochg 4 + SKIP-НП 2).
+
+---
+
+<!-- Сводка по батчу b10 ниже. -->

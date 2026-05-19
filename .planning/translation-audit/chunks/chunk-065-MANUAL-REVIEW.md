@@ -2,9 +2,9 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-065 (81 SKU)
 **Apply key:** `Артикул` (col1, scoped per row)
-**Status:** b8 DONE 64/81 (b9 предстоит; batch=8, b11=SKU81 1 SKU)
+**Status:** b9 DONE 72/81 (b10 предстоит; batch=8, b11=SKU81 1 SKU)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-064
-**Last updated:** chunk-065 b8 (W2)
+**Last updated:** chunk-065 b9 (W2)
 
 Эталон формата: chunk-019-MANUAL-REVIEW.md / chunk-064-MANUAL-REVIEW.md. Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Кумул. OQ закрыты.
 
@@ -13,8 +13,8 @@
 | # | SKU | Артикул | Бренд | Название (UA) | Примечание |
 |---|---|---|---|---|---|
 | 1 | 64 | 1147781261 | HURAKAN | Вафельниця HURAKAN HKN-GES2M для бельгійських вафель | HURAKAN — НП-эксклюзив, fixed row65 НЕ тронут (тело из фида НП позже); b8 confirmed |
-| prelim | 69 | 2059494027 | Hurakan | Вафельниця Hurakan HKN-GES2L | HURAKAN — НП-эксклюзив, тело из фида НП позже |
-| prelim | 70 | 2059501393 | Hurakan | Вафельниця гонконгська Hurakan HKN-GES5HK | HURAKAN — НП-эксклюзив, тело из фида НП позже |
+| 2 | 69 | 2059494027 | Hurakan | Вафельниця Hurakan HKN-GES2L | HURAKAN — НП-эксклюзив, fixed row70 НЕ тронут (тело из фида НП позже); b9 confirmed |
+| 3 | 70 | 2059501393 | Hurakan | Вафельниця гонконгська Hurakan HKN-GES5HK | HURAKAN — НП-эксклюзив, fixed row71 НЕ тронут (тело из фида НП позже); b9 confirmed |
 
 ## Открытые вопросы chunk-065
 
@@ -254,3 +254,35 @@ _(нумерация отдельная, начинается с #1; пока н
 ---
 
 <!-- Сводка по батчу b9 ниже. -->
+<!-- b9 marker -->
+
+## b9 — SKU 65-72 (rows 66-73), 72/81
+
+**Категории:** blk триплет 2 · blknotrip 0 · blknochg 4 · SKIP-НП 2 = 8.
+
+| # | SKU | Артикул | Бренд / модель | Категория | Действие |
+|---|---|---|---|---|---|
+| 1 | 65 | 1149716562 | Roller Grill GED 10 вафельница | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+| 2 | 66 | 1149732444 | Roller Grill GED 20 вафельница | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+| 3 | 67 | 1233837289 | GoodFood WB4B вафельница-тарталетница | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+| 4 | 68 | 1755774485 | AIRHOT WE-1 вафельница бельгийская | blk триплет | col5 ← c7 (`Вафельница для бельгийских вафель AIRHOT WE-1`); col36 — faithful RU (skel==c35 c `\n` ×13, dims==c35: `<h2>`2/WE-1/4/1./4/`</h2>`2/175/12/2/3/220/1,2/250x350x260/6, no DEG; XCH Cyr х ×5 + Lat x ×2 в `250x350x260` source-mix verbatim; Cyr В ×4 в «Вафельница»/«220 В»/«кВт»/«Вес» preserved) |
+| 5 | 69 | 2059494027 | HURAKAN HKN-GES2L вафельница | SKIP-НП #2 | HURAKAN — НП-эксклюзив, fixed row70 НЕ тронут (тело из фида НП позже) |
+| 6 | 70 | 2059501393 | HURAKAN HKN-GES5HK вафельница гонконгская | SKIP-НП #3 | HURAKAN — НП-эксклюзив, fixed row71 НЕ тронут (тело из фида НП позже) |
+| 7 | 71 | 2085217160 | EWT INOX MT100 аппарат для пончиков | blk триплет | col5 ← c7 (`Аппарат для приготовления пончиков EWT INOX MT100`); col36 — faithful RU (skel==c35 c `\n` ×17, dims==c35: MT100/`&#39;`×2/12/`&#39;`×2/7/3/300-1200/42/1050/600/750/6/220/53/530/565/465, no DEG; XCH Cyr х ×3 + Lat X ×1 в `INOX` preserved; `&#39;` U+0027 entity ×2 в UA «Об&#39;єм» → RU «Объем» (entity снят, dims preserved via numeric-entity-strip; numeric-entity «39» отфильтрован symmetrically); `220V` без пробела verbatim) |
+| 8 | 72 | 2110637577 | GoodFood WB1FL вафельница цветок | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+
+**Verify:** 153 PASS / 0 FAIL (REGR 64 + ART 81 + TRIP 2 + blknochg 4 + SKIP-НП 2 verified untouched).
+
+**Глоссарий b9:** см. `chunk-glossary-w2.md` (832 → 842).
+
+**Codepoint findings (TRIP):**
+- SKU68 r69 (AIRHOT WE-1, len 543): NO DEG, XCH Cyr х U+0445 ×5 (вафлі/вафлі/хв/без/etc?) + Lat x U+0078 ×2 в `250x350x260`, DASH `-` U+002D ×2 в `WE-1` и `2-3`, Cyr В U+0412 ×4 в «Вафельниця/220 В/кВт/Вага». `<h2>...<br />\nКількість...</h2> <ul>` skel с двумя цифрами «2» из самих тегов h2 (учтены в dims).
+- SKU71 r72 (EWT INOX MT100, len 664): NO DEG, XCH Cyr х U+0445 ×3 + Lat X U+0058 ×1 в `INOX`, DASH `-` U+002D ×2 в `300-1200`/`фаст-фуді`, `&#39;` U+0027 numeric-entity ×2 в UA «Об&#39;єм» — в RU «Объем» без апострофа/энтити; dims-strip расширен на numeric entities (`&(?:[a-zA-Z]+|#\d+);`) чтобы оба теряли «39» symmetrically.
+
+**Soft-notes (pre-existing в c36, не наша правка):** SKU65/66 Roller Grill GED 10/20 — c36 уже RU (fixed НЕ тронут). SKU67 GoodFood WB4B вафельница-тарталетница c36 уже RU. SKU72 GoodFood WB1FL цветок c36 уже RU. SKU68/71 source c35==c36 (оба UA) — настоящие TRIP, faithful RU написан с нуля. SKU68 AIRHOT WE-1 — sibling SKU54 AIRHOT WE-1B (b7), шаблон совпадает (количество секций/сегментов/диаметр/толщина/таймер/терморегулятор/индикатор/время/материал/напряжение/мощность/габариты/вес). SKU71 EWT INOX MT100 — новая категория: аппарат для пончиков в форме колец.
+
+**Открытых вопросов b9:** нет.
+
+---
+
+<!-- Сводка по батчу b10 ниже. -->
