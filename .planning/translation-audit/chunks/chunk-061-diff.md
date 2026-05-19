@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-061 (67 SKU)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 48/67 (blk триплет 23 / blknochg 21 / blknotrip 0 / SKIP-НП 4; Открытых вопросов 0)
+**Status:** IN PROGRESS 56/67 (blk триплет 26 / blknochg 26 / blknotrip 0 / SKIP-НП 4; Открытых вопросов 0)
 **Worker:** W2 (параллельный воркер, диапазон chunk-055 … chunk-085; W1 ведёт chunk-001 … chunk-054)
 
 **Состав (по типу товара):** первый SKU — Артикул `2309189086` (`Гриль контактний Frosty EGS-44`); последний SKU67 — Артикул `2424751163` (`Гриль-тостер SARO BUSSO T1`). Колонка `Бренд` в источнике дублирует `Артикул` (числовой) — бренд определяется по `Название` per-SKU при аудите батча. Тип: преимущественно грили контактні + тостери / гриль-тостери. **SKIP-НП (зонд по `Название`): 4 NP-suspect** — все в НП-списке → SKIP-НП (тело придёт из фида НП позже, RU не трогается; вносятся в таблицу при обработке соответствующих батчей): **HURAKAN ×3** — SKU28 Арт `1147792135` (`Гриль контактний HURAKAN HKN-PE22R`) · SKU29 Арт `1147801726` (`Гриль контактний Hurakan HKN-PE34R`) · SKU30 Арт `1147802158` (`Гриль контактний HURAKAN HKN-PE44R`); **TATRA ×1** — SKU48 Арт `2062003333` (`Гриль контактний TATRA EMP.102`). Прочие бренды (Frosty, SARO, …) НЕ в НП-списке — обрабатываются обычно, подтверждается per-батч по `Название`. Батч = 8 SKU; 9 батчей (67/8 → б1-8 по 8 SKU = 64, б9 = SKU 65-67 = 3 SKU). openpyxl rows 2..68 (row = SKU + 1).
@@ -217,5 +217,36 @@ blk триплет 6 (SKU9/10/12/13/14/15) · blknochg 2 (SKU11/16) · blknotrip
 - **SKU48 Гриль контактний TATRA EMP.102 (row49, Арт `2062003333`)** — бренд **TATRA** ∈ НП-список → SKIP-НП #4. RU НЕ переписан, fixed row49 НЕ тронут, тело придёт из фида НП позже (col35==col36 оба UA — согласуется: тело НП ещё не пришло).
 
 **Модель-коды:** все согласованы UA↔genuine-RU (Frosty SP-1C2/SP-2A1/SP-2A2/SP-2A3; GoodFood WB888RHB/ECG20EA/GS450L; TATRA EMP.102). Soft-notes (НЕ нумер.): SKU42 «2 верхние» добавка genuine-RU / SKU47 «оружия жира» машинный артефакт genuine-RU — NAME консистентен → НЕ рассинхрон, НЕ Открытый вопрос. Открытых вопросов по батчу 6 нет; chunk-061 OQ=0.
+
+---
+
+## Батч 7 (SKU 49-56, openpyxl rows 50-57) — 56/67
+
+| SKU | Артикул | Название (UA) | Бренд | Категория | Действие |
+|---|---|---|---|---|---|
+| 49 | 2084244161 | Гриль контактний REEDNEE CGR22 | REEDNEE | blk триплет | col5←col7, col36 перевод (1117→len) |
+| 50 | 2110272512 | Гриль контактний GoodFood ECG10EA Panini RED | GoodFood | blknochg | без изменений (genuine RU) |
+| 51 | 2110277517 | Гриль контактний GoodFood ECG11EA Panini RED | GoodFood | blknochg | без изменений (genuine RU) |
+| 52 | 2121017945 | Гриль контактний "PANINI" XL Hendi 263624 | Hendi | blk триплет | col5←col7, col36 перевод (1366→len) |
+| 53 | 2190382430 | Гриль контактний для бургерів GoodFood WB1RHB | GoodFood | blknochg | без изменений (genuine RU) |
+| 54 | 2191316590 | Гриль для корн-догів GoodFood CM6A (3+3) | GoodFood | blknochg | без изменений (genuine RU) |
+| 55 | 2219890979 | Гриль контактний Spidocook SP015PRB | Spidocook | blk триплет | col5←col7, col36 перевод (858→len) |
+| 56 | 2237464195 | Гриль контактний Silver SS-16 | Silver | blknochg | без изменений (genuine RU) |
+
+**blk триплет (3):**
+- **SKU49 REEDNEE CGR22 (row50)** — col5==col4 «Гриль контактний REEDNEE CGR22» (UA-leak «контактний»), col7 genuine RU «Гриль контактный REEDNEE CGR22», descUA==descRU (1117==1117). col5←col7; col36 ← перевод source col35 tag-в-tag (Frosty-family преамбула `Применяется…/Контактные грили…/Технические характеристики` уже в накопл. + own spec: Электрический двухпостовый · Поверхность для жарки (2х214х214 мм + 475х230 мм) рифленая из чугуна · Температурный режим 50-300℃ · Вес/Длина/Высота/Мощность электрическая 3.6/Подключение к электросети 220V · Размеры в упаковке Вес 27/Глубина 440/Высота 260). `℃` U+2103 byte-exact; Cyrillic-х 2х214х214/475х230 byte-exact; `220V` lang-neutral; spec-table dot `3.6` policy-A. «Ширина» (нетто)/упак. идентична RU не тронута. UA-marker col36/col5 = 0.
+- **SKU52 Hendi "PANINI" XL 263624 (row53)** — col5==col4, col7 genuine «Гриль контактный "PANINI" XL Hendi 263624», descUA==descRU (1366==1366). col5←col7; col36 перевод (Грили чугунные эмалированные · Корпус из нержавеющей стали 18/10 · Температуру можно изменять… от 0 ̊C до 300 ̊C · съемный поддон для капель · термостойкой ручки · сетевым выключателем со встроенным световым индикатором, лампой предварительного нагрева и шнуром питания длиной 1,7 м с заземленной вилкой · Резиновые ножки · Диапазон температур до (&deg;C): 0-300 · Размеры 548х415х(Н)210 мм · Вес нетто (кг): 29,37). `0 ̊C`/`300 ̊C` U+030A combining-ring + Latin-C byte-exact; `(&deg;C)` entity+Latin-C byte-exact; `450x270` Latin-x byte-exact; `548х415х(Н)210` Cyrillic-х byte-exact; `1,7 м`/`29,37` запятая lang-neutral; house-style no ё (съемный/решетке). len 1366→len. UA-marker col36/col5 = 0.
+- **SKU55 Spidocook SP015PRB (row56)** — col5==col4, col7 genuine «Гриль контактный Spidocook SP015PRB», descUA==descRU (858==858). col5←col7; col36 перевод (Благодаря антипригарным свойствам…варочных поверхностях · 1 рабочая зона верх и низ рифленая рабочая поверхность · Черная стеклокерамика · Максимальная температура 400 град · термостат механический · скребок для чистки · Вес 14.9/Мощность электрическая 2.8/Подключение к электросети 220V · Размеры в упаковке Вес 16/Глубина 527/Высота 254). spec-table dot `14.9`/`2.8` policy-A; `220V` lang-neutral; `<p>Размеры в упаковке </p>` хвост.пробел byte-exact; «Черная» без ё (house-style). len 858→len. UA-marker col36/col5 = 0.
+
+**blknochg (5) — fixed НЕ тронут:**
+- **SKU50 GoodFood ECG10EA (row51)** — col5==col7 «Гриль контактный GoodFood ECG10EA Panini RED». descUA!=descRU (1064≠1067). genuine RU col36. Soft-note (НЕ нумер.): genuine-RU `Упаковка 420х395х245 мм.` (UA `Упаковка: …` двоеточие опущено) · `Вес 14кг.` без пробела (UA `Вага: 14 кг.`). NAME согласован.
+- **SKU51 GoodFood ECG11EA (row52)** — col5==col7 «Гриль контактный GoodFood ECG11EA Panini RED». descUA!=descRU (1050≠1055). genuine RU чистый. NAME согласован.
+- **SKU53 GoodFood WB1RHB (row54)** — col5==col7 «Гриль контактный для бургеров GoodFood WB1RHB». descUA!=descRU (789≠804). genuine RU чистый (`&ndash;`→дефис, `Однопостовая.`). NAME согласован.
+- **SKU54 GoodFood CM6A (3+3) (row55)** — col5==col7 «Гриль для корн-догов GoodFood CM6A (3+3)». descUA!=descRU (728≠722). genuine RU чистый. NAME согласован.
+- **SKU56 Silver SS-16 (row57)** — col5==col7 «Гриль контактный Silver SS-16». descUA!=descRU (1129≠1134). genuine RU col36. Soft-note (НЕ нумер., прец. SKU27 б4 / SKU35 б5): genuine-RU `<p>Технические характеристики:</p>` (UA `<p><strong>Технічні характеристики:</strong></p>` — `<strong>` опущен) + UA-форма-leak `Тип поверхности Ребриста` (ожид. «Ребристая»). NAME консистентен UA↔RU → структурное расхождение genuine RU, НЕ рассинхрон, НЕ Открытый вопрос.
+
+**SKIP-НП (0):** в батче 7 NP-suspect нет (REEDNEE/Hendi/Spidocook/GoodFood/Silver НЕ в НП-списке). SKIP-НП таблица без изменений (остаётся 4: HURAKAN×3 б4 + TATRA×1 SKU48 б6).
+
+**Модель-коды:** все согласованы UA↔genuine-RU (REEDNEE CGR22; GoodFood ECG10EA/ECG11EA/WB1RHB/CM6A (3+3); Hendi "PANINI" XL 263624; Spidocook SP015PRB; Silver SS-16). Soft-notes (НЕ нумер.): SKU56 Silver `<strong>`-drop + `Тип поверхности Ребриста` UA-форма genuine-RU / SKU50 `Упаковка`/`14кг` пунктуация genuine-RU — NAME консистентен → НЕ рассинхрон, НЕ Открытый вопрос. Открытых вопросов по батчу 7 нет; chunk-061 OQ=0.
 
 ---
