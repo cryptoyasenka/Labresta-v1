@@ -3,7 +3,7 @@
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-066 (90 SKU, rows 2..91; ART 2496038149 … 2153078504)
 **Apply key:** `Артикул` (col1, scoped per row)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-065
-**Status:** b7 DONE 56/90 (b8 предстоит; b1..b11 по 8 SKU + b12=SKU89-90 2 SKU)
+**Status:** b8 DONE 64/90 (b9 предстоит; b1..b11 по 8 SKU + b12=SKU89-90 2 SKU)
 
 Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Формат — как chunk-065-diff.md.
 
@@ -170,3 +170,26 @@ _(нет)_
 
 ### SKIP-НП 0
 _(нет)_
+
+
+## b8 — SKU 57-64 (rows 58-65) — DONE 64/64 (cum)
+
+**Verify:** REGR 56 (b1+b2+b3+b4+b5+b6+b7) + ART 90 + TRIP 0 + BLKNOCHG 7 + SKIP-НП 1 = 386 PASS / 0 FAIL.
+
+### blk триплет 0
+_(нет)_
+
+### blknotrip 0
+_(нет)_
+
+### blknochg 7
+- **SKU 58 r59 ART 671802533** SILVER 2160 LPG газовый (шаурма): c5==c7 genuine RU; c35!=c36 (499/499) — fixed НЕ тронут.
+- **SKU 59 r60 ART 1899487563** SILVER ED 07 электрический: c5==c7 genuine RU; c35!=c36 (704/695) — fixed НЕ тронут; NMUA артефакт «газовий ... електричний» — RU c5 нормализован к «электрический».
+- **SKU 60 r61 ART 2096802833** Atalay ADE-4 S (model swap rebrand из SILVER ED 05): c5==c7 genuine RU; c35!=c36 (419/423) — fixed НЕ тронут.
+- **SKU 61 r62 ART 1895743507** SILVER 2161 LPG (50 кг) газовый: c5==c7 genuine RU; c35!=c36 (538/519) — fixed НЕ тронут.
+- **SKU 62 r63 ART 1895756434** SILVER 2162 LPG (80 кг): c5==c7 genuine RU; c35!=c36 (534/517) — fixed НЕ тронут.
+- **SKU 63 r64 ART 1895799042** SILVER ED 05 (20 кг) электрический: c5==c7 genuine RU; c35!=c36 (730/716) — fixed НЕ тронут.
+- **SKU 64 r65 ART 1895813995** SILVER ED 06 электрический: c5==c7 genuine RU; c35!=c36 (702/693) — fixed НЕ тронут; NMUA артефакт «газовий ... електричний».
+
+### SKIP-НП 1
+- **SKU 57 r58 ART 2060694096** HURAKAN HKN-PCORN (попкорн): fixed row 58 НЕ тронут, тело из фида НП позже. prelim→confirmed #4.

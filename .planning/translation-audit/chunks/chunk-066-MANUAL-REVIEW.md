@@ -2,9 +2,9 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-066 (90 SKU, rows 2..91; ART 2496038149 … 2153078504)
 **Apply key:** `Артикул` (col1, scoped per row)
-**Status:** b7 DONE 56/90 (b8 предстоит; batch=8 b1..b11 по 8 + b12=SKU89-90 2 SKU = 90)
+**Status:** b8 DONE 64/90 (b9 предстоит; batch=8 b1..b11 по 8 + b12=SKU89-90 2 SKU = 90)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-065
-**Last updated:** chunk-066 b7 (W2)
+**Last updated:** chunk-066 b8 (W2)
 
 Эталон формата: chunk-019-MANUAL-REVIEW.md / chunk-065-MANUAL-REVIEW.md. Категории: blk триплет / blknotrip / blknochg / SKIP-НП.
 
@@ -15,7 +15,7 @@
 | 1 | 6 | 2784069485 | HURAKAN | ВАФЕЛЬНИЦЯ HURAKAN HKN-GES300 NUT | HURAKAN — НП-эксклюзив, fixed row7 НЕ тронут (тело из фида НП позже); b1 confirmed |
 | 2 | 36 | 2503734240 | HURAKAN | Млинниця Hurakan HKN-CSE400P одинарна | HURAKAN — НП-эксклюзив, fixed row37 НЕ тронут (тело из фида НП позже); b5 confirmed |
 | 3 | 47 | 2111177527 | HURAKAN | Апарат для приготування солодкої вати Hurakan HKN-C1 | HURAKAN — НП-эксклюзив, fixed row48 НЕ тронут (тело из фида НП позже); b6 confirmed |
-| prelim | 57 | (row 58) | Hurakan | Апарат для приготування попкорну Hurakan HKN-PCORN | HURAKAN — НП-эксклюзив, fixed row58 НЕ тронут; b8 confirm |
+| 4 | 57 | 2060694096 | HURAKAN | Апарат для приготування попкорну Hurakan HKN-PCORN | HURAKAN — НП-эксклюзив, fixed row58 НЕ тронут (тело из фида НП позже); b8 confirmed |
 | prelim | 67 | (row 68) | TATRA | Гриль для шаурми TATRA TDM E 4B | TATRA — НП-эксклюзив, fixed row68 НЕ тронут; b9 confirm |
 
 Brand-list scan: HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA. По prelim-скану 4 HURAKAN + 1 TATRA. Остальные SKU (Roller Grill / Frosty / GoodFood / Hendi / Bartscher / SARO / EWT / AIRHOT / SILVER / FROSTY / PIMAK / CB и пр.) — обрабатываются обычно.
@@ -227,3 +227,29 @@ _(нет)_
 
 ### SKIP-НП 0
 _(нет)_
+
+
+## b8 — SKU 57-64 (rows 58-65)
+
+**Verify:** REGR 56 (b1+b2+b3+b4+b5+b6+b7) + ART 90 + TRIP 0 + BLKNOCHG 7 + SKIP-НП 1 = 386 PASS / 0 FAIL.
+
+### blk триплет 0
+_(нет)_
+
+### blknotrip 0
+_(нет)_
+
+### blknochg 7
+
+| SKU | row | ART | Название | Замечание |
+|---|---|---|---|---|
+| 58 | 59 | 671802533 | Аппарат для шаурмы SILVER 2160 LPG газовый | c5==c7 genuine RU; c35!=c36 (499/499 same len but content diff) — fixed НЕ тронут; body совпадает 9× dims |
+| 59 | 60 | 1899487563 | Аппарат для шаурмы SILVER ED 07 электрический | c5==c7 genuine RU; c35!=c36 (704/695) — fixed НЕ тронут; soft-note -9; NMUA содержит «газовий ... електричний» (артефакт источника, RU c5 нормализован к «электрический») |
+| 60 | 61 | 2096802833 | Аппарат для шаурмы Atalay ADE-4 S | c5==c7 genuine RU model swap (NMUA «SILVER ED 05» → NMRU/NZRU «Atalay ADE-4 S» — Atalay rebrand вариант); c35!=c36 (419/423) — fixed НЕ тронут; soft-note +4 |
+| 61 | 62 | 1895743507 | Аппарат для шаурмы SILVER 2161 LPG (50 кг) газовый | c5==c7 genuine RU; c35!=c36 (538/519) — fixed НЕ тронут; soft-note -19 |
+| 62 | 63 | 1895756434 | Аппарат для шаурмы SILVER 2162 LPG (80 кг) | c5==c7 genuine RU; c35!=c36 (534/517) — fixed НЕ тронут; soft-note -17 |
+| 63 | 64 | 1895799042 | Аппарат для шаурмы SILVER ED 05 (20 кг) электрический | c5==c7 genuine RU; c35!=c36 (730/716) — fixed НЕ тронут; soft-note -14 |
+| 64 | 65 | 1895813995 | Аппарат для шаурмы SILVER ED 06 электрический | c5==c7 genuine RU; c35!=c36 (702/693) — fixed НЕ тронут; soft-note -9; NMUA «газовий ... електричний» артефакт источника |
+
+### SKIP-НП 1
+- **SKU 57 r58 ART 2060694096** Апарат для приготування попкорну Hurakan HKN-PCORN — fixed row58 НЕ тронут, тело из фида НП позже. prelim→confirmed #4.
