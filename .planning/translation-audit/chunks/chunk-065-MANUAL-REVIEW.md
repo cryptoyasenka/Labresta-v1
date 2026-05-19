@@ -2,9 +2,9 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-065 (81 SKU)
 **Apply key:** `Артикул` (col1, scoped per row)
-**Status:** b1 DONE 8/81 (b2 предстоит; batch=8, b11=SKU81 1 SKU)
+**Status:** b2 DONE 16/81 (b3 предстоит; batch=8, b11=SKU81 1 SKU)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-064
-**Last updated:** chunk-065 b1 (W2)
+**Last updated:** chunk-065 b2 (W2)
 
 Эталон формата: chunk-019-MANUAL-REVIEW.md / chunk-064-MANUAL-REVIEW.md. Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Кумул. OQ закрыты.
 
@@ -47,4 +47,31 @@ _(нумерация отдельная, начинается с #1; пока н
 
 ---
 
-<!-- Сводка по батчу b2 ниже. -->
+## b2 — SKU 9-16 (rows 10-17), 16/81
+
+**Категории:** blk триплет 2 · blknotrip 0 · blknochg 6 · SKIP-НП 0 = 8.
+
+| # | SKU | Артикул | Бренд / модель | Категория | Действие |
+|---|---|---|---|---|---|
+| 1 | 9 | 2190251426 | GoodFood WB10DW | blknochg | c5==c7 genuine RU, c35!=c36 (c36 уже RU, `<h4>`) — fixed НЕ тронут |
+| 2 | 10 | 2190252953 | GoodFood WB14DW | blknochg | c5==c7 genuine RU, c35!=c36 (c36 уже RU, `<h4>`) — fixed НЕ тронут |
+| 3 | 11 | 2190254605 | GoodFood WB16DW | blknochg | c5==c7 genuine RU, c35!=c36 (c36 уже RU, `<h4>`) — fixed НЕ тронут |
+| 4 | 12 | 2190257391 | GoodFood WB25DW | blknochg | c5==c7 genuine RU, c35!=c36 (c36 уже RU, `<h4>`) — fixed НЕ тронут |
+| 5 | 13 | 2190258780 | GoodFood WB30DW | blknochg | c5==c7 genuine RU, c35!=c36 (c36 уже RU, `<h4>`) — fixed НЕ тронут |
+| 6 | 14 | 2193237181 | AIRHOT WB-20 водонагреватель электр. | blk триплет | col5 ← c7 (`Водонагреватель электрический AIRHOT WB-20`); col36 — faithful RU (skel==c35, dims==c35: 20/20/30../100,/20,/220,/2.5,/3.580,/5.250,/315x315x660,/330x330x680,, deg `&deg;С` Cyr U+0421, без ё) |
+| 7 | 15 | 2193245500 | AIRHOT WB-30 водонагреватель электр. | blk триплет | col5 ← c7 (`Водонагреватель электрический AIRHOT WB-30`); col36 — faithful RU (skel==c35, dims==c35: 30/30/30../100,/30,/220,/2.5,/4.570,/5.670,/440x440x490,/440x440x520,, deg `&deg;С` Cyr U+0421, без ё) |
+| 8 | 16 | 2237486527 | Silver 2039 электрокипятильник | blknochg | c5==c7 genuine RU, c35!=c36 (c36 уже RU) — fixed НЕ тронут |
+
+**Verify:** 97 PASS / 0 FAIL (REGR 8 + ART 81 + TRIP 2 + blknochg 6).
+
+**Глоссарий b2:** ~10 net-new (AIRHOT WB-20/30 водонагреватель характеристики) + ~10 reuse; см. `chunk-glossary-w2.md` (769 → 779).
+
+**Codepoint findings (TRIP SKU14/SKU15 c35):** DEG 1× `&deg;` tail С (Cyr U+0421) verbatim; XCH all Lat x U+0078 в `315x315x660` / `330x330x680` / `440x440x490` / `440x440x520` verbatim; DASH только в `WB-20`/`WB-30` (U+002D), без `&mdash;`/en-dash; Cyr-Lat: B Lat U+0042 в WB-20/WB-30, остальные С/В Cyrillic.
+
+**Soft-notes (pre-existing в c36 датасете, не наша правка):** GoodFood blknochg SKU9-13 — c36 уже переведено, открывается `<h4>` (вместо `<p>` как в c35), используется «общепита» / `&#39;` в c35 verbatim. Silver 2039 SKU16 — c36 уже RU, fixed.xlsx не трогаем.
+
+**Открытых вопросов b2:** нет.
+
+---
+
+<!-- Сводка по батчу b3 ниже. -->
