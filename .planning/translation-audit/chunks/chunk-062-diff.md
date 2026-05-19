@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-062 (81 SKU)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 80/81 (blk триплет 28 / blknochg 46 / blknotrip 1 / SKIP-НП 5; Открытых вопросов 0)
+**Status:** COMPLETE 81/81 (blk триплет 28 / blknochg 46 / blknotrip 1 / SKIP-НП 6; Открытых вопросов 0)
 **Worker:** W2 (параллельный воркер, диапазон chunk-055 … chunk-085; W1 ведёт chunk-001 … chunk-054)
 **Scaffold:** chunk-062 scaffold (W2, продолжение chunk-061). chunk-061 ЗАКРЫТ 67/67 (blk триплет 29 / blknochg 34 / blknotrip 0 / SKIP-НП 4; OQ 0). chunk-062 = 81 SKU, openpyxl rows 2..82; первый SKU1 ART2424757446 «Гриль контактний SARO PG 1B», последний SKU81 ART2059507443 «Теплова вітрина Hurakan WD-120L». 11 батчей (б1-10 ×8 = 80, б11 = SKU81 ×1 финальный). SKIP-НП зонд по `Название` (NP-список HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA — Lat+Cyr): **6 hits — все HURAKAN**: SKU34 (ART736117487 «Гриль роликовий HURAKAN HKN-GW7M»), SKU53 (ART2375841678 «Гриль роликовий HURAKAN HKN-GW11M»), SKU54 (ART2375848556 «Гриль роликовий HURAKAN HKN-GW9M»), SKU66 (ART901422138 «Теплова вітрина HURAKAN HKN-WD2»), SKU67 (ART1168676811 «Теплова вітрина HURAKAN HKN-WD3M»), SKU81 (ART2059507443 «Теплова вітрина Hurakan WD-120L»). Эти SKU → SKIP-НП (тело из фида НП позже), вносятся в таблицу при обработке батчей б5 (SKU34) / б7 (SKU53/54) / б9 (SKU66/67) / б11 (SKU81). Прочие бренды (SARO и др.) НЕ в НП-списке — обрабатываются обычно.
 
@@ -210,5 +210,19 @@ chunk-062-fixed.xlsx правлен rows 69/70/71/72/73 (blk триплет col5
 **SKIP-НП 0** (в б10 НП нет; последний НП SKU81 row82 HURAKAN → SKIP-НП #6 в б11 финал).
 
 chunk-062-fixed.xlsx правлен row76 (blk триплет col5←col7+col36); rows 74/75/77/78/79/80/81 НЕ тронуты. reopen-verify VERIFY_062_B10 ALL PASS 43 чека (b10 + REGR b1-b9 intact, col36-UA 0, skeleton==src). Открытых вопросов батч не дал (модель-коды NAME UA↔RU согласованы). Глоссарий: б10 +2 net-new (кумул 491). Следующий: chunk-062 батч SKU 81 (row82) HURAKAN → SKIP-НП #6 финал → chunk-062 ЗАКРЫТ.
+
+---
+
+## Батч 11 (SKU 81, openpyxl row 82) — 81/81 · chunk-062 ЗАКРЫТ
+
+**Категория:** SKIP-НП #6 (финальный SKU chunk-062).
+
+| SKU | openpyxl row | Артикул | Бренд | Название (UA) | Действие |
+|---|---|---|---|---|---|
+| 81 | 82 | 2059507443 | HURAKAN | Теплова вітрина Hurakan WD-120L | SKIP-НП — RU не переписан, тело из фида НП позже; fixed row82 col5/col35/col36 НЕ тронуты==source |
+
+SKIP-НП forward-only (приоритет над переводом): HURAKAN ∈ НП-список → распознан, без зонд/дамп/перевод тела. fixed.xlsx row82 НЕ изменён. VERIFY_062_B11 ALLPASS 41 чека (row82 col5/col35/col36==src untouched + REGR b10 row76 триплет col5==col7/UA-clean/skel==src + SKIP-НП rows 35/67/68 + prior triplets b1-b9 intact). Глоссарий: б11 +0 net-new (кумул 491). Открытых вопросов батч не дал.
+
+**chunk-062 ЗАКРЫТ 81/81** — blk триплет 28 / blknochg 46 / blknotrip 1 / SKIP-НП 6 (HURAKAN ×6: SKU34 б5 #1 / SKU53 б7 #2 / SKU54 б7 #3 / SKU66 б9 #4 / SKU67 б9 #5 / SKU81 б11 #6); Открытых вопросов chunk-062: 0. Кумул. OQ ждут Yana (не блокируют): OQ#1 SKU10 c055 / OQ#1 SKU67 c056 / OQ#1 SKU31 c058 / OQ#1 SKU89 c059.
 
 ---
