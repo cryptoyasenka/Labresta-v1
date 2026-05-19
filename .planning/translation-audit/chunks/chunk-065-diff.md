@@ -3,7 +3,7 @@
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-065 (81 SKU, rows 2..82; ART 2121426618 … 2447469404)
 **Apply key:** `Артикул` (col1, scoped per row)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-064
-**Status:** b5 DONE 40/81 (b6 предстоит; b1-b10 по 8 SKU + b11=SKU81 1 SKU)
+**Status:** b6 DONE 48/81 (b7 предстоит; b1-b10 по 8 SKU + b11=SKU81 1 SKU)
 
 Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Формат — как chunk-064-diff.md.
 
@@ -138,4 +138,28 @@ SKIP-НП prelim (HURAKAN, forward-only, тело из фида НП позже)
 
 ---
 
-<!-- Сводка по батчу b6 ниже. -->
+<!-- b6 marker -->
+
+## b6 — diff (SKU 41-48, rows 42-49), 48/81
+
+**Категории:** blk триплет 1 · blknotrip 0 · blknochg 7 · SKIP-НП 0 = 8.
+
+### blk триплет (1)
+- **SKU 48** (r49, ART 2301290442, Frosty WBS-1C вафельница): col5 `Вафельниця Frosty WBS-1C` → `Вафельница Frosty WBS-1C`; col36 UA-leak → faithful RU (skel==c35 c `\n`, dims==c35: 22/1/210/7х7/0/300/0/5/1,20/220/250/340/265/6.00, deg `&deg;C` ×2 **Lat U+0043** entity, XCH Cyr х в `7х7`, DASH `-` U+002D ×2 в `WBS-22B` + `1-постовая`, `&Oslash;` entity verbatim; SOURCE COPY-PASTE: тело упоминает WBS-22B при товаре WBS-1C — faithful preserve).
+
+### blknotrip (0)
+— нет.
+
+### blknochg (7)
+- **SKU 41** (Frosty XG-02 круглые) / **SKU 42** (SILVER 2147 бельгийская) / **SKU 43** (Frosty LD-117 1-постовая) / **SKU 44** (Frosty LD-2202 4-вафли) / **SKU 45** (Frosty LD-4 2-вафли) / **SKU 46** (Frosty WS-15-2 d 4-вафли) / **SKU 47** (GoodFood WB4S бельгийская): c5==c7 genuine RU, c35!=c36.
+
+### SKIP-НП (0)
+— нет.
+
+**Codepoint findings:** SKU48 `&deg;C` Lat ×2 entity + XCH Cyr х в `7х7` + DASH `-` U+002D ×2 + `&Oslash;` entity.
+
+**Verify:** 129 PASS / 0 FAIL (REGR 40 + ART 81 + TRIP 1 + blknochg 7).
+
+---
+
+<!-- Сводка по батчу b7 ниже. -->

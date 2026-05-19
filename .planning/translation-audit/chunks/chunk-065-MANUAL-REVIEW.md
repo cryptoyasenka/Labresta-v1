@@ -2,9 +2,9 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-065 (81 SKU)
 **Apply key:** `Артикул` (col1, scoped per row)
-**Status:** b5 DONE 40/81 (b6 предстоит; batch=8, b11=SKU81 1 SKU)
+**Status:** b6 DONE 48/81 (b7 предстоит; batch=8, b11=SKU81 1 SKU)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-064
-**Last updated:** chunk-065 b5 (W2)
+**Last updated:** chunk-065 b6 (W2)
 
 Эталон формата: chunk-019-MANUAL-REVIEW.md / chunk-064-MANUAL-REVIEW.md. Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Кумул. OQ закрыты.
 
@@ -159,4 +159,33 @@ _(нумерация отдельная, начинается с #1; пока н
 
 ---
 
-<!-- Сводка по батчу b6 ниже. -->
+<!-- b6 marker -->
+
+## b6 — SKU 41-48 (rows 42-49), 48/81
+
+**Категории:** blk триплет 1 · blknotrip 0 · blknochg 7 · SKIP-НП 0 = 8.
+
+| # | SKU | Артикул | Бренд / модель | Категория | Действие |
+|---|---|---|---|---|---|
+| 1 | 41 | 683160377 | Frosty XG-02 вафельница круглые | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+| 2 | 42 | 1135994684 | SILVER 2147 вафельница бельгийская | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+| 3 | 43 | 2041812422 | Frosty LD-117 вафельница 1-постовая | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+| 4 | 44 | 2041848746 | Frosty LD-2202 вафельница 4-вафли | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+| 5 | 45 | 2041869092 | Frosty LD-4 вафельница 2-вафли | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+| 6 | 46 | 2041882194 | Frosty WS-15-2 d вафельница 4-вафли | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+| 7 | 47 | 2213041449 | GoodFood WB4S вафельница бельгийская | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+| 8 | 48 | 2301290442 | Frosty WBS-1C вафельница (тело WBS-22B copy-paste) | blk триплет | col5 ← c7 (`Вафельница Frosty WBS-1C`); col36 — faithful RU (skel==c35 c `\n`, dims==c35: 22/1/210/7х7/0/300/0/5/1,20/220/250/340/265/6.00, deg `&deg;C` ×2 Lat U+0043 verbatim; XCH Cyr х в `7х7`; DASH `-` U+002D в `WBS-22B` и `1-постовая`; `&Oslash;` entity verbatim; SOURCE COPY-PASTE: тело c35/c36 говорит `Frosty WBS-22B` при товаре WBS-1C — faithful preserve, не правим) |
+
+**Verify:** 129 PASS / 0 FAIL (REGR 40 + ART 81 + TRIP 1 + blknochg 7).
+
+**Глоссарий b6:** ~5 net-new + ~12 reuse; см. `chunk-glossary-w2.md` (811 → 816).
+
+**Codepoint findings (TRIP):** SKU48 — 2× `&deg;C` Lat U+0043 entity-form, XCH Cyr х U+0445 в `7х7`, DASH `-` U+002D ×2 (модель `WBS-22B` + `1-постовая`), `&Oslash;` entity verbatim, skel содержит `\n` ×12.
+
+**Soft-notes (pre-existing в c36, не наша правка):** SKU41 (Frosty XG-02), SKU42 (SILVER 2147), SKU43-46 (Frosty LD-117/LD-2202/LD-4/WS-15-2 d), SKU47 (GoodFood WB4S) — c36 уже RU. SKU48 body source-copy-paste WBS-22B при WBS-1C сохранён verbatim (faithful, не OQ).
+
+**Открытых вопросов b6:** нет.
+
+---
+
+<!-- Сводка по батчу b7 ниже. -->
