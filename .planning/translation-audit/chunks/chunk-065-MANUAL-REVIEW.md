@@ -2,9 +2,9 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-065 (81 SKU)
 **Apply key:** `Артикул` (col1, scoped per row)
-**Status:** b4 DONE 32/81 (b5 предстоит; batch=8, b11=SKU81 1 SKU)
+**Status:** b5 DONE 40/81 (b6 предстоит; batch=8, b11=SKU81 1 SKU)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-064
-**Last updated:** chunk-065 b4 (W2)
+**Last updated:** chunk-065 b5 (W2)
 
 Эталон формата: chunk-019-MANUAL-REVIEW.md / chunk-064-MANUAL-REVIEW.md. Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Кумул. OQ закрыты.
 
@@ -130,4 +130,33 @@ _(нумерация отдельная, начинается с #1; пока н
 
 ---
 
-<!-- Сводка по батчу b5 ниже. -->
+<!-- b5 marker -->
+
+## b5 — SKU 33-40 (rows 34-41), 40/81
+
+**Категории:** blk триплет 1 · blknotrip 0 · blknochg 7 · SKIP-НП 0 = 8.
+
+| # | SKU | Артикул | Бренд / модель | Категория | Действие |
+|---|---|---|---|---|---|
+| 1 | 33 | 625811874 | Hendi 240601 диспенсер для глинтвейна 27л | blk триплет | col5 ← c7 (`Диспенсер для глинтвейна Hendi 240601, 27 л`); col36 — faithful RU (skel==c35, dims==c35: 27/90/27/460x480x349/1,8/220, degL `°C` Lat U+0043 verbatim; XCH Lat x ×2 в `460x480x349`; DASH нет) |
+| 2 | 34 | 2074393472 | Эфес КНЭ-25 кипятильник | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+| 3 | 35 | 2074405173 | Эфес КНЭ-50 кипятильник | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+| 4 | 36 | 2074414065 | Эфес КНЭ-100 кипятильник | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+| 5 | 37 | 2110644149 | GoodFood WB20HOT кипятильник | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+| 6 | 38 | 593820052 | FROSTY WB-15 вафельница корн-дог | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+| 7 | 39 | 683160375 | FROSTY WS-15-2 вафельница бельгийские | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+| 8 | 40 | 683160376 | FROSTY XG-01 вафельница круглые | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+
+**Verify:** 121 PASS / 0 FAIL (REGR 32 + ART 81 + TRIP 1 + blknochg 7).
+
+**Глоссарий b5:** ~6 net-new + ~10 reuse; см. `chunk-glossary-w2.md` (805 → 811).
+
+**Codepoint findings (TRIP):** SKU33 — 1× literal `°` U+00B0 + Lat C U+0043 verbatim, XCH Lat x ×2 в `460x480x349`, DASH нет; skel содержит `<p>...</p> <ul> <li>...</li></ul>` (без `\n`).
+
+**Soft-notes (pre-existing в c36, не наша правка):** SKU34-36 (Эфес КНЭ-25/50/100) c36 уже RU + ё (Эфес/электр.) verbatim; SKU37 (GoodFood WB20HOT) c36 открывается `<h4>` вместо `<p>`; SKU38-40 (FROSTY вафельницы) c36 уже RU.
+
+**Открытых вопросов b5:** нет.
+
+---
+
+<!-- Сводка по батчу b6 ниже. -->

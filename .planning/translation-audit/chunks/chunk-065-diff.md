@@ -3,7 +3,7 @@
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-065 (81 SKU, rows 2..82; ART 2121426618 … 2447469404)
 **Apply key:** `Артикул` (col1, scoped per row)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-064
-**Status:** b4 DONE 32/81 (b5 предстоит; b1-b10 по 8 SKU + b11=SKU81 1 SKU)
+**Status:** b5 DONE 40/81 (b6 предстоит; b1-b10 по 8 SKU + b11=SKU81 1 SKU)
 
 Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Формат — как chunk-064-diff.md.
 
@@ -114,4 +114,28 @@ SKIP-НП prelim (HURAKAN, forward-only, тело из фида НП позже)
 
 ---
 
-<!-- Сводка по батчу b5 ниже. -->
+<!-- b5 marker -->
+
+## b5 — diff (SKU 33-40, rows 34-41), 40/81
+
+**Категории:** blk триплет 1 · blknotrip 0 · blknochg 7 · SKIP-НП 0 = 8.
+
+### blk триплет (1)
+- **SKU 33** (r34, ART 625811874, Hendi 240601 диспенсер глинтвейн 27л): col5 `Диспенсер для глінтвейну Hendi 240601, 27 л` → `Диспенсер для глинтвейна Hendi 240601, 27 л`; col36 UA-leak → faithful RU (skel==c35, dims==c35: 27/90/27/460x480x349/1,8/220, degL `°C` **Lat U+0043** verbatim, XCH Lat x ×2 в `460x480x349`, DASH нет).
+
+### blknotrip (0)
+— нет.
+
+### blknochg (7)
+- **SKU 34** (Эфес КНЭ-25) / **SKU 35** (Эфес КНЭ-50) / **SKU 36** (Эфес КНЭ-100) / **SKU 37** (GoodFood WB20HOT) / **SKU 38** (FROSTY WB-15 вафельница корн-дог) / **SKU 39** (FROSTY WS-15-2 бельгийские) / **SKU 40** (FROSTY XG-01 круглые): c5==c7 genuine RU, c35!=c36.
+
+### SKIP-НП (0)
+— нет.
+
+**Codepoint findings:** SKU33 `°C` Lat U+0043 + XCH Lat x ×2 + DASH нет.
+
+**Verify:** 121 PASS / 0 FAIL (REGR 32 + ART 81 + TRIP 1 + blknochg 7).
+
+---
+
+<!-- Сводка по батчу b6 ниже. -->
