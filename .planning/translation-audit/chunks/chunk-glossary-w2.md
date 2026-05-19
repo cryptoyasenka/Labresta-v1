@@ -806,3 +806,29 @@ Soft-note b2: чистый раунд без OQ. SKU13 Roller Grill GED 40 sourc
 - 1-постовая / двопостовая (reuse b2 patterns)
 
 Soft-note b3: чистый раунд без OQ. SKU24 r25 CMS-400-2 source artifact: body bullet «Млинниця електрична 1-постова» при модели CMS-400-2 (двопостова) — faithful preserved в RU «1-постовая», для merge-ревью. SKU22 b3 ECM-400-2 blknochg — c5==c7 genuine RU, fixed НЕ тронут несмотря на &Oslash;/&delta; в body, soft-note 498/510. 5 blknochg все Frosty/GoodFood/Silver — genuine RU c5/c7.
+
+
+## chunk-066 b4 (SKU 25-32, rows 26-33) — 32/90 — глоссарий +10 net-new (cum 899→909)
+
+**Net-new b4:**
+- AIRHOT BE-1 / BE-2 (brand+model verbatim Latin, новые в W2-диапазоне)
+- EWT INOX ECM-1 / ECM-2 (model variants verbatim Latin)
+- двухпостовая (стандартный русский, plural variant) <- двопостова (UA); ср. b3 «двопостовая» был UA-RU mix; здесь pure RU
+- жарочная поверхность из чугуна <- жаркова поверхня з чавуну (new specific bullet)
+- корпус выполнен из нержавеющей стали <- корпус виготовлений із неіржавкої сталі (verb variant «выполнен» vs b1/b2/b3 «выполненный/изготовлен»)
+- вес: (без упаковки) N кг <- вага: (без паковання) N кг (new bullet w/ paren about packaging)
+- с двумя/одной рабочими/рабочей поверхностями/ью <- з двома/однією робочими/робочою поверхнями/ю (plural/singular instrumental)
+- каждая поверхность имеет отдельное управление <- кожна поверхня має окреме керування (new)
+- температурный режим от N до M градусов <- температурний режим від N до M градусів (range with word «градусов», не entity &deg;)
+- специальная лопатка для переворачивания блина <- спеціальна лопатка для перекидання млинця (new — «перекидання»→«переворачивания»)
+- габариты: Ш N мм, Г N мм, В N мм (W/D/H bullet style, new variant, vs b1/b2/b3 «N×N×N мм»)
+
+**Reuse from earlier batches (b4):**
+- блинница электрическая (reuse b3 pattern; здесь конкретно EWT INOX ECM-1/-2)
+- однопостовая (reuse b3 SKU23 CMS-400 1-постова)
+- диаметр поверхности N мм (reuse b1/b2/b3)
+- корпус: нержавеющая сталь (reuse b1)
+- напряжение: 220 В / мощность: N кВт (reuse)
+- габариты: AхBхC мм (reuse b1)
+
+Soft-note b4: чистый раунд без OQ. SKU30 r31 ECM-1 source artifact: body начинается «Млин електричний» (alt spelling вместо Млинниця) — c7 даёт «Блинница электрическая», faithful preserved в RU. SKU31 r32 GoodFood CM20R blknochg: c5==c7 genuine RU «двупостова» (UA-RU smell в источнике, опечатка/латинизм) — fixed НЕ тронут (правило blknochg LIVE). 4 blknochg все GGM/GoodFood/Silver — genuine RU c5/c7. AIRHOT — обычный бренд (не SKIP-НП), переводится.
