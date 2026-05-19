@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-026 (70 SKU, продолжение chunk-025)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 24/70
+**Status:** IN PROGRESS 32/70
 
 **Состав (по типу товара):** первый SKU — Артикул `2448348784`, бренд BRILLIS (`Стол холодильный BRILLIS G-S901V`, раздел `Холодильне та морозильне обладнання/Столи холодильні`). BRILLIS НЕ входит в НП-эксклюзивный список → обычная обработка (НЕ SKIP-НП). Бренд не вынесен отдельной колонкой для аудита — определяется по `Название` per-SKU при аудите батча. Тип товара определяется per-SKU. (Последний SKU 70 — Артикул `2538804263`, бренд NEMOX, `Аппарат для мороженого NEMOX Gelato Chef 3L AUTOMATIC i-green`, раздел `Холодильне та морозильне обладнання/Апарати для морозива (фризера) і гранитори`; столы холодильные → аппараты для мороженого/гранитёры и др.)
 
@@ -485,5 +485,135 @@
 **Наблюдения по батчу SKU 17-24 (24/70) — chunk-026 (столы холодильные; продолжение chunk-025):** **blk триплет 0. blkv 0. blknotrip 0. blknochgeq 0. SKIP-НП 0. blknochg 8** (SKU 17 `482287829` GGM Gastro KTS147AND#2T; SKU 18 `676001812` Tehma 2дв+2ящ 1860х600; SKU 19 `676001813` Tehma 2дв+2ящ 1860х700; SKU 20 `2602529960` Tehma 6ящ 1400х600; SKU 21 `2602533499` Tehma 6ящ 1400х700; SKU 22 `2396380249` GGM Gastro SAG147END; SKU 23 `595398005` GGM KTS227AND#4T; SKU 24 `676001809` Tehma 1дв+2ящ 1400х600) — `desc UA==RU` **False** (в RU отдельный корректный русский перевод поставщика, НЕ укр. копия), `nm_ru`==`nazv_ru` чистый рус., `nm_ru`!=`nm_ua`, char-level UA-leak і/ї/є/ґ НЕТ. Бренды **GGM Gastro International / Tehma НЕ ∈ НП-эксклюзивный список** (NP-brand? False ×8 probe-confirmed) → обычная обработка, НЕ SKIP-НП. LIVE-магазин Horoshop → genuine RU НЕ переписываем, ячейки chunk-026-fixed без изменений (helper печатает 2× «без изменений»). genuine RU faithful: разделитель размеров `х` Cyrillic U+0445 (SKU 17/18/19/20/21/23/24 probe-confirmed `[('х','0x445')]`); SKU 17/23 название `(-2…+8°С)` — `…` U+2026 + `°С` genuine источника; SKU 22 GGM Gastro SAG147END без размеров; в телах latin x U+0078 / `&deg; C`/`&mdash;`/`220 В` (Cyrillic В)/decimal `,` — артефакты источника 1:1, НЕ трогаем (genuine формат НЕ диффаем). Коды GGM KTS147AND#2T / Tehma-варианты / GGM Gastro SAG147END / GGM KTS227AND#4T идентичны UA↔RU genuine в названии → customer-facing рассинхрона названия НЕТ; нет body↔name code/article desync. META always faithful (META UA!=RU genuine). **NON-FLIP** — новых нумерованных Открытых вопросов в батче 0; OQ#1 SKU 15 (Артикул `2783176307`) из b2 сохранён без изменений. Открытых вопросов по батчу: **0**. Кумулятивно chunk-026 = 1 (OQ#1 SKU 15 из b2 — NON-FLIP, без изменений). Кумулятивно SKIP-НП chunk-026 = **1** (b1 0 + b2 1 + b3 0). **chunk-026 — 24/70, далее батч SKU 25-32.**
 
 *(scoped к row Артикул=676001809)*
+
+---
+
+## SKU 25/70 — Холодильный стол 1 дверь и 2 ящика (1400х700 мм) Tehma (Артикул 676001811) — RU корректен; правок нет
+
+**Поле:** Название модификации (RU)
+**Было:** (чистый рус. бренд+код, украинского leak нет)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (RU уже корректный русский перевод — НЕ 🔴 RU=UA)
+**Стало:** без изменений
+
+*(blknochg: `desc UA==RU` **False** (в RU-описании отдельный корректный русский перевод поставщика, НЕ укр. копия); `nm_ru`==`nazv_ru` `Холодильный стол 1 дверь и 2 ящика (1400х700 мм) Tehma` (чистый рус., char-level UA-leak і/ї/є/ґ НЕТ), `nm_ru`!=`nm_ua` (укр. leak только в `nm_ua`). **Tehma НЕ ∈ НП-эксклюзивный список** (NP-brand? False probe-confirmed, word-boundary) → обычная обработка, НЕ SKIP-НП. RU уже корректный русский — **LIVE-магазин Horoshop**, genuine RU-тело перезаписывать НЕЛЬЗЯ без явного go-ahead Yana + safe mode → Назв.мод (RU) и Описание (RU) НЕ трогаем (ячейки chunk-026-fixed без изменений). genuine RU тело/название faithful: разделитель размеров `(1400х700 мм)` — `х` **Cyrillic U+0445** (probe-confirmed `[('х','0x445')]`, НЕ latin x); в теле `+2&deg;C....+8&deg;С`/`+35&deg;С` (`&deg;` entity, latin C + Cyrillic С смешано источником)/`Объем камеры = 260л`/`GN 2/3`/`Dixell, Италия`/`Lunite Hermetique (Франция)`/`Подключение к электросети: 220 В` (Cyrillic В)/`0,55 кВт` (decimal `,`)/`1400x700x850 мм` (latin x U+0078 в теле genuine); `META_ru` содержит укр.-leak хвост (META по правилу всегда faithful) — артефакты источника 1:1, genuine RU зеркалится источником verbatim (blknochg — НЕ переписываем, формат НЕ диффаем). Код-описатель `1 дверь и 2 ящика (1400х700 мм) Tehma` идентичен UA↔RU genuine в названии → customer-facing рассинхрона НЕТ → НЕ нумеровано. META always faithful (META UA!=RU genuine). Открытых вопросов 0.)*
+
+*(scoped к row Артикул=676001811)*
+
+---
+
+## SKU 26/70 — Стол холодильный Tefcold CK7210 (Артикул 905322058) — RU корректен; правок нет
+
+**Поле:** Название модификации (RU)
+**Было:** (чистый рус. бренд+код, украинского leak нет)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (RU уже корректный русский перевод — НЕ 🔴 RU=UA)
+**Стало:** без изменений
+
+*(blknochg: `desc UA==RU` **False** (в RU-описании отдельный корректный русский перевод поставщика, НЕ укр. копия); `nm_ru`==`nazv_ru` `Стол холодильный Tefcold CK7210` (чистый рус., char-level UA-leak і/ї/є/ґ НЕТ), `nm_ru`!=`nm_ua` (укр. leak только в `nm_ua`). **Tefcold НЕ ∈ НП-эксклюзивный список**: SKIP-НП = членство в бренд-SET {HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA}, НЕ substring; naive substring-зонд даёт ложное `'cold'`⊂`'tefcold'`, но word-boundary NP-hit `[]` (Tefcold = отдельный датский бренд Tefcold A/S, НЕ НП «COLD/Колд») → обычная обработка, НЕ SKIP-НП; флаг зафиксирован в `chunk-026-questions.md` для override Yana. RU уже корректный русский — **LIVE-магазин Horoshop**, genuine RU-тело перезаписывать НЕЛЬЗЯ без явного go-ahead Yana + safe mode → Назв.мод (RU) и Описание (RU) НЕ трогаем (ячейки chunk-026-fixed без изменений). genuine RU тело/название faithful: в теле `<h2>…</h2>`/`от -2&deg;С до +10&deg;C` (`&deg;` entity, Cyrillic С + latin C)/`Объем - 282 л`/`Уровень шума: 42 дб`/`Полки GN1/1, 2 шт.`/`нержавеющая сталь SS304`/`1,98 кВт/сутки` (decimal `,`)/`Вес: 112 кг`/`1360x700x950 мм` (latin x genuine); `META_ru` укр.-leak хвост (META faithful) — артефакты источника 1:1, genuine RU зеркалится источником verbatim (blknochg — НЕ переписываем, формат НЕ диффаем). Код `Tefcold CK7210` идентичен UA↔RU genuine в названии → customer-facing рассинхрона НЕТ → НЕ нумеровано. META always faithful (META UA!=RU genuine). Открытых вопросов 0.)*
+
+*(scoped к row Артикул=905322058)*
+
+---
+
+## SKU 27/70 — Стол холодильный TEFCOLD SA914 саладетта (Артикул 1583755165) — RU корректен; правок нет
+
+**Поле:** Название модификации (RU)
+**Было:** (чистый рус. бренд+код, украинского leak нет)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (RU уже корректный русский перевод — НЕ 🔴 RU=UA)
+**Стало:** без изменений
+
+*(blknochg: `desc UA==RU` **False** (в RU-описании отдельный корректный русский перевод поставщика, НЕ укр. копия); `nm_ru`==`nazv_ru` `Стол холодильный TEFCOLD SA914 саладетта` (чистый рус., char-level UA-leak і/ї/є/ґ НЕТ), `nm_ru`!=`nm_ua` (укр. leak только в `nm_ua`). **Tefcold НЕ ∈ НП-эксклюзивный список**: SKIP-НП = членство в бренд-SET {HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA}, НЕ substring; naive substring-зонд даёт ложное `'cold'`⊂`'tefcold'`, но word-boundary NP-hit `[]` (Tefcold = отдельный датский бренд Tefcold A/S, НЕ НП «COLD/Колд») → обычная обработка, НЕ SKIP-НП; флаг зафиксирован в `chunk-026-questions.md` для override Yana. RU уже корректный русский — **LIVE-магазин Horoshop**, genuine RU-тело перезаписывать НЕЛЬЗЯ без явного go-ahead Yana + safe mode → Назв.мод (RU) и Описание (RU) НЕ трогаем (ячейки chunk-026-fixed без изменений). genuine RU тело/название faithful: **RU-тело содержит дополнительный genuine хвост `<p><img alt="" /><img alt="" src="/content/uploads/images/1583755165/770316093_770316093.jpeg" style="width:640px;height:353px" /> </p>` — присутствует ТОЛЬКО в RU (du<dr 733/867), genuine RU-контент поставщика, blknochg → НЕ вырезаем и НЕ переписываем**; в теле `Рабочая t&deg;= +2&deg;/+10&deg;C`/`t&deg; окружающей среды +33&deg;С`/`Хладогент R600a` (источник пишет «Хладогент» — genuine, blknochg НЕ нормализуем в «Хладагент»)/`Напряжение: 220 В` (Cyrillic В)/`0,155 кВт.` (decimal `,`)/`260/230 л.`/`900x700x877 мм` (latin x genuine) — артефакты источника 1:1, genuine RU зеркалится источником verbatim (blknochg — НЕ переписываем, формат НЕ диффаем). Код `TEFCOLD SA914 саладетта` идентичен UA↔RU genuine в названии → customer-facing рассинхрона НЕТ → НЕ нумеровано. META always faithful (META UA!=RU genuine). Открытых вопросов 0.)*
+
+*(scoped к row Артикул=1583755165)*
+
+---
+
+## SKU 28/70 — Стол холодильный Tefcold CK7210/-SP (Артикул 2053015874) — RU корректен; правок нет
+
+**Поле:** Название модификации (RU)
+**Было:** (чистый рус. бренд+код, украинского leak нет)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (RU уже корректный русский перевод — НЕ 🔴 RU=UA)
+**Стало:** без изменений
+
+*(blknochg: `desc UA==RU` **False** (в RU-описании отдельный корректный русский перевод поставщика, НЕ укр. копия); `nm_ru`==`nazv_ru` `Стол холодильный Tefcold CK7210/-SP` (чистый рус., char-level UA-leak і/ї/є/ґ НЕТ), `nm_ru`!=`nm_ua` (укр. leak только в `nm_ua`). **Tefcold НЕ ∈ НП-эксклюзивный список**: SKIP-НП = членство в бренд-SET {HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA}, НЕ substring; naive substring-зонд даёт ложное `'cold'`⊂`'tefcold'`, но word-boundary NP-hit `[]` (Tefcold = отдельный датский бренд Tefcold A/S, НЕ НП «COLD/Колд») → обычная обработка, НЕ SKIP-НП; флаг зафиксирован в `chunk-026-questions.md` для override Yana. RU уже корректный русский — **LIVE-магазин Horoshop**, genuine RU-тело перезаписывать НЕЛЬЗЯ без явного go-ahead Yana + safe mode → Назв.мод (RU) и Описание (RU) НЕ трогаем (ячейки chunk-026-fixed без изменений). genuine RU тело/название faithful: в теле `&ndash;` (`Tefcold CK7210/-SP &ndash; это…`)/`&deg;C`/`&sdot;` (`723 кВт&sdot;ч/год`)/`Хладагент R600a`/`SS304`/`GN1/1`/`220-240/50 V/Hz`/`1.98 квт/24ч` (тут источник decimal `.` — genuine, blknochg НЕ трогаем)/`300 вт`/внутр.размер `(ШxГxВ) 902 x 530 x 589 мм` + габарит `(Ш x Г x В) 1360 x 700 x 880 мм` (latin x U+0078 genuine) — артефакты источника 1:1, genuine RU зеркалится источником verbatim (blknochg — НЕ переписываем, формат НЕ диффаем). Код `Tefcold CK7210/-SP` идентичен UA↔RU genuine в названии → customer-facing рассинхрона НЕТ → НЕ нумеровано. META always faithful (META UA!=RU genuine). Открытых вопросов 0.)*
+
+*(scoped к row Артикул=2053015874)*
+
+---
+
+## SKU 29/70 — Стол холодильный Tefcold CK7410/-SP (Артикул 2053409044) — RU корректен; правок нет
+
+**Поле:** Название модификации (RU)
+**Было:** (чистый рус. бренд+код, украинского leak нет)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (RU уже корректный русский перевод — НЕ 🔴 RU=UA)
+**Стало:** без изменений
+
+*(blknochg: `desc UA==RU` **False** (в RU-описании отдельный корректный русский перевод поставщика, НЕ укр. копия); `nm_ru`==`nazv_ru` `Стол холодильный Tefcold CK7410/-SP` (чистый рус., char-level UA-leak і/ї/є/ґ НЕТ), `nm_ru`!=`nm_ua` (укр. leak только в `nm_ua`). **Tefcold НЕ ∈ НП-эксклюзивный список**: SKIP-НП = членство в бренд-SET {HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA}, НЕ substring; naive substring-зонд даёт ложное `'cold'`⊂`'tefcold'`, но word-boundary NP-hit `[]` (Tefcold = отдельный датский бренд Tefcold A/S, НЕ НП «COLD/Колд») → обычная обработка, НЕ SKIP-НП; флаг зафиксирован в `chunk-026-questions.md` для override Yana. RU уже корректный русский — **LIVE-магазин Horoshop**, genuine RU-тело перезаписывать НЕЛЬЗЯ без явного go-ahead Yana + safe mode → Назв.мод (RU) и Описание (RU) НЕ трогаем (ячейки chunk-026-fixed без изменений). genuine RU тело/название faithful: в теле `&ndash;`/`&deg;C`/`&sdot;` (`1445 кВт&sdot;ч/год`)/`Хладагент R600a`/`SS304`/`6 регулируемых ножек`/`3.96 квт/24ч` (decimal `.` genuine)/внутр.размер `(ШxГxВ) 1772 x 530 x 589 мм` (latin x U+0078 genuine) — артефакты источника 1:1, genuine RU зеркалится источником verbatim (blknochg — НЕ переписываем, формат НЕ диффаем). Код `Tefcold CK7410/-SP` идентичен UA↔RU genuine в названии → customer-facing рассинхрона НЕТ → НЕ нумеровано. META always faithful (META UA!=RU genuine). Открытых вопросов 0.)*
+
+*(scoped к row Артикул=2053409044)*
+
+---
+
+## SKU 30/70 — Стол холодильный Tefcold SK6410 (Артикул 2053440229) — RU корректен; правок нет
+
+**Поле:** Название модификации (RU)
+**Было:** (чистый рус. бренд+код, украинского leak нет)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (RU уже корректный русский перевод — НЕ 🔴 RU=UA)
+**Стало:** без изменений
+
+*(blknochg: `desc UA==RU` **False** (в RU-описании отдельный корректный русский перевод поставщика, НЕ укр. копия); `nm_ru`==`nazv_ru` `Стол холодильный Tefcold SK6410` (чистый рус., char-level UA-leak і/ї/є/ґ НЕТ), `nm_ru`!=`nm_ua` (укр. leak только в `nm_ua`). **Tefcold НЕ ∈ НП-эксклюзивный список**: SKIP-НП = членство в бренд-SET {HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA}, НЕ substring; naive substring-зонд даёт ложное `'cold'`⊂`'tefcold'`, но word-boundary NP-hit `[]` (Tefcold = отдельный датский бренд Tefcold A/S, НЕ НП «COLD/Колд») → обычная обработка, НЕ SKIP-НП; флаг зафиксирован в `chunk-026-questions.md` для override Yana. RU уже корректный русский — **LIVE-магазин Horoshop**, genuine RU-тело перезаписывать НЕЛЬЗЯ без явного go-ahead Yana + safe mode → Назв.мод (RU) и Описание (RU) НЕ трогаем (ячейки chunk-026-fixed без изменений). genuine RU тело/название faithful: в теле `&ndash;`/`&deg;C`/`&sdot;` (`1398 кВт&sdot;ч/год`)/`Хладагент R600a`/`SS304`/`полки … 328 x 430 мм`/`3.83 квт/24ч`/внутр.размер `(ШxГxВ) 1772 x 430 x 589 мм` (latin x U+0078 genuine) — артефакты источника 1:1, genuine RU зеркалится источником verbatim (blknochg — НЕ переписываем, формат НЕ диффаем). Код `Tefcold SK6410` идентичен UA↔RU genuine в названии → customer-facing рассинхрона НЕТ → НЕ нумеровано. META always faithful (META UA!=RU genuine). Открытых вопросов 0.)*
+
+*(scoped к row Артикул=2053440229)*
+
+---
+
+## SKU 31/70 — Стол холодильный Tefcold GC72 (Артикул 2053445854) — RU корректен; правок нет
+
+**Поле:** Название модификации (RU)
+**Было:** (чистый рус. бренд+код, украинского leak нет)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (RU уже корректный русский перевод — НЕ 🔴 RU=UA)
+**Стало:** без изменений
+
+*(blknochg: `desc UA==RU` **False** (в RU-описании отдельный корректный русский перевод поставщика, НЕ укр. копия); `nm_ru`==`nazv_ru` `Стол холодильный Tefcold GC72` (чистый рус., char-level UA-leak і/ї/є/ґ НЕТ), `nm_ru`!=`nm_ua` (укр. leak только в `nm_ua`). **Tefcold НЕ ∈ НП-эксклюзивный список**: SKIP-НП = членство в бренд-SET {HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA}, НЕ substring; naive substring-зонд даёт ложное `'cold'`⊂`'tefcold'`, но word-boundary NP-hit `[]` (Tefcold = отдельный датский бренд Tefcold A/S, НЕ НП «COLD/Колд») → обычная обработка, НЕ SKIP-НП; флаг зафиксирован в `chunk-026-questions.md` для override Yana. RU уже корректный русский — **LIVE-магазин Horoshop**, genuine RU-тело перезаписывать НЕЛЬЗЯ без явного go-ahead Yana + safe mode → Назв.мод (RU) и Описание (RU) НЕ трогаем (ячейки chunk-026-fixed без изменений). genuine RU тело/название faithful: **du/dr длины равны (1251/1251) но содержимое различается (UA «Стіл…» vs RU «Стол…») → `desc UA==RU` False genuine**; в теле `&ndash;`/`&deg;C`/`&sdot;` (`723 кВт&sdot;ч/год`)/`Хладагент R600a`/`SS201` (тут источник SS201, НЕ SS304 — genuine)/`1.98 квт/24ч`/внутр.размер `(ШxГxВ) 902 x 530 x 589 мм` (latin x U+0078 genuine) — артефакты источника 1:1, genuine RU зеркалится источником verbatim (blknochg — НЕ переписываем, формат НЕ диффаем). Код `Tefcold GC72` идентичен UA↔RU genuine в названии → customer-facing рассинхрона НЕТ → НЕ нумеровано. META always faithful (META UA!=RU genuine). Открытых вопросов 0.)*
+
+*(scoped к row Артикул=2053445854)*
+
+---
+
+## SKU 32/70 — Стол холодильный Tefcold CK7310-I (Артикул 2134319186) — RU корректен; правок нет
+
+**Поле:** Название модификации (RU)
+**Было:** (чистый рус. бренд+код, украинского leak нет)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (RU уже корректный русский перевод — НЕ 🔴 RU=UA)
+**Стало:** без изменений
+
+*(blknochg: `desc UA==RU` **False** (в RU-описании отдельный корректный русский перевод поставщика, НЕ укр. копия); `nm_ru`==`nazv_ru` `Стол холодильный Tefcold CK7310-I` (чистый рус., char-level UA-leak і/ї/є/ґ НЕТ), `nm_ru`!=`nm_ua` (укр. leak только в `nm_ua`). **Tefcold НЕ ∈ НП-эксклюзивный список**: SKIP-НП = членство в бренд-SET {HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA}, НЕ substring; naive substring-зонд даёт ложное `'cold'`⊂`'tefcold'`, но word-boundary NP-hit `[]` (Tefcold = отдельный датский бренд Tefcold A/S, НЕ НП «COLD/Колд») → обычная обработка, НЕ SKIP-НП; флаг зафиксирован в `chunk-026-questions.md` для override Yana. RU уже корректный русский — **LIVE-магазин Horoshop**, genuine RU-тело перезаписывать НЕЛЬЗЯ без явного go-ahead Yana + safe mode → Назв.мод (RU) и Описание (RU) НЕ трогаем (ячейки chunk-026-fixed без изменений). genuine RU тело/название faithful: в теле RU `Энергетическая классификация В` (Cyrillic В U+0412)/`&ndash;`/`&deg;C`/`&sdot;` (`894 кВт&sdot;ч/год`)/`Хладагент R600a`/`SS304`/`2.45 квт/24ч`/внутр.размер RU `(ШxГxВ) 1337 x 530 x 589 мм` (latin x U+0078) — **UA-тело содержит `(ШхГхВ)` Cyrillic х U+0445 в части строк, RU genuine использует latin x — артефакт источника, blknochg НЕ выравниваем** — артефакты источника 1:1, genuine RU зеркалится источником verbatim (blknochg — НЕ переписываем, формат НЕ диффаем). Код `Tefcold CK7310-I` идентичен UA↔RU genuine в названии → customer-facing рассинхрона НЕТ → НЕ нумеровано. META always faithful (META UA!=RU genuine). Открытых вопросов 0.)*
+
+**Наблюдения по батчу SKU 25-32 (32/70) — chunk-026 (столы холодильные; продолжение chunk-025):** **blk триплет 0. blkv 0. blknotrip 0. blknochgeq 0. SKIP-НП 0. blknochg 8** (SKU 25 `676001811` Tehma 1дв+2ящ 1400х700; SKU 26 `905322058` Tefcold CK7210; SKU 27 `1583755165` Tefcold SA914 саладетта; SKU 28 `2053015874` Tefcold CK7210/-SP; SKU 29 `2053409044` Tefcold CK7410/-SP; SKU 30 `2053440229` Tefcold SK6410; SKU 31 `2053445854` Tefcold GC72; SKU 32 `2134319186` Tefcold CK7310-I) — `desc UA==RU` **False** (в RU отдельный корректный русский перевод поставщика, НЕ укр. копия; SKU31 длины du/dr равны 1251/1251 но содержимое различается), `nm_ru`==`nazv_ru` чистый рус., `nm_ru`!=`nm_ua`, char-level UA-leak і/ї/є/ґ НЕТ. **⚠ Tefcold ≠ НП «COLD»:** naive substring-зонд `'cold'`⊂`'tefcold'` = ложное срабатывание; SKIP-НП = членство в бренд-SET, НЕ substring; word-boundary NP-hit `[]` (Tefcold = отдельный датский бренд Tefcold A/S, НЕ НП «COLD/Колд»). Бренды **Tehma / Tefcold НЕ ∈ НП-эксклюзивный список** (word-boundary NP-hit нет ×8) → обычная обработка, НЕ SKIP-НП; флаг Tefcold≠НП-COLD зафиксирован в `chunk-026-questions.md` для override Yana (process/classification doubt → NON-FLIP, НЕ нумерованный OQ). LIVE-магазин Horoshop → genuine RU НЕ переписываем, ячейки chunk-026-fixed без изменений (helper печатает 2× «без изменений»). genuine RU faithful: `&deg;`/`&ndash;`/`&sdot;`/`220 В` (Cyrillic В)/`GN1/1`/`SS304`/`SS201`/`R600a`/latin x U+0078 в теле / decimal `,` и `.` (источник смешивает) — артефакты источника 1:1, НЕ трогаем (genuine формат НЕ диффаем). SKU27 RU-тело содержит дополнительный genuine `<img>`-хвост (только в RU, du<dr) — НЕ вырезаем; SKU27 `Хладогент R600a` (источник так пишет — genuine, НЕ нормализуем). SKU32 UA-тело `(ШхГхВ)` Cyrillic х vs RU genuine `(ШxГxВ)` latin x — НЕ выравниваем. Коды Tehma 1дв+2ящ 1400х700 / Tefcold CK7210 / SA914 саладетта / CK7210-SP / CK7410-SP / SK6410 / GC72 / CK7310-I идентичны UA↔RU genuine в названии → customer-facing рассинхрона названия НЕТ; нет body↔name code/article desync. META always faithful (META UA!=RU genuine). **NON-FLIP** — новых нумерованных Открытых вопросов в батче 0; OQ#1 SKU 15 (Артикул `2783176307`) из b2 сохранён без изменений. Открытых вопросов по батчу: **0**. Кумулятивно chunk-026 = 1 (OQ#1 SKU 15 из b2 — NON-FLIP, без изменений). Кумулятивно SKIP-НП chunk-026 = **1** (b1 0 + b2 1 + b3 0 + b4 0). **chunk-026 — 32/70, далее батч SKU 33-40.**
+
+*(scoped к row Артикул=2134319186)*
 
 ---
