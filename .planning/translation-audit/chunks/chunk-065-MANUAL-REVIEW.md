@@ -2,9 +2,9 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-065 (81 SKU)
 **Apply key:** `Артикул` (col1, scoped per row)
-**Status:** b3 DONE 24/81 (b4 предстоит; batch=8, b11=SKU81 1 SKU)
+**Status:** b4 DONE 32/81 (b5 предстоит; batch=8, b11=SKU81 1 SKU)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-064
-**Last updated:** chunk-065 b3 (W2)
+**Last updated:** chunk-065 b4 (W2)
 
 Эталон формата: chunk-019-MANUAL-REVIEW.md / chunk-064-MANUAL-REVIEW.md. Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Кумул. OQ закрыты.
 
@@ -101,4 +101,33 @@ _(нумерация отдельная, начинается с #1; пока н
 
 ---
 
-<!-- Сводка по батчу b4 ниже. -->
+<!-- b4 marker -->
+
+## b4 — SKU 25-32 (rows 26-33), 32/81
+
+**Категории:** blk триплет 5 · blknotrip 0 · blknochg 3 · SKIP-НП 0 = 8.
+
+| # | SKU | Артикул | Бренд / модель | Категория | Действие |
+|---|---|---|---|---|---|
+| 1 | 25 | 500052774 | HENDI 209882 кипятильник 10л | blk триплет | col5 ← c7 (`Кипятильник HENDI 209882, 10л`); col36 — faithful RU (skel==c35, dims==c35: 10/2,2/50/99/336х221х474, degL `°С` Cyr U+0421 literal U+00B0; XCH Cyr х ×2 в `336х221х474`; DASH `–` U+2013 в `заваривания – 50 мин`) |
+| 2 | 26 | 500052775 | HENDI 209899 кипятильник 20л (глинтвейн) | blk триплет | col5 ← c7 (`Кипятильник HENDI 209899, 20л (подходит для глинтвейна)`); col36 — faithful RU (skel==c35, dims==c35: 20/2,2/50/99/384x268x602, degL `°С` Cyr U+0421; XCH Lat x ×2; DASH `–` U+2013) |
+| 3 | 27 | 500052776 | HENDI 209905 кипятильник 30л (глинтвейн) | blk триплет | col5 ← c7 (`Кипятильник HENDI 209905, 30л (подходит для глинтвейна)`); col36 — faithful RU (skel==c35, dims==c35: 30/2,2/50/99/520x/500, degL `°С` Cyr U+0421; XCH Lat x в `Ø 520x(H)500`; DASH `–` U+2013; «Некапающий» в c35 уже RU — verbatim) |
+| 4 | 28 | 500052779 | HENDI 211304 кипятильник-кофеварочная машина 15л подвійна стінка | blk триплет | col5 ← c7 (`Кипятильник – кофеварочная машина HENDI 211304, 15л , двойная стенка` с em-dash U+2013); col36 — faithful RU (skel==c35, dims==c35: 15/85/1,5/90/288x602, degL `°С` ×2 Cyr U+0421; XCH Lat x в `D288x602h`; DASH `-` U+002D в `Кипятильник - кофеварочная машина` ВЕРНО сохранён) |
+| 5 | 29 | 1068056403 | HENDI 211366 кипятильник-кофеварочная машина 16л двойные стенки | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+| 6 | 30 | 1091390651 | Hendi 240700 диспенсер для глинтвейна 28л | blk триплет | col5 ← c7 (`Диспенсер для глинтвейна Hendi 240700, 28 л, нерж.`); col36 — faithful RU (skel==c35 c `\n` + `<h2>`/`<ul>`/`<li>`, dims==c35: 240700/28/110/75/28/447x441x485/2,5, degL `°C` Lat U+0043 verbatim; XCH Lat x ×2 в `447x441x485`; DASH нет) |
+| 7 | 31 | 422807338 | GGM WKH015 кипятильник-чаераздатчик 15л | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+| 8 | 32 | 422807339 | GGM WKH20 кипятильник 18л | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+
+**Verify:** 113 PASS / 0 FAIL (REGR 24 + ART 81 + TRIP 5 + blknochg 3).
+
+**Глоссарий b4:** ~14 net-new + ~14 reuse; см. `chunk-glossary-w2.md` (791 → 805).
+
+**Codepoint findings (TRIP):** SKU25 — 1× literal `°` U+00B0 + Cyr С U+0421, XCH Cyr х U+0445 ×2, DASH `–` U+2013; SKU26 — 1× `°С`, XCH Lat x U+0078 ×2, DASH `–` U+2013; SKU27 — 1× `°С`, dim `Ø 520x(H)500` (regex даёт `520x` + `500`), DASH `–` U+2013; SKU28 — 2× `°С`, XCH Lat x в `D288x602h`, DASH `-` U+002D в смешанной фразе `Кип'ятильник - кофеварочная машина` (UA глагол + RU существительное в одной строке c35) сохранён; SKU30 — 1× `°C` Lat U+0043 (НЕ Cyr!), XCH Lat x ×2 в `447x441x485`, skel содержит `\n`.
+
+**Soft-notes (pre-existing в c36, не наша правка):** SKU29 (HENDI 211366) / SKU31 (GGM WKH015) / SKU32 (GGM WKH20) — c36 уже RU, fixed.xlsx не трогаем. SKU28 c5/c4 содержит `15л ,` (пробел перед запятой) — сохранён в col5←c7 verbatim.
+
+**Открытых вопросов b4:** нет.
+
+---
+
+<!-- Сводка по батчу b5 ниже. -->
