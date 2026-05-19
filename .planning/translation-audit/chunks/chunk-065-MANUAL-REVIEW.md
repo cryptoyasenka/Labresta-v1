@@ -2,9 +2,9 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-065 (81 SKU)
 **Apply key:** `Артикул` (col1, scoped per row)
-**Status:** b2 DONE 16/81 (b3 предстоит; batch=8, b11=SKU81 1 SKU)
+**Status:** b3 DONE 24/81 (b4 предстоит; batch=8, b11=SKU81 1 SKU)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-064
-**Last updated:** chunk-065 b2 (W2)
+**Last updated:** chunk-065 b3 (W2)
 
 Эталон формата: chunk-019-MANUAL-REVIEW.md / chunk-064-MANUAL-REVIEW.md. Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Кумул. OQ закрыты.
 
@@ -74,4 +74,31 @@ _(нумерация отдельная, начинается с #1; пока н
 
 ---
 
-<!-- Сводка по батчу b3 ниже. -->
+## b3 — SKU 17-24 (rows 18-25), 24/81
+
+**Категории:** blk триплет 2 · blknotrip 0 · blknochg 6 · SKIP-НП 0 = 8.
+
+| # | SKU | Артикул | Бренд / модель | Категория | Действие |
+|---|---|---|---|---|---|
+| 1 | 17 | 2237495630 | Silver 2040 электрокипятильник 12л | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+| 2 | 18 | 2237497792 | Silver 2041 электрокипятильник 16л | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+| 3 | 19 | 2237499169 | Silver 2042 электрокипятильник 23л | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+| 4 | 20 | 2331864089 | SARO ISOD 12 термос | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+| 5 | 21 | 2331875380 | SARO 317-2076 термос мет.колба | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+| 6 | 22 | 2437750626 | Frosty FWBD-20C кипятильник | blk триплет | col5 ← c7 (`Кипятильник Frosty FWBD-20C`); col36 — faithful RU (skel==c35, dims==c35: 20/20/8,5/30/100/1/2/2,00/220/220/220/500/4.20, deg `&deg;C` ×2 Lat U+0043 verbatim; SOURCE TYPO `Cенсорная` Lat C U+0043 verbatim) |
+| 7 | 23 | 2526669301 | GoodFood WB14S кипятильник | blknochg | c5==c7 genuine RU, c35!=c36 (c36 RU с `<br />`) — fixed НЕ тронут |
+| 8 | 24 | 500052773 | HENDI 208205 чаераздатчик-кофезаварник 15л | blk триплет | col5 ← c7 (`Чаераздатчик-кофезаварник 15л. HENDI 208205`); col36 — faithful RU (skel==c35 без `<p>` в начале, dims==c35: 15/85/1,5/90/280x580, degL `°С` ×2 Cyr U+0421 literal U+00B0 verbatim; XCH Lat x в D280x580h) |
+
+**Verify:** 105 PASS / 0 FAIL (REGR 16 + ART 81 + TRIP 2 + blknochg 6).
+
+**Глоссарий b3:** ~12 net-new + ~12 reuse; см. `chunk-glossary-w2.md` (779 → 791).
+
+**Codepoint findings (TRIP):** SKU22 — 2× `&deg;C` Lat U+0043 verbatim, SOURCE TYPO `Cенсорна` (Lat C + Cyr енсорна) сохранена в RU как `Cенсорная`, DASH U+002D в model/inline; SKU24 — 2× literal U+00B0 + Cyr С U+0421 (НЕ &deg;), XCH Lat x в `D280x580h`, без `<p>` в начале.
+
+**Soft-notes (pre-existing в c36, не наша правка):** Silver 2040/2041/2042 + SARO ISOD 12 + SARO 317-2076 + GoodFood WB14S — c36 уже RU. WB14S имеет `<br />` и backtick-apostrophe ``кип`ятильник`` в UA-частях c35.
+
+**Открытых вопросов b3:** нет.
+
+---
+
+<!-- Сводка по батчу b4 ниже. -->
