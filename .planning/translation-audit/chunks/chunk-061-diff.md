@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-061 (67 SKU)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 56/67 (blk триплет 26 / blknochg 26 / blknotrip 0 / SKIP-НП 4; Открытых вопросов 0)
+**Status:** IN PROGRESS 64/67 (blk триплет 29 / blknochg 31 / blknotrip 0 / SKIP-НП 4; Открытых вопросов 0)
 **Worker:** W2 (параллельный воркер, диапазон chunk-055 … chunk-085; W1 ведёт chunk-001 … chunk-054)
 
 **Состав (по типу товара):** первый SKU — Артикул `2309189086` (`Гриль контактний Frosty EGS-44`); последний SKU67 — Артикул `2424751163` (`Гриль-тостер SARO BUSSO T1`). Колонка `Бренд` в источнике дублирует `Артикул` (числовой) — бренд определяется по `Название` per-SKU при аудите батча. Тип: преимущественно грили контактні + тостери / гриль-тостери. **SKIP-НП (зонд по `Название`): 4 NP-suspect** — все в НП-списке → SKIP-НП (тело придёт из фида НП позже, RU не трогается; вносятся в таблицу при обработке соответствующих батчей): **HURAKAN ×3** — SKU28 Арт `1147792135` (`Гриль контактний HURAKAN HKN-PE22R`) · SKU29 Арт `1147801726` (`Гриль контактний Hurakan HKN-PE34R`) · SKU30 Арт `1147802158` (`Гриль контактний HURAKAN HKN-PE44R`); **TATRA ×1** — SKU48 Арт `2062003333` (`Гриль контактний TATRA EMP.102`). Прочие бренды (Frosty, SARO, …) НЕ в НП-списке — обрабатываются обычно, подтверждается per-батч по `Название`. Батч = 8 SKU; 9 батчей (67/8 → б1-8 по 8 SKU = 64, б9 = SKU 65-67 = 3 SKU). openpyxl rows 2..68 (row = SKU + 1).
@@ -248,5 +248,36 @@ blk триплет 6 (SKU9/10/12/13/14/15) · blknochg 2 (SKU11/16) · blknotrip
 **SKIP-НП (0):** в батче 7 NP-suspect нет (REEDNEE/Hendi/Spidocook/GoodFood/Silver НЕ в НП-списке). SKIP-НП таблица без изменений (остаётся 4: HURAKAN×3 б4 + TATRA×1 SKU48 б6).
 
 **Модель-коды:** все согласованы UA↔genuine-RU (REEDNEE CGR22; GoodFood ECG10EA/ECG11EA/WB1RHB/CM6A (3+3); Hendi "PANINI" XL 263624; Spidocook SP015PRB; Silver SS-16). Soft-notes (НЕ нумер.): SKU56 Silver `<strong>`-drop + `Тип поверхности Ребриста` UA-форма genuine-RU / SKU50 `Упаковка`/`14кг` пунктуация genuine-RU — NAME консистентен → НЕ рассинхрон, НЕ Открытый вопрос. Открытых вопросов по батчу 7 нет; chunk-061 OQ=0.
+
+---
+
+## Батч 8 (SKU 57-64, openpyxl rows 58-65) — 64/67
+
+| SKU | Артикул | Название (UA) | Бренд | Категория | Действие |
+|---|---|---|---|---|---|
+| 57 | 2237472063 | Гриль контактний Silver SS-20 | Silver | blknochg | без изменений (genuine RU) |
+| 58 | 2237483152 | Гриль контактний Silver SS-20DН | Silver | blknochg | без изменений (genuine RU) |
+| 59 | 2309163306 | Гриль контактний Frosty EGS-18FF | Frosty | blk триплет | col5←col7, col36 перевод (1110→1118) |
+| 60 | 2309182412 | Гриль контактний Frosty EGS-36DF | Frosty | blk триплет | col5←col7, col36 перевод (1111→1118) |
+| 61 | 2309192125 | Гриль контактний Frosty EGS-44DF | Frosty | blk триплет | col5←col7, col36 перевод (1145→1152) |
+| 62 | 2313009379 | Гриль контактний газовий MARS MTS-12G | MARS | blknochg | без изменений (genuine RU) |
+| 63 | 2313011129 | Гриль контактний газовий MARS MTS-20G | MARS | blknochg | без изменений (genuine RU) |
+| 64 | 2330390012 | Гриль контактний електричний SARO PG 1 | SARO | blknochg | без изменений (genuine RU) |
+
+**blk триплет (3) — col5==col4 UA-leak «контактний», col7 genuine RU, descUA==descRU True → col5←col7 + col36 перевод source col35 tag-в-tag; reopen-verify col36!=col35 / UA-marker col36+col5 0 / col5==col7 genuineRU; APPLY MISMATCH 0 / VERIFY ALL PASS:**
+- **SKU59 Frosty EGS-18FF (row60)** — col5==col4 «Гриль контактний Frosty EGS-18FF» (UA-leak «контактний», UA-MARK regex False, прец. c060/c061 б1-б7), col7 genuine RU «Гриль контактный Frosty EGS-18FF», descUA==descRU (1110==1110). col5←col7; col36 ← перевод source col35: преамбула + Технические характеристики byte-идентичны byte-verified RU sibling chunk-061 SKU1 Frosty EGS-44 (b1-committed fixed col36; PRE_RU_FULL substring-assert) + спец-блок (Верхняя рабочая поверхность: 215х215мм / Нижняя рабочая поверхность: 235х235 мм / плиты гладкая/гладкая / темп. от +50&deg;С до +300&deg;С / Верхняя плита фиксируется в любом положении / Съемный жиросборник / Тех. данные: 1,80 кВт/ 220В / Размеры (Д*Ш*В): 310мм x 320мм x 200мм / Вес: 11.60 / Материал: корпус нержавеющая сталь / рабочие поверхности чугун). Verbatim: `&deg;С` entity byte-exact; Cyrillic-х 215х215/235х235 + Latin-x `310мм x 320мм x 200мм` byte-exact; `1,80` запятая / `220В` lang-neutral / `11.60` политика A точка faithful; `м&#39;яса`→`мяса` (апостроф-entity снят). len 1110→1118. UA-marker col36/col5 = 0.
+- **SKU60 Frosty EGS-36DF (row61)** — col5==col4, col7 genuine «Гриль контактный Frosty EGS-36DF», descUA==descRU (1111==1111). col5←col7; col36 перевод: как EGS-18FF, отличия — `2 верхние рабочие поверхности: 215х215мм` / `Нижняя рабочая поверхность: 495х235 мм` / плиты `ребро/гладкая` (UA `ребро/гладка`) / `Тех. данные: 3,60 кВт/ 220В` / `Размеры (Д*Ш*В): 570мм x 320мм x 200мм` / `Вес: 21.80`. len 1111→1118.
+- **SKU61 Frosty EGS-44DF (row62)** — col5==col4, col7 genuine «Гриль контактный Frosty EGS-44DF», descUA==descRU (1145==1145). col5←col7; col36 перевод: `2 верхние рабочие поверхности: 335х215мм` / `2 нижние рабочие поверхности: 355х235 мм` / плиты `ребро/гладкая` / темп. / `Поставляется без вилки` (byte-verified sibling SKU1 EGS-44) / фиксируется / Съемный жиросборник / `Тех. данные: 4,40 кВт/ 220В` / `Размеры (Д*Ш*В): 820мм x 320мм x 200мм` / `Вес: 32.90` / Материал tail. len 1145→1152.
+
+**blknochg (5) — fixed НЕ тронут:**
+- **SKU57 Silver SS-20 (row58)** — col5==col7 «Гриль контактный Silver SS-20». descUA!=descRU (1129≠1134). genuine RU col36. Soft-note (НЕ нумер., прец. SKU56 б7 / SKU27 б4 / SKU35 б5): genuine-RU `<p>Технические характеристики:</p>` (UA `<p><strong>Технічні характеристики:</strong></p>` — `<strong>` опущен) + UA-форма-leak `<li>Тип поверхности ребриста</li>` (ожид. «ребристая»). NAME консистентен UA↔RU → структурное расхождение genuine RU, НЕ рассинхрон, НЕ Открытый вопрос. Silver НЕ в НП-списке.
+- **SKU58 Silver SS-20DН (row59)** — col5==col7 «Гриль контактный Silver SS-20DН». descUA!=descRU (1547≠1575). genuine RU чистый (`<p><strong>Технические характеристики:</strong></p>` сохранён, `&ndash;11,2 А`). NAME согласован.
+- **SKU62 MARS MTS-12G (row63)** — col5==col7 «Гриль контактный газовый MARS MTS-12G». descUA!=descRU (443≠440). genuine RU чистый (`&times;` габариты, `Однопостовой.`). NAME согласован.
+- **SKU63 MARS MTS-20G (row64)** — col5==col7 «Гриль контактный газовый MARS MTS-20G». descUA!=descRU (441≠391). genuine RU col36. Soft-note (НЕ нумер.): genuine RU опускает хвостовую строку `<li>Поверхні &ndash; ребристі</li>` и `Однопостовий.` (UA col35 их содержит) — структурная вариативность genuine RU, NAME консистентен → НЕ рассинхрон, НЕ Открытый вопрос.
+- **SKU64 SARO PG 1 (row65)** — col5==col7 «Гриль контактный электрический SARO PG 1». descUA!=descRU (1142≠1201). genuine RU чистый (`&laquo;`/`&raquo;` кавычки). NAME согласован. SARO НЕ в НП-списке.
+
+**SKIP-НП (0):** в батче 8 NP-suspect нет (Silver/Frosty/MARS/SARO НЕ в НП-списке). SKIP-НП таблица без изменений (остаётся 4: HURAKAN×3 б4 + TATRA×1 SKU48 б6).
+
+**Модель-коды:** все согласованы UA↔genuine-RU (Silver SS-20/SS-20DН; Frosty EGS-18FF/EGS-36DF/EGS-44DF; MARS MTS-12G/MTS-20G; SARO PG 1). Soft-notes (НЕ нумер.): SKU57 Silver `<strong>`-drop + `Тип поверхности ребриста` UA-форма genuine-RU / SKU63 MARS MTS-20G genuine RU опускает хвост `Поверхні ребристі`+`Однопостовий.` — NAME консистентен → НЕ рассинхрон, НЕ Открытый вопрос. Открытых вопросов по батчу 8 нет; chunk-061 OQ=0.
 
 ---
