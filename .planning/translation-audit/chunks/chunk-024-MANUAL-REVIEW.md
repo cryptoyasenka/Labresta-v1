@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-024 (74 SKU)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 74/74
+**Status:** ГОТОВ 74/74
 
 Здесь собираю всё, что требует твоего подтверждения (не авто-фиксы). Авто-фиксы по locked-паттернам перечислены в сводках по батчам, отдельного подтверждения не требуют. Открытые вопросы накапливаются в нумерованный список и финализируются при закрытии chunk-024. SKIP-НП SKU (НП-эксклюзивные бренды) помечаются здесь и не переписываются.
 
@@ -376,10 +376,30 @@
 
 ---
 
-## Открытые вопросы chunk-024
+## chunk-024 — ЗАКРЫТ (74/74)
 
-_(пока пусто — наполняется при аудите батчей)_
+**Все 74 SKU обработаны.** Diff: `chunk-024-diff.md` (Status `COMPLETE 74/74`, секция `## chunk-024 — ИТОГ`). Apply key — `Артикул` (scoped per row). **Diff НЕ применяется к live Horoshop без явного go-ahead Yana + safe mode.**
+
+**Семейства (продолжение chunk-023):** раздел `Холодильне та морозильне обладнання/Льодогенератори` — ледогенераторы Brema (CB425AHC / CB249AHC NEW / GB601AHC B-QUBE, гранулы) → холодильные столы / саладетты (вкл. Saro) → НП-эксклюзив **Apach** / **Fagor** (FAGOR NEO CONCEPT CMFP-серия) (SKIP-НП ×19, тело из фида НП позже).
+
+**Итог авто-применённого (locked, подтверждения не требует):**
+- 🔴 RU=UA full translate + Назв.мод (RU) UA-leak → корр. Название (RU) триплетом (blk): **26 из 74**. Описание RU = укр. копия → самостоятельный RU тег-в-tag; Назв.мод-leak (char-level укр.`іїєґ` либо word-level Льодогенератор→Ледогенератор) → триплет к корр. «Название (RU)» (модель-коды Brema/Apach language-neutral нетронуты). Авторский RU: literal ° → `&deg;`; латин. `x`→Cyrillic х в габаритах; `Хладогент`/`холодоагент`→`Хладагент`/`хладагент` SOFT; `кг/добу`→`кг/сутки` / `гранули`→`гранулы` SOFT; реальная `.`→`,` дробь.
+- 🔴 RU=UA full translate, БЕЗ триплета (blknotrip; Назв.мод уже чистый русский): **11 из 74**.
+- blknochg (обе локали без изменений; RU genuine ≠ UA verbatim): **18 из 74**. genuine RU НЕ переписывается (LIVE-магазин). Вкл. **blknochgeq-специальный ×4** (`desc UA==RU` False, но `nm_ru==nm_ua==nazv_ru` — рендер через blknochg: Saro b49 ×1 + b65 ×3).
+- SKIP-НП (НП-эксклюзивный бренд — тело из фида НП позже, ячейки fixed.xlsx не тронуты): **19 из 74** — бренды **Apach** (×17) / **Fagor** (×2). RU не переписан, зонды/scratch не делались (forward-only правило SKIP-НП, перекрывает blk-паттерн даже при `desc UA==RU` True — SKU 74 Fagor); считается отдельной категорией в 74/74.
+
+**Faithful (locked, не тронуто):** напряжение/voltage везде — значение НИКОГДА (метки переведены; `220 В` нетронуто; где в UA voltage нет — НЕ фабрикуется; разные значения = разные модели НЕ десинк); META всегда (genuine META UA!=RU faithful); Cyrillic х/Х U+0445 (`355х404х590`, множители) — обычная рус. буква, no-op verbatim идентично UA↔RU; латин. `x` U+0078 источника в authored RU габаритах → Cyrillic х; literal ° только в UA-источнике (authored RU → `&deg;`); UA-апостроф `&#39;`/U+0027 в authored RU дроп; `&mdash;`/U+2014 нигде; эмодзи/literal/trailing-space артефакты источника 1:1; src-typo `Хладогент`/`холодоагент`→`Хладагент`/`хладагент` / `кг/добу`→`кг/сутки` / `гранули`→`гранулы` SOFT — рассогласование источника, НЕ перевод-десинк, не нумеруются.
+
+**Открытые вопросы chunk-024 = 0** (chunk-024 закрыт без открытых вопросов; NON-FLIP — placeholder за все 9.x батча не наполнялся, ни одного customer-facing UA↔genuine-RU рассинхрона кода/артикула за 74 SKU).
+
+**Следующее:** chunk-025 (chunk-001 — SKIP навсегда; chunk-≤023 закрыты).
 
 ---
 
-**Last updated:** 2026-05-19 — chunk-024 батч SKU 73-74 (74/74, ФИНАЛЬНЫЙ): Fagor NEO CONCEPT CMFP-135-GN (SKIP-НП) / Fagor NEO CONCEPT CMFP-180-GN (SKIP-НП) — **blk триплет 0 + blknotrip 0 + blknochg 0 + blknochgeq 0** + **SKIP-НП 2** (SKU 73/74 — бренд **Fagor** НП-эксклюзив, forward-only SKIP перекрывает blk-паттерн даже при `desc UA==RU` True у SKU 74, тело из фида НП позже, ячейки НЕ трогаем). Коды FAGOR NEO CONCEPT CMFP-135-GN/CMFP-180-GN language-neutral — customer-facing рассинхрона НЕТ. META always faithful. Открытых вопросов chunk-024 = 0. Кумулятивно SKIP-НП chunk-024 = 19. chunk-024 = 74/74. NEXT: закрытие chunk-024 + scaffold chunk-025.
+## Открытые вопросы chunk-024 (финализированы при закрытии чанка — 0 вопросов)
+
+_(финализировано при закрытии: chunk-024 — **0 Открытых вопросов** (NON-FLIP, placeholder за все батчи 1-8…73-74 не наполнялся, нумерованных вопросов нет — ни одного customer-facing UA↔genuine-RU рассинхрона кода/артикула за 74 SKU). Итог по 74 SKU без нумерованных вопросов: blk 26 = авто-перевод укр. копии + Назв.мод-leak триплет (НЕ customer-facing, модель-коды Brema/Apach language-neutral); blknotrip 11 = авто-перевод без триплета (Назв.мод уже чистый); blknochg 18 — RU genuine ≠ UA, обе локали без изменений (вкл. blknochgeq ×4: Saro b49 ×1 + b65 ×3); SKIP-НП 19 — Apach ×17 / Fagor ×2, НП-эксклюзив, тело из фида НП позже, ячейки не тронуты, forward-only, перекрывает blk даже при `desc UA==RU` True (SKU 74 Fagor); Cyrillic-х `355х404х590`/множители no-op verbatim идентично UA↔RU; voltage разные значения = разные модели НЕ десинк, где в UA нет voltage — НЕ фабрикуется; literal ° UA-источника → authored RU `&deg;`; латин. `x`→Cyrillic х; `Хладогент`/`холодоагент`→`Хладагент`/`хладагент` / `кг/добу`→`кг/сутки` / `гранули`→`гранулы` — SOFT faithful, не нумеруются, genuine RU не переписывается. Кумулятивно SKIP-НП chunk-024 = 19. Применять diff к live Horoshop — только с явным go-ahead Yana + safe mode.)_
+
+---
+
+**Last updated:** 2026-05-19 — **chunk-024 ЗАКРЫТ 74/74.** Все 74 SKU обработаны (раздел Льодогенератори: ледогенераторы Brema CB425AHC/CB249AHC/GB601AHC B-QUBE → холодильные столы/саладетты + Saro + Apach/Fagor SKIP-НП ×19). **Открытые вопросы chunk-024 финализированы: 0 (NON-FLIP — placeholder за все батчи 1-8…73-74 не наполнялся, ни одного customer-facing UA↔genuine-RU рассинхрона кода/артикула за 74 SKU).** Итог по чанку: blk 26/74; blknotrip 11/74; blknochg 18/74 (вкл. blknochgeq ×4 Saro b49+b65); SKIP-НП 19/74 (Apach ×17 / Fagor ×2). Кумулятивно SKIP-НП chunk-024 = 19. diff Status `COMPLETE 74/74` + `## chunk-024 — ИТОГ`; MR Status `ГОТОВ 74/74` + `## chunk-024 — ЗАКРЫТ (74/74)` + ретайтл Открытых вопросов (0 вопросов) + финализирующий italic + заменённый Last updated. (Батчи: 1-8; 9-16; 17-24; 25-32; 33-40; 41-48; 49-56; 57-64; 65-72; 73-74 FINAL partial.) NEXT: chunk-025 (scaffold; chunk-001 — SKIP навсегда; chunk-≤023 закрыты).
