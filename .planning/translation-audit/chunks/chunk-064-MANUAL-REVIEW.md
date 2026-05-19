@@ -2,9 +2,9 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-064 (85 SKU)
 **Apply key:** `Артикул` (col1, scoped per row)
-**Status:** b9 DONE 72/85 (b10..b11 предстоят; batch=8)
+**Status:** b10 DONE 80/85 (b11 предстоит; batch=8)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-063
-**Last updated:** chunk-064 b9 (W2)
+**Last updated:** chunk-064 b10 (W2)
 
 Эталон формата: chunk-019-MANUAL-REVIEW.md / chunk-063-MANUAL-REVIEW.md. Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Кумул. OQ закрыты.
 
@@ -211,4 +211,27 @@ _(нумерация отдельная, начинается с #1; пока н
 
 **Открытых вопросов b9:** нет.
 
-<!-- Сводки по батчам b10..b11 ниже. -->
+## b10 (SKU 73-80) — DONE 80/85
+
+**Категории:** blk триплет 0 · blknotrip 0 · blknochg 0 · SKIP-НП 8 (SKU 73-80 HURAKAN).
+
+| SKU | row | ART | Бренд | Категория | Действие |
+|---|---|---|---|---|---|
+| 73 | 74 | 1168724439 | HURAKAN | SKIP-НП | SKIP-НП (brand=HURAKAN HKN-HVZ35M, тело из фида НП позже); fixed row74 НЕ тронут. |
+| 74 | 75 | 1336654011 | HURAKAN | SKIP-НП | SKIP-НП (brand=HURAKAN HKN-HVB15, тело из фида НП позже); fixed row75 НЕ тронут. |
+| 75 | 76 | 1336655588 | HURAKAN | SKIP-НП | SKIP-НП (brand=HURAKAN HKN-HVZ25M, тело из фида НП позже); fixed row76 НЕ тронут. |
+| 76 | 77 | 1485281695 | HURAKAN | SKIP-НП | SKIP-НП (brand=HURAKAN HKN-HVB8, тело из фида НП позже); fixed row77 НЕ тронут. |
+| 77 | 78 | 1485285952 | HURAKAN | SKIP-НП | SKIP-НП (brand=HURAKAN HKN-HVB12, тело из фида НП позже); fixed row78 НЕ тронут. |
+| 78 | 79 | 1485946760 | HURAKAN | SKIP-НП | SKIP-НП (brand=HURAKAN HKN-HVB20, тело из фида НП позже); fixed row79 НЕ тронут. |
+| 79 | 80 | 1485952587 | HURAKAN | SKIP-НП | SKIP-НП (brand=HURAKAN HKN-HVB25, тело из фида НП позже); fixed row80 НЕ тронут. |
+| 80 | 81 | 1485970635 | HURAKAN | SKIP-НП | SKIP-НП (brand=HURAKAN HKN-HVB30, тело из фида НП позже); fixed row81 НЕ тронут. |
+
+**Verify:** 165 PASS / 0 FAIL — REGR rows 2-73 byte-identical (72) + 85 ART (apply key, rows 2-86) unchanged + 8 SKIP-НП (SKU73-80 HURAKAN, fixed==SRC, ячейки не тронуты).
+
+**Глоссарий b10 (новые UA→RU):** нет (SKIP-НП — переводов нет, тело из фида НП позже).
+
+**Soft-notes merge-review (не OQ):** SKU73-80 ВСЕ HURAKAN (HKN-HVZ35M/HVB15/HVZ25M/HVB8/HVB12/HVB20/HVB25/HVB30 — электрокипятильники/проточные водонагреватели), НП-эксклюзивный бренд → fixed НЕ тронут, тело берётся из фида НП позже. SKU76/78/79/80 c5≠c7 (c5 уже частичный RU «Кип'ятильник Hurakan…з подвійними стінками») — всё равно SKIP-НП (brand priority над переводом).
+
+**Открытых вопросов b10:** нет.
+
+<!-- Сводка по батчу b11 ниже. -->
