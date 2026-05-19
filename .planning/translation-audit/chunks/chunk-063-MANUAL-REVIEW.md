@@ -2,9 +2,9 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-063 (88 SKU)
 **Apply key:** `Артикул` (col1, scoped per row)
-**Status:** b2 DONE 16/88 (b3..b11 remain; batch=8)
+**Status:** b3 DONE 24/88 (b4..b11 remain; batch=8)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-062
-**Last updated:** chunk-063 b2 (W2)
+**Last updated:** chunk-063 b3 (W2)
 
 Эталон формата: chunk-019-MANUAL-REVIEW.md / chunk-062-MANUAL-REVIEW.md. Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Кумул. OQ закрыты (ОВ-1..ОВ-4 remediation c71341f).
 
@@ -64,4 +64,25 @@ _(нумерация отдельная, начинается с #1; пока н
 
 **Открытых вопросов b2:** нет (опечатка «поддрежания» в SKU 9 — пред-существующий дефект источника в genuine RU, blknochg не правим; зафиксировано как замечание для Yana, не OQ).
 
-<!-- Сводки по батчам b3..b11 ниже. -->
+## b3 (SKU 17-24) — DONE 24/88
+
+**Категории:** blk триплет 4 (SKU 17,20,21,23) · blknochg 4 (SKU 18,19,22,24) · SKIP-НП 0.
+
+| SKU | row | ART | Бренд | Категория | Действие |
+|---|---|---|---|---|---|
+| 17 | 18 | 1043369426 | EWT INOX | blk триплет | col5←c7 «Витрина тепловая EWT INOX SDC5»; col36← faithful RU (skel==UA c35) |
+| 18 | 19 | 2210044738 | GoodFood | blknochg | c5==c7 genuine RU, c36 переведён; fixed НЕ тронут |
+| 19 | 20 | 883765440 | FROSTY | blknochg | c5==c7 genuine RU (Супник электрический…), c36 переведён; fixed НЕ тронут |
+| 20 | 21 | 475085014 | Bartscher | blk триплет | col5←c7 «Электросупница 9 л Bartscher 100061»; col36← faithful RU (литералы `°C`/`°С` verbatim) |
+| 21 | 22 | 475113512 | FROSTY | blk триплет | col5←c7 «Электросупница 10 л FROSTY SB-6000S (супник)»; col36← faithful RU |
+| 22 | 23 | 476419919 | GoodFood | blknochg | c5==c7 genuine RU, c36 переведён; fixed НЕ тронут |
+| 23 | 24 | 489952968 | AIRHOT | blk триплет | col5←c7 «Мармит AIRHOT BM-11»; col36← faithful RU (`GN 1/3 — 3 шт.` пунктуация verbatim) |
+| 24 | 25 | 593853560 | GoodFood | blknochg | c5==c7 genuine RU, c36 переведён; fixed НЕ тронут. _Замечание: в genuine c36 опечатка источника «укоплектоварн стекляной» (не наша правка, blknochg) — для merge-ревью Yana._ |
+
+**Verify:** 136 PASS / 0 FAIL — 88 ART (apply key) unchanged + 4×{col5==src c7, col36 skeleton==c35, UA-clean, без ё, dims verbatim incl. кир. х, col4/6/7/35 untouched} + 4 blknochg rows col5/col36==src.
+
+**Глоссарий b3 (новые UA→RU):** настільна→настольная · LED-підсвітка→LED-подсветка · електросупниця→электросупница · вставка-каструля→вставка-кастрюля · відкидна кришка→откидная крышка · марміт→мармит. Reuse: вітрина теплова→витрина тепловая · нержавіюча сталь→нержавеющая сталь · потужність→мощность.
+
+**Открытых вопросов b3:** нет (опечатка «укоплектоварн стекляной» в SKU 24 — пред-существующий дефект источника в genuine RU, blknochg не правим; замечание для Yana, не OQ).
+
+<!-- Сводки по батчам b4..b11 ниже. -->
