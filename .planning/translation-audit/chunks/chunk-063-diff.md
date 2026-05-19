@@ -3,7 +3,7 @@
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-063 (88 SKU, rows 2..89; ART 2059513121 … 2567549749)
 **Apply key:** `Артикул` (col1, scoped per row)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-062
-**Status:** b1 DONE 8/88 (b2..b11 remain; b1-b11 по 8 SKU)
+**Status:** b2 DONE 16/88 (b3..b11 remain; b1-b11 по 8 SKU)
 
 Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Формат — как chunk-062-diff.md.
 
@@ -42,4 +42,28 @@ SKIP-НП предварительно (HURAKAN, forward-only, тело из ф�
 
 **Verify:** 136 PASS / 0 FAIL.
 
-<!-- Сводки по батчам b2..b11 ниже. -->
+## b2 (SKU 9-16, rows 10-17)
+
+Изменения только в `chunk-063-fixed.xlsx` (gitignored). Apply key `Артикул` (col1) НЕ менялся.
+
+**blk триплет (1): col5 ← col7 (genuine RU); col36 ← faithful RU (skeleton == UA col35)**
+
+- **SKU 10 r11 ART 1131731712 — Hendi 233962**
+  - col5: `Теплова вітрина Hendi 233962` → `Тепловая витрина Hendi 233962`
+  - col36: UA-leak (==col35) → RU `<h2>…</h2>\n<p>Технические характеристики: </p>\n<ul>\n` 10×`<li>` `\n</ul>\n<p> </p>` (литералы `°C`, `4хGN 1/2`, `650х467х630`, `0,56 кВт`, `220 В` verbatim)
+
+**blknochg (7): c5==c7 genuine RU, c35!=c36 (RU уже переведён) — fixed НЕ тронут**
+
+- SKU 9 r10 ART 424917690 GGM Gastro ATSM695 _(в genuine c36 опечатка источника «поддрежания» — не наша правка)_
+- SKU 11 r12 ART 424917691 GGM ATSM615
+- SKU 12 r13 ART 2538738615 SARO SHIRA
+- SKU 13 r14 ART 2538743093 SARO YAEL
+- SKU 14 r15 ART 2210058270 GoodFood WS85 ELIT
+- SKU 15 r16 ART 2301733929 Frosty SWS-2P
+- SKU 16 r17 ART 961887244 GoodFood WS920 Black Line
+
+**SKIP-НП (0).**
+
+**Verify:** 112 PASS / 0 FAIL.
+
+<!-- Сводки по батчам b3..b11 ниже. -->

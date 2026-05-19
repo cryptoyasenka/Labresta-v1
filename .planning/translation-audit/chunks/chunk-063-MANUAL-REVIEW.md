@@ -2,9 +2,9 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-063 (88 SKU)
 **Apply key:** `Артикул` (col1, scoped per row)
-**Status:** b1 DONE 8/88 (b2..b11 remain; batch=8)
+**Status:** b2 DONE 16/88 (b3..b11 remain; batch=8)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-062
-**Last updated:** chunk-063 b1 (W2)
+**Last updated:** chunk-063 b2 (W2)
 
 Эталон формата: chunk-019-MANUAL-REVIEW.md / chunk-062-MANUAL-REVIEW.md. Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Кумул. OQ закрыты (ОВ-1..ОВ-4 remediation c71341f).
 
@@ -43,4 +43,25 @@ _(нумерация отдельная, начинается с #1; пока н
 
 **Открытых вопросов b1:** нет.
 
-<!-- Сводки по батчам b2..b11 ниже. -->
+## b2 (SKU 9-16) — DONE 16/88
+
+**Категории:** blk триплет 1 (SKU 10) · blknochg 7 (SKU 9,11,12,13,14,15,16) · SKIP-НП 0.
+
+| SKU | row | ART | Бренд | Категория | Действие |
+|---|---|---|---|---|---|
+| 9 | 10 | 424917690 | GGM Gastro | blknochg | c5==c7 genuine RU, c36 переведён; fixed НЕ тронут. _Замечание: в genuine c36 опечатка источника «поддрежания» (не наша правка, blknochg не трогаем) — для merge-ревью Yana._ |
+| 10 | 11 | 1131731712 | Hendi | blk триплет | col5←c7 «Тепловая витрина Hendi 233962»; col36← faithful RU (skel==UA c35; `°C` литералы и `4хGN 1/2`/`650х467х630`/`0,56 кВт` verbatim) |
+| 11 | 12 | 424917691 | GGM | blknochg | c5==c7 genuine RU, c36 переведён; fixed НЕ тронут |
+| 12 | 13 | 2538738615 | SARO | blknochg | c5==c7 genuine RU, c36 переведён; fixed НЕ тронут |
+| 13 | 14 | 2538743093 | SARO | blknochg | c5==c7 genuine RU, c36 переведён; fixed НЕ тронут |
+| 14 | 15 | 2210058270 | GoodFood | blknochg | c5==c7 genuine RU, c36 переведён; fixed НЕ тронут |
+| 15 | 16 | 2301733929 | Frosty | blknochg | c5==c7 genuine RU, c36 переведён; fixed НЕ тронут |
+| 16 | 17 | 961887244 | GoodFood | blknochg | c5==c7 genuine RU, c36 переведён; fixed НЕ тронут |
+
+**Verify:** 112 PASS / 0 FAIL — 88 ART (apply key) unchanged + SKU 10 {col5==src c7, col36 skeleton==c35, UA-clean, без ё, dims verbatim, col4/6/7/35 untouched} + 7 blknochg rows col5/col36==src.
+
+**Глоссарий b2 (новые UA→RU):** бічні сторони→боковые стороны · загартоване скло→закаленное стекло · зігнута скляна двері→гнутая стеклянная дверь · дзеркальна панель→зеркальная панель · кварцовий нагрівач→кварцевый нагреватель. Reuse: вітрина теплова→витрина тепловая · нержавіюча сталь→нержавеющая сталь.
+
+**Открытых вопросов b2:** нет (опечатка «поддрежания» в SKU 9 — пред-существующий дефект источника в genuine RU, blknochg не правим; зафиксировано как замечание для Yana, не OQ).
+
+<!-- Сводки по батчам b3..b11 ниже. -->
