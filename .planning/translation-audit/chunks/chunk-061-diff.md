@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-061 (67 SKU)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 40/67 (blk триплет 20 / blknochg 17 / blknotrip 0 / SKIP-НП 3; Открытых вопросов 0)
+**Status:** IN PROGRESS 48/67 (blk триплет 23 / blknochg 21 / blknotrip 0 / SKIP-НП 4; Открытых вопросов 0)
 **Worker:** W2 (параллельный воркер, диапазон chunk-055 … chunk-085; W1 ведёт chunk-001 … chunk-054)
 
 **Состав (по типу товара):** первый SKU — Артикул `2309189086` (`Гриль контактний Frosty EGS-44`); последний SKU67 — Артикул `2424751163` (`Гриль-тостер SARO BUSSO T1`). Колонка `Бренд` в источнике дублирует `Артикул` (числовой) — бренд определяется по `Название` per-SKU при аудите батча. Тип: преимущественно грили контактні + тостери / гриль-тостери. **SKIP-НП (зонд по `Название`): 4 NP-suspect** — все в НП-списке → SKIP-НП (тело придёт из фида НП позже, RU не трогается; вносятся в таблицу при обработке соответствующих батчей): **HURAKAN ×3** — SKU28 Арт `1147792135` (`Гриль контактний HURAKAN HKN-PE22R`) · SKU29 Арт `1147801726` (`Гриль контактний Hurakan HKN-PE34R`) · SKU30 Арт `1147802158` (`Гриль контактний HURAKAN HKN-PE44R`); **TATRA ×1** — SKU48 Арт `2062003333` (`Гриль контактний TATRA EMP.102`). Прочие бренды (Frosty, SARO, …) НЕ в НП-списке — обрабатываются обычно, подтверждается per-батч по `Название`. Батч = 8 SKU; 9 батчей (67/8 → б1-8 по 8 SKU = 64, б9 = SKU 65-67 = 3 SKU). openpyxl rows 2..68 (row = SKU + 1).
@@ -186,5 +186,36 @@ blk триплет 6 (SKU9/10/12/13/14/15) · blknochg 2 (SKU11/16) · blknotrip
 - **SKU36 SIRMAN PD RR-RR (row37)** — col5==col7 «Гриль контактный SIRMAN PD RR-RR двупостовой». descUA!=descRU (895≠940). Было/Стало: без изменений. Soft-note: genuine RU col36 сохраняет `<h2>…</h2>` (UA и RU оба h2 — отлично от SKU35 где RU даунгрейд h2→p); та же добавка «вплотную», ` &deg;С` entity. NAME согласован.
 
 **Модель-коды:** все согласованы UA↔RU (GoodFood ECG20RR/ECG201RF; SIRMAN PD LR-LR/RR-RR; Frosty SP-1A1/1A2/1A3/1C1). SKU35 h2→p даунгрейд + «вплотную» — внутри-genuine-RU вариативность, NAME консистентен → НЕ рассинхрон, НЕ Открытый вопрос. Открытых вопросов по батчу 5 нет; chunk-061 OQ=0.
+
+---
+
+## Батч 6 — SKU 41-48 (openpyxl rows 42-49) — 48/67
+
+| SKU | Артикул | Название (UA) | Бренд | Категория | Действие |
+|---|---|---|---|---|---|
+| 41 | 2042379156 | Гриль контактний Frosty SP-1C2 | Frosty | blk триплет | col5←col7, col36 перевод (1110→1116) |
+| 42 | 2042387369 | Гриль контактний Frosty SP-2A1 | Frosty | blknochg | без изменений (genuine RU) |
+| 43 | 2042391742 | Гриль контактний Frosty SP-2A2 | Frosty | blk триплет | col5←col7, col36 перевод (1111→1117) |
+| 44 | 2042392966 | Гриль контактний Frosty SP-2A3 | Frosty | blk триплет | col5←col7, col36 перевод (1112→1119) |
+| 45 | 2045369774 | Гриль контактний для бургерів GoodFood WB888RHB | GoodFood | blknochg | без изменений (genuine RU) |
+| 46 | 2045850817 | Гриль контактний GoodFood ECG20EA | GoodFood | blknochg | без изменений (genuine RU) |
+| 47 | 2045858824 | Гриль саламандра GoodFood GS450L | GoodFood | blknochg | без изменений (genuine RU, lang-neutral name) |
+| 48 | 2062003333 | Гриль контактний TATRA EMP.102 | TATRA | SKIP-НП #4 | fixed НЕ тронут (тело из фида НП позже) |
+
+**blk триплет (3):**
+- **SKU41 Frosty SP-1C2 (row42)** — col5==col4 «Гриль контактний Frosty SP-1C2» (UA-leak «контактний»), col7 genuine RU «Гриль контактный Frosty SP-1C2», descUA==descRU (1110==1110). col5←col7; col36 ← перевод source col35 tag-в-tag (COMMON 9 пар + P_SP1C2 6: Верхня/Нижня робоча поверхня 335х215/355х235, плити ребро/ребро, Тех. дані 2,20/ 220В, Розміри 425мм x 310мм x 200мм, Вага 20.60 кг). `&deg; С` entity+пробелы byte-exact (faithful UA-копия, НЕ genuine-RU стиль `&deg;С`); Cyrillic-х 335х215/355х235 + Latin-x `425мм x 310мм x 200мм` byte-exact; `2,20` запятая / `20.60` точка (политика A) faithful; `м&#39;яса`→`мяса`. len 1110→1116. UA-marker col36/col5 = 0.
+- **SKU43 Frosty SP-2A2 (row44)** — col5==col4, col7 genuine «Гриль контактный Frosty SP-2A2», descUA==descRU (1111==1111). col5←col7; col36 перевод (P_SP2A2: 2 робочі поверхні 215х215мм → 2 рабочие поверхности, Нижня 495х235, плити ребро/гладка→ребро/гладкая, Тех. дані 1,80+1,80/ 220В, Розміри 565мм, Вага 27.40). «2 робочі поверхні»→«2 рабочие поверхности» faithful UA (genuine-RU SP-2A1 supplier пишет «2 верхние рабочие поверхности» — embellishment НЕ копируется в blk триплет). len 1111→1117.
+- **SKU44 Frosty SP-2A3 (row45)** — col5==col4, col7 genuine «Гриль контактный Frosty SP-2A3», descUA==descRU (1112==1112). col5←col7; col36 перевод (P_SP2A3: плити гладка/гладка→гладкая/гладкая, прочее как SP-2A2). len 1112→1119.
+
+**blknochg (4) — fixed НЕ тронут:**
+- **SKU42 Frosty SP-2A1 (row43)** — col5==col7 «Гриль контактный Frosty SP-2A1». descUA!=descRU (1067≠1071). genuine RU col36. Soft-note (НЕ нумер.): genuine-RU «2 верхние рабочие поверхности» (UA «2 робочі поверхні» без «верхние»), `&deg;С` entity без пробелов (genuine-RU стиль). NAME согласован.
+- **SKU45 GoodFood WB888RHB (row46)** — col5==col7 «Гриль контактный для бургеров GoodFood WB888RHB». descUA!=descRU (803≠831). genuine RU. Soft-note: genuine-RU `Терморегулятор 50 &ndash; 300 &deg;С` (UA `50-300`), `&ndash;` entity. NAME согласован.
+- **SKU46 GoodFood ECG20EA (row47)** — col5==col7 «Гриль контактный GoodFood ECG20EA». descUA!=descRU (1202≠1188). genuine RU. Soft-note: genuine-RU `Мощность 3,6кВт` / `50-300&deg;С` без пробелов. NAME согласован.
+- **SKU47 GoodFood GS450L (row48)** — col5==col4==col7 «Гриль саламандра GoodFood GS450L» (lang-neutral name, без UA-маркеров). descUA!=descRU (461≠467). genuine RU col36. Soft-note: genuine-RU `лоток для оружия жира` — машинный артефакт перевода (UA `лоток для зброу жира`); `2,8кВт` без пробела. NAME согласован → НЕ Открытый вопрос.
+
+**SKIP-НП (1):**
+- **SKU48 Гриль контактний TATRA EMP.102 (row49, Арт `2062003333`)** — бренд **TATRA** ∈ НП-список → SKIP-НП #4. RU НЕ переписан, fixed row49 НЕ тронут, тело придёт из фида НП позже (col35==col36 оба UA — согласуется: тело НП ещё не пришло).
+
+**Модель-коды:** все согласованы UA↔genuine-RU (Frosty SP-1C2/SP-2A1/SP-2A2/SP-2A3; GoodFood WB888RHB/ECG20EA/GS450L; TATRA EMP.102). Soft-notes (НЕ нумер.): SKU42 «2 верхние» добавка genuine-RU / SKU47 «оружия жира» машинный артефакт genuine-RU — NAME консистентен → НЕ рассинхрон, НЕ Открытый вопрос. Открытых вопросов по батчу 6 нет; chunk-061 OQ=0.
 
 ---
