@@ -2,9 +2,9 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-066 (90 SKU, rows 2..91; ART 2496038149 … 2153078504)
 **Apply key:** `Артикул` (col1, scoped per row)
-**Status:** b2 DONE 16/90 (b3 предстоит; batch=8 b1..b11 по 8 + b12=SKU89-90 2 SKU = 90)
+**Status:** b3 DONE 24/90 (b4 предстоит; batch=8 b1..b11 по 8 + b12=SKU89-90 2 SKU = 90)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-065
-**Last updated:** chunk-066 b2 (W2)
+**Last updated:** chunk-066 b3 (W2)
 
 Эталон формата: chunk-019-MANUAL-REVIEW.md / chunk-065-MANUAL-REVIEW.md. Категории: blk триплет / blknotrip / blknochg / SKIP-НП.
 
@@ -84,3 +84,32 @@ _(нет)_
 
 ### SKIP-НП 0
 _(нет в b2)_
+
+
+## b3 — SKU 17-24 (rows 18-25)
+
+**Verify:** REGR 16 (b1+b2) + ART 90 + TRIP 3 + BLKNOCHG 5 = 114 PASS / 0 FAIL.
+
+### blk триплет 3
+
+| SKU | row | ART | Название | Действие |
+|---|---|---|---|---|
+| 17 | 18 | 660007483 | Вафельниця EWT INOX FY5 для бельгійських (об'ємних) вафель | c5←c7 genuine RU «Вафельница EWT INOX FY5 для бельгийских вафель»; c36 ← faithful RU (skel==UA, dims 5×, ° U+00B0 ×1, х Cyr ×8, ASCII " ×2 «серце»→«сердце» preserve, ASCII apos `'` ×1 «об'ємних» strip→«объемных» ё avoided); source typo «Термоература» нормализован (опечатка UA), повтор b1 SKU7 / b2 SKU16 |
+| 23 | 24 | 2309296632 | Млинниця Frosty CMS-400 електрична (1-постова) | c5←c7 genuine RU «Блинница Frosty CMS-400 электрическая»; c36 ← faithful RU (skel==UA, dims 11×, &delta; ×1, &ordm; ×1, &deg; ×1, x Lat ×2/х Cyr ×5, Х Cyr ×1); «з антипригарним смаженим покриттям» → «с антипригарным жареным покрытием»; «деревяний шпатель» (UA typo) → «деревянный шпатель» |
+| 24 | 25 | 2309302468 | Млинниця Frosty CMS-400-2 електрична (двопостова, &Oslash;400+&Oslash;400) | c5←c7 genuine RU «Блинница Frosty CMS-400-2 электрическая»; c36 ← faithful RU (skel==UA, dims 13×, &Oslash; ×2, &delta; ×1, &ordm; ×1, &deg; ×1); source artifact: body bullet «Млинниця електрична 1-постова» при CMS-400-2 (двопостова) — preserve faithful «Блинница электрическая 1-постовая»; source typo «Облданання постачається» → RU «Оборудование поставляется» |
+
+### blknotrip 0
+_(нет)_
+
+### blknochg 5
+
+| SKU | row | ART | Название | Замечание |
+|---|---|---|---|---|
+| 18 | 19 | 1124671670 | Вафельница орешница GoodFood WB30N | c5==c7 genuine RU; c35!=c36 (634/643) — fixed НЕ тронут; soft-note +9 |
+| 19 | 20 | 1110591707 | Блинница электрическая FROSTY VP-81 | c5==c7 genuine RU; c35!=c36 (240/251) — fixed НЕ тронут; soft-note +11 |
+| 20 | 21 | 1110593978 | Блинница электрическая FROSTY VP-2Y40 | c5==c7 genuine RU; c35!=c36 (240/251) — fixed НЕ тронут; идентично VP-81 шаблон, только модель |
+| 21 | 22 | 1489906398 | Блинница для панкейков Silver PNK 01 | c5==c7 genuine RU; c35!=c36 (432/443) — fixed НЕ тронут; soft-note +11 |
+| 22 | 23 | 2126950074 | Блинница электрическая Frosty ECM-400-2 (двопостава) | c5==c7 genuine RU; c35!=c36 (498/510) — fixed НЕ тронут; soft-note +12; body содержит &Oslash;400+&Oslash;400 / &delta;=20 |
+
+### SKIP-НП 0
+_(нет в b3)_

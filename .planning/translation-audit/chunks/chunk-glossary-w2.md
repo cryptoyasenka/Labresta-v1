@@ -762,3 +762,47 @@ Soft-note: chunk-066 OPEN. b1 без новых OQ. SKU1 Roller Grill blknochg c
 - страна производитель: Китай (reuse)
 
 Soft-note b2: чистый раунд без OQ. SKU13 Roller Grill GED 40 source «двопостова» — это UA в обоих локалях c5/c7, но genuine RU c7 это «Вафельница» (Cyr RU «Вафельница» сохраняется). blknochg для всех 5 Roller Grill/GoodFood — fixed НЕ тронут, source c35/c36 длины могут различаться (soft-notes указаны).
+
+## chunk-066 b3 (SKU 17-24, rows 18-25) — 24/90 — глоссарий +11 net-new (cum 888→899)
+
+**Net-new b3:**
+- блинница электрическая (1-постовая / двопостовая) <- млинниця електрична (1-постова / двопостова)
+- форма "сердце" (ASCII " ×2 preserved) <- форма "серце"
+- с антипригарным жареным покрытием <- з антипригарним смаженим покриттям (UA «смажений» = жареный, прокаленный)
+- с антипригарным покрытием для жарки <- з антипригарним покриттям для смаження
+- толщина рабочей поверхности: &delta;=20 мм <- товщина робочої поверхні: &delta;=20 мм (&delta; entity preserved)
+- температурный режим: от 0&ordm;С до 300&deg;С <- температурний режим: від 0&ordm;С до 300&deg;С (&ordm;/&deg; entities preserved)
+- резиновые ножки <- гумові ніжки
+- оборудование поставляется без вилки <- облданання постачається без вилки (source typo «облданання»→RU «оборудование»)
+- деревянный шпатель для теста <- деревяний шпатель для тіста (UA typo «деревяний» missing apos)
+- орешница (для половинок горешков) <- горішниця (для половинок горішків)
+- блинница для панкейков <- млинниця для панкейків (Silver PNK 01)
+
+**Reuse from earlier batches (b3):**
+- EWT INOX FYN (brand+model verbatim, reuse b1/b2)
+- Frosty CMS-400 / CMS-400-2 (brand+model verbatim)
+- GoodFood WB30N (brand+model verbatim, reuse b2)
+- FROSTY VP-81 / VP-2Y40 (brand+model verbatim)
+- Silver PNK 01 (brand+model verbatim, новый бренд Silver в W2-диапазоне)
+- Frosty ECM-400-2 (brand+model verbatim)
+- для бельгийских (объемных) вафель (reuse b1/b2)
+- &Oslash;400 диаметр (reuse: &Oslash; entity ASCII Latin)
+- корпус: нержавеющая сталь / выполнен из нержавеющей стали (reuse b1)
+- рабочая поверхность чугун / чугунная поверхность с антипригарным (reuse b1/b2)
+- температура выпекания 250 °C / source typo «Термоература» → «Температура» (reuse b1/b2)
+- автоматический тайминг / устойчивое основание (reuse b1)
+- мощность ТЭНа N кВт (reuse b1)
+- напряжение: 220 В (reuse)
+- габариты: AхBхC мм (reuse)
+- вес: N кг (reuse)
+- встроенный термостат (reuse b1)
+- технические характеристики / характеристики (reuse)
+- тех. данные: N,N кВт/ 220В (reuse b1)
+- размеры (Д*Ш*В): NNNмм x NNNмм x NNNмм (reuse b1)
+- материал: корпус: нержавеющая сталь (reuse b1)
+- в комплекте: (reuse)
+- поддон (reuse b1)
+- 2 термостата (новый, plural)
+- 1-постовая / двопостовая (reuse b2 patterns)
+
+Soft-note b3: чистый раунд без OQ. SKU24 r25 CMS-400-2 source artifact: body bullet «Млинниця електрична 1-постова» при модели CMS-400-2 (двопостова) — faithful preserved в RU «1-постовая», для merge-ревью. SKU22 b3 ECM-400-2 blknochg — c5==c7 genuine RU, fixed НЕ тронут несмотря на &Oslash;/&delta; в body, soft-note 498/510. 5 blknochg все Frosty/GoodFood/Silver — genuine RU c5/c7.

@@ -3,7 +3,7 @@
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-066 (90 SKU, rows 2..91; ART 2496038149 … 2153078504)
 **Apply key:** `Артикул` (col1, scoped per row)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-065
-**Status:** b2 DONE 16/90 (b3 предстоит; b1..b11 по 8 SKU + b12=SKU89-90 2 SKU)
+**Status:** b3 DONE 24/90 (b4 предстоит; b1..b11 по 8 SKU + b12=SKU89-90 2 SKU)
 
 Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Формат — как chunk-065-diff.md.
 
@@ -57,3 +57,26 @@ _(нет)_
 
 ### SKIP-НП 0
 _(нет в b2)_
+
+
+## b3 — SKU 17-24 (rows 18-25) — DONE 24/24 (cum)
+
+**Verify:** REGR 16 (b1+b2) + ART 90 + TRIP 3 + BLKNOCHG 5 = 114 PASS / 0 FAIL.
+
+### blk триплет 3
+- **SKU 17 r18 ART 660007483** EWT INOX FY5 для бельгійських (об'ємних) вафель, форма "серце": c5←c7 + c36 ← faithful RU (skel==UA, dims 5×, ° ×1, ASCII " ×2 «сердце»). Source typo «Термоература» → RU «Температура» (повтор b1/b2).
+- **SKU 23 r24 ART 2309296632** Млинниця Frosty CMS-400 електрична 1-постова: c5←c7 + c36 ← faithful RU (skel==UA, dims 11×, &delta; / &ordm; / &deg; preserved). «смаженим» → «жареным», «для смаження» → «для жарки». «деревяний шпатель» typo → «деревянный шпатель».
+- **SKU 24 r25 ART 2309302468** Млинниця Frosty CMS-400-2 електрична (двопостова &Oslash;400+&Oslash;400): c5←c7 + c36 ← faithful RU (skel==UA, dims 13×, &Oslash; ×2, &delta; ×1, &ordm; ×1, &deg; ×1). Soft-note: source body «1-постова» при модели CMS-400-2 — preserve faithful. «Облданання постачається» typo → RU «Оборудование поставляется».
+
+### blknotrip 0
+_(нет)_
+
+### blknochg 5
+- **SKU 18 r19 ART 1124671670** GoodFood WB30N (орешница): c5==c7 genuine RU; c35!=c36 (634/643) — fixed НЕ тронут.
+- **SKU 19 r20 ART 1110591707** FROSTY VP-81: c5==c7 genuine RU; c35!=c36 (240/251) — fixed НЕ тронут.
+- **SKU 20 r21 ART 1110593978** FROSTY VP-2Y40: c5==c7 genuine RU; c35!=c36 (240/251) — fixed НЕ тронут.
+- **SKU 21 r22 ART 1489906398** Silver PNK 01 (для панкейков): c5==c7 genuine RU; c35!=c36 (432/443) — fixed НЕ тронут.
+- **SKU 22 r23 ART 2126950074** Frosty ECM-400-2 (двопостава, &Oslash;400+&Oslash;400 / &delta;=20): c5==c7 genuine RU; c35!=c36 (498/510) — fixed НЕ тронут.
+
+### SKIP-НП 0
+_(нет в b3)_
