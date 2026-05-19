@@ -2,9 +2,9 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-066 (90 SKU, rows 2..91; ART 2496038149 … 2153078504)
 **Apply key:** `Артикул` (col1, scoped per row)
-**Status:** b4 DONE 32/90 (b5 предстоит; batch=8 b1..b11 по 8 + b12=SKU89-90 2 SKU = 90)
+**Status:** b5 DONE 40/90 (b6 предстоит; batch=8 b1..b11 по 8 + b12=SKU89-90 2 SKU = 90)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-065
-**Last updated:** chunk-066 b4 (W2)
+**Last updated:** chunk-066 b5 (W2)
 
 Эталон формата: chunk-019-MANUAL-REVIEW.md / chunk-065-MANUAL-REVIEW.md. Категории: blk триплет / blknotrip / blknochg / SKIP-НП.
 
@@ -13,7 +13,7 @@
 | # | SKU | Артикул | Бренд | Название (UA) | Примечание |
 |---|---|---|---|---|---|
 | 1 | 6 | 2784069485 | HURAKAN | ВАФЕЛЬНИЦЯ HURAKAN HKN-GES300 NUT | HURAKAN — НП-эксклюзив, fixed row7 НЕ тронут (тело из фида НП позже); b1 confirmed |
-| prelim | 36 | (row 37) | Hurakan | Млинниця Hurakan HKN-CSE400P одинарна | HURAKAN — НП-эксклюзив, fixed row37 НЕ тронут; b5 confirm |
+| 2 | 36 | 2503734240 | HURAKAN | Млинниця Hurakan HKN-CSE400P одинарна | HURAKAN — НП-эксклюзив, fixed row37 НЕ тронут (тело из фида НП позже); b5 confirmed |
 | prelim | 47 | (row 48) | Hurakan | Апарат для приготування солодкої вати Hurakan HKN-C1 | HURAKAN — НП-эксклюзив, fixed row48 НЕ тронут; b6 confirm |
 | prelim | 57 | (row 58) | Hurakan | Апарат для приготування попкорну Hurakan HKN-PCORN | HURAKAN — НП-эксклюзив, fixed row58 НЕ тронут; b8 confirm |
 | prelim | 67 | (row 68) | TATRA | Гриль для шаурми TATRA TDM E 4B | TATRA — НП-эксклюзив, fixed row68 НЕ тронут; b9 confirm |
@@ -142,3 +142,31 @@ _(нет)_
 
 ### SKIP-НП 0
 _(нет в b4)_
+
+
+## b5 — SKU 33-40 (rows 34-41)
+
+**Verify:** REGR 32 (b1+b2+b3+b4) + ART 90 + TRIP 2 + BLKNOCHG 5 + SKIP-НП 1 = 248 PASS / 0 FAIL.
+
+### blk триплет 2
+
+| SKU | row | ART | Название | Действие |
+|---|---|---|---|---|
+| 35 | 36 | 2126943339 | Млинниця Frosty ECM-400-1 (1-постова, &Oslash;400, &delta;=20) | c5←c7 genuine RU «Блинница электрическая Frosty ECM-400-1»; c36 ← faithful RU (skel==UA, dims 10×, &Oslash; ×1, &delta; ×1, &deg; ×2, x Lat ×2 / х Cyr ×2, Х Cyr ×1, * ×2 в «Д*Ш*В»); «з антипригарним смаженим покриттям→с антипригарным жареным покрытием»; «Гумові ніжки→Резиновые ножки»; «Піддон→Поддон»; «Розміри (Д*Ш*В)→Размеры (Д*Ш*В)»; «Тех. дані→Тех. данные»; «корпус: нержавіюча сталь→корпус: нержавеющая сталь» (повтор b3 SKU23/24 шаблон Frosty CMS-400) |
+| 37 | 38 | 1131916120 | Електрична млинниця Hendi 212028 однопостовая (UA-RU mix в c5/c7 source) | c5←c7 genuine RU «Блинница электрическая Hendi 212028 однопостовая» (UA-RU smell «однопостовая» preserved verbatim из источника); c36 ← faithful RU (skel==UA, dims 7×, lowercase ø ×1 Latin slashed-o, ° symbol ×1, x Lat ×2/х Cyr ×3, ASCII apos 0 в RU «Деревянный» (strip с UA «Дерев'яний»)); body «Деко ø400 мм→Противень ø400 мм»; «Дерев'яний шпатель→Деревянный шпатель»; «з нержавіючої сталі→из нержавеющей стали»; «плавним регулюванням→плавной регулировкой»; «З захистом від перегріву→С защитой от перегрева»; «EGО» (последний символ Cyrillic О) preserved verbatim |
+
+### blknotrip 0
+_(нет)_
+
+### blknochg 5
+
+| SKU | row | ART | Название | Замечание |
+|---|---|---|---|---|
+| 33 | 34 | 1491737311 | Блинница электрическая GoodFood CM10N | c5==c7 genuine RU; c35!=c36 (379/391) — fixed НЕ тронут; soft-note +12 (аналог SKU28 b4 CM10R по шаблону) |
+| 34 | 35 | 1973306904 | Блинница GGM CGJ40-2 | c5==c7 genuine RU; c35!=c36 (927/974) — fixed НЕ тронут; soft-note +47 |
+| 38 | 39 | 425078241 | Блинница GGM CGK40-2 | c5==c7 genuine RU; c35!=c36 (291/297) — fixed НЕ тронут; идентично шаблону SKU25 b4 GGM CGK40-1 |
+| 39 | 40 | 1151639954 | Блинница Roller Grill CSE 400 (1-постова) | c5==c7 genuine RU (Latin brand+model); c35!=c36 (381/399) — fixed НЕ тронут; soft-note +18 |
+| 40 | 41 | 1151641832 | Блинница Roller Grill CDE 400 (двопостова, 2х400 мм) | c5==c7 genuine RU; c35!=c36 (406/427) — fixed НЕ тронут; soft-note +21 |
+
+### SKIP-НП 1
+- **SKU 36 r37 ART 2503734240** Млинниця Hurakan HKN-CSE400P одинарна — fixed row37 НЕ тронут, тело из фида НП позже. prelim→confirmed #2.

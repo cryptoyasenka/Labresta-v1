@@ -3,7 +3,7 @@
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-066 (90 SKU, rows 2..91; ART 2496038149 … 2153078504)
 **Apply key:** `Артикул` (col1, scoped per row)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-065
-**Status:** b4 DONE 32/90 (b5 предстоит; b1..b11 по 8 SKU + b12=SKU89-90 2 SKU)
+**Status:** b5 DONE 40/90 (b6 предстоит; b1..b11 по 8 SKU + b12=SKU89-90 2 SKU)
 
 Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Формат — как chunk-065-diff.md.
 
@@ -103,3 +103,25 @@ _(нет)_
 
 ### SKIP-НП 0
 _(нет в b4)_
+
+
+## b5 — SKU 33-40 (rows 34-41) — DONE 40/40 (cum)
+
+**Verify:** REGR 32 (b1+b2+b3+b4) + ART 90 + TRIP 2 + BLKNOCHG 5 + SKIP-НП 1 = 248 PASS / 0 FAIL.
+
+### blk триплет 2
+- **SKU 35 r36 ART 2126943339** Frosty ECM-400-1 (1-постова, &Oslash;400, &delta;=20): c5←c7 «Блинница электрическая Frosty ECM-400-1»; c36 ← faithful RU (skel==UA, dims c35==c36 10×: 400/20/0/300/3,0/220/450/485/240/15.50; &Oslash; ×1, &delta; ×1, &deg; ×2; x Lat ×2 «мм x мм»; * ×2 «Д*Ш*В»; \n ×12). «з антипригарним смаженим покриттям→с антипригарным жареным покрытием», «Гумові ніжки→Резиновые ножки», «Піддон→Поддон», «Тех. дані→Тех. данные», «Розміри (Д*Ш*В)→Размеры (Д*Ш*В)», «корпус: нержавіюча сталь→корпус: нержавеющая сталь». Повтор шаблона b3 SKU23/24 CMS-400.
+- **SKU 37 r38 ART 1131916120** Hendi 212028 однопостовая (UA-RU mix в c5/c7 source): c5←c7 «Блинница электрическая Hendi 212028 однопостовая» (preserve verbatim «однопостовая»); c36 ← faithful RU (skel==UA, dims 7×: 400/400/50/250/470x509x/161/3000; lowercase ø ×1 Latin slashed-o, ° symbol ×1, x Lat ×2/х Cyr ×3; \n ×11; ASCII apos `'` ×1 в UA «Дерев'яний» → strip в RU «Деревянный»). «Деко ø400 мм→Противень ø400 мм», «з керамічним покриттям→с керамическим покрытием», «плавним регулюванням→плавной регулировкой», «З захистом від перегріву і термостатом EGО→С защитой от перегрева и термостатом EGО» (последний символ Cyrillic О preserved verbatim).
+
+### blknotrip 0
+_(нет)_
+
+### blknochg 5
+- **SKU 33 r34 ART 1491737311** GoodFood CM10N: c5==c7 genuine RU; c35!=c36 (379/391) — fixed НЕ тронут; soft-note +12.
+- **SKU 34 r35 ART 1973306904** GGM CGJ40-2 (двопостова, 927/974): c5==c7 genuine RU; c35!=c36 (длинный body) — fixed НЕ тронут; soft-note +47.
+- **SKU 38 r39 ART 425078241** GGM CGK40-2: c5==c7 genuine RU; c35!=c36 (291/297) — fixed НЕ тронут; шаблон SKU25 b4 GGM CGK40-1.
+- **SKU 39 r40 ART 1151639954** Roller Grill CSE 400 (1-постова): c5==c7 genuine RU; c35!=c36 (381/399) — fixed НЕ тронут; soft-note +18.
+- **SKU 40 r41 ART 1151641832** Roller Grill CDE 400 (двопостова 2х400 мм): c5==c7 genuine RU; c35!=c36 (406/427) — fixed НЕ тронут; soft-note +21.
+
+### SKIP-НП 1
+- **SKU 36 r37 ART 2503734240** HURAKAN HKN-CSE400P (млинниця одинарна): fixed row 37 НЕ тронут, тело из фида НП позже. prelim→confirmed #2.

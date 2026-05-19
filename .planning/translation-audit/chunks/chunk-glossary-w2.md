@@ -832,3 +832,31 @@ Soft-note b3: чистый раунд без OQ. SKU24 r25 CMS-400-2 source arti
 - габариты: AхBхC мм (reuse b1)
 
 Soft-note b4: чистый раунд без OQ. SKU30 r31 ECM-1 source artifact: body начинается «Млин електричний» (alt spelling вместо Млинниця) — c7 даёт «Блинница электрическая», faithful preserved в RU. SKU31 r32 GoodFood CM20R blknochg: c5==c7 genuine RU «двупостова» (UA-RU smell в источнике, опечатка/латинизм) — fixed НЕ тронут (правило blknochg LIVE). 4 blknochg все GGM/GoodFood/Silver — genuine RU c5/c7. AIRHOT — обычный бренд (не SKIP-НП), переводится.
+
+
+## chunk-066 b5 (SKU 33-40, rows 34-41) — 40/90 — глоссарий +6 net-new (cum 909→915)
+
+**Net-new b5:**
+- Противень ø400 мм из чугуна <- Деко ø400 мм з чавуну (UA «Деко»=противень, lowercase Latin ø preserved)
+- термостат с плавной регулировкой <- термостат з плавним регулюванням (new variant — vs «плавная регулировка»)
+- с защитой от перегрева <- з захистом від перегріву (new bullet)
+- EGО (термостат brand, последний символ Cyrillic О) — note: source artifact, preserved verbatim
+- Размеры (Д*Ш*В) <- Розміри (Д*Ш*В) (W/D/H bullet с * separator, new vs b1/b2/b3 «N×N×N мм» / b4 «Ш/Г/В»)
+- Тех. данные: N кВт/ NN0В <- Тех. дані: N кВт/ NN0В (new combined power+voltage bullet)
+
+**Reuse from earlier batches (b5):**
+- Frosty ECM-400-1 (model variant; reuse b3 CMS-400/CMS-400-2 + b3 SKU22 ECM-400-2 brand)
+- Hendi 212028 (model verbatim Latin, reuse Hendi pattern из b1/b2)
+- блинница электрическая (reuse b3/b4)
+- 1-постовая (reuse b3 SKU23)
+- &Oslash;400 / &delta;=20 / &deg;C entities preserved (reuse b3)
+- с антипригарным жареным покрытием (reuse b3 SKU23 — повтор)
+- резиновые ножки (reuse b3 SKU23)
+- поддон (reuse b1/b3)
+- корпус: нержавеющая сталь (reuse b1)
+- деревянный шпатель в комплекте (reuse b3 SKU23)
+- блинница электрическая (Hendi context, reuse b1/b3/b4)
+- с одной рабочей поверхностью диаметром 400 мм (reuse b4 SKU30 ECM-1)
+- однопостовая (UA-RU mix preserve в c5/c7 — note: уже в источнике как c7 verbatim)
+
+Soft-note b5: чистый раунд без OQ. SKU37 r38 Hendi 212028 source c5/c7 содержат UA-RU mix «однопостовая» — preserve verbatim (этот вариант уже в c7 как «genuine»). Источник body первая строка «Електрична млинниця» (UA word order) → faithful RU «Электрическая блинница» в первом параграфе (можно и «Блинница электрическая», выбрано preserve source word order для прозы). SKU40 r41 Roller Grill CDE 400 «2х400 мм» с Cyrillic х — preserve verbatim (genuine RU c5/c7). 5 blknochg все GoodFood/GGM/Roller Grill — genuine RU c5/c7. SKIP-НП #2 HURAKAN HKN-CSE400P подтверждён, тело из фида НП позже.
