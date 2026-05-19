@@ -2,9 +2,9 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-065 (81 SKU)
 **Apply key:** `Артикул` (col1, scoped per row)
-**Status:** b6 DONE 48/81 (b7 предстоит; batch=8, b11=SKU81 1 SKU)
+**Status:** b8 DONE 64/81 (b9 предстоит; batch=8, b11=SKU81 1 SKU)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-064
-**Last updated:** chunk-065 b6 (W2)
+**Last updated:** chunk-065 b8 (W2)
 
 Эталон формата: chunk-019-MANUAL-REVIEW.md / chunk-064-MANUAL-REVIEW.md. Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Кумул. OQ закрыты.
 
@@ -12,7 +12,7 @@
 
 | # | SKU | Артикул | Бренд | Название (UA) | Примечание |
 |---|---|---|---|---|---|
-| prelim | 64 | 1147781261 | HURAKAN | Вафельниця HURAKAN HKN-GES2M для бельгійських вафель | HURAKAN — НП-эксклюзив, тело из фида НП позже |
+| 1 | 64 | 1147781261 | HURAKAN | Вафельниця HURAKAN HKN-GES2M для бельгійських вафель | HURAKAN — НП-эксклюзив, fixed row65 НЕ тронут (тело из фида НП позже); b8 confirmed |
 | prelim | 69 | 2059494027 | Hurakan | Вафельниця Hurakan HKN-GES2L | HURAKAN — НП-эксклюзив, тело из фида НП позже |
 | prelim | 70 | 2059501393 | Hurakan | Вафельниця гонконгська Hurakan HKN-GES5HK | HURAKAN — НП-эксклюзив, тело из фида НП позже |
 
@@ -222,3 +222,35 @@ _(нумерация отдельная, начинается с #1; пока н
 ---
 
 <!-- Сводка по батчу b8 ниже. -->
+<!-- b8 marker -->
+
+## b8 — SKU 57-64 (rows 58-65), 64/81
+
+**Категории:** blk триплет 2 · blknotrip 0 · blknochg 5 · SKIP-НП 1 = 8.
+
+| # | SKU | Артикул | Бренд / модель | Категория | Действие |
+|---|---|---|---|---|---|
+| 1 | 57 | 675937435 | AIRHOT WВ-НК1 вафельница гонгконгская с начинкой | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+| 2 | 58 | 683160373 | FROSTY VE-01 вафельница гонконгская (bubble waffle) | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+| 3 | 59 | 683160374 | FROSTY WS-15 вафельница бельгийская | blk триплет | col5 ← c7 (`Вафельница FROSTY WS-15 для бельгийских вафель`); col36 — faithful RU (skel==c35 без `\n`, dims==c35: 4х6/300/15/340x370x240/1,5, deg `°C` U+00B0+Lat U+0043 verbatim; XCH Cyr х в `4х6` + Lat x ×2 в `340x370x240` source-mix verbatim; DASH `—` U+2014 em-dash в `корпус — нержавеющая сталь` preserved) |
+| 4 | 60 | 758595319 | GoodFood WB1RA вафельница поворотная круглые | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+| 5 | 61 | 823889894 | Hendi 212103 вафельница бельгийская | blk триплет | col5 ← c7 (`Вафельница Hendi 212103 для бельгийских вафель`); col36 — faithful RU (skel==c35 c `\n` ×11, dims==c35: 2/3х5/1,5/220/320x437x/251/28, no DEG; XCH Cyr х в `3х5` + Lat x в `320x437x(H)251` source-mix; `(H)` высота preserved; SOURCE-MIX UA «однопостовая» (RU-форма в UA) + «неприлипающая поверхню» (UA noun + RU adj) → RU нормализованы «однопостовая» + «антипригарная поверхность»; UA «п'ять» / «об'ємних» апострофы → RU «пять» / «объемных»; UA «Тена» → RU «ТЭНа») |
+| 6 | 62 | 1009164465 | GoodFood EG25R аппарат для оладьев | blknochg | c5==c7 genuine RU («оладьев» verbatim), c35!=c36 — fixed НЕ тронут |
+| 7 | 63 | 1135992959 | SILVER 2137 вафельница сердечками | blknochg | c5==c7 genuine RU, c35!=c36 — fixed НЕ тронут |
+| 8 | 64 | 1147781261 | HURAKAN HKN-GES2M вафельница бельгийская | SKIP-НП #1 | HURAKAN — НП-эксклюзив, fixed row65 НЕ тронут (тело из фида НП позже) |
+
+**Verify:** 144 PASS / 0 FAIL (REGR 56 + ART 81 + TRIP 2 + blknochg 4 + SKIP-НП 1 verified untouched).
+
+**Глоссарий b8:** см. `chunk-glossary-w2.md` (822 → 832).
+
+**Codepoint findings (TRIP):**
+- SKU59 r60: 1× literal `°C` U+00B0+Lat U+0043, XCH Cyr х U+0445 в `4х6` + Lat x U+0078 ×2 в `340x370x240` (source-mix), DASH `—` U+2014 em-dash в «корпус — неіржавка сталь» (RU: «корпус — нержавеющая сталь»), no `\n` (single-line skel с leading-text перед `<p>`).
+- SKU61 r62: NO DEG, XCH Cyr х U+0445 в `3х5` + Lat x U+0078 в `320x437x(H)251` (source-mix), no DASH, ASCII apostrophe `'` U+0027 ×2 в «об'ємних»/«п'ять» (RU: без апострофа «объемных»/«пять»), `\n` ×11.
+
+**Soft-notes (pre-existing в c36, не наша правка):** SKU57/58/60/62/63 — c36 уже RU (fixed НЕ тронут). SKU57/58 модель содержит Cyr В U+0412 verbatim (не Lat W+B). SKU61 c35 source-mix UA/RU (RU-форма «однопостовая» в UA-тексте; RU adj «неприлипающая» + UA noun «поверхню») — RU нормализованы. SKU62 c5 genuine RU «оладьев» (нестандартная форма род.мн., правильнее «оладий») — источник verbatim.
+
+**Открытых вопросов b8:** нет.
+
+---
+
+<!-- Сводка по батчу b9 ниже. -->

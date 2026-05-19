@@ -3,7 +3,7 @@
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-065 (81 SKU, rows 2..82; ART 2121426618 … 2447469404)
 **Apply key:** `Артикул` (col1, scoped per row)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-064
-**Status:** b6 DONE 48/81 (b7 предстоит; b1-b10 по 8 SKU + b11=SKU81 1 SKU)
+**Status:** b8 DONE 64/81 (b9 предстоит; b1-b10 по 8 SKU + b11=SKU81 1 SKU)
 
 Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Формат — как chunk-064-diff.md.
 
@@ -190,3 +190,29 @@ SKIP-НП prelim (HURAKAN, forward-only, тело из фида НП позже)
 ---
 
 <!-- Сводка по батчу b8 ниже. -->
+<!-- b8 marker -->
+
+## b8 — diff (SKU 57-64, rows 58-65), 64/81
+
+**Категории:** blk триплет 2 · blknotrip 0 · blknochg 5 · SKIP-НП 1 = 8.
+
+### blk триплет (2)
+- **SKU 59** (r60, ART 683160374, FROSTY WS-15 бельгийская): col5 `Вафельниця FROSTY WS-15 для бельгійських вафель` → `Вафельница FROSTY WS-15 для бельгийских вафель`; col36 UA-leak → faithful RU (skel==c35 без `\n` с leading-text перед `<p>`, dims==c35: 4х6/300/15/340x370x240/1,5, deg `°C` U+00B0+Lat U+0043 verbatim, XCH Cyr х в `4х6` + Lat x ×2 в `340x370x240` source-mix verbatim, em-dash `—` U+2014 в «корпус — нержавеющая сталь» preserved).
+- **SKU 61** (r62, ART 823889894, Hendi 212103 бельгийская): col5 `Вафельниця Hendi 212103 для бельгійських вафель` → `Вафельница Hendi 212103 для бельгийских вафель`; col36 UA-leak → faithful RU (skel==c35 c `\n` ×11, dims==c35: 2/3х5/1,5/220/320x437x/251/28, no DEG, XCH Cyr х в `3х5` + Lat x в `320x437x(H)251` source-mix, `(H)` высота-маркер preserved; SOURCE-MIX UA/RU: UA «однопостовая» (RU-форма в UA) + «неприлипающая поверхню» (UA noun + RU adj) → RU нормализованы «однопостовая» + «антипригарная поверхность»; ASCII apostrophe `'` U+0027 в UA «об'ємних»/«п'ять» → RU без апострофа «объемных»/«пять»; UA «Тена» → RU «ТЭНа»).
+
+### blknotrip (0)
+— нет.
+
+### blknochg (5)
+- **SKU 57** (AIRHOT WВ-НК1 гонгконгская с начинкой, Cyr В в модели) / **SKU 58** (FROSTY VE-01 гонконгская bubble waffle) / **SKU 60** (GoodFood WB1RA поворотная круглые) / **SKU 62** (GoodFood EG25R оладьи, c5 «оладьев» нестандартная форма род.мн. verbatim) / **SKU 63** (SILVER 2137 сердечками): c5==c7 genuine RU, c35!=c36.
+
+### SKIP-НП (1)
+- **SKU 64** (r65, ART 1147781261, HURAKAN HKN-GES2M бельгийская) — НП-эксклюзив, fixed row65 НЕ тронут (тело из фида НП позже). SKIP-НП #1 для chunk-065.
+
+**Codepoint findings:** SKU59 `°C` Lat ×1 + XCH Cyr х + Lat x ×2 source-mix + em-dash `—` U+2014; SKU61 no DEG + XCH Cyr х + Lat x source-mix + `(H)` + ASCII apostrophe `'` ×2 removed in RU.
+
+**Verify:** 144 PASS / 0 FAIL (REGR 56 + ART 81 + TRIP 2 + blknochg 4 + SKIP-НП 1).
+
+---
+
+<!-- Сводка по батчу b9 ниже. -->
