@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-062 (81 SKU)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 32/81 (blk триплет 6 / blknochg 25 / blknotrip 1 / SKIP-НП 0; Открытых вопросов 0)
+**Status:** IN PROGRESS 40/81 (blk триплет 10 / blknochg 28 / blknotrip 1 / SKIP-НП 1; Открытых вопросов 0)
 **Worker:** W2 (параллельный воркер, диапазон chunk-055 … chunk-085; W1 ведёт chunk-001 … chunk-054)
 **Scaffold:** chunk-062 scaffold (W2, продолжение chunk-061). chunk-061 ЗАКРЫТ 67/67 (blk триплет 29 / blknochg 34 / blknotrip 0 / SKIP-НП 4; OQ 0). chunk-062 = 81 SKU, openpyxl rows 2..82; первый SKU1 ART2424757446 «Гриль контактний SARO PG 1B», последний SKU81 ART2059507443 «Теплова вітрина Hurakan WD-120L». 11 батчей (б1-10 ×8 = 80, б11 = SKU81 ×1 финальный). SKIP-НП зонд по `Название` (NP-список HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA — Lat+Cyr): **6 hits — все HURAKAN**: SKU34 (ART736117487 «Гриль роликовий HURAKAN HKN-GW7M»), SKU53 (ART2375841678 «Гриль роликовий HURAKAN HKN-GW11M»), SKU54 (ART2375848556 «Гриль роликовий HURAKAN HKN-GW9M»), SKU66 (ART901422138 «Теплова вітрина HURAKAN HKN-WD2»), SKU67 (ART1168676811 «Теплова вітрина HURAKAN HKN-WD3M»), SKU81 (ART2059507443 «Теплова вітрина Hurakan WD-120L»). Эти SKU → SKIP-НП (тело из фида НП позже), вносятся в таблицу при обработке батчей б5 (SKU34) / б7 (SKU53/54) / б9 (SKU66/67) / б11 (SKU81). Прочие бренды (SARO и др.) НЕ в НП-списке — обрабатываются обычно.
 
@@ -112,5 +112,32 @@
 - SKU27 GoodFood HDRG5 RED: genuine-RU энтити-вариативность `°C`→`&deg;С` (как в source RU). NAME консистентен. blknochg → fixed НЕ тронут.
 - SKU28 GoodFood HDRG7 RED: genuine-RU энтити `°C`→`&deg;С`; source-склейка `(3 ролика +4 ролика)` + drop тире (genuine RU артефакт source, UA аналогично). NAME консистентен. blknochg → fixed НЕ тронут.
 - SKU30/31/32 Hendi: source UA col35 содержит RU-leak-артефакт `Непрігорающая поверхню роликів` (полу-RU в UA-описании) — переведён в чистый RU `Непригорающая поверхность роликов` в рамках tag-в-tag (blk триплет, не отдельный soft-note: UA-сторона source, не genuine-RU).
+
+---
+## Батч 5 (SKU 33-40, openpyxl rows 34-41) — 40/81
+
+**Категории:** blk триплет 4 · blknochg 3 · blknotrip 0 · SKIP-НП 1 · OQ 0.
+
+| SKU | row | ART | Имя (UA→RU) | Категория | fixed.xlsx |
+|---|---|---|---|---|---|
+| 33 | 34 | 648054935 | Гриль роликовий Hendi 268704 (11 роликів) → Гриль роликовый Hendi 268704 (11 роликов) | **blk триплет** (descUA==descRU True, col5==col4 UA-leak, col7 genuine RU) | **col5←col7 + col36 tag-в-tag RU (677→670)** |
+| 34 | 35 | 736117487 | Гриль роликовий HURAKAN HKN-GW7M (7 роликів) | **SKIP-НП #1** (HURAKAN — НП-эксклюзив) | НЕ тронут (тело из фида НП позже) |
+| 35 | 36 | 759815061 | Комплект скла→стекла на роликовий→роликовый гриль GoodFood GLASS HDRG5 | blknochg (descUA≠descRU, col5==col7 genuine RU) | НЕ тронут (==src) |
+| 36 | 37 | 759815518 | Комплект скла→стекла на роликовий→роликовый гриль GoodFood GLASS HDRG7 | blknochg | НЕ тронут (==src) |
+| 37 | 38 | 930800964 | Гриль роликовий→роликовый REEDNEE HDRG-E9-2 | blknochg | НЕ тронут (==src) |
+| 38 | 39 | 1110582495 | Гриль роликовий FROSTY WY-005 → Гриль роликовый FROSTY WY-005 | **blk триплет** (descUA==descRU True, col5==col4 UA-leak `роликовий`, col7 genuine RU `роликовый`) | **col5←col7 + col36 tag-в-tag RU (369→376)** |
+| 39 | 40 | 1110586122 | Гриль роликовий FROSTY WY-007 → Гриль роликовый FROSTY WY-007 | **blk триплет** | **col5←col7 + col36 tag-в-tag RU (369→376)** |
+| 40 | 41 | 1110586977 | Гриль роликовий FROSTY WY-009 → Гриль роликовый FROSTY WY-009 | **blk триплет** | **col5←col7 + col36 tag-в-tag RU (369→376)** |
+
+**blk триплет SKU33 Hendi 268704 (11):** col5←col7 `Гриль роликовый Hendi 268704 (11 роликов)`; col36 = полный tag-в-tag RU перевод source col35 (тот же Hendi roller-grill блок, что b4 SKU30 — **есть** строка `Раздельное управление ТЭНами (включение только половины роликов)`). Byte-exact verbatim: `150°C` (литер. U+00B0 + лат. C), `520x477x175` **ЛАТ. x (U+0078)**, `1,18 кВт` (запятая-десятич), `42 см`. skeleton==src, UA-маркеров 0.
+
+**blk триплет SKU38/39/40 FROSTY WY-005/007/009:** col5←col7 `Гриль роликовый FROSTY WY-00N`; col36 = полный tag-в-tag RU перевод source col35 (общий FROSTY_WY блок). Byte-exact verbatim PER-SKU: размеры **все ЛАТ. x (U+0078)** — SKU38 `590x250x420` · SKU39 `590x330x420` · SKU40 `590x400x420`; мощность **SKU38 `0,96 кВт` ЗАПЯТАЯ-десятич** vs **SKU39 `1.33 кВт` / SKU40 `1.69 кВт` ТОЧКА-десятич** (сохранены как в source, НЕ нормализованы); `50 °C`/`250 °C` (пробел + литер. U+00B0 + лат. C); em-dash `Ролики — хромированная сталь`; `220 В`. skeleton==src (вкл. `\n`-разделители между `<li>`), UA-маркеров 0.
+
+**SKIP-НП SKU34 HURAKAN HKN-GW7M (#1):** бренд HURAKAN — НП-эксклюзив (forward-only приоритет над переводом). RU НЕ переписан, fixed.xlsx row35 НЕ тронут (col5/col36 == source); тело придёт из фида НП позже. Внесён в SKIP-НП-таблицу chunk-062-MANUAL-REVIEW.md строкой #1.
+
+**Soft-notes (genuine-RU вариативность / артефакты source — НЕ нумеруются, НЕ OQ; blknochg → fixed НЕ тронут, LIVE НЕ переписан):**
+- SKU35 GoodFood GLASS HDRG5: genuine-RU склейка `4мм` (UA `4 мм` с пробелом); genuine-RU лид сохраняет UA-форму `Комплект стекла на роликовий гриль` / `на гриль роликовый HDRG5` (смешение `роликовий`/`роликовый` — артефакт source genuine RU). NAME консистентен (col5==col7). blknochg → fixed НЕ тронут.
+- SKU36 GoodFood GLASS HDRG7: то же (склейка `4мм` + UA-форма `роликовий` в genuine-RU лиде). NAME консистентен. blknochg → fixed НЕ тронут.
+- SKU37 REEDNEE HDRG-E9-2: genuine-RU чистый (`Роликовый гриль на 9 роликов, выполненных из нержавеющей стали…`, descUA≠descRU 279/280). NAME консистентен. blknochg → fixed НЕ тронут.
 
 ---
