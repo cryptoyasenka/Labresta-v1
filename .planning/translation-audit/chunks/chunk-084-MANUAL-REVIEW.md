@@ -221,3 +221,25 @@
 **Verify:** 48 PASS / 0 FAIL. Без новых OQ.
 
 **Cumulative chunk-084:** 64/71 (TRIP 32 / blknotrip 0 / blknochg 31 / blkfix 1 / SKIP-НП 0; 364 PASS / 0 FAIL).
+
+
+## b9 FINAL (SKU 65-71, rows 66-72) — DONE 71/71
+
+**Категории:** blk триплет 1 / blknotrip 0 / blknochg 6 / blkfix 0 / SKIP-НП 0.
+
+### blk триплет (c5←c7 + c36 полный RU-перевод тела)
+
+- **r67** SKU=66 ART=1346613434 FROSTY FL-78 white (шкаф настольный холодильный, 78 л, стекло 4 стороны, 3 полки, 0..+12°C, 0,19 кВт, 452×406×966 мм) — c5 UA → "Шкаф-витрина холодильная FROSTY FL-78, white"; c35==c36 UA → c36 переведен (531 chars). NB: тот же body что у r46 FROSTY FL-78 black (b6) — same source template.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r66** SKU=65 ART=1225382411 GoodFood RTW160L Premium — c5==c7 RU clean, c36 RU полный (883 chars).
+- **r68** SKU=67 ART=1536891596 FROSTY FL238 white — c5==c7 RU clean, c36 RU полный (520 chars).
+- **r69** SKU=68 ART=665783836 FROSTY RT280L white (кондитерский) — c5==c7 RU clean, c36 RU полный (529 chars).
+- **r70** SKU=69 ART=1086604250 GoodFood RT98L белая — c5==c7 RU clean, c36 RU полный (825 chars).
+- **r71** SKU=70 ART=1086609724 GoodFood RT98L черная — c5==c7 RU clean, c36 RU полный (844 chars).
+- **r72** SKU=71 ART=1225375800 GoodFood RT68L черная — c5==c7 RU clean, c36 RU полный (827 chars).
+
+**Verify:** 32 PASS / 0 FAIL. Без новых OQ.
+
+**Cumulative chunk-084 (ЗАКРЫТ):** 71/71 (TRIP 33 / blknotrip 0 / blknochg 37 / blkfix 1 / SKIP-НП 0; 396 PASS / 0 FAIL).

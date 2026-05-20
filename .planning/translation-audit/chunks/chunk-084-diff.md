@@ -204,3 +204,33 @@
 | 65 | 64 | GoodFood RT78L белая |
 
 **Verify:** 48 PASS / 0 FAIL. Без новых OQ.
+
+
+## b9 FINAL (SKU 65-71, rows 66-72)
+
+Категории: blk триплет 1 / blknotrip 0 / blknochg 6 / blkfix 0 / SKIP-НП 0.
+
+### blk триплет
+
+| row | SKU | модель |
+|---|---|---|
+| 67 | 66 | FROSTY FL-78 white (шкаф настольный, 78 л) |
+
+### blknochg
+
+| row | SKU | модель |
+|---|---|---|
+| 66 | 65 | GoodFood RTW160L Premium |
+| 68 | 67 | FROSTY FL238 white |
+| 69 | 68 | FROSTY RT280L white (кондитерский) |
+| 70 | 69 | GoodFood RT98L белая |
+| 71 | 70 | GoodFood RT98L черная |
+| 72 | 71 | GoodFood RT68L черная |
+
+**Verify:** 32 PASS / 0 FAIL. Без новых OQ.
+
+---
+
+**chunk-084 ЗАКРЫТ:** 71/71 (TRIP 33 / blknotrip 0 / blknochg 37 / blkfix 1 / SKIP-НП 0; 396 PASS / 0 FAIL).
+
+**Cumulative W2 OQ:** 17 (новые в chunk-084: #14 r4 FSC100 prose FS80CP; #15 r6 UF50GCP c36 RTD99L body; #16 r21/r22/r23/r24 Latin c в чиcтки; #17 r39 source h2 RT78L vs c4/c5/c7 RT78B typo).
