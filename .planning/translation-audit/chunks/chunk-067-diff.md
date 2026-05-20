@@ -3,7 +3,7 @@
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-067 (74 SKU, rows 2..75; ART 2045345276 … 2033010783)
 **Apply key:** `Артикул` (col1, scoped per row)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-066
-**Status:** b3 DONE 24/74 (cum: TRIP 10 / blknotrip 0 / blknochg 14 / SKIP-НП 0; b4 предстоит; b1..b9 по 8 SKU + b10=SKU73-74 2 SKU)
+**Status:** b4 DONE 32/74 (cum: TRIP 17 / blknotrip 0 / blknochg 15 / SKIP-НП 0; b5 предстоит; b1..b9 по 8 SKU + b10=SKU73-74 2 SKU)
 
 Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Формат — как chunk-066-diff.md.
 
@@ -93,3 +93,30 @@ SKIP-НП prelim (forward-only, тело из фида НП позже): FAGOR/F
 ### SKIP-НП (0)
 
 В b3 нет brand-locked НП.
+
+
+## Батч 4 (SKU 25-32, rows 26-33) — DONE
+
+**Итог:** TRIP 7 / blknotrip 0 / blknochg 1 / SKIP-НП 0 / verify 238 PASS / 0 FAIL.
+
+### blk триплет (7)
+
+| SKU | row | Артикул | Бренд+модель | col5: UA→RU | col36 |
+|---|---|---|---|---|---|
+| 25 | 26 | 680817555 | Hendi 261309 тостер конвейерный | `Тостер конвеєрний Hendi 261309` → `Тостер конвейерный Hendi 261309` | faithful RU body (непрерывной обжарки, нагревательные элементы, передний/задний поддон) skel==UA |
+| 26 | 27 | 883743422 | FROSTY DS-4 тостер вертикальный | `Тостер вертикальний FROSTY DS-4` → `Тостер вертикальный FROSTY DS-4` | faithful RU body (на 4 кусочка, 315х270х220 мм) skel==UA |
+| 27 | 28 | 1141182737 | SIRMAN 4Q тостер горизонтальный | `Тостер SIRMAN 4Q горизонтальний` → `Тостер SIRMAN 4Q горизонтальный` | faithful RU body (две полочки, съемные решетки без ё, кварцевые трубы, армированные нагреватели) skel==UA |
+| 29 | 30 | 1889465346 | Fimar TOP6 тостер горизонтальный | c5 unchanged `Тостер Fimar TOP6` (латинский brand+model, UA c4==c6) | faithful RU body (две полочки, кварцевые лампы, таймер 15 мин.) skel==UA |
+| 30 | 31 | 2043314442 | Frosty TT-450 тостер конвейерный | c5←c7 verbatim `Тостер конвеерный Frosty TT-450` (source typo «конвеерный» faithful, no normalize) | faithful RU body (~350 кус./час, 360х300, 7 позиций, 3 режима, нержавеющая сталь) skel==UA; SPACE-разделитель между первыми 3 `<p>` блоками воспроизводит источник |
+| 31 | 32 | 2126973957 | Frosty ETC-300 тостер конвейерный | `Тостер конвеєрний Frosty ETC-300` → `Тостер конвейерный Frosty ETC-300` | faithful RU body (~250 кус./час, 260х300, 7 позиций, 3 режима) skel==UA |
+| 32 | 33 | 2126976992 | Frosty ETC-450 тостер конвейерный | `Тостер конвеєрний Frosty ETC-450` → `Тостер конвейерный Frosty ETC-450` | faithful RU body (~350 кус./час, 360х300, 2,80 кВт/220В, 495x420x410, вес 16.00) skel==UA |
+
+### blknochg (1)
+
+| SKU | row | Артикул | Бренд+модель | Причина |
+|---|---|---|---|---|
+| 28 | 29 | 1889450319 | Fimar TOP3 | c5==c7 genuine RU; c36 genuine RU; источник содержит расхождение c4/c6=SIRMAN UA vs c5/c7=Fimar TOP3 и c35=SIRMAN body vs c36=Fimar body — live store fixed, blknochg не правим |
+
+### SKIP-НП (0)
+
+В b4 нет brand-locked НП.
