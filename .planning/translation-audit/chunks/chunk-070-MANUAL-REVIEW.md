@@ -1,7 +1,7 @@
 # chunk-070 MANUAL REVIEW (W2)
 
-**Status:** chunk-070 b6 DONE 48/59 (cum TRIP 16 / blknotrip 0 / blknochg 29 / blkfix 1 / SKIP-НП 2; 225 PASS / 0 FAIL) — next b7 (SKU 49-56, rows 50-57)
-**Last updated:** chunk-070 b6 DONE 48/59
+**Status:** chunk-070 b7 DONE 56/59 (cum TRIP 19 / blknotrip 0 / blknochg 31 / blkfix 4 / SKIP-НП 2; 234 PASS / 0 FAIL) — next b8 (SKU 57-59, rows 58-60, финал 3 SKU)
+**Last updated:** chunk-070 b7 DONE 56/59
 
 ## Структура
 
@@ -212,3 +212,48 @@
 **Открытые вопросы:** 0 новых в b6. (r44 pkg-height «33» — source value faithful, не флагуется как OQ, поскольку правило «structural typos preserved».)
 
 **Verify:** 225 PASS / 0 FAIL.
+
+## b7 (SKU 49-56, rows 50-57) — 56/59
+
+**Категории:** TRIP 3 (r50 Lavezzini LAPACK 550S_2x700 + r51 Lavezzini MEGA + r54 HotmixPRO Gastro) + blknotrip 0 + blknochg 2 (r52 Valko Favola 415/25 Rapida + r57 FROSTY JD-2) + **blkfix 3** (r53 Sirman Minicooker + r55 Sirman Mycook + r56 Pacojet II Sirman, все Ё→Е) + SKIP-НП 0.
+
+**TRIP detail:**
+- **r50 Lavezzini LAPACK 550S_2x700** — c5←c7; c36 ← RU 1058 chars (3 intro paras + 13 li tech + 4 li pkg). Близнец r49 (тот же boilerplate про «с колпаком», ЖК-дисплей, structural typo `<strong>Технические характеристики</strong>:` preserved), но 160 кг / 840x700x1050 / 2 кВт vs r49 150 кг / 840x680x1050 / 1.45 кВт. Pkg dims 175/770/925/1155.
+- **r51 Lavezzini MEGA** — c5←c7 «Вакуумный упаковщик Lavezzini MEGA»; c36 ← RU 839 chars (1 intro para + 11 li tech + 4 li pkg). Intro отличается от LAPACK: «чудове рішення для тих клієнтів, які надзвичайно вимогливі» → «отличное решение для тех клиентов, которые чрезвычайно требовательны». Камера 830х660х230 / 2 планки 600 мм / насос 100 м3/час / 220 кг / 900x800x1150 / 2.4 кВт / 380V. Pkg dims 59/590/670/550 inconsistent с net weight 220 кг — preserved faithful (это явный source-typo, но сохранён).
+- **r54 HotmixPRO Gastro** — c5←c7 «Термомиксер HotmixPRO Gastro»; c36 ← RU 2125 chars — БОЛЬШОЕ тело (5 intro paras + 11 li applications + 13 li tech). Особенности:
+  - **UA `&#39;` dropped** (4 раза): «пам`яті» → «памяти», «обов`язково» → «обязательно», «1`500» → «1500», «2`300» → «2300» (thousand-separator typo source).
+  - **«карамелізовату»** (UA wrong morphology) → переведено «карамелизовать сахар» (faithful intent rather than verbatim broken form).
+  - **`&hellip;` `&deg;` preserved** (HTML entities нетронуты).
+  - Двигатель 1500 Вт / 12500 об/мин / до 190°C (374°F) / шаг 1°C / 250 рецептов / SD-карта / WT функция / sous-vide.
+  - Список применений: измельчения / смешивания / замеса теста / гомогенизации / **карамелизация** (nominative, как в UA) / приготовления / **жарка** (nom) / **пастеризация** (nom) / темперирования шоколада / приготовления по технологии sous-vide / и другие&hellip; — **смешанная морфология (gen+nom)** faithful preserved.
+  - Tech: Объем 2 л (без Ё) / скорость 0-12500 об/мин / 26 скоростей / 4 ч непрерывной работы / +24 ... +190°С / самодиагностика / >200 рецептов / загрузка через Интернет / нагрев 800 Вт / двигатель 1500 Вт / общая 2300 Вт / 220 В / Комплектация (Лопасти, лопатка, крышка с мерным стаканом, лопатка).
+
+**blkfix detail:**
+- **r53 Sirman Minicooker** — c5/c7 уже RU «Термоблендер Sirman Minicooker индукционный»; c36 1× «лёгкого» → «легкого» (Ё→Е).
+- **r55 Sirman Mycook** — c5/c7 уже RU «Термоблендер Sirman Mycook индукционный»; c36 1× «лёгкого» → «легкого» (Ё→Е).
+- **r56 Pacojet II Sirman** — c5/c7 уже RU «Аппарат (бликсер) Pacojet II Sirman»; c36 1× «Ёмкость» → «Емкость» (Ё→Е).
+
+**blknochg detail:**
+- **r52 Valko Favola 415/25 Rapida (1410V154)** — c5/c7 RU «Вакуумный упаковщик», c36 762 chars RU без UA, без Ё.
+- **r57 FROSTY JD-2** — c5/c7 RU «Дозатор для соусов FROSTY JD-2», c36 236 chars RU без UA, без Ё.
+
+**Терминология b7 (новые):**
+- «Термоміксер» → «Термомиксер»
+- «чудове рішення» → «отличное решение»
+- «надзвичайно вимогливі» → «чрезвычайно требовательны»
+- «гарантований кінцевий результат» → «гарантированный конечный результат»
+- «найважчого робочого циклу» → «самом тяжелом рабочем цикле»
+- «карамелізовату цукор» (source-typo) → «карамелизовать сахар» (faithful intent)
+- «постійна присутність оператора» → «постоянное присутствие оператора»
+- «програмованої пам`яті» → «программируемой памяти»
+- «прикріпленого документа» → «прикрепленного документа»
+- «темперування шоколаду» → «темперирования шоколада»
+- «за технологією sous-vide» → «по технологии sous-vide»
+- «безперервної роботи» → «непрерывной работы»
+- «Обсяг» → «Объем» (без Ё)
+- «Лопасті» → «Лопасти»
+- «мірним стаканом» → «мерным стаканом»
+
+**Открытые вопросы:** 0 новых в b7. (r51 LAVEZZINI MEGA pkg-dims source inconsistent — preserved faithful per structural-typo rule, не флагуется как OQ.)
+
+**Verify:** 234 PASS / 0 FAIL.

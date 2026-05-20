@@ -1,7 +1,7 @@
 # chunk-070 DIFF (W2)
 
-**Status:** chunk-070 b6 DONE 48/59 (cum TRIP 16 / blknotrip 0 / blknochg 29 / blkfix 1 / SKIP-НП 2)
-**Last updated:** chunk-070 b6 DONE 48/59
+**Status:** chunk-070 b7 DONE 56/59 (cum TRIP 19 / blknotrip 0 / blknochg 31 / blkfix 4 / SKIP-НП 2)
+**Last updated:** chunk-070 b7 DONE 56/59
 
 Source: `chunk-070.xlsx` (RO, 59 SKU rows 2..60, ART 2176091387..500051832) → operating: `chunk-070-fixed.xlsx` (gitignored, скопирован из source 1:1).
 
@@ -122,3 +122,19 @@ Batches заполняются после каждого закрытого ба
 
 **Итого b6:** TRIP 8 + blknotrip 0 + blknochg 0 + blkfix 0 + SKIP-НП 0. Verify **225 PASS / 0 FAIL**.
 **Cum после b6:** TRIP 16 + blknotrip 0 + blknochg 29 + blkfix 1 + SKIP-НП 2 = **48/59**.
+
+## b7 (SKU 49-56, rows 50-57) — 56/59
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 49 | 50 | 2398156637 | Lavezzini LAPACK 550S_2x700 | **TRIP** | c5←c7; c36 ← RU 1058 chars (близнец r49 с другими размерами): камера 720x570x220 / 2 планки 550 мм / 60 м3/час / 160 кг / 840x700x1050 / 2 кВт / 380V; structural typo `<strong>...</strong>:` preserved |
+| 2 | 50 | 51 | 2398169922 | Lavezzini MEGA | **TRIP** | c5←c7; c36 ← RU 839 chars: чрезвычайно требовательный клиент, камера 830х660х230 / 2 планки 600 мм / насос 100 м3/час / 220 кг / 900x800x1150 / 2.4 кВт / 380V (pkg dims 59/590/670/550 inconsistent source — preserved faithful) |
+| 3 | 51 | 52 | 2398185496 | Valko Favola 415/25 Rapida (1410V154) | blknochg | — (c5/c7 RU «Вакуумный упаковщик», c36 762 chars RU без UA, без Ё) |
+| 4 | 52 | 53 | 838995845 | Sirman Minicooker индукционный | **blkfix** | c36 Ё→Е x1 (лёгкого→легкого) |
+| 5 | 53 | 54 | 1455941492 | HotmixPRO Gastro | **TRIP** | c5←c7 «Термомиксер HotmixPRO Gastro»; c36 ← RU 2125 chars (5 intro paras + 11 li applications + 13 li tech): 1500 Вт двигатель / 12500 об/мин / до 190°C / 250 рецептов / SD-карта / sous-vide; UA `&#39;` (пам'яті, 1'500, 2'300) dropped; «карамелізовату»→«карамелизовать» faithful intent; «Обсяг»→«Объем» (без Ё) |
+| 6 | 54 | 55 | 838981620 | Sirman Mycook индукционный | **blkfix** | c36 Ё→Е x1 (лёгкого→легкого) |
+| 7 | 55 | 56 | 524318041 | Pacojet II Sirman | **blkfix** | c36 Ё→Е x1 (Ёмкость→Емкость) |
+| 8 | 56 | 57 | 881139623 | FROSTY JD-2 дозатор для соусов | blknochg | — (c5/c7 RU, c36 236 chars RU без UA, без Ё) |
+
+**Итого b7:** TRIP 3 (r50/r51/r54) + blknotrip 0 + blknochg 2 (r52/r57) + blkfix 3 (r53/r55/r56) + SKIP-НП 0. Verify **234 PASS / 0 FAIL**.
+**Cum после b7:** TRIP 19 + blknotrip 0 + blknochg 31 + blkfix 4 + SKIP-НП 2 = **56/59**.
