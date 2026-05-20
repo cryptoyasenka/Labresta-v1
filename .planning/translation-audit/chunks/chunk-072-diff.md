@@ -1,7 +1,7 @@
 # chunk-072 diff (W2, продолжение chunk-071)
 
-**Status:** chunk-072 b1 DONE 8/89 (cum TRIP 6 / blknotrip 0 / blknochg 2 / blkfix 0 / SKIP-НП 0; 285 PASS / 0 FAIL) — next b2 (SKU 9-16, rows 10-17)
-**Last updated:** chunk-072 b1 DONE 8/89
+**Status:** chunk-072 b2 DONE 16/89 (cum TRIP 14 / blknotrip 0 / blknochg 2 / blkfix 0 / SKIP-НП 0; 437 PASS / 0 FAIL) — next b3 (SKU 17-24, rows 18-25)
+**Last updated:** chunk-072 b2 DONE 16/89
 
 **Источник:** `.planning/translation-audit/chunks/chunk-072.xlsx` (89 SKU, rows 2..90, ART 1173123408..2197264833).
 **Фикс-таргет:** `.planning/translation-audit/chunks/chunk-072-fixed.xlsx` (gitignored).
@@ -35,3 +35,20 @@
 
 **Итого b1:** TRIP 6 + blknotrip 0 + blknochg 2 + blkfix 0 + SKIP-НП 0. Verify **285 PASS / 0 FAIL**.
 **Cum после b1:** TRIP 6 + blknotrip 0 + blknochg 2 + blkfix 0 + SKIP-НП 0 = **8/89**. UNPROC = 81 (rows 10-90).
+
+
+## b2 (SKU 9-16, rows 10-17) — 16/89
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 9 | 10 | 2102932030 | Gi Metal AC-TPF11 нож-лопатка для теста | **TRIP** | c5←c7 (31 chars); c36 RU 359 chars. Маленький короткий блок: <p> описание + <ul> Технические характеристики (Материал/Размеры/Вес) + <ul> Размер (ширина/длина). |
+| 2 | 10 | 11 | 2102943418 | Gi Metal AC-TPM нож-лопатка для теста | **TRIP** | c5←c7 (29 chars); c36 RU 360 chars. Тот же шаблон что r10, dims 75×150, вес 0.18 кг. |
+| 3 | 11 | 12 | 2121016179 | Hendi 198254 газовая горелка для крем брюле | **TRIP** | c5←c7 (43 chars); c36 RU 616 chars. **Source-quirk: c4 «Газова пальник» (UA gender mismatch — feminine adj + masc noun) → c7/c5 normal RU «Газовая горелка». Body h2 RU mirrors c7**. «Кухарський факел» → «Поварской факел». UA `&#39;` в «полум&#39;я»/«м&#39;яса» dropped. |
+| 4 | 12 | 13 | 2852907601 | Frosty KS100E нож для шаурмы электрический | **TRIP** | c5←c7 (28 chars); c36 RU 587 chars. **Source-quirk: «корпус: нержавеющая сталь пластик (черный)» — отсутствует разделитель между «сталь» и «пластик» (RU+RU без знака — повторяет UA «нержавіюча сталь пластик»)** preserve glue. |
+| 5 | 13 | 14 | 964757839 | Hendi 267240 электронож для шаурмы | **TRIP** | c5←c7 (34 chars); c36 RU 807 chars. UA `&#39;` в «м&#39;яса» dropped. Габариты «194x113x (H)173мм» (пробел перед `(H)` faithful). |
+| 6 | 14 | 15 | 1156825442 | Hendi 588031 Kitchen Line сифон для сливок 0,25 л | **TRIP** | c5←c7 (49 chars); c36 RU 509 chars. UA `&#39;` в «Об&#39;єм» dropped → «Объем». «Фіолетовий колір» → «Фиолетовый цвет». «балончиками для збитих вершків (N₂O)» → «баллончиками для взбитых сливок (N₂O)». |
+| 7 | 15 | 16 | 873362379 | Hendi 551813 воронка-дозатор для соусов и кремов | **TRIP** | c5←c7 (50 chars uppercase); c36 RU 338 chars. **Source-quirk: «Призначений» (masc) для «Воронка» (fem) — gender mismatch preserve → RU «Предназначен» (masc)**. Literal `'` в «Об'єм» dropped → «Объем». |
+| 8 | 16 | 17 | 873550393 | Hendi 271407 термометр цифровой с зондом | **TRIP** | c5←c7 (65 chars uppercase); c36 RU 630 chars. «Протиударний» → «Противоударный». Режим "lock mode" preserved (latin literal). |
+
+**Итого b2:** TRIP 8 + blknotrip 0 + blknochg 0 + blkfix 0 + SKIP-НП 0. Verify **437 PASS / 0 FAIL**.
+**Cum после b2:** TRIP 14 + blknotrip 0 + blknochg 2 + blkfix 0 + SKIP-НП 0 = **16/89**. UNPROC = 73 (rows 18-90).
