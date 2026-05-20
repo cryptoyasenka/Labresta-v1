@@ -96,3 +96,23 @@
 | 33 | 32 | 2139806837 | Tefcold FS1280 |
 
 **Verify:** 72 PASS / 0 FAIL. Без новых OQ.
+
+
+## b5 (SKU 33-40, rows 34-41)
+
+Категории: blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+
+### blknochg
+
+| row | SKU | ART | модель |
+|---|---|---|---|
+| 34 | 33 | 2139807818 | Tefcold SD1280 |
+| 35 | 34 | 2139810528 | Tefcold SDU1280 |
+| 36 | 35 | 2139811585 | Tefcold SDU1375 |
+| 37 | 36 | 2139813373 | Tefcold FS1380 |
+| 38 | 37 | 2139815227 | Tefcold SCU1375 |
+| 39 | 38 | 2139818343 | Tefcold SCU1280CP |
+| 40 | 39 | 2139819535 | Tefcold FSC1380 |
+| 41 | 40 | 2139827779 | Tefcold SCU1375CP |
+
+**Verify:** 72 PASS / 0 FAIL. Без новых OQ.
