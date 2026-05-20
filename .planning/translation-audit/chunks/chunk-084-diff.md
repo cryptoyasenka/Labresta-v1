@@ -29,3 +29,28 @@
 | 6 | 5 | Tefcold UF50GCP (48 л, R290) | c36 prose первый параграф переписан с GoodFood RTD99L → UF50GCP faithful RU (specs матчили c35); OQ #15 |
 
 **Verify:** 28 PASS / 0 FAIL. +2 OQ (#14 r4 FSC100 body FS80CP; #15 r6 UF50GCP c36 contained RTD99L body).
+
+
+## b2 (SKU 9-16, rows 10-17)
+
+Категории: blk триплет 4 / blknotrip 0 / blknochg 4 / blkfix 0 / SKIP-НП 0.
+
+### blk триплет
+
+| row | SKU | модель |
+|---|---|---|
+| 14 | 13 | FROSTY SGD150 (барный минибар, 142 л) |
+| 15 | 14 | Forcar G-ER200GSS нерж (мини-холодильник, 130 л, R600А) |
+| 16 | 15 | Frosty FTD200GSS (холодильный шкаф, 127 л) |
+| 17 | 16 | Forcar G-EF200GSS (морозильный шкаф, 130 л, R290, Италия) |
+
+### blknochg
+
+| row | SKU | модель |
+|---|---|---|
+| 10 | 9 | Tefcold UF200VG (морозильный) |
+| 11 | 10 | Tefcold UF200VSG (морозильный) |
+| 12 | 11 | Tefcold GF200VSG (настольный, охладитель бокалов) |
+| 13 | 12 | Forcar G-EF200 (барный морозильный, c35==c36 RU) |
+
+**Verify:** 40 PASS / 0 FAIL. Без новых OQ.

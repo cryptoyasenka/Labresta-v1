@@ -50,3 +50,26 @@
 **Verify:** 28 PASS / 0 FAIL.
 
 **Cumulative chunk-084:** 8/71 (TRIP 0 / blknotrip 0 / blknochg 7 / blkfix 1 / SKIP-НП 0; 28 PASS / 0 FAIL).
+
+
+## b2 (SKU 9-16, rows 10-17) — DONE 16/71
+
+**Категории:** blk триплет 4 / blknotrip 0 / blknochg 4 / blkfix 0 / SKIP-НП 0.
+
+### blk триплет (c5←c7 + c36 полный RU-перевод тела)
+
+- **r14** SKU=13 ART=1407668964 FROSTY SGD150 (барный минибар, 142 л, +2..+8°C, 0,2 кВт, 600×515×905) — c5 UA "Шафа барна FROSTY SGD150" → "Шкаф барный FROSTY SGD150"; c35==c36 source оба UA → c36 переведён полностью (445 chars).
+- **r15** SKU=14 ART=1553834006 Forcar G-ER200GSS нерж (мини-холодильник, 130 л, +2..+8°C, R600А, 220 В, 600×585×855) — c5 UA → "Шкаф холодильный Forcar G-ER200GSS нерж"; c36 переведён (654 chars; source имел &#39;, в новом RU без него).
+- **r16** SKU=15 ART=2106844926 Frosty FTD200GSS (холодильный шкаф, 127 л, 0/+8°C, 0,20 кВт/220В, 600×635×835, 39 кг) — c5 UA → "Шкаф холодильный Frosty FTD200GSS"; c36 переведён (813 chars).
+- **r17** SKU=16 ART=2336659589 Forcar G-EF200GSS (морозильный шкаф, 130 л, -18..-22°C, R290, 0.36 кВт/220V, 600×585×855, 44 кг, Италия) — c5 UA → "Шкаф морозильный Forcar G-EF200GSS"; c36 переведён полный (1160 chars, включая блок размеров в упаковке).
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r10** SKU=9 ART=2141758489 Tefcold UF200VG морозильный — c5==c7 RU clean, c36 RU полный (1159 chars).
+- **r11** SKU=10 ART=2143864042 Tefcold UF200VSG морозильный — c5==c7 RU clean, c36 RU полный (1171 chars).
+- **r12** SKU=11 ART=2143869122 Tefcold GF200VSG (настольный охладитель бокалов) — c5==c7 RU clean, c36 RU полный (1248 chars).
+- **r13** SKU=12 ART=1365900407 Forcar G-EF200 (барный морозильный) — c5==c7 RU clean, c35==c36 оба RU (поставщик сразу подал RU body, без UA-исходника).
+
+**Verify:** 40 PASS / 0 FAIL. Без новых OQ.
+
+**Cumulative chunk-084:** 16/71 (TRIP 4 / blknotrip 0 / blknochg 11 / blkfix 1 / SKIP-НП 0; 68 PASS / 0 FAIL).
