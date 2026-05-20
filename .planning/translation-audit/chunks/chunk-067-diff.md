@@ -3,7 +3,7 @@
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-067 (74 SKU, rows 2..75; ART 2045345276 … 2033010783)
 **Apply key:** `Артикул` (col1, scoped per row)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-066
-**Status:** b5 DONE 40/74 (cum: TRIP 20 / blknotrip 0 / blknochg 20 / SKIP-НП 0; b6 предстоит; b1..b9 по 8 SKU + b10=SKU73-74 2 SKU)
+**Status:** b6 DONE 48/74 (cum: TRIP 22 / blknotrip 0 / blknochg 22 / SKIP-НП 4; b7 предстоит; b1..b9 по 8 SKU + b10=SKU73-74 2 SKU)
 
 Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Формат — как chunk-066-diff.md.
 
@@ -147,3 +147,31 @@ SKIP-НП prelim (forward-only, тело из фида НП позже): FAGOR/F
 ### SKIP-НП (0)
 
 В b5 нет brand-locked НП.
+
+
+## Батч 6 (SKU 41-48, rows 42-49) — DONE
+
+**Итог:** TRIP 2 / blknotrip 0 / blknochg 2 / SKIP-НП 4 / verify 306 PASS / 0 FAIL.
+
+### blk триплет (2)
+
+| SKU | row | Артикул | Бренд+модель | col5: UA→RU | col36 |
+|---|---|---|---|---|---|
+| 46 | 47 | 2687386113 | ASBER GE-500 B DD посудомоечная (помпа слива) | `Посудомийна машина ASBER GE-500 B DD (помпа зливу)` → `Посудомоечная машина ASBER GE-500 B DD (помпа слива)` | faithful RU body (цикл 120 сек, кассета 500х500, бак 25л, бойлер 7л, дозатор, дренажная помпа, 600х605х830, 3.4 кВт, 220 В) skel==UA |
+| 47 | 48 | 468028908 | Oztiryakiler OBM1080MPDR (Ozti) купольная | `Посудомийна машина купольна Oztiryakiler OBM1080MPDR (Ozti)` → `Посудомоечная машина купольная Oztiryakiler OBM1080MPDR (Ozti)` | faithful RU body h2-заголовок (69/35/27 кассет/час, IPX5, 50x50 см, 380 В / 9,66 кВт, 50/102/132 с, 55-60 °C мойка / 80-85 °C ополаскивание, 670х785х1860) skel==UA |
+
+### blknochg (2)
+
+| SKU | row | Артикул | Бренд+модель | Причина |
+|---|---|---|---|---|
+| 44 | 45 | 2054640013 | Adler EVO 50 PD посудомоечная | c5==c7 genuine RU; c36 genuine RU; c35!=c36 minor variant; не трогаем |
+| 48 | 49 | 470771585 | SILANOS NЕ 700 PS PD/РВ (со сливной помпой) | c5==c7 genuine RU; c36 genuine RU; c35!=c36 minor variant; не трогаем |
+
+### SKIP-НП (4)
+
+| # | SKU | row | Артикул | Бренд | Название |
+|---|---|---|---|---|---|
+| #1 | 41 | 42 | 893760283 | FAGOR | Посудомийна машина FAGOR ADVANCE AD 505 BDD |
+| #2 | 42 | 43 | 1282877474 | Fagor | Посудомийна машина Fagor FIR-30-DD фронтальна |
+| #3 | 43 | 44 | 1282884918 | Fagor | Посудомийна машина Fagor FIR-80-DD купольна |
+| #4 | 45 | 46 | 2331547054 | TATRA | Посудомийна машина TATRA TW.F50+DR+DD |
