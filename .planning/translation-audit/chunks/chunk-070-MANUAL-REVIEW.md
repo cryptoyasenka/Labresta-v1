@@ -1,7 +1,7 @@
 # chunk-070 MANUAL REVIEW (W2)
 
-**Status:** chunk-070 b2 DONE 16/59 (cum TRIP 3 / blknotrip 0 / blknochg 11 / SKIP-НП 2; 192 PASS / 0 FAIL) — next b3 (SKU 17-24, rows 18-25)
-**Last updated:** chunk-070 b2 DONE 16/59
+**Status:** chunk-070 b3 DONE 24/59 (cum TRIP 4 / blknotrip 0 / blknochg 18 / SKIP-НП 2; 198 PASS / 0 FAIL) — next b4 (SKU 25-32, rows 26-33)
+**Last updated:** chunk-070 b3 DONE 24/59
 
 ## Структура
 
@@ -80,3 +80,24 @@
 **Открытые вопросы:** 0 новых в b2.
 
 **Verify:** 192 PASS / 0 FAIL.
+
+
+## b3 (SKU 17-24, rows 18-25) — 24/59
+
+**Категории:** TRIP 1 (r25 Lavezzini LX420 запайщик) + blknochg 7 (r18..r24) + SKIP-НП 0.
+
+**TRIP detail:**
+- **r25 Lavezzini LX420** — c5 ← c7 «Запайщик пакетов Lavezzini LX420»; c36 ← RU 268 chars (5 li: пищевые пакеты до 5 мм / крашеный металл / шов 420 мм / 0,6 кВт / 80х550х260 мм / 4 кг).
+
+**blknochg detail (никаких изменений в c5/c36):**
+- r18 Orved Evox 25 4м3/час (c36 1047 chars RU).
+- r19 PERS.PETROS LEVAC 4.
+- r20 Petros (Orved) Lerica С412.
+- r21 Petros LT1 для лотков «Термоупаковочная».
+- r22 Petros (Orved) Lerica С420 2 планки.
+- r23 LAVEZZINI ECO45 L напольный камерный 20 м3/час шов 450 мм 460x500x220 90 кг.
+- r24 SIRMAN W8 30 Vertigo вертикальная EASY TOUCH Wi-Fi 4 м3/час 22 кг.
+
+**Открытые вопросы:** 0 новых в b3.
+
+**Verify:** 198 PASS / 0 FAIL.

@@ -1,7 +1,7 @@
 # chunk-070 DIFF (W2)
 
-**Status:** chunk-070 b2 DONE 16/59 (cum TRIP 3 / blknotrip 0 / blknochg 11 / SKIP-НП 2)
-**Last updated:** chunk-070 b2 DONE 16/59
+**Status:** chunk-070 b3 DONE 24/59 (cum TRIP 4 / blknotrip 0 / blknochg 18 / SKIP-НП 2)
+**Last updated:** chunk-070 b3 DONE 24/59
 
 Source: `chunk-070.xlsx` (RO, 59 SKU rows 2..60, ART 2176091387..500051832) → operating: `chunk-070-fixed.xlsx` (gitignored, скопирован из source 1:1).
 
@@ -56,3 +56,20 @@ Batches заполняются после каждого закрытого ба
 
 **Итого b2:** TRIP 0 + blknotrip 0 + blknochg 7 + SKIP-НП 1. Verify **192 PASS / 0 FAIL**.
 **Cum после b2:** TRIP 3 + blknotrip 0 + blknochg 11 + SKIP-НП 2 = **16/59**.
+
+
+## b3 (SKU 17-24, rows 18-25) — 24/59
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 17 | 18 | 568706695 | Orved Evox 25, 4м3/час | blknochg | — (c36 1047 chars RU) |
+| 2 | 18 | 19 | 646844866 | PERS.PETROS LEVAC 4 | blknochg | — (c36 454 chars RU) |
+| 3 | 19 | 20 | 646844868 | Petros (Orved) Lerica С412 | blknochg | — (c36 584 chars RU) |
+| 4 | 20 | 21 | 647442348 | Petros LT1 для лотков | blknochg | — (c5/c7 «Термоупаковочная … для лотков», c36 333 chars RU) |
+| 5 | 21 | 22 | 1009196281 | Petros (Orved) Lerica С420 2 планки | blknochg | — (c36 631 chars RU) |
+| 6 | 22 | 23 | 1869658739 | LAVEZZINI ECO45 L напольный | blknochg | — (c5/c7 «напольный», c36 489 chars RU h2 камерный купольная 460x500x220 / 560x640x1050 / 90 кг) |
+| 7 | 23 | 24 | 2395332619 | SIRMAN W8 30 Vertigo | blknochg | — (c36 1340 chars RU EASY TOUCH Wi-Fi / 326x60x250 камера / 4 м3/час / 22 кг) |
+| 8 | 24 | 25 | 489841522 | Lavezzini LX420 запайщик | **TRIP** | c5←c7 «Запайщик пакетов Lavezzini LX420»; c36 ← RU 5 li (пищевые пакеты до 5 мм / крашеный металл / 420 мм / 0,6 кВт / 80х550х260 / 4 кг) |
+
+**Итого b3:** TRIP 1 + blknotrip 0 + blknochg 7 + SKIP-НП 0. Verify **198 PASS / 0 FAIL**.
+**Cum после b3:** TRIP 4 + blknotrip 0 + blknochg 18 + SKIP-НП 2 = **24/59**.
