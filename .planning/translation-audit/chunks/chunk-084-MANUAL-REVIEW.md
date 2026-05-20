@@ -198,3 +198,26 @@
 **Verify:** 60 PASS / 0 FAIL. Без новых OQ.
 
 **Cumulative chunk-084:** 56/71 (TRIP 28 / blknotrip 0 / blknochg 27 / blkfix 1 / SKIP-НП 0; 316 PASS / 0 FAIL).
+
+
+## b8 (SKU 57-64, rows 58-65) — DONE 64/71
+
+**Категории:** blk триплет 4 / blknotrip 0 / blknochg 4 / blkfix 0 / SKIP-НП 0.
+
+### blk триплет (c5←c7 + c36 полный RU-перевод тела)
+
+- **r58** SKU=57 ART=2376142032 Frosty RT280C-3 black (280 л, 5 хром полок, изогнутые двери, 4 колеса, 556×526×1913 мм, 89,50 кг, 0,38 кВт/220В) — c5 UA → "Шкаф холодильный Frosty RT280C-3, black"; c35==c36 UA → c36 переведен (828 chars).
+- **r59** SKU=58 ART=2601693798 REEDNEE RT58B black (58 л, 2 полки, R600a, верх+бок LED, 425×380×838 мм, 31,5 кг, 0,17 кВт/220В) — c5 UA → "Шкаф холодильный REEDNEE RT58B black"; c35==c36 UA с &#39; → c36 переведен (1037 chars), включая блок упаковки.
+- **r60** SKU=59 ART=1175062713 Hendi 233696 (кондитерский белый, 5 полок, 4 колеса с тормозом, R600a, +2..+6°C, 556×526×1913 мм, 0,29 кВт) — c5 UA → "Шкаф холодильный Hendi 233696"; c35==c36 UA → c36 переведен (858 chars).
+- **r61** SKU=60 ART=1175067702 Hendi 233290 (кондитерский черный, аналог Hendi 233696, source body уже частично RU с UA h2 — переведено полностью RU) — c5 UA → "Шкаф-витрина холодильная Hendi 233290"; c36 переведен полностью (877 chars).
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r62** SKU=61 ART=498259913 FROSTY RT58L-1D с замком — c5==c7 RU clean, c36 RU полный (587 chars).
+- **r63** SKU=62 ART=498259918 FROSTY RT98L-1D белая с замком — c5==c7 RU clean, c36 RU полный (593 chars).
+- **r64** SKU=63 ART=616022207 FROSTY RT98L-1D black (черный) — c5==c7 RU clean, c36 RU полный (630 chars).
+- **r65** SKU=64 ART=1086634879 GoodFood RT78L белая — c5==c7 RU clean, c35 UA / c36 already translated to RU (817 chars).
+
+**Verify:** 48 PASS / 0 FAIL. Без новых OQ.
+
+**Cumulative chunk-084:** 64/71 (TRIP 32 / blknotrip 0 / blknochg 31 / blkfix 1 / SKIP-НП 0; 364 PASS / 0 FAIL).

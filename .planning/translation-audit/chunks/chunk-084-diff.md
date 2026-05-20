@@ -179,3 +179,28 @@
 | 55 | 54 | Snaige CD14SM-S3003C |
 
 **Verify:** 60 PASS / 0 FAIL. Без новых OQ.
+
+
+## b8 (SKU 57-64, rows 58-65)
+
+Категории: blk триплет 4 / blknotrip 0 / blknochg 4 / blkfix 0 / SKIP-НП 0.
+
+### blk триплет
+
+| row | SKU | модель |
+|---|---|---|
+| 58 | 57 | Frosty RT280C-3 black (280 л, 5 хром полок) |
+| 59 | 58 | REEDNEE RT58B black (58 л, 31,5 кг) |
+| 60 | 59 | Hendi 233696 (кондитерский белый, 5 полок) |
+| 61 | 60 | Hendi 233290 (кондитерский черный, source mixed UA/RU) |
+
+### blknochg
+
+| row | SKU | модель |
+|---|---|---|
+| 62 | 61 | FROSTY RT58L-1D с замком |
+| 63 | 62 | FROSTY RT98L-1D белая с замком |
+| 64 | 63 | FROSTY RT98L-1D black |
+| 65 | 64 | GoodFood RT78L белая |
+
+**Verify:** 48 PASS / 0 FAIL. Без новых OQ.
