@@ -235,3 +235,18 @@
 **Cumulative (chunk-055..chunk-074 complete + chunk-075 b1-b4):** 871 PASS / 0 FAIL.
 
 **Next:** chunk-075 b5 — SKU 33-40, rows 34-41 (preliminary SKIP-НП: r34 APACH, r35 HURAKAN, r36 HURAKAN, r38 COLD).
+
+
+---
+
+## chunk-075 b5 DONE 40/54 (HEAD b30e41a)
+
+**Status:** chunk-075 b5 DONE 40/54 (cum TRIP 4 / blknotrip 0 / blknochg 29 / blkfix 0 / SKIP-НП 7; 917 PASS / 0 FAIL) — next b6 (SKU 41-48, rows 42-49)
+
+**b5 result:** TRIP 1 (r37 Frosty BCF20 «Шокер»→«Аппарат (шкаф) шоковой заморозки», 5xGN 1/1, 0,76 кВт 220В, 4 цикла, термощуп, нержавеющая сталь). blknochg 4 (r38 Tefcold BLC5; r39 GoodFood GF-BCF20-HC; r40 GoodFood GF-BCF40-HC; r41 Tecnodom P-ATT10EA). SKIP-НП 3 (r34 APACH ASH10K LP NEW; r35 HURAKAN HKN-BCF10M; r36 HURAKAN HKN-BCF5M). 46 PASS / 0 FAIL.
+
+**OQ candidates NEW:** c075 r40 c36 intro model mismatch «GoodFood GF-BCF20-HC» в теле BCF40-HC; c075 r41 numerical discrepancy 15 кг (UA c35) vs 12 кг (RU c36) для заморозки.
+
+**Cumulative (chunk-055..chunk-074 + chunk-075 b1-b5):** 917 PASS / 0 FAIL.
+
+**Next:** chunk-075 b6 — SKU 41-48, rows 42-49 (preliminary SKIP-НП: r42 APACH, r43 APACH, r45 COLD).
