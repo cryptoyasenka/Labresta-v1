@@ -197,3 +197,27 @@ TRIP 7 + blknotrip 0 + blknochg 0 + SKIP-НП 1 = 8/8. Verify **245 PASS / 0 FAI
 **OQ:** 0.
 
 **Cum после b7:** TRIP 24 + blknotrip 0 + blknochg 25 + SKIP-НП 7 = **56/61**. Next b8 (SKU 57-61, rows 58-62).
+
+## b8 (SKU 57-61, rows 58-62) — DONE 61/61 FINAL
+
+TRIP 4 + blknotrip 0 + blknochg 1 + SKIP-НП 0 = 5/5. Verify **250 PASS / 0 FAIL**. **chunk-069 ЗАКРЫТ.**
+
+**TRIP (4):**
+- r58 SKU57 ART 2041770127 **Frosty VM400TE/B** камерный вакууматор (2 запаечные планки, 712 chars): c5←c7 «Вакууматор камерный Frosty VM400TE/B». c36 ← RU body `<p>` + `<ul>` 6 li tech-char + второй блок `<p>+<ul>` (расходники) + третий `<p>+<ul>` (материал корпуса). Dims: 430х430х75+55h/шов 400x10/насос 20m3/h/10 программ/10-20с. Сохранены: «незаменимы», «общественного питания», «полуфабрикатов», «не заветриваются», «вкусовые качества и сочность», «нержавеющая сталь». Без Ё ОК.
+- r59 SKU58 ART 2041785562 **Frosty PCS300A** запайщик пакетов (443 chars): c5 source UA «Зварювач пакетів» → c5←c7 «Запайщик пакетов Frosty PCS300A». c36 ← RU body `<p>` + 7 li: 300x2/~1сек/9 уровней регулировки/окрашенная сталь/0,43кВт+220В/450x85x260/4,50кг. Пленки PPE, PP, LDPE, PVC латиницей сохранены. Сохранена UA фраза «сваривания пакетов» (UA «зварювання» = RU «сваривание»). Без Ё ОК.
+- r60 SKU59 ART 2041805053 **Frosty PCS400A** запайщик пакетов (437 chars): same template как r59 с PCS400A в title но **PCS300A в body** — структурный typo поставщика (см. **OQ#1**). c5←c7 «Запайщик пакетов Frosty PCS400A». c36 ← RU body: шов 400x2/~1с/«Регулируемое время запаивания» (1 строка, без 9 уровней)/окрашенная сталь/0,40кВт+220В/560x80x90/5,50кг. Без Ё ОК.
+- r61 SKU60 ART 2121013327 **Hendi Profi Line 300** ART 201435 (877 chars): c5 source UA «Вакуумний пакувальник» → c5←c7 «Вакуумный упаковщик Hendi Profi Line 300, 201435». c36 ← RU body `<p>` + `<ul>` 18 li tech-char. Dims: планка 300x5мм/насос 8м3/час/камера 300x350x(H)110/корпус 359x425x(В)356/950Вт/230В. Сохранены: «автоматическое и ручное управление», «вакуумный насос высокой производительности», «1009 мбар», «углубление на дне», «прозрачная куполообразная крышка», «большие порции». Дубль строки camera dims в источнике сохранён faithful (li 14+15 повторяют тот же размер с разным форматированием). Без Ё ОК.
+
+**blknochg (1):**
+- r62 SKU61 ART 2176086023 **GoodFood VMP260** вакууматор (937→947 chars c35→c36): c5==c4==c7 RU OK «Вакууматор GoodFood VMP260». c36 уже full RU 947 chars (Вакуумно-упаковочная машина GoodFood VMP260, Полуавтоматическая, Настольная, камера 285х389х50, планка 260мм, 0,37кВт, 220В, насос 14,40 м3/час, в комплекте Vacuum Pump Oil 46# 360мл, набор инструментов 332х505х379мм, 37,20кг, упаковка 405х590х480мм, 46кг). c35 содержит UA `&#39;` (в'язкість), c36 = «вязкость» (RU OK). c36_UA marker = False, отличается от c35 на 10 chars (UA→RU). Fixed строка НЕ тронута — c36 уже готова. Без Ё в c36 ОК.
+
+**OQ#1:** r60 Frosty PCS400A — source body начинается «машина для зварювання пакетів FROSTY PCS300A» (ссылается на неправильную модель). Сохранено в RU как «FROSTY PCS300A» (структурный typo поставщика). Title и c5 правильно «PCS400A». Yana — verify с поставщиком: должно ли body ссылаться на PCS400A?
+
+**Cum после b8:** TRIP 28 + blknotrip 0 + blknochg 26 + SKIP-НП 7 = **61/61** — **chunk-069 ЗАКРЫТ**.
+
+### chunk-069 ФИНАЛЬНЫЕ итоги (61 SKU)
+- TRIP 28 (b1=4 Krupps + b2=2 Krupps + b3=3 Krupps/Frosty + b4=2 REEDNEE/Lavezzini + b5=0 + b6=6 Lavezzini/Hendi + b7=7 Lavezzini/REEDNEE/FROSTY + b8=4 Frosty/Hendi)
+- blknochg 26 (ATA/Elframo/Winterhalter/Krupps/Ozti/Empero/Frosty/GGM/Orved/PERS.PETROS/GoodFood)
+- SKIP-НП 7 (HURAKAN ×4: HKN-CNW460PRO, HKN-CNW430, HKN-VAC400, HKN-VAC260 + Apach ×3: AVM254, AVM308, AVM412) — forward-only, fixed строки НЕ тронуты
+- OQ итого: 1 (r60 PCS400A body ссылается на PCS300A)
+- Verify итого: 250 PASS / 0 FAIL

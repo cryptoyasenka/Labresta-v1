@@ -1,7 +1,7 @@
 # chunk-069 DIFF (W2)
 
-**Status:** b7 DONE 56/61 — батчи b1..b8 (8+8+8+8+8+8+8+5); next b8 (SKU 57-61, rows 58-62)
-**Last updated:** chunk-069 b7 DONE 56/61
+**Status:** chunk-069 ЗАКРЫТ 61/61 — все 8 батчей завершены
+**Last updated:** chunk-069 b8 DONE 61/61 (FINAL)
 
 Source: `chunk-069.xlsx` (RO) → operating: `chunk-069-fixed.xlsx` (gitignored).
 Batches заполняются после каждого закрытого батча.
@@ -117,3 +117,16 @@ Batches заполняются после каждого закрытого ба
 
 **Итого b7:** TRIP 7 + blknotrip 0 + blknochg 0 + SKIP-НП 1. Verify **245 PASS / 0 FAIL**.
 **Cum после b7:** TRIP 24 + blknotrip 0 + blknochg 25 + SKIP-НП 7 = **56/61**.
+
+## b8 (SKU 57-61, rows 58-62) — 61/61 FINAL
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 57 | 58 | 2041770127 | Frosty VM400TE/B камерный вакууматор (2 запаечные планки) | **TRIP** | c5←c7 «Вакууматор камерный Frosty VM400TE/B»; c36 ← RU body (`<p>` + `<ul>` 6 li tech-char + 2 `<p>+<ul>` blocks: 430х430х75+55h/шов 400x10/20m3/h/10 программ/10-20с + расходники + нержавеющая сталь) |
+| 2 | 58 | 59 | 2041785562 | Frosty PCS300A запайщик пакетов | **TRIP** | c5←c7; c36 ← RU body (`<p>` + 7 li: 300x2/~1с/9 уровней/окрашенная сталь/0,43кВт/220В/450x85x260/4,50кг), пленки PPE/PP/LDPE/PVC латиницей |
+| 3 | 59 | 60 | 2041805053 | Frosty PCS400A запайщик пакетов | **TRIP** | c5←c7; c36 ← RU body (`<p>` + 7 li: 400x2/~1с/Регулируемое время/0,40кВт/220В/560x80x90/5,50кг). **OQ#1** — source body ссылается на PCS300A (структурный typo поставщика, сохранён faithful) |
+| 4 | 60 | 61 | 2121013327 | Hendi Profi Line 300 ART 201435 | **TRIP** | c5←c7 «Вакуумный упаковщик Hendi Profi Line 300, 201435»; c36 ← RU body (`<p>` + `<ul>` 18 li tech-char: планка 300x5/насос 8м3/час/камера 300x350x110/359x425x356/950Вт/230В), сохранены: автомат+ручное управление/1009 мбар/куполообразная крышка |
+| 5 | 61 | 62 | 2176086023 | GoodFood VMP260 вакууматор | blknochg | — (c5==c7 RU OK, c36 уже full RU 947 chars; fixed НЕ тронута) |
+
+**Итого b8:** TRIP 4 + blknotrip 0 + blknochg 1 + SKIP-НП 0. Verify **250 PASS / 0 FAIL**.
+**Cum после b8:** TRIP 28 + blknotrip 0 + blknochg 26 + SKIP-НП 7 = **61/61** — **chunk-069 ЗАКРЫТ**.
