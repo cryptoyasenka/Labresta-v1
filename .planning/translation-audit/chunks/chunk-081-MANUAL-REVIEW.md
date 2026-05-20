@@ -122,3 +122,23 @@ TRIP / blknotrip / blknochg / blkfix / SKIP-НП.
 **Verify:** 67 PASS / 0 FAIL. Без новых OQ.
 
 **Cumulative chunk-081:** 40/52 (TRIP 9 / blknotrip 0 / blknochg 30 / blkfix 0 / SKIP-НП 1; 202 PASS / 0 FAIL).
+
+
+## b6 (SKU 41-48, rows 42-49) — DONE 48/52
+
+**Категории:** blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r42** SKU=41 ART=667982768 Everlasting STG GREEN MEAT 700 INOX (AC9500) — c5==c7 RU clean.
+- **r43** SKU=42 ART=667986278 Everlasting STG GREEN MEAT 700 GLASS (AC9501) — c5==c7 RU clean.
+- **r44** SKU=43 ART=667988734 Everlasting STG GREEN MEAT 700 VIP (AC9505) — c5==c7 RU clean.
+- **r45** SKU=44 ART=667990169 Everlasting STG GREEN MEAT 700 BLACK (AC9508) — c5==c7 RU clean (body header «VIP BLACK» faithful, оба маркера в реальном теле).
+- **r46** SKU=45 ART=667991293 Everlasting STG GREEN MEAT 1500 INOX (AC9510) — c5==c7 RU clean.
+- **r47** SKU=46 ART=908191817 Everlasting STG GREEN MEAT 1500 VIP (AC9515) — c5==c7 RU clean. Замечание: c5/c7 без слова «Everlasting», c36 head включает «Everlasting» (источник, не меняем).
+- **r48** SKU=47 ART=908202884 Everlasting STG GREEN MEAT 1500 BLACK (AC9518) — c5==c7 RU clean. **OQ #11** (W2 cum): c36 head говорит «Everlasting STG MEAT 1500 VIP» — но SKU/ART/c4/c5 указывают **BLACK** (вариант исполнения). Body model mismatch — копипаст из VIP в источнике, faithful preserved.
+- **r49** SKU=48 ART=908220495 Everlasting STG GREEN MEAT 1500 GLASS (AC9511) — c5==c7 RU clean. Замечание: c36 head без «GLASS» (общая интро «для дозревания салями»), не блокер.
+
+**Verify:** 32 PASS / 0 FAIL. 1 OQ (#11 r48 model mismatch).
+
+**Cumulative chunk-081:** 48/52 (TRIP 9 / blknotrip 0 / blknochg 38 / blkfix 0 / SKIP-НП 1; 234 PASS / 0 FAIL).

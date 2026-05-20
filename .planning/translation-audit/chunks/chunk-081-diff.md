@@ -122,3 +122,23 @@
 
 **Verify:** 67 PASS / 0 FAIL. Без новых OQ.
 
+
+## b6 (SKU 41-48, rows 42-49)
+
+Категории: blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+
+### blknochg
+
+| row | SKU | ART | модель |
+|---|---|---|---|
+| 42 | 41 | 667982768 | Everlasting STG GREEN MEAT 700 INOX |
+| 43 | 42 | 667986278 | Everlasting STG GREEN MEAT 700 GLASS |
+| 44 | 43 | 667988734 | Everlasting STG GREEN MEAT 700 VIP |
+| 45 | 44 | 667990169 | Everlasting STG GREEN MEAT 700 BLACK |
+| 46 | 45 | 667991293 | Everlasting STG GREEN MEAT 1500 INOX |
+| 47 | 46 | 908191817 | Everlasting STG GREEN MEAT 1500 VIP |
+| 48 | 47 | 908202884 | Everlasting STG GREEN MEAT 1500 BLACK |
+| 49 | 48 | 908220495 | Everlasting STG GREEN MEAT 1500 GLASS |
+
+**Verify:** 32 PASS / 0 FAIL. 1 OQ (#11 r48 c36 body model mismatch BLACK vs VIP).
+
