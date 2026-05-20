@@ -1,7 +1,7 @@
 # chunk-075 MANUAL REVIEW (W2, продолжение chunk-074)
 
-**Status:** chunk-075 b4 DONE 32/54 (cum TRIP 3 / blknotrip 0 / blknochg 25 / blkfix 0 / SKIP-НП 4; 871 PASS / 0 FAIL) — next b5 (SKU 33-40, rows 34-41)
-**Last updated:** chunk-075 b4 (32/54)
+**Status:** chunk-075 b5 DONE 40/54 (cum TRIP 4 / blknotrip 0 / blknochg 29 / blkfix 0 / SKIP-НП 7; 917 PASS / 0 FAIL) — next b6 (SKU 41-48, rows 42-49)
+**Last updated:** chunk-075 b5 (40/54)
 
 **Объём:** 54 SKU rows 2..55. ART 2044220842..1090581793.
 
@@ -73,3 +73,13 @@
 **Status:** chunk-075 b4 DONE 32/54 (cum TRIP 3 / blknotrip 0 / blknochg 25 / blkfix 0 / SKIP-НП 4; 871 PASS / 0 FAIL) — next b5 (SKU 33-40, rows 34-41)
 
 **b4 распределение (SKU 25-32):** blknochg 6 (r26 Эфес ШПЭ-4 дубль; r27 ШЖЭ-1-GN2/1; r28 ШЖЭ-2-GN1/1; r29 ШЖЭ-2-GN2/1; r30 ШЖЭ-3-GN1/1; r31 ШЖЭ-3-GN2/1) + SKIP-НП 2 (r32 FAGOR ADVANCE ATA-061; r33 FAGOR ADVANCE ATA-101). Source quirks preserved: «двосекционный», «гастроемкости» (nom sing).
+
+---
+
+## b5 DONE 40/54 (Status update)
+
+**Status:** chunk-075 b5 DONE 40/54 (cum TRIP 4 / blknotrip 0 / blknochg 29 / blkfix 0 / SKIP-НП 7; 917 PASS / 0 FAIL) — next b6 (SKU 41-48, rows 42-49)
+
+**b5 распределение (SKU 33-40):** TRIP 1 (r37 Frosty BCF20 «Шокер»→«Аппарат (шкаф) шоковой заморозки», 4 программируемых цикла, термощуп, нержавеющая сталь); blknochg 4 (r38 Tefcold BLC5; r39 GoodFood GF-BCF20-HC; r40 GoodFood GF-BCF40-HC source quirk «BCF20-HC» в теле BCF40; r41 Tecnodom P-ATT10EA numerical quirk 15→12 кг); SKIP-НП 3 (r34 APACH ASH10K LP NEW; r35 HURAKAN HKN-BCF10M; r36 HURAKAN HKN-BCF5M).
+
+**Note:** «Tefcold» НЕ SKIP (substring, not standalone brand «COLD»).

@@ -129,3 +129,33 @@
 - **r33 FAGOR ADVANCE ATA-101 (ART 633876362)** — brand=FAGOR. SKIP-НП forward-only. fixed cells НЕ тронуты.
 
 **b4 verify:** 50 PASS / 0 FAIL.
+
+---
+
+## b5 (40/54) — SKU 33-40, rows 34-41
+
+**Категории:** TRIP 1 + blknochg 4 + SKIP-НП 3 = 8 SKU.
+
+### TRIP (1): r37 Frosty BCF20
+
+- c5: «Шокер Frosty BCF20» → «Аппарат (шкаф) шоковой заморозки Frosty BCF20» (== c7).
+- c36: 1154→~1130 chars, аппарат шоковой заморозки, 5xGN 1/1 или 600х400, 0,76 кВт 220В, 800х800х930, охлаждение 20 кг/90 (+70..+3°C), заморозка 15 кг/240, температура окружающей среды до +43°С, расстояние между листами 65 мм, 4 программируемых цикла (быстрое/глубокое охлаждение, быстрая/глубокая заморозка), три фазы (жесткий/мягкий холод/заморозка), автоматический термощуп, нержавеющая сталь. Без Ё.
+
+### blknochg (4): r38, r39, r40, r41
+
+- **r38 Tefcold BLC5 (ART 2112216905)** — c5==c7 «Аппарат (шкаф) шоковой заморозки Tefcold BLC5», c36 1121 chars genuine RU (нержавеющая сталь AISI 304, 100 л, R290, 5 уровней, 800 Вт 220-230V, 800х815х995, 120 кг). Source quirk «Двери Глухие двери Глухие» дубль preserved. Brand=Tefcold (NOT SKIP — «Tefcold» substring ≠ standalone brand «COLD»).
+- **r39 GoodFood GF-BCF20-HC (ART 2276605846)** — c5==c7 «Шкаф шоковой заморозки GoodFood GF-BCF20-HC», c36 1025 chars genuine RU (нержавеющая сталь, 100 л, 5 гастроемкостей GN 1/1, R290, цикл +90→+3 за 90 мин 18 кг, 750 Вт 220В, 800х800х1000, 95 кг).
+- **r40 GoodFood GF-BCF40-HC (ART 2276609641)** — c5==c7 «Шкаф шоковой заморозки GoodFood GF-BCF40-HC», c36 1029 chars genuine RU (190 л, 10 гастроемкостей GN 1/1, +70→+3 за 90 мин 25 кг, 980 Вт 220В, 800х800х1490, 145 кг). **Source quirk:** intro h2 «GoodFood GF-BCF20-HC» — wrong model in body (должно быть BCF40-HC). Preserved per blknochg.
+- **r41 Tecnodom P-ATT10EA (ART 2598216958)** — c5==c7 «Шокер Tecnodom P-ATT10EA», c36 888 chars genuine RU «<h2>Аппарат (шкаф) шоковой заморозки Tecnodom P-ATT10EA на 10 уровней заморозки...» (10 противней GN 1/1 или 600х400, 610х410х760, охлаждение 20 кг/90 (+70..+3), 800х800х1480, 2,15 кВт 220В, R452A). **Source quirk:** UA c35 «заморожування 15 кг» vs RU c36 «заморозка 12 кг» — numerical discrepancy preserved.
+
+### SKIP-НП (3): r34, r35, r36
+
+- **r34 Apach ASH10K LP (NEW) (ART 1499958523)** — c4=«ШОКЕР APACH ASH10K LP (NEW)», brand=APACH. SKIP-НП forward-only. fixed cells НЕ тронуты. Note: c5 currently «Шафа шокового охолодження Apach ASH10K LP (NEW)» (UA), c7 «Шокер APACH ASH10K LP (NEW)» — mismatch, но не наша работа (forward-only).
+- **r35 HURAKAN HKN-BCF10M (ART 1895704885)** — brand=HURAKAN. SKIP-НП.
+- **r36 HURAKAN HKN-BCF5M (ART 1895717687)** — brand=HURAKAN. SKIP-НП.
+
+**Open questions candidates (NEW):**
+- r40 c36 intro misslabeled «GoodFood GF-BCF20-HC» в теле BCF40-HC (model mismatch in body).
+- r41 c35 vs c36 numerical discrepancy «15 кг» (UA) vs «12 кг» (RU) для заморозки 240 мин.
+
+**b5 verify:** 46 PASS / 0 FAIL.
