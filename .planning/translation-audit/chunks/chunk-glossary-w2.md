@@ -1222,3 +1222,26 @@ Soft-note b12: финальный 2-SKU батч chunk-066. 1 TRIP (SKU90 r91 CB
 3. **Gooder blknochg ×6** — все 6 моделей Gooder (BY.500/500D/BYM.01/BYM.02/BY.1000/1000D) — genuine RU c5==c7 + c36 без UA-mark; fixed rows НЕ тронуты. Bartscher-like blknochg pattern, никаких изменений по сути.
 
 **SKIP-НП b3:** 0. cum SKIP-НП 1/?.
+
+## chunk-068 b4 (SKU 25-32, rows 26-33) — +8 новых терминов (cum 1029→1037)
+
+**Контекст:** 6 blk триплет (ASBER GTX-H500 DD купольная / GT-500 DD фронтальная / GE-500 RD B DD (помпа слива) / GEX-H500 RD DD купольная / GT-500 RD DD фронтальная / GE-500 RD DD фронтальная), 1 blknochg (Krupps C537TDGT Advance DP45K — c5==c7 RU OK source variance skel-eq False), 1 SKIP-НП (APACH AF400 DDP — #2 в chunk-068).
+
+| UA (источник) | RU (фид) | контекст |
+|---|---|---|
+| Зворотній клапан | Обратный клапан | r28/r29/r30/r31/r32/r33 col36 — стандартный компонент ASBER посудомоек |
+| Вбудований дозатор для миючого і ополіскуючого засобу (перистальтичний) | Встроенный дозатор для моющего и ополаскивающего средства (перистальтический) | r30/r31/r32/r33 col36 — ASBER RD variant с перистальтическим дозатором |
+| Дренажна помпа | Дренажная помпа | r30 col36 — ASBER GE-500 RD B DD slash variant с дренажным насосом |
+| Панель керування: електромеханічна / електронна | Панель управления: электромеханическая / электронная | r30/r31/r33 col36 — ASBER RD variant с електромеханической панелью; r28/r29/r32 — электронная |
+| підходить для каструль, тарілок, склянок, келихів | подходит для кастрюль, тарелок, стаканов, бокалов | r28/r31 col36 — HoReCa target для ASBER купольных машин (extends b3 HoReCa lead для Oztiryakiler) |
+| Ручки для миття з нержавіючої сталі | Ручки для мытья из нержавеющей стали | r28-r33 col36 — стандартный конструктивный элемент ASBER |
+| Об&#39;єм бака / Об&#39;єм бойлера | Объем бака / Объем бойлера | r30/r31/r32/r33 col36 — RU без Ё (vs r28/r29 «Ємність» → «Емкость») |
+| Продуктивність: 40 касет/годину | Производительность: 40 кассет/час | r31 col36 — ASBER GEX-H500 RD DD productivity (slash-glued variant); расширение шаблона из b2/b3 |
+
+**Замечания b4:**
+1. **Ємність vs Об'єм:** ASBER source использует два варианта одного термина — DD non-RD (r28/r29) → «Ємність» → «Емкость», RD variant (r30/r31/r32/r33) → «Об&#39;єм» → «Объем» (без Ё). Преобразование RU faithful к источнику по каждой строке.
+2. **r33 source typo preserved:** c4/c5/c6/c7 «ASBER GE-500 RD DD» (без B), c35 body начинается с «<h2>Посудомийна машина ASBER GE-500 RD B DD фронтального типу.» (с лишним B — typo copy-paste from r30). При переводе c36 source typo preserved verbatim («ASBER GE-500 RD B DD фронтального типа.»). Title (c5) НЕ имеет typo, поскольку c5←c7 «ASBER GE-500 RD DD» (correct form).
+3. **Asber vs ASBER:** Все c5 source имеют lowercase «Asber»; c7 — uppercase «ASBER». Переписываем по c7 — стандартная live-store форма «Посудомоечная машина ASBER ...» (uniform capitalization).
+4. **Krupps C537TDGT (r26) blknochg vs Krupps b2/b8:** ART 2565641321 — другой SKU, отдельная c35 (549 chars vs 1287 chars у b2 r12 c35). Genuine RU c36 с дополнительной li «1 держатель для тарелок» (не в c35); skel-eq False — source variance, fixed строка не правим.
+
+**SKIP-НП b4:** SKU26 APACH AF400 DDP (#2 в chunk-068). cum SKIP-НП 2/?.

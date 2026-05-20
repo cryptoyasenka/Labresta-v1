@@ -1,7 +1,7 @@
 # chunk-068 DIFF (W2)
 
-**Status:** b3 DONE 24/50 — батчи b1..b7 (8+8+8+8+8+8+2); next b4 (SKU 25-32, rows 26-33)
-**Last updated:** chunk-068 b3 DONE 24/50
+**Status:** b4 DONE 32/50 — батчи b1..b7 (8+8+8+8+8+8+2); next b5 (SKU 33-40, rows 34-41)
+**Last updated:** chunk-068 b4 DONE 32/50
 
 Source: `chunk-068.xlsx` (RO) → operating: `chunk-068-fixed.xlsx` (gitignored).
 Batches заполняются после каждого закрытого батча.
@@ -52,4 +52,20 @@ Batches заполняются после каждого закрытого ба
 
 **Итого b3:** TRIP 2 + blknotrip 0 + blknochg 6 + SKIP-НП 0. Verify 103 PASS / 0 FAIL.
 **Cum после b3:** TRIP 12 + blknotrip 0 + blknochg 11 + SKIP-НП 1 = 24/50.
+
+## b4 (SKU 25-32, rows 26-33) — 32/50
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 25 | 26 | 2565641321 | Krupps C537TDGT Advance DP45K | blknochg | — (skel-eq False source variance, c5==c7 RU OK, не трогаем) |
+| 2 | 26 | 27 | 2603547529 | APACH AF400 DDP | **SKIP-НП** | — (НП forward-only; fixed строка не тронута) |
+| 3 | 27 | 28 | 2687383117 | ASBER GTX-H500 DD купольная | **TRIP** | c5←c7; c36 ← RU 18-строчный body (`<p>` + 15 li) |
+| 4 | 28 | 29 | 2687394138 | ASBER GT-500 DD фронтальная | **TRIP** | c5←c7; c36 ← RU 16-строчный body (`<p>` + 13 li) |
+| 5 | 29 | 30 | 2795786523 | ASBER GE-500 RD B DD (помпа слива) | **TRIP** | c5←c7; c36 ← RU 17-строчный body (`<h2>` + 14 li, перистальтический + электромеханическая + дренажная помпа) |
+| 6 | 30 | 31 | 2796153409 | ASBER GEX-H500 RD DD купольная | **TRIP** | c5←c7; c36 ← RU 19-строчный body (`<p>` + 16 li) |
+| 7 | 31 | 32 | 2796156408 | ASBER GT-500 RD DD фронтальная | **TRIP** | c5←c7; c36 ← RU 16-строчный body (`<h2>` + 13 li, перистальтический + электронная) |
+| 8 | 32 | 33 | 2796159643 | ASBER GE-500 RD DD фронтальная (typo «B DD» preserved) | **TRIP** | c5←c7; c36 ← RU 16-строчный body (`<h2>` + 13 li, c35 body refers «GE-500 RD B DD» — source typo preserved verbatim) |
+
+**Итого b4:** TRIP 6 + blknotrip 0 + blknochg 1 + SKIP-НП 1. Verify 130 PASS / 0 FAIL.
+**Cum после b4:** TRIP 18 + blknotrip 0 + blknochg 12 + SKIP-НП 2 = 32/50.
 
