@@ -583,3 +583,5 @@ CURRENT-w2: chunk-080 b4 DONE 32/53 (cum TRIP 13 / blknotrip 0 / blknochg 17 / b
 CURRENT-w2: chunk-080 b5 DONE 40/53 (cum TRIP 17 / blknotrip 0 / blknochg 19 / blkfix 0 / SKIP-НП 4; 315 PASS / 0 FAIL); TRIP 4 (r34 Frosty FGN-1400BT + r35 Forcar G-EF400GSS + r37 Tecnodom AF06PKMBT + r38 Tecnodom AF07PKMBT290C) + blknochg 2 (Ubc Energy LB + LB ST) + SKIP-НП #3 r36 Fagor + #4 r39 HURAKAN; +1 OQ (W2 cum #10) r35 G-EF400GSS body model mismatch; next b6 (SKU 41-48, rows 42-49)
 
 CURRENT-w2: chunk-080 b6 DONE 48/53 (cum TRIP 17 / blknotrip 0 / blknochg 27 / blkfix 0 / SKIP-НП 4; 347 PASS / 0 FAIL); blknochg 8 (Ubc Optima Professional + Professional LB + Super Large AD LB + Super Large AD LB ST + Juka ND70M ×2 + ND140M ×2); без новых OQ; next b7 FINAL (SKU 49-53, rows 50-54, 5 финальный)
+
+CURRENT-w2: chunk-080 ЗАКРЫТ 53/53 (TRIP 17 / blknotrip 0 / blknochg 32 / blkfix 0 / SKIP-НП 4; 367 PASS / 0 FAIL); b7 финальный blknochg 5 (Tefcold UFSC371G семья); 1 OQ (W2 cum #10) r35 Forcar G-EF400GSS body model mismatch G-EF400SS; SKIP-НП #1 r15 TATRA + #2 r19 Hurakan + #3 r36 Fagor + #4 r39 HURAKAN; next chunk-081 (W2 продолжение)
