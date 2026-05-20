@@ -4,7 +4,7 @@
 **Apply key:** `Артикул` (col1, scoped per row)
 **Status:** b6 DONE 48/74 (cum: TRIP 22 / blknotrip 0 / blknochg 22 / SKIP-НП 4 / OQ 0; b7 предстоит; batch=8 b1..b9 по 8 + b10=SKU73-74 2 SKU = 74)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-066
-**Last updated:** chunk-067 b9 (W2)
+**Last updated:** chunk-067 b10 — ЗАКРЫТ (W2)
 
 Эталон формата: chunk-019-MANUAL-REVIEW.md / chunk-066-MANUAL-REVIEW.md. Категории: blk триплет / blknotrip / blknochg / SKIP-НП.
 
@@ -338,3 +338,35 @@ _(нумерация отдельная, начинается с #1; пока н
 ### Открытые вопросы b9
 
 Нет.
+
+
+## Батч 10 (SKU 73-74, rows 74-75) — DONE — ФИНАЛЬНЫЙ 2-SKU БАТЧ
+
+**Итог:** TRIP 0 / blknotrip 0 / blknochg 2 / SKIP-НП 0 / OQ 0 / verify 420 PASS / 0 FAIL / **cum 74/74 — chunk-067 ЗАКРЫТ**. **NO XLSX writes** — оба blknochg preserve source.
+
+### blknochg — 2 SKU (c5/c35/c36 НЕ тронуты)
+
+- SKU 73 row 74 ART 1943677312 — Ozti OBY 50T PDT с помпой слива воды (c5==c7 genuine RU; c36 genuine RU без UA-mark; c35!=c36 skel-eq True dims match; не трогаем)
+- SKU 74 row 75 ART 2033010783 — Ozti OBМ 1080T PDT купольная (помпа слива) (c5==c7 genuine RU; c36 genuine RU; c35!=c36 skel-eq False; dims c35 содержит лишний токен `5,` vs c36 — source variance в live store; не трогаем)
+
+### Открытые вопросы b10
+
+Нет.
+
+---
+
+## ИТОГ chunk-067 (74 SKU)
+
+| Категория | Cnt |
+|---|---|
+| TRIP (blk триплет) | 30 |
+| blknotrip | 1 |
+| blknochg | 35 |
+| SKIP-НП | 8 |
+| **ИТОГО** | **74** |
+
+**SKIP-НП breakdown:** FAGOR 3 (#1 SKU41 FAGOR ADVANCE AD 505 BDD / #2 SKU42 Fagor FIR-30-DD / #3 SKU43 Fagor FIR-80-DD), TATRA 2 (#4 SKU45 TATRA TW.F50+DR+DD / #7 SKU70 TATRA TW.H50+DR+DD), Apach 3 (#5 SKU51 Apach AF400 DD / #6 SKU52 Apach AF500 DIG DD / #8 SKU71 APACH AK 901). Тела из НП-фида позже.
+
+**Verify:** 420 PASS / 0 FAIL (74 ART + 31×7 TRIP-like + 35×3 blknochg + 8×3 SKIPNP). **OQ:** 0.
+
+**Glossary:** chunk-067 contributed cum 941→1007 (+66 net-new терминов — тостеры/посудомоечные машины/коромысла/ТЭНа через э/Termostop/Acquatech/IKLOUD/UNIKO/полировщик бокалов/ерш для мойки стаканов/корзины тарелок-стаканов-приборов/планетарные миксеры/гастроемкости GN1/1 GN1/2/деки 600х400 600х800).

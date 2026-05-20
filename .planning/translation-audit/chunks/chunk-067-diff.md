@@ -258,3 +258,15 @@ SKIP-НП prelim (forward-only, тело из фида НП позже): FAGOR/F
 |---|---|---|---|---|---|
 | #7 | 70 | 71 | 1519641570 | TATRA | Посудомийна купольна машина TATRA TW.H50+DR+DD. |
 | #8 | 71 | 72 | 1519648525 | APACH | Посудомийна (котломийна) машина APACH AK 901 |
+
+
+## Батч 10 (SKU 73-74, rows 74-75) — DONE — ФИНАЛЬНЫЙ
+
+**Итог:** TRIP 0 / blknotrip 0 / blknochg 2 / SKIP-НП 0 / verify 420 PASS / 0 FAIL. **NO XLSX writes.** **chunk-067 ЗАКРЫТ 74/74.**
+
+### blknochg (2)
+
+| SKU | row | Артикул | Бренд+модель | Причина |
+|---|---|---|---|---|
+| 73 | 74 | 1943677312 | Ozti OBY 50T PDT с помпой слива | c5==c7 genuine RU; c36 genuine RU; c35!=c36 skel-eq True; не трогаем |
+| 74 | 75 | 2033010783 | Ozti OBМ 1080T PDT купольная (помпа слива) | c5==c7 genuine RU; c36 genuine RU; c35!=c36 skel-eq False; dims c35 лишний `5,` source variance; не трогаем |

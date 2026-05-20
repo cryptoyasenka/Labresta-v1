@@ -1154,3 +1154,10 @@ Soft-note b12: финальный 2-SKU батч chunk-066. 1 TRIP (SKU90 r91 CB
 **Замечание:** SKU72 (Empero EMP.500-F) — c4 source UA typo `попа зливу` (должно быть `помпа зливу`/«помпа слива»); c5/c7 корректны (`помпа слива`); fixed row73 c4 НЕ исправляем (faithful live source). SKU69 (Krupps C432DGT Advance) — c4 source короткий `Krupps C432 фронтальна`, c5/c7 полные `Krupps C432DGT Advance фронтальная`; c36 содержит dim `470х535х710` vs c35 `470х555х710` — 1 мм source variance в live store. SKU67 (Empero EMP.BB.01) — c36 содержит одну лишнюю dim `500х500` после `500х500х100`; live store fixed.
 
 **SKIP-НП b9 (2):** SKU70 TATRA TW.H50+DR+DD (#7) + SKU71 APACH AK 901 (#8) — fixed строки НЕ тронуты, тело из фида НП позже. SKU70 c5==c4 UA с финальной точкой `TW.H50+DR+DD.` — НП-бренд forward-only override, не правим. cum SKIP-НП 8/8 (FAGOR 3 + TATRA 2 + Apach 3 — все запланированные НП в chunk-067 закрыты).
+
+
+## chunk-067 b10 (SKU 73-74, rows 74-75) — +0 новых терминов (cum 1007→1007) — FINAL
+
+**Контекст:** 0 blk триплет, 2 blknochg (Ozti OBY 50T PDT / Ozti OBМ 1080T PDT купольная). Термины «Ozti» / «помпа слива» / «купольная посудомоечная машина» уже в глоссарии b6 (SKU47 Oztiryakiler OBM1080MPDR) и b8 (SKU60 Krupps C537DGT). Новых терминов нет.
+
+**ИТОГ chunk-067 glossary contribution:** 941→1007 (+66 net-new). Основные категории: тостеры (Bartscher/Hendi/Frosty/Empero), посудомоечные машины (Krupps/SILANOS/ASBER/Asber/Adler/Apparatus Stalgast/Ozti/Oztiryakiler/Empero), аксессуары (ерш/корзины/полировщик бокалов), технологии (Termostop/Acquatech System/UNIKO дисплей/Wi-Fi IKLOUD/штампованные коромысла AISI 304/ТЭНа через «э»).
