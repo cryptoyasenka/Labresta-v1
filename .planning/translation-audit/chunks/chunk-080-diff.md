@@ -164,3 +164,26 @@
 
 **Verify:** 32 PASS / 0 FAIL. Без новых OQ.
 
+## b7 FINAL (SKU 49-53, rows 50-54, 5 финальный)
+
+Категории: blk триплет 0 / blknotrip 0 / blknochg 5 / blkfix 0 / SKIP-НП 0.
+
+### blknochg
+
+| row | SKU | ART | модель |
+|---|---|---|---|
+| 50 | 49 | 2127195712 | Tefcold UFSC371GCP Black |
+| 51 | 50 | 2127202899 | Tefcold UFSC371G |
+| 52 | 51 | 2127206840 | Tefcold UFSC371G Black |
+| 53 | 52 | 2127209624 | Tefcold UFSC371GCP |
+| 54 | 53 | 2127214194 | Tefcold UFSC371G Black L/H |
+
+**Verify:** 20 PASS / 0 FAIL. Без новых OQ.
+
+## chunk-080 ЗАКРЫТ 53/53
+
+- TRIP 17 / blknotrip 0 / blknochg 32 / blkfix 0 / SKIP-НП 4 = 53/53.
+- Verify: 367 PASS / 0 FAIL по 7 батчам.
+- SKIP-НП: TATRA r15, Hurakan r19, Fagor r36, HURAKAN r39 (все preliminary исчерпаны).
+- 1 OQ (W2 cum #10): r35 Forcar G-EF400GSS body model G-EF400SS.
+

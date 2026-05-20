@@ -1,6 +1,6 @@
 # chunk-080 manual review (W2)
 
-**Status:** chunk-080 b6 DONE 48/53 (cum TRIP 17 / blknotrip 0 / blknochg 27 / blkfix 0 / SKIP-НП 4; 347 PASS / 0 FAIL) — next b7 FINAL (SKU 49-53, rows 50-54, 5 финальный). SKIP-НП 4 закрыты.
+**Status:** chunk-080 ЗАКРЫТ 53/53 (TRIP 17 / blknotrip 0 / blknochg 32 / blkfix 0 / SKIP-НП 4; 367 PASS / 0 FAIL). 1 OQ (W2 cum #10): r35 Forcar G-EF400GSS body model mismatch G-EF400SS. SKIP-НП: #1 r15 TATRA + #2 r19 Hurakan + #3 r36 Fagor + #4 r39 HURAKAN.
 
 ## Параметры
 
@@ -150,4 +150,27 @@ TRIP / blknotrip / blknochg / blkfix / SKIP-НП.
 - **r49** SKU=48 ART=2096369926 Juka ND140M нержавеющая сталь — c5==c7 RU clean (аналогично r47).
 
 **Verify:** 32 PASS / 0 FAIL. Без новых OQ.
+
+## b7 FINAL (SKU 49-53, rows 50-54, 5 финальный) — DONE 53/53
+
+**Категории:** blk триплет 0 / blknotrip 0 / blknochg 5 / blkfix 0 / SKIP-НП 0.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r50** SKU=49 ART=2127195712 Tefcold UFSC371GCP Black — c5==c7 RU clean.
+- **r51** SKU=50 ART=2127202899 Tefcold UFSC371G — c5==c7 RU clean.
+- **r52** SKU=51 ART=2127206840 Tefcold UFSC371G Black — c5==c7 RU clean.
+- **r53** SKU=52 ART=2127209624 Tefcold UFSC371GCP — c5==c7 RU clean.
+- **r54** SKU=53 ART=2127214194 Tefcold UFSC371G Black L/H — c5==c7 RU clean.
+
+**Verify:** 20 PASS / 0 FAIL. Без новых OQ.
+
+## chunk-080 ЗАКРЫТ 53/53
+
+- **Финальная статистика:** TRIP 17 / blknotrip 0 / blknochg 32 / blkfix 0 / SKIP-НП 4 = 53/53.
+- **Verify итого:** 367 PASS / 0 FAIL по всем 7 батчам (b1 75 + b2 68 + b3 65 + b4 57 + b5 50 + b6 32 + b7 20).
+- **SKIP-НП:** #1 r15 TATRA TRC700BT, #2 r19 Hurakan HKN-GX1410BT INOX, #3 r36 Fagor AFN-801, #4 r39 HURAKAN HKN-GX1410BTS.
+- **OQ:** 1 (W2 cum #10) — r35 SKU=34 ART=2402036548 Forcar G-EF400GSS body source ссылается на model «G-EF400SS» (без G); G в G-EF400GSS = Glass door (body подтверждает: «1 двері зі склом», 350 л, R290, LED); faithful перевод сохранил «G-EF400SS» в body. Возможно требуется sync model name с ART.
+- **Состав:** все 53 SKU — морозильные шкафы (Frosty, COOLEQ, REEDNEE, GoodFood, Tecnodom, Brillis, Juka, Tefcold, Forcar, GEMM, Ubc Energy/Optima/Professional). 4 SKIP-НП (TATRA, Hurakan, Fagor, HURAKAN — все preliminary исчерпаны).
+- Next chunk: **chunk-081** (продолжение W2).
 
