@@ -1,7 +1,7 @@
 # chunk-072 MANUAL REVIEW (W2, продолжение chunk-071)
 
-**Status:** chunk-072 b6 DONE 48/89 (cum TRIP 36 / blknotrip 0 / blknochg 12 / blkfix 0 / SKIP-НП 0; 72 PASS / 0 FAIL) — next b7 (SKU 49-56, rows 50-57)
-**Last updated:** chunk-072 b6 DONE 48/89
+**Status:** chunk-072 b7 DONE 56/89 (cum TRIP 36 / blknotrip 0 / blknochg 20 / blkfix 0 / SKIP-НП 0; 56 PASS / 0 FAIL) — next b8 (SKU 57-64, rows 58-65)
+**Last updated:** chunk-072 b7 DONE 56/89
 
 **Объём:** 89 SKU rows 2..90. Hendi 88 (NORMAL) + FAGOR 1 SKIP-НП (r83).
 
@@ -296,3 +296,41 @@
 **Reusable artifact b6:** `SMALL_BOARD_TABLE` (825xxx серия 7 цветов 450x300x12,7) — определён в `_w2_c072_b6_apply.py`.
 
 **Verify:** 72 PASS / 0 FAIL.
+
+
+## b7 (SKU 49-56, rows 50-57) — 56/89
+
+**Категории:** **ALL blknochg 8** — 1× Хангири кадка для риса + 2× KING точильные камни + 3× SEKIRYU ножи янагиба + 2× Блюдо бамбуковое Гета. Ни одной TRIP/blkfix строки — c5/c7/c36 уже соответствуют каноническому RU; UA остаётся только в c35 (forward-only).
+
+**blknochg detail:**
+- **r50 Хангири 48 см (Япония)** — кадка для риса 48 см. c5/c36 RU. UA c35 имеет typos «Када»/«харгірі»/«каска» preserve (forward-only).
+- **r51 KING KW65** — точильный камень #1000/6000 комбинированный 185x63x25 мм. c5/c36 RU. UA в c35.
+- **r52 SEKIRYU SR-240S** — нож ЯНАГИБА 24 см. c5/c36 RU. **Source-Ё preserve в c36 («её» в фразе «делает её и чувствительной к царапинам»)** — forward-only, не правим.
+- **r53 SEKIRYU SR-270S** — нож ЯНАГИБА 27 см. То же тело что r52 (typical SEKIRYU desc). **Source-Ё «её»** preserve.
+- **r54 KING K45** — точильный камень #1000 176x52x15 мм. c5/c36 RU.
+- **r55 Блюдо бамбуковое Гета 24х15 см** — для подачи суши и роллов. c5/c36 RU. Trailing empty `<p> </p>` preserve.
+- **r56 Блюдо бамбуковое Гета 27х18 см** — то же тело что r55, размер 270x180x30. c5/c36 RU.
+- **r57 SEKIRYU SRP-270S** — нож ЯНАГИБА 27 см (perforated серия — отличие от SR-270S). **Source-Ё «её»** preserve.
+
+**Терминология b7 (новые UA→RU, для будущей сводки — все уже в c36 source):**
+- «Точильний камінь» → «Точильный камень»
+- «комбінований для заточування ножів» → «комбинированный для заточки ножей»
+- «Зернистість» → «Зернистость»
+- «однобічним заточуванням» → «односторонней заточкой»
+- «неіржавкої сталі 420J2» → «нержавеющей стали 420J2»
+- «Блюдо бамбукове Гета» → «Блюдо бамбуковое Гета»
+- «для подавання суші та ролів» → «для подачи суши и роллов»
+
+**Открытые вопросы b7:** 0 новых.
+**Source-quirks preserved в b7:**
+- r50 c35 UA typos «Када»/«харгірі»/«каска» preserve (в c35, forward-only)
+- r52/r53/r57 c36 source-Ё в «её» preserve (blknochg forward-only — «No Ё в c36» applies only to TRIP-written cells)
+- r55/r56 trailing empty `<p> </p>` preserve
+
+**Iframes preserved:** нет (в b7 нет iframe в source).
+
+**Reusable patterns identified b7:**
+- SEKIRYU YANAGIBA boilerplate (r52/r53/r57 имеют идентичный многостраничный body) — если встретятся новые SEKIRYU в TRIP, переиспользовать
+- KING точильные камни pattern (короткие 3-line bodies)
+
+**Verify:** 56 PASS / 0 FAIL (+ 3 INFO source-Ё preservation flags).

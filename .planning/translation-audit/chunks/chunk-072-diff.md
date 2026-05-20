@@ -120,3 +120,20 @@
 
 **Итого b6:** TRIP 3 + blknotrip 0 + blknochg 5 + blkfix 0 + SKIP-НП 0. Verify **72 PASS / 0 FAIL**.
 **Cum после b6:** TRIP 36 + blknotrip 0 + blknochg 12 + blkfix 0 + SKIP-НП 0 = **48/89**. UNPROC = 41 (rows 50-90).
+
+
+## b7 (SKU 49-56, rows 50-57) — 56/89
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 49 | 50 | 1158004061 | Хангири 48 см (Япония) — кадка для риса 48 см | **blknochg** | c5 уже RU == c7 (22 chars); c36 уже pure RU (~640 chars). UA только в c35 (с typos «Када»/«харгірі»/«каска»). Forward-only. |
+| 2 | 50 | 51 | 1160831371 | KING KW65 точильный камень #1000/6000 комбинированный | **blknochg** | c5 уже RU == c7 (40 chars); c36 уже pure RU 165 chars («комбинированный для заточки ножей, зернистость 1000 и 6000, 185x63x25 мм»). UA только в c35. |
+| 3 | 51 | 52 | 513978728 | SEKIRYU SR-240S нож ЯНАГИБА 24 см | **blknochg** | c5 уже RU == c7 (35 chars); c36 уже pure RU. UA только в c35. **Source-Ё preserve в c36 («её» в фразе «делает её и чувствительной к царапинам»)** — forward-only, не правим. |
+| 4 | 52 | 53 | 513979201 | SEKIRYU SR-270S нож ЯНАГИБА 27 см | **blknochg** | c5 уже RU == c7 (35 chars); c36 уже pure RU. UA только в c35. **Source-Ё preserve в c36 («её»)** forward-only. |
+| 5 | 53 | 54 | 513999477 | KING K45 точильный камень #1000 | **blknochg** | c5 уже RU == c7 (33 chars); c36 уже pure RU 117 chars («для заточки японских ножей, зернистость #1000, 176x52x15 мм»). UA в c35. |
+| 6 | 54 | 55 | 514002031 | Блюдо бамбуковое Гета 24х15 см | **blknochg** | c5 уже RU == c7 (30 chars); c36 уже pure RU («для подачи суши и роллов, размеры 240x150x30 мм»). UA в c35. Trailing `<p> </p>` preserve. |
+| 7 | 55 | 56 | 514002291 | Блюдо бамбуковое Гета 27х18 см | **blknochg** | c5 уже RU == c7 (30 chars); c36 уже pure RU («270x180x30 мм»). UA в c35. Trailing `<p> </p>` preserve. |
+| 8 | 56 | 57 | 514046588 | SEKIRYU SRP-270S нож ЯНАГИБА 27 см | **blknochg** | c5 уже RU == c7 (36 chars); c36 уже pure RU. UA только в c35. **Source-Ё preserve в c36 («её»)** forward-only. |
+
+**Итого b7:** TRIP 0 + blknotrip 0 + blknochg 8 + blkfix 0 + SKIP-НП 0. Verify **56 PASS / 0 FAIL** (3 INFO-flags: source Ё preserved в r52/53/57 SEKIRYU «её» blknochg forward-only).
+**Cum после b7:** TRIP 36 + blknotrip 0 + blknochg 20 + blkfix 0 + SKIP-НП 0 = **56/89**. UNPROC = 33 (rows 58-90).
