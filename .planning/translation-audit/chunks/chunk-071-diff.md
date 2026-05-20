@@ -1,7 +1,7 @@
 # chunk-071 diff (W2, продолжение chunk-070)
 
-**Status:** chunk-071 b6 DONE 48/83 (cum TRIP 45 / blknotrip 0 / blknochg 3 / blkfix 0 / SKIP-НП 0; 384 PASS / 0 FAIL) — next b7 (SKU 49-56, rows 50-57)
-**Last updated:** chunk-071 b6 DONE 48/83
+**Status:** chunk-071 b7 DONE 56/83 (cum TRIP 53 / blknotrip 0 / blknochg 3 / blkfix 0 / SKIP-НП 0; 408 PASS / 0 FAIL) — next b8 (SKU 57-64, rows 58-65)
+**Last updated:** chunk-071 b7 DONE 56/83
 
 **Источник:** `.planning/translation-audit/chunks/chunk-071.xlsx` (83 SKU, rows 2..84, ART 500478925..1173086863).
 **Фикс-таргет:** `.planning/translation-audit/chunks/chunk-071-fixed.xlsx` (gitignored).
@@ -110,3 +110,19 @@
 
 **Итого b6:** TRIP 8 + blknotrip 0 + blknochg 0 + blkfix 0 + SKIP-НП 0. Verify **384 PASS / 0 FAIL**.
 **Cum после b6:** TRIP 45 + blknotrip 0 + blknochg 3 + blkfix 0 + SKIP-НП 0 = **48/83**. UNPROC = 35 (rows 50-84).
+
+## b7 (SKU 49-56, rows 50-57) — 56/83
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 49 | 50 | 1158558969 | Hendi Profi Line 550502 кондитерский мешок 500 мм | **TRIP** | c5←c7; c36 RU 346 chars. Близнец r48/r49 с той же source-typo (хлопок+полиуретан vs супер нейлон). |
+| 2 | 50 | 51 | 1158613536 | Hendi 551790 насадки для кондитерских мешков форма звезда (5 шт) | **TRIP** | c5←c7 (already RU); c36 RU 220 chars. Диаметры 6/8/10/12/14 мм. |
+| 3 | 51 | 52 | 1158631508 | Hendi 551691 насадки 5 шт | **TRIP** | c5←c7 (already RU «форма простая»); c36 RU 221 chars. **Source-mismatch preserved: c4/c5/c7 «форма простая» vs c35<h2> «форма прямая»**. «діаметром:-» glued (двоеточие+тире) preserve. Диаметры 2/4/6/8/10. |
+| 4 | 52 | 53 | 1158715104 | Hendi 676202 форма силиконовая Semi-sphere 6 ячеек | **TRIP** | c5←c7; c36 RU 1496 chars (1 para + 6 li + large table 11 rows). Все моды: Savarin/Semi-Sphere x2/Tartalette/Madeleines/Briochette/Mini-Muffins/Mini-Cake/Muffins/Mini-Madeleines/Cannele Bordelais. -60..+260°C / GN 1/3 / Ø70x(H)32. |
+| 5 | 53 | 54 | 1158729232 | Hendi 676509 форма силиконовая Tartalette 15 ячеек | **TRIP** | c5←c7; c36 RU 1494 chars. **Source-typo preserved «Силиконовая форма для выпечки типа Semi-sphere x 15 шт» (на самом деле Tartalette)** copy-paste от r53. Same table. Ø50x17. |
+| 6 | 54 | 55 | 1160131932 | Hendi 553404 нож для теста 150x110 | **TRIP** | c5←c7; c36 RU 102 chars. Минимал: «Нож для теста изготовлен из нержавеющей стали». |
+| 7 | 55 | 56 | 1160148205 | Hendi 855751 нож для теста 150x110 + полипропилен ручка | **TRIP** | c5←c7; c36 RU 125 chars. + «Ручка из полипропилена». |
+| 8 | 56 | 57 | 1160151245 | Hendi 856154 нож-ролик для теста - зубчатый | **TRIP** | c5←c7; c36 RU 486 chars. **Source-typo «Ручка для тіста» (должно быть Ролик?) preserved**. UA alt-spelling «з неіржавіючої сталі» → RU «из нержавеющей стали». ø60x180 / волнистое лезвие / декоративные ножи Hendi / самые модные блюда. |
+
+**Итого b7:** TRIP 8 + blknotrip 0 + blknochg 0 + blkfix 0 + SKIP-НП 0. Verify **408 PASS / 0 FAIL**.
+**Cum после b7:** TRIP 53 + blknotrip 0 + blknochg 3 + blkfix 0 + SKIP-НП 0 = **56/83**. UNPROC = 27 (rows 58-84).
