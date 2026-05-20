@@ -142,3 +142,39 @@ TRIP / blknotrip / blknochg / blkfix / SKIP-НП.
 **Verify:** 32 PASS / 0 FAIL. 1 OQ (#11 r48 model mismatch).
 
 **Cumulative chunk-081:** 48/52 (TRIP 9 / blknotrip 0 / blknochg 38 / blkfix 0 / SKIP-НП 1; 234 PASS / 0 FAIL).
+
+
+## b7 FINAL (SKU 49-52, rows 50-53) — DONE 52/52
+
+**Категории:** blk триплет 1 / blknotrip 0 / blknochg 3 / blkfix 0 / SKIP-НП 0.
+
+### TRIP (c5 UA→RU + c36 полный RU перевод)
+
+- **r51** SKU=50 ART=2044223801 Frosty H430T — Шафа для дозрівання м'яса → Шкаф для созревания мяса. c5←c7. c36 UA→RU (1304 chars, 430 л, 80 кг, 3 нерж. полки 480х480 мм, 4 вентилятора, 0,185 кВт, чёрное стекло/корпус).
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r50** SKU=49 ART=1168643166 Everlasting STG GREEN MEAT 400 BLACK GLASS — c5==c7 RU clean.
+- **r52** SKU=51 ART=2217379394 Meatico AC8600 STG GREEN ALL 700 INOX S — c5==c7 RU clean. Замечание: c5 «700», body «625 л» (модельная серия vs нетто-объём, faithful preserved).
+- **r53** SKU=52 ART=2217381714 Meatico AC8601 STG GREEN ALL 700 GLASS S — c5==c7 RU clean. То же замечание про «700»/«625 л».
+
+**Verify:** 21 PASS / 0 FAIL. Без новых OQ.
+
+## ЗАКРЫТИЕ chunk-081 — 52/52
+
+**Финальные категории:** TRIP 10 / blknotrip 0 / blknochg 41 / blkfix 0 / SKIP-НП 1.
+
+**Cumulative PASS:** 255 / 0 FAIL.
+
+**Open Questions (W2 cum):** 1 новый в этом chunk-081 — **#11 r48 Everlasting 1500 BLACK** body model mismatch (head говорит «VIP» вместо «BLACK», копипаст).
+
+**SKIP-НП итого:** 1 — r33 FAGOR FMA-1650.
+
+**Распределение:**
+- b1 (SKU 1-8): 8 blknochg Tefcold семья (BF850 + UF100G + UF50G-P + UF400 + UF400V + UF550 + UF400VS + UF400SG)
+- b2 (SKU 9-16): 8 blknochg Tefcold UFFS семья
+- b3 (SKU 17-24): 8 blknochg Tefcold (RF505 + UFSC370GCP BLACK + UFSC1450GCP NF ×2 + ATOM MAXI F1DB/F2DB + RF1010 + NF7500G)
+- b4 (SKU 25-32): 2 TRIP (Frosty H730T/H730S) + 5 blknochg (Tefcold ATOM MAXI F3DB + UFSC1600GCP + UF400-I + SARO KYRA GN 700 BT + Brillis BL4-R290) + 1 SKIP-НП (Fagor FMA-1650)
+- b5 (SKU 33-40): 7 TRIP (Frosty H150S/H320S/H430S/H228T/H320T/H150T/H228S) + 1 blknochg (Samaref ST 700)
+- b6 (SKU 41-48): 8 blknochg Everlasting STG GREEN MEAT семья (700 + 1500 ×4 вариаций) + OQ #11
+- b7 FINAL (SKU 49-52): 1 TRIP (Frosty H430T) + 3 blknochg (Everlasting 400 BLACK GLASS + Meatico AC8600/AC8601)

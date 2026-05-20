@@ -142,3 +142,30 @@
 
 **Verify:** 32 PASS / 0 FAIL. 1 OQ (#11 r48 c36 body model mismatch BLACK vs VIP).
 
+
+## b7 FINAL (SKU 49-52, rows 50-53)
+
+Категории: blk триплет 1 / blknotrip 0 / blknochg 3 / blkfix 0 / SKIP-НП 0.
+
+### TRIP
+
+| row | SKU | ART | модель |
+|---|---|---|---|
+| 51 | 50 | 2044223801 | Frosty H430T |
+
+### blknochg
+
+| row | SKU | ART | модель |
+|---|---|---|---|
+| 50 | 49 | 1168643166 | Everlasting STG GREEN MEAT 400 BLACK GLASS |
+| 52 | 51 | 2217379394 | Meatico AC8600 STG GREEN ALL 700 INOX S |
+| 53 | 52 | 2217381714 | Meatico AC8601 STG GREEN ALL 700 GLASS S |
+
+**Verify:** 21 PASS / 0 FAIL. Без новых OQ.
+
+## Итого chunk-081 ЗАКРЫТ — 52/52
+
+TRIP 10 / blknotrip 0 / blknochg 41 / blkfix 0 / SKIP-НП 1; 255 PASS / 0 FAIL.
+
+OQ: #11 r48 Everlasting 1500 BLACK body model mismatch VIP. SKIP-НП: #1 r33 FAGOR FMA-1650.
+
