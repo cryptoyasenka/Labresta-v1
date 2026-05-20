@@ -399,3 +399,15 @@
 - Cumulative chunk-076: TRIP 14 / blknotrip 0 / blknochg 17 / blkfix 1 / SKIP-НП 0 = 32/57; 405 PASS / 0 FAIL.
 - OQ: без новых (OQ#6 SKU23 из b3 — единственный по chunk-076).
 - Next: chunk-076 b5 (SKU 33-40, rows 34-41). Preliminary SKIP-НП: r36 FAGOR (SKU35).
+
+
+## chunk-076 b5 DONE 40/57 (2026-05-20 12:11)
+
+- Категории: blk триплет 2 / blknotrip 0 / blknochg 5 / blkfix 0 / SKIP-НП 1.
+- TRIP: r34 Forcar G-ER600, r35 Forcar G-GN650TN.
+- SKIP-НП #1: **r36 FAGOR AFP-1602 EXP NEO CONCEPT 1400 л** (тело из фида НП позже).
+- blknochg: r37-r41 Tefcold (MSU400, FSC175H BLACK, UR200SG, SD1380, MSU300).
+- Verify: 68 PASS / 0 FAIL.
+- Cumulative chunk-076: TRIP 16 / blknotrip 0 / blknochg 22 / blkfix 1 / SKIP-НП 1 = 40/57; 473 PASS / 0 FAIL.
+- OQ: без новых (OQ#6 SKU23 из b3 — единственный по chunk-076).
+- Next: chunk-076 b6 (SKU 41-48, rows 42-49).
