@@ -435,3 +435,14 @@
   - 616 PASS / 0 FAIL cumulative.
   - OQ#6 (r24 Forcar G-ER200SS vs G-ER400) — единственный OQ.
 - Next: chunk-077 scaffold (W2, продолжение chunk-076).
+
+
+## chunk-077 b1 DONE 8/39 (2026-05-20 12:23)
+
+- Категории: blk триплет 3 / blknotrip 0 / blknochg 5 / blkfix 0 / SKIP-НП 0.
+- TRIP: r5 SCAN GUR 390W, r6 Frosty FGN- 600TN, r8 Forcar G-ER600SS.
+- blknochg: r2 GoodFood BC480BB2LED, r3 BRILLIS BN9-LED-R290-EF-INV, r4 BRILLIS BN18-LED-R290-EF-INV, r7 Frosty FGN-1400TN, r9 Forcold G-SNACK400TN-FC.
+- Verify: 65 PASS / 0 FAIL. Ё-fix в TRIP: «идёт»→«идет» (r5/r6 intro), «несъёмные»→«несъемные» (r8).
+- Cumulative chunk-077: 8/39 (TRIP 3 / blknotrip 0 / blknochg 5 / blkfix 0 / SKIP-НП 0).
+- OQ: без новых.
+- Next: chunk-077 b2 (SKU 9-16, rows 10-17). Preliminary SKIP-НП r13 HURAKAN HKN-GX650TNS.
