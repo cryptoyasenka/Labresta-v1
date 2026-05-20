@@ -1,7 +1,7 @@
 # chunk-073 MANUAL REVIEW (W2, продолжение chunk-072)
 
-**Status:** chunk-073 scaffold 0/61 (batch=8 b1..b8) — next b1 (SKU 1-8, rows 2-9)
-**Last updated:** chunk-073 scaffold
+**Status:** chunk-073 b1 DONE 8/61 (TRIP 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0; 40 PASS / 0 FAIL) — next b2 (SKU 9-16, rows 10-17)
+**Last updated:** chunk-073 b1 DONE 8/61
 
 **Объём:** 61 SKU rows 2..62. ART 655872902..2289327088.
 
@@ -27,3 +27,38 @@
 - r54 APACH M30 (ферментатор)
 
 **Cumulative state:** TRIP 0 + blknotrip 0 + blknochg 0 + blkfix 0 + SKIP-НП 0 = 0/61.
+
+
+## Batch 1 (SKU 1-8, rows 2-9)
+
+**Категории b1:**
+- blknochg 8 (LG/Whirlpool/IRONNETTE прачечное)
+
+**Карточки b1:**
+- **r2 IRONNETTE 103 HOLEK** — гладильный каток (увеличенная версия r90 chunk-072 IRONNETTE 85). c5/c7 RU equal, c36 pure RU.
+- **r3 LG FH069FD3MS (13 кг)** — промышленная стиральная для отелей/санаториев/школ/садиков.
+- **r4 LG FH0C7FD3MS (18 кг)** — промышленная стиральная. **Source discrepancy:** заголовок 18 кг vs описание 15-18 кг — blknochg не правим (forward-only).
+- **r5 LG RV1329C4T (15 кг)** — промышленная сушильная.
+- **r6 LG RV1329C4T+FH069FD3MS (13 кг)** — промышленный стирально-сушильный стек. **Source discrepancy:** в c35/c36 описание упоминает другую модель «RV1329CD7P+FH069FD2FS» — blknochg не правим.
+- **r7 Whirlpool ADN 488 (150 см)** — гладильный каландр (длина 150 см, диаметр 25 см).
+- **r8 WHIRLPOOL AWZ9HPS/PRO** — сушильная конденсационного типа с тепловым насосом.
+- **r9 LG RV1840CD4 (17 кг)** — промышленная сушильная.
+
+**Терминология b1 (новые UA→RU):**
+- «Прасувальна машина» → «Гладильная машина / каток»
+- «Прасувальний каландр» → «Гладильный каландр»
+- «Пральна машина» → «Стиральная машина» (повтор из chunk-072 b11)
+- «Сушильна машина» → «Сушильная машина» (повтор)
+- «Прально-сушильна машина (сктек)» → «Стирально-сушильная машина (стек)» (source typo «сктек» → «стек»)
+- «Конденсаційного типу» → «Конденсационного типа»
+- «Тепловий насос» → «Тепловой насос»
+
+**Открытые вопросы b1:** 0 новых.
+
+**Source-quirks observed (blknochg не правим):**
+- r4 заголовок 18 кг vs описание 15-18 кг
+- r6 модель в title (RV1329C4T+FH069FD3MS) vs в описании (RV1329CD7P+FH069FD2FS)
+
+**Iframes preserved:** нет.
+
+**Verify b1:** 40 PASS / 0 FAIL.
