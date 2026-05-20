@@ -40,3 +40,8 @@
 - TRIP 4: r34 Hendi 282083 (электрический 15 л с педалью 60 Вт 230В) + r38/r39/r40 Fama FIN105/FIN106/FIN107 горизонтальные ручные 3/5/8 л
 - blknochg 4: r35/r36/r37/r41 Dadaux PHX60/TORSADO/PHX40/PH13
 - Verify 48 PASS / 0 FAIL; без новых OQ
+
+## b6 (rows 42-49, SKU 41-48) — 48/75 DONE
+
+- blknochg 8 (all): r42/r43 Dadaux PHX25/PHX15 + r44 GoodFood SF15VE электр + r45/r46/r47 SF3V/SF2VS/SF5VS + r48/r49 SF10VE/SF30VE электр
+- Verify 32 PASS / 0 FAIL; без новых OQ

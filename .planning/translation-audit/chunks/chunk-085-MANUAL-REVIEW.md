@@ -98,3 +98,11 @@
   - r41 SKU40 art=2331880194 Dadaux PH13 — c36_len 614
 - **Verify:** 48 PASS / 0 FAIL
 - Без новых OQ
+
+### b6 (rows 42-49, SKU 41-48) — 48/75 DONE
+
+- **blknochg 8** (все 8 SKU, c5==c7 genuine RU):
+  - r42 Dadaux PHX25 (c36_len 722) / r43 Dadaux PHX15 (644)
+  - r44 GoodFood SF15VE электрический (587) / r45 SF3V (452) / r46 SF2VS (461) / r47 SF5VS (460) / r48 SF10VE электрический (587) / r49 SF30VE электрический (588)
+- **Verify:** 32 PASS / 0 FAIL
+- Без новых OQ
