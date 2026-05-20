@@ -1,7 +1,7 @@
 # chunk-072 MANUAL REVIEW (W2, продолжение chunk-071)
 
-**Status:** chunk-072 b11 DONE 88/89 (cum TRIP 43 / blknotrip 0 / blknochg 44 / blkfix 0 / SKIP-НП 1; 77 PASS / 0 FAIL) — next b12 (SKU 89, row 90)
-**Last updated:** chunk-072 b11 DONE 88/89
+**Status:** chunk-072 CLOSED 89/89 (TRIP 43 / blknotrip 0 / blknochg 45 / blkfix 0 / SKIP-НП 1; 83 PASS / 0 FAIL) — next chunk-073 scaffold
+**Last updated:** chunk-072 CLOSED 89/89
 
 **Объём:** 89 SKU rows 2..90. Hendi 88 (NORMAL) + FAGOR 1 SKIP-НП (r83).
 
@@ -486,3 +486,47 @@
 **Iframes preserved:** нет (b11 без iframe).
 
 **Verify:** 29 PASS / 0 FAIL.
+
+
+## Batch 12 (SKU 89, row 90 — FINAL)
+
+**Категории b12:**
+- blknochg 1 (r90 IRONNETTE 85 HOLEK гладильный каток)
+
+**Карточка b12:**
+- **r90 IRONNETTE 85 HOLEK** — гладильный каток / прасувальна машина (HOLEK = бренд). c5/c7 genuine RU equal, c36 pure RU. Untouched.
+
+**Терминология b12 (новые UA→RU):** 0 (полностью обработано в b1..b11).
+
+**Открытые вопросы b12:** 0 новых.
+
+**Source-quirks preserved:** нет (untouched blknochg).
+
+**Iframes preserved:** нет.
+
+**Verify b12:** 6 PASS / 0 FAIL.
+
+---
+
+# chunk-072 CLOSURE 89/89
+
+**Итоговая разбивка:**
+
+| Категория  | Кол-во | Доля    |
+|------------|--------|---------|
+| TRIP       | 43     | 48.3%   |
+| blknotrip  | 0      | 0%      |
+| blknochg   | 45     | 50.6%   |
+| blkfix     | 0      | 0%      |
+| SKIP-НП    | 1      | 1.1%    |
+| **Total**  | **89** | 100%    |
+
+**Verify cumulative:** 83 PASS / 0 FAIL across b1..b12.
+
+**Открытые вопросы (forward к Yana):**
+- OQ#1 (b5) SKU39 BCB10 vs BCB10 NC — две версии Bartscher BCB10 (one без No Chrome, другая с). Решение по выбору тела за Yana.
+- OQ#2 (b6) r43 Hendi 880906 — каталожный mismatch: c5/c7/c36 RU = «Контейнер для еды двойной GN 1/1 Hendi» (530x325x65, 7.5л), но c4/c35 UA = «Контейнер для тіста 14 л Hendi 880906» (600x400x70). Дубль с r38 b5 SKU (одинаковый Hendi ART, разные Horoshop ART, разная информация). Logged blknochg + Yana review.
+
+**Главные источники (W2 chunk-072):** Hendi (88 SKU доминирующий поставщик, включая ножи 845xxx japanese, доски HACCP 826xxx GN 1/1 / 825xxx 450x300x12,7 small / 8261xx GN 1/2, гастроёмкости, весы 580xxx серия, контейнеры), FAGOR (1 SKIP-НП), SUZUMO/Konica Minolta/FUJIMAK/WHIRLPOOL/IRONNETTE HOLEK (специализированные единичные позиции).
+
+**Следующий шаг:** chunk-073 scaffold (W2 continuous per night-mode /loop).

@@ -209,3 +209,28 @@
 - Untouched
 
 ### Verify b11: 29 PASS / 0 FAIL
+
+
+## Batch 12 (SKU 89, row 90 — FINAL)
+
+### r90 IRONNETTE 85 HOLEK — Гладильный каток (blknochg)
+- c5/c7 == «Гладильный каток IRONNETTE 85 HOLEK» (genuine RU, equal)
+- c36 уже pure RU; только c35 UA — untouched
+- HOLEK сохраняется как brand-name
+
+### Verify b12: 6 PASS / 0 FAIL
+
+## chunk-072 CLOSURE 89/89
+
+**Итого по chunk-072:**
+- TRIP 43 (b1..b11)
+- blknotrip 0
+- blknochg 45 (b1..b12)
+- blkfix 0
+- SKIP-НП 1 (r83 FAGOR SCP-10 forward-only)
+- **Total: 89/89 SKU**
+- **Verify cumulative: 83 PASS / 0 FAIL**
+
+**Открытые вопросы chunk-072:**
+- OQ#1 (b5) SKU39 BCB10 vs BCB10 NC — pending Yana confirm
+- OQ#2 (b6) r43 Hendi 880906 catalog mismatch GN 1/1 (530x325x65 7.5л) vs контейнер 14 л (600x400x70) — дубль с r38 b5 SKU; одинаковый Hendi ART но разные Horoshop ART/тело — для Yana
