@@ -53,3 +53,33 @@
 
 **Verify:** 32 PASS / 0 FAIL. Без новых OQ.
 
+
+
+## b3 (SKU 17-24, rows 18-25)
+
+Категории: blk триплет 3 / blknotrip 0 / blknochg 4 / blkfix 0 / SKIP-НП 1.
+
+### blk триплет (TRIP)
+
+| row | SKU | модель | c5 (RU) | c36 |
+|---|---|---|---|---|
+| 21 | 20 | Frosty H275D | Шкаф холодильный для вина Frosty H275D | UA→RU 730 л / 275 бутылок / 2 зоны |
+| 23 | 22 | SCAN SV 45 B | Шкаф холодильный для вина SCAN SV 45 B | UA→RU 115 л / 45 бутылок / 1 зона / Дания |
+| 24 | 23 | Bartscher 700133 | Шкаф холодильный для вина Bartscher 700133 | UA→RU 119 л / 40 бутылок / 2 зоны / Германия |
+
+### blknochg
+
+| row | SKU | модель |
+|---|---|---|
+| 18 | 17 | Meatico AC9608 STG GREEN MEAT 700 ALL PANORAMA |
+| 19 | 18 | Meatico AC9615 STG GREEN MEAT 1500 BLACK PANORAMA |
+| 20 | 19 | Meatico AC9618 STG GREEN MEAT 1500 VIP PANORAMA |
+| 25 | 24 | WHIRLPOOL ADN 231 |
+
+### SKIP-НП
+
+| row | SKU | brand | модель |
+|---|---|---|---|
+| 22 | 21 | HURAKAN | HKN-WNC160CDW |
+
+**Verify:** 42 PASS / 0 FAIL. Без новых OQ.
