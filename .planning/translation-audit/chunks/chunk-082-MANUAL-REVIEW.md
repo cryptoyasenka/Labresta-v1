@@ -158,3 +158,40 @@
 **Verify:** 26 PASS / 0 FAIL. Без новых OQ.
 
 **Cumulative chunk-082:** 48/52 (TRIP 10 / blknotrip 0 / blknochg 34 / blkfix 0 / SKIP-НП 4; 221 PASS / 0 FAIL).
+
+
+## b7 FINAL (SKU 49-52, rows 50-53, 4 SKU) — DONE 52/52
+
+**Категории:** blk триплет 0 / blknotrip 0 / blknochg 4 / blkfix 0 / SKIP-НП 0.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r50** SKU=49 ART=2052998682 Tefcold CPV1380E (latin E) — c5==c7 RU clean.
+- **r51** SKU=50 ART=2128168018 Tefcold CPV1380Е (cyrillic Е) — c5==c7 RU clean. **Замечание:** дубликат модели CPV1380 с другим charset — разный ART, разные SKU; в каталоге фактически дубль; не OQ.
+- **r52** SKU=51 ART=2128184913 Tefcold TFW160S — c5==c7 RU clean.
+- **r53** SKU=52 ART=2133540222 Tefcold TFW375S — c5==c7 RU clean.
+
+**Verify:** 16 PASS / 0 FAIL. Без новых OQ.
+
+---
+
+## chunk-082 ИТОГ — ЗАКРЫТ 52/52
+
+**Категории:** TRIP 10 / blknotrip 0 / blknochg 38 / blkfix 0 / SKIP-НП 4.
+
+**SKIP-НП (4):**
+- #1 r22 SKU=21 HURAKAN HKN-WNC160CDW
+- #2 r39 SKU=38 FAGOR CWC-300
+- #3 r42 SKU=41 HURAKAN HKN-WNC110T
+- #4 r43 SKU=42 HURAKAN HKN-WNC470CDW
+
+**TRIP (10) — все шкафы холодильные для вина:**
+- b3: r21 Frosty H275D (730 л, 275 бутылок), r23 SCAN SV 45 B (115 л, 45), r24 Bartscher 700133 (119 л, 40)
+- b4: r31 Frosty FCB-128 (128 л, 45), r32 Frosty H 46D (150 л, 38-46), r33 Frosty H 80D (228 л, 65-80)
+- b5: r34 Frosty H 120D (320 л, 97-120), r35 Frosty H 168D (430 л, 68-169), r40 Tecfrigo Sommelier 482 (480 л, 181), r41 Tecfrigo Sommelier 481FG (480 л, 168)
+
+**Открытые вопросы:** OQ #12 W2 cum r35 H 168D — source «місткість 169-68 пляшок» (модель H168D макс=168), переведено «68-169 бутылок» (low-high, оба числа сохранены).
+
+**Замечание:** r34 c4 «H 120D» (с пробелом) vs c7 «H120D» (без пробела) — использован c4-вариант. r50/r51 — дубликаты CPV1380 latin/cyrillic.
+
+**Итого PASS/FAIL:** 237 PASS / 0 FAIL.

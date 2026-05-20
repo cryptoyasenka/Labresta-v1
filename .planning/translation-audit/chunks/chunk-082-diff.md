@@ -163,3 +163,25 @@
 | 43 | 42 | HURAKAN | HKN-WNC470CDW |
 
 **Verify:** 26 PASS / 0 FAIL. Без новых OQ.
+
+
+## b7 FINAL (SKU 49-52, rows 50-53)
+
+Категории: blk триплет 0 / blknotrip 0 / blknochg 4 / blkfix 0 / SKIP-НП 0.
+
+### blknochg
+
+| row | SKU | модель |
+|---|---|---|
+| 50 | 49 | Tefcold CPV1380E (latin E) |
+| 51 | 50 | Tefcold CPV1380Е (cyrillic Е) |
+| 52 | 51 | Tefcold TFW160S |
+| 53 | 52 | Tefcold TFW375S |
+
+**Verify:** 16 PASS / 0 FAIL. Без новых OQ.
+
+---
+
+## chunk-082 ИТОГ — ЗАКРЫТ 52/52
+
+TRIP 10 / blknotrip 0 / blknochg 38 / blkfix 0 / SKIP-НП 4; 237 PASS / 0 FAIL. OQ #12 W2 cum (r35 H 168D bottle range typo).
