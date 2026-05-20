@@ -1,7 +1,7 @@
 # chunk-071 diff (W2, продолжение chunk-070)
 
-**Status:** chunk-071 b5 DONE 40/83 (cum TRIP 37 / blknotrip 0 / blknochg 3 / blkfix 0 / SKIP-НП 0; 360 PASS / 0 FAIL) — next b6 (SKU 41-48, rows 42-49)
-**Last updated:** chunk-071 b5 DONE 40/83
+**Status:** chunk-071 b6 DONE 48/83 (cum TRIP 45 / blknotrip 0 / blknochg 3 / blkfix 0 / SKIP-НП 0; 384 PASS / 0 FAIL) — next b7 (SKU 49-56, rows 50-57)
+**Last updated:** chunk-071 b6 DONE 48/83
 
 **Источник:** `.planning/translation-audit/chunks/chunk-071.xlsx` (83 SKU, rows 2..84, ART 500478925..1173086863).
 **Фикс-таргет:** `.planning/translation-audit/chunks/chunk-071-fixed.xlsx` (gitignored).
@@ -94,3 +94,19 @@
 
 **Итого b5:** TRIP 8 + blknotrip 0 + blknochg 0 + blkfix 0 + SKIP-НП 0. Verify **360 PASS / 0 FAIL**.
 **Cum после b5:** TRIP 37 + blknotrip 0 + blknochg 3 + blkfix 0 + SKIP-НП 0 = **40/83**. UNPROC = 43 (rows 42-84).
+
+## b6 (SKU 41-48, rows 42-49) — 48/83
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 41 | 42 | 1158537698 | Hendi 677834 силиконовый коврик 400х300 | **TRIP** | c5←c7; c36 RU 290 chars. `<h2>` structural preserve. Dims swap «300 x 400» в теле vs «400х300» в названии — preserve. «-40 ° C до 250 ° C» с пробелами вокруг ° preserve. |
+| 2 | 42 | 43 | 1158541722 | Hendi 512517 маркер для тортов ø320 12 порций | **TRIP** | c5←c7; c36 RU 170 chars. **Source-typo `<h2>` указан ART «Hendi 677834» (коврик) вместо 512517 (copy-paste от r42) preserved**. Размер 350х194х240. |
+| 3 | 43 | 44 | 1158543784 | Hendi 557112 кондитерские мешки одноразовые рулон 100 шт | **TRIP** | c5←c7; c36 RU 239 chars. `<h2>` preserve. «557112-» glued (no space) preserve. HACCP / 80 микрон / рулон 100 / для теплой+холодной массы. |
+| 4 | 44 | 45 | 1158548555 | Hendi Kitchen Line 550120 кондитерский мешок 300 мм 2 шт | **TRIP** | c5←c7; c36 RU 257 chars. `<h2>` + 5 отдельных `<p>` (не li). Супер-нейлон без швов / многоразовый / петля-вешалка / тонкий+эластичный / стирать в горячей воде. |
+| 5 | 45 | 46 | 1158551353 | Hendi Kitchen Line 550229 350 мм 2 шт | **TRIP** | c5←c7; c36 RU 257 chars. Близнец r45 (550229/350). |
+| 6 | 46 | 47 | 1158551694 | Hendi Kitchen Line 550526 500 мм 2 шт | **TRIP** | c5←c7; c36 RU 257 chars. Близнец r45/r46 (550526/500). |
+| 7 | 47 | 48 | 1158557766 | Hendi Profi Line 550205 350 мм | **TRIP** | c5←c7; c36 RU 346 chars. `<h2>` + 2 `<p>`. **Source-typo internal contradiction: «з бавовни» (хлопок)+полиуретан, затем «супер нейлон» — preserve faithful**. С подвеской / гибкий+тонкий / кипящая вода. |
+| 8 | 48 | 49 | 1158558532 | Hendi Profi Line 550304 400 мм | **TRIP** | c5←c7; c36 RU 346 chars. Близнец r48 с той же source-typo (хлопок+полиуретан+нейлон). 550304/400. |
+
+**Итого b6:** TRIP 8 + blknotrip 0 + blknochg 0 + blkfix 0 + SKIP-НП 0. Verify **384 PASS / 0 FAIL**.
+**Cum после b6:** TRIP 45 + blknotrip 0 + blknochg 3 + blkfix 0 + SKIP-НП 0 = **48/83**. UNPROC = 35 (rows 50-84).
