@@ -194,3 +194,18 @@
 **OQ pending:** #1 c071 SKU39 BCB10 vs BCB10 NC; #2 c072 r43 Hendi 880906 catalog; #3 c074 b5 r39 ART=1166344539 9л vs 13,5л.
 
 **Next:** chunk-075 b2 — SKU 9-16, rows 10-17.
+
+
+---
+
+## chunk-075 b2 DONE 16/54 (HEAD bf2fd32)
+
+**Status:** chunk-075 b2 DONE 16/54 (cum TRIP 3 / blknotrip 0 / blknochg 11 / blkfix 0 / SKIP-НП 2; 765 PASS / 0 FAIL) — next b3 (SKU 17-24, rows 18-25)
+
+**b2 result:** blknochg 8 — полный блок Эфес (r10-r17): ШР-6/8/10 в вариантах GN1/1, GN2/1, -К. Все c5==c7 «Шкаф расстоечный Эфес ...» genuine RU; c36 genuine RU bodies без UA-маркеров и без Ё. Fixed cells НЕ тронуты. 56 PASS / 0 FAIL.
+
+**Cumulative (chunk-055..chunk-074 complete + chunk-075 b1+b2):** 765 PASS / 0 FAIL.
+
+**OQ pending:** #1 c071 SKU39 BCB10 vs BCB10 NC; #2 c072 r43 Hendi 880906 catalog; #3 c074 b5 r39 ART=1166344539 9л vs 13,5л.
+
+**Next:** chunk-075 b3 — SKU 17-24, rows 18-25.
