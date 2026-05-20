@@ -567,3 +567,5 @@ CURRENT-w2: chunk-079 b4 DONE 32/58 (cum TRIP 0 / blknotrip 0 / blknochg 32 / bl
 CURRENT-w2: chunk-079 b5 DONE 40/58 (cum TRIP 1 / blknotrip 0 / blknochg 39 / blkfix 0 / SKIP-НП 0; 361 PASS / 0 FAIL); TRIP 1 (r34 Tecnodom AF04EKOTN) + blknochg 7; без новых OQ; next b6 (SKU 41-48, rows 42-49)
 
 CURRENT-w2: chunk-079 b6 DONE 48/58 (cum TRIP 1 / blknotrip 0 / blknochg 47 / blkfix 0 / SKIP-НП 0; 433 PASS / 0 FAIL); blknochg 8 (GoodFood 2 + Tehma 4 + GGM 1); 1 новый OQ #3 (r46/r47 Tehma трехдверные, body=двухдверный); next b7 (SKU 49-56, rows 50-57)
+
+CURRENT-w2: chunk-079 b7 DONE 56/58 (cum TRIP 1 / blknotrip 0 / blknochg 55 / blkfix 0 / SKIP-НП 0; 505 PASS / 0 FAIL); blknochg 8 (Tehma 5 + Tefcold 3); без новых OQ; next b8 FINAL (SKU 57-58, rows 58-59, 2 SKU)
