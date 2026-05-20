@@ -1,7 +1,7 @@
 # chunk-072 diff (W2, продолжение chunk-071)
 
-**Status:** chunk-072 b4 DONE 32/89 (cum TRIP 28 / blknotrip 0 / blknochg 4 / blkfix 0 / SKIP-НП 0; 385 PASS / 0 FAIL) — next b5 (SKU 33-40, rows 34-41)
-**Last updated:** chunk-072 b4 DONE 32/89
+**Status:** chunk-072 b5 DONE 40/89 (cum TRIP 33 / blknotrip 0 / blknochg 7 / blkfix 0 / SKIP-НП 0; 359 PASS / 0 FAIL) — next b6 (SKU 41-48, rows 42-49)
+**Last updated:** chunk-072 b5 DONE 40/89
 
 **Источник:** `.planning/translation-audit/chunks/chunk-072.xlsx` (89 SKU, rows 2..90, ART 1173123408..2197264833).
 **Фикс-таргет:** `.planning/translation-audit/chunks/chunk-072-fixed.xlsx` (gitignored).
@@ -86,3 +86,20 @@
 
 **Итого b4:** TRIP 6 + blknotrip 0 + blknochg 2 + blkfix 0 + SKIP-НП 0. Verify **385 PASS / 0 FAIL**.
 **Cum после b4:** TRIP 28 + blknotrip 0 + blknochg 4 + blkfix 0 + SKIP-НП 0 = **32/89**. UNPROC = 57 (rows 34-90).
+
+
+## b5 (SKU 33-40, rows 34-41) — 40/89
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 33 | 34 | 1161553274 | Hendi 674413 высечка кондитерская 14 шт зубчатый край ø18-108 мм | **TRIP** | c5←c7 (67 chars); c36 RU 447 chars. Iframe `Lu-VBvLVe2c` preserve. «Зубчастий (гофрований)» → «Зубчатый (гофрированный)». |
+| 2 | 34 | 35 | 1161570960 | Hendi 673782 высечка кондитерская 8 шт бабочка | **blknochg** | c5 уже RU == c7; c36 уже pure RU 437 chars. UA только в c35 — forward-only. |
+| 3 | 35 | 36 | 1162111467 | Hendi 673768 высечка кондитерская 9 шт звезда | **blknochg** | c5 уже RU == c7; c36 уже pure RU. UA только в c35. **Source-quirk: c35 UA typo «форма - метелик» (butterfly) но продукт «зірка» (star); c36 already correctly «звезда»** — leave alone. |
+| 4 | 36 | 37 | 1162152815 | Hendi 673751 высечка кондитерская 9 шт квадратная | **blknochg** | c5 уже RU == c7; c36 уже pure RU. Forward-only. |
+| 5 | 37 | 38 | 1166434765 | Hendi 880906 контейнер для теста 14 л 600x400х(H)70 мм | **TRIP** | c5←c7 (55 chars); c36 RU 168 chars. **Source-quirks: title (H)70 vs body external (H)75 mismatch; «внутрішні Габарити» mid-sentence cap asymmetric vs «Габарити зовнішні» → RU «внутренние Габариты»; c7 mixed Latin x + Cyrillic х** preserve. |
+| 6 | 38 | 39 | 1166441242 | Hendi 880913 контейнер для теста 18 л 600x400х(H)90 мм | **TRIP** | c5←c7 (55 chars); c36 RU 169 chars. Те же quirks что r38: (H)90 vs (H)95, asymmetric cap. «Місткість» → «Емкость». |
+| 7 | 39 | 40 | 1166442240 | Hendi 880920 контейнер для теста 24 л 600x400х(H)130 мм | **TRIP** | c5←c7 (56 chars); c36 RU 173 chars. **Source-quirks: title «24 л» vs body «Ємність - 28 л» volume mismatch; «Габарити внутрішні» (слово первым — другой order vs r38/r39 «внутрішні Габарити»)** preserve. |
+| 8 | 40 | 41 | 1166446086 | Hendi 880968 крышка для контейнеров для теста 600x400 мм | **TRIP** | c5←c7 (56 chars); c36 RU 173 chars. **Source-quirk: продукт — LID но body описывает CONTAINER 28 л (структурное несоответствие)** preserve. |
+
+**Итого b5:** TRIP 5 + blknotrip 0 + blknochg 3 + blkfix 0 + SKIP-НП 0. Verify **359 PASS / 0 FAIL**.
+**Cum после b5:** TRIP 33 + blknotrip 0 + blknochg 7 + blkfix 0 + SKIP-НП 0 = **40/89**. UNPROC = 49 (rows 42-90).

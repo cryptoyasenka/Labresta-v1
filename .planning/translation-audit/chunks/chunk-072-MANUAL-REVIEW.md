@@ -1,7 +1,7 @@
 # chunk-072 MANUAL REVIEW (W2, продолжение chunk-071)
 
-**Status:** chunk-072 b4 DONE 32/89 (cum TRIP 28 / blknotrip 0 / blknochg 4 / blkfix 0 / SKIP-НП 0; 385 PASS / 0 FAIL) — next b5 (SKU 33-40, rows 34-41)
-**Last updated:** chunk-072 b4 DONE 32/89
+**Status:** chunk-072 b5 DONE 40/89 (cum TRIP 33 / blknotrip 0 / blknochg 7 / blkfix 0 / SKIP-НП 0; 359 PASS / 0 FAIL) — next b6 (SKU 41-48, rows 42-49)
+**Last updated:** chunk-072 b5 DONE 40/89
 
 **Объём:** 89 SKU rows 2..90. Hendi 88 (NORMAL) + FAGOR 1 SKIP-НП (r83).
 
@@ -205,3 +205,45 @@
 - r33 Lu-VBvLVe2c (новый)
 
 **Verify:** 385 PASS / 0 FAIL.
+
+
+## b5 (SKU 33-40, rows 34-41) — 40/89
+
+**Категории:** TRIP 5 (Hendi 674413 высечка зубчатая + контейнеры для теста 880906/880913/880920 + крышка 880968) + blknochg 3 (Hendi высечки 673782 бабочка / 673768 звезда / 673751 квадратная).
+
+**TRIP detail:**
+- **r34 Hendi 674413** — высечка кондитерская 14 шт зубчатый край ø18-108 мм. «Зубчастий (гофрований)» → «Зубчатый (гофрированный)». Iframe `Lu-VBvLVe2c` preserve.
+- **r38 Hendi 880906** — контейнер для теста 14 л 600x400х(H)70 мм. **Source-quirks: title (H)70 vs body external (H)75 mismatch; «внутрішні Габарити» (mid-sentence cap, asymmetric vs «Габарити зовнішні») → RU «внутренние Габариты» preserve; c7 mixed Latin x + Cyrillic х в «600x400х»**.
+- **r39 Hendi 880913** — контейнер для теста 18 л 600x400х(H)90 мм. Same quirks: (H)90 title vs (H)95 body external; «Місткість» → «Емкость».
+- **r40 Hendi 880920** — контейнер для теста 24 л 600x400х(H)130 мм. **Source-quirk: title «24 л» vs body «Ємність - 28 л» (volume mismatch); «Габарити внутрішні» (слово первым — отличается от r38/r39 «внутрішні Габарити»)** preserve order.
+- **r41 Hendi 880968** — крышка для контейнеров для теста 600x400 мм. **Source-quirk: продукт — LID но body описывает CONTAINER 28 л (structural mismatch — описание контейнера для крышки)** preserve.
+
+**blknochg detail:**
+- **r35 Hendi 673782** — высечка бабочка 8 шт. c5/c36 уже pure RU; UA только в c35 — forward-only.
+- **r36 Hendi 673768** — высечка звезда 9 шт. c5/c36 уже RU. **Source-quirk: c35 UA typo «форма - метелик» (butterfly) для продукта «зірка» (star); c36 RU already correctly «звезда»** — preserve as-is.
+- **r37 Hendi 673751** — высечка квадратная 9 шт. c5/c36 RU. Forward-only.
+
+**Терминология b5 (новые UA→RU):**
+- «Зубчастий (гофрований) край» → «Зубчатый (гофрированный) край»
+- «Контейнер для тіста» → «Контейнер для теста»
+- «Габарити зовнішні» → «Габариты внешние»
+- «внутрішні Габарити» (asymmetric cap) → «внутренние Габариты» preserve
+- «Габарити внутрішні» (другой order в r40) → «Габариты внутренние»
+- «Ємність» → «Емкость»
+- «Місткість» → «Емкость»
+- «Кришка» → «Крышка»
+
+**Открытые вопросы b5:** 0 новых.
+**Source-quirks preserved в b5:**
+- r36 blknochg: c35 UA «форма - метелик» typo для star product (c36 already correct)
+- r38/r39: title height vs body external height mismatch (70/75, 90/95)
+- r38/r39: «внутрішні Габарити» asymmetric cap preserve
+- r40: title «24 л» vs body «28 л» volume mismatch
+- r40: «Габарити внутрішні» (other order)
+- r41: LID product but body describes CONTAINER 28 л
+
+**Iframes preserved:**
+- r34 Lu-VBvLVe2c (тот же что r33 b4)
+- r35/r36/r37 blknochg все имеют Lu-VBvLVe2c в неизменном c36
+
+**Verify:** 359 PASS / 0 FAIL.
