@@ -541,3 +541,13 @@
 - Cumulative chunk-078: 32/53 (TRIP 0 / blknotrip 0 / blknochg 31 / blkfix 0 / SKIP-НП 1; 282 PASS / 0 FAIL).
 - OQ: без новых.
 - Next: chunk-078 b5 (SKU 33-40, rows 34-41).
+
+
+## chunk-078 b5 DONE 40/53 (2026-05-20 14:15)
+
+- Категории: blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+- blknochg: r34/r35/r36 Tefcold SD1280/SDU1280/SDU1375, r37 FS1380, r38/r39 SCU1375/SCU1280CP, r40 FSC1380, r41 SCU1375CP.
+- Verify: 72 PASS / 0 FAIL.
+- Cumulative chunk-078: 40/53 (TRIP 0 / blknotrip 0 / blknochg 39 / blkfix 0 / SKIP-НП 1; 354 PASS / 0 FAIL).
+- OQ: без новых.
+- Next: chunk-078 b6 (SKU 41-48, rows 42-49).
