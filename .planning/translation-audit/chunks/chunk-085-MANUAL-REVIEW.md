@@ -120,3 +120,18 @@
 - **blknochg 1**: r51 CD-723DR (c36_len 321)
 - **Verify:** 60 PASS / 0 FAIL
 - Без новых OQ (r54 c5/c7 без «электрический» faithful: модель имеет fuel-option + опциональный электроподогрев)
+
+### b8 (rows 58-65, SKU 57-64) — 64/75 DONE
+
+- **TRIP 1** (c5←c7 + c36 RU faithful):
+  - r58 SKU57 art=2138826493 Frosty ZC-801 — Чафиндиш GN 1/1 9 л со съемной крышкой-подставкой под топливо, в комплекте чаши для топлива, нерж. сталь, 640×360×330 (source body имел незакрытый «Объем 9,0 литров, з» / «з кришкою підставка під паливо» — переведён faithful с сохранением структуры списка)
+- **blknochg 7** (c5==c7 genuine RU):
+  - r59 SKU58 art=2331694097 SARO CARLA — Чафиндиш, c36_len 360
+  - r60 SKU59 art=2331710660 SARO LORENA — Чафиндиш электрический, c36_len 852
+  - r61 SKU60 art=2424766839 SARO ANOUK 1 — Чафиндиш, c36_len 457
+  - r62 SKU61 art=1359551496 GoodFood CD100E — Чафиндиш электрический, c36_len 541 (source EYO present)
+  - r63 SKU62 art=1359848540 GoodFood CD200 Premium — Чафиндиш, c36_len 516 (source EYO present)
+  - r64 SKU63 art=1359855616 GoodFood CD300 Simple Style — Чафиндиш, c36_len 523 (source EYO present)
+  - r65 SKU64 art=2110653278 GoodFood CD65P — Чафиндиш электрический, c36_len 694
+- **Verify:** 22 PASS / 0 FAIL
+- Без новых OQ

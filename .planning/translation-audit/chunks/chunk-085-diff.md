@@ -51,3 +51,9 @@
 - TRIP 7 Frosty чафиндиши: r50 CD-7055FG премиум 9 л электр + r52 CD-7055 GN 1/1 со съемной крышкой + r53 CD-723DRE стандарт со скользящей крышкой 180° + r54 CD-723E с подставкой под топливо + опциональный электроподогрев (c7 БЕЗ «электрический») + r55 CD-823 с крышкой + r56 CD-823FG со скользящей крышкой + r57 CD-723 GN 1/1 премиум
 - blknochg 1: r51 CD-723DR
 - Verify 60 PASS / 0 FAIL; без новых OQ
+
+## b8 (rows 58-65, SKU 57-64) — 64/75 DONE
+
+- TRIP 1: r58 Frosty ZC-801 (чафиндиш GN 1/1 9 л со съемной крышкой+подставкой под топливо, нерж, 640×360×330)
+- blknochg 7: r59 SARO CARLA / r60 SARO LORENA электр / r61 SARO ANOUK 1 / r62 GoodFood CD100E электр / r63 GoodFood CD200 Premium / r64 GoodFood CD300 Simple Style / r65 GoodFood CD65P электр
+- Verify 22 PASS / 0 FAIL; без новых OQ
