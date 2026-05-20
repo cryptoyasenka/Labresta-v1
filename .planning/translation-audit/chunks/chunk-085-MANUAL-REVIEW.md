@@ -36,3 +36,18 @@
   - r3 SKU2 art=1546890217 Hurakan HKN-ISV5P BLACK Шприц колбасный (тело из фида НП позже)
 - **Verify:** 48 PASS / 0 FAIL
 - Без новых OQ
+
+### b2 (rows 10-17, SKU 9-16) — 16/75 DONE
+
+- **TRIP 4** (c5←c7 + c36 RU faithful):
+  - r10 SKU9 art=479313108 FROSTY SV-5 — Шприц колбасный 5 л вертикальный, 300х340х690 (same SV template as b1.r9)
+  - r11 SKU10 art=479314413 FROSTY SV-7 — 7 л вертикальный, 300х340х830
+  - r12 SKU11 art=479317523 FROSTY SV-10 — 10 л вертикальный, 300х340х580
+  - r17 SKU16 art=1145162184 Hendi 282090 — Шприц колбасный 7 л вертикальный (наполнитель фарша); расширенное body (силиконовая прокладка отдельно, цилиндр 140x460(h), габариты 300x300x(H)770мм мм — typo «мм мм» в source сохранён faithful)
+- **blknochg 4** (c5==c7 genuine RU):
+  - r13 SKU12 art=1137316611 GoodFood SF3VS — Шприц колбасный вертикальный, c36_len 460
+  - r14 SKU13 art=1137324164 GoodFood SF7VS — c36_len 462
+  - r15 SKU14 art=1137326083 GoodFood SF10VS — c36_len 462
+  - r16 SKU15 art=1137329926 GoodFood SF15VS — c36_len 462
+- **Verify:** 48 PASS / 0 FAIL
+- Без новых OQ
