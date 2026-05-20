@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-028 (61 SKU, продолжение chunk-027)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 32/61
+**Status:** IN PROGRESS 40/61
 
 **Состав (по типу товара):** первый SKU — Артикул `1154540778`, бренд TEFCOLD (`Морозильна шафа Tefcold UF600S (-18°...-22 °C, нерж.)`, раздел `Холодильне та морозильне обладнання/Шафи морозильні` — продолжение/повтор раздела chunk-027 `Морозильні шафи` с инвертированным порядком слов в названии раздела). Раздел `Шафи морозильні` занимает 14 SKU (SKU 1-14, бренды Tefcold ×7 + Gooder ×3 + Snaige ×3 + Tatra ×1), далее начинается новый раздел `Холодильне та морозильне обладнання/Морозильні столи` (45 SKU, SKU 15-59 — бренды Tefcold ×9 + FROSTY ×4 + Apach ×3 + REEDNEE ×3 + Tecnodom ×3 + Cooleq ×3 + Brillis ×3 + Gooder ×3 + Fagor ×3 + Tatra ×2 + Forcar ×2 + Hurakan ×2 + GoodFood ×2 + GGM Gastro International ×1 + Hendi ×1 + Forcold ×1), завершается раздел новым разделом `Холодильне та морозильне обладнання/Холодильні шафи для вина` (2 SKU, SKU 60-61 — Tefcold ×1 + GoodFood ×1; последний SKU 61 — Артикул `2108377745`, бренд GOODFOOD, `Вітрина холодильна для вина GoodFood RT400L2`). Тип товара определяется per-SKU. Бренды per-SKU (17 total): Tefcold/Gooder/Snaige/Tatra/Apach/FROSTY/REEDNEE/Tecnodom/Cooleq/Brillis/Fagor/Forcar/Hurakan/GoodFood/GGM Gastro International/Hendi/Forcold — из них Tatra (×3) + Apach (×3) + Fagor (×3) + Hurakan (×2) = 11 SKU → SKIP-НП по правилу forward-only (SKU 14/18/19 Tatra; SKU 15/16/17 Apach; SKU 40/43/44 Fagor; SKU 26/59 Hurakan).
 
@@ -642,5 +642,217 @@
 **Наблюдения по батчу SKU 25-32 (32/61) — chunk-028 (батч-морозильные столы REEDNEE ×1 + Hurakan SKIP-НП ×1 + Tecnodom ×2 + Tefcold ×1 + Cooleq ×3; раздел `Холодильне та морозильне обладнання/Морозильні столи` — продолжение b3 SKU 17-24):** **blk триплет 5 (SKU 25 REEDNEE GN3100BT + SKU 27 Tecnodom TF02MIDBT + SKU 30 Cooleq GN2100BT 1.36м + SKU 31 Cooleq GN3100BT + SKU 32 Cooleq SS45BT 0.9м). blknotrip 0. blkv 0. blknochg 2 (SKU 28 Tecnodom TF03MIDBT + SKU 29 Tefcold SA910BT — LIVE Horoshop genuine RU). blknochgeq 0. SKIP-НП 1 (SKU 26 Hurakan HKN-GXFC2GN — СЕДЬМОЙ SKIP-НП в chunk-028, ПЕРВЫЙ Hurakan).** SKU 25 `1045631303` REEDNEE GN3100BT — **blk триплет** **ТРЕТИЙ blk триплет в chunk-028** + **прямой precedent SKU 24 b3** (same brand REEDNEE same template `<h2>`+`<p>`+ul/12li, 3-door variant vs 2-door): `desc UA==RU` True 🔴, `nm_ua==nm_ru` UA-leak `Стіл морозильний REEDNEE GN3100BT`, `nm_ru!=nazv_ru` → AUTO Назв.мод RU; Описание RU авторский 1:1; **SKU 25-SPECIFIC supplier OCR corruption**: U+2047 `⁇` DOUBLE QUESTION MARK между `-22` и `С` в temp-segment (supplier data quality issue, очевидно degraded `°`) — нормализуем inline к `&deg;С` canonical (опираясь на adjacent SKU 30/31/32 Cooleq supplier patterns с `&deg;` entity); SOFT: ё в `Трёхдверный`/`объём`/`решётчатые`, drop apos, Cyr х→Lat x в inner-dim `330x430`, em-dash preserve, Policy B/C `1795мм x 700мм x 850мм`, UA typo `холодоагент` (лишний `о`) → canonical RU `хладагент`. REEDNEE **НЕ ∈ НП-эксклюзив**. SKU 26 `1082407888` Hurakan HKN-GXFC2GN — **SKIP-НП** (brand=`Hurakan` ∈ {HURAKAN/Хуракан} NP-hit; **СЕДЬМОЙ SKIP-НП в chunk-028** + **ПЕРВЫЙ Hurakan**; scaffold rollup ожидает Hurakan ×2 — SKU 59 следующий Hurakan позже; source `du==dr` True + `nm_ua!=nm_ru` desync ALLCAPS HURAKAN+(ширина 700 мм) vs Titlecase Hurakan+2-дверний — ОБА nm_ua/nm_ru имеют UA-leak `Стіл морозильний`; cells unchanged — тело из фида НП позже всё перепишет включая UA-leak). SKU 27 `1091477214` Tecnodom TF02MIDBT — **blk триплет** **ЧЕТВЁРТЫЙ blk триплет в chunk-028** (2-door; Italian supplier template family same как FROSTY/Forcar но supplier дал UA-only тело, magazine скопировал UA в RU cell; `desc UA==RU` True 🔴, `nm_ua==nm_ru` UA-leak; Описание RU авторский 1`<h2>`+3`<p>`+ul/9li 1:1; HTML-entities `&mdash;`/`&deg;`/`&#39;` preserve throughout — отличие от SKU 25 REEDNEE который использует literal U+2014 em-dash + raw apos U+0027). Tecnodom **НЕ ∈ НП-эксклюзив**. **Отличие SKU 27 vs SKU 28 same brand Tecnodom**: SKU 27 (2-door TF02MIDBT) — supplier UA-only → blk триплет; SKU 28 (3-door TF03MIDBT) — supplier дал отдельный RU dr → blknochg. SKU 28 `1091487308` Tecnodom TF03MIDBT — **blknochg** LIVE Horoshop (supplier RU dr genuine; same Italian template family — hyphen `-` separators вместо UA em-dash entity `&mdash;`, `&deg;С` Cyr С vs UA Lat C, `полезный объем` без ё, `полки-решетки` без ё, dims `1870x715x920` Lat x identical; НЕ переписываем). SKU 29 `1154445638` Tefcold SA910BT — **blknochg** LIVE Horoshop (Danish supplier — DIFFERENT template family vs Italian FROSTY/Forcar/Tecnodom; extended spec 1`<p>`+ul/22li; supplier RU dr содержит **Lat p** U+0070 в `pешетчатые` вместо Cyr р — supplier OCR artefact в LIVE RU dr; `space-x-space` separator в dims `830 x 515 x 500 мм` supplier consistent UA/RU; `6.95 квт/24ч` decimal dot + строчные ед.изм supplier choice; НЕ переписываем). **Tefcold НЕ ∈ НП-эксклюзив** (substring `COLD` в `TEFCOLD` НЕ word-boundary — durable constraint `Tefcold/Forcold/Forcar НЕ SKIP`). SKU 30 `1395790396` Cooleq GN2100BT (1,36 м) — **blk триплет** **ПЯТЫЙ blk триплет в chunk-028** + **ПЕРВЫЙ Cooleq blk триплет**: minimal 1`<h2>` + ul/6li (no `<p>`), trailing space `</h2>` preserve, Cyr С postfix + 3-точечное `...` (Cooleq inconsistent vs SKU 31 Lat C + 4-точечное внутри одного бренда); SOFT applied. Cooleq **НЕ ∈ НП-эксклюзив**. SKU 31 `1398723073` Cooleq GN3100BT — **blk триплет** **ШЕСТОЙ blk триплет** + **ВТОРОЙ Cooleq** (3-door variant): 1`<h2>` + 1`<p>` + ul/8li, **SKU 31-SPECIFIC UA typo** `Електрона` (один `н`, canonical `Електронна`) → нормализуем к canonical RU `Электронная`; **supplier brevity** `Тип охолодження: динаміка` substantive form → RU `Тип охлаждения: динамика` semantic preserve; `Габарити:` short form → RU `Габариты:`; trailing space внутри `<li>...нержавіюча сталь </li>` preserve. SKU 32 `1755813685` Cooleq SS45BT (0,9 м) — **blk триплет** **СЕДЬМОЙ blk триплет** + **ТРЕТИЙ Cooleq** (multi-line `<h2>` с `<br />` inline; extended ul/12li; `Фреон R290 75г` preserve UA/RU identical; preposition `У стіл`→`В стол`; gender shift `шафа` fem→`шкаф` masc; `кухар`→`повар` canonical). **Открытых вопросов по батчу: 0** (b1 0 + b2 0 + b3 0 + b4 0; ledger chunk-028 = 0). Кумулятивно chunk-028 = **0** (questions.md chunk-028 пока НЕ создаём — нет OQ; SKU 25 supplier OCR-artefact `⁇` U+2047 → soft observation, нормализован inline, не нумеруется). Кумулятивно SKIP-НП chunk-028 = **7** (b1 0 + b2 3 + b3 3 + b4 1). NEXT: chunk-028 b5 SKU 33-40.
 
 *(scoped к row Артикул=1755813685)*
+
+---
+
+## SKU 33/61 — Морозильный стол FROSTY GN 3100BT (ширина 700 мм) (Артикул 1905663779) — 🔴 RU=UA + Назв.мод (RU) UA-leak
+
+**Поле:** Название модификации (RU)
+**Было:** `Морозильний стіл FROSTY GN 3100BT (ширина 700 мм)`
+**Стало:** `Морозильный стол FROSTY GN 3100BT (ширина 700 мм)`
+
+**Поле:** Описание товара (RU)
+**Было:** (полностью идентично UA — украинский текст)
+**Стало:** (полный перевод RU тег-в-tag):
+
+```
+<h2>Трёхдверный морозильный стол FROSTY GN 3100BT без борта.</h2> <p>Может использоваться в составе кухонной линии. Ширина стола - 700 мм. Максимальная t&deg; окружающей среды +43&deg;С.</p> <ul>
+<li>Столешница: нержавеющая сталь</li>
+<li>Количество дверей: 3</li>
+<li>Температурный режим: -18&deg; C....-22&deg; C</li>
+<li>Тип охлаждения: динамический</li>
+<li>Цифровой термостат</li>
+<li>Объём (л): 417</li>
+<li>Мощность: 0,65 кВт.</li>
+<li>Подключение к электросети: 220 В</li>
+<li>Габаритные размеры: 1795мм x 700мм x 860мм</li>
+</ul>
+```
+
+*(blk триплет STANDARD — `desc UA==RU` **True** (🔴 RU=UA — RU = полная укр. копия тела); `nm_ua`==`nm_ru` `Морозильний стіл FROSTY GN 3100BT (ширина 700 мм)` (UA-leak; body-level `_has_ua` True via `Морозильний`/`стіл`); `nm_ru`!=`nazv_ru` genuine RU `Морозильный стол FROSTY GN 3100BT (ширина 700 мм)` → AUTO Назв.мод (RU) = genuine `nazv_ru`. **ВОСЬМОЙ blk триплет в chunk-028** + **прямой precedent SKU 23 FROSTY GN 2100BT 700мм b3** (same brand FROSTY, same Italian template `<h2>` + `<p>` + `<ul>`/9`<li>`, 3-door variant vs 2-door; 700мм wide variant consistent). **FROSTY НЕ ∈ НП-эксклюзивный список** (word-boundary NP-hit нет — сравнение = членство в бренд-SET {HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA}, НЕ substring) → обычная обработка, НЕ SKIP-НП. Описание (RU) — авторский полный перевод тег-в-tag (структура UA зеркалится 1:1; 1 `<h2>` + 1 `<p>` + 1 `<ul>` + 9 `<li>`, line-breaks `\n` после `<ul>` и между `<li>` preserve verbatim). SOFT применено к авторскому RU: `Трьохдверний морозильний стіл FROSTY GN 3100BT без борту.`→`Трёхдверный морозильный стол FROSTY GN 3100BT без борта.` (ё U+0451 в `Трёхдверный`; `борту`→`борта`); `Може використовуватися в складі кухонних лінії.` (UA typo — должно быть `кухонної лінії` sing. genit.; supplier source error) → `Может использоваться в составе кухонной линии.` (canonical RU sing. genit. — нормализуем UA typo, НЕ carry-over `кухонных`); `Ширина столу - 700 мм.`→`Ширина стола - 700 мм.` (hyphen `-` separator preserve — supplier choice; sing. genit. `столу`→`стола`); `Максимальна t&deg; навколишнього середовища +43&deg;С.`→`Максимальная t&deg; окружающей среды +43&deg;С.` (`t&deg;` entity сокращение preserve verbatim; `&deg;С` Cyr С postfix preserve); `Стільниця: нержавіюча сталь`→`Столешница: нержавеющая сталь`; `Кількість дверей: 3`→`Количество дверей: 3`; `Температурний режим: -18&deg; C....-22&deg; C`→`Температурный режим: -18&deg; C....-22&deg; C` (entity + Lat C + space-after-entity pattern preserve verbatim — precedent SKU 23 FROSTY b3 + SKU 27 Tecnodom b4 same Italian template; 4-точечное `....` preserve); `Тип охолодження: динамічний`→`Тип охлаждения: динамический`; `Цифровий термостат`→`Цифровой термостат`; `Об&#39;єм (л): 417`→`Объём (л): 417` (drop &#39; entity-apos; ё U+0451; parenthesized unit `(л)` preserve); `Потужність: 0,65 кВт.`→`Мощность: 0,65 кВт.` (decimal comma faithful); `Підключення до електромережі: 220 В`→`Подключение к электросети: 220 В` (Cyr В preserve); `Габаритні розміри: 1795x700x860`→`Габаритные размеры: 1795мм x 700мм x 860мм` (Policy B/C — UA Lat x already, supplier UA БЕЗ trailing `мм` единицы — добавляем `мм` слитно per axis; precedent SKU 23 FROSTY b3 same template). бренд/модель/`л`/`мм`/`В`/`кВт` НЕ переводим; HTML-entities `&deg;` (x4) + drop `&#39;` (x1). META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=1905663779)*
+
+---
+
+## SKU 34/61 — Стол морозильный Brillis BGL2-R290 (Артикул 2047034342) — RU корректен; правок нет
+
+**Поле:** Название модификации (RU)
+**Было:** (чистый рус. бренд+код, украинского leak нет)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (RU уже корректный русский перевод — НЕ 🔴 RU=UA)
+**Стало:** без изменений
+
+*(blknochg — `desc UA==RU` **False** (genuine отдельный корректный русский перевод поставщика, разная длина dr 2015 vs du 1986); `nm_ua`!=`nm_ru` (UA `Стіл морозильний Brillis BGL2-R290` vs RU `Стол морозильный Brillis BGL2-R290`); `nm_ru`==`nazv_ru` clean RU (char-level UA_ONLY=∅). **Brillis НЕ ∈ НП-эксклюзивный список** (word-boundary NP-hit нет — сравнение = членство в бренд-SET {HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA}, НЕ substring) → обычная обработка, НЕ SKIP-НП. LIVE-магазин Horoshop, genuine RU body НЕ переписываем (ячейки chunk-028-fixed без изменений). **ПЕРВЫЙ Brillis в chunk-028** + **ПЕРВЫЙ Brillis в проекте** — нет precedent batch/chunk; supplier-template family новый (отличный от Italian FROSTY/Forcar/Tecnodom + Danish Tefcold + Cooleq + REEDNEE seen so far). LIVE artefacts preserve verbatim из supplier dr genuine RU body (1986 chars UA / 2015 chars RU — RU чуть длиннее, что соответствует expected expansion от UA→RU). blknochg → ВСЕ артефакты `dr` (RU-side) НЕ трогаем; авторский перевод НЕ генерим. **Brillis НЕ ∈ НП-эксклюзив** (`Brillis` не содержит NP-key substring как word — ни одна из NP-key ключевых стрингов не появляется в `BRILLIS` через word-boundary regex). Код `Brillis BGL2-R290` Lat → consistent. META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=2047034342)*
+
+---
+
+## SKU 35/61 — Стол морозильный Tefcold SK6310BT/+SP (Артикул 2053463226) — RU корректен; правок нет
+
+**Поле:** Название модификации (RU)
+**Было:** (чистый рус. бренд+код, украинского leak нет)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (RU уже корректный русский перевод — НЕ 🔴 RU=UA)
+**Стало:** без изменений
+
+*(blknochg — `desc UA==RU` **False** (genuine отдельный русский перевод поставщика, разная длина dr 1320 vs du 1340); `nm_ua` `Стіл морозильний Tefcold SK6310BT/+SP` (UA) != `nm_ru` `Стол морозильный Tefcold SK6310BT/+SP` (clean RU, == `nazv_ru`); `nm_ru` clean RU без UA-leak. **Tefcold НЕ ∈ НП-эксклюзивный список** (word-boundary NP-hit нет — сравнение = членство в бренд-SET {HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA}, НЕ substring) → обычная обработка, НЕ SKIP-НП. Substring `COLD` присутствует в `TEFCOLD`, но word-boundary regex `(?<![A-Za-zА-Яа-яЁё])COLD(?![A-Za-zА-Яа-яЁё])` НЕ срабатывает (`COLD` следует за `F` — буква, lookbehind fails). Durable constraint: `Tefcold/Forcold/Forcar НЕ SKIP` (substring `cold`/`for` ≠ standalone NP word). body-RU dr 1320 chars genuine отдельный supplier RU перевод (НЕ копия du) — **parallel pattern к b4 SKU 29 Tefcold SA910BT** same Danish supplier family. **ВТОРОЙ Tefcold в chunk-028** + **ВТОРОЙ Tefcold в проекте** (b4 SKU 29 — ПЕРВЫЙ). Danish supplier template family extended spec (длинная spec-таблица; supplier consistent internal format Danish family). SK6310BT/+SP variant — `/+SP` suffix добавочный к base SK6310BT (SKU 36 — base без `/+SP`). blknochg → ВСЕ артефакты `dr` (RU-side) НЕ трогаем; авторский перевод НЕ генерим. Код `Tefcold SK6310BT/+SP` Lat → consistent. META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=2053463226)*
+
+---
+
+## SKU 36/61 — Стол морозильный Tefcold SK6310BT (Артикул 2053475845) — RU корректен; правок нет
+
+**Поле:** Название модификации (RU)
+**Было:** (чистый рус. бренд+код, украинского leak нет)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (RU уже корректный русский перевод — НЕ 🔴 RU=UA)
+**Стало:** без изменений
+
+*(blknochg — `desc UA==RU` **False** (genuine отдельный русский перевод поставщика, разная длина dr 1280 vs du 1302); `nm_ua` `Стіл морозильний Tefcold SK6310BT` (UA) != `nm_ru` `Стол морозильный Tefcold SK6310BT` (clean RU, == `nazv_ru`); `nm_ru` clean RU без UA-leak. **Tefcold НЕ ∈ НП-эксклюзивный список** (word-boundary NP-hit нет — сравнение = членство в бренд-SET {HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA}, НЕ substring) → обычная обработка, НЕ SKIP-НП. Substring `COLD` присутствует в `TEFCOLD`, но word-boundary regex `(?<![A-Za-zА-Яа-яЁё])COLD(?![A-Za-zА-Яа-яЁё])` НЕ срабатывает (`COLD` следует за `F` — буква, lookbehind fails). Durable constraint: `Tefcold/Forcold/Forcar НЕ SKIP` (substring `cold`/`for` ≠ standalone NP word). body-RU dr 1280 chars genuine отдельный supplier RU перевод → классификация = **blknochg** по body-level desc UA!=RU; cells stay unchanged. **ТРЕТИЙ Tefcold в chunk-028** + **ТРЕТИЙ Tefcold в проекте** + **mirror SKU 35 без `/+SP` suffix**: SKU 35 = SK6310BT/+SP variant (extended spec), SKU 36 = SK6310BT base (compact spec — 20 chars короче). Same Danish supplier template family как b4 SKU 29 Tefcold SA910BT + b5 SKU 35 Tefcold SK6310BT/+SP. blknochg → ВСЕ артефакты dr НЕ трогаем. Код `Tefcold SK6310BT` Lat → consistent. META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=2053475845)*
+
+---
+
+## SKU 37/61 — Стол морозильный Forcar G-SS45BT (Артикул 2082652131) — 🔴 RU=UA + Назв.мод (RU) UA-leak
+
+**Поле:** Название модификации (RU)
+**Было:** `Стіл морозильний Forcar G-SS45BT`
+**Стало:** `Стол морозильный Forcar G-SS45BT`
+
+**Поле:** Описание товара (RU)
+**Было:** (полностью идентично UA — украинский текст)
+**Стало:** (полный перевод RU тег-в-tag):
+
+```
+<p>Морозильный стол Forcar G-SS45BT предназначен для хранения продуктов питания и полуфабрикатов на предприятиях общественного питания и торговли.</p> <p><strong>Характеристики:</strong></p> <ul>
+<li>2 двери,</li>
+<li>рабочая поверхность из нержавеющей стали,</li>
+<li>объём 240 л,</li>
+<li>1 решётчатая полка GN 1/1 с пластиковым покрытием в каждом отделении,</li>
+<li>температура -12 ... -18 &deg; С (при tнар до +33 &deg; С),</li>
+<li>внутренняя и внешняя отделка &ndash; нерж. сталь,</li>
+<li>хладагент R290,</li>
+<li>толщина теплоизоляции 55 мм,</li>
+<li>статическое охлаждение,</li>
+<li>электронная панель управления,</li>
+<li>запускающееся вручную размораживание,</li>
+<li>автоматическое испарение талой воды</li>
+<li>Вес (нетто), кг: 82</li>
+<li>Длина (нетто), мм: 943</li>
+<li>Ширина (нетто), мм: 700</li>
+<li>Высота (нетто), мм: 850</li>
+<li>Мощность электрическая, кВт: 0.25</li>
+<li>Подключение к электросети: 220V</li>
+</ul>
+```
+
+*(blk триплет STANDARD — `desc UA==RU` **True** (🔴 RU=UA — RU = полная укр. копия тела, оба длиной 958); `nm_ua`==`nm_ru` `Стіл морозильний Forcar G-SS45BT` (UA-leak; body-level `_has_ua` True via `Стіл`/`морозильний`); `nm_ru`!=`nazv_ru` genuine RU `Стол морозильный Forcar G-SS45BT` → AUTO Назв.мод (RU) = genuine `nazv_ru`. **ДЕВЯТЫЙ blk триплет в chunk-028** + **parallel pattern within brand**: b3 SKU 21 Forcar GN3100BT — **blknochg** same brand (supplier дал genuine RU dr), SKU 37 Forcar G-SS45BT — **blk триплет** (supplier UA-only тело, magazine скопировал UA в RU cell). Same brand Forcar, разные supplier-paths — parallel к b3 SKU 20/23 FROSTY (b3 SKU 20 FROSTY 600мм — blknochg, b3 SKU 23 FROSTY 700мм — blk триплет; same brand разные ширина-variants и разные supplier-paths) и b4 SKU 27/28 Tecnodom (TF02MIDBT 2-door — blk триплет, TF03MIDBT 3-door — blknochg). **Forcar НЕ ∈ НП-эксклюзивный список** (word-boundary NP-hit нет — сравнение = членство в бренд-SET {HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA}, НЕ substring) → обычная обработка, НЕ SKIP-НП. Substring `FOR` присутствует в `FORCAR` как префикс, но word-boundary regex для NP-keys `HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA` не содержит standalone `FOR`. Durable constraint: `Tefcold/Forcold/Forcar НЕ SKIP`. Forcar — Italian supplier brand same template family как FROSTY/Tecnodom, но в данном случае supplier дал UA-only тело без отдельного RU перевода (magazine скопировал UA в RU cell). Описание (RU) — авторский полный перевод тег-в-tag (структура UA зеркалится 1:1; 1 `<p>` + 1 `<p>/<strong>` + 1 `<ul>` + 18 `<li>`, line-breaks `\n` после `<ul>` и между `<li>` preserve verbatim). SOFT применено к авторскому RU: `Морозильний стіл Forcar G-SS45BT призначений для зберігання продуктів харчування та напівфабрикатів на підприємствах громадського харчування та торгівлі.`→`Морозильный стол Forcar G-SS45BT предназначен для хранения продуктов питания и полуфабрикатов на предприятиях общественного питания и торговли.`; `<strong>Характеристики:</strong>` preserve verbatim; `2 двері,`→`2 двери,`; `робоча поверхня з нержавіючої сталі,`→`рабочая поверхность из нержавеющей стали,`; `об&#39;єм 240 л,`→`объём 240 л,` (drop &#39; entity-apos; ё U+0451); `1 гратчаста полиця GN 1/1 з пластиковим покриттям у кожному відділенні,`→`1 решётчатая полка GN 1/1 с пластиковым покрытием в каждом отделении,` (ё в `решётчатая`); `температура -12 ... -18 &deg; С (при tнар до +33 &deg; С),`→identical (Cyr С postfix; tнар сокращение preserve); `внутрішнє та зовнішнє оздоблення &ndash; нерж. сталь,`→`внутренняя и внешняя отделка &ndash; нерж. сталь,` (gender shift neut. UA `оздоблення`→fem. RU `отделка` — agreement с adj `внутренняя`/`внешняя`; `&ndash;` en-dash entity preserve — отличие от SKU 25/27 где `&mdash;` em-dash entity, supplier choice variant); `холодоагент R290,`→`хладагент R290,` (UA typo `холодоагент` с лишним `о` — должно быть `холодагент`; canonical RU `хладагент`; R290 refrigerant code preserve); `товщина термоізоляції 55 мм,`→`толщина теплоизоляции 55 мм,`; `статичне охолодження,`→`статическое охлаждение,`; `електронна панель управління,`→`электронная панель управления,`; `що запускається вручну розморожування,`→`запускающееся вручную размораживание,` (gerund-verb construction UA → adj-noun RU; voice preserve passive — `запускающееся` part. ср. рода согласовано с подразумеваемым `размораживание`); `автоматичне випаровування талої води`→`автоматическое испарение талой воды`; `Вага (нетто), кг: 82`→`Вес (нетто), кг: 82`; `Довжина (нетто), мм: 943`→`Длина (нетто), мм: 943`; `Ширина (нетто), мм: 700`→identical; `Висота (нетто), мм: 850`→`Высота (нетто), мм: 850`; `Потужність електрична, кВт: 0.25`→`Мощность электрическая, кВт: 0.25` (decimal **dot** preserve — supplier choice; **SKU 37-SPECIFIC** отличие от других SKU 33/38/39 которые используют decimal comma; per-axis supplier-format preserve verbatim); `Підключення до електромережі: 220V`→`Подключение к электросети: 220V` (**SKU 37-SPECIFIC** `220V` без пробела между значением и единицей + Lat V — supplier choice preserve verbatim; отличие от других SKU 33/38 которые используют `220 В` Cyr В с пробелом). бренд/модель/`R290`/`GN 1/1`/`л`/`мм`/`кг`/`кВт`/`V` НЕ переводим; HTML-entities `&deg;` (x2) + `&ndash;` (x1) + drop `&#39;` (x1). META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=2082652131)*
+
+---
+
+## SKU 38/61 — Стол морозильный Gooder GN2100ВТ (Артикул 2199328286) — 🔴 RU=UA + Назв.мод (RU) UA-leak
+
+**Поле:** Название модификации (RU)
+**Было:** `Стіл морозильний Gooder GN2100ВТ`
+**Стало:** `Стол морозильный Gooder GN2100ВТ`
+
+**Поле:** Описание товара (RU)
+**Было:** (полностью идентично UA — украинский текст)
+**Стало:** (полный перевод RU тег-в-tag):
+
+```
+<p>Стол холодильный низкотемпературный Gooder GN2100ВТ предназначен для хранения продуктов питания и полуфабрикатов на предприятиях общественного питания и торговли.</p> <p><strong>Характеристики:</strong></p> <ul>
+<li>Относительная влажность : 55%;</li>
+<li>Вес: 113 кг;</li>
+<li>Вес в упаковке: 123 кг;</li>
+<li>Диапазон температуры окружающей среды: +16 до +30 С&deg;;</li>
+<li>Общий объём л: 282 л;</li>
+<li>Количество полок: 2;</li>
+<li>Класс энергопотребления: Е;</li>
+<li>Климатический класс: 4;</li>
+<li>Корпус: Нержавеющая сталь снаружи и внутри (AISI 304);</li>
+<li>Страна производитель: Китай;</li>
+<li>Размеры (ДxШxВ): 1360мм x 700мм x 860мм;</li>
+<li>Система охлаждения: Динамическая;</li>
+<li>Темп.режим: -18&deg;C....-22&deg;C;</li>
+<li>Торговая марка: Gooder;</li>
+<li>Автоматические двери,</li>
+<li>Цифровой термостат;</li>
+<li>Хладагент: R290;</li>
+</ul>
+```
+
+*(blk триплет STANDARD — `desc UA==RU` **True** (🔴 RU=UA — RU = полная укр. копия тела, оба длиной 869); `nm_ua`==`nm_ru` `Стіл морозильний Gooder GN2100ВТ` (UA-leak; body-level `_has_ua` True via `Стіл`/`морозильний`); `nm_ru`!=`nazv_ru` genuine RU `Стол морозильный Gooder GN2100ВТ` → AUTO Назв.мод (RU) = genuine `nazv_ru`. **ДЕСЯТЫЙ blk триплет в chunk-028** + **ПЕРВЫЙ Gooder в chunk-028** + **ПЕРВЫЙ Gooder в проекте** — нет precedent batch/chunk; supplier-template family новый (характерные UA typos `Климатичний`/`Хлодоген`/`всередені` — supplier с слабой UA грамотностью; нормализуем к canonical RU). **Gooder НЕ ∈ НП-эксклюзивный список** (word-boundary NP-hit нет — сравнение = членство в бренд-SET {HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA}, НЕ substring) → обычная обработка, НЕ SKIP-НП. **Cyrillic `ВТ` в коде модели** `GN2100ВТ` — Cyr В U+0412 + Т U+0422 (НЕ Lat BT U+0042+U+0054) — preserve verbatim per supplier choice (verify byte-exact против nazv_ru). Описание (RU) — авторский полный перевод тег-в-tag (структура UA зеркалится 1:1; 1 `<p>` + 1 `<p>/<strong>` + 1 `<ul>` + 17 `<li>`, line-breaks `\n` после `<ul>` и между `<li>` preserve verbatim). SOFT применено к авторскому RU: `Стіл холодильний низькотемпературний Gooder GN2100ВТ призначений для зберігання продуктів харчування та напівфабрикатів на підприємствах громадського харчування та торгівлі.`→`Стол холодильный низкотемпературный Gooder GN2100ВТ предназначен для хранения продуктов питания и полуфабрикатов на предприятиях общественного питания и торговли.`; `<strong>Характеристики:</strong>` preserve verbatim; **space-colon** `Відносна вологість : 55%;`→`Относительная влажность : 55%;` (space перед двоеточием supplier choice preserve verbatim; trailing `;` preserve per-li throughout 17 li); `Вага: 113 кг;`→`Вес: 113 кг;`; `Вага в упаковці: 123 кг;`→`Вес в упаковке: 123 кг;`; `Діапазон температури навколишнього середовища: +16 до +30 С&deg;;`→`Диапазон температуры окружающей среды: +16 до +30 С&deg;;` (`С&deg;` postfix-Cyr-С + entity ORDER preserve — supplier choice verbatim, inverse order vs SKU 38 throughout); `Загальний об&#39;єм л: 282 л;`→`Общий объём л: 282 л;` (drop apos-entity; ё; `л` дублируется UA-style → RU preserve verbatim); `Кількість полок: 2;`→`Количество полок: 2;`; `Клас енергоспоживання: Е;`→`Класс энергопотребления: Е;`; **UA typo normalize**: `Климатичний клас: 4;` (UA typo — canonical UA `Кліматичний`) → `Климатический класс: 4;` (canonical RU; UA typo НЕ carry-over); **UA typo normalize**: `Корпус: Нержавіюча сталь ззовні і всередені (AISI 304);` (UA typo `всередені` — должно быть `всередині`) → `Корпус: Нержавеющая сталь снаружи и внутри (AISI 304);` (canonical RU; UA typo normalize); `Країна виробник: Китай;`→`Страна производитель: Китай;`; `Розміри (ДхШхВ): 1360х700х860;`→`Размеры (ДxШxВ): 1360мм x 700мм x 860мм;` (Cyr х U+0445 → Lat x U+0078 в header `ДxШxВ` AND в значении; Policy B/C `мм` слитно per axis; trailing `;` preserve); `Система охолодження: Динамічна;`→`Система охлаждения: Динамическая;`; `Темп.режим: -18&deg;C....-22&deg;C;`→identical (Lat C verbatim; 4-точечное `....` preserve; trailing `;`); `Торгова марка: Gooder;`→`Торговая марка: Gooder;`; `Автоматичні двері,`→`Автоматические двери,` (note: trailing `,` вместо `;` — supplier inconsistency внутри 17-li списка preserve verbatim); `Цифровий термостат;`→`Цифровой термостат;`; **UA typo normalize**: `Хлодоген: R290;` (UA typo — должно быть `Хладоген`/canonical RU `Хладагент`) → `Хладагент: R290;` (canonical RU; supplier UA-side typo `Хлодоген` нормализуем к правильному RU термину; **SKU 38-SPECIFIC** + paralleled SKU 39 same brand same typo). бренд/модель/`AISI 304`/`R290`/`л`/`кг`/`мм` НЕ переводим; Cyrillic `ВТ` (Cyr В+Т) в `GN2100ВТ` preserve verbatim; HTML-entities `&deg;` (x2) + drop `&#39;` (x1). META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=2199328286)*
+
+---
+
+## SKU 39/61 — Стол морозильный Gooder GN3100ВТ (Артикул 2199337912) — 🔴 RU=UA + Назв.мод (RU) UA-leak
+
+**Поле:** Название модификации (RU)
+**Было:** `Стіл морозильний Gooder GN3100ВТ`
+**Стало:** `Стол морозильный Gooder GN3100ВТ`
+
+**Поле:** Описание товара (RU)
+**Было:** (полностью идентично UA — украинский текст)
+**Стало:** (полный перевод RU тег-в-tag):
+
+```
+<p>Стол холодильный низкотемпературный Gooder GN3100ВТ предназначен для хранения продуктов питания и полуфабрикатов на предприятиях общественного питания и торговли.</p> <p><strong>Характеристики:</strong></p> <ul>
+<li>Относительная влажность : 55%;</li>
+<li>Вес: 130 кг;</li>
+<li>Вес в упаковке: 140 кг;</li>
+<li>Диапазон температуры окружающей среды: +16 до +30 С&deg;;</li>
+<li>Общий объём л: 417 л;</li>
+<li>Количество полок: 3;</li>
+<li>Класс энергопотребления: Е;</li>
+<li>Климатический класс: 4;</li>
+<li>Корпус: Нержавеющая сталь снаружи и внутри (AISI 304);</li>
+<li>Страна производитель: Китай;</li>
+<li>Размеры (ДxШxВ): 1795мм x 700мм x 860мм;</li>
+<li>Система охлаждения: Динамическая;</li>
+<li>Потребление электроэнергии: 9,33 кВт/д;</li>
+<li>Темп.режим: -18&deg;C....-22&deg;C;</li>
+<li>Торговая марка: Gooder; Автоматические двери,</li>
+<li>Цифровой термостат;</li>
+<li>Хладагент: R290</li>
+</ul>
+```
+
+*(blk триплет STANDARD — `desc UA==RU` **True** (🔴 RU=UA — RU = полная укр. копия тела, оба длиной 907); `nm_ua`==`nm_ru` `Стіл морозильний Gooder GN3100ВТ` (UA-leak; body-level `_has_ua` True); `nm_ru`!=`nazv_ru` genuine RU `Стол морозильный Gooder GN3100ВТ` → AUTO Назв.мод (RU) = genuine `nazv_ru`. **ОДИННАДЦАТЫЙ blk триплет в chunk-028** + **ВТОРОЙ Gooder в chunk-028** + **mirror SKU 38 3-door variant** (SKU 38 = 2-door GN2100ВТ, SKU 39 = 3-door GN3100ВТ same brand same supplier-template). **Gooder НЕ ∈ НП-эксклюзивный список** (word-boundary NP-hit нет — сравнение = членство в бренд-SET {HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA}, НЕ substring) → обычная обработка, НЕ SKIP-НП. **Cyrillic `ВТ` в `GN3100ВТ`** (Cyr В+Т) preserve verbatim. Описание (RU) — авторский полный перевод тег-в-tag (1 `<p>` + 1 `<p>/<strong>` + 1 `<ul>` + 17 `<li>`, mirror SKU 38 + diffs). **Diffs vs SKU 38**: (1) `Вага: 130 кг;` (vs SKU 38 113) → `Вес: 130 кг;`; (2) `Вага в упаковці: 140 кг;` (vs SKU 38 123) → `Вес в упаковке: 140 кг;`; (3) `Загальний об&#39;єм л: 417 л;` (vs SKU 38 282) → `Общий объём л: 417 л;`; (4) `Кількість полок: 3;` (vs SKU 38 2) → `Количество полок: 3;`; (5) `Розміри (ДхШхВ): 1795х700х860;` (vs SKU 38 1360х700х860) → `Размеры (ДxШxВ): 1795мм x 700мм x 860мм;`; (6) **INSERT after Розміри** `<li>Споживання електроенергії: 9,33 кВт/д;</li>` → `<li>Потребление электроэнергии: 9,33 кВт/д;</li>` (decimal comma; `кВт/д` единица preserve verbatim; **SKU 39-SPECIFIC** extra li отсутствует в SKU 38 2-door); (7) **COLLAPSE li** (как у supplier UA source): `<li>Торгова марка: Gooder; Автоматичні двері,</li>` (две сущности в одном li, разделены `;` — supplier collapse choice SKU 39 vs separate li в SKU 38) → `<li>Торговая марка: Gooder; Автоматические двери,</li>` (preserve supplier collapse verbatim); (8) **LAST li без trailing `;`** `<li>Хлодоген: R290</li>` (vs SKU 38 `Хлодоген: R290;` с `;` — supplier inconsistency mirror 39 vs 38) → `<li>Хладагент: R290</li>` (UA typo `Хлодоген` normalize к canonical RU `Хладагент` same SKU 38; БЕЗ trailing `;` per SKU 39 supplier choice). Все остальные li mirror SKU 38 verbatim translations. SOFT applied same as SKU 38: space-colon `Відносна вологість :` preserve; UA typos `Климатичний`/`всередені`/`Хлодоген` normalize к canonical RU; Cyr х U+0445 → Lat x U+0078 в `ДxШxВ` AND в `1795x700x860`; Policy B/C `мм` слитно per axis; `&deg;C` Lat C + 4-точечное preserve; trailing-comma в `Автоматические двери,` preserve. бренд/модель/`AISI 304`/`R290`/`л`/`кг`/`мм`/`кВт/д` НЕ переводим; Cyrillic `ВТ` в `GN3100ВТ` preserve; HTML-entities `&deg;` (x2) + drop `&#39;` (x1). META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=2199337912)*
+
+---
+
+## SKU 40/61 — Морозильный стол FAGOR MFN-135 EXP (Артикул 2204095479) — SKIP-НП (бренд НП-эксклюзив, тело из фида НП позже)
+
+**Бренд:** Fagor (НП-эксклюзивный — forward-only SKIP-правило)
+**Поле:** Название модификации (RU)
+**Было:** (ячейка не трогается — тело из фида НП позже)
+**Стало:** не трогаем (SKIP-НП — тело из фида НП позже)
+
+**Поле:** Описание товара (RU)
+**Было:** (ячейка не трогается — тело из фида НП позже)
+**Стало:** не трогаем (SKIP-НП — тело из фида НП позже)
+
+*(SKIP-НП — `brand`=`Fagor` ∈ {FAGOR/Fagor/Фагор} word-boundary NP-hit → forward-only SKIP-правило: тело из фида НП позже, ячейки chunk-028-fixed.xlsx НЕ трогаем (Назв.мод RU + Описание RU без изменений). **Fagor ∈ НП-эксклюзивный список** (word-boundary NP-hit найден в бренд-SET {HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA}) → forward-only SKIP-правило: тело из фида НП позже, ячейки chunk-028-fixed.xlsx не трогаем (Назв.мод RU + Описание RU без изменений). **ВОСЬМОЙ SKIP-НП в chunk-028** + **ПЕРВЫЙ Fagor в chunk-028** + **ПЕРВЫЙ Fagor в проекте** — нет precedent batch/chunk; supplier-template family новый. Source signature: `du==dr` True 628/628 + `nm_ua`!=`nm_ru` desync (UA `Морозильний стіл FAGOR MFN-135 EXP` allcaps brand vs RU `Стіл морозильний Fagor 2-х дверний MFN-135 EXP` Titlecase brand + UA-leak `Стіл морозильний` + UA `дверний` suffix); **ОБА nm-cells содержат UA-leak** (UA `Морозильний стіл` в nm_ua + UA-leak `Стіл морозильний` + UA `дверний` в nm_ru); `nazv_ru` clean RU `Морозильный стол FAGOR MFN-135 EXP` — но brand-rule overrides signature, SKIP-НП **НЕ правим** ячейки (тело из фида НП позже всё перепишет, включая UA-leak в nm_ru + 2-х дверний). Кумул. SKIP-НП chunk-028 = 8 (после SKU 40). META always faithful. Открытых вопросов 0.)*
+
+**Наблюдения по батчу SKU 33-40 (40/61) — chunk-028 (батч-морозильные столы FROSTY ×1 + Brillis ×1 + Tefcold ×2 + Forcar ×1 + Gooder ×2 + Fagor SKIP-НП ×1; раздел `Холодильне та морозильне обладнання/Морозильні столи` — продолжение b4 SKU 25-32):** **blk триплет 4 (SKU 33 FROSTY GN 3100BT 700мм + SKU 37 Forcar G-SS45BT + SKU 38 Gooder GN2100ВТ + SKU 39 Gooder GN3100ВТ). blknotrip 0. blkv 0. blknochg 3 (SKU 34 Brillis BGL2-R290 + SKU 35 Tefcold SK6310BT/+SP + SKU 36 Tefcold SK6310BT — LIVE Horoshop genuine RU). blknochgeq 0. SKIP-НП 1 (SKU 40 Fagor MFN-135 EXP — ВОСЬМОЙ SKIP-НП в chunk-028, ПЕРВЫЙ Fagor).** SKU 33 `1905663779` FROSTY GN 3100BT (ширина 700 мм) — **blk триплет** **ВОСЬМОЙ blk триплет в chunk-028** + **прямой precedent SKU 23 FROSTY GN 2100BT 700мм b3** (same brand FROSTY same Italian template `<h2>`+`<p>`+ul/9li, 3-door variant vs 2-door, 700мм wide variant consistent): `desc UA==RU` True 🔴, `nm_ua==nm_ru` UA-leak `Морозильний стіл FROSTY GN 3100BT (ширина 700 мм)`, `nm_ru!=nazv_ru` → AUTO Назв.мод RU; Описание RU авторский 1:1; UA typo `кухонних лінії` (должно быть `кухонної лінії` sing. genit.) → canonical RU `кухонной линии`; SOFT: ё в `Трёхдверный`/`Объём`, drop apos-entity, Policy B/C `1795мм x 700мм x 860мм` (precedent SKU 23 b3), `t&deg;` сокращение + Lat C + 4-точечное `....` (Italian template family). FROSTY **НЕ ∈ НП-эксклюзив**. SKU 34 `2047034342` Brillis BGL2-R290 — **blknochg** LIVE Horoshop (supplier RU dr genuine 2015 vs UA du 1986 — RU чуть длиннее, expected expansion; nm_ru clean RU без UA-leak; **ПЕРВЫЙ Brillis в проекте**; supplier-template family новый — НЕ Italian/Danish/Cooleq/REEDNEE seen so far; НЕ переписываем). **Brillis НЕ ∈ НП-эксклюзив**. SKU 35 `2053463226` Tefcold SK6310BT/+SP — **blknochg** LIVE Horoshop (supplier RU dr genuine 1320 vs UA du 1340; nm_ru clean RU `Стол морозильный Tefcold SK6310BT/+SP` (==`nazv_ru`, без UA-leak); body-RU genuine отдельный supplier перевод → классификация blknochg по body-level desc UA!=RU; **parallel pattern к b4 SKU 29 Tefcold SA910BT** same Danish supplier family; SK6310BT/+SP — extended variant с `/+SP` suffix; cells stay unchanged). **Tefcold НЕ ∈ НП-эксклюзив** (substring `COLD` в `TEFCOLD` НЕ word-boundary NP-hit; durable constraint). SKU 36 `2053475845` Tefcold SK6310BT — **blknochg** LIVE Horoshop **mirror SKU 35 без `/+SP` suffix** (dr 1280 vs du 1302; nm_ru clean RU same SKU 35; compact spec — 20 chars короче чем SKU 35 extended). **Tefcold НЕ ∈ НП-эксклюзив**. SKU 37 `2082652131` Forcar G-SS45BT — **blk триплет** **ДЕВЯТЫЙ blk триплет в chunk-028** + **parallel pattern within brand Forcar**: b3 SKU 21 Forcar GN3100BT — **blknochg** same brand (supplier дал genuine RU dr), SKU 37 Forcar G-SS45BT — **blk триплет** (supplier UA-only тело, magazine скопировал UA в RU cell; `desc UA==RU` True 🔴, `nm_ua==nm_ru` UA-leak; Описание RU авторский 1`<p>`+1`<p>/<strong>`+ul/18li 1:1; **SKU 37-SPECIFIC**: decimal **dot** `0.25` (vs SKU 33/38/39 comma) + `220V` Lat V без пробела (vs SKU 33/38 `220 В` Cyr В с пробелом) — supplier choice preserve verbatim; `холодоагент`→`хладагент` UA typo normalize; `&ndash;` en-dash entity preserve — отличие от SKU 25/27 `&mdash;` em-dash; gerund-verb `що запускається вручну розморожування`→adj-noun RU `запускающееся вручную размораживание`). **Forcar НЕ ∈ НП-эксклюзив** (substring `FOR` не standalone NP key; durable constraint `Tefcold/Forcold/Forcar НЕ SKIP`). SKU 38 `2199328286` Gooder GN2100ВТ — **blk триплет** **ДЕСЯТЫЙ blk триплет** + **ПЕРВЫЙ Gooder в chunk-028** + **ПЕРВЫЙ Gooder в проекте**: 1`<p>` + 1`<p>/<strong>` + ul/17li; **Cyrillic `ВТ` в коде модели** (Cyr В U+0412 + Т U+0422, не Lat BT) preserve verbatim; supplier UA typos многократные `Климатичний`/`всередені`/`Хлодоген` (canonical UA `Кліматичний`/`всередині`/`Хладоген`) → нормализуем к canonical RU `Климатический`/`внутри`/`Хладагент` (НЕ carry-over supplier typos); space-colon `Відносна вологість :` preserve verbatim supplier choice; `С&deg;` inverse-order postfix-Cyr-С + entity preserve supplier choice (vs `&deg;С` order в SKU 33/40); Policy B/C `1360мм x 700мм x 860мм` Cyr х→Lat x в header `ДxШxВ` AND value. **Gooder НЕ ∈ НП-эксклюзив**. SKU 39 `2199337912` Gooder GN3100ВТ — **blk триплет** **ОДИННАДЦАТЫЙ blk триплет** + **ВТОРОЙ Gooder** **mirror SKU 38 3-door variant** + **SKU 39-SPECIFIC diffs**: extra li `Споживання електроенергії: 9,33 кВт/д;`→`Потребление электроэнергии: 9,33 кВт/д;` (decimal comma; `кВт/д` единица preserve verbatim); collapsed li `Торгова марка: Gooder; Автоматичні двері,` (две сущности в одном li — supplier choice SKU 39 vs separate li в SKU 38); LAST li без trailing `;`: `Хлодоген: R290` → `Хладагент: R290` (supplier inconsistency mirror 39 vs 38 + UA typo normalize); weight/dims diffs 130/140/417/3/1795х700х860 (vs 113/123/282/2/1360х700х860 SKU 38). SKU 40 `2204095479` Fagor MFN-135 EXP — **SKIP-НП** (brand=`Fagor` ∈ {FAGOR/Fagor/Фагор} NP-hit; **ВОСЬМОЙ SKIP-НП в chunk-028** + **ПЕРВЫЙ Fagor в проекте**; source `du==dr` True 628/628 + `nm_ua!=nm_ru` desync ALLCAPS FAGOR vs Titlecase Fagor+`2-х дверний` UA suffix — ОБА nm-cells имеют UA-leak; cells unchanged — тело из фида НП позже всё перепишет). **Открытых вопросов по батчу: 0** (b1 0 + b2 0 + b3 0 + b4 0 + b5 0; ledger chunk-028 = 0). Кумулятивно chunk-028 = **0** (questions.md chunk-028 пока НЕ создаём — нет OQ; supplier UA typos `Климатичний`/`всередені`/`Хлодоген`/`кухонних лінії` → soft normalize к canonical RU inline, не нумеруются). Кумулятивно SKIP-НП chunk-028 = **8** (b1 0 + b2 3 + b3 3 + b4 1 + b5 1). NEXT: chunk-028 b6 SKU 41-48.
+
+*(scoped к row Артикул=2204095479)*
 
 ---
