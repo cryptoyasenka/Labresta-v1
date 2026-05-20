@@ -76,3 +76,23 @@
 | 25 | 24 | 2139042703 | Tefcold CC45 | |
 
 **Verify:** 66 PASS / 0 FAIL. Без новых OQ.
+
+
+## b4 (SKU 25-32, rows 26-33)
+
+Категории: blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+
+### blknochg
+
+| row | SKU | ART | модель |
+|---|---|---|---|
+| 26 | 25 | 2139103813 | Tefcold CC77 |
+| 27 | 26 | 2139107576 | Tefcold CC55 |
+| 28 | 27 | 2139137100 | Tefcold FS1220 |
+| 29 | 28 | 2139139145 | Tefcold SDU1220 |
+| 30 | 29 | 2139149162 | Tefcold CEV425CP 2 LED L/H |
+| 31 | 30 | 2139159124 | Tefcold CEV425CP 2 LED |
+| 32 | 31 | 2139177661 | Tefcold SCU1280 |
+| 33 | 32 | 2139806837 | Tefcold FS1280 |
+
+**Verify:** 72 PASS / 0 FAIL. Без новых OQ.
