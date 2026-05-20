@@ -665,3 +665,9 @@ CURRENT-w2: chunk-085 b8 DONE 64/75 (cum TRIP 29 / blknotrip 0 / blknochg 31 / b
 
 
 CURRENT-w2: chunk-085 b9 DONE 72/75 (cum TRIP 33 / blknotrip 0 / blknochg 34 / blkfix 0 / SKIP-НП 5; 387 PASS / 0 FAIL); TRIP 4 (Hendi 209981 чайник + Airhot EC 6 чебуречница c36-only + Hendi 222553/222560 центрифуги) + blknochg 3 (Frosty DG-01 + La Monferrina Dryer + камень Нагура) + SKIP-НП 1 HURAKAN HKN-EF16; без новых OQ; next b10 FINAL (SKU 73-75, rows 74-76, 3 SKU — закрытие chunk-085 и W2 range 055-085)
+
+
+CURRENT-w2: chunk-085 b10 FINAL DONE 75/75 ✅ ЗАКРЫТ (cum TRIP 33 / blknotrip 0 / blknochg 37 / blkfix 0 / SKIP-НП 5; 396 PASS / 0 FAIL); blknochg 3 (Трейдвест MB-15/MB-25/МВ-50 центрифуги для белья); без новых OQ
+
+=== W2 RANGE 055-085 ЗАКРЫТ ✅ ===
+chunk-085 был финальным в диапазоне W2 (chunk-055 .. chunk-085). Все chunks обработаны.
