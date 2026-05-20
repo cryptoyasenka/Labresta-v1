@@ -155,3 +155,34 @@
 - r51 thickness 0,7 (vs r50 0,6) — confirmed via tail dump.
 
 ### Verify b7: 69 PASS / 0 FAIL
+
+
+## Batch 8 (SKU 57-64, rows 58-65)
+
+### TRIP 8 (HENDI continue: сотейники capsule + frying + кастрюли Budget Line + Impact Bonding + sandwich)
+- **r58 Сотейник HENDI 838303 5 л** — c5 нейтральная; c36 RU hendi_saucepot_capsule_body «5 литров», dim ø240x115 мм, 0,6 мм. Reuse b7 helper.
+- **r59 Сотейник для жарки HENDI 830048 1,2 л** — c5 нейтральная; c36 RU hendi_saucepot_frying_body «1,2 литра», dim ø140x70 мм, 0,7 мм. NEW helper.
+- **r60 Сотейник для жарки HENDI 830055 1,5 л** — аналог r59, dim ø160x75 мм.
+- **r61 Сотейник для жарки HENDI 830154 2 л** — аналог r59, «2 литра», dim ø180x80 мм.
+- **r62 Сотейник для жарки HENDI 830253 3 л** — аналог r59, «3 литра», dim ø200x90 мм.
+- **r63 Кастрюля HENDI Budget Line 832851 32 л** — c5 ← c7 «Кастрюля 32 л HENDI Budget Line 832851 с крышкой»; c36 RU hendi_pot_body EXTENDED с intro override «Кастрюля средняя с крышкой HENDI Budget Line 832851», dim ø400x260 мм, 0,8 мм.
+- **r64 Кастрюля HENDI 832707 37 л** — c5 ← c7 «Кастрюля 37 л HENDI 832707»; c36 RU hendi_pot_impact_bonding_body «37 литров», dim ø360x360 мм, 1 мм. Reuse b6 helper.
+- **r65 Кастрюля HENDI 834909 71 л** — c5 ← c7 «Кастрюля 71 л HENDI 834909»; c36 RU hendi_pot_body EXTENDED (volume_l=71, thickness_mm='1'), dim ø450x450 мм. Default intro «Кастрюля 71 л HENDI 834909».
+
+### blknochg / blknotrip / blkfix / SKIP-НП: 0
+
+### NEW/EXTENDED functions b8:
+- `hendi_saucepot_frying_body(volume_str, art, dim_mm, thickness_mm='0,7')` — 11 li сотейник для жарки: «Исключительно массивная сталь высочайшего качества», полированный рант, Impact Bonding, без крышки, длинная пустотелая ручка, dishwasher-safe.
+- **EXTENDED** `hendi_pot_body(volume_l, art, dim_mm, thickness_mm='0,8', intro=None)` — добавлены `thickness_mm` (default 0,8 — back-compat для b4/b5 calls) + `intro` override (default `'Кастрюля {volume_l} л HENDI {art}'`).
+
+### Source-quirks b8:
+- r58 «об'ємом 5 літрів» → «объемом 5 литров» (RU paucal ≥5: «литров»).
+- r59-r62 «об'ємом N літра/літри» → «объемом N литра» (1,2/1,5/2/3 — все «литра»: 1,2 и 1,5 = genitive of decimal, 2/3 = paucal 2-4).
+- r59-r62 «Виключно масивна сталь найвищої якості» → «Исключительно массивная сталь высочайшего качества» (NEW phrase).
+- r59-r62 reuse b6: «ненагревающихся масивних»→«не нагревающихся массивных», «теплопровідність»→«теплопроводностью», «теплову провідність»→«тепловую проводимость», «Стійкість до впливу кислот»→«Стойкость к воздействию кислот».
+- r63 intro source «Каструля середня з кришкою HENDI Budget Line 832851» — generic descriptor «medium with lid», c7 form различается («Кастрюля 32 л HENDI Budget Line 832851 с крышкой»); body intro mirrors source descriptor pattern.
+- r63/r65 «Ергономічні ручки, що не нагріваються ручки з нержавіючої сталі закріплені заклепками» — double «ручки» source-quirk preserved → «Эргономичные ручки, не нагревающиеся ручки из нержавеющей стали закреплены заклепками» (b4 helper string).
+- r64 «об'ємом 37 літрів» → «объемом 37 литров» (≥5).
+- r65 intro short «Каструля 71 л HENDI 834909» (no об'ємом prefix) — default extended hendi_pot_body output.
+
+### Verify b8: 98 PASS / 0 FAIL

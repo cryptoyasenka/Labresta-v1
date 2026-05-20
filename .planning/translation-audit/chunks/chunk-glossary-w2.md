@@ -1384,3 +1384,11 @@ Soft-note b12: финальный 2-SKU батч chunk-066. 1 TRIP (SKU90 r91 CB
 - Довга порожня ручка з нержавіючої сталі → Длинная пустотелая ручка из нержавеющей стали (reuse b6)
 - HTML-entities mirroring (r55-style): &trade; / &deg; / &ndash; / &oslash; — preserved as-is when source uses entities
 - `</h2> <ul>` (space, no newline) — source-format preserved when present (r55)
+
+
+## chunk-074 b8 (HENDI сотейники для жарки + Budget Line + 37/71 л кастрюли)
+- Сотейник для смаження об'ємом N → Сотейник для жарки объемом N
+- Виключно масивна сталь найвищої якості → Исключительно массивная сталь высочайшего качества
+- Каструля середня з кришкою HENDI Budget Line → Кастрюля средняя с крышкой HENDI Budget Line
+- (Полные skel-фразы повтор b6 Impact Bonding + b6 capsule no-lid — см. предыдущие глоссы)
+- Volume_str pattern: «N литра» для 1,2/1,5/2/3 л; «N литров» для 5/37/71 л (RU paucal rule applied: 1=литр, 2-4=литра, ≥5=литров)

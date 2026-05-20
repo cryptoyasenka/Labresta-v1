@@ -461,3 +461,44 @@
 ### Status
 
 **chunk-074 b7 DONE 56/87 (cum TRIP 50 / blknotrip 0 / blknochg 6 / blkfix 0 / SKIP-НП 0; 363 PASS / 0 FAIL; OQ#3 still pending) — next b8 (SKU 57-64, rows 58-65).**
+
+
+---
+
+## Batch 8 — DONE 64/87
+
+**Range:** rows 58-65 (SKU 57-64). Все 8 — TRIP HENDI continue: 1 сотейник capsule (b7 reuse), 4 сотейника для жарки (NEW helper hendi_saucepot_frying_body), 1 кастрюля Budget Line с крышкой (hendi_pot_body extended intro), 1 кастрюля Impact Bonding 37 л (b6 reuse), 1 кастрюля 71 л sandwich (hendi_pot_body extended thickness).
+
+### Categories
+- **TRIP 8:** r58 838303 5 л ø240x115 0,6мм (capsule); r59 830048 1,2 л ø140x70 + r60 830055 1,5 л ø160x75 + r61 830154 2 л ø180x80 + r62 830253 3 л ø200x90 (frying, 0,7мм); r63 832851 32 л Budget Line с крышкой ø400x260 0,8мм; r64 832707 37 л ø360x360 1мм Impact Bonding; r65 834909 71 л ø450x450 1мм sandwich.
+- **blknochg / blknotrip / blkfix / SKIP-НП:** 0.
+
+### c5 rewrites
+- r63 c5 ← c7 «Кастрюля 32 л HENDI Budget Line 832851 с крышкой» (UA «з кришкою»).
+- r64 c5 ← c7 «Кастрюля 37 л HENDI 832707» (UA «Каструля»).
+- r65 c5 ← c7 «Кастрюля 71 л HENDI 834909» (UA «Каструля»).
+- r58/r59/r60/r61/r62: c5 нейтральные («Сотейник» neutral), не тронуты.
+
+### Source-quirks
+- r58 «5 літрів» → «5 литров» (paucal ≥5).
+- r59-r62 «об'ємом N літра/літри» → «объемом N литра» (all collapse to «литра»: 1,2/1,5 = decimal genitive, 2/3 = paucal).
+- r59-r62 «Виключно масивна сталь найвищої якості» → «Исключительно массивная сталь высочайшего качества» (NEW phrase).
+- r59-r62 reuse normalizations: «ненагревающихся масивних»→«не нагревающихся массивных», «теплопровідність»→«теплопроводностью», «теплову провідність»→«тепловую проводимость».
+- r63 intro descriptor «Кастрюля средняя с крышкой HENDI Budget Line 832851» — c7 form различается («32 л … с крышкой»).
+- r63/r65 double «ручки» source-quirk preserved.
+- r64 «37 літрів»→«37 литров».
+- r65 intro short без об'ємом prefix → default extended helper.
+
+### NEW/EXTENDED helpers b8
+- **NEW** `hendi_saucepot_frying_body(volume_str, art, dim_mm, thickness_mm='0,7')` — 11 li, Impact Bonding, без крышки, длинная пустотелая ручка, dishwasher-safe.
+- **EXTENDED** `hendi_pot_body(volume_l, art, dim_mm, thickness_mm='0,8', intro=None)` — добавлены thickness_mm (back-compat default) + intro override.
+
+### Verify
+- 98 PASS / 0 FAIL.
+
+### Open Questions
+- Нет новых. OQ #3 (b5 r39) — pending Yana decision.
+
+### Status
+
+**chunk-074 b8 DONE 64/87 (cum TRIP 58 / blknotrip 0 / blknochg 6 / blkfix 0 / SKIP-НП 0; 461 PASS / 0 FAIL; OQ#3 still pending) — next b9 (SKU 65-72, rows 66-73).**
