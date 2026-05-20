@@ -469,3 +469,13 @@
 - Cumulative chunk-077: 24/39 (TRIP 5 / blknotrip 0 / blknochg 17 / blkfix 1 / SKIP-НП 1; 203 PASS / 0 FAIL).
 - OQ: без новых.
 - Next: chunk-077 b4 (SKU 25-32, rows 26-33).
+
+
+## chunk-077 b4 DONE 32/39 (2026-05-20 13:00)
+
+- Категории: blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+- blknochg: r26 Ubc Extra Large; r27-r32 Juka VD-серия (VD75GА/VD75G/VD70M нерж/VD70M/VD140M/VD140M нерж — все среднетемпературные); r33 Juka SD70M универсальный.
+- Verify: 72 PASS / 0 FAIL.
+- Cumulative chunk-077: 32/39 (TRIP 5 / blknotrip 0 / blknochg 25 / blkfix 1 / SKIP-НП 1; 275 PASS / 0 FAIL).
+- OQ: без новых.
+- Next: chunk-077 b5 FINAL (SKU 33-39, rows 34-40, 7 SKU).
