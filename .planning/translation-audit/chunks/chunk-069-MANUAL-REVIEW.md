@@ -1,7 +1,7 @@
 # chunk-069 MANUAL REVIEW (W2)
 
-**Status:** chunk-069 b1 DONE 8/61 (TRIP 4 + blknochg 4 + SKIP-НП 0; 101 PASS) — next b2 (SKU 9-16, rows 10-17)
-**Last updated:** chunk-069 b1 DONE 8/61
+**Status:** chunk-069 b2 DONE 16/61 (cum TRIP 6 + blknochg 10 + SKIP-НП 0; 117 PASS) — next b3 (SKU 17-24, rows 18-25)
+**Last updated:** chunk-069 b2 DONE 16/61
 
 ## Структура
 
@@ -67,4 +67,24 @@ chunk-069 = **61 SKU**, batches 8+8+8+8+8+8+8+5 (b1..b8):
 **Verify breakdown:** 61 ART regression + 4 blknochg × 3 = 12 + 4 TRIP × 7 = 28 = **101 PASS / 0 FAIL**.
 
 **Cum после b1:** TRIP 4 + blknotrip 0 + blknochg 4 + SKIP-НП 0 = **8/61**. Next b2 (SKU 9-16, rows 10-17).
+
+## b2 (SKU 9-16, rows 10-17) — DONE 16/61
+
+TRIP 2 + blknochg 6 + SKIP-НП 0 = 8/8. Verify **117 PASS / 0 FAIL**.
+
+**TRIP (2):**
+- r10 SKU9 ART 923587067 **Krupps EVO121 туннельная** (c35==c36 UA dup, 1149 chars, 14 nl): c5←c7; c36 ← faithful RU body (EVOLUTION линия, 11 li + 3 ol, dims `60/120/500х500/450/500x500x100/18/500x500x100/4/1750x770x1825/24,2/1,5/2,0/10,5`).
+- r14 SKU13 ART 1519082393 **Krupps EL951E** (c35==c36 UA dup, 490 chars, 11 nl): c5←c7; c36 ← faithful RU body (10 li tech-char, dims `951/670х600/120/150/240/540/445/2/775х810х1360/7,4/380`).
+
+**blknochg (6):**
+- r11 SKU10 ART 1152270353 Winterhalter UCM Glasswasher фронтальная: c5==c7 RU OK, c36 без UA-mark, skel-eq False source variance; fixed НЕ изменена.
+- r12 SKU11 ART 1160729445 Krupps C537S DGT Advance фронтальная: c5==c7 RU OK; fixed НЕ изменена.
+- r13 SKU12 ART 1264689042 Oztiryakiler OBM1080DPD купольная: c5==c7 RU OK; fixed НЕ изменена.
+- r15 SKU14 ART 1813450895 Ozti OBM 1080D PDRT помпа слива купольная: c5==c7 RU OK; fixed НЕ изменена.
+- r16 SKU15 ART 1943696404 Ozti OBM 1080D PDT помпа слива купольная: c5==c7 RU OK; fixed НЕ изменена.
+- r17 SKU16 ART 2045404308 Empero EMP.2000-SAG-R: c5==c7 RU OK; fixed НЕ изменена.
+
+**SKIP-НП:** 0. **OQ:** 0.
+
+**Cum после b2:** TRIP 6 + blknotrip 0 + blknochg 10 + SKIP-НП 0 = **16/61**.
 
