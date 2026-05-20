@@ -1,6 +1,6 @@
 # chunk-080 manual review (W2)
 
-**Status:** chunk-080 b2 DONE 16/53 (cum TRIP 6 / blknotrip 0 / blknochg 9 / blkfix 0 / SKIP-НП 1; 143 PASS / 0 FAIL) — next b3 (SKU 17-24, rows 18-25). SKIP-НП #1 r15 TATRA TRC700BT. 3 SKIP-НП preliminary остались (r19 Hurakan / r36 Fagor / r39 HURAKAN).
+**Status:** chunk-080 b3 DONE 24/53 (cum TRIP 8 / blknotrip 0 / blknochg 14 / blkfix 0 / SKIP-НП 2; 208 PASS / 0 FAIL) — next b4 (SKU 25-32, rows 26-33). SKIP-НП: #1 r15 TATRA + #2 r19 Hurakan. 2 SKIP-НП preliminary остались (r36 Fagor / r39 HURAKAN, оба b5).
 
 ## Параметры
 
@@ -67,4 +67,27 @@ TRIP / blknotrip / blknochg / blkfix / SKIP-НП.
 - **r17** SKU=16 ART=2046787606 Brillis BL14-M-R290-EF — c5==c7 RU clean (c5 «Энергоэффективный шкаф морозильный...» — расхождение с c4 «Шафа морозильна...», но c5==c7 — наследие источника).
 
 **Verify:** 68 PASS / 0 FAIL. Без новых OQ.
+
+## b3 (SKU 17-24, rows 18-25) — DONE 24/53
+
+**Категории:** blk триплет 2 / blknotrip 0 / blknochg 5 / blkfix 0 / SKIP-НП 1.
+
+### SKIP-НП
+
+- **r19** SKU=18 ART=2104599345 **Hurakan** HKN-GX1410BT INOX 1400 л — SKIP-НП (brand=Hurakan, тело из фида НП позже). Ячейки в fixed не меняли. ⇒ SKIP-НП #2 по chunk-080.
+
+### TRIP (c5 ← c7; c36 ← faithful RU translation)
+
+- **r20** SKU=19 ART=2106854841 Frosty FBD400SS — c5 UA→RU «Шкаф морозильный Frosty FBD400SS»; c36 полный RU-перевод (был дубль c35): 326 л общий / 249 л полезный, глухие двери, замок, 6 полок ПВХ 480х405, -18..-23 °C, цифр.контроллер, статическое охлаждение, ручное размораживание, внутри белый пластик, корпус нерж.сталь, 0,432 кВт/220В, 600x639x1875, 80 кг.
+- **r21** SKU=20 ART=2106857097 Frosty FBD600SS — c5 UA→RU «Шкаф морозильный Frosty FBD600SS»; c36 полный RU-перевод (был дубль c35): 534 л общий / 411 л полезный, глухие двери, замок, 6 полок ПВХ 640х490 (UA «розмыром» — typo источника), автотермостат -18..-23 °C, статическое охлаждение, ручное размораживание, внутри белый пластик, корпус нерж.сталь, 0,48 кВт/220В, 775x744x1900, 96 кг.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r18** SKU=17 ART=2094488928 Juka ND75G — c5==c7 RU clean.
+- **r22** SKU=21 ART=2134159499 Tefcold UFFS371SD — c5==c7 RU clean.
+- **r23** SKU=22 ART=2141755896 Tefcold UF400S — c5==c7 RU clean.
+- **r24** SKU=23 ART=2143847088 Tefcold UF600 — c5==c7 RU clean.
+- **r25** SKU=24 ART=2144730312 Tefcold GUF140 — c5==c7 RU clean.
+
+**Verify:** 65 PASS / 0 FAIL. Без новых OQ.
 

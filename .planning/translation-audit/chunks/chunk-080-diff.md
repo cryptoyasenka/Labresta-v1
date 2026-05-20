@@ -63,3 +63,32 @@
 
 **Verify:** 68 PASS / 0 FAIL. Без новых OQ.
 
+## b3 (SKU 17-24, rows 18-25)
+
+Категории: blk триплет 2 / blknotrip 0 / blknochg 5 / blkfix 0 / SKIP-НП 1.
+
+### SKIP-НП
+
+| row | SKU | ART | бренд | модель |
+|---|---|---|---|---|
+| 19 | 18 | 2104599345 | Hurakan | HKN-GX1410BT INOX 1400 л |
+
+### TRIP
+
+| row | SKU | ART | модель | действие |
+|---|---|---|---|---|
+| 20 | 19 | 2106854841 | Frosty FBD400SS | c5 UA→RU; c36 полный RU-перевод (дубль c35) |
+| 21 | 20 | 2106857097 | Frosty FBD600SS | c5 UA→RU; c36 полный RU-перевод (дубль c35; UA typo «розмыром») |
+
+### blknochg
+
+| row | SKU | ART | модель |
+|---|---|---|---|
+| 18 | 17 | 2094488928 | Juka ND75G |
+| 22 | 21 | 2134159499 | Tefcold UFFS371SD |
+| 23 | 22 | 2141755896 | Tefcold UF400S |
+| 24 | 23 | 2143847088 | Tefcold UF600 |
+| 25 | 24 | 2144730312 | Tefcold GUF140 |
+
+**Verify:** 65 PASS / 0 FAIL. Без новых OQ.
+
