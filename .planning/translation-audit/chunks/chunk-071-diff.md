@@ -1,7 +1,7 @@
 # chunk-071 diff (W2, продолжение chunk-070)
 
-**Status:** chunk-071 b3 DONE 24/83 (cum TRIP 21 / blknotrip 0 / blknochg 3 / blkfix 0 / SKIP-НП 0; 312 PASS / 0 FAIL) — next b4 (SKU 25-32, rows 26-33)
-**Last updated:** chunk-071 b3 DONE 24/83
+**Status:** chunk-071 b4 DONE 32/83 (cum TRIP 29 / blknotrip 0 / blknochg 3 / blkfix 0 / SKIP-НП 0; 336 PASS / 0 FAIL) — next b5 (SKU 33-40, rows 34-41)
+**Last updated:** chunk-071 b4 DONE 32/83
 
 **Источник:** `.planning/translation-audit/chunks/chunk-071.xlsx` (83 SKU, rows 2..84, ART 500478925..1173086863).
 **Фикс-таргет:** `.planning/translation-audit/chunks/chunk-071-fixed.xlsx` (gitignored).
@@ -62,3 +62,19 @@
 
 **Итого b3:** TRIP 5 + blknotrip 0 + blknochg 3 + blkfix 0 + SKIP-НП 0. Verify **312 PASS / 0 FAIL**.
 **Cum после b3:** TRIP 21 + blknotrip 0 + blknochg 3 + blkfix 0 + SKIP-НП 0 = **24/83**. UNPROC = 59 (rows 26-84).
+
+## b4 (SKU 25-32, rows 26-33) — 32/83
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 25 | 26 | 1157445613 | Hendi 199008 баллончики 0,2 л | **TRIP** | c5←c7; c36 RU 121 chars. «В наборе различные насадки». |
+| 2 | 26 | 27 | 1157446283 | Hendi 199046 баллончики 4×0,2 л | **TRIP** | c5←c7; c36 RU 158 chars. Literal `'` в «Об'єм» drop. |
+| 3 | 27 | 28 | 1157446826 | Hendi 198209 газовая горелка крем-брюле | **TRIP** | c5←c7; c36 RU 793 chars (`<h2>` preserved structural; 8 li + iframe fIJhmL59SPY). Literal `'` x3 drops («полум'я» x2 + «п'єзоелектричний»). Любой угол / пьезорозжиг / алюм ручка / регулируемое пламя / 145x190. |
+| 4 | 28 | 29 | 1157555952 | Hendi 589106 набор игл-насадок Profi Line | **TRIP** | c5←c7; c36 RU 369 chars: 4 наконечника нерж (2 длинных ø3/ø5 + 2 коротких ø3/ø5). «травлення» (etching) preserved. Source-typo «збиті вершки» → RU «взбитых сливок». |
+| 5 | 29 | 30 | 1157566957 | Hendi 589205 запчасти Profi Line | **TRIP** | c5←c7; c36 RU 462 chars (1 para + 8 li). **Source-typo preserved «588024 - емкость 0,1 л»** (модель 1,0!). Прокладка/адаптер сопла/плоская насадка/прямое сопло/держатель картриджа/клапан/щетка/«тюльпановой». |
+| 6 | 30 | 31 | 1157577157 | Hendi 588208 баллончик (10 шт) | **TRIP** | c5←c7; c36 RU 344 chars (HTML spans+br). N₂O preserved. «Liss, Kidde, ISI i Kayser» (`i` Latin in UA) → «Liss, Kidde, ISI и Kayser». Empty `<span>` at start preserved. |
+| 7 | 31 | 32 | 1157580753 | Hendi 589007 запчасти Kitchen Line | **TRIP** | c5←c7; c36 RU 482 chars. Близнец r30 структурно (8 li same). Для сифонов Kitchen Line 588369/588376. |
+| 8 | 32 | 33 | 1157947758 | Hendi 271346 термометр для выпечки с зондом+таймером | **TRIP** | c5←c7; c36 RU 574 chars (1 para + 9 li). Таймер с обратным отсчетом + звук сигнал / 0..+300°C / 0,1°C / lock mode / MIN/MAX / зонд печной нерж / 65×70×17. |
+
+**Итого b4:** TRIP 8 + blknotrip 0 + blknochg 0 + blkfix 0 + SKIP-НП 0. Verify **336 PASS / 0 FAIL**.
+**Cum после b4:** TRIP 29 + blknotrip 0 + blknochg 3 + blkfix 0 + SKIP-НП 0 = **32/83**. UNPROC = 51 (rows 34-84).
