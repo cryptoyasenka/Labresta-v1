@@ -1,6 +1,6 @@
 # chunk-077 manual review (W2)
 
-**Status:** chunk-077 b4 DONE 32/39 (cum TRIP 5 / blknotrip 0 / blknochg 25 / blkfix 1 / SKIP-НП 1; 275 PASS / 0 FAIL) — next b5 FINAL (SKU 33-39, rows 34-40, 7 SKU). SKIP-НП #1: r13 HURAKAN HKN-GX650TNS. Без новых OQ.
+**Status:** chunk-077 ЗАКРЫТ 39/39 (TRIP 6 / blknotrip 0 / blknochg 31 / blkfix 1 / SKIP-НП 1; 339 PASS / 0 FAIL). SKIP-НП #1: r13 HURAKAN HKN-GX650TNS. Без новых OQ. Next: chunk-078 scaffold.
 
 ## Параметры
 
@@ -105,3 +105,30 @@ TRIP / blknotrip / blknochg / blkfix / SKIP-НП.
 - **r33** SKU=32 ART=2096372188 Juka SD70M (универсальный) — c5==c7 RU clean.
 
 **Verify:** 72 PASS / 0 FAIL. Без новых OQ.
+
+
+## b5 FINAL (SKU 33-39, rows 34-40, 7 SKU) — DONE 39/39
+
+**Категории:** blk триплет 1 / blknotrip 0 / blknochg 6 / blkfix 0 / SKIP-НП 0.
+
+### TRIP (c5 ← c7; c36 ← faithful RU body)
+
+- **r38** SKU=37 ART=1156102598 Tefcold RK710 — c5 был UA («Шафа холодильна»), c7 уже RU. Переписан c5→«Шкаф холодильный Tefcold RK710»; c36 переведён полностью с UA (был полный дубль c35): «Холодильный шкаф RK710 (Tefcold), из нержавеющей стали гастрономический, полки GN2/1»; технические характеристики — корпус AISI 304, динамическое охлаждение, объем 480 л, 1 дверь, -2..+10°C, R600A, 250 Вт, 220-230V, 740х830х2010, 143 кг.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r34** SKU=33 ART=2096379187 Juka SD70M нержавеющая сталь (универсальный) — c5==c7 RU clean.
+- **r35** SKU=34 ART=2096381591 Juka SD140M (универсальный) — c5==c7 RU clean.
+- **r36** SKU=35 ART=2096384258 Juka SD140M нержавеющая сталь (универсальный) — c5==c7 RU clean (NBSP \xa0 в названии — наследие источника, не наш write).
+- **r37** SKU=36 ART=1074933883 Tecnodom AF14PKMTN (среднетемпературный) — c5==c7 RU clean.
+- **r39** SKU=38 ART=1178211704 Tefcold UR400S нерж — c5==c7 RU clean.
+- **r40** SKU=39 ART=1775843181 Tefcold UR400SG нерж — c5==c7 RU clean.
+
+**Verify:** 64 PASS / 0 FAIL. Без новых OQ.
+
+## chunk-077 ЗАКРЫТ 39/39
+
+- TRIP 6 / blknotrip 0 / blknochg 31 / blkfix 1 / SKIP-НП 1.
+- 339 PASS / 0 FAIL cumulative.
+- SKIP-НП #1: r13 HURAKAN HKN-GX650TNS (тело из фида НП позже).
+- OQ: 0 новых на c077. Cumulative W2 OQ: 6 (#1 c071 SKU39 BCB10 / #2 c072 r43 Hendi 880906 / #3 c074 r39 ART=1166344539 9л vs 13,5л / #4 c075 r40 GoodFood BCF20→BCF40 / #5 c075 r41 Tecnodom 15 кг c35 vs 12 кг c36 / #6 c076 r24 Forcar G-ER200SS vs G-ER400).
