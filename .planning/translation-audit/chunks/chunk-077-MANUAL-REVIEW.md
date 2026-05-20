@@ -1,6 +1,6 @@
 # chunk-077 manual review (W2)
 
-**Status:** chunk-077 b3 DONE 24/39 (cum TRIP 5 / blknotrip 0 / blknochg 17 / blkfix 1 / SKIP-НП 1; 203 PASS / 0 FAIL) — next b4 (SKU 25-32, rows 26-33). SKIP-НП #1: r13 HURAKAN HKN-GX650TNS. Без новых OQ.
+**Status:** chunk-077 b4 DONE 32/39 (cum TRIP 5 / blknotrip 0 / blknochg 25 / blkfix 1 / SKIP-НП 1; 275 PASS / 0 FAIL) — next b5 FINAL (SKU 33-39, rows 34-40, 7 SKU). SKIP-НП #1: r13 HURAKAN HKN-GX650TNS. Без новых OQ.
 
 ## Параметры
 
@@ -85,5 +85,23 @@ TRIP / blknotrip / blknochg / blkfix / SKIP-НП.
 - **r23** SKU=22 ART=2380647543 Ubc Super Large — c5==c7 RU clean (вторая позиция той же модели, другой ART).
 - **r24** SKU=23 ART=2380652781 Ubc Super Large AD — c5==c7 RU clean.
 - **r25** SKU=24 ART=2380653644 Ubc Super Large AD ST нержавейка — c5==c7 RU clean.
+
+**Verify:** 72 PASS / 0 FAIL. Без новых OQ.
+
+
+## b4 (SKU 25-32, rows 26-33) — DONE 32/39
+
+**Категории:** blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r26** SKU=25 ART=2380655044 Ubc Extra Large — c5==c7 RU clean.
+- **r27** SKU=26 ART=2094425391 Juka VD75GА (среднетемпературный) — c5==c7 RU clean.
+- **r28** SKU=27 ART=2094469185 Juka VD75G (среднетемпературный) — c5==c7 RU clean.
+- **r29** SKU=28 ART=2095066352 Juka VD70M нержавейка (среднетемпературный) — c5==c7 RU clean.
+- **r30** SKU=29 ART=2095076561 Juka VD70M (среднетемпературный) — c5==c7 RU clean.
+- **r31** SKU=30 ART=2095079467 Juka VD140M (среднетемпературный) — c5==c7 RU clean.
+- **r32** SKU=31 ART=2095086549 Juka VD140M нержавейка (среднетемпературный) — c5==c7 RU clean.
+- **r33** SKU=32 ART=2096372188 Juka SD70M (универсальный) — c5==c7 RU clean.
 
 **Verify:** 72 PASS / 0 FAIL. Без новых OQ.
