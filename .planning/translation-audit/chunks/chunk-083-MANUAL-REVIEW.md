@@ -182,3 +182,25 @@
 **Verify:** 16 PASS / 0 FAIL. Без новых OQ.
 
 **Cumulative chunk-083:** 56/62 (TRIP 24 / blknotrip 0 / blknochg 28 / blkfix 0 / SKIP-НП 4; 256 PASS / 0 FAIL).
+
+
+## b8 FINAL (SKU 57-62, rows 58-63) — DONE 62/62 chunk-083 ЗАКРЫТ
+
+**Категории:** blk триплет 0 / blknotrip 0 / blknochg 6 / blkfix 0 / SKIP-НП 0.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r58** SKU=57 ART=2095056650 Juka VD60G холодильный среднетемпературный — c5==c7 RU clean, c36 RU полный (1969 chars).
+- **r59** SKU=58 ART=515244617 TEFCOLD DB300S-3 (мини холодильник барный) — c5==c7 RU clean, c36 RU полный (733 chars).
+- **r60** SKU=59 ART=2050417713 Snaige CC14SM-S6004F холодильный — c5==c7 RU clean, c36 RU полный (931 chars).
+- **r61** SKU=60 ART=2052568120 Tefcold DB201S (шкаф барный холодильный, 276 л) — c5==c7 RU clean, c36 RU полный (980 chars).
+- **r62** SKU=61 ART=2139026557 Tefcold BC25CP (настольный) — c5==c7 RU clean, c36 RU полный (1211 chars).
+- **r63** SKU=62 ART=2139111115 Tefcold FS60CP (настольный) — c5==c7 RU clean, c36 RU полный (1147 chars).
+
+**Verify:** 18 PASS / 0 FAIL. Без новых OQ.
+
+**Cumulative chunk-083 FINAL:** 62/62 (TRIP 24 / blknotrip 0 / blknochg 34 / blkfix 0 / SKIP-НП 4; 274 PASS / 0 FAIL).
+
+**Cumulative OQ:** #1 (W2 carry) — без новых в chunk-083 после b5 OQ #13.
+
+**SKIP-НП в chunk-083:** 4 HURAKAN (r51 HKN-BCS143F + r52 HKN-BCS143 + r53 HKN-BC145 + r54 HKN-UF100G) — ячейки fixed.xlsx не изменены, тело из фида НП позже.

@@ -188,3 +188,23 @@
 | 54 | 53 | HURAKAN | HKN-UF100G (морозильный барный) |
 
 **Verify:** 16 PASS / 0 FAIL. Без новых OQ.
+
+
+## b8 FINAL (SKU 57-62, rows 58-63) — chunk-083 ЗАКРЫТ 62/62
+
+Категории: blk триплет 0 / blknotrip 0 / blknochg 6 / blkfix 0 / SKIP-НП 0.
+
+### blknochg
+
+| row | SKU | модель |
+|---|---|---|
+| 58 | 57 | Juka VD60G (холодильный среднетемпературный) |
+| 59 | 58 | TEFCOLD DB300S-3 (барный) |
+| 60 | 59 | Snaige CC14SM-S6004F |
+| 61 | 60 | Tefcold DB201S (барный, 276 л) |
+| 62 | 61 | Tefcold BC25CP (настольный) |
+| 63 | 62 | Tefcold FS60CP (настольный) |
+
+**Verify:** 18 PASS / 0 FAIL. Без новых OQ.
+
+**chunk-083 ИТОГО:** 62/62 (TRIP 24 / blknotrip 0 / blknochg 34 / blkfix 0 / SKIP-НП 4; 274 PASS / 0 FAIL).
