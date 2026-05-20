@@ -713,3 +713,20 @@ Yana ответила на 9 открытых вопросов W2 (chunks 055-08
 - `794c23e` ANSWERED markers для c055/c056/c058/c085 questions.md
 
 W2 RANGE 055-085 ✅ FULLY CLOSED после применения 9 OQ. Готово для тестовой загрузки `w2-horoshop-import-TEST-1.xlsx` в Horoshop, затем полная загрузка `w2-horoshop-import-055-085.xlsx` (964 SKU).
+
+
+=== AWAITING YANA: CLEANUP PLAN APPROVAL (2026-05-21) ===
+
+Yana объявила полный реревью всех 31 chunks (055-085) с расширенным scope колонок:
+- RU добавляем: col23 HTML title / col25 META keywords / col27 META description / col29 h1 / col38 Короткое описание
+- UA-зона тоже теперь моя: «правописание и логику» (col4/c6/c22/c24/c26/c28/c35/c37)
+- Раньше W2 правил только c5/c7/c36 — теперь 16 колонок
+
+**Diagnostic baseline:** `.planning/translation-audit/W2-CLEANUP-DIAGNOSTIC.json` (commit `2927809`) — скан 2168 SKU × 16 колонок. Топ chunks: c063 (118), c059 (109), c060 (106), c071 (102), c084 (100).
+
+**Pending от Yana (без этого НЕ стартовать массовую чистку):**
+1. Sweep xlsx col7 — добавить «Название (RU)» в import? (правки c7 в текущем 3-col sweep терялись)
+2. UA scope — только typo? Или + RU-кальки + consistency с RU-телом?
+3. Приоритеты — Pass 1 bulk-fix Ё/'/UA-stems в meta → Pass 2 ручная UA-грамматика?
+
+**/loop поведение:** до ответа Yana следующие 15m тики = дубликат-триггер (нет согласованного next batch).
