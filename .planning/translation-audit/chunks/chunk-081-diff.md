@@ -97,3 +97,28 @@
 
 **Verify:** 39 PASS / 0 FAIL. Без новых OQ.
 
+
+## b5 (SKU 33-40, rows 34-41)
+
+Категории: blk триплет 7 / blknotrip 0 / blknochg 1 / blkfix 0 / SKIP-НП 0.
+
+### TRIP
+
+| row | SKU | ART | модель |
+|---|---|---|---|
+| 34 | 33 | 1889488216 | Frosty H150S |
+| 35 | 34 | 1889503104 | Frosty H320S |
+| 36 | 35 | 1889648134 | Frosty H430S |
+| 37 | 36 | 2044206016 | Frosty H228T |
+| 38 | 37 | 2044221576 | Frosty H320T |
+| 39 | 38 | 2309283789 | Frosty H150T |
+| 40 | 39 | 2309291510 | Frosty H228S |
+
+### blknochg
+
+| row | SKU | ART | модель |
+|---|---|---|---|
+| 41 | 40 | 498547311 | Samaref ST 700 |
+
+**Verify:** 67 PASS / 0 FAIL. Без новых OQ.
+

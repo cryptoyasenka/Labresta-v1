@@ -99,3 +99,26 @@ TRIP / blknotrip / blknochg / blkfix / SKIP-НП.
 **Verify:** 39 PASS / 0 FAIL. Без новых OQ.
 
 **Cumulative chunk-081:** 32/52 (TRIP 2 / blknotrip 0 / blknochg 29 / blkfix 0 / SKIP-НП 1; 135 PASS / 0 FAIL).
+
+
+## b5 (SKU 33-40, rows 34-41) — DONE 40/52
+
+**Категории:** blk триплет 7 / blknotrip 0 / blknochg 1 / blkfix 0 / SKIP-НП 0.
+
+### TRIP (c5 UA→RU + c36 полный RU перевод)
+
+- **r34** SKU=33 ART=1889488216 Frosty H150S — Шафа для визрівання м'яса → Шкаф для вызревания мяса (та сиру → и сыра). c5←c7. c36 UA→RU (1032 chars, 150 л, 2 полки нерж., 3 вентилятора, серебристое стекло).
+- **r35** SKU=34 ART=1889503104 Frosty H320S — Шкаф для вызревания мяса. c5←c7. c36 UA→RU (1028 chars, 320 л, 4 полки, 5 вентиляторов, серебристое).
+- **r36** SKU=35 ART=1889648134 Frosty H430S — Шкаф для вызревания мяса. c5←c7. c36 UA→RU (1028 chars, 430 л, 5 полок, 5 вентиляторов, серебристое).
+- **r37** SKU=36 ART=2044206016 Frosty H228T — Шафа для дозрівання м'яса → Шкаф для созревания мяса. c5←c7. c36 UA→RU (1295 chars, 228 л, 3 полки, 4 вентилятора, чёрное).
+- **r38** SKU=37 ART=2044221576 Frosty H320T — Шкаф для созревания мяса. c5←c7. c36 UA→RU (1304 chars, 320 л, 3 полки, 4 вентилятора, чёрное).
+- **r39** SKU=38 ART=2309283789 Frosty H150T — Шкаф для созревания мяса. c5←c7. c36 UA→RU (1331 chars, 150 л, 2 полки, 3 вентилятора, чёрное; merged Polki+Sensor block faithful).
+- **r40** SKU=39 ART=2309291510 Frosty H228S — Шкаф для созревания мяса. c5←c7. c36 UA→RU (1416 chars, 228 л, 3 полки, 4 вентилятора, серебристое; +упаковка/брутто; merged block faithful).
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r41** SKU=40 ART=498547311 Samaref ST 700 — c5==c7 RU clean.
+
+**Verify:** 67 PASS / 0 FAIL. Без новых OQ.
+
+**Cumulative chunk-081:** 40/52 (TRIP 9 / blknotrip 0 / blknochg 30 / blkfix 0 / SKIP-НП 1; 202 PASS / 0 FAIL).
