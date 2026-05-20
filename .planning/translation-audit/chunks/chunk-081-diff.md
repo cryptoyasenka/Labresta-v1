@@ -29,3 +29,22 @@
 
 **Verify:** 32 PASS / 0 FAIL. Без новых OQ.
 
+## b2 (SKU 9-16, rows 10-17)
+
+Категории: blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+
+### blknochg
+
+| row | SKU | ART | модель |
+|---|---|---|---|
+| 10 | 9 | 2143881489 | Tefcold UFFS371G |
+| 11 | 10 | 2143885138 | Tefcold UFFS370G |
+| 12 | 11 | 2143887884 | Tefcold UFFS371G LEFT |
+| 13 | 12 | 2143890960 | Tefcold UFFS371GCP |
+| 14 | 13 | 2143894012 | Tefcold UFFS370GCP |
+| 15 | 14 | 2143896940 | Tefcold UF400VG |
+| 16 | 15 | 2143899546 | Tefcold RF500SNACK |
+| 17 | 16 | 2144701837 | Tefcold UF400VSG |
+
+**Verify:** 32 PASS / 0 FAIL. Без новых OQ.
+

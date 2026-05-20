@@ -1,6 +1,6 @@
 # chunk-081 manual review (W2)
 
-**Status:** chunk-081 b1 DONE 8/52 (TRIP 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0; 32 PASS / 0 FAIL) — next b2 (SKU 9-16, rows 10-17). 1 SKIP-НП preliminary (r33 Fagor, b4).
+**Status:** chunk-081 b2 DONE 16/52 (cum TRIP 0 / blknotrip 0 / blknochg 16 / blkfix 0 / SKIP-НП 0; 64 PASS / 0 FAIL) — next b3 (SKU 17-24, rows 18-25). 1 SKIP-НП preliminary (r33 Fagor, b4).
 
 ## Параметры
 
@@ -36,6 +36,23 @@ TRIP / blknotrip / blknochg / blkfix / SKIP-НП.
 - **r7** SKU=6 ART=2143853708 Tefcold UF550 — c5==c7 RU clean.
 - **r8** SKU=7 ART=2143858217 Tefcold UF400VS — c5==c7 RU clean.
 - **r9** SKU=8 ART=2143877088 Tefcold UF400SG — c5==c7 RU clean.
+
+**Verify:** 32 PASS / 0 FAIL. Без новых OQ.
+
+## b2 (SKU 9-16, rows 10-17) — DONE 16/52
+
+**Категории:** blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r10** SKU=9 ART=2143881489 Tefcold UFFS371G — c5==c7 RU clean.
+- **r11** SKU=10 ART=2143885138 Tefcold UFFS370G — c5==c7 RU clean.
+- **r12** SKU=11 ART=2143887884 Tefcold UFFS371G LEFT — c5==c7 RU clean.
+- **r13** SKU=12 ART=2143890960 Tefcold UFFS371GCP — c5==c7 RU clean.
+- **r14** SKU=13 ART=2143894012 Tefcold UFFS370GCP — c5==c7 RU clean.
+- **r15** SKU=14 ART=2143896940 Tefcold UF400VG — c5==c7 RU clean.
+- **r16** SKU=15 ART=2143899546 Tefcold RF500SNACK — c5==c7 RU clean.
+- **r17** SKU=16 ART=2144701837 Tefcold UF400VSG — c5==c7 RU clean.
 
 **Verify:** 32 PASS / 0 FAIL. Без новых OQ.
 
