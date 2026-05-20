@@ -186,3 +186,37 @@
 - r65 intro short «Каструля 71 л HENDI 834909» (no об'ємом prefix) — default extended hendi_pot_body output.
 
 ### Verify b8: 98 PASS / 0 FAIL
+
+
+## Batch 9 (SKU 65-72, rows 66-73)
+
+### TRIP 8 (HENDI continue: sandwich/capsule/Impact Bonding pots + Teflon pan)
+- **r66 Кастрюля HENDI 835104 98 л** — c5 ← c7 «Кастрюля 98 л HENDI 835104»; c36 RU hendi_pot_body (sandwich), dim ø500x500 мм, 1 мм. Reuse b4 helper.
+- **r67 Кастрюля HENDI 837108 2,8 л** — c5 ← c7 «Кастрюля 2,8 л HENDI 837108»; c36 RU hendi_pot_capsule_body «2,8», dim ø160x140 мм, 0,6 мм. Reuse b5 helper.
+- **r68 Кастрюля HENDI 837603 20 л** — c5 ← c7 «Кастрюля 20 л HENDI 837603»; c36 RU hendi_pot_capsule_body «20», dim ø320x270 мм, 0,8 мм. Reuse b5 helper.
+- **r69 Кастрюля HENDI 832202 6 л** — c5 ← c7 «Кастрюля 6 л HENDI 832202»; c36 RU hendi_pot_impact_bonding_body «6 л» (abbrev), dim ø200x190 мм, 0,7 мм. Reuse b6 helper.
+- **r70 Кастрюля HENDI 832400 10 л** — c5 ← c7 «Кастрюля 10 л HENDI 832400»; c36 hendi_pot_impact_bonding_body «10 л», dim ø240x220 мм, 0,7 мм.
+- **r71 Кастрюля HENDI 832509 16 л** — c5 ← c7 «Кастрюля 16 л HENDI 832509»; c36 hendi_pot_impact_bonding_body «16 л», dim ø280x260 мм, 0,7 мм.
+- **r72 Кастрюля HENDI 832608 24 л** — c5 ← c7 «Кастрюля 24 л HENDI 832608»; c36 hendi_pot_impact_bonding_body «24 л», dim ø320x300 мм, 0,8 мм.
+- **r73 Сковорода ø180 мм HENDI 621110** — c5 без правки (c5==c7 уже совпадают); c36 RU hendi_pan_teflon_body «180», dim ø240x50 мм, 4 мм. Reuse b7 helper.
+
+### blknochg / blknotrip / blkfix / SKIP-НП: 0
+
+### Helpers b9 (reuse-only — no new/extended):
+- `hendi_pot_body` (b4) — sandwich pot template.
+- `hendi_pot_capsule_body` (b5) — capsule pot, 7 li.
+- `hendi_pot_impact_bonding_body` (b6) — IB pot, 10 li, «объемом» prefix.
+- `hendi_pan_teflon_body` (b7) — Teflon Platinum Plus pan.
+
+### Source-quirks b9:
+- r66 «з чудовою теплопровідність алюмінію» (source has nominative «теплопровідність» under instrumental «з чудовою») → «с отличной теплопроводностью алюминия» (b4 helper instrumental).
+- r66 «Ергономічні ручки, що не нагріваються ручки з нержавіючої сталі закріплені заклепками» (double «ручки» source-quirk) → «Эргономичные ручки, не нагревающиеся ручки из нержавеющей стали закреплены заклепками» (b4 helper).
+- r67/r68 «Багатоточкове кріплення ненагревающихся сталевих ручок» (mixed UA/RU «ненагревающихся» one-word) → «Многоточечное крепление не нагревающихся стальных ручек» (split + UA→RU).
+- r69-r72 «об'ємом N л» abbreviated (vs b8 r58/r64 spelled-out «літрів») → «объемом N л» (matches source abbreviation).
+- r69-r72 «ненагревающихся масивних сталевих ручок» (mixed UA/RU) → «не нагревающихся массивных стальных ручек».
+- r69-r72 «теплову провідність» → «тепловую проводимость».
+- r69-r72 «Стійкість до впливу кислот» → «Стойкость к воздействию кислот».
+- r69-r72 «Всі кришки зроблені з нержавіючої сталі товщиною 1 мм з отворами для випуску пари» → «Все крышки изготовлены из нержавеющей стали толщиной 1 мм с отверстиями для выпуска пара» (b6 helper).
+- r73 «Зроблені з твердого алюмінієвого лиття» plural→«Изготовлены из твердого алюминиевого литья» (b7 helper, plural preserved).
+
+### Verify b9: 84 PASS / 0 FAIL

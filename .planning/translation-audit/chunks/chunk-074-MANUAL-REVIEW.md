@@ -502,3 +502,48 @@
 ### Status
 
 **chunk-074 b8 DONE 64/87 (cum TRIP 58 / blknotrip 0 / blknochg 6 / blkfix 0 / SKIP-НП 0; 461 PASS / 0 FAIL; OQ#3 still pending) — next b9 (SKU 65-72, rows 66-73).**
+
+
+---
+
+## Batch 9 — DONE 72/87
+
+**Range:** rows 66-73 (SKU 65-72). Все 8 — TRIP HENDI continue: 1 sandwich pot 98 л (b4 reuse), 2 capsule pots 2,8/20 л (b5 reuse), 4 Impact Bonding pots 6/10/16/24 л (b6 reuse, «об'ємом N л» abbrev variant), 1 Teflon pan ø180 мм (b7 reuse).
+
+### Categories
+- **TRIP 8:** r66 835104 98 л ø500x500 1мм sandwich; r67 837108 2,8 л ø160x140 0,6мм capsule + r68 837603 20 л ø320x270 0,8мм capsule; r69 832202 6 л ø200x190 0,7мм + r70 832400 10 л ø240x220 0,7мм + r71 832509 16 л ø280x260 0,7мм + r72 832608 24 л ø320x300 0,8мм (все Impact Bonding); r73 621110 Сковорода ø180 мм ø240x50 4мм Teflon Platinum Plus.
+- **blknochg / blknotrip / blkfix / SKIP-НП:** 0.
+
+### c5 rewrites
+- r66 c5 ← c7 «Кастрюля 98 л HENDI 835104».
+- r67 c5 ← c7 «Кастрюля 2,8 л HENDI 837108».
+- r68 c5 ← c7 «Кастрюля 20 л HENDI 837603».
+- r69 c5 ← c7 «Кастрюля 6 л HENDI 832202».
+- r70 c5 ← c7 «Кастрюля 10 л HENDI 832400».
+- r71 c5 ← c7 «Кастрюля 16 л HENDI 832509».
+- r72 c5 ← c7 «Кастрюля 24 л HENDI 832608».
+- r73: c5==c7 «Сковорода ø180 мм HENDI 621110» — не тронут.
+
+### Source-quirks
+- r66 «з чудовою теплопровідність алюмінію» (nominative quirk for «з чудовою» which needs instrumental) → «с отличной теплопроводностью алюминия» (instrumental fix — single «теплопровідність» word, plural «-провідністю» style used in b4 helper).
+- r66 «Ергономічні ручки, що не нагріваються ручки з нержавіючої сталі закріплені заклепками» — double «ручки» source-quirk preserved → «Эргономичные ручки, не нагревающиеся ручки из нержавеющей стали закреплены заклепками» (b4 helper string).
+- r67/r68 «ненагревающихся сталевих ручок» — mixed UA/RU one-word → split + UA→RU: «не нагревающихся стальных ручек».
+- r69-r72 «об'ємом N л» (abbreviated «л» NOT spelled-out «літрів»/«літра») → «объемом N л» (matches source abbreviation; differs from b8 r58/r64 spelled-out variants).
+- r69-r72 «ненагревающихся масивних сталевих ручок» (mixed UA/RU) → «не нагревающихся массивных стальных ручек».
+- r69-r72 «теплову провідність» → «тепловую проводимость» (reuse b6).
+- r69-r72 «Стійкість до впливу кислот» → «Стойкость к воздействию кислот» (reuse b6).
+- r69-r72 «Всі кришки зроблені з нержавіючої сталі товщиною 1 мм з отворами для випуску пари» → «Все крышки изготовлены из нержавеющей стали толщиной 1 мм с отверстиями для выпуска пара» (in b6 helper string).
+- r73 «Зроблені з твердого алюмінієвого лиття» — plural «Зроблені» quirk preserved → «Изготовлены из твердого алюминиевого литья» (b7 helper).
+
+### Helpers b9
+- **REUSE-ONLY (нет новых/расширений):** hendi_pot_body (b4), hendi_pot_capsule_body (b5), hendi_pot_impact_bonding_body (b6), hendi_pan_teflon_body (b7).
+
+### Verify
+- 84 PASS / 0 FAIL.
+
+### Open Questions
+- Нет новых. OQ #3 (b5 r39) — pending Yana decision.
+
+### Status
+
+**chunk-074 b9 DONE 72/87 (cum TRIP 66 / blknotrip 0 / blknochg 6 / blkfix 0 / SKIP-НП 0; 545 PASS / 0 FAIL; OQ#3 still pending) — next b10 (SKU 73-80, rows 74-81).**

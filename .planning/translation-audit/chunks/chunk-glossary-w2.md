@@ -1392,3 +1392,9 @@ Soft-note b12: финальный 2-SKU батч chunk-066. 1 TRIP (SKU90 r91 CB
 - Каструля середня з кришкою HENDI Budget Line → Кастрюля средняя с крышкой HENDI Budget Line
 - (Полные skel-фразы повтор b6 Impact Bonding + b6 capsule no-lid — см. предыдущие глоссы)
 - Volume_str pattern: «N литра» для 1,2/1,5/2/3 л; «N литров» для 5/37/71 л (RU paucal rule applied: 1=литр, 2-4=литра, ≥5=литров)
+
+
+## chunk-074 b9 (HENDI continuation — pots sandwich/capsule/IB + Teflon pan, all reuse helpers)
+- Каструля об'ємом N л → Кастрюля объемом N л (abbreviation-preserving variant, отличается от spelled-out «литрів»→«литров» b8)
+- Всі кришки зроблені з нержавіючої сталі товщиною 1 мм з отворами для випуску пари → Все крышки изготовлены из нержавеющей стали толщиной 1 мм с отверстиями для выпуска пара
+- (Остальные skel-фразы повтор b4/b5/b6/b7 helpers — см. предыдущие глоссы)
