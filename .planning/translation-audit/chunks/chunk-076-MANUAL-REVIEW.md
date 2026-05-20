@@ -1,6 +1,6 @@
 # chunk-076 MANUAL REVIEW (W2, продолжение chunk-075)
 
-**Status:** chunk-076 b4 DONE 32/57 (cum TRIP 14 / blknotrip 0 / blknochg 17 / blkfix 1 / SKIP-НП 0; 405 PASS / 0 FAIL) — next b5 (SKU 33-40, rows 34-41). Без новых открытых вопросов (OQ#6 SKU23 из b3).
+**Status:** chunk-076 b5 DONE 40/57 (cum TRIP 16 / blknotrip 0 / blknochg 22 / blkfix 1 / SKIP-НП 1; 473 PASS / 0 FAIL) — next b6 (SKU 41-48, rows 42-49). SKIP-НП #1: r36 FAGOR AFP-1602 EXP NEO CONCEPT. Без новых OQ.
 **Last updated:** chunk-076 b3 (24/57)
 
 **Объём:** 57 SKU rows 2..58. ART 2106845309..2239472491.
@@ -94,3 +94,27 @@
 - **r28** SKU=27 ART=2099563456 Brillis BN14-M-R290-ЕF — c5==c7 genuine RU.
 
 **Verify:** 90 PASS / 0 FAIL. Без новых OQ (OQ#6 SKU23 из b3 — единственный по chunk-076).
+
+
+## b5 (SKU 33-40, rows 34-41) — DONE 40/57
+
+**Категории:** blk триплет 2 / blknotrip 0 / blknochg 5 / blkfix 0 / SKIP-НП 1.
+
+### TRIP (c5 ← c7; c36 ← faithful RU body)
+
+- **r34** SKU=33 ART=2082988489 Forcar G-ER600 — c5→«Шкаф холодильный Forcar G-ER600»; c36 RU: shared intro pattern (Forcar G-ER600 используется на предприятиях общественного питания...); 1 дверь, статич.охлаждение, 3 полки 630х480+1 полка 630х290 пласт.покрытие, 570 л, +2..+8°С (при +33°С), термоизол.60 мм, разморозка остановкой компрессора+авто исп.талой воды, без подсветки, замок, мех.регулятор, R600А, крашеная сталь/пластик, 90 кг, 777х695х1895, 0.19 кВт/220V; pack 97 / 760х840х2010.
+- **r35** SKU=34 ART=2082991109 Forcar G-GN650TN — c5→«Шкаф холодильный Forcar G-GN650TN»; c36 RU: 650 л, 3 решетчатые GN 2/1 пласт.покр., глухие двери, -2..+8°С (при t нар. +43°С), авто разморозка+исп.талой воды, R290, термоизол.60 мм, динамика, регулир.ножки, подсветка, электр.блок упр., нерж.сталь, 134 кг, 740х830х2010, 0.35 кВт/220V; pack 141 / 860х770х2070.
+
+### SKIP-НП
+
+- **r36** SKU=35 ART=2105465186 **FAGOR** AFP-1602 EXP NEO CONCEPT 1400 л — SKIP-НП (brand=FAGOR, тело из фида НП позже). Ячейки в fixed не меняли. ⇒ SKIP-НП #1 по chunk-076.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r37** SKU=36 ART=2128170016 Tefcold MSU400 — c5==c7 RU.
+- **r38** SKU=37 ART=2128176893 Tefcold FSC175H BLACK — c5==c7 RU.
+- **r39** SKU=38 ART=2133557525 Tefcold UR200SG — c5==c7 RU.
+- **r40** SKU=39 ART=2133562538 Tefcold SD1380 — c5==c7 RU.
+- **r41** SKU=40 ART=2134172342 Tefcold MSU300 — c5==c7 RU.
+
+**Verify:** 68 PASS / 0 FAIL. Без новых OQ.
