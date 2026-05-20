@@ -171,3 +171,20 @@
 
 **Итого b9:** TRIP 1 + blknotrip 0 + blknochg 7 + blkfix 0 + SKIP-НП 0. Verify **55 PASS / 0 FAIL**.
 **Cum после b9:** TRIP 40 + blknotrip 0 + blknochg 32 + blkfix 0 + SKIP-НП 0 = **72/89**. UNPROC = 17 (rows 74-90).
+
+
+## b10 (SKU 73-80, rows 74-81) — 80/89
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 73 | 74 | 1537036266 | SUZUMO SVR-NХA-CE робот для производства квадратных роллов | **blknochg** | c5 уже RU == c7 (54 chars); c36 уже pure RU. UA в c35. **NB:** c4 UA «SVR-NXA» (Latin X), c5/c7 RU «SVR-NХA» (Cyrillic Х) — preserve. |
+| 2 | 74 | 75 | 1537038992 | SUZUMO SVR-BХA-CE робот для производства круглых роллов | **blknochg** | c5 уже RU == c7 (52 chars); c36 уже pure RU. UA в c35. То же Latin/Cyrillic X mismatch (c4 «SVR-BXA» Latin, c5 «SVR-BХA» Cyrillic). |
+| 3 | 75 | 76 | 1538601211 | SUZUMO SVC-ATC-CE+SVC-AT8FB автоматический нож для нарезания роллов | **blknochg** | c5 уже RU == c7 (66 chars); c36 уже pure RU. UA в c35. |
+| 4 | 76 | 77 | 1538607425 | Konica Minolta RM-401AG-CE автоматическая мойка для риса | **blknochg** | c5 уже RU == c7 (58 chars); c36 уже pure RU. UA в c35. |
+| 5 | 77 | 78 | 1538645744 | SUZUMO MCR-UNC миксер для риса | **blknochg** | c5 уже RU == c7 (30 chars); c36 уже pure RU. UA в c35. |
+| 6 | 78 | 79 | 1538611765 | FUJIMAK FRW22W мойка для риса | **blknochg** | c5 уже RU == c7 (29 chars); c36 уже pure RU. UA в c35. |
+| 7 | 79 | 80 | 1538630581 | Fujimak FRC162NC рисоварка электрическая на 3 уровня | **blknochg** | c5 уже RU == c7 (53 chars); c36 уже pure RU. UA в c35. |
+| 8 | 80 | 81 | 1125337516 | Hendi 580226 весы кухонные точные до 5 кг | **TRIP** | c5←c7 (26 chars); c36 RU 660 chars. **Source-quirk: UA `±1 р` (буква 'р' опечатка вместо 'г'; ниже корректно «20 г») → RU «±1 г»** (нормализуем). «Датчик натягу» → «Датчик натяжения». «Сенсорна панель» → «Сенсорная панель». «CR2032» preserve. «Габариты 200х151х11 мм». No Ё. |
+
+**Итого b10:** TRIP 1 + blknotrip 0 + blknochg 7 + blkfix 0 + SKIP-НП 0. Verify **48 PASS / 0 FAIL**.
+**Cum после b10:** TRIP 41 + blknotrip 0 + blknochg 39 + blkfix 0 + SKIP-НП 0 = **80/89**. UNPROC = 9 (rows 82-90).
