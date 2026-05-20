@@ -277,3 +277,31 @@
 **Открытых вопросов новых:** 0.
 
 **Next:** b7 FINAL (SKU 49-54, rows 50-55, 6 SKUs). Preliminary SKIP-НП r54 HURAKAN. После b7: chunk-075 COMPLETE → next chunk-076 scaffold.
+
+
+## chunk-075 b7 FINAL DONE 54/54 (chunk-075 COMPLETE) (2026-05-20)
+
+**HEAD before:** 2c1ddfc (b6 C2 marker)
+**HEAD C1:** 0b95fe3 (b7 FINAL content)
+**Категории b7:** TRIP 0 / blknotrip 0 / blknochg 5 / blkfix 0 / SKIP-НП 1.
+
+**SKIP-НП 1:**
+- r54 SKU53 ART=1082945513 HURAKAN HKN-GX650TN INOX (forward-only)
+
+**blknochg 5:**
+- r50 SKU49 ART=2396395264 GGM Gastro ZBG157ND (Холодильный стол-саладетта, c36 2887)
+- r51 SKU50 ART=2396398752 GGM Gastro ZBG207ND (Холодильный стол-саладетта, c36 2853)
+- r52 SKU51 ART=2396400259 GGM Gastro ZBG208ND (Холодильный стол-саладетта, c36 2916)
+- r53 SKU52 ART=2661830503 GGM Gastro ZBG157N4D (Холодильный стол-саладетта, c36 1124)
+- r55 SKU54 ART=1090581793 Tecnodom AF07PKMTN (DGD) (Шкаф холодильный, c36 511)
+
+**Verify b7:** 55 PASS / 0 FAIL.
+
+## chunk-075 ИТОГ COMPLETE 54/54
+
+- TRIP 4 / blknotrip 0 / blknochg 40 / blkfix 0 / SKIP-НП 10 = 54/54 (100%)
+- Кумулятив verify chunk-075: 1042 PASS / 0 FAIL
+- Открытых вопросов новых из chunk-075: 2 (#NEW r40 GoodFood intro h2 model mismatch BCF20→BCF40; #NEW r41 Tecnodom P-ATT10EA «15 кг» c35 vs «12 кг» c36)
+- Кумулятив W2 OQ: #1 c071 SKU39 BCB10 vs BCB10 NC; #2 c072 r43 Hendi 880906; #3 c074 r39 ART=1166344539 9л vs 13,5л; #4 c075 r40 model intro; #5 c075 r41 заморозка numerical
+
+**Next:** chunk-076 scaffold (W2, продолжение chunk-075).
