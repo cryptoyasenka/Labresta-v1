@@ -127,3 +127,31 @@
 - r49 «Довга порожня ручка з нержавіючої сталі» → «Длинная пустотелая ручка из нержавеющей стали».
 
 ### Verify b6: 75 PASS / 0 FAIL
+
+
+## Batch 7 (SKU 49-56, rows 50-57)
+
+### TRIP 8 (HENDI продолжение — капсула без крышки + Teflon Platinum Plus + сотейники)
+- **r50 Сковорода HENDI 838600 ø280 мм** — c5 нейтральная; c36 RU hendi_pan_capsule_body, dim ø280x50 мм, 0,6 мм. Reuse b6 helper.
+- **r51 Сковорода HENDI 838617 ø320 мм** — аналог r50, dim ø320x55 мм, 0,7 мм.
+- **r52 Сковорода HENDI 621103 ø140 мм** — c5 нейтральная; c36 RU hendi_pan_teflon_body chars-mode, dim ø200x44 мм, 4 мм. NEW helper.
+- **r53 Сковорода HENDI 621127 ø200 мм** — аналог r52, dim ø260x52 мм.
+- **r54 Сковорода HENDI 621134 ø200 мм** — аналог r52, dim ø280x52 мм (тот же диаметр основания 200 но другой art и outer dim).
+- **r55 Сковорода HENDI 621158 «Platinum Professional Aluminium» ø320** — c5 ← c7 «Сковорода алюминиевая Ø320 HENDI 621158 Platinum Professional Aluminium»; c36 RU hendi_pan_teflon_body **entities-mode** (&trade;/&deg;/&ndash;/&oslash; preserved + h2/ul space-not-newline mirror), base ø215 мм, dim ø320x60 мм, 4 мм.
+- **r56 Сотейник HENDI 838105 1,5 л** — c5 нейтральная; c36 RU hendi_saucepot_capsule_body «1,5 литра», dim ø160x75 мм, 0,6 мм. NEW helper.
+- **r57 Сотейник HENDI 838204 3 л** — аналог r56, «3 литра», dim ø200x95 мм, 0,6 мм.
+
+### blknochg / blknotrip / blkfix / SKIP-НП: 0
+
+### Reusable functions b7 (NEW):
+- `hendi_pan_teflon_body(diam_base_mm, art, dim_mm, thickness_mm='4', entities=False)` — 9 li, силиконовая ручка, Teflon™ Platinum Plus, 3 слоя, dishwasher-safe. `entities=True` → HTML-entities mode (&trade;/&deg;/&ndash;/&oslash; + h2/ul space).
+- `hendi_saucepot_capsule_body(volume_str, art, dim_mm, thickness_mm='0,6')` — 9 li сотейник с капсульным дном (b6 hendi_pan_capsule_body + extra «Можно мыть в посудомоечной машине» li, intro «Сотейник объемом N...»).
+
+### Source-quirks b7:
+- r52-r55 «Зроблені з твердого алюмінієвого лиття» (plural для singular «сковорода») → «Изготовлены из твердого алюминиевого литья» (plural preserved — source quirk).
+- r50/r51/r56/r57 «ненагревающихся сталевих ручок» (mixed UA/RU) → «не нагревающихся стальных ручек» (norm split — same as r37/38/39/49).
+- r56/r57 «об'ємом 1,5 літра / 3 літри» (UA paucal both directions) → «объемом 1,5 литра / 3 литра» (RU correct genitive/paucal).
+- r55 HTML-entities pattern: &trade; / &deg; / &ndash; / &oslash; preserved literal; `</h2> <ul>` (space, not newline) mirrored.
+- r51 thickness 0,7 (vs r50 0,6) — confirmed via tail dump.
+
+### Verify b7: 69 PASS / 0 FAIL

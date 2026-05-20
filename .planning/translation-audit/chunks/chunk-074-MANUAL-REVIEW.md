@@ -425,3 +425,39 @@
 ### Status
 
 **chunk-074 b6 DONE 48/87 (cum TRIP 42 / blknotrip 0 / blknochg 6 / blkfix 0 / SKIP-НП 0; 294 PASS / 0 FAIL; OQ#3 still pending) — next b7 (SKU 49-56, rows 50-57).**
+
+
+---
+
+## Batch 7 — DONE 56/87
+
+**Range:** rows 50-57 (SKU 49-56). Все 8 — TRIP HENDI продолжение: 2 капсула без крышки (reuse b6 hendi_pan_capsule_body), 4 Teflon™ Platinum Plus (3 chars + 1 entities-mode → NEW hendi_pan_teflon_body), 2 сотейника капсула (NEW hendi_saucepot_capsule_body).
+
+### Categories
+- **TRIP 8:** r50 838600 ø280 ø280x50 0,6мм + r51 838617 ø320 ø320x55 0,7мм (капсула без крышки); r52 621103 ø140 ø200x44 + r53 621127 ø200 ø260x52 + r54 621134 ø200 ø280x52 + r55 621158 ø215 ø320x60 (Teflon Platinum Plus, r55 entities-mode); r56 838105 1,5 л ø160x75 + r57 838204 3 л ø200x95 (сотейник капсула).
+- **blknochg / blknotrip / blkfix / SKIP-НП:** 0.
+
+### c5 rewrites
+- r55 c5 ← c7 «Сковорода алюминиевая Ø320 HENDI 621158 Platinum Professional Aluminium» (c5_src был UA «алюмінієва»).
+- r50/r51/r52/r53/r54/r56/r57: c5/c7/NMUA нейтральные (без UA-маркеров), c5 не тронут.
+
+### Source-quirks
+- r52-r55 «Зроблені з твердого...» (plural для singular «сковорода») → «Изготовлены из твердого...» (plural preserved — source quirk).
+- r50/r51/r56/r57 «ненагревающихся сталевих» (mixed UA/RU) → «не нагревающихся стальных» (norm split).
+- r56/r57 «об'ємом 1,5 літра / 3 літри» → «объемом 1,5 литра / 3 литра».
+- r55 HTML-entities mirrored as-is (&trade;/&deg;/&ndash;/&oslash;); `</h2> <ul>` space (not newline) preserved.
+- r51 thickness 0,7 ≠ r50 0,6 — variant within capsule pan family.
+
+### NEW helpers b7
+- `hendi_pan_teflon_body(diam_base_mm, art, dim_mm, thickness_mm='4', entities=False)` — Teflon™ Platinum Plus с силиконовой ручкой, 9 li, 3 слоя, dishwasher-safe. Entities-flag для r55-style HTML escapes + h2/ul space pattern.
+- `hendi_saucepot_capsule_body(volume_str, art, dim_mm, thickness_mm='0,6')` — сотейник 9 li (капсула + «Можно мыть» extra li, intro «Сотейник объемом N...»).
+
+### Verify
+- 69 PASS / 0 FAIL.
+
+### Open Questions
+- Нет новых. OQ #3 (b5 r39) — pending Yana decision.
+
+### Status
+
+**chunk-074 b7 DONE 56/87 (cum TRIP 50 / blknotrip 0 / blknochg 6 / blkfix 0 / SKIP-НП 0; 363 PASS / 0 FAIL; OQ#3 still pending) — next b8 (SKU 57-64, rows 58-65).**
