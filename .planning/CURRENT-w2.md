@@ -459,3 +459,13 @@
 - Cumulative chunk-077: 16/39 (TRIP 5 / blknotrip 0 / blknochg 9 / blkfix 1 / SKIP-НП 1; 131 PASS / 0 FAIL).
 - OQ: без новых.
 - Next: chunk-077 b3 (SKU 17-24, rows 18-25).
+
+
+## chunk-077 b3 DONE 24/39 (2026-05-20 12:50)
+
+- Категории: blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+- blknochg: r18 Ubc Energy AD ST, r19 Ubc Prime, r20 Ubc Large, r21 Ubc Active Large (Full Door) [source Ё в c36], r22/r23 Ubc Super Large (две позиции одной модели), r24 Ubc Super Large AD, r25 Ubc Super Large AD ST.
+- Verify: 72 PASS / 0 FAIL.
+- Cumulative chunk-077: 24/39 (TRIP 5 / blknotrip 0 / blknochg 17 / blkfix 1 / SKIP-НП 1; 203 PASS / 0 FAIL).
+- OQ: без новых.
+- Next: chunk-077 b4 (SKU 25-32, rows 26-33).
