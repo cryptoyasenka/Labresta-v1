@@ -3,7 +3,7 @@
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-066 (90 SKU, rows 2..91; ART 2496038149 … 2153078504)
 **Apply key:** `Артикул` (col1, scoped per row)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-065
-**Status:** b8 DONE 64/90 (b9 предстоит; b1..b11 по 8 SKU + b12=SKU89-90 2 SKU)
+**Status:** b9 DONE 72/90 (b10 предстоит; b1..b11 по 8 SKU + b12=SKU89-90 2 SKU)
 
 Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Формат — как chunk-065-diff.md.
 
@@ -193,3 +193,26 @@ _(нет)_
 
 ### SKIP-НП 1
 - **SKU 57 r58 ART 2060694096** HURAKAN HKN-PCORN (попкорн): fixed row 58 НЕ тронут, тело из фида НП позже. prelim→confirmed #4.
+
+
+## b9 — SKU 65-72 (rows 66-73) — DONE 72/72 (cum)
+
+**Verify:** REGR 64 (b1+b2+b3+b4+b5+b6+b7+b8) + ART 90 + TRIP 0 + BLKNOCHG 7 + SKIP-НП 1 = 410 PASS / 0 FAIL.
+
+### blk триплет 0
+_(нет)_
+
+### blknotrip 0
+_(нет)_
+
+### blknochg 7
+- **SKU 65 r66 ART 1901351927** SILVER ED 03 электрический (шаурма): c5==c7 genuine RU; c35!=c36 (676/668) — fixed НЕ тронут.
+- **SKU 66 r67 ART 2096821653** Atalay ADE-4 A (шаурма): c5==c7 genuine RU; c35!=c36 (574/567) — fixed НЕ тронут.
+- **SKU 68 r69 ART 2237375501** Silver ED 02 электрический (шаурма): c5==c7 genuine RU; c35!=c36 (865/884) — fixed НЕ тронут.
+- **SKU 69 r70 ART 2237408222** Silver AD 03 электрический (шаурма): c5==c7 genuine RU; c35!=c36 (859/872) — fixed НЕ тронут.
+- **SKU 70 r71 ART 2237413979** Silver AD 04 электрический (шаурма): c5==c7 genuine RU; c35!=c36 (858/859) — fixed НЕ тронут.
+- **SKU 71 r72 ART 2237557975** Atalay ADE-3 A (шаурма): c5==c7 genuine RU; c35!=c36 (572/575) — fixed НЕ тронут.
+- **SKU 72 r73 ART 2237562450** Atalay ADE-5 A (шаурма): c5==c7 genuine RU; c35!=c36 (613/610) — fixed НЕ тронут.
+
+### SKIP-НП 1
+- **SKU 67 r68 ART 2197251446** TATRA TDM E 4B (гриль для шаурми): fixed row 68 НЕ тронут, тело из фида НП позже. prelim→confirmed #5.

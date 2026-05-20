@@ -933,3 +933,18 @@ Soft-note b7: чистый раунд без OQ. SKU49 r50 Bartscher source typo
 - HURAKAN HKN-PCORN (SKIP-НП — не входит в глоссарий)
 
 Soft-note b8: чистый раунд, 0 TRIP — все 7 blknochg SILVER/Atalay шаурма имеют c5==c7 genuine RU + c35!=c36 (UA-RU body разные), fixed НЕ тронут. SKU60 model swap «SILVER ED 05» (NMUA) → «Atalay ADE-4 S» (genuine RU c5/c7) — Atalay rebrand вариант, не bug. SKU59/SKU64 NMUA содержат «газовий ... електричний» (артефакт источника — двойная метка), RU c5/c7 нормализованы к «электрический». SKIP-НП #4 HURAKAN HKN-PCORN подтверждён, тело из фида НП позже. OQ 0.
+
+
+## chunk-066 b9 (SKU 65-72, rows 66-73) — 72/90 — глоссарий +0 net-new (cum 935→935)
+
+**Net-new b9:**
+_(нет — все 7 blknochg Silver/Atalay шаурма модели — reuse brand/category из b8 и chunk-063)_
+
+**Reuse from earlier batches (b9):**
+- Silver ED 02 / ED 03 / AD 03 / AD 04 (model variants — SILVER brand reuse cum, новые модели — cum reuse, не отдельные строки)
+- Atalay ADE-3 A / ADE-4 A / ADE-5 A (Atalay brand reuse from b8 SKU60 Atalay ADE-4 S)
+- Аппарат для шаурмы (reuse cum)
+- электрический (reuse cum)
+- TATRA TDM E 4B (SKIP-НП — не входит в глоссарий)
+
+Soft-note b9: чистый раунд, 0 TRIP — все 7 blknochg Silver/Atalay шаурма имеют c5==c7 genuine RU + c35!=c36 (UA-RU body разные тексты), fixed НЕ тронут. SKU65 NMUA «електричний» / c5/c7 RU «электрический» (genuine). SKIP-НП #5 TATRA TDM E 4B шаурма подтверждён (5-й SKIP-НП в chunk-066, 1-й не-HURAKAN — TATRA), тело из фида НП позже. OQ 0.
