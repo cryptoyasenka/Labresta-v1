@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-028 (61 SKU, продолжение chunk-027)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 48/61
+**Status:** IN PROGRESS 56/61
 
 **Состав (по типу товара):** первый SKU — Артикул `1154540778`, бренд TEFCOLD (`Морозильна шафа Tefcold UF600S (-18°...-22 °C, нерж.)`, раздел `Холодильне та морозильне обладнання/Шафи морозильні` — продолжение/повтор раздела chunk-027 `Морозильні шафи` с инвертированным порядком слов в названии раздела). Раздел `Шафи морозильні` занимает 14 SKU (SKU 1-14, бренды Tefcold ×7 + Gooder ×3 + Snaige ×3 + Tatra ×1), далее начинается новый раздел `Холодильне та морозильне обладнання/Морозильні столи` (45 SKU, SKU 15-59 — бренды Tefcold ×9 + FROSTY ×4 + Apach ×3 + REEDNEE ×3 + Tecnodom ×3 + Cooleq ×3 + Brillis ×3 + Gooder ×3 + Fagor ×3 + Tatra ×2 + Forcar ×2 + Hurakan ×2 + GoodFood ×2 + GGM Gastro International ×1 + Hendi ×1 + Forcold ×1), завершается раздел новым разделом `Холодильне та морозильне обладнання/Холодильні шафи для вина` (2 SKU, SKU 60-61 — Tefcold ×1 + GoodFood ×1; последний SKU 61 — Артикул `2108377745`, бренд GOODFOOD, `Вітрина холодильна для вина GoodFood RT400L2`). Тип товара определяется per-SKU. Бренды per-SKU (17 total): Tefcold/Gooder/Snaige/Tatra/Apach/FROSTY/REEDNEE/Tecnodom/Cooleq/Brillis/Fagor/Forcar/Hurakan/GoodFood/GGM Gastro International/Hendi/Forcold — из них Tatra (×3) + Apach (×3) + Fagor (×3) + Hurakan (×2) = 11 SKU → SKIP-НП по правилу forward-only (SKU 14/18/19 Tatra; SKU 15/16/17 Apach; SKU 40/43/44 Fagor; SKU 26/59 Hurakan).
 
@@ -1002,5 +1002,177 @@
 **Наблюдения по батчу SKU 41-48 (48/61) — chunk-028 (батч-морозильные столы GoodFood ×2 + Fagor SKIP-НП ×2 + Brillis ×2 + Tecnodom ×1 + GGM Gastro International ×1; раздел `Холодильне та морозильне обладнання/Морозильні столи` — продолжение b5 SKU 33-40):** **blk триплет 1 (SKU 47 Tecnodom TF02MIDBTAL). blknotrip 0. blkv 0. blknochg 5 (SKU 41 GoodFood GF-GN2100BT-HC + SKU 42 GoodFood GF-GN3100BT-HC + SKU 45 Brillis СN2100 + SKU 46 Brillis СN3100 + SKU 48 GGM Gastro International GGM GTS227 — LIVE Horoshop genuine RU). blknochgeq 0. SKIP-НП 2 (SKU 43 Fagor MFN-180 EXP + SKU 44 Fagor CCN-2G GR — ДЕВЯТЫЙ-ДЕСЯТЫЙ SKIP-НП в chunk-028, ВТОРОЙ-ТРЕТИЙ Fagor в проекте).** SKU 41 `2212710231` GoodFood GF-GN2100BT-HC — **blknochg** LIVE Horoshop (**ПЕРВЫЙ GoodFood в проекте**; supplier-template family новый — НЕ Italian/Danish/Cooleq/REEDNEE/Brillis/Gooder seen so far; supplier RU dr genuine 821 vs UA du 790; nm_ru clean RU без UA-leak; НЕ переписываем). **GoodFood НЕ ∈ НП-эксклюзив** (substring `GOOD`/`FOOD` НЕ standalone NP key). SKU 42 `2212715970` GoodFood GF-GN3100BT-HC — **blknochg** LIVE Horoshop **mirror SKU 41 3-door variant** (SKU 41 = 2-door GF-GN2100BT-HC, SKU 42 = 3-door GF-GN3100BT-HC same brand same supplier-template — GF-GN21/31 pattern); supplier RU dr 842 vs SKU 41 dr 821 — slight expansion для 3-door extra spec; nm_ru clean RU без UA-leak; cells unchanged. SKU 43 `2282947003` Fagor MFN-180 EXP — **SKIP-НП** (brand=`Fagor` ∈ {FAGOR/Fagor/Фагор} NP-hit; **ДЕВЯТЫЙ SKIP-НП в chunk-028** + **ВТОРОЙ Fagor в проекте** + **mirror SKU 40 MFN-135 EXP b5 ПЕРВЫЙ Fagor**: 180 vs 135 size variant внутри одной Fagor MFN-серии same suffix EXP; source `du==dr` True 587/587 + `nm_ua!=nm_ru` desync (UA simple vs RU Titlecase Fagor+UA-leak `Стіл морозильний`+UA `3-х дверний` insertion — mirror SKU 40 pattern UA-leak в nm_ru с добавленным `3-х дверний`); ОБА nm-cells UA-leak; cells unchanged — тело из фида НП позже всё перепишет). SKU 44 `2375839553` Fagor CCN-2G GR — **SKIP-НП** (brand=Fagor NP-hit; **ДЕСЯТЫЙ SKIP-НП** + **ТРЕТИЙ Fagor**; **CCN-серия** distinct от MFN-серии SKU 40/43 — Fagor разные supplier-series внутри одного бренда; source `du!=dr` 449/440 supplier дал отдельный RU body НО brand=Fagor NP-hit → SKIP-НП **независимо** от `du!=dr` body-level; nm_ru clean RU `Стол морозильный Fagor CCN-2G GR` без UA-leak; cells unchanged). SKU 45 `2448658777` Brillis СN2100 — **blknochg** LIVE Horoshop (**ВТОРОЙ Brillis в chunk-028** + **ВТОРОЙ Brillis в проекте** после b5 SKU 34 Brillis BGL2-R290 ПЕРВЫЙ; SKU 45 СN2100 другая Brillis series distinct от BGL2-R290; **Cyrillic С** U+0421 в коде model `СN2100` (НЕ Lat C) preserve verbatim per supplier; 2-door mirror SKU 46 3-door; **edge case** dr.len == du.len 934 в точности равны supplier-side формирование, content differs verified `same=False` → genuine separate RU body; nm_ru clean RU; cells unchanged). **Brillis НЕ ∈ НП-эксклюзив**. SKU 46 `2448660375` Brillis СN3100 — **blknochg** LIVE Horoshop **mirror SKU 45 3-door variant** (СN2100→СN3100, Cyr С preserve same convention SKU 45); dr.len == du.len 934 edge case parallel SKU 45; nm_ru clean RU; cells unchanged. SKU 47 `2545751551` Tecnodom TF02MIDBTAL — **blk триплет** **ДВЕНАДЦАТЫЙ blk триплет в chunk-028** + **ВТОРОЙ Tecnodom blk триплет** + **AL/ALU variant к base SKU 27 TF02MIDBT b4** ПЕРВЫЙ Tecnodom blk триплет (same brand Tecnodom same Italian template family, **разные модели и разные supplier-templates**: SKU 27 TF02MIDBT 1h2+3p+1ul/9li с `&mdash;`/`&deg;`/`&#39;` HTML entities vs SKU 47 TF02MIDBTAL 1p+1p/strong+1ul/11li без `&mdash;`/h2 — другая supplier-template structure для AL variant; **+2 li vs SKU 27**); `desc UA==RU` True 🔴 + `nm_ua==nm_ru` UA-leak `Стіл морозильний Tecnodom TF02MIDBTAL`, `nm_ru!=nazv_ru` clean RU `Стол морозильный Tecnodom TF02MIDBTAL` → AUTO Назв.мод (RU) = nazv_ru; Описание (RU) авторский 1p+1p/strong+ul/11li 1:1; **SKU 47-SPECIFIC**: **supplier asymmetric spacing** `-18&deg; C` (space-AFTER-entity) vs `-22 &deg;C` (space-BEFORE-entity) внутри одного li preserve verbatim; UA typo `Холодоагент` (лишний `о`)→canonical RU `Хладагент`; UA typo `відділені`→canonical RU `отделении`; Policy B/C `1420x700x1020 мм`→`1420мм x 700мм x 1020мм` (drop trailing single `мм` + per-axis `мм` слитно — same pattern b4 SKU 27 Tecnodom TF02MIDBT); R452А refrigerant Cyr А U+0410 preserve verbatim; drop `&#39;` x2 в `об'єм`/`Під'єднання`; поличка→полка lexical; UA `та`→`и` conjunction). **Tecnodom НЕ ∈ НП-эксклюзив**. SKU 48 `508918206` GGM Gastro International GGM GTS227 — **blknochg** LIVE Horoshop (**ПЕРВЫЙ GGM в проекте**; supplier-template family новый — multi-word brand `GGM Gastro International` vs short single-word brands seen so far; **4-door variant** model code `GGM GTS227` с **inline-dims** `2223х700 мм` (Cyr х U+0445) в самом nazv_ru/nm — необычный паттерн dims в имени продукта vs обычное отдельное поле; supplier RU dr 837 vs UA du 815; nm_ru clean RU `Стол морозильный четырехдверный GGM GTS227, (2223х700 мм)` без UA-leak; cells unchanged). **GGM Gastro International НЕ ∈ НП-эксклюзив** (substring `GASTRO`/`INTERNATIONAL` НЕ в NP-keys standalone). **Открытых вопросов по батчу: 0** (b1 0 + b2 0 + b3 0 + b4 0 + b5 0 + b6 0; ledger chunk-028 = 0). Кумулятивно chunk-028 = **0** (questions.md chunk-028 пока НЕ создаём — нет OQ; supplier UA typos `Холодоагент`/`відділені` → soft normalize к canonical RU inline, не нумеруются). Кумулятивно SKIP-НП chunk-028 = **10** (b1 0 + b2 3 + b3 3 + b4 1 + b5 1 + b6 2). NEXT: chunk-028 b7 SKU 49-56.
 
 *(scoped к row Артикул=508918206)*
+
+---
+
+## SKU 49/61 — Стол морозильный Hendi 233399 Kitchen Line 600-я серия (Артикул 961986157) — 🔴 RU=UA + Назв.мод (RU) UA-leak
+
+**Поле:** Название модификации (RU)
+**Было:** `Стіл морозильний Hendi 233399 Kitchen Line 600-я серія`
+**Стало:** `Стол морозильный Hendi 233399 Kitchen Line 600-я серия`
+
+**Поле:** Описание товара (RU)
+**Было:** (полностью идентично UA — украинский текст)
+**Стало:** (полный перевод RU тег-в-tag):
+
+```
+<p>Стол морозильный с тремя дверцами. Корпус и внутренняя камера изготовлены из нержавеющей стали AISI 304, устойчивой к воздействию жиров и органических кислот (задняя внешняя стенка – из гальванической стали), внутренние углы закруглены, что облегчает чистку шкафа.<br/>
+Данная модель способна выдержать даже очень высокую температуру окружающей среды (до +43°С и влажности до 65%). <br/> Толщина изоляционного материала: 50 мм. Автоматический отвод конденсата.</p>
+<p>Технические характеристики:</p>
+<ul>
+<li>Температурный режим: -12°С...-22°C </li>
+<li>климатический класс: N</li>
+<li>Беспроблемная работа при температуре окружающей среды до +38°C</li>
+<li>Динамическое охлаждение</li>
+<li>В комплекте 1 полка на дверь (2x 430x428 мм + 1x 490x428 мм) с допустимой нагрузкой около 15 кг на каждую полку (при равномерном распределении веса)</li>
+<li>Вместимость: 390 л. </li>
+<li>Габариты: 1800x600x(H)850 мм.</li>
+<li>Мощность: 0,5 кВт.</li>
+<li>Напряжение: 220 В.</li>
+<li>Количество дверей: 3</li>
+<li>Ножки регулируются по высоте.</li>
+<li>Хладагент: R134a</li>
+</ul>
+<p><img alt="" src="/content/uploads/images/961986157/770316093_770316093.jpeg" style="width:640px;height:353px"/> </p>
+```
+
+*(blk триплет **mixed-bilingual subtype** — `desc UA==RU` **True** 1186/1186 (du==dr identical) **+ UA-leak в body** char-level verified `і` U+0456 присутствует в обоих du и dr; supplier copy **half-translated abandoned mid-UL**: intro 1p + first 3 li + last li `Хладагент: R134a` genuine RU, **средние 8 li (Динамічне охолодження ... Ніжки регулюються по висоті)** UA-leak. `nm_ua`==`nm_ru` `Стіл морозильний Hendi 233399 Kitchen Line 600-я серія` UA-leak; `nm_ru`!=`nazv_ru` clean RU `Стол морозильный Hendi 233399 Kitchen Line 600-я серия` → AUTO Назв.мод (RU) = genuine `nazv_ru`. **Body — полный авторский RU**: RU-portion (intro 1p + first 3 li + last li R134a + img p) preserve verbatim; UA-portion (8 средних li) translate UA→RU 1:1 inline; **SOFT** supplier copy defects normalize: `близько 15 кожну полицю` (unit omitted) → `около 15 кг на каждую полку` add `кг` per refrigeration shelf-load convention; `Місткість: 390 к.` (unit truncated) → `Вместимость: 390 л.` per Kitchen Line 600 series capacity standard (refrigeration volume в литрах); `1 полиці` (supplier UA singular gen.sg ambiguous между «1 полка» и общим «полок») preserve literal `1 полка на дверь` — НЕ ре-интерпретируем supplier semantic. **Lat `x` U+0078** в dim-value `1800x600x(H)850` preserve verbatim (supplier использует Lat `x` НЕ Cyr `х` — отличие от Gooder SKU 38/39/55 где `х` Cyr → нормализуем к Lat `x`; Hendi supplier-side уже Lat `x` — оставляем). decimal comma `0,5 кВт` preserve. **Hendi НЕ ∈ НП-эксклюзивный список** (word-boundary NP-hit нет — сравнение = членство в бренд-SET {HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA}, НЕ substring) → обычная обработка, НЕ SKIP-НП. **ПЕРВЫЙ Hendi в проекте** — нет precedent batch/chunk; supplier-template family новый (Kitchen Line 600-я серия, 3-door morozilny с горизонтально-вытянутым корпусом 1800x600x850). **Lesson saved**: snapshot decision «blknmfix — 0 UA chars verified» был **wrong** — probe head (first 300 chars) показывал genuine RU intro, но char-level full-body scan нашёл UA `і` в средних 8 li; **durable rule**: для du==dr identical body всегда char-level full-body UA scan, НЕ head-only. **Mixed-bilingual subtype** (supplier abandoned translation mid-UL) — НОВАЯ supplier-side pattern; обработали как standard blk триплет (full body author RU). META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=961986157)*
+
+---
+
+## SKU 50/61 — Стол морозильный Tefcold CF7210 (Артикул 1154439882) — RU корректен; правок нет
+
+**Поле:** Название модификации (RU)
+**Было:** (чистый рус. бренд+код, украинского leak нет)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (RU уже корректный русский перевод — НЕ 🔴 RU=UA)
+**Стало:** без изменений
+
+*(blknochg — `desc UA==RU` **False** (genuine отдельный корректный русский перевод поставщика; dr 1374 vs du 1368); `nm_ua`!=`nm_ru` (UA `Стіл морозильний Tefcold CF7210` vs RU `Стол морозильный Tefcold CF7210`); `nm_ru`==`nazv_ru` clean RU (char-level UA_ONLY=∅). **Tefcold НЕ ∈ НП-эксклюзивный список** (word-boundary NP-hit нет — сравнение = членство в бренд-SET {HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA}, НЕ substring) → обычная обработка, НЕ SKIP-НП. LIVE Horoshop genuine RU body НЕ переписываем (ячейки chunk-028-fixed без изменений). Tefcold CF7210 — **2-door variant** Tefcold CF-серии (CF=Counter Freezer); supplier-template family Danish Tefcold (продолжение b5 SKU 35/36 Tefcold SK6210BT family и других Tefcold в проекте). LIVE artefacts preserve verbatim. blknochg → ВСЕ артефакты `dr` (RU-side) НЕ трогаем; авторский перевод НЕ генерим. Код `Tefcold CF7210` Lat → consistent. META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=1154439882)*
+
+---
+
+## SKU 51/61 — Стол морозильный Tefcold CF7310 (Артикул 2053453675) — RU корректен; правок нет
+
+**Поле:** Название модификации (RU)
+**Было:** (чистый рус. бренд+код, украинского leak нет)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (RU уже корректный русский перевод — НЕ 🔴 RU=UA)
+**Стало:** без изменений
+
+*(blknochg — `desc UA==RU` **False** (genuine; dr 1314 vs du 1336 — RU чуть короче UA, нетипично но допустимо); `nm_ua`!=`nm_ru`; `nm_ru`==`nazv_ru` clean RU без UA-leak. **Tefcold НЕ ∈ НП-эксклюзивный список** (word-boundary NP-hit нет — сравнение = членство в бренд-SET {HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA}, НЕ substring) → обычная обработка, НЕ SKIP-НП. LIVE Horoshop genuine RU НЕ переписываем. **Mirror SKU 50 3-door variant** (Tefcold CF7210 2-door → CF7310 3-door same supplier-template — CF72/73 pattern parallel к SK62/63 pairs). blknochg → ВСЕ артефакты dr НЕ трогаем; авторский перевод НЕ генерим. Код `Tefcold CF7310` Lat → consistent. META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=2053453675)*
+
+---
+
+## SKU 52/61 — Стол морозильный Tefcold CF7410 (Артикул 2053467056) — RU корректен; правок нет
+
+**Поле:** Название модификации (RU)
+**Было:** (чистый рус. бренд+код, украинского leak нет)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (RU уже корректный русский перевод — НЕ 🔴 RU=UA)
+**Стало:** без изменений
+
+*(blknochg — `desc UA==RU` **False** (genuine; dr 1274 vs du 1298 — RU чуть короче UA same pattern as SKU 51); `nm_ua`!=`nm_ru`; `nm_ru`==`nazv_ru` clean RU без UA-leak. **Tefcold НЕ ∈ НП-эксклюзивный список** (word-boundary NP-hit нет — сравнение = членство в бренд-SET {HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA}, НЕ substring) → обычная обработка, НЕ SKIP-НП. LIVE Horoshop genuine RU НЕ переписываем. **Mirror SKU 50/51 4-door variant** (CF72/73/74 pattern — CF7410 = 4-door extension same supplier-template family). blknochg → ВСЕ артефакты dr НЕ трогаем. Код `Tefcold CF7410` Lat → consistent. META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=2053467056)*
+
+---
+
+## SKU 53/61 — Стол морозильный Tefcold SK6210BT/+SP (Артикул 2053468272) — RU корректен; правок нет
+
+**Поле:** Название модификации (RU)
+**Было:** (чистый рус. бренд+код, украинского leak нет)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (RU уже корректный русский перевод — НЕ 🔴 RU=UA)
+**Стало:** без изменений
+
+*(blknochg — `desc UA==RU` **False** (genuine; dr 1284 vs du 1307 — RU чуть короче UA); `nm_ua`!=`nm_ru`; `nm_ru`==`nazv_ru` clean RU без UA-leak. **Tefcold НЕ ∈ НП-эксклюзивный список** (word-boundary NP-hit нет — сравнение = членство в бренд-SET {HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA}, НЕ substring) → обычная обработка, НЕ SKIP-НП. LIVE Horoshop genuine RU НЕ переписываем. SKU 53 Tefcold SK6210BT/+SP — **другая Tefcold series SK-серии** distinct от CF-серии SKU 50/51/52; `/+SP` sibling-suffix mirror b5 SKU 35/36 Tefcold SK6310BT/+SP pattern (SP=Splash Protection или similar option). `BT` Lat в коде модели preserve verbatim — distinct от Cyr `ВТ` в SKU 54/55 Gooder. blknochg → ВСЕ артефакты dr НЕ трогаем. Код `Tefcold SK6210BT/+SP` Lat (BT Lat) → consistent. META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=2053468272)*
+
+---
+
+## SKU 54/61 — Стол морозильный Tefcold SK6410ВТ/+SP (Артикул 2113716261) — RU корректен; правок нет
+
+**Поле:** Название модификации (RU)
+**Было:** (чистый рус. бренд+код, украинского leak нет)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (RU уже корректный русский перевод — НЕ 🔴 RU=UA)
+**Стало:** без изменений
+
+*(blknochg — `desc UA==RU` **False** (genuine; dr 1000 vs du 986 — RU чуть длиннее UA expected expansion); `nm_ua`!=`nm_ru`; `nm_ru`==`nazv_ru` clean RU без UA-leak. **Tefcold НЕ ∈ НП-эксклюзивный список** (word-boundary NP-hit нет — сравнение = членство в бренд-SET {HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA}, НЕ substring) → обычная обработка, НЕ SKIP-НП. LIVE Horoshop genuine RU НЕ переписываем. SKU 54 Tefcold SK6410ВТ/+SP — **4-door variant SK-серии** (SK62/64 pattern parallel к CF72/74) **+ Cyrillic `ВТ`** U+0412+U+0422 в коде model `SK6410ВТ` (НЕ Lat `BT` как в SKU 53 SK6210BT) preserve verbatim — supplier-side latin/cyrillic mix в коде, **same convention** как Gooder ВТ в SKU 38/39 b5 и SKU 55 GN4100ВТ b7. blknochg → ВСЕ артефакты dr НЕ трогаем. META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=2113716261)*
+
+---
+
+## SKU 55/61 — Стол морозильный Gooder GN4100ВТ (Артикул 2199341644) — 🔴 RU=UA + Назв.мод (RU) UA-leak
+
+**Поле:** Название модификации (RU)
+**Было:** `Стіл морозильний Gooder GN4100ВТ`
+**Стало:** `Стол морозильный Gooder GN4100ВТ`
+
+**Поле:** Описание товара (RU)
+**Было:** (полностью идентично UA — украинский текст)
+**Стало:** (полный перевод RU тег-в-tag):
+
+```
+<p>Стол холодильный низкотемпературный Gooder GN4100ВТ предназначен для хранения продуктов питания и полуфабрикатов на предприятиях общественного питания и торговли.</p> <p><strong>Характеристики:</strong></p> <ul>
+<li>Относительная влажность : 55%;</li>
+<li>Вес: 145 кг;</li>
+<li>Вес в упаковке: 155 кг;</li>
+<li>Диапазон температуры окружающей среды: +16 до +30 С&deg;;</li>
+<li>Общий объём л: 553 л;</li>
+<li>Количество полок: 4;</li>
+<li>Класс энергопотребления: Е;</li>
+<li>Климатический класс: 4;</li>
+<li>Корпус: Нержавеющая сталь снаружи и внутри (AISI 304);</li>
+<li>Страна-производитель: Китай;</li>
+<li>Размеры (ДxШxВ): 2230мм x 700мм x 860мм;</li>
+<li>Система охлаждения: Динамическая;</li>
+<li>Потребление электроэнергии: 10,89 кВт/д;</li>
+<li>Темп.режим: -18&deg;C....-22&deg;C; Торговая марка: Gooder; Автоматические двери,</li>
+<li>Цифровой термостат;</li>
+<li>Хладагент: R290</li>
+</ul>
+```
+
+*(blk триплет STANDARD — `desc UA==RU` **True** (🔴 RU=UA — RU = полная укр. копия тела, оба длиной 899); `nm_ua`==`nm_ru` `Стіл морозильний Gooder GN4100ВТ` (UA-leak; body-level `_has_ua` True via `Стіл`/`морозильний`); `nm_ru`!=`nazv_ru` genuine RU `Стол морозильный Gooder GN4100ВТ` → AUTO Назв.мод (RU) = genuine `nazv_ru`. **ЧЕТЫРНАДЦАТЫЙ blk триплет в chunk-028** + **ТРЕТИЙ Gooder blk триплет в chunk-028** + **4-door variant к base SKU 38/39 b5 Gooder GN2100ВТ/GN3100ВТ family** (same brand Gooder same Chinese supplier-template family, **4-door extension** к 2/3-door siblings GN21/31/41 pattern). **Gooder НЕ ∈ НП-эксклюзивный список** (word-boundary NP-hit нет — сравнение = членство в бренд-SET {HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA}, НЕ substring) → обычная обработка, НЕ SKIP-НП. Описание (RU) — авторский полный перевод тег-в-tag (структура UA зеркалится 1:1; 1 `<p>` + 1 `<p>/<strong>` + 1 `<ul>` + 16 `<li>` collapsed; line-breaks `\n` после `<ul>` и между `<li>` preserve verbatim). SOFT применено к авторскому RU **1:1 from b5 SKU 38/39 Gooder precedent**: `Стіл холодильний низькотемпературний...призначений для зберігання...` → `Стол холодильный низкотемпературный...предназначен для хранения...` (4-door specific intro); **inverse postfix-Cyr+entity** `+16 до +30 С&deg;;` preserve verbatim (НЕ `&deg;С` — supplier-specific postfix order); **space-colon** `Відносна вологість :` → `Относительная влажность :` preserve supplier-side spacing; **Cyr `х` U+0445 → Lat `x` U+0078** в dim-header `(ДхШхВ)→(ДxШxВ)` AND value `2230х700х860→2230мм x 700мм x 860мм` Policy B/C; drop `&#39;` в `об&#39;єм`→`объём` ё; **Cyr `ВТ`** U+0412+U+0422 в коде `GN4100ВТ` preserve verbatim (same supplier convention SKU 38/39 b5); **UA typo normalize**: `Климатичний` (UA typo — canonical UA `Кліматичний`) → `Климатический` (canonical RU); `всередені` (UA typo — canonical UA `всередині`) → `внутри` (canonical RU); `Хлодоген` (UA spelling mishmash — canonical UA `Холодоагент`) → `Хладагент` (canonical RU); UA→RU lexicon: `Загальний об'єм`→`Общий объём`, `Кількість полок`→`Количество полок`, `Клас енергоспоживання`→`Класс энергопотребления`, `Країна виробник`→`Страна-производитель`, `Система охолодження: Динамічна`→`Система охлаждения: Динамическая`, `Споживання електроенергії: 10,89 кВт/д`→`Потребление электроэнергии: 10,89 кВт/д` (decimal comma preserve; `кВт/д` unit preserve); **collapsed-li three-in-one supplier signature** `Темп.режим: -18&deg;C....-22&deg;C; Торгова марка: Gooder; Автоматичні двері,` (3-in-1 supplier inline) → `Темп.режим: -18&deg;C....-22&deg;C; Торговая марка: Gooder; Автоматические двери,` preserve verbatim (4-точечное `....`, supplier semicolons, trailing comma); `Цифровий термостат`→`Цифровой термостат`; бренд/модель/`R290`/`л`/`мм`/`%`/`AISI 304`/`Е` (Cyr Е class) preserve verbatim; HTML-entities `&deg;` (x3 — `+30 С&deg;`, `-18&deg;C`, `-22&deg;C`) preserve verbatim. META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=2199341644)*
+
+---
+
+## SKU 56/61 — Стол морозильный Tefcold GF72 (Артикул 2245882346) — RU корректен; правок нет
+
+**Поле:** Название модификации (RU)
+**Было:** (чистый рус. бренд+код, украинского leak нет)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (RU уже корректный русский перевод — НЕ 🔴 RU=UA)
+**Стало:** без изменений
+
+*(blknochg — `desc UA==RU` **False** (genuine; dr 1016 vs du 982 — RU чуть длиннее UA expected expansion); `nm_ua`!=`nm_ru`; `nm_ru`==`nazv_ru` clean RU без UA-leak. **Tefcold НЕ ∈ НП-эксклюзивный список** (word-boundary NP-hit нет — сравнение = членство в бренд-SET {HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA}, НЕ substring) → обычная обработка, НЕ SKIP-НП. LIVE Horoshop genuine RU НЕ переписываем. SKU 56 Tefcold GF72 — **другая Tefcold series GF-серии** distinct от CF-серии SKU 50/51/52 и SK-серии SKU 53/54 (GF=Glass Freezer или Gastronorm Freezer); single SKU GF-серии в b7. blknochg → ВСЕ артефакты dr НЕ трогаем. Код `Tefcold GF72` Lat → consistent. META always faithful. Открытых вопросов 0.)*
+
+**Наблюдения по батчу SKU 49-56 (56/61) — chunk-028 (батч-морозильные столы Hendi ×1 + Tefcold ×6 + Gooder ×1; раздел `Холодильне та морозильне обладнання/Морозильні столи` — продолжение b6 SKU 41-48):** **blk триплет 2 (SKU 49 Hendi 233399 mixed-bilingual subtype + SKU 55 Gooder GN4100ВТ standard). blknotrip 0. blkv 0. blknochg 6 (SKU 50 Tefcold CF7210, SKU 51 Tefcold CF7310, SKU 52 Tefcold CF7410, SKU 53 Tefcold SK6210BT/+SP, SKU 54 Tefcold SK6410ВТ/+SP, SKU 56 Tefcold GF72 — LIVE Horoshop genuine RU). blknochgeq 0. SKIP-НП 0 (no Fagor/Hurakan/etc в b7).** SKU 49 `961986157` Hendi 233399 Kitchen Line 600-я серія — **blk триплет mixed-bilingual subtype**: source signature `du==dr` True 1186/1186 (identical) **+ UA-leak в body** char-level verified (`і` U+0456 присутствует в обоих du и dr — supplier half-translated abandoned mid-UL); intro 1p + first 3 li + last li R134a genuine RU, **средние 8 li UA-leak** (`Динамічне охолодження`/`У комплекті`/`Місткість`/`Габарити`/`Потужність`/`Напруга`/`Кількість дверей`/`Ніжки регулюються`); `nm_ua==nm_ru` UA-leak `Стіл морозильний Hendi 233399 Kitchen Line 600-я серія`, `nm_ru!=nazv_ru` clean RU `Стол морозильный Hendi 233399 Kitchen Line 600-я серия` → AUTO Назв.мод (RU) = nazv_ru; Описание (RU) — авторский полный RU body (RU-portion preserve verbatim + UA-portion translate); **SOFT supplier copy defects normalize**: `близько 15 кожну полицю` (unit omitted) → `около 15 кг на каждую полку` add `кг`; `Місткість: 390 к.` (unit truncated) → `Вместимость: 390 л.` per Kitchen Line 600 capacity standard; `1 полиці` preserve literal `1 полка`. Lat `x` в dim-value preserve verbatim (Hendi supplier-side Lat, distinct от Gooder Cyr `х` → Lat `x` нормализация в SKU 55). **ПЕРВЫЙ Hendi в проекте** — нет precedent batch/chunk; supplier-template family новый (Kitchen Line 600-я серия, 3-door morozilny 1800x600x850). **Hendi НЕ ∈ НП-эксклюзив**. **Lesson**: snapshot «blknmfix — 0 UA chars verified» был **wrong** — probe head (first 300 chars) показывал RU intro но char-level full-body scan нашёл UA `і` в средних 8 li; **durable rule**: для du==dr identical body всегда char-level full-body UA scan, НЕ head-only. **Mixed-bilingual subtype** (supplier abandoned translation mid-UL) — НОВАЯ supplier-side pattern; обработали как standard blk триплет (full body author RU). SKU 50 `1154439882` Tefcold CF7210 — **blknochg** LIVE Horoshop (Tefcold НЕ НП-эксклюзив; **2-door variant** CF-серии Danish Tefcold; supplier RU dr 1374 vs UA du 1368; nm_ru clean RU без UA-leak; cells unchanged). SKU 51 `2053453675` Tefcold CF7310 — **blknochg** LIVE Horoshop **mirror SKU 50 3-door variant** (CF72/73 pattern parallel к SK62/63); supplier RU dr 1314 vs UA du 1336 (RU чуть короче UA нетипично но допустимо); nm_ru clean RU; cells unchanged. SKU 52 `2053467056` Tefcold CF7410 — **blknochg** LIVE Horoshop **4-door variant CF-серии** (CF72/73/74 pattern); supplier RU dr 1274 vs UA du 1298; cells unchanged. SKU 53 `2053468272` Tefcold SK6210BT/+SP — **blknochg** LIVE Horoshop **другая Tefcold series SK-серии** distinct от CF-серии SKU 50/51/52; `/+SP` sibling-suffix mirror b5 SKU 35/36 Tefcold SK6310BT/+SP pattern; `BT` Lat в коде preserve verbatim — distinct от Cyr `ВТ` в SKU 54/55; supplier RU dr 1284 vs UA du 1307; cells unchanged. SKU 54 `2113716261` Tefcold SK6410ВТ/+SP — **blknochg** LIVE Horoshop **4-door variant SK-серии** (SK62/64 pattern parallel к CF72/74) **+ Cyrillic `ВТ`** U+0412+U+0422 в коде `SK6410ВТ` (НЕ Lat `BT` как SKU 53) preserve verbatim — supplier-side latin/cyrillic mix **same convention** как Gooder ВТ в SKU 38/39 b5 и SKU 55 b7; supplier RU dr 1000 vs UA du 986 expected expansion; cells unchanged. SKU 55 `2199341644` Gooder GN4100ВТ — **blk триплет STANDARD** **ЧЕТЫРНАДЦАТЫЙ blk триплет в chunk-028** + **ТРЕТИЙ Gooder blk триплет** + **4-door variant к base SKU 38/39 b5 Gooder GN2100ВТ/GN3100ВТ family** (same brand Gooder same Chinese supplier-template, 4-door extension GN21/31/41 pattern); `desc UA==RU` True 🔴 + `nm_ua==nm_ru` UA-leak `Стіл морозильний Gooder GN4100ВТ`, `nm_ru!=nazv_ru` clean RU → AUTO Назв.мод (RU) = nazv_ru; Описание (RU) авторский 1p+1p/strong+ul/16li 1:1 from b5 SKU 38/39 Gooder precedent; **SKU 55-SPECIFIC**: **inverse postfix-Cyr+entity** `С&deg;` preserve (НЕ `&deg;С`); **space-colon** `Відносна вологість :` preserve; **Cyr `х` U+0445 → Lat `x` U+0078** в dim-header `(ДхШхВ)→`(ДxШxВ)` AND value `2230х700х860→2230мм x 700мм x 860мм` Policy B/C; **Cyr `ВТ`** в коде `GN4100ВТ` preserve verbatim; UA typos normalize: `Климатичний`→`Климатический`, `всередені`→`внутри`, `Хлодоген`→`Хладагент` (supplier UA spelling mishmash); **collapsed-li three-in-one** `Темп.режим: -18&deg;C....-22&deg;C; Торгова марка: Gooder; Автоматичні двері,` preserve structure verbatim with translate; `Цифровий термостат`→`Цифровой термостат`; HTML-entities `&deg;` x3 preserve. **Gooder НЕ ∈ НП-эксклюзив**. SKU 56 `2245882346` Tefcold GF72 — **blknochg** LIVE Horoshop **другая Tefcold series GF-серии** distinct от CF-серии SKU 50/51/52 и SK-серии SKU 53/54 (GF=Glass Freezer или Gastronorm Freezer); single SKU GF-серии в b7; supplier RU dr 1016 vs UA du 982 expected expansion; nm_ru clean RU; cells unchanged. **Открытых вопросов по батчу: 0** (b1 0 + b2 0 + b3 0 + b4 0 + b5 0 + b6 0 + b7 0; ledger chunk-028 = 0). Кумулятивно chunk-028 = **0** (questions.md chunk-028 пока НЕ создаём — нет OQ; SKU 49 supplier copy defects `близько 15 без units`/`Місткість: 390 к.` soft normalize к canonical RU inline, не нумеруются; SKU 55 supplier UA typos `Климатичний`/`всередені`/`Хлодоген` → soft normalize к canonical RU inline, не нумеруются). Кумулятивно SKIP-НП chunk-028 = **10** (b1 0 + b2 3 + b3 3 + b4 1 + b5 1 + b6 2 + b7 0). NEXT: chunk-028 b8 SKU 57-61 (LAST 5-SKU батч → закрытие 61/61).
+
+*(scoped к row Артикул=2245882346)*
 
 ---
