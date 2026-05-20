@@ -154,3 +154,28 @@
 | 48 | 47 | Frosty FL-98 white |
 
 **Verify:** 56 PASS / 0 FAIL. Без новых OQ.
+
+
+## b7 (SKU 49-56, rows 50-57)
+
+Категории: blk триплет 7 / blknotrip 0 / blknochg 1 / blkfix 0 / SKIP-НП 0.
+
+### blk триплет
+
+| row | SKU | модель |
+|---|---|---|
+| 50 | 49 | Frosty RT-58B-3 Black (58 л, 2 полки, 32 кг) |
+| 51 | 50 | Frosty RT-78B-1 Black (78 л, 3 полки, верх LED) |
+| 52 | 51 | Frosty RT-78B-3 Black (78 л, 3 полки, бок LED, 36 кг) |
+| 53 | 52 | Frosty RT-98B-3 Black (98 л, 4 полки, бок LED, 40 кг) |
+| 54 | 53 | Frosty RT-98B-1 Black (98 л, 4 полки, верх LED, 38 кг) |
+| 56 | 55 | Frosty RT215C-3 black (215 л, 3 хром полки, колеса) |
+| 57 | 56 | Frosty RT235C-3 black (235 л, 4 хром полки, колеса) |
+
+### blknochg
+
+| row | SKU | модель |
+|---|---|---|
+| 55 | 54 | Snaige CD14SM-S3003C |
+
+**Verify:** 60 PASS / 0 FAIL. Без новых OQ.
