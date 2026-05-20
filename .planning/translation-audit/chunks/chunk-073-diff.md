@@ -1,6 +1,6 @@
 # chunk-073 DIFF (W2, продолжение chunk-072)
 
-**Status:** chunk-073 scaffold 0/61 — next b1 (SKU 1-8, rows 2-9)
+**Status:** chunk-073 b7 DONE 56/61 (cum TRIP 17 / blknotrip 0 / blknochg 31 / blkfix 0 / SKIP-НП 8; 274 PASS / 0 FAIL) — next b8 (SKU 57-61, rows 58-62, FINAL 5 SKU)
 
 **Объём:** 61 SKU rows 2..62.
 
@@ -101,3 +101,20 @@
 - r46 Frosty DVA 8 / r47 DVA12 / r48 DVA16 / r49 DVA20 — фильтры-умягчители (повтор серии b5)
 
 ### Verify b6: 24 PASS / 0 FAIL (после Ё-fix «четырехслойное»)
+
+
+## Batch 7 (SKU 49-56, rows 50-57)
+
+### TRIP 6
+- **r50 Frosty CHLJ-20B** — c5 UA→RU «Уничтожитель насекомых Frosty CHLJ-20B»; c36 full RU rewrite (минимальный профиль: 2400 V электрод, 2 лампы по 10 Вт, ~40 кв., корпус-алюминий + цепочка; без размеров и кВт)
+- **r51 Frosty CHLJ-30B** — аналог r50 + размеры (500x110x320 мм, 0,03 кВт/220 В, 2300 V, 15 Вт, ~60 кв.)
+- **r52 Frosty CHLJ-40B** — аналог r51 (660x110x370 мм, 0,04 кВт/220 В, 2200 V, 20 Вт, ~80 кв.)
+- **r55 Frosty CHLJ-30W** — c5/c36 RU. W-серия отличается формата: три отдельных <p> + <strong>Технические характеристики</strong> heading. (2300 V, 15 Вт, ~60 кв., 0,03 кВт/220 В, 500x110x320 мм)
+- **r56 Frosty CHLJ-40W** — аналог r55 (2200 V, 20 Вт, ~80 кв., 0,04 кВт/220 В, 660x110x370 мм)
+- **r57 EWT INOX AAC25A** — c5 UA→RU «Стерилизатор для ножей EWT INOX AAC25A»; c36 full RU (14 ножей, таймер 60 мин, AISI201, антирадиационный акрил, 350x125x590 мм + упаковка 585x125x645, 0.01 кВт, 220V, 8 кг)
+
+### SKIP-НП 2 (forward-only)
+- r53 HURAKAN HKN-UVA10 — стерилизатор для ножей (forward-only)
+- r54 APACH M30 — ферментатор (forward-only)
+
+### Verify b7: 46 PASS / 0 FAIL
