@@ -3,7 +3,7 @@
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-067 (74 SKU, rows 2..75; ART 2045345276 … 2033010783)
 **Apply key:** `Артикул` (col1, scoped per row)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-066
-**Status:** b4 DONE 32/74 (cum: TRIP 17 / blknotrip 0 / blknochg 15 / SKIP-НП 0; b5 предстоит; b1..b9 по 8 SKU + b10=SKU73-74 2 SKU)
+**Status:** b5 DONE 40/74 (cum: TRIP 20 / blknotrip 0 / blknochg 20 / SKIP-НП 0; b6 предстоит; b1..b9 по 8 SKU + b10=SKU73-74 2 SKU)
 
 Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Формат — как chunk-066-diff.md.
 
@@ -120,3 +120,30 @@ SKIP-НП prelim (forward-only, тело из фида НП позже): FAGOR/F
 ### SKIP-НП (0)
 
 В b4 нет brand-locked НП.
+
+
+## Батч 5 (SKU 33-40, rows 34-41) — DONE
+
+**Итог:** TRIP 3 / blknotrip 0 / blknochg 5 / SKIP-НП 0 / verify 274 PASS / 0 FAIL.
+
+### blk триплет (3)
+
+| SKU | row | Артикул | Бренд+модель | col5: UA→RU | col36 |
+|---|---|---|---|---|---|
+| 34 | 35 | 2565679278 | Bartscher 100374 тостер вертикальный | c5 unchanged `Тостер Bartscher 100374` (brand+model latin) | faithful RU body (4 паза 140х35, 6 уровней подрумянивания, 2 пульта, 2 съемные насадки без ё, 220V Китай, размеры в упаковке) skel==UA |
+| 35 | 36 | 680814299 | Hendi 261163 тостер | c5 unchanged `Тостер Hendi 261163` | faithful RU body (2 кусочка, два зажима, независимые термостаты, таймер 8 мин., 300х200х233, 1,2 кВт) skel==UA |
+| 36 | 37 | 1161583632 | Hendi 262214 тостер инфракрасный | `Тостер інфрачервоний Hendi 262214` → `Тостер инфракрасный Hendi 262214` | faithful RU body (h2-заголовок; 6 кусочков, 2 уровня нагревания, инфракрасные кварцевые трубки 30 сек, таймер 15 мин., 6 зажимов, 438х290х402, 3 кВт) skel==UA |
+
+### blknochg (5)
+
+| SKU | row | Артикул | Бренд+модель | Причина |
+|---|---|---|---|---|
+| 33 | 34 | 2538748710 | SARO ARIS 4 тостер | c5==c7 latin brand+model; c36 genuine RU; c35!=c36 skel-eq False — две редакции, blknochg не трогаем |
+| 37 | 38 | 2043309201 | Frosty TT-300 тостер конвейерный | c5==c7 `Тостер конвеерный Frosty TT-300` source typo «конвеерный» live; c36 genuine RU расширенная; c35!=c36; не трогаем |
+| 38 | 39 | 470763674 | SILANOS T1500 машина посудомоечная туннельная | c5==c7 genuine RU; c36 genuine RU minor variant; c35!=c36 skel-eq True dims match; не трогаем |
+| 39 | 40 | 644895365 | Empero EMP.2000 с сушкой | c5==c7 genuine RU; c36 genuine RU; одна dim source typo c35:185 vs c36:85; не трогаем |
+| 40 | 41 | 644913557 | Empero EMP.3000 с сушкой и блоком предварительной мойки | c5==c7 genuine RU; c36 genuine RU; одна dim source typo c35:185 vs c36:85; не трогаем |
+
+### SKIP-НП (0)
+
+В b5 нет brand-locked НП.

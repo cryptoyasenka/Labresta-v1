@@ -2,9 +2,9 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-067 (74 SKU, rows 2..75; ART 2045345276 … 2033010783)
 **Apply key:** `Артикул` (col1, scoped per row)
-**Status:** b4 DONE 32/74 (cum: TRIP 17 / blknotrip 0 / blknochg 15 / SKIP-НП 0 / OQ 0; b5 предстоит; batch=8 b1..b9 по 8 + b10=SKU73-74 2 SKU = 74)
+**Status:** b5 DONE 40/74 (cum: TRIP 20 / blknotrip 0 / blknochg 20 / SKIP-НП 0 / OQ 0; b6 предстоит; batch=8 b1..b9 по 8 + b10=SKU73-74 2 SKU = 74)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-066
-**Last updated:** chunk-067 b4 (W2)
+**Last updated:** chunk-067 b5 (W2)
 
 Эталон формата: chunk-019-MANUAL-REVIEW.md / chunk-066-MANUAL-REVIEW.md. Категории: blk триплет / blknotrip / blknochg / SKIP-НП.
 
@@ -170,5 +170,38 @@ _(нумерация отдельная, начинается с #1; пока н
 В b4 нет brand-locked НП. (prelim 8 на b6/b7/b9.)
 
 ### Открытые вопросы b4
+
+Нет.
+
+
+## Батч 5 (SKU 33-40, rows 34-41) — DONE
+
+**Итог:** TRIP 3 / blknotrip 0 / blknochg 5 / SKIP-НП 0 / OQ 0 / verify 274 PASS / 0 FAIL / cum 40/74.
+
+### blk триплет (TRIP) — 3 SKU
+
+- **SKU 34 row 35 ART 2565679278 — Тостер Bartscher 100374**
+  - col5 unchanged `Тостер Bartscher 100374` (brand+model only, c5==c7 latin-identical).
+  - col36 faithful RU: «Тостер Bartscher 100374 используется для разогрева и поджаривания тостов, сэндвичей, горячих бутербродов; вертикальный; 4 паза 140х35 мм; 6 уровней подрумянивания; 2 пульта управления для двух пазов; в комплекте 2 съемные насадки для булочек (без ё) и 2 поддона для крошек; вес 2.35 кг / длина 330 / ширина 300 / высота 200 мм; мощность 1.48 кВт; 220V; Китай; размеры в упаковке: вес 2.759 / глубина 410 / ширина 460 / высота 300.» skel==UA, dims match. UA `&#39;` в `підрум&#39;янювання` → RU без апострофа.
+- **SKU 35 row 36 ART 680814299 — Тостер Hendi 261163**
+  - col5 unchanged `Тостер Hendi 261163` (brand+model only, c5==c7).
+  - col36 faithful RU: «Тостер на 2 кусочка; корпус из нержавеющей стали; в наборе два зажима для тостов; независимые термостаты для правого и левого отсека; таймер до 8 мин. со звуковым сигналом; выдвижной поддон для сбора крошек; габариты 300х200х233 мм; мощность 1,2 кВт.» skel==UA, dims match.
+- **SKU 36 row 37 ART 1161583632 — Тостер інфрачервоний Hendi 262214**
+  - col5 UA→genuine RU: `Тостер інфрачервоний Hendi 262214` → `Тостер инфракрасный Hendi 262214` (как c7)
+  - col36 faithful RU: «Тостер инфракрасный Hendi 262214 на 6 кусочков (h2-заголовок); 2 уровня нагревания по 3 кусочка хлеба; инфракрасные кварцевые трубки для быстрого нагрева (температура достигает максимума в течение 30 секунд); трубки остывают в течение секунд; переключатель для выбора разных типов нагревания; механический таймер со звуковым сигналом (15 минут); в комплект входят 6 зажимов для тостов из нержавеющей стали; габариты 438х290х402 мм; мощность 3 кВт.» skel==UA (с `<h2>` заголовком), dims match.
+
+### blknochg — 5 SKU (c5/c35/c36 НЕ тронуты)
+
+- SKU 33 row 34 ART 2538748710 — SARO ARIS 4 тостер (c5==c7 `Тостер SARO ARIS 4` brand+model latin; c35!=c36 skel-eq False; c36 genuine RU без UA-mark; dims match — это две разные редакции описания, не blknotrip)
+- SKU 37 row 38 ART 2043309201 — Frosty TT-300 тостер конвейерный (c5==c7 `Тостер конвеерный Frosty TT-300` — source typo «конвеерный» faithful live; c35!=c36 skel-eq False; c36 genuine RU без UA-mark — расширенная редакция в живом магазине)
+- SKU 38 row 39 ART 470763674 — SILANOS T1500 машина посудомоечная туннельная (c5==c7 genuine RU; c36 genuine RU расширенная edition; c35!=c36 но skel-eq True dims match — minor textual variant, blknochg)
+- SKU 39 row 40 ART 644895365 — Empero EMP.2000 туннельная посудомоечная машина с сушкой (c5==c7 genuine RU; c36 genuine RU; c35!=c36 — minor edition differences; one dim differs c35:185 vs c36:85 source typo, live store fixed)
+- SKU 40 row 41 ART 644913557 — Empero EMP.3000 с сушкой и блоком предварительной мойки (c5==c7 genuine RU; c36 genuine RU; c35!=c36 minor variant; one dim source typo c35:185 vs c36:85)
+
+### SKIP-НП — 0 SKU
+
+В b5 нет brand-locked НП. (prelim 8 на b6/b7/b9.)
+
+### Открытые вопросы b5
 
 Нет.
