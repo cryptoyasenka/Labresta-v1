@@ -500,3 +500,13 @@
 - Preliminary SKIP-НП #1: r19 TATRA TRC1400TN (b3).
 - Файлы: chunk-078.xlsx (RO), chunk-078-fixed.xlsx (gitignored), chunk-078-MANUAL-REVIEW.md, chunk-078-diff.md.
 - Next: chunk-078 b1 (SKU 1-8, rows 2-9).
+
+
+## chunk-078 b1 DONE 8/53 (2026-05-20 13:35)
+
+- Категории: blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+- blknochg: r2/r3 Tefcold RK1420/RK1420G, r4/r5 Gooder SR400G/SR600G, r6-r9 Snaige CC29SM/CC31SM (T100FFQ/T1CBFFQ).
+- Verify: 72 PASS / 0 FAIL.
+- Cumulative chunk-078: 8/53 (TRIP 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0; 72 PASS / 0 FAIL).
+- OQ: без новых.
+- Next: chunk-078 b2 (SKU 9-16, rows 10-17).
