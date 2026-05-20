@@ -104,3 +104,28 @@
 | 33 | 32 | FROSTY RT235L (кондитерский) |
 
 **Verify:** 40 PASS / 0 FAIL. Без новых OQ.
+
+
+## b5 (SKU 33-40, rows 34-41)
+
+Категории: blk триплет 3 / blknotrip 0 / blknochg 5 / blkfix 0 / SKIP-НП 0.
+
+### blk триплет
+
+| row | SKU | модель |
+|---|---|---|
+| 34 | 33 | Frosty FL218 black (холодильный, 218 л) |
+| 39 | 38 | REEDNEE RT78B white (шкаф-витрина, source h2 typo «RT78L» — OQ #17) |
+| 40 | 39 | REEDNEE RT98B white (шкаф-витрина, 98 л, замок) |
+
+### blknochg
+
+| row | SKU | модель |
+|---|---|---|
+| 35 | 34 | Frosty FL288 black |
+| 36 | 35 | SCAN RTC 237 we |
+| 37 | 36 | FROSTY RT235L white (кондитерский) |
+| 38 | 37 | FROSTY RT78L-1D белая с замком |
+| 41 | 40 | GoodFood RT78L черная |
+
+**Verify:** 44 PASS / 0 FAIL. +1 OQ #17 r39 source h2 «RT78L» vs c4/c5/c7 RT78B typo.

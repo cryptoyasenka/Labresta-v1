@@ -123,3 +123,30 @@
 **Verify:** 40 PASS / 0 FAIL. Без новых OQ.
 
 **Cumulative chunk-084:** 32/71 (TRIP 12 / blknotrip 0 / blknochg 19 / blkfix 1 / SKIP-НП 0; 156 PASS / 0 FAIL).
+
+
+## b5 (SKU 33-40, rows 34-41) — DONE 40/71
+
+**Категории:** blk триплет 3 / blknotrip 0 / blknochg 5 / blkfix 0 / SKIP-НП 0.
+
+### blk триплет (c5←c7 + c36 полный RU-перевод тела)
+
+- **r34** SKU=33 ART=2072212305 Frosty FL218 black (холодильный шкаф, 218 л, стекло 4 стороны, 0..+12°C, 0,25 кВт/220В, 515×485×1595 мм, 73 кг) — c5 UA → "Шкаф холодильный Frosty FL218 black"; c35==c36 source UA с &#39; → c36 переведен полностью (825 chars).
+- **r39** SKU=38 ART=641916589 REEDNEE RT78B white (шкаф-витрина настольный холодильный, R600a, 78 л, 0..+12°C, 0,17 кВт, 428×386×960 мм) — c5 UA → "Шкаф-витрина холодильная REEDNEE RT78B white"; c35==c36 UA → c36 переведен (524 chars). **NB: source h2 ссылается на «REEDNEE RT78L», а c4/c5/c7 = RT78B — source typo, переведено faithfully (OQ #17).**
+- **r40** SKU=39 ART=930809748 REEDNEE RT98B white (шкаф-витрина настольный холодильный, двойное стекло, 98 л, 4 полки, замок, 0,17 кВт, 428×386×1110 мм) — c5 UA → "Шкаф-витрина холодильная REEDNEE RT98B white"; c35==c36 UA с &#39; → c36 переведен (619 chars).
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r35** SKU=34 ART=2072213285 Frosty FL288 black — c5==c7 RU clean, c36 RU полный (848 chars).
+- **r36** SKU=35 ART=2219904786 SCAN RTC 237 we (витрина холодильная) — c5==c7 RU clean, c36 RU полный (560 chars).
+- **r37** SKU=36 ART=665783835 FROSTY RT235L white (кондитерский) — c5==c7 RU clean, c36 RU полный (502 chars).
+- **r38** SKU=37 ART=498259916 FROSTY RT78L-1D белая с замком — c5==c7 RU clean, c36 RU полный (590 chars).
+- **r41** SKU=40 ART=1086819137 GoodFood RT78L черная — c5==c7 RU clean, c36 RU полный (828 chars, source c35 UA но c36 already translated).
+
+### Открытые вопросы (новые в b5)
+
+- **OQ #17 (W2 cum #17):** r39 SKU=38 REEDNEE RT78B white — source c35/c36 h2 содержит «REEDNEE RT78L» вместо RT78B (c4/c5/c7 = RT78B). Likely source typo в UA prose. Переведено faithfully (RU h2 также "REEDNEE RT78L"). Yana может решить, нужно ли поправить c36 RU модель на RT78B.
+
+**Verify:** 44 PASS / 0 FAIL.
+
+**Cumulative chunk-084:** 40/71 (TRIP 15 / blknotrip 0 / blknochg 24 / blkfix 1 / SKIP-НП 0; 200 PASS / 0 FAIL).
