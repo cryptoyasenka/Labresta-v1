@@ -1,7 +1,7 @@
 # chunk-075 MANUAL REVIEW (W2, продолжение chunk-074)
 
-**Status:** chunk-075 scaffold 0/54 — next b1 (SKU 1-8, rows 2-9)
-**Last updated:** chunk-075 scaffold (created)
+**Status:** chunk-075 b1 DONE 8/54 (cum TRIP 3 / blknotrip 0 / blknochg 3 / blkfix 0 / SKIP-НП 2; 709 PASS / 0 FAIL) — next b2 (SKU 9-16, rows 10-17)
+**Last updated:** chunk-075 b1 (8/54)
 
 **Объём:** 54 SKU rows 2..55. ART 2044220842..1090581793.
 
@@ -36,3 +36,16 @@
 - b5: SKU 33-40 (r34-41)
 - b6: SKU 41-48 (r42-49)
 - b7 FINAL: SKU 49-54 (r50-55) — 6 SKUs
+
+---
+
+## b1 DONE 8/54 (Status update)
+
+**Status:** chunk-075 b1 DONE 8/54 (cum TRIP 3 / blknotrip 0 / blknochg 3 / blkfix 0 / SKIP-НП 2; 709 PASS / 0 FAIL) — next b2 (SKU 9-16, rows 10-17)
+
+**b1 распределение (SKU 1-8):**
+- TRIP 3: r2 Frosty VF-15, r7 Moretti Forni L80/S100E, r8 Moretti Forni 0A000810
+- blknochg 3: r5 GoodFood PR13TS, r6 GoodFood PR16TS, r9 Эфес ШР-6-GN 1/1
+- SKIP-НП 2: r3 HURAKAN HKN-XLT196M, r4 APACH APE12ABQ D
+
+**Quirks:** r2 «м&#39;якішу»→«мякиша» (HTML-апостроф снят); r8 mixed source (RU intro + UA body); r8 «Дека для випічки»→«Противни для выпечки».
