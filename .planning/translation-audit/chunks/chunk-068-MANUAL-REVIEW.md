@@ -1,7 +1,7 @@
 # chunk-068 MANUAL REVIEW (W2)
 
-**Status:** chunk-068 b2 DONE 16/50 (cum TRIP 10 + blknotrip 0 + blknochg 5 + SKIP-НП 1; OQ 0; 109 PASS) — следующий b3 (SKU 17-24, rows 18-25)
-**Last updated:** chunk-068 b2 DONE 16/50
+**Status:** chunk-068 b3 DONE 24/50 (cum TRIP 12 + blknotrip 0 + blknochg 11 + SKIP-НП 1; OQ 0; 103 PASS) — следующий b4 (SKU 25-32, rows 26-33)
+**Last updated:** chunk-068 b3 DONE 24/50
 
 ## Структура
 
@@ -68,4 +68,26 @@
 **OQ:** 0 новых открытых вопросов.
 
 **Verify breakdown:** 50 ART + 6 TRIP × 7 = 42 + 1 SKIP-НП × 6 (all cols unchanged) = 6 + 1 blknochg × 3 = 3 + b1 regression 4 TRIP c5==c7 + 4 blknochg c5 unchanged = 8. Total **109 PASS / 0 FAIL**.
+
+## b3 (SKU 17-24, rows 18-25) — DONE 24/50
+
+**Категории:** TRIP 2 + blknotrip 0 + blknochg 6 + SKIP-НП 0 = 8/8. Verify 103 PASS / 0 FAIL.
+
+**TRIP (2) — Oztiryakiler посудомоечные машины:**
+- r18 SKU17 ART 2460066584 **Oztiryakiler OBM1080TPD** Посудомоечная машина купольная: c5←c7 (`Посудомоечная машина Oztiryakiler OBM1080TPD`); c36 ← faithful RU body 29 строк (`<p>` lead + `<p><strong>Технические характеристики:</strong></p>` + 22-li main + `<p>Размеры в упаковке</p>` + 4-li упаковка; dims `1080/69/50x50/445/102/700/785/1960/9.66/380/52/102/132/152/192/2,8/69/40/112/820/750/1550`; «ідеально підходить … в ресторанах, кафе, барах, кав&#39;ярнях, пивних пабах» → «идеально подходит … в ресторанах, кафе, барах, кофейнях, пивных пабах», «Цикл миття, с» → «Цикл мойки, с», «понад 40» → «свыше 40», «Тип завантаження: купольна» → «Тип загрузки: купольная»).
+- r19 SKU18 ART 2460074406 **Oztiryakiler OBY50TPDT** Посудомоечная машина фронтальная: c5←c7 (`Посудомоечная машина Oztiryakiler OBY50TPDT`); c36 ← faithful RU body 33 строки (`<p>` lead + `<p><strong>Технические характеристики:</strong></p>` + 26-li main + `<p>Размеры в упаковке</p>` + 4-li упаковка; dims `50/35/50x50/335/2,8/5/102/132/152/172/192/60/595/650/830/5.5/220/2,8/35/32/40/70/700/650/1000`; «5 програм мийки 102/132/152/172/192 с» → «5 программ мойки 102/132/152/172/192 с», «Розмір кошиків 50x50см» → «Размер корзин 50x50см», «Висота завантаження 335 мм» → «Высота загрузки 335 мм», «Три кошики в комплекті» → «Три корзины в комплекте», «Тип завантаження: фронтальне» → «Тип загрузки: фронтальная»).
+
+**blknochg (6) — Gooder fixed rows НЕ изменены:**
+- r20 SKU19 ART 2556977107 **Gooder BY.500**: c5==c7 RU OK, c36 без UA-mark, skel-eq True (len35=1412 / len36=1441).
+- r21 SKU20 ART 2556993881 **Gooder BY.500D**: c5==c7 RU OK, c36 без UA-mark, skel-eq True.
+- r22 SKU21 ART 2557006167 **Gooder BYM.01**: c5==c7 RU OK, c36 без UA-mark, skel-eq True.
+- r23 SKU22 ART 2557011733 **Gooder BYM.02**: c5==c7 RU OK, c36 без UA-mark, skel-eq True.
+- r24 SKU23 ART 2558087500 **Gooder BY.1000** купольная: c5==c7 RU OK, c36 без UA-mark, skel-eq True.
+- r25 SKU24 ART 2558089725 **Gooder BY.1000D** купольная: c5==c7 RU OK, c36 без UA-mark, skel-eq True.
+
+**SKIP-НП:** 0 в b3. Gooder НЕ в списке НП-эксклюзивных брендов.
+
+**OQ:** 0 новых открытых вопросов.
+
+**Verify breakdown:** 50 ART regression + 2 TRIP × 7 = 14 + 6 blknochg × 3 = 18 + b1/b2 regression (10 prior TRIP c5==c7 + 5 prior blknochg c5 unchanged + 6 SKIP-НП r10 cols unchanged) = 21. Total **103 PASS / 0 FAIL**.
 

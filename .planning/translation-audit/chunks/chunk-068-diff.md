@@ -1,7 +1,7 @@
 # chunk-068 DIFF (W2)
 
-**Status:** b2 DONE 16/50 — батчи b1..b7 (8+8+8+8+8+8+2); next b3 (SKU 17-24, rows 18-25)
-**Last updated:** chunk-068 b2 DONE 16/50
+**Status:** b3 DONE 24/50 — батчи b1..b7 (8+8+8+8+8+8+2); next b4 (SKU 25-32, rows 26-33)
+**Last updated:** chunk-068 b3 DONE 24/50
 
 Source: `chunk-068.xlsx` (RO) → operating: `chunk-068-fixed.xlsx` (gitignored).
 Batches заполняются после каждого закрытого батча.
@@ -36,4 +36,20 @@ Batches заполняются после каждого закрытого ба
 
 **Итого b2:** TRIP 6 + blknotrip 0 + blknochg 1 + SKIP-НП 1. Verify 109 PASS / 0 FAIL.
 **Cum после b2:** TRIP 10 + blknotrip 0 + blknochg 5 + SKIP-НП 1 = 16/50.
+
+## b3 (SKU 17-24, rows 18-25) — 24/50
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 17 | 18 | 2460066584 | Oztiryakiler OBM1080TPD купольная | **TRIP** | c5←c7; c36 ← RU 29-строчный body (`<p>` lead + 22 li main + 4 li упаковка) |
+| 2 | 18 | 19 | 2460074406 | Oztiryakiler OBY50TPDT фронтальная | **TRIP** | c5←c7; c36 ← RU 33-строчный body (`<p>` lead + 26 li main + 4 li упаковка) |
+| 3 | 19 | 20 | 2556977107 | Gooder BY.500 | blknochg | — |
+| 4 | 20 | 21 | 2556993881 | Gooder BY.500D | blknochg | — |
+| 5 | 21 | 22 | 2557006167 | Gooder BYM.01 | blknochg | — |
+| 6 | 22 | 23 | 2557011733 | Gooder BYM.02 | blknochg | — |
+| 7 | 23 | 24 | 2558087500 | Gooder BY.1000 купольная | blknochg | — |
+| 8 | 24 | 25 | 2558089725 | Gooder BY.1000D купольная | blknochg | — |
+
+**Итого b3:** TRIP 2 + blknotrip 0 + blknochg 6 + SKIP-НП 0. Verify 103 PASS / 0 FAIL.
+**Cum после b3:** TRIP 12 + blknotrip 0 + blknochg 11 + SKIP-НП 1 = 24/50.
 
