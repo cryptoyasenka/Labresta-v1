@@ -57,3 +57,10 @@
 - TRIP 1: r58 Frosty ZC-801 (чафиндиш GN 1/1 9 л со съемной крышкой+подставкой под топливо, нерж, 640×360×330)
 - blknochg 7: r59 SARO CARLA / r60 SARO LORENA электр / r61 SARO ANOUK 1 / r62 GoodFood CD100E электр / r63 GoodFood CD200 Premium / r64 GoodFood CD300 Simple Style / r65 GoodFood CD65P электр
 - Verify 22 PASS / 0 FAIL; без новых OQ
+
+## b9 (rows 66-73, SKU 65-72) — 72/75 DONE
+
+- TRIP 4: r66 Hendi 209981 (чайник электрический 1,8 л беспроводной, iframe YouTube preserved) + r68 Airhot EC 6 (чебуречница 20 л, c36-only TRIP variant — c5 already RU) + r71 Hendi 222553 (центрифуга 12 л) + r72 Hendi 222560 (центрифуга 25 л)
+- blknochg 3: r67 Frosty DG-01 шаурма электр + r70 La Monferrina Dryer EC/NG 25 шкаф сушки макарон + r73 камень Нагура
+- SKIP-НП 1 HURAKAN: r69 HKN-EF16 чебуречница
+- Verify 35 PASS / 0 FAIL; без новых OQ
