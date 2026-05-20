@@ -220,3 +220,38 @@
 - r73 «Зроблені з твердого алюмінієвого лиття» plural→«Изготовлены из твердого алюминиевого литья» (b7 helper, plural preserved).
 
 ### Verify b9: 84 PASS / 0 FAIL
+
+
+## Batch 10 (SKU 73-80, rows 74-81)
+
+### TRIP 4
+- **r74 Сотейник для жарки HENDI 839409 1,6 л** — c5 ← c7 «Сотейник для жарки 1,6 л HENDI 839409»; c36 RU hendi_saucepot_frying_capsule_body «1,6 литра», dim ø200x75 мм, 0,6 мм. NEW helper (capsule вариант, отличается от b8 frying Impact Bonding).
+- **r76 Тележка сервировочная Hendi 810002 на 2 уровня** — c5 ← c7; c36 RU hendi_trolley_body '810002' '2 уровня' '2 полки' '550' '910x590x(H)950мм' intro_dot=True. NEW helper.
+- **r77 Тележка сервировочная Hendi 810101 на 3 уровня** — c5 ← c7; c36 RU hendi_trolley_body '810101' '3 уровня' '3 полки' '295' '910x590x(H)950мм' intro_dot=False (source intro без точки в </p>).
+- **r81 Диспенсер для хлопьев Frosty JVT-5** — c5 ← c7; c36 RU frosty_dispenser_body (one-off): «Дипенсер для сыпучих продуктов подходит для дозирования мюсли, чипсов, круп...». Source typo «Дипенсер» preserved.
+
+### blknochg 4
+- **r75 Saro INES (3 полки)** — c5==c7 «Тележка сервировочная Saro INES для столовых приборов (3 полки)», c36 genuine RU (no UA-markers). НЕ тронут.
+- **r78 Saro Felix (2 полки)** — c5==c7 «Тележка сервировочная Saro Felix (на 2 полки)», c36 genuine RU. НЕ тронут.
+- **r79 Saro Bastian (3 полки)** — c5==c7 «Тележка сервировочная Saro Bastian (3 полки)», c36 genuine RU. НЕ тронут.
+- **r80 Saro David (5 полок)** — c5==c7 «Тележка сервировочная Saro David (5 полок)», c36 genuine RU. НЕ тронут.
+
+### blknotrip / blkfix / SKIP-НП: 0
+
+### NEW helpers b10:
+- `hendi_saucepot_frying_capsule_body(volume_str, art, dim_mm, thickness_mm='0,6')` — 9 li capsule frying саутепот: «Многослойное капсульное дно» + split component li, не нагревающихся стальных ручек, без крышки, длинная пустотелая ручка, dishwasher-safe.
+- `hendi_trolley_body(art, levels_word, levels_paucal, distance_mm, dim_mm, intro_dot=True)` — Hendi serving trolley с шумопоглощающим материалом, нагрузка 75 кг/полка, 4 поворотных колеса, тормоза 2, округленные края, intro_dot flag для r76 (.)/r77 (без точки) variants.
+- `frosty_dispenser_body()` — one-off body для r81 (не reusable).
+
+### Source-quirks b10:
+- r74 «Сотейник для смаження» → «Сотейник для жарки»; «об'ємом 1,6 літра» → «объемом 1,6 литра» (decimal genitive RU paucal).
+- r74 «ненагревающихся сталевих ручок» (mixed UA/RU one-word) → «не нагревающихся стальных ручек» split.
+- r74 — capsule frying saucepot template (b10 NEW): отличается от b8 frying (Impact Bonding 11 li → 9 li без «Стойкость к воздействию кислот»/«Impact Bonding»).
+- r76 «<p>...для розносу страв на 2 рівня.</p>» с точкой / r77 «<p>...для розносу страв на 3 рівня</p>» БЕЗ точки — source-quirk preserved через `intro_dot` param.
+- r76/r77 «Округлені краї» → «Округленные края» (no Ё).
+- r76/r77 «– 550 мм» / «– 295 мм» — en-dash «–» preserved.
+- r81 source typo «Дипенсер» (missing «с») preserved в c36 RU как «Дипенсер» (faithful translation); c5 «Диспенсер» из c7 (correct).
+- r81 «мюслів»→«мюсли» (RU indeclinable noun), «чіпсів»→«чипсов», «фуд кортів»→«фуд кортов», «кофі брейках»→«кофе брейках» (no Ё), «бранч»→«бранч» (loan), «шведських столах»→«шведских столах», «домашній кухні»→«домашней кухне».
+- r81 source typo «Дипенсер» — preserved (rule: faithful skel==UA, не правим source typos в TRIP).
+
+### Verify b10: 61 PASS / 0 FAIL

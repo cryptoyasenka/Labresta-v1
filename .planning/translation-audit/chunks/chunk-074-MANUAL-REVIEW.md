@@ -547,3 +547,50 @@
 ### Status
 
 **chunk-074 b9 DONE 72/87 (cum TRIP 66 / blknotrip 0 / blknochg 6 / blkfix 0 / SKIP-НП 0; 545 PASS / 0 FAIL; OQ#3 still pending) — next b10 (SKU 73-80, rows 74-81).**
+
+
+---
+
+## Batch 10 — DONE 80/87
+
+**Range:** rows 74-81 (SKU 73-80). Категории: TRIP 4 (r74 HENDI сотейник capsule frying + r76/r77 HENDI тележки 2/3 уровня + r81 Frosty диспенсер) + blknochg 4 (r75/r78/r79/r80 Saro тележки — все c5==c7 genuine RU, c36 genuine RU).
+
+### Categories
+- **TRIP 4:** r74 839409 1,6 л ø200x75 0,6мм capsule frying; r76 810002 Hendi тележка 2 уровня ø910x590x(H)950мм; r77 810101 Hendi тележка 3 уровня (intro без точки); r81 2077849371 Frosty JVT-5 диспенсер для хлопьев.
+- **blknochg 4:** r75 1143802191 Saro INES (3 полки); r78 1143774718 Saro Felix (2 полки); r79 1143791833 Saro Bastian (3 полки); r80 1143793985 Saro David (5 полок) — c5==c7 genuine RU, c36 genuine RU без UA-markers, fixed cells НЕ тронуты.
+- **blknotrip / blkfix / SKIP-НП:** 0.
+
+### c5 rewrites
+- r74 c5 ← c7 «Сотейник для жарки 1,6 л HENDI 839409» (UA «для смаження»→RU «для жарки»).
+- r76 c5 ← c7 «Тележка сервировочная Hendi 810002 на 2 уровня» (UA «Візок сервірувальний...на 2 рівня»).
+- r77 c5 ← c7 «Тележка сервировочная Hendi 810101 на 3 уровня».
+- r81 c5 ← c7 «Диспенсер для хлопьев Frosty JVT-5» (UA «для пластівців»).
+- r75/r78/r79/r80: c5 НЕ тронуты (c5==c7 уже).
+
+### Source-quirks
+- r74 «Сотейник для смаження об'ємом 1,6 літра» → «Сотейник для жарки объемом 1,6 литра» (decimal genitive, RU paucal rule).
+- r74 «ненагревающихся сталевих ручок» (mixed UA/RU) → «не нагревающихся стальных ручек».
+- r74 body — capsule вариант frying саутепота: НЕ Impact Bonding sandwich (отличается от b8 frying), всего 9 li без «Стойкость к воздействию кислот» / «Impact Bonding».
+- r76 intro «.../для розносу страв на 2 рівня.</p>» с точкой / r77 «.../для розносу страв на 3 рівня</p>» БЕЗ точки — preserved via `intro_dot` helper param.
+- r76/r77 «Округлені краї» → «Округленные края» (no Ё в WRITTEN c36).
+- r76/r77 «– 550 мм» / «– 295 мм» — long dash (en-dash «–»), preserved.
+- r81 «Дипенсер для сипучих продуктів» — typo источника «Дипенсер» (без «с») preserved в RU как «Дипенсер»; в c5 — корректное «Диспенсер» (из c7).
+- r81 «мюслів» → «мюсли» (RU indeclinable), «чіпсів»→«чипсов», «круп»→«круп».
+- r81 «кофі брейках» → «кофе брейках» (no Ё, source preserve form).
+- r81 «бранч, шведських столах» → «бранч, шведских столах»; «знайде своє застосування на домашній кухні» → «найдет свое применение на домашней кухне» (no Ё throughout).
+- r75/r78/r79/r80 — c36 source quirks (e.g. «макс.громове завантаження» source typo на r78, «нерж.стали» на r79) НЕ правим (blknochg, не наш scope).
+
+### NEW helpers b10
+- **NEW** `hendi_saucepot_frying_capsule_body(volume_str, art, dim_mm, thickness_mm='0,6')` — 9 li, capsule (без Impact Bonding sandwich), без крышки, длинная пустотелая ручка, dishwasher-safe.
+- **NEW** `hendi_trolley_body(art, levels_word, levels_paucal, distance_mm, dim_mm, intro_dot=True)` — Hendi серv. тележка с шумопоглощающим материалом, нагрузка 75 кг/полка, 4 поворотных колеса, тормоза 2, округленные края.
+- **NEW** одноразовая `frosty_dispenser_body()` — body для r81 (one-off, не helper для следующих SKU).
+
+### Verify
+- 61 PASS / 0 FAIL.
+
+### Open Questions
+- Нет новых. OQ #3 (b5 r39) — pending Yana decision.
+
+### Status
+
+**chunk-074 b10 DONE 80/87 (cum TRIP 70 / blknotrip 0 / blknochg 10 / blkfix 0 / SKIP-НП 0; 606 PASS / 0 FAIL; OQ#3 still pending) — next b11 final (SKU 81-87, rows 82-88).**
