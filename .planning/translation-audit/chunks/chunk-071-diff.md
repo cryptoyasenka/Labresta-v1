@@ -1,7 +1,7 @@
 # chunk-071 diff (W2, продолжение chunk-070)
 
-**Status:** chunk-071 b9 DONE 72/83 (cum TRIP 68 / blknotrip 0 / blknochg 4 / blkfix 0 / SKIP-НП 0; 453 PASS / 0 FAIL) — next b10 (SKU 73-80, rows 74-81)
-**Last updated:** chunk-071 b9 DONE 72/83
+**Status:** chunk-071 b10 DONE 80/83 (cum TRIP 76 / blknotrip 0 / blknochg 4 / blkfix 0 / SKIP-НП 0; 477 PASS / 0 FAIL) — next b11 финал (SKU 81-83, rows 82-84)
+**Last updated:** chunk-071 b10 DONE 80/83
 
 **Источник:** `.planning/translation-audit/chunks/chunk-071.xlsx` (83 SKU, rows 2..84, ART 500478925..1173086863).
 **Фикс-таргет:** `.planning/translation-audit/chunks/chunk-071-fixed.xlsx` (gitignored).
@@ -158,3 +158,19 @@
 
 **Итого b9:** TRIP 8 + blknotrip 0 + blknochg 0 + blkfix 0 + SKIP-НП 0. Verify **453 PASS / 0 FAIL**.
 **Cum после b9:** TRIP 68 + blknotrip 0 + blknochg 4 + blkfix 0 + SKIP-НП 0 = **72/83**. UNPROC = 11 (rows 74-84).
+
+## b10 (SKU 73-80, rows 74-81) — 80/83
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 73 | 74 | 1166980507 | Hendi 515365 кисть кондитерская силиконовая плоская 50×235 | **TRIP** | c5←c7; c36 RU 316 chars. Близнец r73 (b9), шире 50 мм. `<h2>` SKU 515365 (correct, no typo unlike r73). |
+| 2 | 74 | 75 | 1167020747 | Hendi 826065 доска разделочная HACCP GN 1/1 фиолетовая | **TRIP** | c5←c7; c36 RU 1632 chars. HACCP board template + iframe C8b5szTz-0g preserved. **Reusable 7-row color table** (одинаковая для всех b10 досок). «(антиаллергическая маркування)» mix RU+UA → «(антиаллергическая маркировка)». |
+| 3 | 75 | 76 | 1167027087 | Hendi 826003 доска разделочная HACCP GN 1/1 белая | **TRIP** | c5←c7; c36 RU 1617 chars. Тот же template; usage «молочные продукты, хлеб». |
+| 4 | 76 | 77 | 1167033802 | Hendi 826027 доска разделочная HACCP GN 1/1 голубая (синяя) | **TRIP** | c5←c7; c36 RU 1608 chars. Color «голубая (синяя)» preserve dual naming; usage «рыба». |
+| 5 | 77 | 78 | 1167060549 | Hendi 826058 доска разделочная HACCP GN 1/1 желтая | **TRIP** | c5←c7; c36 RU 1607 chars. **Source-typo: «сира птах» (broken UA, должно быть «сира птиця») → translate «сырая птица»** (faithful RU). |
+| 6 | 78 | 79 | 1172959385 | Hendi 826034 доска разделочная HACCP GN 1/1 зеленая | **TRIP** | c5←c7; c36 RU 1612 chars. Usage «(овощи и зелень)». |
+| 7 | 79 | 80 | 1172963060 | Hendi 826041 доска разделочная HACCP GN 1/1 коричневая | **TRIP** | c5←c7; c36 RU 1625 chars. Usage «(колбасы, вареное мясо)» — note `<li>` order differs from table column («ковбаси, варене м'ясо» в `<li>` vs «варене м'ясо, ковбаси» в таблице — preserve as in source). |
+| 8 | 80 | 81 | 1172965322 | Hendi 826010 доска разделочная HACCP GN 1/1 красная | **TRIP** | c5←c7; c36 RU 1608 chars. Usage «(сырое мясо)». |
+
+**Итого b10:** TRIP 8 + blknotrip 0 + blknochg 0 + blkfix 0 + SKIP-НП 0. Verify **477 PASS / 0 FAIL**.
+**Cum после b10:** TRIP 76 + blknotrip 0 + blknochg 4 + blkfix 0 + SKIP-НП 0 = **80/83**. UNPROC = 3 (rows 82-84) → b11 финал.
