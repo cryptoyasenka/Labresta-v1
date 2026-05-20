@@ -188,3 +188,24 @@
 
 **Итого b10:** TRIP 1 + blknotrip 0 + blknochg 7 + blkfix 0 + SKIP-НП 0. Verify **48 PASS / 0 FAIL**.
 **Cum после b10:** TRIP 41 + blknotrip 0 + blknochg 39 + blkfix 0 + SKIP-НП 0 = **80/89**. UNPROC = 9 (rows 82-90).
+
+
+## Batch 11 (SKU 81-88, rows 82-89)
+
+### r82 Hendi 580233 — Весы кухонные до 15 кг (TRIP)
+- **c5:** «Ваги кухонні Hendi 580233 — точне зважування на робочому місці.» → «Весы кухонные Hendi 580233»
+- **c36:** UA HTML body → RU HTML body (вмещение 15 000 г, точность ±1 г, мин 2 г; HIPS+нерж; датчик натяжения; граммы; сенсорная панель вкл/выкл+тара; авто-сброс; авто-выключение; 3 AAA; 266x269x(H)34)
+
+### r87 WHIRLPOOL AWH 912 S/PRO — Стиральная машина проф 9 кг с пропариванием (TRIP)
+- **c5:** не менялась (source c5==c7 RU с typo «фунцкцией» preserve verbatim)
+- **c36:** full rewrite UA→RU (9 кг загрузка, ZEN прямой привод, 1200 об/мин, G-фактор 390, остаточная влажность ≤53%, технология 6th Sense -45% энергии, ОБРАБОТКА ПАРОМ 99,9% бактерий, 24 программы, 1700 Вт, 599х643х845 мм). Source typo «6th Sence» нормализован к корректному «6th Sense».
+
+### r83 FAGOR SCP-10 M E 1P COMPACT CONCEPT — Сушильная машина (SKIP-НП)
+- Бренд FAGOR ∈ SKIP-НП list → forward-only, ячейки c5/c36 не менялись (xlsx-fixed = source)
+- Тело будет из фида НП позже
+
+### r84/85/86/88/89 WHIRLPOOL стиральные/сушильные (blknochg)
+- c5 уже RU == c7; c36 уже RU (только c35 UA)
+- Untouched
+
+### Verify b11: 29 PASS / 0 FAIL
