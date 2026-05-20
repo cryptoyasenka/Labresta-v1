@@ -14,6 +14,33 @@ from openpyxl import load_workbook
 COLS_RU = [5, 7, 23, 25, 27, 29, 36, 38]
 COLS_UA = [4, 6, 22, 24, 26, 28, 35, 37]
 
+# SKIP-НП brands per CLAUDE.md directive — НЕ переписывать RU, тело из НП-фида позже.
+# Bilingual + case-insensitive substring check on brand cell c8 OR on c4/c5/c6/c7 names.
+SKIP_NP_BRANDS = [
+    'HURAKAN', 'HURAKAN', 'Хуракан', 'ХУРАКАН',
+    'APACH', 'Апач', 'АПАЧ',
+    'FAGOR', 'Фагор', 'ФАГОР',
+    'TATRA', 'Татра', 'ТАТРА',
+    'COLD', 'Колд', 'КОЛД',
+    'PROJECT SYSTEMS',
+    'ASTORIA', 'Астория',
+    'ARRIS', 'Аррис',
+    'MAXIMA', 'Максима',
+]
+
+def is_skip_np(ws, r: int) -> tuple[bool, str]:
+    """Return (is_skip, matched_brand). Checks c8 brand + c4..c7 names."""
+    brand = (ws.cell(r, 8).value or '').strip()
+    nm_ua = str(ws.cell(r, 4).value or '')
+    nm_ru = str(ws.cell(r, 5).value or '')
+    nz_ua = str(ws.cell(r, 6).value or '')
+    nz_ru = str(ws.cell(r, 7).value or '')
+    haystack = f'{brand} | {nm_ua} | {nm_ru} | {nz_ua} | {nz_ru}'.lower()
+    for b in SKIP_NP_BRANDS:
+        if b.lower() in haystack:
+            return True, b
+    return False, ''
+
 CYR_RU = r'А-Яа-яЁё'
 CYR_ALL = r'А-Яа-яЁёЇїІіЄєҐґ'
 
@@ -316,8 +343,17 @@ def main():
 
     total = 0
     total_flags = 0
+    total_skip = 0
     for r in range(start_row, end_row + 1):
         sku = ws.cell(r, 1).value
+
+        skip, matched = is_skip_np(ws, r)
+        if skip:
+            lines.append(f'## r{r} ART={sku} — SKIP-НП (brand={matched})\n')
+            lines.append(f'- RU не переписывается, тело из НП-фида merge позже.\n\n')
+            total_skip += 1
+            continue
+
         row_lines = []
 
         for c in COLS_RU:
@@ -352,7 +388,7 @@ def main():
             lines.append('\n')
 
     wb.save(fixed_path)
-    print(f'TOTAL real changes: {total}, FLAGs: {total_flags}')
+    print(f'TOTAL real changes: {total}, FLAGs: {total_flags}, SKIP-НП: {total_skip}')
 
     with open(diff_path, 'w', encoding='utf-8') as f:
         f.writelines(lines)
