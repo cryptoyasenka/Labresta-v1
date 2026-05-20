@@ -615,3 +615,5 @@ CURRENT-w2: chunk-083 b2 DONE 16/62 (cum TRIP 6 / blknotrip 0 / blknochg 10 / bl
 CURRENT-w2: chunk-083 b3 DONE 24/62 (cum TRIP 11 / blknotrip 0 / blknochg 13 / blkfix 0 / SKIP-НП 0; 116 PASS / 0 FAIL); TRIP 5 (SCAN SK145 E + SCAN SF 115 X + FROSTY SGD315SL + Forcar G-ER200SS + Forcar G-EF200SS) + blknochg 3 (Frosty FBD200SS/GSS + GoodFood RTD99L); без новых OQ; next b4 (SKU 25-32, rows 26-33)
 
 CURRENT-w2: chunk-083 b4 DONE 32/62 (cum TRIP 16 / blknotrip 0 / blknochg 16 / blkfix 0 / SKIP-НП 0; 160 PASS / 0 FAIL); TRIP 5 (REEDNEE DR200SL + F200SS + Frosty FCB-75 + SGD250SL + Gooder BBD230H) + blknochg 3 (Whirlpool ADN 140/140B + HATA DF200S); без новых OQ; next b5 (SKU 33-40, rows 34-41)
+
+CURRENT-w2: chunk-083 b5 DONE 40/62 (cum TRIP 22 / blknotrip 0 / blknochg 18 / blkfix 0 / SKIP-НП 0; 208 PASS / 0 FAIL); TRIP 6 (Gooder BBD230S + ВВT350H/S + Forcar G-BC3PS + Frosty GN126H/GN220HS барные) + blknochg 2 (Tefcold DB301S-3 + EWT INOX LG128); +1 OQ #13 r37 Tefcold DB301S-3 UA body модель DB201S; next b6 (SKU 41-48, rows 42-49)
