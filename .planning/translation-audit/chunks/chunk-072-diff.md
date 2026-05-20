@@ -1,7 +1,7 @@
 # chunk-072 diff (W2, продолжение chunk-071)
 
-**Status:** chunk-072 b3 DONE 24/89 (cum TRIP 22 / blknotrip 0 / blknochg 2 / blkfix 0 / SKIP-НП 0; 413 PASS / 0 FAIL) — next b4 (SKU 25-32, rows 26-33)
-**Last updated:** chunk-072 b3 DONE 24/89
+**Status:** chunk-072 b4 DONE 32/89 (cum TRIP 28 / blknotrip 0 / blknochg 4 / blkfix 0 / SKIP-НП 0; 385 PASS / 0 FAIL) — next b5 (SKU 33-40, rows 34-41)
+**Last updated:** chunk-072 b4 DONE 32/89
 
 **Источник:** `.planning/translation-audit/chunks/chunk-072.xlsx` (89 SKU, rows 2..90, ART 1173123408..2197264833).
 **Фикс-таргет:** `.planning/translation-audit/chunks/chunk-072-fixed.xlsx` (gitignored).
@@ -69,3 +69,20 @@
 
 **Итого b3:** TRIP 8 + blknotrip 0 + blknochg 0 + blkfix 0 + SKIP-НП 0. Verify **413 PASS / 0 FAIL**.
 **Cum после b3:** TRIP 22 + blknotrip 0 + blknochg 2 + blkfix 0 + SKIP-НП 0 = **24/89**. UNPROC = 65 (rows 26-90).
+
+
+## b4 (SKU 25-32, rows 26-33) — 32/89
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 25 | 26 | 1158559861 | Hendi 551400 насадки для кондитерских мешков комплект 12 шт | **TRIP** | c5←c7 (78 chars, no-op — c5 уже RU); c36 RU 247 chars. **Source-quirk: «компл. 12 шт» в названии, но body «7 предметов» (number mismatch) preserve faithful**. h2 в c36 уже RU — translate body only (UA `<p>` блоки). |
+| 2 | 26 | 27 | 1158566905 | Hendi 551592 насадки для кондитерских мешков комплект 5 шт | **TRIP** | c5←c7 (64 chars, no-op); c36 RU 362 chars. h2 + первый `<p>` уже RU preserve, остальные `<p>` translated. **Source-quirk: «гострим краях» UA gen/loc/dat hybrid → RU «острым краям»** preserve grammatical pattern. |
+| 3 | 27 | 28 | 1158638980 | Hendi Profi Line 515143 ролик для теста перфорирующий | **blknochg** | c5 уже RU == c7 (no-op); c36 уже pure RU (len 204 vs c35 UA 201). UA только в c35 — forward-only. **Source-quirk: c35/c36 упоминают SKU 515051 хотя c4/c5/c7 указывают 515143** preserve. |
+| 4 | 28 | 29 | 1158684841 | Hendi 676905 форма силиконовая Mini-Muffins 11 ячеек | **blknochg** | c5 уже RU == c7; c36 уже pure RU (1785 chars, full table + iframe `U-MpL0Ztt1k`). UA только в c35 — forward-only. HTML entities `&deg;` `&Oslash;` preserve. |
+| 5 | 29 | 30 | 1160171502 | Hendi 515020 скалка для раскатки теста деревянная 39,5 см | **TRIP** | c5←c7 (58 chars); c36 RU 194 chars. Literal `'` в «дерев'яна» dropped → «деревянная». Малый блок: h2 + 3 `<p>`. |
+| 6 | 30 | 31 | 1160207848 | Hendi 659403 скребок для теста 70x116x(L)410 мм | **TRIP** | c5←c7 (48 chars); c36 RU 649 chars. **Source-quirk: «110'C» literal `'` used as degree → translated to proper «110°C»** (drop `'`, use ° sign for semantics). Iframe `Gnw_h-FEhHY` preserve (тот же что силиконовые шпатели/скребки). |
+| 7 | 31 | 32 | 1161547097 | Hendi 682401 форма для выпечки прямоугольная 300x110x75 мм | **TRIP** | c5←c7 (61 chars); c36 RU 120 chars (малый). **Source-quirk: c7 title «Форма для выпечки - прямоугольная» с тире, body без тире «Форма для выпечки прямоугольная»** preserve faithful. |
+| 8 | 32 | 33 | 1161550239 | Hendi 673416 высечка кондитерская 14 шт гладкий край ø19-112 мм | **TRIP** | c5←c7 (66 chars); c36 RU 430 chars. Iframe `Lu-VBvLVe2c` preserve verbatim. «Висічка кондитерська» → «Высечка кондитерская». |
+
+**Итого b4:** TRIP 6 + blknotrip 0 + blknochg 2 + blkfix 0 + SKIP-НП 0. Verify **385 PASS / 0 FAIL**.
+**Cum после b4:** TRIP 28 + blknotrip 0 + blknochg 4 + blkfix 0 + SKIP-НП 0 = **32/89**. UNPROC = 57 (rows 34-90).
