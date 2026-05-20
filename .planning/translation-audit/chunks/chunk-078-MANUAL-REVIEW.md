@@ -1,6 +1,6 @@
 # chunk-078 manual review (W2)
 
-**Status:** chunk-078 b1 DONE 8/53 (cum TRIP 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0; 72 PASS / 0 FAIL) — next b2 (SKU 9-16, rows 10-17). Preliminary SKIP-НП #1: r19 TATRA TRC1400TN (b3). Без новых OQ.
+**Status:** chunk-078 b2 DONE 16/53 (cum TRIP 0 / blknotrip 0 / blknochg 16 / blkfix 0 / SKIP-НП 0; 144 PASS / 0 FAIL) — next b3 (SKU 17-24, rows 18-25). Preliminary SKIP-НП #1: r19 TATRA TRC1400TN (b3). Без новых OQ.
 
 ## Параметры
 
@@ -37,5 +37,23 @@ TRIP / blknotrip / blknochg / blkfix / SKIP-НП.
 - **r7** SKU=6 ART=2050432029 Snaige CC29SM-T1CBFFQ — c5==c7 RU clean (наследие «используетсяна»).
 - **r8** SKU=7 ART=2050432666 Snaige CC31SM-T100FFQ — c5==c7 RU clean (наследие «используетсяна»).
 - **r9** SKU=8 ART=2050433230 Snaige CC31SM-T1CBFFQ — c5==c7 RU clean (наследие «используетсяна»).
+
+**Verify:** 72 PASS / 0 FAIL. Без новых OQ.
+
+
+## b2 (SKU 9-16, rows 10-17) — DONE 16/53
+
+**Категории:** blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r10** SKU=9 ART=2050433886 Snaige CC35DM-P6CBFD — c5==c7 RU clean (наследие «используетсяна»).
+- **r11** SKU=10 ART=2050434203 Snaige CC48DM-P600FD — то же.
+- **r12** SKU=11 ART=2050434473 Snaige CC48DM-P6CBFD — то же.
+- **r13** SKU=12 ART=2050683823 Snaige CD350-100D — то же.
+- **r14** SKU=13 ART=2050694836 Snaige CD35DM-S300SD — то же.
+- **r15** SKU=14 ART=2050701525 Snaige CD40DM-S3002E — то же.
+- **r16** SKU=15 ART=2050708198 Snaige CD48DM-S300AD — то же.
+- **r17** SKU=16 ART=2052929591 Tefcold GUC70 — c5==c7 RU clean.
 
 **Verify:** 72 PASS / 0 FAIL. Без новых OQ.

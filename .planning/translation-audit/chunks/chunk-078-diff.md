@@ -29,3 +29,23 @@
 | 9 | 8 | 2050433230 | Snaige CC31SM-T1CBFFQ | то же |
 
 **Verify:** 72 PASS / 0 FAIL. Без новых OQ.
+
+
+## b2 (SKU 9-16, rows 10-17)
+
+Категории: blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+
+### blknochg
+
+| row | SKU | ART | модель | примечание |
+|---|---|---|---|---|
+| 10 | 9 | 2050433886 | Snaige CC35DM-P6CBFD | source «используетсяна» |
+| 11 | 10 | 2050434203 | Snaige CC48DM-P600FD | source «используетсяна» |
+| 12 | 11 | 2050434473 | Snaige CC48DM-P6CBFD | source «используетсяна» |
+| 13 | 12 | 2050683823 | Snaige CD350-100D | source «используетсяна» |
+| 14 | 13 | 2050694836 | Snaige CD35DM-S300SD | source «используетсяна» |
+| 15 | 14 | 2050701525 | Snaige CD40DM-S3002E | source «используетсяна» |
+| 16 | 15 | 2050708198 | Snaige CD48DM-S300AD | source «используетсяна» |
+| 17 | 16 | 2052929591 | Tefcold GUC70 | |
+
+**Verify:** 72 PASS / 0 FAIL. Без новых OQ.
