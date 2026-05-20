@@ -1,7 +1,7 @@
 # chunk-072 diff (W2, продолжение chunk-071)
 
-**Status:** chunk-072 b2 DONE 16/89 (cum TRIP 14 / blknotrip 0 / blknochg 2 / blkfix 0 / SKIP-НП 0; 437 PASS / 0 FAIL) — next b3 (SKU 17-24, rows 18-25)
-**Last updated:** chunk-072 b2 DONE 16/89
+**Status:** chunk-072 b3 DONE 24/89 (cum TRIP 22 / blknotrip 0 / blknochg 2 / blkfix 0 / SKIP-НП 0; 413 PASS / 0 FAIL) — next b4 (SKU 25-32, rows 26-33)
+**Last updated:** chunk-072 b3 DONE 24/89
 
 **Источник:** `.planning/translation-audit/chunks/chunk-072.xlsx` (89 SKU, rows 2..90, ART 1173123408..2197264833).
 **Фикс-таргет:** `.planning/translation-audit/chunks/chunk-072-fixed.xlsx` (gitignored).
@@ -52,3 +52,20 @@
 
 **Итого b2:** TRIP 8 + blknotrip 0 + blknochg 0 + blkfix 0 + SKIP-НП 0. Verify **437 PASS / 0 FAIL**.
 **Cum после b2:** TRIP 14 + blknotrip 0 + blknochg 2 + blkfix 0 + SKIP-НП 0 = **16/89**. UNPROC = 73 (rows 18-90).
+
+
+## b3 (SKU 17-24, rows 18-25) — 24/89
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 17 | 18 | 1144489433 | Hendi 271148 термометр бесконтактный лазерный | **TRIP** | c5←c7 (47 chars); c36 RU 617 chars. **Source-quirk: <p> body начинается «термометр с зондом» хотя c7 title «бесконтактный» — structural mismatch preserve**. Iframe `MsXPbN-Jm2A` preserve verbatim. |
+| 2 | 18 | 19 | 1156808407 | Hendi 975893 Kurt Scheller Edition сифон для сливок 0,5 л бирюзовый | **TRIP** | c5←c7 (61 chars); c36 RU 468 chars. Literal `'` в «Об'єм» dropped → «Объем». «Не може бути вимитий» → «Не может быть вымыт». |
+| 3 | 19 | 20 | 1158022720 | Hendi 271230 термометр с зондом цифровой (-50/350°C) | **TRIP** | c5←c7 (52 chars); c36 RU 706 chars. <p> title uppercase «ТЕРМОМЕТР ЦИФРОВОЙ С ЗОНДОМ». Iframe `98xxO29PNQg` preserve. Режим "hold" (latin literal). |
+| 4 | 20 | 21 | 1158035300 | Hendi 271308 термометр цифровой со складным зондом (-50/350°C) | **TRIP** | c5←c7 (62 chars); c36 RU 534 chars. **Source-quirk: title c7 «-50/350°C» vs body <p> «-50/+300°C» (range mismatch) preserve faithful**. «0 °с» (lowercase с) preserve в body. |
+| 5 | 21 | 22 | 1158149014 | Hendi 572412 Kitchen Line порционная ложка 1/24 л, Ø53 мм | **TRIP** | c5←c7 (71 chars uppercase); c36 RU 406 chars. **Source-quirks preserve: «Місткість в л::» double colon → «Емкость в л::»; «Виготовлений» (masc) для «Ложка» (fem) gender mismatch → RU «Изготовлен»**. |
+| 6 | 22 | 23 | 1158152359 | Hendi 572610 Kitchen Line порционная ложка 1/36 л, Ø48 мм | **TRIP** | c5←c7 (72 chars uppercase); c36 RU 376 chars. Same template r22. Layout «гастрономии. <br/>\n<br/> Особенности» (single space delta vs r22). |
+| 7 | 23 | 24 | 1158156178 | Hendi 572719 Kitchen Line порционная ложка 1/40, Ø44 мм | **TRIP** | c5←c7 (70 chars uppercase); c36 RU 375 chars. Same r22 template. |
+| 8 | 24 | 25 | 1158158850 | Hendi 759233 Profi Line порционная ложка 1/24, Ø53 мм | **TRIP** | c5←c7 (68 chars uppercase); c36 RU 366 chars. **Отличия от r22-24: «Profi Line» mixed case (не all caps), «Емкость в л:» single colon (без typo), «Ручка из полиамида» новый item**. |
+
+**Итого b3:** TRIP 8 + blknotrip 0 + blknochg 0 + blkfix 0 + SKIP-НП 0. Verify **413 PASS / 0 FAIL**.
+**Cum после b3:** TRIP 22 + blknotrip 0 + blknochg 2 + blkfix 0 + SKIP-НП 0 = **24/89**. UNPROC = 65 (rows 26-90).

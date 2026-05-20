@@ -1,7 +1,7 @@
 # chunk-072 MANUAL REVIEW (W2, продолжение chunk-071)
 
-**Status:** chunk-072 b2 DONE 16/89 (cum TRIP 14 / blknotrip 0 / blknochg 2 / blkfix 0 / SKIP-НП 0; 437 PASS / 0 FAIL) — next b3 (SKU 17-24, rows 18-25)
-**Last updated:** chunk-072 b2 DONE 16/89
+**Status:** chunk-072 b3 DONE 24/89 (cum TRIP 22 / blknotrip 0 / blknochg 2 / blkfix 0 / SKIP-НП 0; 413 PASS / 0 FAIL) — next b4 (SKU 25-32, rows 26-33)
+**Last updated:** chunk-072 b3 DONE 24/89
 
 **Объём:** 89 SKU rows 2..90. Hendi 88 (NORMAL) + FAGOR 1 SKIP-НП (r83).
 
@@ -106,3 +106,49 @@
 - r16: «Предназначен» (masc) для «Воронка» (fem) — gender mismatch preserve
 
 **Verify:** 437 PASS / 0 FAIL.
+
+
+## b3 (SKU 17-24, rows 18-25) — 24/89
+
+**Категории:** TRIP 8 (термометры Hendi 4 шт + сифон Kurt Scheller + порционные ложки Hendi для мороженого 4 шт).
+
+**TRIP detail:**
+- **r18 Hendi 271148** — термометр бесконтактный лазерный. **Source-quirk: body <p> opens «термометр с зондом» но c7 title указывает «бесконтактный» — structural mismatch preserve**. Iframe `MsXPbN-Jm2A` (YouTube) preserve verbatim.
+- **r19 Hendi 975893** — Kurt Scheller Edition сифон для сливок 0,5 л бирюзовый. Literal `'` в «Об'єм» → «Объем». Brand «KURT SCHELLER EDITION» uppercase preserve.
+- **r20 Hendi 271230** — термометр с зондом цифровой -50/350°C. Iframe `98xxO29PNQg` preserve. Body title <p> uppercase «ТЕРМОМЕТР ЦИФРОВОЙ С ЗОНДОМ». Режим "hold" (latin literal preserve).
+- **r21 Hendi 271308** — термометр цифровой со складным зондом -50/350°C. **Source-quirk: range mismatch — c7 title «-50/350°C», body <p> «-50/+300°C»** preserve faithful. «0 °с» lowercase preserve.
+- **r22 Hendi 572412** — Kitchen Line порционная ложка 1/24 л, Ø53 мм. **Source-quirks: «Місткість в л::» (double colon typo) → «Емкость в л::»; «Виготовлений» (masc adj) для «Ложка» (fem noun) — gender mismatch preserve → RU «Изготовлен»**.
+- **r23 Hendi 572610** — Kitchen Line 1/36 л, Ø48 мм. Те же source-quirks. Layout: «гастрономии. <br/>\n<br/> Особенности» (single space delta).
+- **r24 Hendi 572719** — Kitchen Line 1/40, Ø44 мм. Те же source-quirks (double colon + masc adj).
+- **r25 Hendi 759233** — Profi Line 1/24, Ø53 мм. **Отличия от r22-24**: «Profi Line» mixed case (не all caps как «KITCHEN LINE»), single colon «Емкость в л:» (без typo), новый item «Ручка из полиамида», нет «Толщина стенки» и нет «Габариты».
+
+**Терминология b3 (новые UA→RU):**
+- «безконтактний (лазерний)» → «бесконтактный (лазерный)»
+- «Лазерний покажчик» → «Лазерный указатель»
+- «Не може бути вимитий» → «Не может быть вымыт»
+- «Швидке і точне вимірювання» → «Быстрое и точное измерение»
+- «Ступінь захисту IP65» → «Степень защиты IP65»
+- «Градація» → «Градация»
+- «зберігає значення миттєвої температури» → «сохраняет значение мгновенной температуры»
+- «Оболонка для зонда» → «Оболочка для зонда»
+- «зі складним зондом» → «со складным зондом»
+- «Пристрій автоматично вимикається» → «Устройство автоматически выключается»
+- «протягом 1 години» → «в течение 1 часа»
+- «ПОРЦІЙНА ЛОЖКА» → «ПОРЦИОННАЯ ЛОЖКА»
+- «місткістю 1/24 л» → «емкостью 1/24 л»
+- «ідеальним рішенням як для домашнього використання, так і для професійної гастрономії» → «идеальным решением как для домашнего использования, так и для профессиональной гастрономии»
+- «Особливості продукту» → «Особенности продукта»
+- «Місткість в л::» (double colon typo) → «Емкость в л::»
+- «Товщина стінки» → «Толщина стенки»
+- «Ручка з поліаміду» → «Ручка из полиамида»
+- «бірюзовий колір» → «бирюзовый цвет»
+
+**Открытые вопросы b3:** 0 новых.
+**Source-quirks preserved в b3:**
+- r18: body opens «с зондом» despite title «бесконтактный» (structural mismatch preserve)
+- r21: range mismatch c7 «-50/350°C» vs body «-50/+300°C» (preserve faithful)
+- r21: «0 °с» lowercase preserve
+- r22/r23/r24: «Местимость в л::» double colon typo preserve → «Емкость в л::»
+- r22/r23/r24: «Виготовлений» masc adj для «Ложка» fem noun (gender mismatch) → RU «Изготовлен» masc preserve
+
+**Verify:** 413 PASS / 0 FAIL.
