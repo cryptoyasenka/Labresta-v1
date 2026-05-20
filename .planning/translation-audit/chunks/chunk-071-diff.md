@@ -1,7 +1,7 @@
 # chunk-071 diff (W2, продолжение chunk-070)
 
-**Status:** chunk-071 b10 DONE 80/83 (cum TRIP 76 / blknotrip 0 / blknochg 4 / blkfix 0 / SKIP-НП 0; 477 PASS / 0 FAIL) — next b11 финал (SKU 81-83, rows 82-84)
-**Last updated:** chunk-071 b10 DONE 80/83
+**Status:** chunk-071 ЗАКРЫТ 83/83 (TRIP 79 / blknotrip 0 / blknochg 4 / blkfix 0 / SKIP-НП 0; 486 PASS / 0 FAIL)
+**Last updated:** chunk-071 b11 финал DONE — chunk-071 ЗАКРЫТ
 
 **Источник:** `.planning/translation-audit/chunks/chunk-071.xlsx` (83 SKU, rows 2..84, ART 500478925..1173086863).
 **Фикс-таргет:** `.planning/translation-audit/chunks/chunk-071-fixed.xlsx` (gitignored).
@@ -174,3 +174,14 @@
 
 **Итого b10:** TRIP 8 + blknotrip 0 + blknochg 0 + blkfix 0 + SKIP-НП 0. Verify **477 PASS / 0 FAIL**.
 **Cum после b10:** TRIP 76 + blknotrip 0 + blknochg 4 + blkfix 0 + SKIP-НП 0 = **80/83**. UNPROC = 3 (rows 82-84) → b11 финал.
+
+## b11 финал (SKU 81-83, rows 82-84) — 83/83 — chunk-071 ЗАКРЫТ
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 81 | 82 | 1172969284 | Hendi 825563 доска разделочная HACCP 450×300×12,7 желтая | **TRIP** | c5←c7; c36 RU 1578 chars. Меньшая серия 825xxx (без GN 1/1, flat both sides). Новая reusable SMALL_BOARD_TABLE + iframe sQhMvuX1twE. Usage «(сырая птица)» — correct mapping. |
+| 2 | 82 | 83 | 1172976735 | Hendi 825549 доска разделочная HACCP 450×300×12,7 зеленая | **TRIP** | c5←c7; c36 RU 1580 chars. **Source-typo: `<li>Зелений колір (сира птах)`** — green color description маппит на «сира птах» (raw poultry), что по справочной таблице принадлежит желтой 825563. Preserve faithful → «Зеленый цвет (сырая птица)». |
+| 3 | 83 | 84 | 1173086863 | Hendi 825525 доска разделочная HACCP 450×300×12,7 красная | **TRIP** | c5←c7; c36 RU 1579 chars. Usage «(сырое мясо)» — correct mapping. |
+
+**Итого b11 финал:** TRIP 3 + blknotrip 0 + blknochg 0 + blkfix 0 + SKIP-НП 0. Verify **486 PASS / 0 FAIL**.
+**Cum финал:** TRIP 79 + blknotrip 0 + blknochg 4 + blkfix 0 + SKIP-НП 0 = **83/83**. UNPROC = 0. **chunk-071 ЗАКРЫТ.**

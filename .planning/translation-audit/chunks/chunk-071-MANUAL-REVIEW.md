@@ -1,7 +1,7 @@
 # chunk-071 MANUAL REVIEW (W2, продолжение chunk-070)
 
-**Status:** chunk-071 b10 DONE 80/83 (cum TRIP 76 / blknotrip 0 / blknochg 4 / blkfix 0 / SKIP-НП 0; 477 PASS / 0 FAIL) — next b11 финал (SKU 81-83, rows 82-84)
-**Last updated:** chunk-071 b10 DONE 80/83
+**Status:** chunk-071 ЗАКРЫТ 83/83 (TRIP 79 / blknotrip 0 / blknochg 4 / blkfix 0 / SKIP-НП 0; 486 PASS / 0 FAIL)
+**Last updated:** chunk-071 b11 финал DONE — chunk-071 ЗАКРЫТ
 
 **Объём:** 83 SKU rows 2..84. Все Hendi (NORMAL). 0 SKIP-НП.
 
@@ -516,3 +516,50 @@
 - All 7 boards (r75-r81): reusable BOARD_TABLE (одинаковая для всех 7 досок), iframe C8b5szTz-0g preserve identically
 
 **Verify:** 477 PASS / 0 FAIL.
+
+## b11 финал (SKU 81-83, rows 82-84) — 83/83 — chunk-071 ЗАКРЫТ
+
+**Категории:** TRIP 3 (3 доски HACCP 450×300×12,7 разноцветные меньшая серия 825xxx flat both sides с iframe sQhMvuX1twE).
+
+**TRIP detail:**
+- **r82 Hendi 825563** — доска разделочная HACCP 450×300×12,7 желтая (плоская с обеих сторон, без жолобков). Usage `<li>Желтый цвет (сырая птица)` — correct mapping (жёлтая = сырая птица per table).
+- **r83 Hendi 825549** — доска разделочная HACCP 450×300×12,7 зеленая. **Source-typo preserved: `<li>` body says «Зелений колір (сира птах)» — зелёная по справочной таблице должна быть «овочі», а в `<li>` стоит «сира птах» которая принадлежит жёлтой 825563. Faithful preserve → «Зеленый цвет (сырая птица)»** (mismatch в `<li>` vs table остаётся как в источнике).
+- **r84 Hendi 825525** — доска разделочная HACCP 450×300×12,7 красная. Usage `<li>Красный цвет (сырое мясо)` — correct mapping.
+
+**Новый template (отличия от b10 GN 1/1 серии 826xxx):**
+- Размеры в `<h3>`: 450×300×12,7 мм (не GN 1/1)
+- Body line: «гладкая с двух сторон» (а не «с одной стороны и с вырезом»)
+- `<li>` особенности отличаются: «обе стороны без желобков (гладкие)» + «Закругленные защитные кромки» + «Возможно мытье в посудомоечной машине»
+- Справочная таблица другая: SKU 825518/825525/825532/825549/825556/825563/825570 (всё та же палитра 7 цветов, размер 450×300×(H)12,7)
+- iframe SRC отличается: `sQhMvuX1twE` (vs `C8b5szTz-0g` в b10)
+- `<h3>` (не `<h2>`) preserve
+
+**Терминология b11 финал (новые UA→RU):**
+- «гладка з двох сторін» → «гладкая с двух сторон»
+- «обидві сторони без жолобків (гладкі)» → «обе стороны без желобков (гладкие)»
+- «Закруглені захисні кромки» → «Закругленные защитные кромки»
+- «Можливе миття в посудомийній машині» → «Возможно мытье в посудомоечной машине»
+- (остальное — повторяется с b10)
+
+**Открытые вопросы b11 финал:** 0 новых.
+**Source-quirks preserved в b11 финал:**
+- r83: `<li>Зелений колір (сира птах)` — green/raw-poultry mismatch в source vs table → preserve faithful как «Зеленый цвет (сырая птица)»
+- Reusable SMALL_BOARD_TABLE для всех 3 досок (одинаковая 7-row справочная таблица)
+- iframe sQhMvuX1twE preserved identically across r82/r83/r84
+
+**Verify:** 486 PASS / 0 FAIL.
+
+---
+
+# chunk-071 ЗАКРЫТ 83/83
+
+**Финальное распределение:**
+- TRIP 79 (95.2%)
+- blknotrip 0
+- blknochg 4 (4.8% — r20/r21/r22 миски Akkuralka в b3 + r58 Hendi Kitchen Line 515068 резак в b8)
+- blkfix 0
+- SKIP-НП 0
+
+**Verify итого:** 486 PASS / 0 FAIL.
+
+**Брендовый профиль:** Hendi 100% (78 SKU + 4 Hendi+Kitchen Line; и 1 Akkuralka в r20-22 = 3 SKU, всего 82 Hendi). Wait — actually let me recount: Hendi 78 + Hendi Kitchen Line (r58) + r20/r21/r22 Akkuralka. Akkuralka 3 SKU.
