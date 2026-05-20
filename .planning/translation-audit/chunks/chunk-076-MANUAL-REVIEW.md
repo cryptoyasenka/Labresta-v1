@@ -1,6 +1,6 @@
 # chunk-076 MANUAL REVIEW (W2, продолжение chunk-075)
 
-**Status:** chunk-076 b3 DONE 24/57 (cum TRIP 9 / blknotrip 0 / blknochg 14 / blkfix 1 / SKIP-НП 0; 315 PASS / 0 FAIL) — next b4 (SKU 25-32, rows 26-33). OQ#6 NEW: r24 Forcar G-ER200SS vs G-ER400 model mismatch.
+**Status:** chunk-076 b4 DONE 32/57 (cum TRIP 14 / blknotrip 0 / blknochg 17 / blkfix 1 / SKIP-НП 0; 405 PASS / 0 FAIL) — next b5 (SKU 33-40, rows 34-41). Без новых открытых вопросов (OQ#6 SKU23 из b3).
 **Last updated:** chunk-076 b3 (24/57)
 
 **Объём:** 57 SKU rows 2..58. ART 2106845309..2239472491.
@@ -73,3 +73,24 @@
 **Verify:** 107 PASS / 0 FAIL.
 
 **Открытых вопросов:** 1 новый (OQ#6 r24 Forcar модель upstream catalog).
+
+
+## b4 (SKU 25-32, rows 26-33) — DONE 32/57
+
+**Категории:** blk триплет 5 / blknotrip 0 / blknochg 3 / blkfix 0 / SKIP-НП 0.
+
+### TRIP (c5 ← c7; c36 ← faithful RU body)
+
+- **r29** SKU=28 ART=2106847118 Gooder USS 1200 DSC — c5→«Шкаф холодильный Gooder USS 1200 DSC»; c36 RU: 1122 л, 4+1 полок, климат.класс 3, Турция, 230/50В, 0,9 кВт, 1200*742*2000, стеклянные двери купе, динамика, без канопе, R290, LED свет, механ.упр., белый, термометр; вес 174 кг / pack 189 кг.
+- **r30** SKU=29 ART=2106847119 Gooder USS 374 DTK BK — c5→«Шкаф холодильный Gooder USS 374 DTK BK»; c36 RU: 358 л, 5 полок, климат.3, Турция, 230/50В, LED, 0,37 кВт, 595*640*1840, R600a, глухие двери, термометр, механ.упр., замок, цвет белый.
+- **r31** SKU=30 ART=2106847120 Gooder USS 374 DTK — c5→«Шкаф холодильный Gooder USS 374 DTK»; c36 RU: те же габариты что и r30, но стеклянные двери, 74 кг (vs 64), 1.7 kWh/24h.
+- **r32** SKU=31 ART=2106847121 Forcar G-ER400G — c5→«Шкаф холодильный Forcar G-ER400G»; c36 RU: 340 л, 1 стеклянная дверь, 3 полки 500х415+1 полка 500х211, +2..+8°С, динамика, LED, R290, крашеный металл/пластик, 0.19 кВт, 600х585х1855, 220V; pack 73 / 650х680х2040.
+- **r33** SKU=32 ART=2106847122 Forcar G-ER400GSS — c5→«Шкаф холодильный Forcar G-ER400GSS»; c36 RU: то же что r32 но 340 литров (формулировка из c35), термоизоляция 45 мм, разморозка остановкой компрессора + испарение талой воды, нерж.сталь корпус/пластик внутри; pack 84 / 650х680х2040.
+
+### blknochg
+
+- **r26** SKU=25 ART=2099562849 Brillis BN7-M-R290-EF — c5==c7 genuine RU.
+- **r27** SKU=26 ART=2099563168 Brillis BN8-P-R290 — c5==c7 genuine RU.
+- **r28** SKU=27 ART=2099563456 Brillis BN14-M-R290-ЕF — c5==c7 genuine RU.
+
+**Verify:** 90 PASS / 0 FAIL. Без новых OQ (OQ#6 SKU23 из b3 — единственный по chunk-076).
