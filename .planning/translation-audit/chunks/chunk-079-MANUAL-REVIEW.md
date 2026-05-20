@@ -1,6 +1,6 @@
 # chunk-079 manual review (W2)
 
-**Status:** chunk-079 b6 DONE 48/58 (cum TRIP 1 / blknotrip 0 / blknochg 47 / blkfix 0 / SKIP-НП 0; 433 PASS / 0 FAIL) — next b7 (SKU 49-56, rows 50-57). 3 OQ (c079 #1 r12 FSC1000H; #2 r14 FSC1950S; #3 r46/r47 Tehma 3-door body=2-door).
+**Status:** chunk-079 b7 DONE 56/58 (cum TRIP 1 / blknotrip 0 / blknochg 55 / blkfix 0 / SKIP-НП 0; 505 PASS / 0 FAIL) — next b8 FINAL (SKU 57-58, rows 58-59, 2 SKU). 3 OQ (c079 #1 r12 FSC1000H; #2 r14 FSC1950S; #3 r46/r47 Tehma 3-door body=2-door).
 
 ## Параметры
 
@@ -141,3 +141,21 @@ TRIP / blknotrip / blknochg / blkfix / SKIP-НП.
 ### Открытые вопросы (новые)
 
 - **OQ c079 #3**: r46 ART=676001802 + r47 ART=676001803 Tehma **трёхдверные** холодильные столы (1860х600 / 1860х700) — c4/c5/c7 корректно указывают «трехдверный», но c36 body начинается «Двухдверный холодильный стол в стандартном исполнении...» — описание двухдверного стола применено к 3-door SKU. Источник: переиспользовал body sibling-модели (2-door). Не наш write. Решение Yana: либо «Двухдверный» → «Трёхдверный» (без Ё → «Трехдверный»), либо принять как generic body.
+
+## b7 (SKU 49-56, rows 50-57) — DONE 56/58
+
+**Категории:** blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r50** SKU=49 ART=676001806 Tehma четырехдверный 2320х700 — c5==c7 RU clean.
+- **r51** SKU=50 ART=676001807 Tehma на 4 ящика 1400х700 — c5==c7 RU clean (c36 body «на 4 выдвижных ящика» вместо «ящиков» — наследие источника, не наш write).
+- **r52** SKU=51 ART=676001808 Tehma на 6 ящиков 1860х700 — c5==c7 RU clean (c36 «на 6 выдвижных ящика» — наследие, как r51).
+- **r53** SKU=52 ART=1499588290 Tehma на 4 ящика 1400х600 — c5==c7 RU clean (c36 «на 4 выдвижных ящика» — наследие).
+- **r54** SKU=53 ART=1499593560 Tehma на 6 ящиков 1860х600 — c5==c7 RU clean (c36 «на 6 выдвижных ящика» — наследие).
+- **r55** SKU=54 ART=530982358 Tefcold SA910-I — c5==c7 RU clean.
+- **r56** SKU=55 ART=1861387206 Tefcold GS91 — c5==c7 RU clean (c36 «нержвеющей» вместо «нержавеющей» — опечатка источника, не наш write).
+- **r57** SKU=56 ART=1861396318 Tefcold SA1365 S/S — c5==c7 RU clean.
+
+**Verify:** 72 PASS / 0 FAIL. Без новых OQ.
+
