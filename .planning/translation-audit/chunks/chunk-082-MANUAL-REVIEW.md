@@ -40,3 +40,23 @@
 **Verify:** 32 PASS / 0 FAIL. Без новых OQ.
 
 **Cumulative chunk-082:** 8/52 (TRIP 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0; 32 PASS / 0 FAIL).
+
+
+## b2 (SKU 9-16, rows 10-17) — DONE 16/52
+
+**Категории:** blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r10** SKU=9 ART=2217605626 Meatico AC8612 STG GREEN ALL 1500 INOX CF — c5==c7 RU clean.
+- **r11** SKU=10 ART=2217614387 Meatico AC8613 STG GREEN ALL 1500 GLASS CF — c5==c7 RU clean.
+- **r12** SKU=11 ART=2217617159 Meatico AC8615 STG GREEN ALL 1500 VIP S — c5==c7 RU clean.
+- **r13** SKU=12 ART=2217621055 Meatico AC8617 STG GREEN ALL 1500 VIP CF — c5==c7 RU clean.
+- **r14** SKU=13 ART=2217623265 Meatico AC8618 STG GREEN ALL 1500 BLACK S — c5==c7 RU clean.
+- **r15** SKU=14 ART=2217628663 Meatico AC8619 STG GREEN ALL 1500 BLACK CF — c5==c7 RU clean.
+- **r16** SKU=15 ART=2217634745 Meatico AC9528 STG GREEN MEAT 150 BLACK GLASS — c5==c7 RU clean.
+- **r17** SKU=16 ART=2217639502 Meatico AC9605 STG GREEN MEAT 700 VIP PANORAMA — c5==c7 RU clean.
+
+**Verify:** 32 PASS / 0 FAIL. Без новых OQ.
+
+**Cumulative chunk-082:** 16/52 (TRIP 0 / blknotrip 0 / blknochg 16 / blkfix 0 / SKIP-НП 0; 64 PASS / 0 FAIL).

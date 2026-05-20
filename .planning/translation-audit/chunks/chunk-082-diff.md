@@ -33,3 +33,23 @@
 
 **Verify:** 32 PASS / 0 FAIL. Без новых OQ.
 
+
+## b2 (SKU 9-16, rows 10-17)
+
+Категории: blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+
+### blknochg
+
+| row | SKU | ART | модель |
+|---|---|---|---|
+| 10 | 9 | 2217605626 | Meatico AC8612 STG GREEN ALL 1500 INOX CF |
+| 11 | 10 | 2217614387 | Meatico AC8613 STG GREEN ALL 1500 GLASS CF |
+| 12 | 11 | 2217617159 | Meatico AC8615 STG GREEN ALL 1500 VIP S |
+| 13 | 12 | 2217621055 | Meatico AC8617 STG GREEN ALL 1500 VIP CF |
+| 14 | 13 | 2217623265 | Meatico AC8618 STG GREEN ALL 1500 BLACK S |
+| 15 | 14 | 2217628663 | Meatico AC8619 STG GREEN ALL 1500 BLACK CF |
+| 16 | 15 | 2217634745 | Meatico AC9528 STG GREEN MEAT 150 BLACK GLASS |
+| 17 | 16 | 2217639502 | Meatico AC9605 STG GREEN MEAT 700 VIP PANORAMA |
+
+**Verify:** 32 PASS / 0 FAIL. Без новых OQ.
+
