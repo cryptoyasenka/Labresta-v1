@@ -1,7 +1,7 @@
 # chunk-068 MANUAL REVIEW (W2)
 
-**Status:** chunk-068 b5 DONE 40/50 (cum TRIP 20 + blknotrip 0 + blknochg 18 + SKIP-НП 2; OQ 0; 124 PASS) — следующий b6 (SKU 41-48, rows 42-49)
-**Last updated:** chunk-068 b5 DONE 40/50
+**Status:** chunk-068 b6 DONE 48/50 (cum TRIP 20 + blknotrip 0 + blknochg 26 + SKIP-НП 2; OQ 0; 280 PASS) — следующий b7 (SKU 49-50, rows 50-51, финал)
+**Last updated:** chunk-068 b6 DONE 48/50
 
 ## Структура
 
@@ -134,4 +134,27 @@
 **OQ:** 0 новых открытых вопросов.
 
 **Verify breakdown:** 50 ART regression + 2 TRIP × 7 = 14 + 6 blknochg × 3 = 18 + b1..b4 regression (18 prior TRIP c5==c7 + 12 prior blknochg c5 unchanged + 2 SKIP-НП × 6 = 12) = 42. Total **124 PASS / 0 FAIL**.
+
+## b6 (SKU 41-48, rows 42-49) — DONE 48/50
+
+**Категории:** TRIP 0 + blknotrip 0 + blknochg 8 + SKIP-НП 0 = 8/8. Verify **280 PASS / 0 FAIL**.
+
+**blknochg (8):**
+- r42 SKU41 ART 2389367033 **ATA ALP 30** котломоечная (Soft-touch посудомоечная, кошик 560x500, 18-li body): c5==c7 RU OK, c36 без UA-mark, skel-eq True, dims-eq True (16 dims); fixed строка НЕ изменена. ATA brand НЕ в списке НП-эксклюзивных.
+- r43 SKU42 ART 2389374106 **ATA ALP 01GS** котломоечная (Soft-touch, кошик 600x700, 18-li body): c5==c7 RU OK, c36 без UA-mark, skel-eq True, dims-eq True (19 dims); fixed строка НЕ изменена.
+- r44 SKU43 ART 2395348633 **OZTI OBY 50T PDRT** посудомоечная (24-строчный body, 5 программ мойки 102/132/152/172/192 сек): c5==c7 RU OK, c36 без UA-mark, skel-eq True, dims-eq True (23 dims); fixed строка НЕ изменена.
+- r45 SKU44 ART 2227322220 **ADLER ECO 50 DP PD** с помпой слива (21-строчный body): c5==c7 RU OK, c36 без UA-mark, skel-eq True, dims-eq True (14 dims); fixed строка НЕ изменена. ADLER brand НЕ в списке НП-эксклюзивных.
+- r46 SKU45 ART 1576147000 **Ozti OBY 50D PDT** с помпой слива воды (13-строчный body с `<h2>`): c5==c7 RU OK, c36 без UA-mark, skel-eq False (target RU добавил `<strong>` обёртку вокруг «Дренажный насос» — это RU-enhancement, не UA-mark), dims-eq True (12 dims); fixed строка НЕ изменена.
+- r47 SKU46 ART 2330374782 **OZTI OBM 1080 PDRT** купольная (24-строчный body, кошик 1080 мм): c5==c7 RU OK, c36 без UA-mark, skel-eq True, dims-eq True (19 dims); fixed строка НЕ изменена.
+- r48 SKU47 ART 2389309688 **ATA ALP 01S** котломоечная (21-строчный body, Двобойлерна система, кошик 600x700): c5==c7 RU OK, c36 без UA-mark, skel-eq False (c35 имеет `<br />` после первого абзаца, c36 без — мелкая структурная разница, c36 OK valid RU), dims-eq True (21 dims); fixed строка НЕ изменена.
+- r49 SKU48 ART 2434107874 **ATA AT 1001** посудомоечная стаканомоечная (17-строчный body, 1100 шт/час, кошик 500x500): c5==c7 RU OK, c36 без UA-mark, skel-eq True, dims-eq True (12 dims); fixed строка НЕ изменена.
+
+**TRIP:** 0 в b6.
+**SKIP-НП:** 0 в b6.
+
+**OQ:** 0 новых открытых вопросов.
+
+**Verify breakdown:** 50 ART regression + 8 c5==c7 = 8 + 8 no-UA c5/c7/c36 = 24 + 8 no-Ё c36 = 8 + 8 fix c5/c7/c36 unchanged = 24 + b1..b5 regression (20 prior TRIP × 5 invariants = 100 + 18 prior blknochg × 3 = 54 + 2 SKIP-НП × 6 = 12) = 280. Total **280 PASS / 0 FAIL**.
+
+**Cum после b6:** TRIP 20 + blknotrip 0 + blknochg 26 + SKIP-НП 2 = **48/50**. До закрытия chunk-068 остался b7 (SKU 49-50, rows 50-51, ATA AT 1201 + AT 1401 купольные).
 

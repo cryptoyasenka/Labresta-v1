@@ -1,7 +1,7 @@
 # chunk-068 DIFF (W2)
 
-**Status:** b5 DONE 40/50 — батчи b1..b7 (8+8+8+8+8+8+2); next b6 (SKU 41-48, rows 42-49)
-**Last updated:** chunk-068 b5 DONE 40/50
+**Status:** b6 DONE 48/50 — батчи b1..b7 (8+8+8+8+8+8+2); next b7 (SKU 49-50, rows 50-51, финал)
+**Last updated:** chunk-068 b6 DONE 48/50
 
 Source: `chunk-068.xlsx` (RO) → operating: `chunk-068-fixed.xlsx` (gitignored).
 Batches заполняются после каждого закрытого батча.
@@ -84,4 +84,20 @@ Batches заполняются после каждого закрытого ба
 
 **Итого b5:** TRIP 2 + blknotrip 0 + blknochg 6 + SKIP-НП 0. Verify 124 PASS / 0 FAIL.
 **Cum после b5:** TRIP 20 + blknotrip 0 + blknochg 18 + SKIP-НП 2 = 40/50.
+
+## b6 (SKU 41-48, rows 42-49) — 48/50
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 41 | 42 | 2389367033 | ATA ALP 30 котломоечная (560x500) | blknochg | — (c5==c7 RU OK, skel-eq True, dims-eq True) |
+| 2 | 42 | 43 | 2389374106 | ATA ALP 01GS котломоечная (600x700) | blknochg | — (c5==c7 RU OK, skel-eq True, dims-eq True) |
+| 3 | 43 | 44 | 2395348633 | OZTI OBY 50T PDRT | blknochg | — (c5==c7 RU OK, skel-eq True, dims-eq True) |
+| 4 | 44 | 45 | 2227322220 | ADLER ECO 50 DP PD с помпой слива | blknochg | — (c5==c7 RU OK, skel-eq True, dims-eq True) |
+| 5 | 45 | 46 | 1576147000 | Ozti OBY 50D PDT с помпой слива воды | blknochg | — (skel-eq False: c36 добавил `<strong>` вокруг «Дренажный насос», RU-enhance) |
+| 6 | 46 | 47 | 2330374782 | OZTI OBM 1080 PDRT купольная | blknochg | — (c5==c7 RU OK, skel-eq True, dims-eq True) |
+| 7 | 47 | 48 | 2389309688 | ATA ALP 01S котломоечная (600x700, Двобойлерна) | blknochg | — (skel-eq False: c35 имеет `<br />`, c36 без; c36 OK valid RU) |
+| 8 | 48 | 49 | 2434107874 | ATA AT 1001 посудомоечная стаканомоечная | blknochg | — (c5==c7 RU OK, skel-eq True, dims-eq True) |
+
+**Итого b6:** TRIP 0 + blknotrip 0 + blknochg 8 + SKIP-НП 0. Verify **280 PASS / 0 FAIL**.
+**Cum после b6:** TRIP 20 + blknotrip 0 + blknochg 26 + SKIP-НП 2 = **48/50**.
 
