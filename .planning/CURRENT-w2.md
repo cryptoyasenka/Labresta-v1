@@ -662,3 +662,6 @@ CURRENT-w2: chunk-085 b7 DONE 56/75 (cum TRIP 28 / blknotrip 0 / blknochg 24 / b
 
 
 CURRENT-w2: chunk-085 b8 DONE 64/75 (cum TRIP 29 / blknotrip 0 / blknochg 31 / blkfix 0 / SKIP-НП 4; 352 PASS / 0 FAIL); TRIP 1 Frosty ZC-801 чафиндиш + blknochg 7 (SARO CARLA/LORENA/ANOUK1 + GoodFood CD100E/CD200/CD300/CD65P); без новых OQ; next b9 (SKU 65-72, rows 66-73, включая r69 HURAKAN HKN-EF16 чебуречница SKIP)
+
+
+CURRENT-w2: chunk-085 b9 DONE 72/75 (cum TRIP 33 / blknotrip 0 / blknochg 34 / blkfix 0 / SKIP-НП 5; 387 PASS / 0 FAIL); TRIP 4 (Hendi 209981 чайник + Airhot EC 6 чебуречница c36-only + Hendi 222553/222560 центрифуги) + blknochg 3 (Frosty DG-01 + La Monferrina Dryer + камень Нагура) + SKIP-НП 1 HURAKAN HKN-EF16; без новых OQ; next b10 FINAL (SKU 73-75, rows 74-76, 3 SKU — закрытие chunk-085 и W2 range 055-085)
