@@ -1,6 +1,6 @@
 # chunk-080 manual review (W2)
 
-**Status:** chunk-080 b4 DONE 32/53 (cum TRIP 13 / blknotrip 0 / blknochg 17 / blkfix 0 / SKIP-НП 2; 265 PASS / 0 FAIL) — next b5 (SKU 33-40, rows 34-41, включая r36 Fagor + r39 HURAKAN — оба SKIP-НП). SKIP-НП: #1 r15 TATRA + #2 r19 Hurakan. 2 SKIP-НП preliminary остались (r36 Fagor / r39 HURAKAN, оба b5).
+**Status:** chunk-080 b5 DONE 40/53 (cum TRIP 17 / blknotrip 0 / blknochg 19 / blkfix 0 / SKIP-НП 4; 315 PASS / 0 FAIL) — next b6 (SKU 41-48, rows 42-49). SKIP-НП: #1 r15 TATRA + #2 r19 Hurakan + #3 r36 Fagor + #4 r39 HURAKAN. Все preliminary SKIP-НП исчерпаны.
 
 ## Параметры
 
@@ -23,7 +23,7 @@ TRIP / blknotrip / blknochg / blkfix / SKIP-НП.
 
 ## OQ (chunk-080)
 
-(пусто на момент scaffold)
+- **OQ #1 (W2 cum #10)** r35 SKU=34 ART=2402036548 Forcar G-EF400GSS: c4 / c5 / c7 / ART указывают модель «G-EF400GSS», но c35/c36 body ссылается на «Forcar G-EF400SS» (без G). G в G-EF400GSS = Glass door (body подтверждает: «1 двері зі склом», 350 л, R290, LED), отличается от r27 G-EF400SS (без стекла, 340 л, R600A, без подсветки). Перевод выполнен faithful — в RU body также «Forcar G-EF400SS». Возможно требуется sync model name с ART.
 
 ## b1 (SKU 1-8, rows 2-9) — DONE 8/53
 
@@ -110,4 +110,27 @@ TRIP / blknotrip / blknochg / blkfix / SKIP-НП.
 - **r32** SKU=31 ART=2284538874 BRILLIS BL9-LED-R290-EF-INV — c5==c7 RU clean (c4 имеет UA уточнение «з інверторною технологією», но c5==c7 без него — наследие источника).
 
 **Verify:** 57 PASS / 0 FAIL. Без новых OQ.
+
+## b5 (SKU 33-40, rows 34-41) — DONE 40/53
+
+**Категории:** blk триплет 4 / blknotrip 0 / blknochg 2 / blkfix 0 / SKIP-НП 2.
+
+### SKIP-НП
+
+- **r36** SKU=35 ART=2460100897 **Fagor** AFN-801 EXP NEO CONCEPT 700 л — SKIP-НП (brand=Fagor, тело из фида НП позже). Ячейки в fixed не меняли. ⇒ SKIP-НП #3 по chunk-080.
+- **r39** SKU=38 ART=2854784095 **HURAKAN** HKN-GX1410BTS 1400 л — SKIP-НП (brand=HURAKAN, тело из фида НП позже). Ячейки в fixed не меняли. ⇒ SKIP-НП #4 по chunk-080.
+
+### TRIP (c5 ← c7; c36 ← faithful RU translation)
+
+- **r34** SKU=33 ART=2367458423 Frosty FGN-1400BT — c5 UA→RU «Шкаф морозильный Frosty FGN-1400BT»; c36 полный RU-перевод (дубль c35): 1392 л общий / 1063 л полезный, 1 камера, 2 глухие двери, 2 замка, LED-подсветка, 6 регул.решетчатых полок ПВХ GN-2/1, цифр.контроллер, температурный диапазон от 18°С до -22°C (UA source typo «від 18°С» — faithful translation), +38 °C среды, вентилируемое охлаждение, авто-размораживание, регул.ножки, 0,572 кВт/220В, 1380x856x2083, 170 кг, корпус нерж.сталь.
+- **r35** SKU=34 ART=2402036548 Forcar G-EF400GSS — c5 UA→RU «Шкаф морозильный Forcar G-EF400GSS»; c36 полный RU-перевод (дубль c35): 1 дверь со стеклом, статическое охлаждение, 6 полок 480x440x160, 350 л, -18..-22 °C при +33 °C, термоизоляция 60 мм, ручное размораживание/слив, LED-подсветка, R290, нерж.сталь/пластик, 76 кг, 600x585x1855, 0,38 кВт/220В, Италия. **OQ #1 (W2 cum #10)**: body source ссылается на модель «G-EF400SS» (без G), хотя ART/c4/c5/c7 — «G-EF400GSS». Faithful перевод сохраняет «G-EF400SS» в body.
+- **r37** SKU=36 ART=2493870063 Tecnodom AF06PKMBT — c5 UA→RU «Шкаф морозильный Tecnodom AF06PKMBT»; c36 полный RU-перевод (дубль c35): глухие двери, 3 полки 530х550, 600 л, -18..-22*С (source asterisk вместо °), R452A, динам.охлаждение, регул.ножки, 110 кг, 710x700x2100, 0,55 кВт/220В.
+- **r38** SKU=37 ART=2493887857 Tecnodom AF07PKMBT290C — c5 UA→RU «Шкаф морозильный Tecnodom AF07PKMBT290C»; c36 полный RU-перевод (дубль c35): глухие двери, 3 полки ПВХ GN2/1, 700 л, -18..-22*С (source asterisk), R290, динам.охлаждение, регул.ножки, пластиковые крюки для полок, 107 кг, 710x800x2100, 0,55 кВт/220В, Италия.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r40** SKU=39 ART=2380248072 Ubc Energy LB — c5==c7 RU clean.
+- **r41** SKU=40 ART=2380250504 Ubc Energy LB ST нержавейка — c5==c7 RU clean.
+
+**Verify:** 50 PASS / 0 FAIL. **+1 OQ (W2 cum #10):** r35 Forcar G-EF400GSS body model mismatch.
 

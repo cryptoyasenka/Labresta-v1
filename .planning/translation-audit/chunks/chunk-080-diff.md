@@ -116,3 +116,32 @@
 
 **Verify:** 57 PASS / 0 FAIL. Без новых OQ.
 
+## b5 (SKU 33-40, rows 34-41)
+
+Категории: blk триплет 4 / blknotrip 0 / blknochg 2 / blkfix 0 / SKIP-НП 2.
+
+### SKIP-НП
+
+| row | SKU | ART | бренд | модель |
+|---|---|---|---|---|
+| 36 | 35 | 2460100897 | Fagor | AFN-801 EXP NEO CONCEPT 700 л |
+| 39 | 38 | 2854784095 | HURAKAN | HKN-GX1410BTS 1400 л |
+
+### TRIP
+
+| row | SKU | ART | модель | действие |
+|---|---|---|---|---|
+| 34 | 33 | 2367458423 | Frosty FGN-1400BT | c5 UA→RU; c36 полный RU-перевод (дубль c35) |
+| 35 | 34 | 2402036548 | Forcar G-EF400GSS | c5 UA→RU; c36 полный RU-перевод (дубль c35; OQ #10 body model mismatch G-EF400SS vs G-EF400GSS) |
+| 37 | 36 | 2493870063 | Tecnodom AF06PKMBT | c5 UA→RU; c36 полный RU-перевод (дубль c35) |
+| 38 | 37 | 2493887857 | Tecnodom AF07PKMBT290C | c5 UA→RU; c36 полный RU-перевод (дубль c35) |
+
+### blknochg
+
+| row | SKU | ART | модель |
+|---|---|---|---|
+| 40 | 39 | 2380248072 | Ubc Energy LB |
+| 41 | 40 | 2380250504 | Ubc Energy LB ST нержавейка |
+
+**Verify:** 50 PASS / 0 FAIL. +1 OQ (W2 cum #10).
+
