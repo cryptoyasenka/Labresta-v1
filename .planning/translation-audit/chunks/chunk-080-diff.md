@@ -145,3 +145,22 @@
 
 **Verify:** 50 PASS / 0 FAIL. +1 OQ (W2 cum #10).
 
+## b6 (SKU 41-48, rows 42-49)
+
+Категории: blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+
+### blknochg
+
+| row | SKU | ART | модель |
+|---|---|---|---|
+| 42 | 41 | 2380256413 | Ubc Optima Professional |
+| 43 | 42 | 2380269727 | Ubc Professional LB |
+| 44 | 43 | 2380658273 | Ubc Super Large AD LB |
+| 45 | 44 | 2380661181 | Ubc Super Large AD LB ST нержавейка |
+| 46 | 45 | 2096350992 | Juka ND70M |
+| 47 | 46 | 2096364392 | Juka ND70M нержавеющая сталь |
+| 48 | 47 | 2096366619 | Juka ND140M |
+| 49 | 48 | 2096369926 | Juka ND140M нержавеющая сталь |
+
+**Verify:** 32 PASS / 0 FAIL. Без новых OQ.
+

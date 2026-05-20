@@ -1,6 +1,6 @@
 # chunk-080 manual review (W2)
 
-**Status:** chunk-080 b5 DONE 40/53 (cum TRIP 17 / blknotrip 0 / blknochg 19 / blkfix 0 / SKIP-НП 4; 315 PASS / 0 FAIL) — next b6 (SKU 41-48, rows 42-49). SKIP-НП: #1 r15 TATRA + #2 r19 Hurakan + #3 r36 Fagor + #4 r39 HURAKAN. Все preliminary SKIP-НП исчерпаны.
+**Status:** chunk-080 b6 DONE 48/53 (cum TRIP 17 / blknotrip 0 / blknochg 27 / blkfix 0 / SKIP-НП 4; 347 PASS / 0 FAIL) — next b7 FINAL (SKU 49-53, rows 50-54, 5 финальный). SKIP-НП 4 закрыты.
 
 ## Параметры
 
@@ -133,4 +133,21 @@ TRIP / blknotrip / blknochg / blkfix / SKIP-НП.
 - **r41** SKU=40 ART=2380250504 Ubc Energy LB ST нержавейка — c5==c7 RU clean.
 
 **Verify:** 50 PASS / 0 FAIL. **+1 OQ (W2 cum #10):** r35 Forcar G-EF400GSS body model mismatch.
+
+## b6 (SKU 41-48, rows 42-49) — DONE 48/53
+
+**Категории:** blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r42** SKU=41 ART=2380256413 Ubc Optima Professional — c5==c7 RU clean.
+- **r43** SKU=42 ART=2380269727 Ubc Professional LB — c5==c7 RU clean.
+- **r44** SKU=43 ART=2380658273 Ubc Super Large AD LB — c5==c7 RU clean.
+- **r45** SKU=44 ART=2380661181 Ubc Super Large AD LB ST нержавейка — c5==c7 RU clean.
+- **r46** SKU=45 ART=2096350992 Juka ND70M — c5==c7 RU clean.
+- **r47** SKU=46 ART=2096364392 Juka ND70M нержавеющая сталь — c5==c7 RU clean (c4 имеет UA «нержавіюча сталь», но c5==c7 RU «нержавеющая сталь» — наследие источника).
+- **r48** SKU=47 ART=2096366619 Juka ND140M — c5==c7 RU clean.
+- **r49** SKU=48 ART=2096369926 Juka ND140M нержавеющая сталь — c5==c7 RU clean (аналогично r47).
+
+**Verify:** 32 PASS / 0 FAIL. Без новых OQ.
 
