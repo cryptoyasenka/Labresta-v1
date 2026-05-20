@@ -179,3 +179,18 @@
 - chunk-NN.xlsx gitignored (`*.xlsx`), source копируется из main worktree, в W2 read-only.
 - chunk-glossary-w2.md — новый файл (у W1 нет отдельного сводного, термины внутри его MANUAL-REVIEW). W1-глоссарий = READ-ONLY референс.
 - INDEX.md Status НЕ править (W1 владеет статус-доской).
+
+
+---
+
+## chunk-075 b1 DONE 8/54 (HEAD 992ddfa)
+
+**Status:** chunk-075 b1 DONE 8/54 (cum TRIP 3 / blknotrip 0 / blknochg 3 / blkfix 0 / SKIP-НП 2; 709 PASS / 0 FAIL) — next b2 (SKU 9-16, rows 10-17)
+
+**b1 result:** TRIP 3 (r2 Frosty VF-15 / r7 Moretti Forni L80/S100E / r8 Moretti Forni 0A000810); blknochg 3 (r5 GoodFood PR13TS / r6 GoodFood PR16TS / r9 Эфес ШР-6-GN 1/1); SKIP-НП 2 (r3 HURAKAN HKN-XLT196M / r4 APACH APE12ABQ D). 41 PASS / 0 FAIL.
+
+**Cumulative (chunk-055..chunk-074 complete + chunk-075 b1):** 709 PASS / 0 FAIL.
+
+**OQ pending:** #1 c071 SKU39 BCB10 vs BCB10 NC; #2 c072 r43 Hendi 880906 catalog; #3 c074 b5 r39 ART=1166344539 9л vs 13,5л.
+
+**Next:** chunk-075 b2 — SKU 9-16, rows 10-17.
