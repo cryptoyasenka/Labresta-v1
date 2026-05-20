@@ -4,7 +4,7 @@
 **Apply key:** `Артикул` (col1, scoped per row)
 **Status:** b6 DONE 48/74 (cum: TRIP 22 / blknotrip 0 / blknochg 22 / SKIP-НП 4 / OQ 0; b7 предстоит; batch=8 b1..b9 по 8 + b10=SKU73-74 2 SKU = 74)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-066
-**Last updated:** chunk-067 b8 (W2)
+**Last updated:** chunk-067 b9 (W2)
 
 Эталон формата: chunk-019-MANUAL-REVIEW.md / chunk-066-MANUAL-REVIEW.md. Категории: blk триплет / blknotrip / blknochg / SKIP-НП.
 
@@ -311,5 +311,30 @@ _(нумерация отдельная, начинается с #1; пока н
 В b8 нет brand-locked НП. (cum SKIP-НП 6/8 prelim — остались 2 в b9: SKU70 TATRA + SKU71 APACH AK 901 котломийна.)
 
 ### Открытые вопросы b8
+
+Нет.
+
+
+## Батч 9 (SKU 65-72, rows 66-73) — DONE
+
+**Итог:** TRIP 0 / blknotrip 0 / blknochg 6 / SKIP-НП 2 / OQ 0 / verify 414 PASS / 0 FAIL / cum 72/74. **NO XLSX writes** — все blknochg + SKIP-НП preserve source.
+
+### blknochg — 6 SKU (c5/c35/c36 НЕ тронуты)
+
+- SKU 65 row 66 ART 1312822960 — Empero EMP.500-SDF (цифровой дисплей) посудомоечная (c5==c7 genuine RU; c36 genuine RU без UA-mark; c35!=c36 skel-eq True dims match; не трогаем)
+- SKU 66 row 67 ART 1312858248 — Empero EMP.TB.01 корзина для тарелок (c5==c7 genuine RU; c36 genuine RU без UA-mark; c35!=c36 skel-eq True dims match; не трогаем)
+- SKU 67 row 68 ART 1312874503 — Empero EMP.BB.01 корзина для стаканов (c5==c7 genuine RU; c36 genuine RU; c35!=c36 skel-eq True — c36 содержит одну лишнюю dim `500х500` extra; live store fixed; не трогаем)
+- SKU 68 row 69 ART 1312875812 — Empero EMP.KC.01 корзина для столовых приборов (c5==c7 genuine RU; c36 genuine RU; c35!=c36 skel-eq False — текстовая редакция расхождение; не трогаем)
+- SKU 69 row 70 ART 1500266298 — Krupps C432DGT Advance фронтальная (c5==c7 genuine RU c4=`Krupps C432 фронтальна` короткий, c5/c7=полная `Krupps C432DGT Advance фронтальная`; c36 genuine RU; c35!=c36 skel-eq False dims differ slightly — c36 содержит `432` префикс и `470х535х710` vs c35 `470х555х710` (1 мм dim source variance); live store fixed; не трогаем)
+- SKU 72 row 73 ART 1865347951 — Empero EMP.500-F помпа слива (c4 source typo `попа зливу` UA, но c5/c7 = `помпа слива` правильно; c5==c7 genuine RU; c36 genuine RU без UA-mark; c35!=c36 skel-eq True dims match; не трогаем — c4 typo live store)
+
+### SKIP-НП — 2 SKU (НП-эксклюзивные бренды, fixed строки НЕ тронуты, тело из фида НП позже)
+
+| # | SKU | row | Артикул | Бренд | Название (UA) | Примечание |
+|---|---|---|---|---|---|---|
+| #7 | 70 | 71 | 1519641570 | TATRA | Посудомийна купольна машина TATRA TW.H50+DR+DD. | TATRA НП-эксклюзив, fixed row71 НЕ тронут (c5==c4 UA-leak с финальной точкой; c35==c36 UA both; tail dot live source) |
+| #8 | 71 | 72 | 1519648525 | APACH | Посудомийна (котломийна) машина APACH AK 901 | APACH НП-эксклюзив, fixed row72 НЕ тронут (c5==c7 genuine RU; c35!=c36 skel-eq False dims differ — текстовая редакция и dims pattern; не переписываем — НП-бренд forward-only) |
+
+### Открытые вопросы b9
 
 Нет.

@@ -235,3 +235,26 @@ SKIP-НП prelim (forward-only, тело из фида НП позже): FAGOR/F
 ### SKIP-НП (0)
 
 В b8 нет brand-locked НП.
+
+
+## Батч 9 (SKU 65-72, rows 66-73) — DONE
+
+**Итог:** TRIP 0 / blknotrip 0 / blknochg 6 / SKIP-НП 2 / verify 414 PASS / 0 FAIL. **NO XLSX writes.**
+
+### blknochg (6)
+
+| SKU | row | Артикул | Бренд+модель | Причина |
+|---|---|---|---|---|
+| 65 | 66 | 1312822960 | Empero EMP.500-SDF (цифровой дисплей) | c5==c7; c36 genuine RU; c35!=c36 skel-eq True; не трогаем |
+| 66 | 67 | 1312858248 | Empero EMP.TB.01 корзина для тарелок | c5==c7; c36 genuine RU; c35!=c36 skel-eq True; не трогаем |
+| 67 | 68 | 1312874503 | Empero EMP.BB.01 корзина для стаканов | c5==c7; c36 genuine RU с лишней dim `500х500`; не трогаем |
+| 68 | 69 | 1312875812 | Empero EMP.KC.01 корзина для столовых приборов | c5==c7; c36 genuine RU; c35!=c36 skel-eq False; не трогаем |
+| 69 | 70 | 1500266298 | Krupps C432DGT Advance фронтальная | c5==c7 (c4 короткий `Krupps C432 фронтальна`); c36 genuine RU; c35!=c36 dims differ slightly (c36: `432` префикс, `470х535х710` vs c35 `470х555х710`); не трогаем |
+| 72 | 73 | 1865347951 | Empero EMP.500-F помпа слива | c4 source typo `попа зливу`; c5==c7 правильно `помпа слива`; c36 genuine RU; c35!=c36 skel-eq True; не трогаем |
+
+### SKIP-НП (2)
+
+| # | SKU | row | Артикул | Бренд | Название |
+|---|---|---|---|---|---|
+| #7 | 70 | 71 | 1519641570 | TATRA | Посудомийна купольна машина TATRA TW.H50+DR+DD. |
+| #8 | 71 | 72 | 1519648525 | APACH | Посудомийна (котломийна) машина APACH AK 901 |

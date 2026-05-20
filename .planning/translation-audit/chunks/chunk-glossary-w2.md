@@ -1145,3 +1145,12 @@ Soft-note b12: финальный 2-SKU батч chunk-066. 1 TRIP (SKU90 r91 CB
 **Замечание:** SKU60 (Krupps C537DGT Advance): «ТЕНа» source → «ТЭНа» (тэн пишем через «э», не через «е» и не через «ё» — это исключение для электронагревательного элемента; согласовано в b7 r56 Krupps C537TDGT и закрепляется здесь как стандарт). SKU58 (ASBER GEX-H500 DD): c5 source `Посудомийка купольна Asber GEX-H500 DD` — variant источника с lowercase brand и без слова «машина»; перезаписываем по c7 `Посудомоечная машина ASBER GEX-H500 DD` (полная стандартная форма live store).
 
 **SKIP-НП b8 (0):** brand-locked НП в b8 нет. cum SKIP-НП 6/8 prelim — остались 2 в b9: SKU70 TATRA TW.H50+DR+DD + SKU71 APACH AK 901 котломийна.
+
+
+## chunk-067 b9 (SKU 65-72, rows 66-73) — +0 новых терминов (cum 1007→1007)
+
+**Контекст:** 0 blk триплет, 6 blknochg (Empero аксессуары + Krupps C432DGT Advance), 2 SKIP-НП (TATRA + APACH). Новых терминов нет — все blknochg-источники уже в RU. SKIP-НП тело отложено в НП-фид.
+
+**Замечание:** SKU72 (Empero EMP.500-F) — c4 source UA typo `попа зливу` (должно быть `помпа зливу`/«помпа слива»); c5/c7 корректны (`помпа слива`); fixed row73 c4 НЕ исправляем (faithful live source). SKU69 (Krupps C432DGT Advance) — c4 source короткий `Krupps C432 фронтальна`, c5/c7 полные `Krupps C432DGT Advance фронтальная`; c36 содержит dim `470х535х710` vs c35 `470х555х710` — 1 мм source variance в live store. SKU67 (Empero EMP.BB.01) — c36 содержит одну лишнюю dim `500х500` после `500х500х100`; live store fixed.
+
+**SKIP-НП b9 (2):** SKU70 TATRA TW.H50+DR+DD (#7) + SKU71 APACH AK 901 (#8) — fixed строки НЕ тронуты, тело из фида НП позже. SKU70 c5==c4 UA с финальной точкой `TW.H50+DR+DD.` — НП-бренд forward-only override, не правим. cum SKIP-НП 8/8 (FAGOR 3 + TATRA 2 + Apach 3 — все запланированные НП в chunk-067 закрыты).
