@@ -553,3 +553,5 @@
 - Next: chunk-078 b6 (SKU 41-48, rows 42-49).
 
 CURRENT-w2: chunk-078 b6 DONE 48/53 (cum TRIP 0 / blknotrip 0 / blknochg 47 / blkfix 0 / SKIP-НП 1; 426 PASS / 0 FAIL); blknochg 8 Tefcold; без новых OQ; next b7 FINAL (SKU 49-53, rows 50-54, 5 SKU)
+
+CURRENT-w2: chunk-078 ЗАКРЫТ 53/53 (TRIP 0 / blknotrip 0 / blknochg 52 / blkfix 0 / SKIP-НП 1; 471 PASS / 0 FAIL); SKIP-НП #1 r19 TATRA TRC1400TN; без новых OQ; next chunk-079 scaffold
