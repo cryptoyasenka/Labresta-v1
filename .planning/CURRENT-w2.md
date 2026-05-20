@@ -559,3 +559,5 @@ CURRENT-w2: chunk-078 ЗАКРЫТ 53/53 (TRIP 0 / blknotrip 0 / blknochg 52 / b
 CURRENT-w2: chunk-079 b1 DONE 8/58 (cum TRIP 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0; 72 PASS / 0 FAIL); blknochg 8 Tefcold; без новых OQ; next b2 (SKU 9-16, rows 10-17)
 
 CURRENT-w2: chunk-079 b2 DONE 16/58 (cum TRIP 0 / blknotrip 0 / blknochg 16 / blkfix 0 / SKIP-НП 0; 144 PASS / 0 FAIL); blknochg 8 Tefcold; 2 новых OQ (c079 #1 r12 FSC1000H body=FSC1000S; c079 #2 r14 FSC1950S body=FS1202H); next b3 (SKU 17-24, rows 18-25)
+
+CURRENT-w2: chunk-079 b3 DONE 24/58 (cum TRIP 0 / blknotrip 0 / blknochg 24 / blkfix 0 / SKIP-НП 0; 216 PASS / 0 FAIL); blknochg 8 Tefcold; без новых OQ; next b4 (SKU 25-32, rows 26-33)
