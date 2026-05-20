@@ -1,7 +1,7 @@
 # chunk-075 MANUAL REVIEW (W2, продолжение chunk-074)
 
-**Status:** chunk-075 b2 DONE 16/54 (cum TRIP 3 / blknotrip 0 / blknochg 11 / blkfix 0 / SKIP-НП 2; 765 PASS / 0 FAIL) — next b3 (SKU 17-24, rows 18-25)
-**Last updated:** chunk-075 b2 (16/54)
+**Status:** chunk-075 b3 DONE 24/54 (cum TRIP 3 / blknotrip 0 / blknochg 19 / blkfix 0 / SKIP-НП 2; 821 PASS / 0 FAIL) — next b4 (SKU 25-32, rows 26-33)
+**Last updated:** chunk-075 b3 (24/54)
 
 **Объём:** 54 SKU rows 2..55. ART 2044220842..1090581793.
 
@@ -57,3 +57,11 @@
 **Status:** chunk-075 b2 DONE 16/54 (cum TRIP 3 / blknotrip 0 / blknochg 11 / blkfix 0 / SKIP-НП 2; 765 PASS / 0 FAIL) — next b3 (SKU 17-24, rows 18-25)
 
 **b2 распределение (SKU 9-16):** blknochg 8 — полный блок Эфес ШР-6/8/10 / GN1/1 / GN2/1 / -К варианты (r10-r17), все c5==c7 «Шкаф расстоечный Эфес ...» genuine RU, c36 genuine RU bodies. Fixed cells НЕ тронуты.
+
+---
+
+## b3 DONE 24/54 (Status update)
+
+**Status:** chunk-075 b3 DONE 24/54 (cum TRIP 3 / blknotrip 0 / blknochg 19 / blkfix 0 / SKIP-НП 2; 821 PASS / 0 FAIL) — next b4 (SKU 25-32, rows 26-33)
+
+**b3 распределение (SKU 17-24):** blknochg 8 — смешанный блок: PIMAK MYK1 (r18 расстоечный) + Эфес пекарские ШПЭ-1/2/3/4 (r19-r23) + Эфес жарочный ШЖЭ-1-GN1/1 (r24) + Эфес ШПЭ-3 дубль (r25, мощность 20,16 vs 20,6 у r22). Все c5==c7 genuine RU, c36 genuine RU. Fixed cells НЕ тронуты. Source quirk r19 «комплектеп» preserved.
