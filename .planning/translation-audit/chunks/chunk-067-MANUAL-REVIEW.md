@@ -4,7 +4,7 @@
 **Apply key:** `Артикул` (col1, scoped per row)
 **Status:** b6 DONE 48/74 (cum: TRIP 22 / blknotrip 0 / blknochg 22 / SKIP-НП 4 / OQ 0; b7 предстоит; batch=8 b1..b9 по 8 + b10=SKU73-74 2 SKU = 74)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-066
-**Last updated:** chunk-067 b7 (W2)
+**Last updated:** chunk-067 b8 (W2)
 
 Эталон формата: chunk-019-MANUAL-REVIEW.md / chunk-066-MANUAL-REVIEW.md. Категории: blk триплет / blknotrip / blknochg / SKIP-НП.
 
@@ -276,5 +276,40 @@ _(нумерация отдельная, начинается с #1; пока н
 | #6 | 52 | 53 | 1162046388 | Apach | Посудомийка Apach AF500 DIG DD з дозатором | Apach НП-эксклюзив, fixed row53 НЕ тронут (c5==c4 UA-leak; не трогаем) |
 
 ### Открытые вопросы b7
+
+Нет.
+
+
+## Батч 8 (SKU 57-64, rows 58-65) — DONE
+
+**Итог:** TRIP 4 / blknotrip 0 / blknochg 4 / SKIP-НП 0 / OQ 0 / verify 390 PASS / 0 FAIL / cum 64/74.
+
+### blk триплет (TRIP) — 4 SKU
+
+- **SKU 57 row 58 ART 664883807 — Посудомийна машина Krupps EL981E (серія ELITECH LINE) для габаритного посуду**
+  - col5 UA→genuine RU: → `Посудомоечная машина Krupps EL981E (серия ELITECH LINE) для габаритной посуды` (как c7)
+  - col36 faithful RU (4 параграфа + 11-li характеристики): большая моечная для котлов, кастрюль, миксеров, GN1/1, GN1/2, дек 600х400 и 600х800; до 575x645x850; тарелки 630; кастрюли 850; Termostop; дозатор 3 л/час, ополаскивателя 0,3 л/час; линия ELITECH + Acquatech System + IKLOUD Wi-Fi; дисплей UNIKO; 6/10/15/30 кассет/час; циклы 120/240/260/540 сек; корзина 60х67х10 нерж.стали; держатель на 18 делений; габариты 820х775х1850; 7,4 кВт; 380 В; расход 2 л — литеральные `—` em-dash. skel==UA, dims match.
+- **SKU 58 row 59 ART 732424078 — Посудомийна машина ASBER GEX-H500 DD**
+  - col5 UA→genuine RU: → `Посудомоечная машина ASBER GEX-H500 DD` (как c7; source c5 был `Посудомийка купольна Asber GEX-H500 DD` — разные форматы вариантов, заменяем по c7)
+  - col36 faithful RU (2 параграфа + 16-li характеристики): купольного типа ASBER GEX-H500 DD; 40 кассет/час; высота 400 мм; цикл 90/180 сек; кассета 500х500; бак 33 л; бойлер 7 л; загрузка 440 мм; 2 кассеты + 1 контейнер-вставка; габариты 630х750х1482; 11,25 кВт; 380 В. skel==UA, dims match.
+- **SKU 60 row 61 ART 1134521234 — Посудомийна машина Krupps C537DGT Advance фронтальна**
+  - col5 UA→genuine RU: → `Посудомоечная машина Krupps C537DGT Advance фронтальная` (как c7)
+  - col36 faithful RU h2-заголовок: «C537DGT Advance для тарелок до 395 мм и бокалов до 310 мм»; 30 кассет/час; <strong>цикл 2 мин</strong>; кассета 500х500; 1+1 корзины; 2 держателя; габариты 585х610х815; preserve `&mdash;` entity; ТЭНа ванны 2,6 кВт; бойлера 2,5 кВт; моечного насоса 0,52 кВт; номинальная 3,12 кВт; 220 В. (ТЭНа — «тэн» без ё, написание через «э».) skel==UA, dims match.
+- **SKU 63 row 64 ART 1200533520 — Посудомийна машина ASBER GE500DD фронтальна**
+  - col5 UA→genuine RU: → `Посудомоечная машина ASBER GE500DD фронтальная` (как c7)
+  - col36 faithful RU (2 параграфа + 13-li характеристики): ASBER GE500DD до 320 мм; цикл 120 сек; кассета 500х500; бак 25 л; бойлер 7 л; 2 кассеты + 1 контейнер-вставка; габариты 600х605х830; 3.4 кВт; 220 В. skel==UA, dims match.
+
+### blknochg — 4 SKU (c5/c35/c36 НЕ тронуты)
+
+- SKU 59 row 60 ART 823877211 — Empero EMP.BPR.002 аппарат для полировки бокалов (c5==c7 genuine RU; c36 genuine RU без UA-mark; c35!=c36 skel-eq True dims match; не трогаем)
+- SKU 61 row 62 ART 1157922214 — SILANOS VS P57-62N-D посудомоечная (котломоечная) (c5==c7 genuine RU; c36 genuine RU; c35!=c36 skel-eq False но dims match — текстовая редакция; не трогаем)
+- SKU 62 row 63 ART 1164964525 — Apparatus (Stalgast) купольная посудомоечная (c5==c7 genuine RU; c36 genuine RU; c35!=c36 skel-eq True; не трогаем)
+- SKU 64 row 65 ART 1312820859 — Empero EMP.500-380-F посудомоечная (c5==c7 genuine RU; c36 genuine RU; c35!=c36 skel-eq True dims match; не трогаем)
+
+### SKIP-НП — 0 SKU
+
+В b8 нет brand-locked НП. (cum SKIP-НП 6/8 prelim — остались 2 в b9: SKU70 TATRA + SKU71 APACH AK 901 котломийна.)
+
+### Открытые вопросы b8
 
 Нет.
