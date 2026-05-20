@@ -1,6 +1,6 @@
 # chunk-078 manual review (W2)
 
-**Status:** chunk-078 b5 DONE 40/53 (cum TRIP 0 / blknotrip 0 / blknochg 39 / blkfix 0 / SKIP-НП 1; 354 PASS / 0 FAIL) — next b6 (SKU 41-48, rows 42-49). SKIP-НП #1: r19 TATRA TRC1400TN. Без новых OQ.
+**Status:** chunk-078 b6 DONE 48/53 (cum TRIP 0 / blknotrip 0 / blknochg 47 / blkfix 0 / SKIP-НП 1; 426 PASS / 0 FAIL) — next b7 FINAL (SKU 49-53, rows 50-54, 5 SKU). SKIP-НП #1: r19 TATRA TRC1400TN. Без новых OQ.
 
 ## Параметры
 
@@ -112,5 +112,23 @@ TRIP / blknotrip / blknochg / blkfix / SKIP-НП.
 - **r39** SKU=38 ART=2139818343 Tefcold SCU1280CP — c5==c7 RU clean.
 - **r40** SKU=39 ART=2139819535 Tefcold FSC1380 — c5==c7 RU clean.
 - **r41** SKU=40 ART=2139827779 Tefcold SCU1375CP — c5==c7 RU clean.
+
+**Verify:** 72 PASS / 0 FAIL. Без новых OQ.
+
+
+## b6 (SKU 41-48, rows 42-49) — DONE 48/53
+
+**Категории:** blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r42** SKU=41 ART=2139829710 Tefcold CEV425 BLACK L/H — c5==c7 RU clean.
+- **r43** SKU=42 ART=2139833049 Tefcold CEV425CP BLACK — c5==c7 RU clean.
+- **r44** SKU=43 ART=2139834831 Tefcold FS2380 — c5==c7 RU clean.
+- **r45** SKU=44 ART=2139837133 Tefcold GBC375 — c5==c7 RU clean.
+- **r46** SKU=45 ART=2140069555 Tefcold SCU2375 — c5==c7 RU clean.
+- **r47** SKU=46 ART=2140081518 Tefcold GBC375CP — c5==c7 RU clean.
+- **r48** SKU=47 ART=2140086525 Tefcold SCU1425H — c5==c7 RU clean.
+- **r49** SKU=48 ART=2140092342 Tefcold FSC1450 — c5==c7 RU clean.
 
 **Verify:** 72 PASS / 0 FAIL. Без новых OQ.

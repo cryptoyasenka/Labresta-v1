@@ -116,3 +116,23 @@
 | 41 | 40 | 2139827779 | Tefcold SCU1375CP |
 
 **Verify:** 72 PASS / 0 FAIL. Без новых OQ.
+
+
+## b6 (SKU 41-48, rows 42-49)
+
+Категории: blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+
+### blknochg
+
+| row | SKU | ART | модель |
+|---|---|---|---|
+| 42 | 41 | 2139829710 | Tefcold CEV425 BLACK L/H |
+| 43 | 42 | 2139833049 | Tefcold CEV425CP BLACK |
+| 44 | 43 | 2139834831 | Tefcold FS2380 |
+| 45 | 44 | 2139837133 | Tefcold GBC375 |
+| 46 | 45 | 2140069555 | Tefcold SCU2375 |
+| 47 | 46 | 2140081518 | Tefcold GBC375CP |
+| 48 | 47 | 2140086525 | Tefcold SCU1425H |
+| 49 | 48 | 2140092342 | Tefcold FSC1450 |
+
+**Verify:** 72 PASS / 0 FAIL. Без новых OQ.
