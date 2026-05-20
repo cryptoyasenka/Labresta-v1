@@ -250,3 +250,30 @@
 **Cumulative (chunk-055..chunk-074 + chunk-075 b1-b5):** 917 PASS / 0 FAIL.
 
 **Next:** chunk-075 b6 — SKU 41-48, rows 42-49 (preliminary SKIP-НП: r42 APACH, r43 APACH, r45 COLD).
+
+
+## chunk-075 b6 DONE 48/54 (2026-05-20)
+
+**HEAD before:** 07b675f (b5 C2 marker)
+**HEAD C1:** 652c2a1 (b6 content)
+**Категории:** TRIP 0 / blknotrip 0 / blknochg 6 / blkfix 0 / SKIP-НП 2.
+
+**SKIP-НП 2:**
+- r42 SKU41 ART=1862480502 APACH (forward-only)
+- r43 SKU42 ART=1862455773 APACH (forward-only)
+
+**blknochg 6:**
+- r44 SKU43 ART=1855552120 Tecnodom P-ATT05EA290 (на 5 уровней, c36 866)
+- r45 SKU44 ART=1855517769 Tefcold BLC14 (14 уровней, 299 л, R404A, 2000 Вт 380-400V, 205 кг, source quirk «Двери Глухие двери Глухие» дубль preserved, c36 1126; «Tefcold» НЕ SKIP-НП — standalone brand «COLD» ≠ substring)
+- r46 SKU45 ART=1855554066 Tecnodom P-ATT03 (на 3 уровня, c36 670)
+- r47 SKU46 ART=1855553732 Tecnodom P-ATT07 (на 7 уровней, c36 683)
+- r48 SKU47 ART=1825517864 GGM Gastro SAG147AND (Холодильный стол-саладетта, 392 л, 8×GN 1/6, AISI 304, c36 2474)
+- r49 SKU48 ART=1825511820 GGM Gastro ZBG158ND (Холодильный стол-саладетта, 390 л, AISI 304, c36 2885)
+
+**Verify:** 70 PASS / 0 FAIL.
+
+**Кумулятив chunk-075:** TRIP 4 / blknotrip 0 / blknochg 35 / blkfix 0 / SKIP-НП 9 = 48/54 (89%); 987 PASS / 0 FAIL.
+
+**Открытых вопросов новых:** 0.
+
+**Next:** b7 FINAL (SKU 49-54, rows 50-55, 6 SKUs). Preliminary SKIP-НП r54 HURAKAN. После b7: chunk-075 COMPLETE → next chunk-076 scaffold.
