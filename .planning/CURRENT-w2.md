@@ -561,3 +561,5 @@ CURRENT-w2: chunk-079 b1 DONE 8/58 (cum TRIP 0 / blknotrip 0 / blknochg 8 / blkf
 CURRENT-w2: chunk-079 b2 DONE 16/58 (cum TRIP 0 / blknotrip 0 / blknochg 16 / blkfix 0 / SKIP-НП 0; 144 PASS / 0 FAIL); blknochg 8 Tefcold; 2 новых OQ (c079 #1 r12 FSC1000H body=FSC1000S; c079 #2 r14 FSC1950S body=FS1202H); next b3 (SKU 17-24, rows 18-25)
 
 CURRENT-w2: chunk-079 b3 DONE 24/58 (cum TRIP 0 / blknotrip 0 / blknochg 24 / blkfix 0 / SKIP-НП 0; 216 PASS / 0 FAIL); blknochg 8 Tefcold; без новых OQ; next b4 (SKU 25-32, rows 26-33)
+
+CURRENT-w2: chunk-079 b4 DONE 32/58 (cum TRIP 0 / blknotrip 0 / blknochg 32 / blkfix 0 / SKIP-НП 0; 288 PASS / 0 FAIL); blknochg 8 (Tefcold ATOM MAXI C3DB / FSC1600H / NC7500G / UBC Large 1200 л / Ubc Energy AD / Atom Maxi C1DB / Atom Maxi C1DBB / Angelo Po AF1N); без новых OQ; next b5 (SKU 33-40, rows 34-41)
