@@ -1,6 +1,6 @@
 # chunk-073 DIFF (W2, продолжение chunk-072)
 
-**Status:** chunk-073 b7 DONE 56/61 (cum TRIP 17 / blknotrip 0 / blknochg 31 / blkfix 0 / SKIP-НП 8; 274 PASS / 0 FAIL) — next b8 (SKU 57-61, rows 58-62, FINAL 5 SKU)
+**Status:** chunk-073 CLOSED 61/61 (TRIP 17 / blknotrip 0 / blknochg 36 / blkfix 0 / SKIP-НП 8; 309 PASS / 0 FAIL)
 
 **Объём:** 61 SKU rows 2..62.
 
@@ -118,3 +118,15 @@
 - r54 APACH M30 — ферментатор (forward-only)
 
 ### Verify b7: 46 PASS / 0 FAIL
+
+
+## Batch 8 (SKU 57-61, rows 58-62) — FINAL 5 SKU / chunk-073 closure
+
+### blknochg 5 (all)
+- r58 GoodFood KS10 — Стерилизатор для ножей (c5/c7 RU equal)
+- r59 GoodFood KFWD18 — Измельчитель отходов (c5/c7 RU equal, бренд НЕ-НП — GoodFood обрабатывается обычно)
+- r60 Atalay ABS-10 — Стерилизатор для ножей
+- r61 Atalay ABS-20 — Стерилизатор для ножей
+- r62 Silanos 8 л — Умягчитель для воды
+
+### Verify b8: 35 PASS / 0 FAIL

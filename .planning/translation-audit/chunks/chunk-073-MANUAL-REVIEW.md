@@ -1,7 +1,7 @@
 # chunk-073 MANUAL REVIEW (W2, продолжение chunk-072)
 
-**Status:** chunk-073 b7 DONE 56/61 (cum TRIP 17 / blknotrip 0 / blknochg 31 / blkfix 0 / SKIP-НП 8; 274 PASS / 0 FAIL) — next b8 (SKU 57-61, rows 58-62, FINAL 5 SKU)
-**Last updated:** chunk-073 b7 DONE 56/61
+**Status:** chunk-073 CLOSED 61/61 (TRIP 17 / blknotrip 0 / blknochg 36 / blkfix 0 / SKIP-НП 8; 309 PASS / 0 FAIL)
+**Last updated:** chunk-073 CLOSED 61/61
 
 **Объём:** 61 SKU rows 2..62. ART 655872902..2289327088.
 
@@ -290,3 +290,41 @@
 - «решетка» vs «ґрати» — UA «ґрат» в винительном падеже множ. → RU «решетки» (родительный падеж от «решетка»).
 
 **Verify b7:** 46 PASS / 0 FAIL.
+
+
+## Batch 8 (SKU 57-61, rows 58-62) — FINAL / chunk-073 closure
+
+**Категории b8:** blknochg 5 (все 5 final rows).
+
+**Карточки b8 (blknochg):**
+- **r58 GoodFood KS10** — Стерилизатор для ножей (c5==c7, c36 RU; c35 UA preserve)
+- **r59 GoodFood KFWD18** — Измельчитель отходов (бренд GoodFood НЕ из SKIP-НП списка, но c5/c36 уже RU)
+- **r60 Atalay ABS-10** — Стерилизатор для ножей
+- **r61 Atalay ABS-20** — Стерилизатор для ножей (вариант больше)
+- **r62 Silanos 8 л** — Умягчитель для воды (c35 UA len=971, c36 RU len=700 — заметная разница, но c36 уже RU)
+
+**Открытые вопросы b8:** 0 новых.
+
+**Iframes preserved b8:** не проверено детально (blknochg не правим body).
+
+**Verify b8:** 35 PASS / 0 FAIL.
+
+**chunk-073 CLOSED 61/61 (TRIP 17 / blknotrip 0 / blknochg 36 / blkfix 0 / SKIP-НП 8; 309 PASS / 0 FAIL total).**
+
+**Cumulative SKIP-НП (8):**
+- r13 FAGOR LA-14 TP2 E (b2)
+- r14 Fagor Compact LAP-10 TP2 E P (b2)
+- r15 FAGOR SRP-10 M E COMPACT CONCEPT (b2)
+- r29 HURAKAN HKN-MID80 (b4)
+- r30 HURAKAN HKN-FWD450A (b4)
+- r41 HURAKAN HKN-FWD370A (b5)
+- r53 HURAKAN HKN-UVA10 (b7)
+- r54 APACH M30 (b7)
+
+**Cumulative reusable functions (chunk-073):**
+- `hendi_trap_body(area_m2, power_w, dim)` (b4) — Hendi 270158/270165/270172 настенные/потолочные
+- `hendi_ceiling_trap_body(area_m2, power_w, dim)` (b5) — Hendi 270066/270141 IPX4 UV-A потолочные
+- `frosty_chlj_b_body(voltage_v, lamp_w, area_m2, kw=None, dim=None)` (b7) — Frosty CHLJ-20B/30B/40B
+- `frosty_chlj_w_body(voltage_v, lamp_w, area_m2, kw, dim)` (b7) — Frosty CHLJ-30W/40W
+
+**Открытые вопросы (cumulative chunk-073):** 0.
