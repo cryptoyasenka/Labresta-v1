@@ -37,3 +37,18 @@
 - r15 FAGOR SRP-10 M E COMPACT CONCEPT — сушильная
 
 ### Verify b2: 34 PASS / 0 FAIL
+
+
+## Batch 3 (SKU 17-24, rows 18-25)
+
+### All 8 rows = blknochg (Astra/GGM/AGA/KENLE/Whirlpool прачечное)
+- r18 Astra KP-850 — каток гладильный для мини-прачечных/отелей
+- r19 GGM MEI1500 (1,5 м) — каток гладильная машина
+- r20 GGM MEI1500-33 (1,5 м) — каток гладильная машина
+- r21 GGM MEI1250 (1,25 м) — каток гладильная машина
+- r22 AGA E75 — сушильная индустриальная (AGA Tech SRL)
+- r23 KENLE F22 — стиральная неподрессорная 22-24 кг с ПЛК-контроллером
+- r24 Whirlpool ADN 486 (125 см) — гладильный каландр
+- r25 Whirlpool ADN 490 (175 см) — гладильный каландр
+
+### Verify b3: 40 PASS / 0 FAIL
