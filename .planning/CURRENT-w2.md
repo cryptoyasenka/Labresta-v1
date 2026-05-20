@@ -388,3 +388,14 @@
 **Кумулятив W2 OQ:** #1 c071 SKU39 BCB10/BCB10 NC; #2 c072 r43 Hendi 880906; #3 c074 r39 ART=1166344539 9л vs 13,5л; #4 c075 r40 GoodFood intro model; #5 c075 r41 Tecnodom 15 vs 12 кг; **#6 c076 r24 Forcar G-ER200SS vs G-ER400 catalog**.
 
 **Next:** b4 (SKU 25-32, rows 26-33).
+
+
+## chunk-076 b4 DONE 32/57 (2026-05-20 12:08)
+
+- Категории: blk триплет 5 / blknotrip 0 / blknochg 3 / blkfix 0 / SKIP-НП 0.
+- TRIP: r29 Gooder USS 1200 DSC, r30 Gooder USS 374 DTK BK, r31 Gooder USS 374 DTK, r32 Forcar G-ER400G, r33 Forcar G-ER400GSS.
+- blknochg: r26-r28 Brillis (BN7-M-R290-EF, BN8-P-R290, BN14-M-R290-ЕF).
+- Verify: 90 PASS / 0 FAIL.
+- Cumulative chunk-076: TRIP 14 / blknotrip 0 / blknochg 17 / blkfix 1 / SKIP-НП 0 = 32/57; 405 PASS / 0 FAIL.
+- OQ: без новых (OQ#6 SKU23 из b3 — единственный по chunk-076).
+- Next: chunk-076 b5 (SKU 33-40, rows 34-41). Preliminary SKIP-НП: r36 FAGOR (SKU35).
