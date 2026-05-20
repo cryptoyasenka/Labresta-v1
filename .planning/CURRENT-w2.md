@@ -557,3 +557,5 @@ CURRENT-w2: chunk-078 b6 DONE 48/53 (cum TRIP 0 / blknotrip 0 / blknochg 47 / bl
 CURRENT-w2: chunk-078 ЗАКРЫТ 53/53 (TRIP 0 / blknotrip 0 / blknochg 52 / blkfix 0 / SKIP-НП 1; 471 PASS / 0 FAIL); SKIP-НП #1 r19 TATRA TRC1400TN; без новых OQ; next chunk-079 scaffold
 
 CURRENT-w2: chunk-079 b1 DONE 8/58 (cum TRIP 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0; 72 PASS / 0 FAIL); blknochg 8 Tefcold; без новых OQ; next b2 (SKU 9-16, rows 10-17)
+
+CURRENT-w2: chunk-079 b2 DONE 16/58 (cum TRIP 0 / blknotrip 0 / blknochg 16 / blkfix 0 / SKIP-НП 0; 144 PASS / 0 FAIL); blknochg 8 Tefcold; 2 новых OQ (c079 #1 r12 FSC1000H body=FSC1000S; c079 #2 r14 FSC1950S body=FS1202H); next b3 (SKU 17-24, rows 18-25)
