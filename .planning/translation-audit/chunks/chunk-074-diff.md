@@ -77,3 +77,24 @@
 - Будет переиспользована для HENDI кастрюль r34+ в b5+.
 
 ### Verify b4: 46 PASS / 0 FAIL
+
+
+## Batch 5 (SKU 33-40, rows 34-41)
+
+### TRIP 8 (все HENDI кастрюли+сковороды)
+- **r34 Кастрюля HENDI 834206 22 л** — c5 уже RU; c36 RU (тройное термодифф. дно, ø320x280 мм). hendi_pot_body reuse.
+- **r35 Кастрюля HENDI 834404 37 л** — аналог r34, ø360x360 мм.
+- **r36 Кастрюля HENDI 834701 50 л** — аналог r34, ø400x400 мм.
+- **r37 Кастрюля HENDI 837207 4,7 л** — c5 уже RU; c36 RU (многослойное капсульное дно, не нагревающиеся стальные ручки, толщина 0,6 мм, ø200x160 мм). NEW helper hendi_pot_capsule_body.
+- **r38 Кастрюля HENDI 837306 9 л** — аналог r37, ø240x200 мм.
+- **r39 ART=1166344539 — OQ #3 source-bug:** c5 ← c7 «Кастрюля 13,5 л HENDI 837405»; c36 translated UA→RU literally, references 9 л 837306 ø240x200 мм (copy from r38). Yana verify which canonical — log chunk-074-questions.md.
+- **r40 Сковорода HENDI 627600 ø140 мм** — c5/c7 RU equal; c36 RU (твердое алюм. литье, антипригар мрамор, стальная ручка эпокси до 260°C, 3 слоя, НЕ в посудомоечной, толщина 4 мм, ø200x40 мм). NEW helper hendi_pan_body.
+- **r41 Сковорода HENDI 627617 ø180 мм** — аналог r40, ø240x42 мм.
+
+### blknochg / blknotrip / blkfix / SKIP-НП: 0
+
+### Reusable functions b5 (NEW):
+- `hendi_pot_capsule_body(volume_l, art, dim_mm, thickness_mm='0,6')` — 7 li капсульное дно
+- `hendi_pan_body(diam_base_mm, art, dim_mm, thickness_mm='4')` — 9 li сковорода с мрамор-покрытием
+
+### Verify b5: 49 PASS / 0 FAIL (включая r39 c5 == «Кастрюля 13,5 л HENDI 837405»)
