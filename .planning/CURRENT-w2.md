@@ -657,3 +657,5 @@ CURRENT-w2: chunk-085 b4 DONE 32/75 (cum TRIP 17 / blknotrip 0 / blknochg 11 / b
 CURRENT-w2: chunk-085 b5 DONE 40/75 (cum TRIP 21 / blknotrip 0 / blknochg 15 / blkfix 0 / SKIP-НП 4; 238 PASS / 0 FAIL); TRIP 4 (Hendi 282083 + Fama FIN105/106/107) + blknochg 4 (Dadaux PHX60/TORSADO/PHX40/PH13); без новых OQ; next b6 (SKU 41-48, rows 42-49)
 
 CURRENT-w2: chunk-085 b6 DONE 48/75 (cum TRIP 21 / blknotrip 0 / blknochg 23 / blkfix 0 / SKIP-НП 4; 270 PASS / 0 FAIL); blknochg 8 (Dadaux PHX25/PHX15 + GoodFood SF15VE/SF3V/SF2VS/SF5VS/SF10VE/SF30VE); без новых OQ; next b7 (SKU 49-56, rows 50-57)
+
+CURRENT-w2: chunk-085 b7 DONE 56/75 (cum TRIP 28 / blknotrip 0 / blknochg 24 / blkfix 0 / SKIP-НП 4; 330 PASS / 0 FAIL); TRIP 7 Frosty чафиндиши CD-7055FG/CD-7055/CD-723DRE/CD-723E/CD-823/CD-823FG/CD-723 + blknochg 1 CD-723DR; без новых OQ; next b8 (SKU 57-64, rows 58-65)
