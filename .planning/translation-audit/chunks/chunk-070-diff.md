@@ -1,7 +1,7 @@
 # chunk-070 DIFF (W2)
 
-**Status:** chunk-070 b5 DONE 40/59 (cum TRIP 8 / blknotrip 0 / blknochg 29 / blkfix 1 / SKIP-НП 2)
-**Last updated:** chunk-070 b5 DONE 40/59
+**Status:** chunk-070 b6 DONE 48/59 (cum TRIP 16 / blknotrip 0 / blknochg 29 / blkfix 1 / SKIP-НП 2)
+**Last updated:** chunk-070 b6 DONE 48/59
 
 Source: `chunk-070.xlsx` (RO, 59 SKU rows 2..60, ART 2176091387..500051832) → operating: `chunk-070-fixed.xlsx` (gitignored, скопирован из source 1:1).
 
@@ -106,3 +106,19 @@ Batches заполняются после каждого закрытого ба
 
 **Итого b5:** TRIP 1 + blknotrip 0 + blknochg 6 + blkfix 1 + SKIP-НП 0. Verify **213 PASS / 0 FAIL**.
 **Cum после b5:** TRIP 8 + blknotrip 0 + blknochg 29 + blkfix 1 + SKIP-НП 2 = **40/59**.
+
+## b6 (SKU 41-48, rows 42-49) — 48/59
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 41 | 42 | 2398018333 | Valko TS2 герметичный запайщик лотков | **TRIP** | c5←c7 «Термоупаковочная машина Valko TS2»; c36 ← RU 928 chars (14 li tech + 4 li pkg): настольный, алюм. пластина с тефлоновым покрытием, ручная подача рулона, электронный контроль T, 15 кг / 565x515x385 / 0.6 кВт / 220V / Италия |
+| 2 | 42 | 43 | 2398030000 | Lavezzini TERMOPACK SV400 | **TRIP** | c5←c7; c36 ← RU 959 chars (11 li + 4 pkg): полуавтомат термоупаковщик в лоток / глубина max 100 мм / камера 265х325 / матрицы не входят / 60 кг / 400x500x300 / 1.2 кВт / 220V |
+| 3 | 43 | 44 | 2398043789 | Lavezzini TERMOPACK SV300 | **TRIP** | c5←c7; c36 ← RU 999 chars: камера 265х196 / Тип подключения Электрический / 40 кг / 280x500x300 / 0.6 кВт / 220V (faithful pkg-height «33» preserved) |
+| 4 | 44 | 45 | 2398077613 | Lavezzini BOXER DUO | **TRIP** | c5←c7; c36 ← RU 1123 chars: TOP SERIES / STEP VAC / самоочищающаяся насосная / 20 программ / камера 500x460x220 / 2 планки 450 мм / насос 20 м3/час / 63 кг / 600x560x450 / 0.95 кВт / 220V |
+| 5 | 45 | 46 | 2398103996 | Lavezzini BOXER DUO gas | **TRIP** | c5←c7; c36 ← RU 1333 chars: близнец r45 + inert газ (+) + микропринтер для маркировки (4-й абзац) |
+| 6 | 46 | 47 | 2398118216 | Lavezzini BOXER45 LCD | **TRIP** | c5←c7; c36 ← RU 1173 chars: близнец r45+r46 + inert газ (+) (без 4-го абзаца) |
+| 7 | 47 | 48 | 2398121892 | Lavezzini LAPACK 500 | **TRIP** | c5←c7; c36 ← RU 1038 chars: с колпаком на колесах / ЖК-дисплей / камера 510х650х220 / 1 планка 500 мм / насос 60 м3/час / 140 кг / 630x760x1050 / 1.4 кВт / 380V |
+| 8 | 48 | 49 | 2398143399 | Lavezzini LAPACK 550S | **TRIP** | c5←c7; c36 ← RU 1101 chars: камера 720x570x220 / 2 планки 550 мм / 60 м3/час / 150 кг / 840x680x1050 / 1.45 кВт / Тип подключения Электрический / 380V; structural typo «<strong>Технические характеристики</strong>:» (двоеточие вне strong) preserved faithful |
+
+**Итого b6:** TRIP 8 + blknotrip 0 + blknochg 0 + blkfix 0 + SKIP-НП 0. Verify **225 PASS / 0 FAIL**.
+**Cum после b6:** TRIP 16 + blknotrip 0 + blknochg 29 + blkfix 1 + SKIP-НП 2 = **48/59**.
