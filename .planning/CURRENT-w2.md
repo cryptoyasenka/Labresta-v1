@@ -446,3 +446,16 @@
 - Cumulative chunk-077: 8/39 (TRIP 3 / blknotrip 0 / blknochg 5 / blkfix 0 / SKIP-НП 0).
 - OQ: без новых.
 - Next: chunk-077 b2 (SKU 9-16, rows 10-17). Preliminary SKIP-НП r13 HURAKAN HKN-GX650TNS.
+
+
+## chunk-077 b2 DONE 16/39 (2026-05-20 12:27)
+
+- Категории: blk триплет 2 / blknotrip 0 / blknochg 4 / blkfix 1 / SKIP-НП 1.
+- TRIP: r11 Tecnodom P-AFD07TN-C-PK, r12 Tecnodom P-AFD14TN-B-PK.
+- BLKFIX: r15 Ubc Smart Cool (UA фрагмент таблицы спецификаций + 3 Ё нормализованы к Е).
+- SKIP-НП #1: **r13 HURAKAN HKN-GX650TNS** (тело из фида НП позже).
+- blknochg: r10 SARO SK 301, r14 Ubc S Line, r16 Ubc Medium, r17 Ubc Energy (последние три имеют источник Ё в c36 — допустимо).
+- Verify: 66 PASS / 0 FAIL.
+- Cumulative chunk-077: 16/39 (TRIP 5 / blknotrip 0 / blknochg 9 / blkfix 1 / SKIP-НП 1; 131 PASS / 0 FAIL).
+- OQ: без новых.
+- Next: chunk-077 b3 (SKU 17-24, rows 18-25).
