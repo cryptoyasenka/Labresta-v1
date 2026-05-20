@@ -520,3 +520,14 @@
 - Cumulative chunk-078: 16/53 (TRIP 0 / blknotrip 0 / blknochg 16 / blkfix 0 / SKIP-НП 0; 144 PASS / 0 FAIL).
 - OQ: без новых.
 - Next: chunk-078 b3 (SKU 17-24, rows 18-25). SKIP-НП r19 TATRA TRC1400TN попадёт в b3.
+
+
+## chunk-078 b3 DONE 24/53 (2026-05-20 13:55)
+
+- Категории: blk триплет 0 / blknotrip 0 / blknochg 7 / blkfix 0 / SKIP-НП 1.
+- SKIP-НП #1: r19 TATRA TRC1400TN (тело из фида НП позже).
+- blknochg: r18 Tefcold FSC175H узкий, r20 FS890H BLACK, r21 BK850 под противни кондитерский, r22 UR400G, r23 UR90G-SUB ZERO, r24 UR600 (c5/c7 «UR600-I»), r25 CC45.
+- Verify: 66 PASS / 0 FAIL.
+- Cumulative chunk-078: 24/53 (TRIP 0 / blknotrip 0 / blknochg 23 / blkfix 0 / SKIP-НП 1; 210 PASS / 0 FAIL).
+- OQ: без новых.
+- Next: chunk-078 b4 (SKU 25-32, rows 26-33).
