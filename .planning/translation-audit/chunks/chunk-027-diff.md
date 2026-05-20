@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-027 (53 SKU, продолжение chunk-026)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 48/53
+**Status:** IN PROGRESS 53/53
 
 **Состав (по типу товара):** первый SKU — Артикул `2538822484`, бренд NEMOX (`Апарат для морозива NEMOX Gelato Chef 5L AUTOMATIC i-green`, раздел `Холодильне та морозильне обладнання/Апарати для морозива (фризера) і гранитори` — прямое продолжение второго раздела chunk-026). NEMOX НЕ входит в НП-эксклюзивный список → обычная обработка (НЕ SKIP-НП). Раздел `Апарати для морозива (фризера) і гранитори` занимает 33 SKU (SKU 1-33), далее начинается новый раздел `Холодильне та морозильне обладнання/Шафи морозильні` (20 SKU, SKU 34-53; последний SKU 53 — Артикул `1154533678`, бренд TEFCOLD, `Морозильна шафа Tefcold RF710 (-18°...-22 °C, нерж.)`). Тип товара определяется per-SKU. Бренды per-SKU: Staff/Nemox/Gooder/EWT INOX/Tefcold/CAB/Fagor/Hata/Brillis/Forcold/Hurakan/REEDNEE/Forcar — из них Fagor (×2) и Hurakan (×2) → SKIP-НП по правилу forward-only.
 
@@ -1370,5 +1370,115 @@
 Морозильные шкафы: Forcold/Hata/Gooder/Tefcold/Forcar — все **НЕ ∈ НП-эксклюзивный список** (НП-set = {HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA}) → обычная обработка, **0 SKIP-НП в b6** (vs 2 SKIP-НП в b5). **blk триплет 6 STANDARD:** SKU 41 Forcold G-GN650BT-FC (3p/1ul/16li + 1 `<img />` SELF-CLOSED preserve byte-exact — FIRST self-closed `<img />` в авторском RU chunk-027, vs SKU 40 b5 non-self-closed `<img>`; HTML41 plain `<p>Технические характеристики:</p>` NO `<strong>` tag — vs SKU 43-48 strong-обёртка) + SKU 43 Gooder UDD 370 DTK BK (2p + `<strong>...</strong>:` colon-OUTSIDE-strong + 1ul/18li, dims `*`-asterisk 3× → Lat x) + SKU 44 Gooder UDD 370 DTK (2p + colon-outside-strong + 1ul/21li, dims `*` 3× + combo voltage `230/50В` preserve) + SKU 46 Forcar G-EF400 (2p + colon-outside-strong + 1ul/22li, FIRST flat-layout blk в авторском RU chunk-027 — БЕЗ `D x W x H` triple, нетто-размеры построчно Довжина/Ширина/Висота; `220V` Lat preserve) + SKU 47 Forcold G-SNACK400BT-FC (FIRST multi-section blk в авторском RU chunk-027: 4p — lead + colon-outside-strong + 2 anchor-p `Размеры в упаковке`/`В комплекте` + 3ul 12+4+3=19li + 2D dims `530 x 540 мм` space-x-space + `220V` Lat) + SKU 48 Gooder BF400V (FIRST `<h2>` в авторском RU chunk-027 + 1p `<strong>Технические характеристики:</strong></p>` colon-INSIDE-strong — vs SKU 43/44/46/47 colon-outside; 1h2+1p+1ul/18li, mixed 2D+3D dims Cyr х → Lat x; `Розмір полок :` space-before-colon preserve; UA-typo `Хлодоген`→`Хладагент`; 3-dot range `-18...-22` vs SKU 43/44 4-dot `....`). **blknochg 2 LIVE Horoshop genuine RU body НЕ переписываем:** SKU 42 Hata GNH650BT S/S201 3R (1p + ul/16li с typos поставщика preserve: `Объем` без ё, `LED свещение` (должно быть `освещение`), `закрытие двери` sing. vs UA pl `дверей`; volt `220 В ` trailing space genuine) + SKU 45 Tefcold GUF70 (1p marketing-lead + colon-INSIDE-strong + ul/31li самый длинный — `pаспашная`/`pешетчатые` Lat `p` Horoshop artefact, `&sdot;` entity, `5.83 квт/24ч` literal `.` decimal preserve, `220-240/50 V/Hz` combo Lat V, `45 дб(А)` lowercase `дб`). **SKIP-НП 0**: ни одного Hurakan/Apach/Fagor/Tatra/Cold/Project Systems/Astoria/Arris/Maxima в b6. Кумул. SKIP-НП chunk-027 = 2 (b1-b4: 0; b5: 2 Fagor; b6: 0). **OQ ledger chunk-027 остаётся 1** (OQ#1 b5 SKU 33 `шиєвого алюмінію` source typo не пересматривается; в b6 новых OQ нет). blk триплет 6 + blkv 0 + blknotrip 0 + blknochg 2 + blknochgeq 0 + SKIP-НП 0 = 8/8. NEXT: chunk-027 b7 SKU 49-53 (LAST 5-SKU batch chunk-027 → 53/53 CLOSE).
 
 *(scoped к row Артикул=2633573771)*
+
+---
+
+## SKU 49/53 — Морозильный шкаф BF400VG Gooder (Артикул 2640112372) — 🔴 RU=UA + Назв.мод (RU) UA-leak
+
+**Поле:** Название модификации (RU)
+**Было:** `Морозильна шафа BF400VG Gooder`
+**Стало:** `Морозильный шкаф BF400VG Gooder`
+
+**Поле:** Описание товара (RU)
+**Было:** (полностью идентично UA — украинский текст)
+**Стало:** (полный перевод RU тег-в-tag):
+
+```
+<h2>Морозильный шкаф BF400VG Gooder работает в температурном режиме от -18&deg;С до -22&deg;С.</h2> <p><strong>Технические характеристики:</strong></p> <ul>
+<li>Вес: 62 кг</li>
+<li>Вес в упаковке: 78 кг</li>
+<li>Общий объём, л: 380 л</li>
+<li>Двойной стеклопакет</li>
+<li>Замок</li>
+<li>Количество полок: 4+1</li>
+<li>Климатический класс: 5</li>
+<li>Без освещения</li>
+<li>Мощность: 0,135 кВт;</li>
+<li>Размер полок : 410 x 485 мм;</li>
+<li>Размеры (ДхШхВ): 595мм x 662мм x 1882мм;</li>
+<li>Размеры в упаковке (ДхШхВ): 660мм x 665мм x 2050мм;</li>
+<li>Расположение дверей: правые/не сменные</li>
+<li>Система охлаждения: статическая</li>
+<li>Темп. режим: -18&deg;C...-22&deg;C</li>
+<li>Цвет белый</li>
+<li>Цифровой термостат</li>
+<li>Хладагент: R290</li>
+</ul>
+```
+
+*(blk триплет STANDARD: `desc UA==RU` **True** (🔴 RU=UA — RU = полная укр. копия тела), `nm_ru`==`nm_ua` `Морозильна шафа BF400VG Gooder` (UA word `Морозильна шафа`; char-level UA_ONLY=∅; body-level `_has_ua(_du)` True via `Морозильна`/`працює`/`температурному`/`Технічні`), `nm_ru`!=`nazv_ru` genuine `Морозильный шкаф BF400VG Gooder` → AUTO Назв.мод (RU) = genuine `nazv_ru` + Описание (RU) — авторский MIRROR SKU 48 BF400V паттерна chunk-027: 1 `<h2>` lead (vs SKU 41/43/44/46/47 `<p>` lead) + 1 `<p><strong>Технические характеристики:</strong></p>` colon-INSIDE-strong (vs SKU 43/44/46/47 colon-outside) + 1 `<ul>` + 18 `<li>`. **Gooder НЕ ∈ НП-эксклюзивный список** (word-boundary NP-hit нет — сравнение = членство в бренд-SET {HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA}, НЕ substring) → обычная обработка, НЕ SKIP-НП. SOFT: h2 `<h2>Морозильна шафа BF400VG Gooder працює в температурному режимі від -18&deg;С до -22&deg;С.</h2>`→`<h2>Морозильный шкаф BF400VG Gooder работает в температурном режиме от -18&deg;С до -22&deg;С.</h2>` (h2 lead byte-mirror source); `<strong>Технічні характеристики:</strong>`→`<strong>Технические характеристики:</strong>` (colon INSIDE strong byte-mirror — mirror SKU 48); `Вага: 62 кг`→`Вес: 62 кг`; `Вага в упаковці: 78 кг`→`Вес в упаковке: 78 кг`; `Загальний об&#39;єм л: 380 л`→`Общий объём, л: 380 л` (drop `&#39;` + label-style comma re-order + ё, mirror SKU 48); **NEW li pos.4 `Подвійний склопакет`→`Двойной стеклопакет`** (vs SKU 48 без этой li); `Замок` (same); `Кількість полок: 4+1`→`Количество полок: 4+1`; `Климатичний клас: 5`→`Климатический класс: 5`; `Без освітлення`→`Без освещения`; `Потужність: 0,135 кВт;`→`Мощность: 0,135 кВт;`; `Розмір полок : 410х485 мм;`→`Размер полок : 410 x 485 мм;` (space-before-colon `полок :` preserve verbatim — source artefact, mirror SKU 48 + Cyr х → Lat x + 2D space-x-space Policy C 2D-формат); `Розміри (ДхШхВ): 595х662х1882 мм;`→`Размеры (ДхШхВ): 595мм x 662мм x 1882мм;` (Cyr х → Lat x + `мм` слитно 3D Policy B/C); `Розміри в упаковці (ДхШхВ): 660х665х2050 мм;`→`Размеры в упаковке (ДхШхВ): 660мм x 665мм x 2050мм;`; **NEW li pos.13 `Розташування дверей: праві/не змінні`→`Расположение дверей: правые/не сменные`** (mirror UA 2-token negation `не змінні` → RU 2-token `не сменные` preserve space-separated faithful — vs SKU 48 без `не` `праві/змінні`→`правые/сменные`); `Система охолодження: статична`→`Система охлаждения: статическая`; `Темп.режим: -18&deg;C...-22&deg;C`→`Темп. режим: -18&deg;C...-22&deg;C` (SOFT space added + 3-dot range preserve mirror SKU 48); **(MISSING vs SKU 48: `Глухі двері` li отсутствует в SKU 49)**; `Колір білий`→`Цвет белый`; `Цифровий термостат`→`Цифровой термостат`; `Хлодоген: R290`→`Хладагент: R290` (UA-typo `Хлодоген` mirror SKU 48 same form — standard RU `Хладагент`). HTML-entities 1:1. Код `BF400VG Gooder` Lat не переводится. META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=2640112372)*
+
+---
+
+## SKU 50/53 — Морозильный шкаф HURAKAN HKN-GX650BTS (Артикул 2854780491) — SKIP-НП (бренд НП-эксклюзив, тело из фида НП позже)
+
+**Бренд:** Hurakan (НП-эксклюзивный — forward-only SKIP-правило)
+**Поле:** Название модификации (RU)
+**Было:** (ячейка не трогается — тело из фида НП позже)
+**Стало:** не трогаем (SKIP-НП — тело из фида НП позже)
+
+**Поле:** Описание товара (RU)
+**Было:** (ячейка не трогается — тело из фида НП позже)
+**Стало:** не трогаем (SKIP-НП — тело из фида НП позже)
+
+*(SKIP-НП forward-only — `brand=Hurakan` ∈ НП-эксклюзивный список {HURAKAN/Hurakan/Хуракан}; word-boundary NP-hit → не переписываем RU, не пишем зонд-скрипты, не делаем scratch-дамп, не тратим xhigh-анализ. **Hurakan ∈ НП-эксклюзивный список** (word-boundary NP-hit по бренд-SET {HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA}) → forward-only SKIP-правило: тело из фида НП позже, ячейки chunk-027-fixed.xlsx НЕ трогаем. Ячейки `nm_ru`+`du`/`dr` chunk-027-fixed.xlsx **НЕ трогаем** — тело из фида НП позже всё перепишет. SKU 50 HKN-GX650BTS — ВТОРАЯ SKIP-НП SKU chunk-027 (после SKU 34 Fagor + SKU 39 Fagor b5; ПЕРВАЯ Hurakan в chunk-027). nazv_ru `Морозильный шкаф HURAKAN HKN-GX650BTS` clean RU genuine — для общей связности SKIP-НП блока в MR не нумеруется. META faithful (блок сохраняется без правок). Открытых вопросов 0.)*
+
+*(scoped к row Артикул=2854780491)*
+
+---
+
+## SKU 51/53 — Морозильный шкаф Hurakan HKN-GX650BT INOX (Артикул 1082954195) — SKIP-НП (бренд НП-эксклюзив, тело из фида НП позже)
+
+**Бренд:** Hurakan (НП-эксклюзивный — forward-only SKIP-правило)
+**Поле:** Название модификации (RU)
+**Было:** (ячейка не трогается — тело из фида НП позже)
+**Стало:** не трогаем (SKIP-НП — тело из фида НП позже)
+
+**Поле:** Описание товара (RU)
+**Было:** (ячейка не трогается — тело из фида НП позже)
+**Стало:** не трогаем (SKIP-НП — тело из фида НП позже)
+
+*(SKIP-НП forward-only — `brand=Hurakan` ∈ НП-эксклюзивный список; word-boundary NP-hit. **Hurakan ∈ НП-эксклюзивный список** (word-boundary NP-hit по бренд-SET {HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA}) → forward-only SKIP-правило: тело из фида НП позже, ячейки chunk-027-fixed.xlsx НЕ трогаем. Ячейки chunk-027-fixed.xlsx **НЕ трогаем** — тело из фида НП позже. SKU 51 HKN-GX650BT INOX — ТРЕТЬЯ SKIP-НП SKU chunk-027 (mirror SKU 50 Hurakan pattern + INOX suffix); nazv_ru `Морозильный шкаф Hurakan HKN-GX650BT INOX` clean RU genuine. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=1082954195)*
+
+---
+
+## SKU 52/53 — Морозильный шкаф Tefcold RF1420 (-18°...-22°С, нерж.) (Артикул 1154459204) — RU корректен; правок нет
+
+**Поле:** Название модификации (RU)
+**Было:** (чистый рус. бренд+код, украинского leak нет)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (RU уже корректный русский перевод — НЕ 🔴 RU=UA)
+**Стало:** без изменений
+
+*(blknochg — `desc UA==RU` **False** (genuine отдельный корректный русский перевод поставщика, НЕ укр. копия); `nm_ua`==`nm_ru`==`nazv_ru` `Морозильный шкаф Tefcold RF1420 (-18°...-22°С, нерж.)` (UA `Морозильна шафа` → RU `Морозильный шкаф`; все 4 поля clean RU char-level UA_ONLY=∅; title содержит литералы `°` + Cyr `С` + `нерж.` shortform faithful). **Tefcold НЕ ∈ НП-эксклюзивный список** (word-boundary NP-hit нет — сравнение = членство в бренд-SET {HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA}, НЕ substring) → обычная обработка, НЕ SKIP-НП. RU уже корректный русский — **LIVE-магазин Horoshop**, genuine RU-тело перезаписывать НЕЛЬЗЯ без явного go-ahead Yana + safe mode → Назв.мод (RU) и Описание (RU) НЕ трогаем. genuine RU body: 1× `<h2>` marketing-lead + `<p>Технические характеристики:</p>` plain NO `<strong>` + ul/24li + `<p><img alt="" src="/content/uploads/images/1154459204/..." style="..." /> </p>` (self-closed `/>` + trailing space genuine artefact). Особенности genuine RU: `pаспашные самозакрывающиеся глухие двери` Lat `p` Horoshop artefact + `pешетчатые белые полки GN2/1` Lat `p` (mirror SKU 45 Tefcold pattern), `Температурный диапазон: От -24 до -18 &deg;C` (capital `От` mid-sentence source style), `Уровень шума: 48 дб(А)` lowercase `дб` (vs стандарт `дБ` preserve), `Хладагент: R290`, `Входная мощность: 730 вт` lowercase `вт`, `Напряжение / Частота: 220-240/50 V/Hz` combo Lat V preserve, `Потребляемая энергия: 12.48 квт/24ч` literal `.` decimal Horoshop preserve (blknochg НЕ конвертируем в comma), 2× dims `Внутренний размер (Ш x Г x В): 1360 x 685 x 1396 мм` + `Габаритный размер (Ш x Г x В): 1480 x 850 x 2010 мм` — 3D в space-x-space формате БЕЗ `мм слитно` (поставщик-специфичный, blknochg НЕ нормализуем). Код `Tefcold RF1420` Lat → customer-facing рассинхрона названия НЕТ. META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=1154459204)*
+
+---
+
+## SKU 53/53 — Морозильный шкаф Tefcold RF710 (-18°...-22°С, нерж.) (Артикул 1154533678) — RU корректен; правок нет
+
+**Поле:** Название модификации (RU)
+**Было:** (чистый рус. бренд+код, украинского leak нет)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (RU уже корректный русский перевод — НЕ 🔴 RU=UA)
+**Стало:** без изменений
+
+*(blknochg — `desc UA==RU` **False** (genuine отдельный RU); `nm_ru`==`nazv_ru` `Морозильный шкаф Tefcold RF710 (-18°...-22°С, нерж.)` clean RU (char-level UA_ONLY=∅; title `(-18°...-22°С, нерж.)` Cyr С no-space). NB: **nazv_ua title `-22 °C` space-before-°C + Lat C** vs nazv_ru `-22°С` no-space + Cyr С — source desync UA↔RU в title-suffix preserve verbatim; blknochg НЕ трогаем nazv_ua. **Tefcold НЕ ∈ НП-эксклюзивный список** (word-boundary NP-hit нет — сравнение = членство в бренд-SET {HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA}, НЕ substring) → обычная обработка, НЕ SKIP-НП. RU genuine LIVE — НЕ переписываем. genuine RU body: 1× `<h2>` marketing-lead + `<p>Технические характеристики:</p>` plain NO `<strong>` + ul/22li + img-wrap p with self-closed `<img ... />` + trailing space (mirror SKU 52 pattern, уменьшенная версия — single-door RF710 vs RF1420 double). Особенности genuine RU: `pаспашная самозакрывающаяся глухая дверь` Lat `p` singular form + `pешетчатые белые полки GN2/1` Lat `p`, `Уровень шума: 48 дб(А)` lowercase (mirror SKU 52), `Хладагент: R290`, `Входная мощность: 650 вт`, `Напряжение / Частота: 220-240/50 V/Hz` combo Lat V, `Потребляемая энергия: 7,19 квт/24ч` decimal `,` already comma (vs SKU 52 `12.48` literal `.` — отличается между SKU 52 и 53 в genuine RU, blknochg НЕ unify), 2× dims `Внутренний размер (Ш x Г x В): 624 x 685 x 1396 мм` + `Габаритный размер (Ш x Г x В): 740 x 850 x 2010 мм` space-x-space БЕЗ `мм слитно` (поставщик-специфичный). Код `Tefcold RF710` Lat. META faithful. Открытых вопросов 0.)*
+
+
+**Наблюдения по батчу SKU 49-53 (раздел `Холодильне та морозильне обладнання/Морозильні шафи` — ЗАВЕРШЕНИЕ chunk-027):**
+
+СЕДЬМОЙ и ПОСЛЕДНИЙ батч chunk-027 (5 SKU вместо 8 — хвост 53/53 SKU). Морозильные шкафы: Gooder/Hurakan×2/Tefcold×2. **blk триплет 1 STANDARD:** SKU 49 Gooder BF400VG (mirror SKU 48 BF400V паттерна chunk-027 — 1h2 + 1p colon-INSIDE-strong + 1ul/18li; diff vs SKU 48: +1 li `Двойной стеклопакет` поз.4 + -1 li `Глухие двери` absent + поз.13 `правые/не сменные` NEW negation form 2-token mirror UA `не змінні`; UA-typo `Хлодоген`→`Хладагент` mirror SKU 48). **blkv 0; blknotrip 0; blknochg 2 LIVE** — SKU 52 Tefcold RF1420 (1h2+1p+ul/24li+img-wrap p, `pаспашные`/`pешетчатые` Lat `p` Horoshop artefact, `48 дб(А)` lowercase, `12.48 квт/24ч` literal `.` decimal, `220-240/50 V/Hz` combo Lat V, dims в space-x-space БЕЗ `мм слитно` — поставщик-специфичный) + SKU 53 Tefcold RF710 (mirror SKU 52 уменьшенный single-door — 1h2+1p+ul/22li+img-wrap p; nazv_ua/nazv_ru desync title `-22 °C` Lat C space-before-°C vs `-22°С` Cyr С no-space preserve verbatim; `7,19 квт/24ч` уже comma decimal vs SKU 52 literal `.` — РАЗНЫЕ форматы между SKU 52 и 53 в genuine RU, blknochg НЕ unify). **blknochgeq 0; SKIP-НП 2** — SKU 50 Hurakan HKN-GX650BTS + SKU 51 Hurakan HKN-GX650BT INOX (ПЕРВЫЕ Hurakan в chunk-027; ВТОРАЯ-ТРЕТЬЯ SKIP-НП пара chunk-027 vs SKU 34/39 Fagor b5). Кумул. SKIP-НП chunk-027 = **4** (b1-b4: 0; b5: 2 Fagor; b6: 0; b7: 2 Hurakan). **OQ ledger chunk-027 = 1 БЕЗ ИЗМЕНЕНИЯ** (b5 OQ#1 SKU 33 `шиєвого алюмінію` source typo finalizes при close 53/53). blk триплет 1 + blkv 0 + blknotrip 0 + blknochg 2 + blknochgeq 0 + SKIP-НП 2 = 5/5. **chunk-027 = 53/53 → ЗАКРЫТИЕ СЛЕДУЮЩИМ ШАГОМ.**
+
+*(scoped к row Артикул=1154533678)*
 
 ---
