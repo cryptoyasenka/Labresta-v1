@@ -89,3 +89,28 @@
 | 33 | 32 | 907890667 | Angelo Po AF1N (расстоечно-холодильный) | |
 
 **Verify:** 72 PASS / 0 FAIL. Без новых OQ.
+
+
+## b5 (SKU 33-40, rows 34-41)
+
+Категории: blk триплет 1 / blknotrip 0 / blknochg 7 / blkfix 0 / SKIP-НП 0.
+
+### TRIP
+
+| row | SKU | ART | модель | действие |
+|---|---|---|---|---|
+| 34 | 33 | 1090576697 | Tecnodom AF04EKOTN | c5 UA→RU; c36 полный RU-перевод (дубль c35 был) |
+
+### blknochg
+
+| row | SKU | ART | модель |
+|---|---|---|---|
+| 35 | 34 | 1174595266 | Samaref PF 700M TN нерж. |
+| 36 | 35 | 2379520133 | Ubc Dynamic Plus |
+| 37 | 36 | 2493959296 | Tecnodom AF14PKMTN290 |
+| 38 | 37 | 2106846233 | Frosty FTD400SS |
+| 39 | 38 | 2106847262 | Frosty FTD600SS |
+| 40 | 39 | 2239432973 | GoodFood BC160BW2LED |
+| 41 | 40 | 2239439273 | GoodFood BC160BW2LEDCOL |
+
+**Verify:** 73 PASS / 0 FAIL. Без новых OQ.

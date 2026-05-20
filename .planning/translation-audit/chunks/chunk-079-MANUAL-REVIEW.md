@@ -1,6 +1,6 @@
 # chunk-079 manual review (W2)
 
-**Status:** chunk-079 b4 DONE 32/58 (cum TRIP 0 / blknotrip 0 / blknochg 32 / blkfix 0 / SKIP-НП 0; 288 PASS / 0 FAIL) — next b5 (SKU 33-40, rows 34-41). 2 OQ (c079 #1 r12 FSC1000H; c079 #2 r14 FSC1950S).
+**Status:** chunk-079 b5 DONE 40/58 (cum TRIP 1 / blknotrip 0 / blknochg 39 / blkfix 0 / SKIP-НП 0; 361 PASS / 0 FAIL) — next b6 (SKU 41-48, rows 42-49). 2 OQ (c079 #1 r12 FSC1000H; c079 #2 r14 FSC1950S).
 
 ## Параметры
 
@@ -98,3 +98,24 @@ TRIP / blknotrip / blknochg / blkfix / SKIP-НП.
 - **r33** SKU=32 ART=907890667 Angelo Po AF1N (шкаф расстоечно-холодильный) — c5==c7 RU clean.
 
 **Verify:** 72 PASS / 0 FAIL. Без новых OQ.
+
+
+## b5 (SKU 33-40, rows 34-41) — DONE 40/58
+
+**Категории:** blk триплет 1 / blknotrip 0 / blknochg 7 / blkfix 0 / SKIP-НП 0.
+
+### TRIP (c5 ← c7; c36 ← faithful RU body)
+
+- **r34** SKU=33 ART=1090576697 Tecnodom AF04EKOTN — c5 был UA «Шафа холодильна Tecnodom AF04EKOTN», c7 уже RU. Переписан c5→«Шкаф холодильный Tecnodom AF04EKOTN»; c36 переведён полностью с UA (был дубль c35): «Шкаф холодильный Tecnodom AF04EKOTN среднетемпературный с облицовкой из нержавеющей стали»; ТТХ — объем 400 л, глухие двери, цифровой дисплей, динамическое охлаждение, авторазмораживание, автоиспарение конденсата, 3 полки-решетки GN1/1 пласт., термоизоляция 50 мм, регулируемые ножки, 0..+10 °C, R404A, 700х620х1900, 0,385 кВт/220 В.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r35** SKU=34 ART=1174595266 Samaref PF 700M TN нерж. — c5==c7 RU clean.
+- **r36** SKU=35 ART=2379520133 Ubc Dynamic Plus — c5==c7 RU clean.
+- **r37** SKU=36 ART=2493959296 Tecnodom AF14PKMTN290 — c5==c7 RU clean.
+- **r38** SKU=37 ART=2106846233 Frosty FTD400SS — c5==c7 RU clean.
+- **r39** SKU=38 ART=2106847262 Frosty FTD600SS — c5==c7 RU clean.
+- **r40** SKU=39 ART=2239432973 GoodFood BC160BW2LED — c5==c7 RU clean.
+- **r41** SKU=40 ART=2239439273 GoodFood BC160BW2LEDCOL — c5==c7 RU clean.
+
+**Verify:** 73 PASS / 0 FAIL. Без новых OQ.
