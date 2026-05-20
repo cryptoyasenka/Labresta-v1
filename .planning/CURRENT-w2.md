@@ -479,3 +479,15 @@
 - Cumulative chunk-077: 32/39 (TRIP 5 / blknotrip 0 / blknochg 25 / blkfix 1 / SKIP-НП 1; 275 PASS / 0 FAIL).
 - OQ: без новых.
 - Next: chunk-077 b5 FINAL (SKU 33-39, rows 34-40, 7 SKU).
+
+
+## chunk-077 b5 FINAL DONE 39/39 — ЗАКРЫТ (2026-05-20 13:15)
+
+- Категории: blk триплет 1 / blknotrip 0 / blknochg 6 / blkfix 0 / SKIP-НП 0.
+- TRIP: r38 Tefcold RK710 (c5 был UA → RU; c36 был полный дубль c35 → переведён полностью).
+- blknochg: r34/r35/r36 Juka SD-серия (универсальные SD70M/SD140M/SD140M нерж), r37 Tecnodom AF14PKMTN (среднетемп.), r39 Tefcold UR400S нерж, r40 Tefcold UR400SG нерж.
+- Verify: 64 PASS / 0 FAIL.
+- chunk-077 FINAL: 39/39 (TRIP 6 / blknotrip 0 / blknochg 31 / blkfix 1 / SKIP-НП 1; 339 PASS / 0 FAIL).
+- SKIP-НП #1 по c077: r13 HURAKAN HKN-GX650TNS.
+- OQ: 0 новых на c077. Cumulative W2 OQ = 6.
+- Next: chunk-078 scaffold (W2, продолжение chunk-077).
