@@ -1,6 +1,6 @@
 # chunk-078 manual review (W2)
 
-**Status:** chunk-078 b2 DONE 16/53 (cum TRIP 0 / blknotrip 0 / blknochg 16 / blkfix 0 / SKIP-НП 0; 144 PASS / 0 FAIL) — next b3 (SKU 17-24, rows 18-25). Preliminary SKIP-НП #1: r19 TATRA TRC1400TN (b3). Без новых OQ.
+**Status:** chunk-078 b3 DONE 24/53 (cum TRIP 0 / blknotrip 0 / blknochg 23 / blkfix 0 / SKIP-НП 1; 210 PASS / 0 FAIL) — next b4 (SKU 25-32, rows 26-33). SKIP-НП #1: r19 TATRA TRC1400TN. Без новых OQ.
 
 ## Параметры
 
@@ -57,3 +57,24 @@ TRIP / blknotrip / blknochg / blkfix / SKIP-НП.
 - **r17** SKU=16 ART=2052929591 Tefcold GUC70 — c5==c7 RU clean.
 
 **Verify:** 72 PASS / 0 FAIL. Без новых OQ.
+
+
+## b3 (SKU 17-24, rows 18-25) — DONE 24/53
+
+**Категории:** blk триплет 0 / blknotrip 0 / blknochg 7 / blkfix 0 / SKIP-НП 1.
+
+### SKIP-НП
+
+- **r19** SKU=18 ART=2062033613 **TATRA** TRC1400TN — SKIP-НП (brand=TATRA, тело из фида НП позже). Ячейки в fixed не меняли. ⇒ SKIP-НП #1 по chunk-078.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r18** SKU=17 ART=2052936584 Tefcold FSC175H узкий — c5==c7 RU clean.
+- **r20** SKU=19 ART=2107580724 Tefcold FS890H BLACK — c5==c7 RU clean.
+- **r21** SKU=20 ART=2133534707 Tefcold BK850 под противни кондитерский — c5==c7 RU clean.
+- **r22** SKU=21 ART=2133551858 Tefcold UR400G — c5==c7 RU clean.
+- **r23** SKU=22 ART=2134152498 Tefcold UR90G-SUB ZERO — c5==c7 RU clean.
+- **r24** SKU=23 ART=2134186706 Tefcold UR600 — c5/c7 «UR600-I» (с суффиксом -I), c4 «UR600» — c5==c7 RU clean (расхождение c4 vs c5 — наследие).
+- **r25** SKU=24 ART=2139042703 Tefcold CC45 — c5==c7 RU clean.
+
+**Verify:** 66 PASS / 0 FAIL. Без новых OQ.
