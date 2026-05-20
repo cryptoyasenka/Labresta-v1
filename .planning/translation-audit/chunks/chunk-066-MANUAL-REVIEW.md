@@ -2,9 +2,9 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-066 (90 SKU, rows 2..91; ART 2496038149 … 2153078504)
 **Apply key:** `Артикул` (col1, scoped per row)
-**Status:** b9 DONE 72/90 (b10 предстоит; batch=8 b1..b11 по 8 + b12=SKU89-90 2 SKU = 90)
+**Status:** b10 DONE 80/90 (b11 предстоит; batch=8 b1..b11 по 8 + b12=SKU89-90 2 SKU = 90)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-065
-**Last updated:** chunk-066 b9 (W2)
+**Last updated:** chunk-066 b10 (W2)
 
 Эталон формата: chunk-019-MANUAL-REVIEW.md / chunk-065-MANUAL-REVIEW.md. Категории: blk триплет / blknotrip / blknochg / SKIP-НП.
 
@@ -279,3 +279,30 @@ _(нет)_
 
 ### SKIP-НП 1
 - **SKU 67 r68 ART 2197251446** Гриль для шаурми TATRA TDM E 4B — fixed row68 НЕ тронут, тело из фида НП позже. prelim→confirmed #5.
+
+
+## b10 — SKU 73-80 (rows 74-81)
+
+**Verify:** REGR 72 (b1+b2+b3+b4+b5+b6+b7+b8+b9) + ART 90 + TRIP 0 + BLKNOCHG 8 + SKIP-НП 0 = 434 PASS / 0 FAIL.
+
+### blk триплет 0
+_(нет)_
+
+### blknotrip 0
+_(нет)_
+
+### blknochg 8
+
+| SKU | row | ART | Название | Замечание |
+|---|---|---|---|---|
+| 73 | 74 | 2313001999 | Аппарат для шаурмы электрический MARS MED-02 | c5==c7 genuine RU; c35!=c36 (538/541) — fixed НЕ тронут; soft-note +3 |
+| 74 | 75 | 2313003451 | Аппарат для шаурмы электрический MARS MED-03 | c5==c7 genuine RU; c35!=c36 (524/521) — fixed НЕ тронут; soft-note -3 |
+| 75 | 76 | 2313005071 | Аппарат для шаурмы электрический MARS MED-04 | c5==c7 genuine RU; c35!=c36 (525/522) — fixed НЕ тронут; soft-note -3 |
+| 76 | 77 | 2313005399 | Аппарат для шаурмы газовый MARS MSD-02 | c5==c7 genuine RU; c35!=c36 (474/461) — fixed НЕ тронут; soft-note -13 |
+| 77 | 78 | 2313007426 | Аппарат для шаурмы газовый MARS MSD-03 | c5==c7 genuine RU; c35!=c36 (477/464) — fixed НЕ тронут; soft-note -13 |
+| 78 | 79 | 2313008595 | Аппарат для шаурмы газовый MARS MSD-04 | c5==c7 genuine RU; c35!=c36 (476/463) — fixed НЕ тронут; soft-note -13 |
+| 79 | 80 | 2424779373 | Аппарат для шаурмы электрический Silver ED 04 | c5==c7 genuine RU; c35!=c36 (818/824) — fixed НЕ тронут; soft-note +6 |
+| 80 | 81 | 2424949061 | Аппарат для шаурмы электрический Atalay ADE-5 U | c5==c7 genuine RU; c35!=c36 (503/521) — fixed НЕ тронут; soft-note +18 |
+
+### SKIP-НП 0
+_(нет)_

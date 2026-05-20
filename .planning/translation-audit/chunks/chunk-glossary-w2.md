@@ -948,3 +948,17 @@ _(нет — все 7 blknochg Silver/Atalay шаурма модели — reuse
 - TATRA TDM E 4B (SKIP-НП — не входит в глоссарий)
 
 Soft-note b9: чистый раунд, 0 TRIP — все 7 blknochg Silver/Atalay шаурма имеют c5==c7 genuine RU + c35!=c36 (UA-RU body разные тексты), fixed НЕ тронут. SKU65 NMUA «електричний» / c5/c7 RU «электрический» (genuine). SKIP-НП #5 TATRA TDM E 4B шаурма подтверждён (5-й SKIP-НП в chunk-066, 1-й не-HURAKAN — TATRA), тело из фида НП позже. OQ 0.
+
+## chunk-066 b10 (SKU 73-80, rows 74-81) — 80/90 — глоссарий +1 net-new (cum 935→936)
+
+**Net-new b10:**
+- MARS (brand verbatim, Latin, новый бренд — шаурма машины MED-02/03/04 электрические + MSD-02/03/04 газовые)
+
+**Reuse from earlier batches (b10):**
+- MARS MED-02/03/04 / MSD-02/03/04 (model variants — MARS brand cum reuse после net-new строки)
+- Silver ED 04 (Silver ED family reuse from b8/b9)
+- Atalay ADE-5 U (Atalay brand reuse from b8 SKU60, b9 ADE-3/-4/-5 A)
+- Аппарат для шаурмы (reuse cum)
+- электрический / газовый (reuse cum)
+
+Soft-note b10: чистый раунд, 0 TRIP — все 8 blknochg MARS/Silver/Atalay шаурма имеют c5==c7 genuine RU + c35!=c36 (UA-RU body разные тексты), fixed НЕ тронут. MARS — новый бренд (Latin), шаурма-машины 6 моделей (MED электрические 02/03/04 + MSD газовые 02/03/04). 0 SKIP-НП в b10. OQ 0.

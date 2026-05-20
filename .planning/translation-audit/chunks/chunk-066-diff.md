@@ -3,7 +3,7 @@
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-066 (90 SKU, rows 2..91; ART 2496038149 … 2153078504)
 **Apply key:** `Артикул` (col1, scoped per row)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-065
-**Status:** b9 DONE 72/90 (b10 предстоит; b1..b11 по 8 SKU + b12=SKU89-90 2 SKU)
+**Status:** b10 DONE 80/90 (b11 предстоит; b1..b11 по 8 SKU + b12=SKU89-90 2 SKU)
 
 Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Формат — как chunk-065-diff.md.
 
@@ -216,3 +216,27 @@ _(нет)_
 
 ### SKIP-НП 1
 - **SKU 67 r68 ART 2197251446** TATRA TDM E 4B (гриль для шаурми): fixed row 68 НЕ тронут, тело из фида НП позже. prelim→confirmed #5.
+
+
+## b10 — SKU 73-80 (rows 74-81) — DONE 80/80 (cum)
+
+**Verify:** REGR 72 (b1+b2+b3+b4+b5+b6+b7+b8+b9) + ART 90 + TRIP 0 + BLKNOCHG 8 + SKIP-НП 0 = 434 PASS / 0 FAIL.
+
+### blk триплет 0
+_(нет)_
+
+### blknotrip 0
+_(нет)_
+
+### blknochg 8
+- **SKU 73 r74 ART 2313001999** MARS MED-02 электрический (шаурма): c5==c7 genuine RU; c35!=c36 (538/541) — fixed НЕ тронут.
+- **SKU 74 r75 ART 2313003451** MARS MED-03 электрический (шаурма): c5==c7 genuine RU; c35!=c36 (524/521) — fixed НЕ тронут.
+- **SKU 75 r76 ART 2313005071** MARS MED-04 электрический (шаурма): c5==c7 genuine RU; c35!=c36 (525/522) — fixed НЕ тронут.
+- **SKU 76 r77 ART 2313005399** MARS MSD-02 газовый (шаурма): c5==c7 genuine RU; c35!=c36 (474/461) — fixed НЕ тронут.
+- **SKU 77 r78 ART 2313007426** MARS MSD-03 газовый (шаурма): c5==c7 genuine RU; c35!=c36 (477/464) — fixed НЕ тронут.
+- **SKU 78 r79 ART 2313008595** MARS MSD-04 газовый (шаурма): c5==c7 genuine RU; c35!=c36 (476/463) — fixed НЕ тронут.
+- **SKU 79 r80 ART 2424779373** Silver ED 04 электрический (шаурма): c5==c7 genuine RU; c35!=c36 (818/824) — fixed НЕ тронут.
+- **SKU 80 r81 ART 2424949061** Atalay ADE-5 U электрический (шаурма): c5==c7 genuine RU; c35!=c36 (503/521) — fixed НЕ тронут.
+
+### SKIP-НП 0
+_(нет)_
