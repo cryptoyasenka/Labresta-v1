@@ -13,3 +13,28 @@
 - r54 HURAKAN HKN-UF100G
 
 **Распределение батчей:** b1 (2-9, 8) → b2 (10-17, 8) → b3 (18-25, 8) → b4 (26-33, 8) → b5 (34-41, 8) → b6 (42-49, 8) → b7 (50-57, 8, вкл. r51-r54 HURAKAN×4) → b8 FINAL (58-63, 6).
+
+
+## b1 (SKU 1-8, rows 2-9)
+
+Категории: blk триплет 5 / blknotrip 0 / blknochg 3 / blkfix 0 / SKIP-НП 0.
+
+### blk триплет (TRIP)
+
+| row | SKU | модель | c5 (RU) | c36 |
+|---|---|---|---|---|
+| 3 | 2 | SIRMAN SOAVE | Шкаф холодильный для вина SIRMAN SOAVE | UA→RU 51 бутылка / 2 зоны / R600a |
+| 5 | 4 | Sirman Lison | Винный шкаф Sirman Lison | UA→RU 250 бутылок / 710 л / +5..+22 |
+| 6 | 5 | EWT INOX RT400L-2 | Шкаф-витрина холодильная для вина EWT INOX RT400L-2 | UA→RU 81 бутылка / +5..+18 / R134a |
+| 7 | 6 | REEDNEE RT400L-2 | Шкаф холодильный для вина REEDNEE RT400L-2 | UA→RU 81 бутылка / +5..+18 / R290 |
+| 8 | 7 | FROSTY BD-32 | Шкаф морозильный FROSTY BD-32 (минибар) | UA→RU 32 л / -13..-22 |
+
+### blknochg
+
+| row | SKU | модель |
+|---|---|---|
+| 2 | 1 | Tefcold CPP1380 (винный) |
+| 4 | 3 | Tecfrigo Sommelier 481 |
+| 9 | 8 | Frosty FBB293F (барный) |
+
+**Verify:** 44 PASS / 0 FAIL. Без новых OQ.

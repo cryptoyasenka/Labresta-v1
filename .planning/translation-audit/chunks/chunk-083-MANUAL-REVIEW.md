@@ -21,3 +21,26 @@
 - b6 (SKU 41-48, rows 42-49)
 - b7 (SKU 49-56, rows 50-57) — включая r51-r54 HURAKAN SKIP×4
 - b8 FINAL (SKU 57-62, rows 58-63, 6 SKU)
+
+
+## b1 (SKU 1-8, rows 2-9) — DONE 8/62
+
+**Категории:** blk триплет 5 / blknotrip 0 / blknochg 3 / blkfix 0 / SKIP-НП 0.
+
+### blk триплет (TRIP — c5 переписан с UA→RU + c36 полный RU перевод)
+
+- **r3** SKU=2 ART=2567616405 SIRMAN SOAVE (51 бутылка, 2 зоны 5-12/12-18°C, R600a, реверсивные двери) — c5 «Шкаф холодильный для вина SIRMAN SOAVE». c36 переведен полностью.
+- **r5** SKU=4 ART=2525995929 Sirman Lison (250 бутылок, 710 л, +5..+22°C, R600a, 1000×600×1900мм) — c5 «Винный шкаф Sirman Lison» (по c7-pattern). c36 переведен.
+- **r6** SKU=5 ART=655434908 EWT INOX RT400L-2 (81 бутылка, +5..+18°C, R134a, на колесах) — c5 «Шкаф-витрина холодильная для вина EWT INOX RT400L-2». c36 переведен.
+- **r7** SKU=6 ART=2084253148 REEDNEE RT400L-2 (81 бутылка, +5..+18°C, R290, на колесиках) — c5 «Шкаф холодильный для вина REEDNEE RT400L-2». c36 переведен.
+- **r8** SKU=7 ART=1129158560 FROSTY BD-32 минибар (32 л, -13..-22°C, 1 полка, окраш. сталь) — c5 «Шкаф морозильный FROSTY BD-32 (минибар)». c36 переведен.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r2** SKU=1 ART=2134369414 Tefcold CPP1380 для вина — c5==c7 RU clean. Замечание: c35==c36 (оба RU, len 1497) — нетипично, но c5/c36 RU clean.
+- **r4** SKU=3 ART=2227197573 Tecfrigo Sommelier 481 (192 бутылки) — c5==c7 RU clean.
+- **r9** SKU=8 ART=2037165266 Frosty FBB293F барный — c5==c7 RU clean.
+
+**Verify:** 44 PASS / 0 FAIL. Без новых OQ.
+
+**Cumulative chunk-083:** 8/62 (TRIP 5 / blknotrip 0 / blknochg 3 / blkfix 0 / SKIP-НП 0; 44 PASS / 0 FAIL).
