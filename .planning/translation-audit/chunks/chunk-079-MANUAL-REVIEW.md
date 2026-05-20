@@ -1,6 +1,6 @@
 # chunk-079 manual review (W2)
 
-**Status:** chunk-079 scaffold (W2, продолжение chunk-078). 58 SKU rows 2..59. SKIP-НП preliminary: 0. Next: b1 (SKU 1-8, rows 2-9).
+**Status:** chunk-079 b1 DONE 8/58 (cum TRIP 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0; 72 PASS / 0 FAIL) — next b2 (SKU 9-16, rows 10-17). Без новых OQ.
 
 ## Параметры
 
@@ -21,3 +21,21 @@ TRIP / blknotrip / blknochg / blkfix / SKIP-НП.
 ## OQ (chunk-079)
 
 (пусто на момент scaffold)
+
+
+## b1 (SKU 1-8, rows 2-9) — DONE 8/58
+
+**Категории:** blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r2** SKU=1 ART=2140760718 Tefcold UR600SG — c5==c7 RU clean.
+- **r3** SKU=2 ART=2140762562 Tefcold RK500SNACK — c5==c7 RU clean.
+- **r4** SKU=3 ART=2140764901 Tefcold NC2500G — c5==c7 RU clean (c36 body упоминает «NC2500» без G — наследие источника, не наш write).
+- **r5** SKU=4 ART=2140771607 Tefcold FS890H — c5==c7 RU clean.
+- **r6** SKU=5 ART=2140773390 Tefcold FSC890S — c5==c7 RU clean.
+- **r7** SKU=6 ART=2140774704 Tefcold FSC890H — c5==c7 RU clean.
+- **r8** SKU=7 ART=2140777191 Tefcold RK710G — c5==c7 RU clean.
+- **r9** SKU=8 ART=2140783030 Tefcold RKS600 — c5==c7 RU clean.
+
+**Verify:** 72 PASS / 0 FAIL. Без новых OQ.
