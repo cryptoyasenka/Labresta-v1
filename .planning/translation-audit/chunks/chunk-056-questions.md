@@ -1,4 +1,7 @@
-# chunk-056 — questions for Yana (W2)
+# chunk-056 — questions for Yana (W2) — ANSWERED
+
+**Status:** OQ #1 ANSWERED Yana 2026-05-21 (через AskUserQuestion). Решения сохранены в `.planning/translation-audit/chunks/W2-OQ-ANSWERS.md` (commit `e2bd5ac`). См. блок «Решение Yana» в конце документа.
+
 
 Нумерованные Открытые вопросы chunk-056 (customer-facing рассинхрон чисел/модель-кодов источника — НЕ авто-фиксятся, ждут решения Yana). Дублируются в chunk-056-MANUAL-REVIEW.md раздел «Открытые вопросы chunk-056». Soft-notes (НЕ нумерованные, genuine RU дефекты источника, LIVE не трогается) сюда НЕ выносятся — они в diff.md / MANUAL-REVIEW.
 
@@ -24,5 +27,16 @@
 **Что сделано (по прецеденту OQ#1 SKU 10 chunk-055 / OQ#1 chunk-021 BCB10 vs BCB10 NC):** SKU 67 = blknochg (`descUA != descRU` False — genuine отдельный RU, lenUA=470 lenRU=756, RU с доп. iframe-видео). На LIVE-магазине рассинхрон модель-кода UA↔genuine-RU **без go-ahead Yana НЕ правится**. genuine «Название (RU)» НЕ переписано; «Название модификации (RU)» НЕ флипнуто; fixed.xlsx не трогается (blknochg и так не модифицируется). «Описание товара (RU)» — genuine отдельный RU, тоже не переписывается.
 
 **Нужно решение Yana:** какой код верный для этого SKU — `APPIA II V 1GR` (UA-название) или `Appia Life V 1Gr` (UA-описание + вся RU-карточка)? Гипотеза: опечатка в UA-названии (вся остальная линейка и собственное UA-описание = Appia Life). После ответа: либо выровнять UA Назв/Назв.мод → `Appia Life V 1Gr` (если опечатка в UA-названии), либо подтвердить что это физически другая модель (APPIA II) и развести карточки. До решения карточка на LIVE в части модель-кода не трогается.
+
+---
+
+## Решение Yana (2026-05-21) — OQ #1 ANSWERED
+
+**Канон:** `Appia Life V 1Gr` (опечатка в UA-имени `APPIA II V 1GR`). Вся линейка батча и собственное UA-описание используют `Appia Life`.
+
+**W2 RU side (verified):** `chunk-056-fixed.xlsx` r68 col5/col7 = `Кофемашина Nuova Simonelli Appia Life 1Gr V (1 группа)` — RU уже совпадает с каноном (порядок токенов `1Gr V` vs `V 1Gr` — minor order variation, RU стилистически уже корректна).
+
+**Forward к W1 (UA-правка):** `chunk-056-fixed.xlsx` r68 col4/col6 → выровнять на `Кавомашина Nuova Simonelli Appia Life V 1Gr (1 група)` (поправить опечатку `APPIA II V 1GR`). На момент проверки W2 fixed.xlsx уже содержит правильный UA `Appia Life V 1Gr` — возможно прошлый цикл уже синхронизировал; верифицировать в W1 worktree.
+
 
 ---
