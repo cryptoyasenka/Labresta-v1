@@ -631,3 +631,5 @@ CURRENT-w2: chunk-084 b1 DONE 8/71 (cum TRIP 0 / blknotrip 0 / blknochg 7 / blkf
 CURRENT-w2: chunk-084 b2 DONE 16/71 (cum TRIP 4 / blknotrip 0 / blknochg 11 / blkfix 1 / SKIP-НП 0; 68 PASS / 0 FAIL); TRIP 4 (FROSTY SGD150 + Forcar G-ER200GSS нерж + Frosty FTD200GSS + Forcar G-EF200GSS) + blknochg 4 (Tefcold UF200VG/VSG/GF200VSG + Forcar G-EF200); без новых OQ; next b3 (SKU 17-24, rows 18-25)
 
 CURRENT-w2: chunk-084 b3 DONE 24/71 (cum TRIP 10 / blknotrip 0 / blknochg 13 / blkfix 1 / SKIP-НП 0; 116 PASS / 0 FAIL); TRIP 6 (Hendi 525630 + Hendi 617700 + Gi Metal AC-SP/ACH-SP/AC-SPN2/AC-SPG2 — щётки/щипцы для пиццы и гриля) + blknochg 2 (Frosty FTD200SS + Gi Metal AC-SPT); +1 OQ #16 Latin c в чиcтки source typo; next b4 (SKU 25-32, rows 26-33)
+
+CURRENT-w2: chunk-084 b4 DONE 32/71 (cum TRIP 12 / blknotrip 0 / blknochg 19 / blkfix 1 / SKIP-НП 0; 156 PASS / 0 FAIL); TRIP 2 (r26 Gi Metal AC-SPGT2 щётка для гриля н/с 310x60 + r30 FROSTY FL-58 шкаф настольный холодильный 58 л black) + blknochg 6 (FROSTY RT58L-1D/RT78L-1D/RT280L/FL-98/FL238/RT235L шкафы-витрины); без новых OQ; next b5 (SKU 33-40, rows 34-41)
