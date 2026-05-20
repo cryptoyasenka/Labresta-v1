@@ -1,7 +1,7 @@
 # chunk-068 MANUAL REVIEW (W2)
 
-**Status:** chunk-068 b4 DONE 32/50 (cum TRIP 18 + blknotrip 0 + blknochg 12 + SKIP-НП 2; OQ 0; 130 PASS) — следующий b5 (SKU 33-40, rows 34-41)
-**Last updated:** chunk-068 b4 DONE 32/50
+**Status:** chunk-068 b5 DONE 40/50 (cum TRIP 20 + blknotrip 0 + blknochg 18 + SKIP-НП 2; OQ 0; 124 PASS) — следующий b6 (SKU 41-48, rows 42-49)
+**Last updated:** chunk-068 b5 DONE 40/50
 
 ## Структура
 
@@ -112,4 +112,26 @@
 **OQ:** 0 новых открытых вопросов.
 
 **Verify breakdown:** 50 ART regression + 6 TRIP × 7 = 42 + 1 blknochg × 3 = 3 + 1 SKIP-НП × 6 = 6 + b1/b2/b3 regression (12 prior TRIP c5==c7 + 11 prior blknochg c5 unchanged + 6 SKIP-НП r10 cols unchanged) = 29. Total **130 PASS / 0 FAIL**.
+
+## b5 (SKU 33-40, rows 34-41) — DONE 40/50
+
+**Категории:** TRIP 2 + blknotrip 0 + blknochg 6 + SKIP-НП 0 = 8/8. Verify 124 PASS / 0 FAIL.
+
+**TRIP (2):**
+- r35 SKU34 ART 659353448 **Hendi 696002 ёрш для мойки стаканов**: c5←c7 (`Ерш для мойки стаканов Hendi 696002`); c36 ← 7-строчный body (`<p>` lead + `<ul>` + 4-li; dims `3/4/190x100x180`; «Йорж для миття склянок з трьома щіточками» → «Ерш для мойки стаканов с тремя щеточками» (без Ё); «Виготовлений з поліпропілену» → «Изготовлен из полипропилена», «3 щітки з нейлону» → «3 щетки из нейлона», «На дні 4 ніжки-присоски» → «На дне 4 ножки-присоски»).
+- r36 SKU35 ART 1500252450 **Krupps C327DGT Advance фронтальная** (различный SKU от b2 r12 ART 2213453082 — без DP45K насоса): c5←c7; c36 ← 12-строчный body с `<h2>` (1 h2-lead «Размер корзин: 350х350 мм» + `<p>Технические характеристики:</p>` + 10-li; dims `2/327/350х350/2/240/2/2/1/1/2/2,79/220/420х548х660`; ключевые «висота склянки 240 мм» → «высота стакана 240 мм», «довжина циклу 2 хв» → «длина цикла 2 мин», «тримач для приладів/тарілок» → «держатель для приборов/тарелок»).
+
+**blknochg (6):**
+- r34 SKU33 ART 506147414 **GGM GPE5 полировщик для бокалов**: c5==c7 RU OK, c36 без UA-mark, skel-eq True; fixed строка НЕ изменена.
+- r37 SKU36 ART 753318879 **GGG GPE8 полировщик для бокалов**: c5==c7 RU OK, c36 без UA-mark, skel-eq True; fixed строка НЕ изменена.
+- r38 SKU37 ART 2389346752 **ATA ALP 43** Посудомоечная котломоечная машина: c5==c7 RU OK, c36 без UA-mark, skel-eq True (len35=1771/len36=1868 source variance); fixed строка НЕ изменена. ATA brand НЕ в списке НП-эксклюзивных, но c5/c7 уже RU genuine.
+- r39 SKU38 ART 2389351402 **ATA ALP 02S** котломоечная: c5==c7 RU OK, c36 без UA-mark, skel-eq True; fixed строка НЕ изменена.
+- r40 SKU39 ART 2389356892 **ATA ALP 40** котломоечная: c5==c7 RU OK, c36 без UA-mark, skel-eq True; fixed строка НЕ изменена.
+- r41 SKU40 ART 2389361331 **ATA ALP 02GS** котломоечная: c5==c7 RU OK, c36 без UA-mark, skel-eq True; fixed строка НЕ изменена.
+
+**SKIP-НП:** 0 в b5.
+
+**OQ:** 0 новых открытых вопросов.
+
+**Verify breakdown:** 50 ART regression + 2 TRIP × 7 = 14 + 6 blknochg × 3 = 18 + b1..b4 regression (18 prior TRIP c5==c7 + 12 prior blknochg c5 unchanged + 2 SKIP-НП × 6 = 12) = 42. Total **124 PASS / 0 FAIL**.
 

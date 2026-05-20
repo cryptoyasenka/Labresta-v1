@@ -1,7 +1,7 @@
 # chunk-068 DIFF (W2)
 
-**Status:** b4 DONE 32/50 — батчи b1..b7 (8+8+8+8+8+8+2); next b5 (SKU 33-40, rows 34-41)
-**Last updated:** chunk-068 b4 DONE 32/50
+**Status:** b5 DONE 40/50 — батчи b1..b7 (8+8+8+8+8+8+2); next b6 (SKU 41-48, rows 42-49)
+**Last updated:** chunk-068 b5 DONE 40/50
 
 Source: `chunk-068.xlsx` (RO) → operating: `chunk-068-fixed.xlsx` (gitignored).
 Batches заполняются после каждого закрытого батча.
@@ -68,4 +68,20 @@ Batches заполняются после каждого закрытого ба
 
 **Итого b4:** TRIP 6 + blknotrip 0 + blknochg 1 + SKIP-НП 1. Verify 130 PASS / 0 FAIL.
 **Cum после b4:** TRIP 18 + blknotrip 0 + blknochg 12 + SKIP-НП 2 = 32/50.
+
+## b5 (SKU 33-40, rows 34-41) — 40/50
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 33 | 34 | 506147414 | GGM GPE5 полировщик для бокалов | blknochg | — |
+| 2 | 34 | 35 | 659353448 | Hendi 696002 ёрш для мойки стаканов | **TRIP** | c5←c7; c36 ← RU 7-строчный body (`<p>` + 4 li) |
+| 3 | 35 | 36 | 1500252450 | Krupps C327DGT Advance фронтальная (без DP45K) | **TRIP** | c5←c7; c36 ← RU 12-строчный body с `<h2>` (10 li) |
+| 4 | 36 | 37 | 753318879 | GGG GPE8 полировщик для бокалов | blknochg | — |
+| 5 | 37 | 38 | 2389346752 | ATA ALP 43 котломоечная | blknochg | — |
+| 6 | 38 | 39 | 2389351402 | ATA ALP 02S котломоечная | blknochg | — |
+| 7 | 39 | 40 | 2389356892 | ATA ALP 40 котломоечная | blknochg | — |
+| 8 | 40 | 41 | 2389361331 | ATA ALP 02GS котломоечная | blknochg | — |
+
+**Итого b5:** TRIP 2 + blknotrip 0 + blknochg 6 + SKIP-НП 0. Verify 124 PASS / 0 FAIL.
+**Cum после b5:** TRIP 20 + blknotrip 0 + blknochg 18 + SKIP-НП 2 = 40/50.
 
