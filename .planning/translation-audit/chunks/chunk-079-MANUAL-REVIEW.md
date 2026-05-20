@@ -1,6 +1,6 @@
 # chunk-079 manual review (W2)
 
-**Status:** chunk-079 b2 DONE 16/58 (cum TRIP 0 / blknotrip 0 / blknochg 16 / blkfix 0 / SKIP-НП 0; 144 PASS / 0 FAIL) — next b3 (SKU 17-24, rows 18-25). 2 новых OQ (c079 #1 r12 FSC1000H body=FSC1000S; c079 #2 r14 FSC1950S body=FS1202H).
+**Status:** chunk-079 b3 DONE 24/58 (cum TRIP 0 / blknotrip 0 / blknochg 24 / blkfix 0 / SKIP-НП 0; 216 PASS / 0 FAIL) — next b4 (SKU 25-32, rows 26-33). 2 OQ (c079 #1 r12 FSC1000H; c079 #2 r14 FSC1950S).
 
 ## Параметры
 
@@ -62,3 +62,21 @@ TRIP / blknotrip / blknochg / blkfix / SKIP-НП.
 
 - **OQ c079 #1**: r12 SKU=11 ART=2141133910 Tefcold **FSC1000H** — название (c4/c5/c7) указывает на FSC1000H, но тело описания (c35/c36) дословно идентично r11 FSC1000S и упоминает модель «FSC1000S» в первом предложении. Источник: ETL переиспользовал описание sibling-SKU. Не наш write. Решение Yana: либо переписать body под FSC1000H (нужен спец-лист модели), либо принять как есть.
 - **OQ c079 #2**: r14 SKU=13 ART=2141140987 Tefcold **FSC1950S** — название указывает на FSC1950S, но тело описания (c35/c36) идентично r13 FS1202H и упоминает «FS1202H». Источник: cross-paste из соседнего SKU. Не наш write. Решение Yana: переписать body под FSC1950S или принять.
+
+
+## b3 (SKU 17-24, rows 18-25) — DONE 24/58
+
+**Категории:** blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r18** SKU=17 ART=2141162757 Tefcold FSC1200S — c5==c7 RU clean.
+- **r19** SKU=18 ART=2141164488 Tefcold FSC1200H — c5==c7 RU clean.
+- **r20** SKU=19 ART=2141165352 Tefcold NC5000G — c5==c7 RU clean (c36 body упоминает «NC5000» без G — наследие источника, тот же паттерн что r4 NC2500G).
+- **r21** SKU=20 ART=2141167671 Tefcold GUC140 — c5==c7 RU clean (c36 «Шкаф холодильник» вместо «Шкаф холодильный» — наследие источника, не наш write).
+- **r22** SKU=21 ART=2141173104 Tefcold FSC1000H BLACK — c5==c7 RU clean.
+- **r23** SKU=22 ART=2141175210 Tefcold FSC1200H BLACK — c5==c7 RU clean.
+- **r24** SKU=23 ART=2141177828 Tefcold RK1010 — c5==c7 RU clean.
+- **r25** SKU=24 ART=2141180004 Tefcold FS1600H — c5==c7 RU clean.
+
+**Verify:** 72 PASS / 0 FAIL. Без новых OQ.

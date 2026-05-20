@@ -49,3 +49,23 @@
 | 17 | 16 | 2141159745 | Tefcold ATOM MAXI C2DB | |
 
 **Verify:** 72 PASS / 0 FAIL. 2 новых OQ (см. MR).
+
+
+## b3 (SKU 17-24, rows 18-25)
+
+Категории: blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+
+### blknochg
+
+| row | SKU | ART | модель | примечание |
+|---|---|---|---|---|
+| 18 | 17 | 2141162757 | Tefcold FSC1200S | |
+| 19 | 18 | 2141164488 | Tefcold FSC1200H | |
+| 20 | 19 | 2141165352 | Tefcold NC5000G | c36 body «NC5000» без G — наследие |
+| 21 | 20 | 2141167671 | Tefcold GUC140 | c36 «Шкаф холодильник» — наследие |
+| 22 | 21 | 2141173104 | Tefcold FSC1000H BLACK | |
+| 23 | 22 | 2141175210 | Tefcold FSC1200H BLACK | |
+| 24 | 23 | 2141177828 | Tefcold RK1010 | |
+| 25 | 24 | 2141180004 | Tefcold FS1600H | |
+
+**Verify:** 72 PASS / 0 FAIL. Без новых OQ.
