@@ -1,6 +1,6 @@
 # chunk-079 manual review (W2)
 
-**Status:** chunk-079 b3 DONE 24/58 (cum TRIP 0 / blknotrip 0 / blknochg 24 / blkfix 0 / SKIP-НП 0; 216 PASS / 0 FAIL) — next b4 (SKU 25-32, rows 26-33). 2 OQ (c079 #1 r12 FSC1000H; c079 #2 r14 FSC1950S).
+**Status:** chunk-079 b4 DONE 32/58 (cum TRIP 0 / blknotrip 0 / blknochg 32 / blkfix 0 / SKIP-НП 0; 288 PASS / 0 FAIL) — next b5 (SKU 33-40, rows 34-41). 2 OQ (c079 #1 r12 FSC1000H; c079 #2 r14 FSC1950S).
 
 ## Параметры
 
@@ -78,5 +78,23 @@ TRIP / blknotrip / blknochg / blkfix / SKIP-НП.
 - **r23** SKU=22 ART=2141175210 Tefcold FSC1200H BLACK — c5==c7 RU clean.
 - **r24** SKU=23 ART=2141177828 Tefcold RK1010 — c5==c7 RU clean.
 - **r25** SKU=24 ART=2141180004 Tefcold FS1600H — c5==c7 RU clean.
+
+**Verify:** 72 PASS / 0 FAIL. Без новых OQ.
+
+
+## b4 (SKU 25-32, rows 26-33) — DONE 32/58
+
+**Категории:** blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r26** SKU=25 ART=2141184019 Tefcold ATOM MAXI C3DB — c5==c7 RU clean.
+- **r27** SKU=26 ART=2141187105 Tefcold FSC1600H — c5==c7 RU clean.
+- **r28** SKU=27 ART=2141187732 Tefcold NC7500G — c5==c7 RU clean (c36 body «NC7500» без G — наследие, тот же паттерн что r4/r20).
+- **r29** SKU=28 ART=2215585521 UBC Large 1200 л — c5==c7 RU clean.
+- **r30** SKU=29 ART=2379537724 Ubc Energy AD — c5==c7 RU clean.
+- **r31** SKU=30 ART=2492499126 Tefcold Atom Maxi C1DB — c5==c7 RU clean.
+- **r32** SKU=31 ART=2492520954 Tefcold Atom Maxi C1DBB — c5==c7 RU clean.
+- **r33** SKU=32 ART=907890667 Angelo Po AF1N (шкаф расстоечно-холодильный) — c5==c7 RU clean.
 
 **Verify:** 72 PASS / 0 FAIL. Без новых OQ.

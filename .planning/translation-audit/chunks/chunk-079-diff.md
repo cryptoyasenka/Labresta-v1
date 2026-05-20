@@ -69,3 +69,23 @@
 | 25 | 24 | 2141180004 | Tefcold FS1600H | |
 
 **Verify:** 72 PASS / 0 FAIL. Без новых OQ.
+
+
+## b4 (SKU 25-32, rows 26-33)
+
+Категории: blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+
+### blknochg
+
+| row | SKU | ART | модель | примечание |
+|---|---|---|---|---|
+| 26 | 25 | 2141184019 | Tefcold ATOM MAXI C3DB | |
+| 27 | 26 | 2141187105 | Tefcold FSC1600H | |
+| 28 | 27 | 2141187732 | Tefcold NC7500G | c36 body «NC7500» без G — наследие |
+| 29 | 28 | 2215585521 | UBC Large 1200 л | |
+| 30 | 29 | 2379537724 | Ubc Energy AD | |
+| 31 | 30 | 2492499126 | Tefcold Atom Maxi C1DB | |
+| 32 | 31 | 2492520954 | Tefcold Atom Maxi C1DBB | |
+| 33 | 32 | 907890667 | Angelo Po AF1N (расстоечно-холодильный) | |
+
+**Verify:** 72 PASS / 0 FAIL. Без новых OQ.
