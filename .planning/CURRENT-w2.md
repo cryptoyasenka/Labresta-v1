@@ -510,3 +510,13 @@
 - Cumulative chunk-078: 8/53 (TRIP 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0; 72 PASS / 0 FAIL).
 - OQ: без новых.
 - Next: chunk-078 b2 (SKU 9-16, rows 10-17).
+
+
+## chunk-078 b2 DONE 16/53 (2026-05-20 13:45)
+
+- Категории: blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+- blknochg: r10-r16 Snaige CC35DM/CC48DM/CD350/CD35DM/CD40DM/CD48DM series, r17 Tefcold GUC70.
+- Verify: 72 PASS / 0 FAIL.
+- Cumulative chunk-078: 16/53 (TRIP 0 / blknotrip 0 / blknochg 16 / blkfix 0 / SKIP-НП 0; 144 PASS / 0 FAIL).
+- OQ: без новых.
+- Next: chunk-078 b3 (SKU 17-24, rows 18-25). SKIP-НП r19 TATRA TRC1400TN попадёт в b3.
