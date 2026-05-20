@@ -1,7 +1,7 @@
 # chunk-069 MANUAL REVIEW (W2)
 
-**Status:** chunk-069 b2 DONE 16/61 (cum TRIP 6 + blknochg 10 + SKIP-НП 0; 117 PASS) — next b3 (SKU 17-24, rows 18-25)
-**Last updated:** chunk-069 b2 DONE 16/61
+**Status:** chunk-069 b3 DONE 24/61 (cum TRIP 9 + blknochg 14 + SKIP-НП 1; 179 PASS) — next b4 (SKU 25-32, rows 26-33)
+**Last updated:** chunk-069 b3 DONE 24/61
 
 ## Структура
 
@@ -87,4 +87,28 @@ TRIP 2 + blknochg 6 + SKIP-НП 0 = 8/8. Verify **117 PASS / 0 FAIL**.
 **SKIP-НП:** 0. **OQ:** 0.
 
 **Cum после b2:** TRIP 6 + blknotrip 0 + blknochg 10 + SKIP-НП 0 = **16/61**.
+
+## b3 (SKU 17-24, rows 18-25) — DONE 24/61
+
+TRIP 3 + blknotrip 0 + blknochg 4 + SKIP-НП 1 = 8/8. Verify **179 PASS / 0 FAIL**.
+
+**TRIP (3):**
+- r20 SKU19 ART 2126106102 **Krupps EL985E (котломоечная) для габаритной посуды** (c35==c36 UA dup, 2639 chars, инлайн body): c5←c7 «Посудомоечная машина Krupps EL985E (котломоечная) для габаритной посуды»; c36 ← faithful RU body (`<h2>` + 3 `<p>` + `<ul>` с 11 li tech-char). Содержит UNIKO/ELITECH/Acquatech System/Wi-Fi IKLOUD/Termostop/ХАССП. Dims: 30 корзин/час, 1780 тарелок/час, 700×825×655(h), 680мм, 850x725x100, 1000x860x1805, 13 кВт, 380 В, 2,5-3,0 л, 120/150/240/540 сек. UA «м&#39;ясних» → «мясных» (drop apostrophe). UA «електроененергії» (typo extra «не») → «электроэнергии» (letter-miss fix). Без Ё.
+- r22 SKU21 ART 2538744328 **Frosty AP1 400V котломоечная** (c35==c36 UA dup, 3255 chars, 12 `<p>` + 4 `<ul>` структура): c5←c7 «Машина котломоечная Frosty AP1 400V»; c36 ← faithful RU body. h=650 мм, размеры 720×780×1730 мм, корзина 560х630х100h, 9,9 кВт/380В, 30 корзин/час, 26 тарелок (опц.), 37 л бак, soft touch, AISI 304. UA typo «дл» (3 дл 6 л) → «до» (3 до 6 л) letter-miss fix. UA «обсяг» → «объем» (без Ё). UA «&ordm;С» preserved. Без Ё.
+- r23 SKU22 ART 2538759109 **Frosty AP2 400V котломоечная** (c35==c36 UA dup, 3255 chars, тот же template как r22): c5←c7 «Машина котломоечная Frosty AP2 400V»; c36 ← faithful RU body. h=850 мм (versus r22 650), размеры 720×780×1930 (versus r22 1730), всё остальное идентично. Без Ё.
+
+**blknochg (4):**
+- r18 SKU17 ART 2045406113 Empero EMP.3000-SAG-R: c5==c7 RU OK, c36 без UA-mark, fixed НЕ изменена.
+- r19 SKU18 ART 2110099464 Empero EMP.1000-F: c5==c7 RU OK; fixed НЕ изменена.
+- r21 SKU20 ART 2191298201 Empero EMP.1000-SDF: c5==c7 RU OK; fixed НЕ изменена.
+- r25 SKU24 ART 1548982581 Frosty C18 камерный вакуумный упаковщик: c5==c7 RU OK, c36 без UA-mark; fixed НЕ изменена.
+
+**SKIP-НП (1):**
+- r24 SKU23 ART 1168653006 **HURAKAN HKN-CNW460 PRO** термоупаковочный аппарат (Стол горячий): brand HURAKAN ∈ SKIP-НП list → forward-only, fixed строка НЕ тронута (тело из НП-фида позже). c5 src «Термопакувальний апарат Hurakan HKN-CNW460 PRO*» содержит UA «Термопакувальний» и звездочку — НЕ переписываем.
+
+**OQ:** 0.
+
+**Verify breakdown:** 61 ART regression + 4 b1-TRIP × 4 (modified c5/c36 + no-UA + no-Ё) = 16 + 4 b1-blknochg × 3 = 12 + 2 b2-TRIP × 4 = 8 + 6 b2-blknochg × 3 = 18 + 4 b3-blknochg × 4 (c5/c36/c7 + RU OK) = 16 + 1 SKIP-НП × 7 (all cols) = 7 + 3 b3-TRIP × ~14 (c5 match + body content checks + skel-eq + dim differentials) ≈ 41 = **179 PASS / 0 FAIL**.
+
+**Cum после b3:** TRIP 9 + blknotrip 0 + blknochg 14 + SKIP-НП 1 = **24/61**. Next b4 (SKU 25-32, rows 26-33).
 

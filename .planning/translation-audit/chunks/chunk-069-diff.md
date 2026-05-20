@@ -1,7 +1,7 @@
 # chunk-069 DIFF (W2)
 
-**Status:** b2 DONE 16/61 — батчи b1..b8 (8+8+8+8+8+8+8+5); next b3 (SKU 17-24, rows 18-25)
-**Last updated:** chunk-069 b2 DONE 16/61
+**Status:** b3 DONE 24/61 — батчи b1..b8 (8+8+8+8+8+8+8+5); next b4 (SKU 25-32, rows 26-33)
+**Last updated:** chunk-069 b3 DONE 24/61
 
 Source: `chunk-069.xlsx` (RO) → operating: `chunk-069-fixed.xlsx` (gitignored).
 Batches заполняются после каждого закрытого батча.
@@ -37,3 +37,19 @@ Batches заполняются после каждого закрытого ба
 
 **Итого b2:** TRIP 2 + blknotrip 0 + blknochg 6 + SKIP-НП 0. Verify **117 PASS / 0 FAIL**.
 **Cum после b2:** TRIP 6 + blknotrip 0 + blknochg 10 + SKIP-НП 0 = **16/61**.
+
+## b3 (SKU 17-24, rows 18-25) — 24/61
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 17 | 18 | 2045406113 | Empero EMP.3000-SAG-R | blknochg | — |
+| 2 | 18 | 19 | 2110099464 | Empero EMP.1000-F | blknochg | — |
+| 3 | 19 | 20 | 2126106102 | Krupps EL985E (котломоечная) для габаритной посуды | **TRIP** | c5←c7; c36 ← RU body (`<h2>` + 3 `<p>` + 11 li tech-char), Acquatech/UNIKO/IKLOUD/ХАССП, dims `30/1780/680/120/150/240/540/850x725x100/8/5/18/1000x860x1805/13/380/2,5-3,0` |
+| 4 | 20 | 21 | 2191298201 | Empero EMP.1000-SDF | blknochg | — |
+| 5 | 21 | 22 | 2538744328 | Frosty AP1 400V котломоечная (h=650) | **TRIP** | c5←c7; c36 ← RU body (12 `<p>` + 4 `<ul>` blocks: 3+14+3+2 li), h=650, dims `650/400х600/26/30/3-6/37/15/60/2/4/9,9/380/720x780x1730/155/560х630х100h`, typo «дл»→«до» |
+| 6 | 22 | 23 | 2538759109 | Frosty AP2 400V котломоечная (h=850) | **TRIP** | c5←c7; c36 ← RU body (same template как r22 с h=850 + 1930мм высота) |
+| 7 | 23 | 24 | 1168653006 | HURAKAN HKN-CNW460 PRO термоупаковочный | **SKIP-НП** | — (НП forward-only; fixed строка не тронута) |
+| 8 | 24 | 25 | 1548982581 | Frosty C18 камерный вакуумный упаковщик | blknochg | — |
+
+**Итого b3:** TRIP 3 + blknotrip 0 + blknochg 4 + SKIP-НП 1. Verify **179 PASS / 0 FAIL**.
+**Cum после b3:** TRIP 9 + blknotrip 0 + blknochg 14 + SKIP-НП 1 = **24/61**.
