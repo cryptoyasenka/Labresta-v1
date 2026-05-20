@@ -103,3 +103,20 @@
 
 **Итого b5:** TRIP 5 + blknotrip 0 + blknochg 3 + blkfix 0 + SKIP-НП 0. Verify **359 PASS / 0 FAIL**.
 **Cum после b5:** TRIP 33 + blknotrip 0 + blknochg 7 + blkfix 0 + SKIP-НП 0 = **40/89**. UNPROC = 49 (rows 42-90).
+
+
+## b6 (SKU 41-48, rows 42-49) — 48/89
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 41 | 42 | 1173082506 | Hendi 825556 доска разделочная HACCP 450x300x12,7 мм коричневая | **TRIP** | c5←c7 (62 chars); c36 RU 1112 chars. SMALL_BOARD_TABLE (825xxx серия 7 цветов 450x300x12,7) + iframe `sQhMvuX1twE` preserve. **Source-quirk: UA `<li>` «Коричневій колір» (typo locative) → RU «Коричневый цвет» standard form**; UA «сира птах» typo (должно «птиця») → RU «сырая птица» (нормализуем); «варене м'ясо» literal `'` dropped → «вареное мясо». No Ё в c36. |
+| 2 | 42 | 43 | 1930950687 | Hendi 880906 — title/body MISMATCH (c5/c7 «Контейнер для еды двойной GN 1/1», c35 UA describes 880906 14 л) | **blknochg** | c5 уже RU == c7; c36 уже pure RU 120 chars («Контейнер для еды двойной GN 1/1... Габариты: 530х325х65... 7,5 л»). UA только в c35. **Источниковый конфликт: c4/c35 описывают Hendi 880906 14 л 600x400x70, но c5/c7/c36 — GN 1/1 530x325x65 7,5 л (совершенно другой продукт)**. Forward-only; **Открытый вопрос #2**. См. также r38 b5 (1166434765 — другая Horoshop-строка для того же 880906). |
+| 3 | 43 | 44 | 873570684 | Hendi 271186 термометр для морозильников и холодильников | **TRIP** | c5←c7 (56 chars); c36 RU 354 chars. Малый блок: `<p>` + `<ul>` × 6 `<li>`. «Дозвіл: 2,5°C» (UA «разрешающая способность/шаг») → RU «Разрешение: 2,5°C» preserve term. Габариты «60х70 мм» — Cyrillic «х» preserve. |
+| 4 | 44 | 45 | 1165829624 | HENDI 588574 сифон содовый 1 л | **TRIP** | c5←c7 (45 chars); c36 RU 612 chars + iframe `ESB30T0xPiA`. «Сифон содовий ємністю» → «Сифон содовый емкостью» (без Ё). «Пляшка з нержавіючої сталі» → «Бутылка из нержавеющей стали». «струсіть» → «встряхните». CO₂ + ø100 preserve. Размер ø100x(H)320 мм. |
+| 5 | 45 | 46 | 876951846 | Сетка для варки риса 95х95 см (без бренда / no-brand) | **blknochg** | c5 уже RU == c7 (29 chars); c36 уже pure RU 360 chars. UA только в c35. Forward-only. |
+| 6 | 46 | 47 | 921204080 | Хангири 60 см Япония (без бренда — кадка для риса, японская) | **blknochg** | c5 уже RU == c7 (21 chars); c36 уже pure RU 590 chars. UA только в c35. **Source-quirk: «кадка будет прослужит» — будущее время + инфинитив (структурный) — preserve as is** (нет правки c36). |
+| 7 | 47 | 48 | 1060747430 | Хангири 39 см (Япония) (кадка для риса 39 см загрузка 1,5 кг) | **blknochg** | c5 уже RU == c7 (22 chars); c36 уже pure RU 583 chars. UA только в c35. Trailing `<p> </p>` preserve. |
+| 8 | 48 | 49 | 1060762720 | Хангири 720х176 мм (Япония) | **blknochg** | c5 уже RU == c7 (29 chars); c36 уже pure RU 575 chars. UA только в c35 (с typos «Када», «харгірі», «каска» — UA quirks остаются в c35). Forward-only. |
+
+**Итого b6:** TRIP 3 + blknotrip 0 + blknochg 5 + blkfix 0 + SKIP-НП 0. Verify **72 PASS / 0 FAIL**.
+**Cum после b6:** TRIP 36 + blknotrip 0 + blknochg 12 + blkfix 0 + SKIP-НП 0 = **48/89**. UNPROC = 41 (rows 50-90).
