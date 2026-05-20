@@ -113,3 +113,28 @@
 | 30 | 29 | HATA DF200S S/S201 (морозильный) |
 
 **Verify:** 44 PASS / 0 FAIL. Без новых OQ.
+
+
+## b5 (SKU 33-40, rows 34-41)
+
+Категории: blk триплет 6 / blknotrip 0 / blknochg 2 / blkfix 0 / SKIP-НП 0.
+
+### blk триплет (TRIP)
+
+| row | SKU | модель | c5 (RU) | c36 |
+|---|---|---|---|---|
+| 34 | 33 | Gooder BBD230S | Шкаф холодильный Gooder BBD230S | UA→RU 208 л / 0..+8 / R600a / Раздвижные двери |
+| 35 | 34 | Gooder ВВT350H | Шкаф холодильный Gooder ВВT350H | UA→RU 320 л / 0..+8 / 1350×520×900 / Подвесные двери |
+| 36 | 35 | Gooder ВВT350S | Шкаф холодильный Gooder ВВT350S | UA→RU 320 л / 0..+8 / 1350×520×900 / Раздвижные двери |
+| 38 | 37 | Forcar G-BC3PS | Шкаф холодильный Forcar G-BC3PS | UA→RU 335 л / +2..+8 / R600A / 3 раздвижные стекл. двери |
+| 40 | 39 | Frosty GN126H | Шкаф барный Frosty GN126H | UA→RU 126 л / +2..+8 / 0,20 кВт |
+| 41 | 40 | Frosty GN220HS | Шкаф барный Frosty GN220HS | UA→RU 220 л / +2..+8 / 0,245 кВт |
+
+### blknochg
+
+| row | SKU | модель |
+|---|---|---|
+| 37 | 36 | Tefcold DB301S-3 (OQ #13: UA body модель DB201S — translator исправил в c36) |
+| 39 | 38 | EWT INOX LG128 (барный) |
+
+**Verify:** 48 PASS / 0 FAIL. +1 OQ #13 (Tefcold DB301S-3 body модель mismatch).

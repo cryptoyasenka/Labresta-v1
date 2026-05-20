@@ -113,3 +113,26 @@
 **Verify:** 44 PASS / 0 FAIL. Без новых OQ.
 
 **Cumulative chunk-083:** 32/62 (TRIP 16 / blknotrip 0 / blknochg 16 / blkfix 0 / SKIP-НП 0; 160 PASS / 0 FAIL).
+
+
+## b5 (SKU 33-40, rows 34-41) — DONE 40/62
+
+**Категории:** blk триплет 6 / blknotrip 0 / blknochg 2 / blkfix 0 / SKIP-НП 0.
+
+### blk триплет (TRIP — c5 переписан с UA→RU + c36 полный RU перевод)
+
+- **r34** SKU=33 ART=2048299863 Gooder BBD230S (208 л, 0..+8°C, R600a, 0,133 кВт, 900×520×900 мм, Раздвижные двери, Китай) — c5 «Шкаф холодильный Gooder BBD230S». c36 переведен (c35==c36 source оба UA).
+- **r35** SKU=34 ART=2048299967 Gooder ВВT350H (320 л, 0..+8°C, R600a, 0,135 кВт, 1350×520×900 мм, Подвесные двери, Китай) — c5 «Шкаф холодильный Gooder ВВT350H». c36 переведен. Замечание: model «ВВT350H» содержит Cyrillic «ВВ» + Latin «T350H» — сохранено verbatim (так в источнике c4/c6/c7).
+- **r36** SKU=35 ART=2048300132 Gooder ВВT350S (320 л, 0..+8°C, R600a, 0,135 кВт, 1350×520×900 мм, Раздвижные двери, Китай) — c5 «Шкаф холодильный Gooder ВВT350S». c36 переведен. Замечание: model mixed Cyrillic+Latin (см. r35).
+- **r38** SKU=37 ART=2082962694 Forcar G-BC3PS (335 л, +2..+8°C, R600A, 0,25 кВт, 1350×535×925 мм, 3 раздвижные стеклянные двери) — c5 «Шкаф холодильный Forcar G-BC3PS». c36 переведен.
+- **r40** SKU=39 ART=2106718973 Frosty GN126H (126 л, +2..+8°C, 0,20 кВт, 600×505×895 мм, барный) — c5 «Шкаф барный Frosty GN126H». c36 переведен.
+- **r41** SKU=40 ART=2106724984 Frosty GN220HS (220 л, +2..+8°C, 0,245 кВт, 900×505×895 мм, барный, раздвижные двери) — c5 «Шкаф барный Frosty GN220HS». c36 переведен.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r37** SKU=36 ART=2052609907 Tefcold DB301S-3 — c5==c7 RU clean, c36 RU clean. **+1 OQ #13 W2 cum**: c35 UA body начинается «Шафа барна холодильна DB201S Tefcold...» — модель DB201S, но c4/c5/c6/c7 и c36 RU = «DB301S-3» (другая модель). Translator уже исправил DB201S→DB301S-3 в c36; UA source имеет несоответствие модели в теле описания. c36 RU consistent с названием — blknochg, не переписываем, но фиксируем для merge-ревью.
+- **r39** SKU=38 ART=2084479585 EWT INOX LG128 барный — c5==c7 RU clean.
+
+**Verify:** 48 PASS / 0 FAIL. +1 OQ #13.
+
+**Cumulative chunk-083:** 40/62 (TRIP 22 / blknotrip 0 / blknochg 18 / blkfix 0 / SKIP-НП 0; 208 PASS / 0 FAIL).
