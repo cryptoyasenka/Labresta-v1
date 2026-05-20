@@ -222,3 +222,16 @@
 **Cumulative (chunk-055..chunk-074 complete + chunk-075 b1+b2+b3):** 821 PASS / 0 FAIL.
 
 **Next:** chunk-075 b4 — SKU 25-32, rows 26-33.
+
+
+---
+
+## chunk-075 b4 DONE 32/54 (HEAD b41b846)
+
+**Status:** chunk-075 b4 DONE 32/54 (cum TRIP 3 / blknotrip 0 / blknochg 25 / blkfix 0 / SKIP-НП 4; 871 PASS / 0 FAIL) — next b5 (SKU 33-40, rows 34-41)
+
+**b4 result:** blknochg 6 — продолжение Эфес ШПЭ/ШЖЭ (r26 ШПЭ-4 дубль; r27 ШЖЭ-1-GN2/1; r28 ШЖЭ-2-GN1/1; r29 ШЖЭ-2-GN2/1; r30 ШЖЭ-3-GN1/1; r31 ШЖЭ-3-GN2/1). SKIP-НП 2 — r32+r33 FAGOR ADVANCE ATA-061/101 шкафы шоковой заморозки. Source quirks «двосекционный»/«гастроемкости» preserved (blknochg). 50 PASS / 0 FAIL.
+
+**Cumulative (chunk-055..chunk-074 complete + chunk-075 b1-b4):** 871 PASS / 0 FAIL.
+
+**Next:** chunk-075 b5 — SKU 33-40, rows 34-41 (preliminary SKIP-НП: r34 APACH, r35 HURAKAN, r36 HURAKAN, r38 COLD).
