@@ -255,3 +255,58 @@
 - r81 source typo «Дипенсер» — preserved (rule: faithful skel==UA, не правим source typos в TRIP).
 
 ### Verify b10: 61 PASS / 0 FAIL
+
+
+## Batch 11 FINAL (SKU 81-87, rows 82-88)
+
+### TRIP 5
+- **r82 Диспенсер для хлопьев Frosty JVD-5** — c5 ← c7; c36 frosty_jvd5_body (one-off): intro с source typo «Дипенсер для сыпучих продуктов»; li «Диспенсер для хлопьев», «Круглая колба: 2х4 л», «емкость - поликарбонат», «335мм x 240мм x 650мм».
+- **r84 Шкаф расстоечный Unox XEKPT10EUC** — c5 ← c7 «Шкаф расстоечный Unox XEKPT10EUC, на 10 противней 600х400»; c36 unox_xekpt10_body «10 противней 600х400», BakerLux Shop.Pro, MASTER/TOUCH/LED, 800х792х886 мм, 42 кг.
+- **r86 Шкаф расстоечный Unox XEKPT08HSC** — c5 ← c7 «Шкаф расстоечный Unox XEKPT08HSC, 8 противней 460х330»; c36 unox_xekpt08_body «8 противней 460х330», BakerLux, 600х711х750 мм, 35 кг.
+- **r87 Шкаф расстоечный Unox XEBPC12EUB** — c5 ← c7 «Шкаф расстоечный Unox XEBPC12EUB, на 12 противней 600х400»; c36 unox_xebpc12_body (h2+p intro), «UnoxXEBPC12EUB» glued preserved, BakerTouch, «12 противней» в h2 + «12 листов» в p, «стационарное подключение к водопроводу», 860х978х798 мм.
+- **r88 Шкаф расстоечный Frosty VF-12** — c5 ← c7 «Шкаф расстоечный Frosty VF-12»; c36 frosty_vf12_body (long: 3 параграфа intro + 8 li + материал). «Расстойка тестовых заготовок», +20°C..+60°C, GN1/1, корпус нержавеющая сталь.
+
+### blknochg 1
+- **r83 Шкаф расстоечный Frosty FLV-13C** — c5==c7 «Шкаф расстоечный Frosty FLV-13C», c36 (1159) genuine RU («Расстоечный шкаф Frosty FLV-13C оборудование промышленное...») без UA-markers. fixed cells НЕ тронуты.
+
+### SKIP-НП 1
+- **r85 Шкаф расстойный Apach APE8AD** (brand=APACH) — forward-only, fixed cells НЕ тронуты, тело из фида НП позже.
+
+### blknotrip / blkfix: 0
+
+### Helpers b11 (все one-off, не reusable):
+- `frosty_jvd5_body()` — диспенсер 2х4 л.
+- `unox_xekpt10_body()` — шкаф расстоечный 10 противней.
+- `unox_xekpt08_body()` — шкаф расстоечный 8 противней.
+- `unox_xebpc12_body()` — шкаф расстоечный 12 противней (h2+p intro).
+- `frosty_vf12_body()` — шкаф расстоечный long body.
+
+### Source-quirks b11:
+- r82 intro «Дипенсер» source typo preserved в RU; li «Диспенсер» (correct из source li).
+- r82 «мюслів»→«мюсли», «кофі брейках»→«кофе брейках», «шведських столах»→«шведских столах» (no Ё).
+- r84/r86 «що керується/Керується» (UA participle/verb) → «управляемый/Управляется» (RU participle/passive).
+- r84/r86/r87 «дек» (UA short for деко) → «противней»; «деко» → «противня» (singular).
+- r87 «UnoxXEBPC12EUB» (no space между brand и model) preserved.
+- r87 «12 дечок» (UA diminutive) → «12 противней» в h2 + «12 листів»→«12 листов» в <p> (preserve source variation).
+- r87 «можливе стаціонарне підключення» → «возможно стационарное подключение»; «немає» → «отсутствует».
+- r87 «70&deg;С» (Cyrillic С) preserved (НЕ Latin C).
+- r88 «вистоювання» → «расстойки»; «бродіння» → «брожения»; «висохлої плівки-кірочки» → «высохшей пленки-корочки» (no Ё).
+- r88 «За рахунок цього» → «За счет этого» (no Ё).
+- r88 «м&#39;якішу» → «мякиша» (no apostrophe в RU, no Ё).
+- r88 «12 рівнів протвинів» (UA typo) → «12 уровней противней» (нормализовано).
+- r88 «оснащена пультом керування» → «оснащен пультом управления».
+- r88 «привабливий зовнішній вигляд» → «привлекательный внешний вид».
+- r82/r88 все «найдет/подойдет/свое» — без Ё (правило Yana: no Ё в WRITTEN cells).
+- r85 SKIP-НП (APACH): тело из фида НП позже — без касания fixed cells.
+
+### Verify b11: 62 PASS / 0 FAIL
+
+### chunk-074 ИТОГ (cumulative b1..b11):
+- 87/87 DONE
+- TRIP 75
+- blknotrip 0
+- blknochg 11
+- blkfix 0
+- SKIP-НП 1 (r85 Apach APE8AD)
+- 668 PASS / 0 FAIL across all batches
+- 3 open questions (OQ#1 c071, OQ#2 c072, OQ#3 c074 b5)

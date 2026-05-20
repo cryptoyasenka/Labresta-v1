@@ -594,3 +594,55 @@
 ### Status
 
 **chunk-074 b10 DONE 80/87 (cum TRIP 70 / blknotrip 0 / blknochg 10 / blkfix 0 / SKIP-НП 0; 606 PASS / 0 FAIL; OQ#3 still pending) — next b11 final (SKU 81-87, rows 82-88).**
+
+
+---
+
+## Batch 11 FINAL — DONE 87/87
+
+**Range:** rows 82-88 (SKU 81-87, 7 SKUs). Категории: TRIP 5 (r82 Frosty диспенсер JVD-5 + 3 Unox шкафа + r88 Frosty VF-12) + blknochg 1 (r83 Frosty FLV-13C) + SKIP-НП 1 (r85 Apach APE8AD).
+
+### Categories
+- **TRIP 5:** r82 2375955809 Frosty JVD-5 диспенсер; r84 841075667 Unox XEKPT10EUC на 10 противней; r86 802761009 Unox XEKPT08HSC на 8 противней; r87 1519173217 Unox XEBPC12EUB на 12 противней; r88 2044217237 Frosty VF-12 шкаф расстоечный.
+- **blknochg 1:** r83 2293264457 Frosty FLV-13C — c5==c7 «Шкаф расстоечный Frosty FLV-13C», c36 (1159 chars) genuine RU без UA-markers. НЕ тронут.
+- **SKIP-НП 1:** r85 627967814 Apach APE8AD (brand=APACH). Forward-only — fixed cells НЕ тронуты, тело из фида НП позже.
+- **blknotrip / blkfix:** 0.
+
+### c5 rewrites
+- r82 c5 ← c7 «Диспенсер для хлопьев Frosty JVD-5».
+- r84 c5 ← c7 «Шкаф расстоечный Unox XEKPT10EUC, на 10 противней 600х400».
+- r86 c5 ← c7 «Шкаф расстоечный Unox XEKPT08HSC, 8 противней 460х330».
+- r87 c5 ← c7 «Шкаф расстоечный Unox XEBPC12EUB, на 12 противней 600х400».
+- r88 c5 ← c7 «Шкаф расстоечный Frosty VF-12».
+- r83/r85: c5 НЕ тронуты.
+
+### Source-quirks
+- r82 «Дипенсер для сипучих продуктів» (intro typo) preserved в c36 как «Дипенсер для сыпучих продуктов»; «Диспенсер для пластівців» li → «Диспенсер для хлопьев» (correct).
+- r82 «об'єм/Розміри/Вага» list-elements normalized: «Объем, л: 2х4», «Размеры (Д*Ш*В): 335мм x 240мм x 650мм», «Вес: 4.00».
+- r84/r86 intro «Шафа розстійна італійського бренда Unox...» — TRIP, «дек» (UA) → «противней» (correct RU).
+- r84 «що керується через печі нової лінійки» → «управляемый через печи новой линейки» (participial → participle equivalent).
+- r86 «Керується через печі лінійки» → «Управляется через печи линейки».
+- r87 «UnoxXEBPC12EUB» (no space) — source-quirk preserved (NOT «Unox XEBPC12EUB»).
+- r87 «12 дечок» (UA diminutive) → «12 противней» в h2; «12 листів» → «12 листов» в p (preserve source distinction).
+- r87 «<strong>можливе стаціонарне підключення до водопроводу</strong>» → «<strong>возможно стационарное подключение к водопроводу</strong>» (preserve <strong> tag).
+- r87 «підключення до каналізації немає» → «подключение к канализации отсутствует».
+- r88 «вистоювання тестових заготовок» → «расстойки тестовых заготовок».
+- r88 «висохлої плівки-кірочки» → «высохшей пленки-корочки» (no Ё).
+- r88 «За рахунок цього» → «За счет этого» (no Ё).
+- r88 «пористої структури м&#39;якішу» → «пористую структуру мякиша» (no apostrophe RU, no Ё).
+- r88 «12 рівнів протвинів» (UA typo for «противнів») → «12 уровней противней» (нормализовано в стандартный RU).
+- r82/r88 все «найдет/подойдет/свое/незаменим» — no Ё.
+- r83 (blknochg) — c36 source quirks (e.g. «Без підключення до водопроводу» в UA c35 → «Без подключения к водопроводу» в RU c36) уже правильные, НЕ трогаем.
+
+### NEW helpers b11
+- **All one-off** (no reusable b11 helpers): frosty_jvd5_body, unox_xekpt10_body, unox_xekpt08_body, unox_xebpc12_body, frosty_vf12_body. Каждый — уникальное тело SKU.
+
+### Verify
+- 62 PASS / 0 FAIL.
+
+### Open Questions
+- Нет новых. OQ #3 (b5 r39) — pending Yana decision.
+
+### Status
+
+**chunk-074 b11 FINAL DONE 87/87 (cum TRIP 75 / blknotrip 0 / blknochg 11 / blkfix 0 / SKIP-НП 1; 668 PASS / 0 FAIL; OQ#3 still pending) — chunk-074 ИТОГ: COMPLETE. Next: chunk-075 scaffold (W2, продолжение chunk-074).**
