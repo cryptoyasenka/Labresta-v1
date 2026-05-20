@@ -154,3 +154,22 @@
 
 **Verify:** 72 PASS / 0 FAIL. Без новых OQ.
 
+## b8 FINAL (SKU 57-58, rows 58-59, 2 SKU)
+
+Категории: blk триплет 0 / blknotrip 0 / blknochg 2 / blkfix 0 / SKIP-НП 0.
+
+### blknochg
+
+| row | SKU | ART | модель | примечание |
+|---|---|---|---|---|
+| 58 | 57 | 595398006 | GGM KTS227ND#4T 2,23х0,7 м | c36 «повышеннойокружающей» — наследие |
+| 59 | 58 | 2046767826 | Brillis GRN-BL9-EV-SE-LED | |
+
+**Verify:** 18 PASS / 0 FAIL. Без новых OQ.
+
+## chunk-079 ЗАКРЫТ 58/58
+
+- TRIP 1 / blknotrip 0 / blknochg 57 / blkfix 0 / SKIP-НП 0.
+- 523 PASS / 0 FAIL cumulative.
+- 3 новых OQ (c079 #1/#2/#3) — см. MR.
+

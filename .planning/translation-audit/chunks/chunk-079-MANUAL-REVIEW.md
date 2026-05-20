@@ -1,6 +1,6 @@
 # chunk-079 manual review (W2)
 
-**Status:** chunk-079 b7 DONE 56/58 (cum TRIP 1 / blknotrip 0 / blknochg 55 / blkfix 0 / SKIP-НП 0; 505 PASS / 0 FAIL) — next b8 FINAL (SKU 57-58, rows 58-59, 2 SKU). 3 OQ (c079 #1 r12 FSC1000H; #2 r14 FSC1950S; #3 r46/r47 Tehma 3-door body=2-door).
+**Status:** chunk-079 ЗАКРЫТ 58/58 (TRIP 1 / blknotrip 0 / blknochg 57 / blkfix 0 / SKIP-НП 0; 523 PASS / 0 FAIL). 3 OQ (c079 #1 r12 FSC1000H body=FSC1000S; #2 r14 FSC1950S body=FS1202H; #3 r46/r47 Tehma 3-door body=2-door). Next: chunk-080 scaffold.
 
 ## Параметры
 
@@ -158,4 +158,26 @@ TRIP / blknotrip / blknochg / blkfix / SKIP-НП.
 - **r57** SKU=56 ART=1861396318 Tefcold SA1365 S/S — c5==c7 RU clean.
 
 **Verify:** 72 PASS / 0 FAIL. Без новых OQ.
+
+## b8 FINAL (SKU 57-58, rows 58-59, 2 SKU) — DONE 58/58
+
+**Категории:** blk триплет 0 / blknotrip 0 / blknochg 2 / blkfix 0 / SKIP-НП 0.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r58** SKU=57 ART=595398006 GGM KTS227ND#4T (-2…+8°С) 2,23х0,7 м — c5==c7 RU clean (c36 «повышеннойокружающей» без пробела — наследие источника).
+- **r59** SKU=58 ART=2046767826 Brillis GRN-BL9-EV-SE-LED морозильный шкаф — c5==c7 RU clean.
+
+**Verify:** 18 PASS / 0 FAIL. Без новых OQ.
+
+## chunk-079 ЗАКРЫТ 58/58
+
+- TRIP 1 / blknotrip 0 / blknochg 57 / blkfix 0 / SKIP-НП 0.
+- 523 PASS / 0 FAIL cumulative.
+- TRIP #1: r34 Tecnodom AF04EKOTN (c5 UA→RU + c36 full RU translation).
+- OQ: 3 новых на c079.
+  - **OQ c079 #1**: r12 Tefcold FSC1000H — body=FSC1000S (cross-paste sibling).
+  - **OQ c079 #2**: r14 Tefcold FSC1950S — body=FS1202H (cross-paste sibling).
+  - **OQ c079 #3**: r46/r47 Tehma 3-door (1860х600/700) — body начинается «Двухдверный...» (generic 2-door reuse).
+- Cumulative W2 OQ: 9 (#1 c071 SKU39 BCB10 / #2 c072 r43 Hendi 880906 / #3 c074 r39 ART=1166344539 9л vs 13,5л / #4 c075 r40 GoodFood BCF20→BCF40 / #5 c075 r41 Tecnodom 15 кг c35 vs 12 кг c36 / #6 c076 r24 Forcar G-ER200SS vs G-ER400 / #7 c079 #1 r12 FSC1000H / #8 c079 #2 r14 FSC1950S / #9 c079 #3 r46/r47 Tehma 3-door).
 
