@@ -603,3 +603,5 @@ CURRENT-w2: chunk-082 b3 DONE 24/52 (cum TRIP 3 / blknotrip 0 / blknochg 20 / bl
 CURRENT-w2: chunk-082 b4 DONE 32/52 (cum TRIP 6 / blknotrip 0 / blknochg 25 / blkfix 0 / SKIP-НП 1; 150 PASS / 0 FAIL); TRIP 3 шкафы для вина (Frosty FCB-128 + H 46D + H 80D) + blknochg 5 (Tefcold/Frosty семья); без новых OQ; next b5 (SKU 33-40, rows 34-41, включая r39 FAGOR SKIP)
 
 CURRENT-w2: chunk-082 b5 DONE 40/52 (cum TRIP 10 / blknotrip 0 / blknochg 28 / blkfix 0 / SKIP-НП 2; 195 PASS / 0 FAIL); TRIP 4 шкафы для вина (Frosty H 120D + H 168D + Tecfrigo Sommelier 482 + 481FG) + blknochg 3 (Tefcold/Sirman) + SKIP-НП #2 r39 FAGOR CWC-300; +1 OQ #12 W2 cum r35 H 168D bottle range; next b6 (SKU 41-48, rows 42-49, включая r42+r43 HURAKAN SKIP)
+
+CURRENT-w2: chunk-082 b6 DONE 48/52 (cum TRIP 10 / blknotrip 0 / blknochg 34 / blkfix 0 / SKIP-НП 4; 221 PASS / 0 FAIL); blknochg 6 (Tefcold семья + Snaige) + SKIP-НП #3 r42 HURAKAN HKN-WNC110T + #4 r43 HURAKAN HKN-WNC470CDW; без новых OQ; next b7 FINAL (SKU 49-52, rows 50-53, 4 финальный)
