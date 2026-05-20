@@ -1,7 +1,7 @@
 # chunk-068 MANUAL REVIEW (W2)
 
-**Status:** chunk-068 b1 DONE 8/50 (TRIP 4 + blknotrip 0 + blknochg 4 + SKIP-НП 0; OQ 0; 90 PASS) — следующий b2 (SKU 9-16, rows 10-17)
-**Last updated:** chunk-068 b1 DONE 8/50
+**Status:** chunk-068 b2 DONE 16/50 (cum TRIP 10 + blknotrip 0 + blknochg 5 + SKIP-НП 1; OQ 0; 109 PASS) — следующий b3 (SKU 17-24, rows 18-25)
+**Last updated:** chunk-068 b2 DONE 16/50
 
 ## Структура
 
@@ -46,4 +46,26 @@
 **OQ:** 0 новых открытых вопросов.
 
 **Verify breakdown:** 50 ART regression + 4 TRIP × 7 checks (c4 untouched / c5==c7 / skel-eq / dims-eq / no UA / no Ё / nl-eq) = 28 + 4 blknochg × 3 checks (c4/c5/c36 unchanged vs RO) = 12. Total **90 PASS / 0 FAIL**.
+
+## b2 (SKU 9-16, rows 10-17) — DONE 16/50
+
+**Категории:** TRIP 6 + blknotrip 0 + blknochg 1 + SKIP-НП 1 = 8/8. Verify 109 PASS / 0 FAIL.
+
+**TRIP (6):**
+- r11 SKU10 ART 2191921582 **Frosty ECO40 1ph** стаканомойка: c5←c7 (`Машина для мытья стаканов (бокалов) Frosty ECO40 1ph` — c7 использует «мытья», не «мойки» как в r6 ECO35; preserve c7 verbatim); c36 25 строк (16-li main + 4-li комплект + 1-li материал; dims `60/30/400х400/276/2/1/2/1,5/11/3/55/2/4/2,50/220/480/517/696/30.00/1/1`; «Подуктивність» source typo → «Производительность» (correct RU)).
+- r12 SKU11 ART 2213453082 **Krupps C327DGT Advance** со встроенным сл. насосом DP45K: c5←c7; c36 31 строка с `<h2>` header («Размер корзин: 350х350 мм»); 24-li main + 4-li упаковка; dims включают `<h2>2/2`, `327`, `45`, `350х350×2`, `30`, `240`, `36/420/485/660`, `2.79/220`, `90/120/150/180`, packaging `48/670/570/840`.
+- r13 SKU12 ART 2213463204 **Krupps C537DGT Advance** со встроенным сл. насосом DP45K: c5←c7; c36 31 строка с `<h2>` («Подходит для тарелок высотой до 350 мм и бокалов высотой до 310 мм»); 24-li main + 4-li упаковка; ключевые dims: `350`, `310`, `500х500`, `30`, `395`, `60/585/600/815`, `3.12/220`, `32-40` посуды, packaging `69.2/800/680/1000`.
+- r14 SKU13 ART 2221209761 **Winterhalter UC-M 012V0031** фронтальная: c5←c7; c36 20 строк (3 `<p>` блока + 18-li); preserved source typos «Посудомийна машина Посудомийна машина» dup (→ «Посудомоечная машина Посудомоечная машина»), «1цикл» no-space (→ «1цикл»); termostop / atmospheric bойlер / Touch Screen / Energy / Integrated softener; dims `012/0031./4/66/40/28/24/77/48/32/22/77/500х500×2/404/15,3/62/30/4/60,/120,/180/240/180/2,4/1/637х600х760/7,9/380`.
+- r15 SKU14 ART 2278734126 **Oztiryakiler OBY35TPDT**: c5←c7; c36 22 строки с `<h2>` («Панель управления Touch. Корпус, моечный и нагревательные баки из нержавеющей стали...»); 15-li main + 4-li упаковка; dims `<h2>2×2`, `30/425/465/630/3.3/220/2,5/30`, `20-32` посуды, packaging `35/570/530/750`.
+- r16 SKU15 ART 2278736666 **Oztiryakiler OBY40TPDT**: c5←c7; c36 22 строки (same template как r15 но более крупная машина: `35/475/545/765`, посуды `32-40`, packaging `40/650/560/890`).
+
+**blknochg (1):**
+- r17 SKU16 ART 2289323710 **Silanos S021 PS PD/РВ DIGIT** (стаканомойка): c5==c7 RU OK, c36 без UA-mark, skel-eq **False** (len35=1349 vs len36=1353, source variance — fixed строка НЕ изменена).
+
+**SKIP-НП (1):**
+- r10 SKU9 ART 2176569021 **APACH AC800DIG DD** Посудомоечная машина — brand=APACH ⇒ НП forward-only override; fixed строка (c4/c5/c6/c7/c35/c36) НЕ тронута, тело из НП-фида позже. cum SKIP-НП 1/?.
+
+**OQ:** 0 новых открытых вопросов.
+
+**Verify breakdown:** 50 ART + 6 TRIP × 7 = 42 + 1 SKIP-НП × 6 (all cols unchanged) = 6 + 1 blknochg × 3 = 3 + b1 regression 4 TRIP c5==c7 + 4 blknochg c5 unchanged = 8. Total **109 PASS / 0 FAIL**.
 
