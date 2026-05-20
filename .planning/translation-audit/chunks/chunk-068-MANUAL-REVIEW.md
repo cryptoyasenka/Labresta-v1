@@ -1,7 +1,7 @@
 # chunk-068 MANUAL REVIEW (W2)
 
-**Status:** chunk-068 b6 DONE 48/50 (cum TRIP 20 + blknotrip 0 + blknochg 26 + SKIP-НП 2; OQ 0; 280 PASS) — следующий b7 (SKU 49-50, rows 50-51, финал)
-**Last updated:** chunk-068 b6 DONE 48/50
+**Status:** chunk-068 **ЗАКРЫТ 50/50** (cum TRIP 20 + blknotrip 0 + blknochg 28 + SKIP-НП 2; OQ 0; b7 256 PASS) — следующий chunk-069 scaffold (продолжение chunk-068)
+**Last updated:** chunk-068 ЗАКРЫТ 50/50
 
 ## Структура
 
@@ -157,4 +157,31 @@
 **Verify breakdown:** 50 ART regression + 8 c5==c7 = 8 + 8 no-UA c5/c7/c36 = 24 + 8 no-Ё c36 = 8 + 8 fix c5/c7/c36 unchanged = 24 + b1..b5 regression (20 prior TRIP × 5 invariants = 100 + 18 prior blknochg × 3 = 54 + 2 SKIP-НП × 6 = 12) = 280. Total **280 PASS / 0 FAIL**.
 
 **Cum после b6:** TRIP 20 + blknotrip 0 + blknochg 26 + SKIP-НП 2 = **48/50**. До закрытия chunk-068 остался b7 (SKU 49-50, rows 50-51, ATA AT 1201 + AT 1401 купольные).
+
+## b7 (SKU 49-50, rows 50-51, ФИНАЛ) — DONE 50/50
+
+**Категории:** TRIP 0 + blknotrip 0 + blknochg 2 + SKIP-НП 0 = 2/2. Verify **256 PASS / 0 FAIL**.
+
+**blknochg (2):**
+- r50 SKU49 ART 2434119030 **ATA AT 1201 купольная** Посудомоечная машина (17-строчный body, кошик 500x500, 1201 шт/час): c5==c7 RU OK, c36 без UA-mark, skel-eq True, dims-eq True (12 dims `1201/10,1/304/85/1201/1080/304/500х500/10100/660/796/1420`); fixed строка НЕ изменена.
+- r51 SKU50 ART 2434126712 **ATA AT 1401 купольная** Посудомоечная машина (17-строчный body, кошик 500x500, 1401 шт/час): c5==c7 RU OK, c36 без UA-mark, skel-eq True, dims-eq True (12 dims `1401/304/85/2/80/1080/304/500х500/9200/660/790/1440`); fixed строка НЕ изменена.
+
+**TRIP:** 0. **SKIP-НП:** 0.
+
+**OQ:** 0.
+
+**Verify breakdown:** 50 ART regression + 2 b7 × 8 = 16 + b1..b6 regression (20 prior TRIP × 5 = 100 + 26 prior blknochg × 3 = 78 + 2 SKIP-НП × 6 = 12) = 256. Total **256 PASS / 0 FAIL**.
+
+**Cum после b7 (FINAL):** TRIP 20 + blknotrip 0 + blknochg 28 + SKIP-НП 2 = **50/50**. chunk-068 **ЗАКРЫТ**.
+
+## chunk-068 сводка
+
+- 50 SKU, 7 батчей (8+8+8+8+8+8+2).
+- TRIP **20**, blknotrip 0, blknochg **28**, SKIP-НП **2** (r10 APACH AC800DIG DD + r27 APACH AF400 DDP). OQ 0.
+- Glossary: 1007 → 1042 (+35 терминов накоплено за b1..b5; b6 + b7 — blknochg-only, не вводили новые).
+- Cumulative verify across batches: 90 + 109 + 103 + 130 + 124 + 280 + 256 = **1092 PASS / 0 FAIL** (с regression-перекрытиями).
+- Все 50 ART preserved, все TRIP с c5←c7 + c36 RU body без UA-mark/без Ё, все blknochg fixed строки НЕ изменены, все SKIP-НП fixed строки НЕ изменены.
+
+Следующий шаг: **chunk-069 scaffold** (продолжение chunk-068, диапазон W2 chunk-055..085).
+
 

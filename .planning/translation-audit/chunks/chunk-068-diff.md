@@ -1,7 +1,7 @@
 # chunk-068 DIFF (W2)
 
-**Status:** b6 DONE 48/50 — батчи b1..b7 (8+8+8+8+8+8+2); next b7 (SKU 49-50, rows 50-51, финал)
-**Last updated:** chunk-068 b6 DONE 48/50
+**Status:** chunk-068 **ЗАКРЫТ 50/50** — батчи b1..b7 (8+8+8+8+8+8+2); next chunk-069 scaffold
+**Last updated:** chunk-068 ЗАКРЫТ 50/50
 
 Source: `chunk-068.xlsx` (RO) → operating: `chunk-068-fixed.xlsx` (gitignored).
 Batches заполняются после каждого закрытого батча.
@@ -100,4 +100,14 @@ Batches заполняются после каждого закрытого ба
 
 **Итого b6:** TRIP 0 + blknotrip 0 + blknochg 8 + SKIP-НП 0. Verify **280 PASS / 0 FAIL**.
 **Cum после b6:** TRIP 20 + blknotrip 0 + blknochg 26 + SKIP-НП 2 = **48/50**.
+
+## b7 (SKU 49-50, rows 50-51, ФИНАЛ) — 50/50
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 49 | 50 | 2434119030 | ATA AT 1201 купольная (1201 шт/час) | blknochg | — (c5==c7 RU OK, skel-eq True, dims-eq True 12 dims) |
+| 2 | 50 | 51 | 2434126712 | ATA AT 1401 купольная (1401 шт/час) | blknochg | — (c5==c7 RU OK, skel-eq True, dims-eq True 12 dims) |
+
+**Итого b7:** TRIP 0 + blknotrip 0 + blknochg 2 + SKIP-НП 0. Verify **256 PASS / 0 FAIL**.
+**Cum после b7 (FINAL):** TRIP 20 + blknotrip 0 + blknochg 28 + SKIP-НП 2 = **50/50**. chunk-068 **ЗАКРЫТ**.
 
