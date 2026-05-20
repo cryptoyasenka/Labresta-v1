@@ -1,6 +1,6 @@
 # chunk-076 MANUAL REVIEW (W2, продолжение chunk-075)
 
-**Status:** chunk-076 b6 DONE 48/57 (cum TRIP 20 / blknotrip 0 / blknochg 26 / blkfix 1 / SKIP-НП 1; 556 PASS / 0 FAIL) — next b7 (SKU 49-56, rows 50-57). Preliminary SKIP-НП r50 Fagor. Без новых OQ.
+**Status:** chunk-076 b7 FINAL COMPLETE 57/57 (cum TRIP 20 / blknotrip 0 / blknochg 34 / blkfix 1 / SKIP-НП 2; 616 PASS / 0 FAIL). SKIP-НП #2: r50 Fagor CUP-11G. Без новых OQ. Chunk-076 ЗАКРЫТ.
 **Last updated:** chunk-076 b3 (24/57)
 
 **Объём:** 57 SKU rows 2..58. ART 2106845309..2239472491.
@@ -139,3 +139,39 @@
 - **r45** SKU=44 ART=2140766549 Tefcold RK505 — c5==c7 RU.
 
 **Verify:** 83 PASS / 0 FAIL. Без новых OQ.
+
+
+## b7 (SKU 49-57, rows 50-58) — FINAL COMPLETE 57/57
+
+**Категории:** blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 1.
+
+### SKIP-НП
+
+- **r50** SKU=49 ART=2229480146 **Fagor** CUP-11G — SKIP-НП (brand=Fagor, тело из фида НП позже). Ячейки в fixed не меняли. ⇒ SKIP-НП #2 по chunk-076.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r51** SKU=50 ART=2239402739 GoodFood BC160NBB2LED — c5==c7 RU.
+- **r52** SKU=51 ART=2239435289 GoodFood BC160BB2LED — c5==c7 RU.
+- **r53** SKU=52 ART=2239444347 GoodFood BC360NBW2LED — c5==c7 RU.
+- **r54** SKU=53 ART=2239446151 GoodFood BC360BW2LED — c5==c7 RU.
+- **r55** SKU=54 ART=2239454792 GoodFood BC360BB2LED — c5==c7 RU.
+- **r56** SKU=55 ART=2239464437 GoodFood BC480NBW2LED — c5==c7 RU.
+- **r57** SKU=56 ART=2239469725 GoodFood BC480BW2LED — c5==c7 RU.
+- **r58** SKU=57 ART=2239472491 GoodFood BC480NBB2LED — c5==c7 RU.
+
+**Verify:** 60 PASS / 0 FAIL. Без новых OQ.
+
+---
+
+## chunk-076 ИТОГ
+
+- **57/57 SKU обработано.**
+- **Категории cumulative:**
+  - TRIP: 20 (rows 8, 9, 14, 15, 16, 19, 20, 24, 25, 29, 30, 31, 32, 33, 34, 35, 46, 47, 48, 49)
+  - blknotrip: 0
+  - blknochg: 34
+  - blkfix: 1 (r22 Whirlpool ADN 221C)
+  - SKIP-НП: 2 (r36 FAGOR AFP-1602 EXP NEO CONCEPT, r50 Fagor CUP-11G)
+- **Verify cumulative:** 616 PASS / 0 FAIL.
+- **OQ:** #6 (r24 Forcar G-ER200SS vs G-ER400 model mismatch). Единственный OQ по chunk-076.

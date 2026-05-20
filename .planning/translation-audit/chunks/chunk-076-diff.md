@@ -171,3 +171,40 @@
 | 45 | 44 | 2140766549 | Tefcold RK505 |
 
 **Verify:** 83 PASS / 0 FAIL. Без новых OQ.
+
+
+## b7 (SKU 49-57, rows 50-58) — FINAL
+
+Категории: blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 1.
+
+### SKIP-НП
+
+| row | SKU | ART | бренд | модель |
+|---|---|---|---|---|
+| 50 | 49 | 2229480146 | Fagor | CUP-11G |
+
+⇒ SKIP-НП #2 по chunk-076. Ячейки в fixed не меняли. Тело из фида НП позже.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+| row | SKU | ART | модель |
+|---|---|---|---|
+| 51 | 50 | 2239402739 | GoodFood BC160NBB2LED |
+| 52 | 51 | 2239435289 | GoodFood BC160BB2LED |
+| 53 | 52 | 2239444347 | GoodFood BC360NBW2LED |
+| 54 | 53 | 2239446151 | GoodFood BC360BW2LED |
+| 55 | 54 | 2239454792 | GoodFood BC360BB2LED |
+| 56 | 55 | 2239464437 | GoodFood BC480NBW2LED |
+| 57 | 56 | 2239469725 | GoodFood BC480BW2LED |
+| 58 | 57 | 2239472491 | GoodFood BC480NBB2LED |
+
+**Verify:** 60 PASS / 0 FAIL. Без новых OQ.
+
+---
+
+## chunk-076 FINAL
+
+- 57 SKU (rows 2-58) — все обработаны через b1-b7.
+- **TRIP 20 / blknotrip 0 / blknochg 34 / blkfix 1 / SKIP-НП 2** = 57 SKU.
+- Verify cumulative 616 PASS / 0 FAIL.
+- OQ: #6 (r24 Forcar G-ER200SS vs G-ER400 upstream model mismatch).
