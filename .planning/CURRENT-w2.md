@@ -599,3 +599,5 @@ CURRENT-w2: chunk-082 b1 DONE 8/52 (cum TRIP 0 / blknotrip 0 / blknochg 8 / blkf
 CURRENT-w2: chunk-082 b2 DONE 16/52 (cum TRIP 0 / blknotrip 0 / blknochg 16 / blkfix 0 / SKIP-НП 0; 64 PASS / 0 FAIL); blknochg 8 (Meatico STG GREEN ALL 1500 ×6 + STG GREEN MEAT 150 BLACK GLASS + 700 VIP PANORAMA); без новых OQ; next b3 (SKU 17-24, rows 18-25, включая r22 HURAKAN HKN-WNC160CDW SKIP-НП)
 
 CURRENT-w2: chunk-082 b3 DONE 24/52 (cum TRIP 3 / blknotrip 0 / blknochg 20 / blkfix 0 / SKIP-НП 1; 106 PASS / 0 FAIL); TRIP 3 (r21 Frosty H275D + r23 SCAN SV 45 B + r24 Bartscher 700133 — шкафы для вина) + blknochg 4 (Meatico AC9608/AC9615/AC9618 PANORAMA + WHIRLPOOL ADN 231) + SKIP-НП #1 r22 HURAKAN HKN-WNC160CDW; без новых OQ; next b4 (SKU 25-32, rows 26-33)
+
+CURRENT-w2: chunk-082 b4 DONE 32/52 (cum TRIP 6 / blknotrip 0 / blknochg 25 / blkfix 0 / SKIP-НП 1; 150 PASS / 0 FAIL); TRIP 3 шкафы для вина (Frosty FCB-128 + H 46D + H 80D) + blknochg 5 (Tefcold/Frosty семья); без новых OQ; next b5 (SKU 33-40, rows 34-41, включая r39 FAGOR SKIP)
