@@ -31,6 +31,11 @@ def drop_apos_ru(s: str) -> str:
 # Lex dict UA→RU (applied in RU cols only).
 # Expanded based on findings per batch.
 UA_RU_LEX = [
+    # Brand spellings (UA Cyrillic → RU Cyrillic)
+    (r'\bфімар\b', 'фимар'),
+    (r'\bФімар\b', 'Фимар'),
+    (r'\bсірман\b', 'сирман'),
+    (r'\bСірман\b', 'Сирман'),
     # Hybrid typos (RU stem + UA letter)
     (r'\bпромішленній\b', 'промышленной'),
     (r'\bпромішленний\b', 'промышленный'),
