@@ -491,3 +491,12 @@
 - SKIP-НП #1 по c077: r13 HURAKAN HKN-GX650TNS.
 - OQ: 0 новых на c077. Cumulative W2 OQ = 6.
 - Next: chunk-078 scaffold (W2, продолжение chunk-077).
+
+
+## chunk-078 scaffold (W2, продолжение chunk-077) (2026-05-20 13:25)
+
+- 53 SKU, rows 2..54. ART 1836114228..2140758985.
+- Батчи: b1(2-9) | b2(10-17) | b3(18-25) | b4(26-33) | b5(34-41) | b6(42-49) | b7(50-54, 5 final).
+- Preliminary SKIP-НП #1: r19 TATRA TRC1400TN (b3).
+- Файлы: chunk-078.xlsx (RO), chunk-078-fixed.xlsx (gitignored), chunk-078-MANUAL-REVIEW.md, chunk-078-diff.md.
+- Next: chunk-078 b1 (SKU 1-8, rows 2-9).
