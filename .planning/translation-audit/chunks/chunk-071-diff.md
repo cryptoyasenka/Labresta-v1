@@ -1,7 +1,7 @@
 # chunk-071 diff (W2, продолжение chunk-070)
 
-**Status:** chunk-071 b2 DONE 16/83 (cum TRIP 16 / blknotrip 0 / blknochg 0 / blkfix 0 / SKIP-НП 0; 297 PASS / 0 FAIL) — next b3 (SKU 17-24, rows 18-25)
-**Last updated:** chunk-071 b2 DONE 16/83
+**Status:** chunk-071 b3 DONE 24/83 (cum TRIP 21 / blknotrip 0 / blknochg 3 / blkfix 0 / SKIP-НП 0; 312 PASS / 0 FAIL) — next b4 (SKU 25-32, rows 26-33)
+**Last updated:** chunk-071 b3 DONE 24/83
 
 **Источник:** `.planning/translation-audit/chunks/chunk-071.xlsx` (83 SKU, rows 2..84, ART 500478925..1173086863).
 **Фикс-таргет:** `.planning/translation-audit/chunks/chunk-071-fixed.xlsx` (gitignored).
@@ -46,3 +46,19 @@
 
 **Итого b2:** TRIP 8 + blknotrip 0 + blknochg 0 + blkfix 0 + SKIP-НП 0. Verify **297 PASS / 0 FAIL**.
 **Cum после b2:** TRIP 16 + blknotrip 0 + blknochg 0 + blkfix 0 + SKIP-НП 0 = **16/83**. UNPROC = 67 (rows 18-84).
+
+## b3 (SKU 17-24, rows 18-25) — 24/83
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 17 | 18 | 908848545 | Hendi 199039 баллончики с газом (4 шт) | **TRIP** | c5←c7 «Баллончики с газом (4 шт) Hendi 199039 для газовой горелки»; c36 ← RU 142 chars (2 para): для горелок арт.198230/198216 + 4 шт в наборе. |
+| 2 | 18 | 19 | 1144395391 | Hendi 222676 терка V-обр ручная | **TRIP** | c5←c7 «Терка для овощей Hendi 222676 РУЧНАЯ - V–образная»; c36 ← RU 507 chars (1 para + empty + 2 li ul). **Source-typo preserved «222676изготовлена»** (no space, RU word). V-обр главное + волнистое второе / 2 доп лезвия жюльен 6+9 мм для картофеля-фри / 530×165×203. |
+| 3 | 19 | 20 | 1156818682 | Hendi 975862 сифон Kurt Scheller голубой | **blknochg** | Source c5/c36 already RU («Сифон для сливок ... голубой»), fixed cells unchanged. |
+| 4 | 20 | 21 | 1156819719 | Hendi 975855 сифон Kurt Scheller желтый | **blknochg** | Source c5/c36 already RU («Сифон для сливок ... желтый»), fixed cells unchanged. |
+| 5 | 21 | 22 | 1156821932 | Hendi 975879 сифон Kurt Scheller зеленый | **blknochg** | Source c5/c36 already RU («Сифон для сливок ... зеленый»), fixed cells unchanged. |
+| 6 | 22 | 23 | 1156823550 | Hendi 975886 сифон Kurt Scheller фиолетовый | **TRIP** | c5←c7 «Сифон для сливок Hendi 975886 Kurt Scheller Edition фиолетовый»; c36 ← RU 469 chars (1 para + 6 li): 0,5 л / алюминий / 3 насадки полипропилен + щетка / N₂O preserved / для горячих соусов нельзя / не моется в ПММ. Literal `'` в «Об'єм» drop. |
+| 7 | 23 | 24 | 1156829173 | Hendi 588369 Kitchen Line 0,5 л | **TRIP** | c5←c7 «Сифон для сливок Hendi 588369 (0,5 л)»; c36 ← RU 496 chars (1 para + 8 li): Ø 80 / H 260 / N₂O preserved / «не входят в комплект» (source mixed RU «не входят» + UA «до комплекту» normalized). `&#39;` в «Об&#39;єм» drop. |
+| 8 | 24 | 25 | 1156830998 | Hendi 588376 Kitchen Line 1,0 л | **TRIP** | c5←c7 «Сифон для сливок Hendi 588376 Kitchen Line 1,0 л»; c36 ← RU 513 chars. **Source-typos preserved:** (1) «Kitchen Line 0,25 л» в первом предложении (модель 1,0 л!) — копипаст-typo, (2) «Фіолетовий колір» → «Фиолетовый цвет» в синем/жёлтом/etc SKU — копипаст, (3) lowercase «висота»→«высота» preserved. Ø 95 / H 320. |
+
+**Итого b3:** TRIP 5 + blknotrip 0 + blknochg 3 + blkfix 0 + SKIP-НП 0. Verify **312 PASS / 0 FAIL**.
+**Cum после b3:** TRIP 21 + blknotrip 0 + blknochg 3 + blkfix 0 + SKIP-НП 0 = **24/83**. UNPROC = 59 (rows 26-84).
