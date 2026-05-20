@@ -3,7 +3,7 @@
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-067 (74 SKU, rows 2..75; ART 2045345276 … 2033010783)
 **Apply key:** `Артикул` (col1, scoped per row)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-066
-**Status:** b2 DONE 16/74 (cum: TRIP 7 / blknotrip 0 / blknochg 9 / SKIP-НП 0; b3 предстоит; b1..b9 по 8 SKU + b10=SKU73-74 2 SKU)
+**Status:** b3 DONE 24/74 (cum: TRIP 10 / blknotrip 0 / blknochg 14 / SKIP-НП 0; b4 предстоит; b1..b9 по 8 SKU + b10=SKU73-74 2 SKU)
 
 Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Формат — как chunk-066-diff.md.
 
@@ -66,3 +66,30 @@ SKIP-НП prelim (forward-only, тело из фида НП позже): FAGOR/F
 ### SKIP-НП (0)
 
 В b2 нет brand-locked НП. (prelim 8 на b6/b7/b9.)
+
+
+## Батч 3 (SKU 17-24, rows 18-25) — DONE
+
+**Итог:** TRIP 3 / blknotrip 0 / blknochg 5 / SKIP-НП 0 / verify 186 PASS / 0 FAIL.
+
+### blk триплет (3)
+
+| SKU | row | Артикул | Бренд+модель | col5: UA→RU | col36 |
+|---|---|---|---|---|---|
+| 20 | 21 | 680812889 | FROSTY CVT-03 тостер конвейерный | `Тостер конвеєрний FROSTY CVT-03` → `Тостер конвейерный FROSTY CVT-03` | faithful RU body (320 кусочков, 360 мм лента, 520х480х400, 2,6 кВт) skel==UA |
+| 22 | 23 | 2465032226 | Bartscher 100373 тостер вертикальный | c5 unchanged `Тостер Bartscher 100373` (brand+model) | faithful RU body (2 паза 140х35, 6 уровней подрумянивания, 220V, Китай, размеры в упаковке) skel==UA; UA `&#39;` в `підрум&#39;янювання` → RU без апострофа; `знімна` → `съемная` без ё |
+| 23 | 24 | 680802268 | FROSTY DS-6 тостер вертикальный | `Тостер вертикальний FROSTY DS-6` → `Тостер вертикальный FROSTY DS-6` | faithful RU body (на 6 кусочков, 400х210х215, 2,5 кВт, 220 В) skel==UA |
+
+### blknochg (5)
+
+| SKU | row | Артикул | Бренд+модель | Причина |
+|---|---|---|---|---|
+| 17 | 18 | 1128659172 | AIRHOT CS-30 кукурузоварка | c5==c7 genuine RU; c36 genuine RU (с ё в source — не трогаем); skel-eq, dims match — но c36 без UA-mark, blknochg |
+| 18 | 19 | 671776158 | SILVER СМ 250 кукурузоварка | c5==c7 genuine RU; c36 genuine RU; не трогаем |
+| 19 | 20 | 671783156 | SILVER СМ 400 кукурузоварка | c5==c7 genuine RU; c36 genuine RU; не трогаем |
+| 21 | 22 | 2043293826 | Frosty AT360T тостер горизонтальный | c5==c7 genuine RU; c36 genuine RU **расширенная версия** (skel-eq False, dims различаются) — НЕ blknotrip, это отдельная редакция RU, не трогаем |
+| 24 | 25 | 680810516 | FROSTY CVT-02 тостер конвейерный | c5==c7 genuine RU; c36 genuine RU; не трогаем |
+
+### SKIP-НП (0)
+
+В b3 нет brand-locked НП.

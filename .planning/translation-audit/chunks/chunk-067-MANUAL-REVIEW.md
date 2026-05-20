@@ -2,9 +2,9 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-067 (74 SKU, rows 2..75; ART 2045345276 … 2033010783)
 **Apply key:** `Артикул` (col1, scoped per row)
-**Status:** b2 DONE 16/74 (cum: TRIP 7 / blknotrip 0 / blknochg 9 / SKIP-НП 0 / OQ 0; b3 предстоит; batch=8 b1..b9 по 8 + b10=SKU73-74 2 SKU = 74)
+**Status:** b3 DONE 24/74 (cum: TRIP 10 / blknotrip 0 / blknochg 14 / SKIP-НП 0 / OQ 0; b4 предстоит; batch=8 b1..b9 по 8 + b10=SKU73-74 2 SKU = 74)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-066
-**Last updated:** chunk-067 b2 (W2)
+**Last updated:** chunk-067 b3 (W2)
 
 Эталон формата: chunk-019-MANUAL-REVIEW.md / chunk-066-MANUAL-REVIEW.md. Категории: blk триплет / blknotrip / blknochg / SKIP-НП.
 
@@ -96,5 +96,38 @@ _(нумерация отдельная, начинается с #1; пока н
 В b2 нет brand-locked НП. (prelim 8 на b6/b7/b9.)
 
 ### Открытые вопросы b2
+
+Нет.
+
+
+## Батч 3 (SKU 17-24, rows 18-25) — DONE
+
+**Итог:** TRIP 3 / blknotrip 0 / blknochg 5 / SKIP-НП 0 / OQ 0 / verify 186 PASS / 0 FAIL / cum 24/74.
+
+### blk триплет (TRIP) — 3 SKU
+
+- **SKU 20 row 21 ART 680812889 — Тостер конвеєрний FROSTY CVT-03**
+  - col5 UA→genuine RU: → `Тостер конвейерный FROSTY CVT-03` (как c7)
+  - col36 faithful RU: «Тостер конвейерный FROSTY CVT-03 с производительностью до 320 кусочков в час; регулятор мощности и скорости; трубчатые нагреватели; ширина тостерной ленты 360 мм; корпус изготовлен из нержавеющей стали; габариты 520х480х400 мм; мощность 2,6 кВт.» skel==UA, dims match. Источник содержит inline-RU фрагмент «регулятор мощности и скорости» уже в UA c35 — RU сохраняет verbatim.
+- **SKU 22 row 23 ART 2465032226 — Тостер Bartscher 100373 вертикальный**
+  - col5 UA-leak копия `Тостер Bartscher 100373` — без UA-mark в латинице, но c36==c35 UA-копия → TRIP. RU c5 остаётся `Тостер Bartscher 100373` (модельное название, brand+number, не меняется).
+  - col36 faithful RU: «Тостер вертикальный Bartscher 100373; 2 паза 140х35 мм; 6 уровней подрумянивания; 1 пульт управления для двух пазов; кнопка прерывания; в комплекте съемная насадка для булочек (без Ё — «съемная»); вес/длина/ширина/высота/мощность/220V/Китай; размеры в упаковке.» skel==UA, dims match. UA `&#39;` в `підрум&#39;янювання` → RU без апострофа («подрумянивания»). UA `знімна` → `съемная` faithful normalize (без ё в RU c36 — EYO check).
+- **SKU 23 row 24 ART 680802268 — Тостер вертикальний FROSTY DS-6**
+  - col5 UA→genuine RU: → `Тостер вертикальный FROSTY DS-6` (как c7)
+  - col36 faithful RU: «Тостер вертикальный на 6 кусочков; материал нержавеющая сталь; таймер со звуковым сигналом на 5 минут; поддон для крошек; габариты 400х210х215 мм; мощность 2,5 кВт; напряжение 220 В.» skel==UA, dims match.
+
+### blknochg — 5 SKU (c5/c35/c36 НЕ тронуты; genuine RU в источнике)
+
+- SKU 17 row 18 ART 1128659172 — AIRHOT CS-30 кукурузоварка (c5==c7; c36 genuine RU с ё в источнике — не трогаем)
+- SKU 18 row 19 ART 671776158 — SILVER СМ 250 кукурузоварка (c5==c7; c36 genuine RU)
+- SKU 19 row 20 ART 671783156 — SILVER СМ 400 кукурузоварка (c5==c7; c36 genuine RU)
+- SKU 21 row 22 ART 2043293826 — Frosty AT360T тостер горизонтальный (c5==c7 genuine RU; c36 genuine RU расширенная версия — skel-eq False, dims различаются — НЕ blknotrip, это genuine RU отдельная редакция, не трогаем)
+- SKU 24 row 25 ART 680810516 — FROSTY CVT-02 тостер конвейерный (c5==c7; c36 genuine RU)
+
+### SKIP-НП — 0 SKU
+
+В b3 нет brand-locked НП. (prelim 8 на b6/b7/b9.)
+
+### Открытые вопросы b3
 
 Нет.
