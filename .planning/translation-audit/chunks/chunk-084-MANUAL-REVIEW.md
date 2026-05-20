@@ -100,3 +100,26 @@
 **Verify:** 48 PASS / 0 FAIL.
 
 **Cumulative chunk-084:** 24/71 (TRIP 10 / blknotrip 0 / blknochg 13 / blkfix 1 / SKIP-НП 0; 116 PASS / 0 FAIL).
+
+
+## b4 (SKU 25-32, rows 26-33) — DONE 32/71
+
+**Категории:** blk триплет 2 / blknotrip 0 / blknochg 6 / blkfix 0 / SKIP-НП 0.
+
+### blk триплет (c5←c7 + c36 полный RU-перевод тела)
+
+- **r26** SKU=25 ART=2103366019 Gi Metal AC-SPGT2 — щетка для гриля со щетиной из нержавеющей стали и ручкой из высокопрочного полимера, размер 310×60 мм, вес 0,290 кг. c35==c36 source UA → c36 переведен полностью (401 chars). NB: source имеет внутреннее противоречие (intro «нержавіюча сталь» vs spec «Залізна щетина») — переведено faithfully.
+- **r30** SKU=29 ART=2106846093 FROSTY FL-58 (шкаф настольный холодильный, 58 л, 0..+12°C, 0,19 кВт, 452×406×816 мм, стекло с 4 сторон, LED-подсветка, 2 полки, черный) — c5 UA → "Шкаф-витрина холодильная FROSTY FL-58, black"; c35==c36 source UA с &#39; → c36 переведен полностью (521 chars, без &#39;).
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r27** SKU=26 ART=2106845076 FROSTY RT58L-1D (черная с замком) — c5==c7 RU clean, c36 RU полный (609 chars).
+- **r28** SKU=27 ART=2106850214 FROSTY RT78L-1D — c5==c7 RU clean, c36 RU полный (627 chars).
+- **r29** SKU=28 ART=2106852266 FROSTY RT280L (кондитерский демонстрационный) — c5==c7 RU clean, c36 RU полный (530 chars).
+- **r31** SKU=30 ART=2106848574 FROSTY FL-98 (шкаф настольный, аналог FL-58) — c5==c7 RU clean, c36 RU полный (523 chars).
+- **r32** SKU=31 ART=2106849283 FROSTY FL238 — c5==c7 RU clean, c36 RU полный (529 chars).
+- **r33** SKU=32 ART=2106850943 FROSTY RT235L (кондитерский демонстрационный) — c5==c7 RU clean, c36 RU полный (555 chars).
+
+**Verify:** 40 PASS / 0 FAIL. Без новых OQ.
+
+**Cumulative chunk-084:** 32/71 (TRIP 12 / blknotrip 0 / blknochg 19 / blkfix 1 / SKIP-НП 0; 156 PASS / 0 FAIL).

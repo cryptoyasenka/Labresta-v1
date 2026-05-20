@@ -79,3 +79,28 @@
 | 22 | 21 | Gi Metal AC-SPT (щётка) |
 
 **Verify:** 48 PASS / 0 FAIL. +1 OQ #16 r21/r22/r23/r24 c7 Latin c в "чиcтки".
+
+
+## b4 (SKU 25-32, rows 26-33)
+
+Категории: blk триплет 2 / blknotrip 0 / blknochg 6 / blkfix 0 / SKIP-НП 0.
+
+### blk триплет
+
+| row | SKU | модель |
+|---|---|---|
+| 26 | 25 | Gi Metal AC-SPGT2 (щетка для гриля, н/с щетина, 310×60 мм) |
+| 30 | 29 | FROSTY FL-58 (шкаф настольный холодильный, 58 л, стекло 4 стороны, LED, 0..+12°C, black) |
+
+### blknochg
+
+| row | SKU | модель |
+|---|---|---|
+| 27 | 26 | FROSTY RT58L-1D (черная с замком) |
+| 28 | 27 | FROSTY RT78L-1D |
+| 29 | 28 | FROSTY RT280L (кондитерский) |
+| 31 | 30 | FROSTY FL-98 |
+| 32 | 31 | FROSTY FL238 |
+| 33 | 32 | FROSTY RT235L (кондитерский) |
+
+**Verify:** 40 PASS / 0 FAIL. Без новых OQ.
