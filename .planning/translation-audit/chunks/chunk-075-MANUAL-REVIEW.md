@@ -1,7 +1,7 @@
 # chunk-075 MANUAL REVIEW (W2, продолжение chunk-074)
 
-**Status:** chunk-075 b5 DONE 40/54 (cum TRIP 4 / blknotrip 0 / blknochg 29 / blkfix 0 / SKIP-НП 7; 917 PASS / 0 FAIL) — next b6 (SKU 41-48, rows 42-49)
-**Last updated:** chunk-075 b5 (40/54)
+**Status:** chunk-075 b6 DONE 48/54 (cum TRIP 4 / blknotrip 0 / blknochg 35 / blkfix 0 / SKIP-НП 9; 987 PASS / 0 FAIL) — next b7 FINAL (SKU 49-54, rows 50-55)
+**Last updated:** chunk-075 b6 (48/54)
 
 **Объём:** 54 SKU rows 2..55. ART 2044220842..1090581793.
 
@@ -83,3 +83,22 @@
 **b5 распределение (SKU 33-40):** TRIP 1 (r37 Frosty BCF20 «Шокер»→«Аппарат (шкаф) шоковой заморозки», 4 программируемых цикла, термощуп, нержавеющая сталь); blknochg 4 (r38 Tefcold BLC5; r39 GoodFood GF-BCF20-HC; r40 GoodFood GF-BCF40-HC source quirk «BCF20-HC» в теле BCF40; r41 Tecnodom P-ATT10EA numerical quirk 15→12 кг); SKIP-НП 3 (r34 APACH ASH10K LP NEW; r35 HURAKAN HKN-BCF10M; r36 HURAKAN HKN-BCF5M).
 
 **Note:** «Tefcold» НЕ SKIP (substring, not standalone brand «COLD»).
+
+
+## b6 (SKU 41-48, rows 42-49) — DONE 8/8
+
+**Категории:** blk триплет 0 / blknotrip 0 / blknochg 6 / blkfix 0 / SKIP-НП 2
+
+**Резюме:**
+- r42 SKU41 ART=1862480502 APACH-бренд (см. NM_UA) → **SKIP-НП** forward-only, fixed cells unchanged.
+- r43 SKU42 ART=1862455773 APACH-бренд → **SKIP-НП** forward-only, fixed cells unchanged.
+- r44 SKU43 ART=1855552120 Tecnodom P-ATT05EA290 (Аппарат шоковой заморозки на 5 уровней, 866 chars c36) → **blknochg** (c5==c7 genuine RU, нет UA в c36).
+- r45 SKU44 ART=1855517769 Tefcold BLC14 (Аппарат шоковой заморозки, 14 уровней, 299 л, R404A, 2000 Вт 380-400V, 205 кг, source quirk «Двери Глухие двери Глухие» дубль preserved, 1126 chars c36) → **blknochg**. «Tefcold» — НЕ SKIP-НП (бренд standalone «COLD», substring не считается).
+- r46 SKU45 ART=1855554066 Tecnodom P-ATT03 (Аппарат шоковой заморозки на 3 уровня, 670 chars c36) → **blknochg**.
+- r47 SKU46 ART=1855553732 Tecnodom P-ATT07 (Аппарат шоковой заморозки на 7 уровней, 683 chars c36) → **blknochg**.
+- r48 SKU47 ART=1825517864 GGM Gastro SAG147AND (Холодильный стол-саладетта, 392 л, 8×GN 1/6, AISI 304, +2..+8°С, 2474 chars c36) → **blknochg**.
+- r49 SKU48 ART=1825511820 GGM Gastro ZBG158ND (Холодильный стол-саладетта, 390 л, AISI 304, 2885 chars c36) → **blknochg**.
+
+**Verify:** 70 PASS / 0 FAIL.
+
+**Открытых вопросов:** 0 (новых не появилось; кумулятивный список без изменений).

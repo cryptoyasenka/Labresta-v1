@@ -159,3 +159,28 @@
 - r41 c35 vs c36 numerical discrepancy «15 кг» (UA) vs «12 кг» (RU) для заморозки 240 мин.
 
 **b5 verify:** 46 PASS / 0 FAIL.
+
+
+## b6 (SKU 41-48, rows 42-49)
+
+Категории: blk триплет 0 / blknotrip 0 / blknochg 6 / blkfix 0 / SKIP-НП 2.
+
+### SKIP-НП (forward-only, fixed cells unchanged)
+
+| row | SKU | ART | brand | примечание |
+|---|---|---|---|---|
+| 42 | 41 | 1862480502 | APACH | NM_UA brand=APACH; fixed row 42 без изменений |
+| 43 | 42 | 1862455773 | APACH | NM_UA brand=APACH; fixed row 43 без изменений |
+
+### blknochg (c5==c7 genuine RU, c36 genuine RU body, fixed без изменений)
+
+| row | SKU | ART | модель | c36 len | примечание |
+|---|---|---|---|---|---|
+| 44 | 43 | 1855552120 | Tecnodom P-ATT05EA290 | 866 | Аппарат шоковой заморозки на 5 уровней |
+| 45 | 44 | 1855517769 | Tefcold BLC14 | 1126 | 14 уровней, 299 л, R404A, 2000 Вт 380-400V, 205 кг; source quirk «Двери Глухие двери Глухие» дубль preserved; «Tefcold» НЕ SKIP-НП (standalone bbrand «COLD» ≠ substring) |
+| 46 | 45 | 1855554066 | Tecnodom P-ATT03 | 670 | Аппарат шоковой заморозки на 3 уровня |
+| 47 | 46 | 1855553732 | Tecnodom P-ATT07 | 683 | Аппарат шоковой заморозки на 7 уровней |
+| 48 | 47 | 1825517864 | GGM Gastro SAG147AND | 2474 | Холодильный стол-саладетта, 392 л, 8×GN 1/6, AISI 304, +2..+8°С |
+| 49 | 48 | 1825511820 | GGM Gastro ZBG158ND | 2885 | Холодильный стол-саладетта, 390 л, AISI 304 |
+
+**Verify:** 70 PASS / 0 FAIL (5 cells × 2 SKIP rows + 11 checks × 6 blknochg rows = 10 + 66 - корректировка по фактическим check_count, см. _w2_c075_b6verify.py).
