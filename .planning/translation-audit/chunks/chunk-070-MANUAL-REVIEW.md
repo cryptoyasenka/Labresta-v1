@@ -1,7 +1,7 @@
 # chunk-070 MANUAL REVIEW (W2)
 
-**Status:** chunk-070 b3 DONE 24/59 (cum TRIP 4 / blknotrip 0 / blknochg 18 / SKIP-НП 2; 198 PASS / 0 FAIL) — next b4 (SKU 25-32, rows 26-33)
-**Last updated:** chunk-070 b3 DONE 24/59
+**Status:** chunk-070 b4 DONE 32/59 (cum TRIP 7 / blknotrip 0 / blknochg 23 / SKIP-НП 2; 214 PASS / 0 FAIL) — next b5 (SKU 33-40, rows 34-41)
+**Last updated:** chunk-070 b4 DONE 32/59
 
 ## Структура
 
@@ -101,3 +101,22 @@
 **Открытые вопросы:** 0 новых в b3.
 
 **Verify:** 198 PASS / 0 FAIL.
+
+
+## b4 (SKU 25-32, rows 26-33) — 32/59
+
+**Категории:** TRIP 3 (r27 Lavezzini DG30 + r28 Lavezzini TOP BABY LCD + r32 Lavezzini Mini BIG) + blknochg 5 (r26 Orved Petros С46 Н + r29/r30/r31 Sammic SE-204/SE-310/SE-416 + r33 SIRMAN S 400/2T) + SKIP-НП 0.
+
+**TRIP detail:**
+- **r27 Lavezzini DG30** — c5 ← c7; c36 ← RU 776 chars: Полуавтоматический камерный, автоподъём «самой удачной крышки» (UA «найвдалішої» preserved), система самоочистки масла, шов 300 мм, камера 310x350x190, насос 10 м3/час, 0,4 кВт, 38 кг.
+- **r28 Lavezzini TOP BABY LCD** — c5 ← c7; c36 ← RU 971 chars: Автоматический камерный 10 программ, микропечатный принтер для маркировки, шов 300 мм, камера 310х350x190, 0,4 кВт, 38 кг, внешние 460х410х420.
+- **r32 Lavezzini Mini BIG** — c5 ← c7; c36 ← RU 430 chars: Полуавтоматический бескамерный, гофрированные пакеты, насос 20 л/мин, шов 450 мм, 0,27 кВт, 470x260x130. UA `&#39;` dropped.
+
+**blknochg detail:**
+- r26 Orved Petros С46 Н (c36 RU).
+- r29/r30/r31 Sammic SE-204/SE-310/SE-416 (4/10/16 м³/час, c36 2467 chars каждый).
+- r33 SIRMAN S 400/2T с обрезкой (c36 946 chars).
+
+**Открытые вопросы:** 0 новых в b4.
+
+**Verify:** 214 PASS / 0 FAIL.

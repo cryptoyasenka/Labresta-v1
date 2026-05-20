@@ -1,7 +1,7 @@
 # chunk-070 DIFF (W2)
 
-**Status:** chunk-070 b3 DONE 24/59 (cum TRIP 4 / blknotrip 0 / blknochg 18 / SKIP-НП 2)
-**Last updated:** chunk-070 b3 DONE 24/59
+**Status:** chunk-070 b4 DONE 32/59 (cum TRIP 7 / blknotrip 0 / blknochg 23 / SKIP-НП 2)
+**Last updated:** chunk-070 b4 DONE 32/59
 
 Source: `chunk-070.xlsx` (RO, 59 SKU rows 2..60, ART 2176091387..500051832) → operating: `chunk-070-fixed.xlsx` (gitignored, скопирован из source 1:1).
 
@@ -73,3 +73,20 @@ Batches заполняются после каждого закрытого ба
 
 **Итого b3:** TRIP 1 + blknotrip 0 + blknochg 7 + SKIP-НП 0. Verify **198 PASS / 0 FAIL**.
 **Cum после b3:** TRIP 4 + blknotrip 0 + blknochg 18 + SKIP-НП 2 = **24/59**.
+
+
+## b4 (SKU 25-32, rows 26-33) — 32/59
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 25 | 26 | 646844869 | Orved Petros С46 Н | blknochg | — (c36 586 chars RU) |
+| 2 | 26 | 27 | 647442353 | Lavezzini DG30 камерный | **TRIP** | c5←c7; c36 ← RU 776 chars (Полуавтоматический камерный / автоподъём крышки / самоочистка масла / шов 300 мм / камера 310x350x190 / 10 м3/час / 0,4 кВт / 38 кг) |
+| 3 | 27 | 28 | 878104998 | Lavezzini TOP BABY LCD автомат | **TRIP** | c5←c7; c36 ← RU 971 chars (Автоматический камерный 10 программ / микропечатный принтер / шов 300 мм / камера 310х350x190 / 10 м3/час / 0,4 кВт / 38 кг) |
+| 4 | 28 | 29 | 1048994117 | Sammic SE-204 4 м3/час | blknochg | — (c36 2467 chars RU) |
+| 5 | 29 | 30 | 1049057636 | Sammic SE-310 10 м3/час | blknochg | — (близнец r29) |
+| 6 | 30 | 31 | 1049059995 | Sammic SE-416 16 м3/час | blknochg | — (близнец r29) |
+| 7 | 31 | 32 | 2070683537 | Lavezzini Mini BIG бескамерный | **TRIP** | c5←c7; c36 ← RU 430 chars (Полуавтоматический бескамерный / насос 20 л/мин / шов 450 мм / 0,27 кВт / 470x260x130) |
+| 8 | 32 | 33 | 2396519654 | SIRMAN S 400/2T с обрезкой | blknochg | — (c36 946 chars RU) |
+
+**Итого b4:** TRIP 3 + blknotrip 0 + blknochg 5 + SKIP-НП 0. Verify **214 PASS / 0 FAIL**.
+**Cum после b4:** TRIP 7 + blknotrip 0 + blknochg 23 + SKIP-НП 2 = **32/59**.
