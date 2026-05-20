@@ -623,3 +623,5 @@ CURRENT-w2: chunk-083 b6 DONE 48/62 (cum TRIP 24 / blknotrip 0 / blknochg 24 / b
 CURRENT-w2: chunk-083 b7 DONE 56/62 (cum TRIP 24 / blknotrip 0 / blknochg 28 / blkfix 0 / SKIP-НП 4; 256 PASS / 0 FAIL); blknochg 4 (GoodFood GF-SGD315-H6C барный + Juka NG60G/ND60G морозильные + Juka VG60G холодильный среднетемпературный) + SKIP-НП 4 HURAKAN (HKN-BCS143F морозильный барный + HKN-BCS143/BC145 холодильные барные + HKN-UF100G морозильный барный); без новых OQ; next b8 FINAL (SKU 57-62, rows 58-63, 6 SKU)
 
 CURRENT-w2: chunk-083 ЗАКРЫТ 62/62 (TRIP 24 / blknotrip 0 / blknochg 34 / blkfix 0 / SKIP-НП 4 HURAKAN; 274 PASS / 0 FAIL); b8 FINAL blknochg 6 (Juka VD60G + TEFCOLD DB300S-3 + Snaige CC14SM-S6004F + Tefcold DB201S/BC25CP/FS60CP); cum OQ #1-13 (новый в chunk-083 — OQ #13 r37 Tefcold DB301S-3 body модель DB201S); SKIP-НП #1 r51 HKN-BCS143F + #2 r52 HKN-BCS143 + #3 r53 HKN-BC145 + #4 r54 HKN-UF100G; next chunk-084 scaffold
+
+CURRENT-w2: chunk-084 scaffold (W2, продолжение chunk-083); 71 SKU rows 2-72, 0 SKIP-НП preliminary (no HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA in c4/c5); next b1 (SKU 1-8, rows 2-9)
