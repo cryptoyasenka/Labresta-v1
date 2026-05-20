@@ -1,7 +1,7 @@
 # chunk-069 DIFF (W2)
 
-**Status:** b4 DONE 32/61 — батчи b1..b8 (8+8+8+8+8+8+8+5); next b5 (SKU 33-40, rows 34-41)
-**Last updated:** chunk-069 b4 DONE 32/61
+**Status:** b5 DONE 40/61 — батчи b1..b8 (8+8+8+8+8+8+8+5); next b6 (SKU 41-48, rows 42-49)
+**Last updated:** chunk-069 b5 DONE 40/61
 
 Source: `chunk-069.xlsx` (RO) → operating: `chunk-069-fixed.xlsx` (gitignored).
 Batches заполняются после каждого закрытого батча.
@@ -69,3 +69,19 @@ Batches заполняются после каждого закрытого ба
 
 **Итого b4:** TRIP 2 + blknotrip 0 + blknochg 5 + SKIP-НП 1. Verify **179 PASS / 0 FAIL**.
 **Cum после b4:** TRIP 11 + blknotrip 0 + blknochg 19 + SKIP-НП 2 = **32/61**.
+
+## b5 (SKU 33-40, rows 34-41) — 40/61
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 33 | 34 | 490598501 | Frosty 300x400 пакеты гофрированные | blknochg | — |
+| 2 | 34 | 35 | 568706697 | Orved Evox 30 вакуумный упаковщик 8м3/час | blknochg | — |
+| 3 | 35 | 36 | 593842902 | GGM VMKH-300 вакуумный упаковщик 14,4 м3/час | blknochg | — |
+| 4 | 36 | 37 | 593842903 | GGM VMKH-400Z вакуумный упаковщик 20 м3/час | blknochg | — |
+| 5 | 37 | 38 | 639913421 | Apach AVM254 вакуумный 4 м³/час | **SKIP-НП** | — (НП forward-only; fixed строка не тронута) |
+| 6 | 38 | 39 | 639913422 | Apach AVM308 вакуумный 8 м³/час | **SKIP-НП** | — (НП forward-only; fixed строка не тронута) |
+| 7 | 39 | 40 | 639913425 | Apach AVM412 вакуумный 12 м³/час | **SKIP-НП** | — (НП forward-only; fixed строка не тронута) |
+| 8 | 40 | 41 | 646844865 | PERS.PETROS LEVAC 3 вакуумный упаковщик | blknochg | — |
+
+**Итого b5:** TRIP 0 + blknotrip 0 + blknochg 5 + SKIP-НП 3. Verify **187 PASS / 0 FAIL**.
+**Cum после b5:** TRIP 11 + blknotrip 0 + blknochg 24 + SKIP-НП 5 = **40/61**.

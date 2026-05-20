@@ -1,7 +1,7 @@
 # chunk-069 MANUAL REVIEW (W2)
 
-**Status:** chunk-069 b4 DONE 32/61 (cum TRIP 11 + blknochg 19 + SKIP-НП 2; 179 PASS) — next b5 (SKU 33-40, rows 34-41)
-**Last updated:** chunk-069 b4 DONE 32/61
+**Status:** chunk-069 b5 DONE 40/61 (cum TRIP 11 + blknochg 24 + SKIP-НП 5; 187 PASS) — next b6 (SKU 41-48, rows 42-49)
+**Last updated:** chunk-069 b5 DONE 40/61
 
 ## Структура
 
@@ -133,4 +133,24 @@ TRIP 2 + blknotrip 0 + blknochg 5 + SKIP-НП 1 = 8/8. Verify **179 PASS / 0 FAI
 **OQ:** 0.
 
 **Cum после b4:** TRIP 11 + blknotrip 0 + blknochg 19 + SKIP-НП 2 = **32/61**. Next b5 (SKU 33-40, rows 34-41).
+
+## b5 (SKU 33-40, rows 34-41) — DONE 40/61
+
+TRIP 0 + blknotrip 0 + blknochg 5 + SKIP-НП 3 = 8/8. Verify **187 PASS / 0 FAIL**. Чисто SKIP-НП + blknochg батч, ни одного TRIP — никаких изменений в chunk-069-fixed.xlsx.
+
+**blknochg (5):**
+- r34 SKU33 ART 490598501 Frosty 300x400 пакеты гофрированные (паковання 100 шт./полиэтилен/300х400): c5==c7 RU OK, c36 без UA-mark; fixed НЕ изменена.
+- r35 SKU34 ART 568706697 Orved Evox 30 вакуумный упаковщик 8м3/час: c5==c7 RU OK; fixed НЕ изменена.
+- r36 SKU35 ART 593842902 GGM VMKH-300 вакуумный упаковщик 14,4 м3/час: c5==c7 RU OK; fixed НЕ изменена.
+- r37 SKU36 ART 593842903 GGM VMKH-400Z вакуумный упаковщик 20 м3/час: c5==c7 RU OK; fixed НЕ изменена.
+- r41 SKU40 ART 646844865 PERS.PETROS LEVAC 3 вакуумный упаковщик: c5==c7 RU OK; fixed НЕ изменена.
+
+**SKIP-НП (3) — Apach forward-only:**
+- r38 SKU37 ART 639913421 **Apach AVM254** вакуумный пакувальник 4 м³/час: brand Apach ∈ SKIP-НП list → forward-only, fixed строка НЕ тронута. c5/c35/c36 source содержат UA «Вакуумний пакувальник», «м3/год» — НЕ переписываем.
+- r39 SKU38 ART 639913422 **Apach AVM308** вакуумный пакувальник 8 м³/час: brand Apach → SKIP-НП. fixed НЕ тронута.
+- r40 SKU39 ART 639913425 **Apach AVM412** вакуумный пакувальник 12 м³/час: brand Apach → SKIP-НП. fixed НЕ тронута.
+
+**OQ:** 0.
+
+**Cum после b5:** TRIP 11 + blknotrip 0 + blknochg 24 + SKIP-НП 5 = **40/61**. Next b6 (SKU 41-48, rows 42-49).
 
