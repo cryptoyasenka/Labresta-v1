@@ -387,3 +387,41 @@
 - **r39 c5/c36 vs c7 mismatch — Open Question #3** (см. chunk-074-questions.md).
 
 **Verify b5:** 49 PASS / 0 FAIL.
+
+
+---
+
+## Batch 6 — DONE 48/87
+
+**Range:** rows 42-49 (SKU 41-48). Все 8 — TRIP HENDI продолжение: 5 сковорода мрамор-эпокси (hendi_pan_body), 2 кастрюля Impact Bonding (NEW helper hendi_pot_impact_bonding_body), 1 сковорода капсула без крышки (NEW helper hendi_pan_capsule_body).
+
+### Categories
+- **TRIP 8:** r42-r46 сковороды мрамор (627662 ø260x45 / 627624 ø280x50 / 627631 ø320x50 / 627648 ø360x50 / 627655 ø390x50); r47 832004 кастрюля 3 л ø160x150 0,7мм; r48 832806 кастрюля 50 л ø400x400 1мм; r49 838501 сковорода ø240 ø240x45 0,6мм.
+- **blknochg / blknotrip / blkfix / SKIP-НП:** 0.
+
+### c5 rewrites
+- r47 c5 ← c7 «Кастрюля 3 л HENDI 832004» (NMUA «Каструля»).
+- r48 c5 ← c7 «Кастрюля 50 л HENDI 832806» (NMUA «Каструля»).
+- r42-r46, r49: c5 == c7 == NMUA (нейтральные, без UA-маркеров), c5 не тронут.
+
+### Source-quirks (преданно сохранены/нормализованы)
+- r47/48 «теплопровідність алюмінію» (UA им.п. typo) → «теплопроводностью алюминия» (норм.твор.п.) — то же что в b4-b5.
+- r47/48 «ненагревающихся масивних» → «не нагревающихся массивных» (norm split + extra adj).
+- r47/48 «теплову провідність» → «тепловую проводимость» (RU norm).
+- r48 c35 «50 літрів» → c36 «50 литров» (literal по источнику; c5/c7 используют «50 л»).
+- r49 «ненагревающихся сталевих» → «не нагревающихся стальных» (norm split).
+- r49 «Довга порожня ручка» → «Длинная пустотелая ручка».
+
+### NEW helpers b6
+- `hendi_pot_impact_bonding_body(volume_str, art, dim_mm, thickness_mm)` — 10 li, материал «Нержавеющая сталь 18/0+18/8+18/10», полированный рант, тройное термодифф «сэндвич», технология «Impact Bonding». Параметр volume_str — литерал из источника.
+- `hendi_pan_capsule_body(diam_mm, art, dim_mm, thickness_mm)` — 8 li, капсульное дно, без крышки, длинная пустотелая ручка из нержавеющей стали.
+
+### Verify
+- 75 PASS / 0 FAIL.
+
+### Open Questions
+- Нет новых. OQ #3 (b5 r39) — pending Yana decision.
+
+### Status
+
+**chunk-074 b6 DONE 48/87 (cum TRIP 42 / blknotrip 0 / blknochg 6 / blkfix 0 / SKIP-НП 0; 294 PASS / 0 FAIL; OQ#3 still pending) — next b7 (SKU 49-56, rows 50-57).**
