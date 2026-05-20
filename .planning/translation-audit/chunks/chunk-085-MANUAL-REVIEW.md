@@ -67,3 +67,19 @@
   - r21 SKU20 art=1546893484 Hurakan HKN-ISV7P BLACK (note: c4 «HKN-ISV5P» vs c5/c7 «HKN-ISV7P» — model mismatch в источнике; SKIP — не трогаем)
 - **Verify:** 48 PASS / 0 FAIL
 - +1 OQ **#18** r21 source c4=HKN-ISV5P vs c5/c7=HKN-ISV7P — model mismatch в Hurakan listing, отметка для НП-feed merge
+
+### b4 (rows 26-33, SKU 25-32) — 32/75 DONE
+
+- **TRIP 4** (c5←c7 + c36 RU faithful):
+  - r29 SKU28 art=2237306151 Airhot SV-7 — Шприц колбасный механический вертикальный 7 л, 4 насадки нерж Ø16/22/32/38, цилиндр 140*460 мм, 2 скорости, нетто 11 кг (брутто 14 кг), 300x300x790 мм
+  - r30 SKU29 art=2354731828 Frosty SEV10 — Шприц колбасный электрический вертикальный 10 л, вариатор скорости + педаль, 4 насадки Ø16/22/32/38, 0,06 кВт/220В, 370х330х637, 28.00 кг
+  - r31 SKU30 art=2567426644 Frosty EVS-10L — Шприц колбасный электрический вертикальный 10 л, цилиндр Ø220×270h, педаль + кнопки, вариатор скорости, 0,12 кВт/220В, 395х300х720, 34.60 кг
+  - r33 SKU32 art=2122387122 Hendi 282571 Profi Line — Шприц колбасный 3 л с двумя скоростями (как r25 282588, но 3 л / 11 кг / 300×340×570 мм)
+- **blknochg 3**:
+  - r26 SKU25 art=2190386155 GoodFood SF3H — Шприц колбасный горизонтальный, c36_len 679
+  - r27 SKU26 art=2190389156 GoodFood SF5H — c36_len 684
+  - r28 SKU27 art=2190389730 GoodFood SF7H — c36_len 682
+- **SKIP-НП 1** HURAKAN:
+  - r32 SKU31 art=2599069575 HURAKAN HKN-ISV7P BLACK (тело из фида НП позже)
+- **Verify:** 46 PASS / 0 FAIL
+- Без новых OQ

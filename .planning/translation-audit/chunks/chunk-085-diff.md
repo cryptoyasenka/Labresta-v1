@@ -27,3 +27,10 @@
 - blknochg 1: r24 GoodFood SF12VS
 - SKIP-НП 2 HURAKAN: r20 HKN-ISH5P + r21 HKN-ISV7P (note: r21 c4=ISV5P vs c5/c7=ISV7P mismatch — OQ #18)
 - Verify 48 PASS / 0 FAIL; +1 OQ #18
+
+## b4 (rows 26-33, SKU 25-32) — 32/75 DONE
+
+- TRIP 4: r29 Airhot SV-7 (механический вертик 7 л 2 скорости) + r30 Frosty SEV10 (электр 10 л) + r31 Frosty EVS-10L (электр 10 л с педалью+кнопками) + r33 Hendi 282571 Profi Line (3 л 11 кг)
+- blknochg 3: r26/r27/r28 GoodFood SF3H/SF5H/SF7H горизонтальные
+- SKIP-НП 1 HURAKAN: r32 HKN-ISV7P
+- Verify 46 PASS / 0 FAIL; без новых OQ
