@@ -1,7 +1,7 @@
 # chunk-070 DIFF (W2)
 
-**Status:** chunk-070 b1 DONE 8/59 (cum TRIP 3 / blknotrip 0 / blknochg 4 / SKIP-НП 1)
-**Last updated:** chunk-070 b1 DONE 8/59
+**Status:** chunk-070 b2 DONE 16/59 (cum TRIP 3 / blknotrip 0 / blknochg 11 / SKIP-НП 2)
+**Last updated:** chunk-070 b2 DONE 16/59
 
 Source: `chunk-070.xlsx` (RO, 59 SKU rows 2..60, ART 2176091387..500051832) → operating: `chunk-070-fixed.xlsx` (gitignored, скопирован из source 1:1).
 
@@ -39,3 +39,20 @@ Batches заполняются после каждого закрытого ба
 
 **Итого b1:** TRIP 3 + blknotrip 0 + blknochg 4 + SKIP-НП 1. Verify **201 PASS / 0 FAIL**.
 **Cum после b1:** TRIP 3 + blknotrip 0 + blknochg 4 + SKIP-НП 1 = **8/59**.
+
+
+## b2 (SKU 9-16, rows 10-17) — 16/59
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 9 | 10 | 639913426 | Apach AVM420, 20 м3/час | **SKIP-НП** | — (brand=APACH, тело из фида НП позже) |
+| 2 | 10 | 11 | 2333597378 | Dadaux Astorr 310 | blknochg | — (c5/c7 RU, c36 745 chars RU Becker насос 10 m³/h / 360х315х135 / 220-230V / 70 кг) |
+| 3 | 11 | 12 | 2333599907 | Dadaux Astorr 416 | blknochg | — (близнец r11, c36 RU) |
+| 4 | 12 | 13 | 2333601187 | Dadaux Astorr 421 | blknochg | — (близнец r11, c36 RU) |
+| 5 | 13 | 14 | 2333602959 | Dadaux Astorr 570 | blknochg | — (c36 906 chars RU 70 m³/h / 666х550х500 / 380-400V / 240 кг) |
+| 6 | 14 | 15 | 647442349 | Orved Profi 2 для лотков | blknochg | — (c5/c7 RU, c36 495 chars RU 190х260 vs 190х137+137х95 матрица / 0,7 кВт / 17,1 кг) |
+| 7 | 15 | 16 | 1009188903 | Petros (Orved) С308, 8 м3/час | blknochg | — (c36 679 chars RU камерный купольная 8 м3/час / 332x335x170 / 0,6 кВт / 24 кг) |
+| 8 | 16 | 17 | 646844871 | Orved Evox 25H (8mc) | blknochg | — (c36 709 chars RU ORVED EVOX 25 / 8 м3/час / 25 мм source-typo preserved / 303х293х110 / 0,45 кВт / 27 кг) |
+
+**Итого b2:** TRIP 0 + blknotrip 0 + blknochg 7 + SKIP-НП 1. Verify **192 PASS / 0 FAIL**.
+**Cum после b2:** TRIP 3 + blknotrip 0 + blknochg 11 + SKIP-НП 2 = **16/59**.

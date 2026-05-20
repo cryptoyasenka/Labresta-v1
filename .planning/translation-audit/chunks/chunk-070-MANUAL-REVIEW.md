@@ -1,7 +1,7 @@
 # chunk-070 MANUAL REVIEW (W2)
 
-**Status:** chunk-070 b1 DONE 8/59 (cum TRIP 3 / blknotrip 0 / blknochg 4 / SKIP-НП 1; 201 PASS / 0 FAIL) — next b2 (SKU 9-16, rows 10-17)
-**Last updated:** chunk-070 b1 DONE 8/59
+**Status:** chunk-070 b2 DONE 16/59 (cum TRIP 3 / blknotrip 0 / blknochg 11 / SKIP-НП 2; 192 PASS / 0 FAIL) — next b3 (SKU 17-24, rows 18-25)
+**Last updated:** chunk-070 b2 DONE 16/59
 
 ## Структура
 
@@ -59,3 +59,24 @@
 **Открытые вопросы:** 0 новых в b1.
 
 **Verify:** 201 PASS / 0 FAIL.
+
+
+## b2 (SKU 9-16, rows 10-17) — 16/59
+
+**Категории:** TRIP 0 + blknochg 7 (r11-r17) + SKIP-НП 1 (r10 APACH AVM420).
+
+**blknochg detail (никаких изменений):**
+- r11 Dadaux Astorr 310 — c36 уже RU (Becker насос 10 m³/h / шов 420 мм / 220-230V / 70 кг).
+- r12 Dadaux Astorr 416 — близнец r11.
+- r13 Dadaux Astorr 421 — близнец r11.
+- r14 Dadaux Astorr 570 — c36 уже RU (Becker 70 m³/h / шов 550 мм / 380-400V / 240 кг / planки 2×500 D/G + 2×710 AV/AR / 870×852×1075).
+- r15 Orved Profi 2 для лотков — c36 уже RU (290х480х355 / 17,1 кг / 0,7 кВт; матрица 190х260 или 2× 190х137+137х95).
+- r16 Petros (Orved) С308, 8 м3/час — c36 уже RU камерный купольная (332x335x170 / 0,6 кВт / 24 кг).
+- r17 Orved Evox 25H (8mc) — c36 уже RU (8 м3/час, шов 25 мм source-typo preserved faithful; 303х293х110 / 0,45 кВт / 27 кг).
+
+**SKIP-НП detail:**
+- r10 APACH AVM420 — brand=APACH, fixed строка НЕ тронута, тело из фида НП позже.
+
+**Открытые вопросы:** 0 новых в b2.
+
+**Verify:** 192 PASS / 0 FAIL.
