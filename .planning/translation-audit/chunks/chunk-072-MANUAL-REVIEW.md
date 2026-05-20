@@ -1,7 +1,7 @@
 # chunk-072 MANUAL REVIEW (W2, продолжение chunk-071)
 
-**Status:** chunk-072 b8 DONE 64/89 (cum TRIP 39 / blknotrip 0 / blknochg 25 / blkfix 0 / SKIP-НП 0; 66 PASS / 0 FAIL) — next b9 (SKU 65-72, rows 66-73)
-**Last updated:** chunk-072 b8 DONE 64/89
+**Status:** chunk-072 b9 DONE 72/89 (cum TRIP 40 / blknotrip 0 / blknochg 32 / blkfix 0 / SKIP-НП 0; 55 PASS / 0 FAIL) — next b10 (SKU 73-80, rows 74-81)
+**Last updated:** chunk-072 b9 DONE 72/89
 
 **Объём:** 89 SKU rows 2..90. Hendi 88 (NORMAL) + FAGOR 1 SKIP-НП (r83).
 
@@ -370,3 +370,34 @@
 **Reusable artifact b8:** `HENDI_KNIFE_BODY(blade_mm, thick_mm, knife_mm)` — function template для Hendi 845xxx японских ножей (применён r63/r64/r65).
 
 **Verify:** 66 PASS / 0 FAIL (+ 1 INFO source-Ё «её» preservation r58 SEKIRYU).
+
+
+## b9 (SKU 65-72, rows 66-73) — 72/89
+
+**Категории:** TRIP 1 (Hendi 845042 SASHIMI 24 см) + blknochg 7 (сковорода для омлета медная + точильные камни Taidea/KING HANDY + нож ДЕБА SAKAI + 2× бокс для нори NBO + SUZUMO машина для формирования риса).
+
+**TRIP detail:**
+- **r66 Hendi 845042 SASHIMI 24 см** — лезвие 240 мм / 4 мм / нож 370 мм. HENDI_KNIFE_BODY template.
+
+**blknochg detail:**
+- **r67 сковорода для омлета медная** — 24х24 см. c5/c36 RU.
+- **r68 Taidea T7100W водный камень #1000** — 180х60х14 мм. c5/c36 RU. HRC + корунд. NB: c4 UA «(зернистість #1000)» внутри названия; c5 RU нормализована «#1000 Taidea T7100W» в начале — разные структуры, оба RU/UA корректны (forward-only).
+- **r69 SAKAI YELLOW STEEL нож ДЕБА 16,5 см** — HRC 60, размеры 165x... c5/c36 RU.
+- **r70 KING HANDY точильный камень #1000** — 150x50x25 мм. c5/c36 RU.
+- **r71 БОКС ДЛЯ НОРИ NBO-05** — оранжевый на половину листа, 225х130х95 мм.
+- **r72 БОКС ДЛЯ НОРИ NBO-1** — оранжевый, 225х130х95 мм.
+- **r73 SUZUMO SVR-NYA-CE** — машина для формирования риса горизонтальная.
+
+**Терминология b9 (новые UA→RU):**
+- «Сковорода для омлету мідна» → «Сковорода для омлета медная»
+- «Водний камінь» → «Водный камень»
+- «Бокс для норі помаранчевий» → «Бокс для нори оранжевый»
+- «аркуш» → «лист»
+- «Машина для формування рису в горизонтальній площині» → «Машина для формирования риса в горизонтальной плоскости»
+- «без пошкодження зерен і згортання ролу» → «без повреждения зерен и сворачивания ролла»
+
+**Открытые вопросы b9:** 0 новых.
+**Source-quirks preserved в b9:** нет (всё чисто).
+**Iframes preserved:** нет.
+
+**Verify:** 55 PASS / 0 FAIL.

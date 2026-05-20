@@ -154,3 +154,20 @@
 
 **Итого b8:** TRIP 3 + blknotrip 0 + blknochg 5 + blkfix 0 + SKIP-НП 0. Verify **66 PASS / 0 FAIL** (+ 1 INFO source-Ё «её» preserved r58).
 **Cum после b8:** TRIP 39 + blknotrip 0 + blknochg 25 + blkfix 0 + SKIP-НП 0 = **64/89**. UNPROC = 25 (rows 66-90).
+
+
+## b9 (SKU 65-72, rows 66-73) — 72/89
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 65 | 66 | 672980170 | Hendi 845042 нож японский SASHIMI 24 см | **TRIP** | c5←c7 (41 chars); c36 RU 376 chars (HENDI_KNIFE_BODY). Лезвие 240 мм / 4 мм / нож 370 мм. |
+| 2 | 66 | 67 | 876970402 | Сковорода для омлета медная 24х24 см | **blknochg** | c5 уже RU == c7 (29 chars); c36 уже pure RU. UA в c35. |
+| 3 | 67 | 68 | 1141787450 | Taidea T7100W точильный камень водный #1000 180х60х14 | **blknochg** | c5 уже RU == c7; c36 уже pure RU (HRC/Корунд). UA в c35. **NB:** c4 UA имеет «(зернистість #1000)», c5 RU нормализовано «#1000 Taidea T7100W» — разная структура, но обе RU/UA уже корректны. |
+| 4 | 68 | 69 | 1160821820 | SAKAI YELLOW STEEL нож ДЕБА 16,5 см | **blknochg** | c5 уже RU == c7 (35 chars); c36 уже pure RU. UA в c35. **NB:** c4 UA «НІЖ ДЕБА» (UA orthography), c5 RU «НОЖ ДЕБА» — нормально. |
+| 5 | 69 | 70 | 1160825893 | KING HANDY точильный камень #1000 150x50x25 | **blknochg** | c5 уже RU == c7 (36 chars); c36 уже pure RU. UA в c35. |
+| 6 | 70 | 71 | 1160833881 | БОКС ДЛЯ НОРИ (1/2 листа) NBO-05 оранжевый | **blknochg** | c5 уже RU == c7 (32 chars); c36 уже pure RU (225х130х95 мм). UA в c35. |
+| 7 | 71 | 72 | 1160835867 | БОКС ДЛЯ НОРИ оранжевый NBO-1 | **blknochg** | c5 уже RU == c7 (29 chars); c36 уже pure RU. UA в c35. |
+| 8 | 72 | 73 | 1536992698 | SUZUMO SVR-NYA-CE машина для формирования риса горизонтальная | **blknochg** | c5 уже RU == c7 (76 chars); c36 уже pure RU. UA в c35. |
+
+**Итого b9:** TRIP 1 + blknotrip 0 + blknochg 7 + blkfix 0 + SKIP-НП 0. Verify **55 PASS / 0 FAIL**.
+**Cum после b9:** TRIP 40 + blknotrip 0 + blknochg 32 + blkfix 0 + SKIP-НП 0 = **72/89**. UNPROC = 17 (rows 74-90).
