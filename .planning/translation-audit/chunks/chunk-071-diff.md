@@ -1,7 +1,7 @@
 # chunk-071 diff (W2, продолжение chunk-070)
 
-**Status:** chunk-071 b8 DONE 64/83 (cum TRIP 60 / blknotrip 0 / blknochg 4 / blkfix 0 / SKIP-НП 0; 429 PASS / 0 FAIL) — next b9 (SKU 65-72, rows 66-73)
-**Last updated:** chunk-071 b8 DONE 64/83
+**Status:** chunk-071 b9 DONE 72/83 (cum TRIP 68 / blknotrip 0 / blknochg 4 / blkfix 0 / SKIP-НП 0; 453 PASS / 0 FAIL) — next b10 (SKU 73-80, rows 74-81)
+**Last updated:** chunk-071 b9 DONE 72/83
 
 **Источник:** `.planning/translation-audit/chunks/chunk-071.xlsx` (83 SKU, rows 2..84, ART 500478925..1173086863).
 **Фикс-таргет:** `.planning/translation-audit/chunks/chunk-071-fixed.xlsx` (gitignored).
@@ -142,3 +142,19 @@
 
 **Итого b8:** TRIP 7 + blknotrip 0 + blknochg 1 + blkfix 0 + SKIP-НП 0. Verify **429 PASS / 0 FAIL**.
 **Cum после b8:** TRIP 60 + blknotrip 0 + blknochg 4 + blkfix 0 + SKIP-НП 0 = **64/83**. UNPROC = 19 (rows 66-84).
+
+## b9 (SKU 65-72, rows 66-73) — 72/83
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 65 | 66 | 1160231659 | Hendi 658802 скребок из нейлона 55×90×L420 | **TRIP** | c5←c7; c36 RU 495 chars. Близнец r64/r65, длиннее (L)420. Prefix «Hendi сборщик тортов» preserve. |
+| 2 | 66 | 67 | 1160236004 | Hendi 554234 декоративный скребок прямоугольный 110×72 нерж | **TRIP** | c5←c7; c36 RU 534 chars. **Source-quirk: dims `<h2>` «102х69 мм» != c5/c7 «110х72 мм» — preserve faithful**; также c36 упоминает «з нержавіючої сталі» которое отсутствует в c5/c7. |
+| 3 | 67 | 68 | 1160246515 | Hendi 554364 скребок прямоугольный 120×93 компл 6шт | **TRIP** | c5←c7; c36 RU 235 chars. Полипропилен. Простое описание. |
+| 4 | 68 | 69 | 1160249312 | Hendi 659106 скребок с силиконовой лопаткой 70×105×L420 + iframe | **TRIP** | c5←c7; c36 RU 679 chars. iframe Gnw_h-FEhHY preserved. **Real °C present** «-60 ° C до + 260 ° C» — preserve as is. Source-quirk: «- рукоятка з пластику ABS<br/> термостійкість...» — glued without bullet on 2nd part — preserve. |
+| 5 | 69 | 70 | 1162408700 | Hendi 637821 сито для просеивания сахарной пудры ø410 | **TRIP** | c5 уже RU (==c7) сохраняем; c36 mixed UA («Особенности продукта:» RU + UA body) → pure RU 223 chars. Header order «ø410 мм Hendi 637821» preserve. |
+| 6 | 70 | 71 | 1165850116 | Hendi 588406 баллончики с углекислым газом 10 шт | **TRIP** | c5←c7; c36 RU 176 chars. «Картриджи-баллончики с CO2». «- золото» solo color line preserve. |
+| 7 | 71 | 72 | 1166974852 | Hendi 515228 кисть кондитерская деревянная плоская 20×210 2шт | **TRIP** | c5 уже RU (==c7) сохраняем; c36 UA → RU 146 chars. «Кількість в упаковці» / «Розміри, мм» → RU. |
+| 8 | 72 | 73 | 1166977971 | Hendi 515358 кисть кондитерская силиконовая плоская 35×235 | **TRIP** | c5←c7; c36 RU 316 chars. **Source-typo: `<h2>` content says «Hendi 515228» (wrong SKU, should be 515358) — preserve faithful**. «градусів C» → «градусов C» (написано словом, не °). |
+
+**Итого b9:** TRIP 8 + blknotrip 0 + blknochg 0 + blkfix 0 + SKIP-НП 0. Verify **453 PASS / 0 FAIL**.
+**Cum после b9:** TRIP 68 + blknotrip 0 + blknochg 4 + blkfix 0 + SKIP-НП 0 = **72/83**. UNPROC = 11 (rows 74-84).
