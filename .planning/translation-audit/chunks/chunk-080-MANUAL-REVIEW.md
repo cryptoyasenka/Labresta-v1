@@ -1,6 +1,6 @@
 # chunk-080 manual review (W2)
 
-**Status:** chunk-080 b1 DONE 8/53 (cum TRIP 3 / blknotrip 0 / blknochg 5 / blkfix 0 / SKIP-НП 0; 75 PASS / 0 FAIL) — next b2 (SKU 9-16, rows 10-17). 4 SKIP-НП preliminary (r15 TATRA / r19 Hurakan / r36 Fagor / r39 HURAKAN).
+**Status:** chunk-080 b2 DONE 16/53 (cum TRIP 6 / blknotrip 0 / blknochg 9 / blkfix 0 / SKIP-НП 1; 143 PASS / 0 FAIL) — next b3 (SKU 17-24, rows 18-25). SKIP-НП #1 r15 TATRA TRC700BT. 3 SKIP-НП preliminary остались (r19 Hurakan / r36 Fagor / r39 HURAKAN).
 
 ## Параметры
 
@@ -44,4 +44,27 @@ TRIP / blknotrip / blknochg / blkfix / SKIP-НП.
 - **r6** SKU=5 ART=2493884395 Tecnodom AF07PKMBT LEFT — c5==c7 RU clean.
 
 **Verify:** 75 PASS / 0 FAIL. Без новых OQ.
+
+## b2 (SKU 9-16, rows 10-17) — DONE 16/53
+
+**Категории:** blk триплет 3 / blknotrip 0 / blknochg 4 / blkfix 0 / SKIP-НП 1.
+
+### SKIP-НП
+
+- **r15** SKU=14 ART=1505341914 **TATRA** TRC700BT — SKIP-НП (brand=TATRA, тело из фида НП позже). Ячейки в fixed не меняли. ⇒ SKIP-НП #1 по chunk-080.
+
+### TRIP (c5 ← c7; c36 ← faithful RU translation)
+
+- **r11** SKU=10 ART=1090611117 Tecnodom AF14PKMBT — c5 был UA, c7 уже RU. Переписан c5→«Шкаф морозильный Tecnodom AF14PKMBT»; c36 переведён полностью с UA (дубль c35): 1400 л, глухие двери, цифр.дисплей, 0,69 кВт (UA «потужніть» — typo источника), динам.охлаждение, авторазмораживание, R452A, автоиспарение конденсата, 6 полок GN 2/1, направляющие-крюки, регул.ножки, -18..-22 °C, 1420х800х2030 мм.
+- **r12** SKU=11 ART=1167134361 FROSTY GN650BT — c5 UA→RU «Шкаф морозильный FROSTY GN650BT»; c36 полный RU-перевод (дубль c35): 1 глухая дверь, -18..-22 °C при +38 °C среды, 650 л, 3 полки GN2/1, замок, внутр.подсветка, вентилируемое охлаждение, авторазмораживание, нерж.сталь satin-finish SCOTCH-BRITE, колеса, 0,42 кВт, 740х830х2010.
+- **r13** SKU=12 ART=1167138649 FROSTY GN1410BT — c5 UA→RU «Шкаф морозильный FROSTY GN1410BT»; c36 полный RU-перевод (дубль c35): двухдверный, 2 глухие двери, -18..-22 °C, 1340 л, 6 полок GN2/1, замок, внутр.подсветка, вентилируемое охлаждение, авторазмораживание, нерж.сталь satin-finish SCOTCH-BRITE, 0,42 кВт, 1480х830х2010.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r10** SKU=9 ART=1090605534 Tecnodom AF07PKMBT — c5==c7 RU clean.
+- **r14** SKU=13 ART=1395554157 COOLEQ GN1410BT (-18°С...-22°С, нерж.) — c5==c7 RU clean.
+- **r16** SKU=15 ART=2046671059 Brillis BL7-M-R290-EF — c5==c7 RU clean.
+- **r17** SKU=16 ART=2046787606 Brillis BL14-M-R290-EF — c5==c7 RU clean (c5 «Энергоэффективный шкаф морозильный...» — расхождение с c4 «Шафа морозильна...», но c5==c7 — наследие источника).
+
+**Verify:** 68 PASS / 0 FAIL. Без новых OQ.
 
