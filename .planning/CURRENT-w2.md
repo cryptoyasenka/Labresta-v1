@@ -531,3 +531,13 @@
 - Cumulative chunk-078: 24/53 (TRIP 0 / blknotrip 0 / blknochg 23 / blkfix 0 / SKIP-НП 1; 210 PASS / 0 FAIL).
 - OQ: без новых.
 - Next: chunk-078 b4 (SKU 25-32, rows 26-33).
+
+
+## chunk-078 b4 DONE 32/53 (2026-05-20 14:05)
+
+- Категории: blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+- blknochg: r26/r27 Tefcold CC77/CC55 (импульсный продаж), r28 FS1220, r29 SDU1220, r30/r31 CEV425CP 2 LED (L/H и без), r32 SCU1280, r33 FS1280.
+- Verify: 72 PASS / 0 FAIL.
+- Cumulative chunk-078: 32/53 (TRIP 0 / blknotrip 0 / blknochg 31 / blkfix 0 / SKIP-НП 1; 282 PASS / 0 FAIL).
+- OQ: без новых.
+- Next: chunk-078 b5 (SKU 33-40, rows 34-41).
