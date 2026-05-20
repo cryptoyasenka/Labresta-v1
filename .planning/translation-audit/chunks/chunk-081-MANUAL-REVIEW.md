@@ -73,3 +73,29 @@ TRIP / blknotrip / blknochg / blkfix / SKIP-НП.
 
 **Verify:** 32 PASS / 0 FAIL. Без новых OQ.
 
+
+
+## b4 (SKU 25-32, rows 26-33) — DONE 32/52
+
+**Категории:** blk триплет 2 / blknotrip 0 / blknochg 5 / blkfix 0 / SKIP-НП 1.
+
+### TRIP (c5 UA→RU + c36 полный RU перевод)
+
+- **r31** SKU=30 ART=2044227917 Frosty H730T — Шафа для дозрівання м'яса → Шкаф для созревания мяса. c5←c7. c36 UA→RU (1304 chars, 730 л, 3 полки нерж., 4 вентилятора, чёрное стекло/корпус).
+- **r32** SKU=31 ART=2077841122 Frosty H730S — Шафа для дозрівання м'яса → Шкаф для созревания мяса. c5←c7. c36 UA→RU (1198 chars, 730 л, 6 полок нерж., 6 вентиляторов, серебристое стекло, чёрный корпус).
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r26** SKU=25 ART=2144755547 Tefcold ATOM MAXI F3DB — c5==c7 RU clean.
+- **r27** SKU=26 ART=2144758114 Tefcold UFSC1600GCP — c5==c7 RU clean.
+- **r28** SKU=27 ART=2245914296 Tefcold UF400-I — c5==c7 RU clean.
+- **r29** SKU=28 ART=2331855260 SARO KYRA GN 700 BT — c5==c7 RU clean.
+- **r30** SKU=29 ART=2047212257 Brillis BL4-R290 — c5==c7 RU clean.
+
+### SKIP-НП (brand=FAGOR, тело из фида НП позже)
+
+- **r33** SKU=32 ART=2197275420 FAGOR FMA-1650 — Шкаф для созревания мяса. SKIP-НП #1. Ячейки не меняем.
+
+**Verify:** 39 PASS / 0 FAIL. Без новых OQ.
+
+**Cumulative chunk-081:** 32/52 (TRIP 2 / blknotrip 0 / blknochg 29 / blkfix 0 / SKIP-НП 1; 135 PASS / 0 FAIL).

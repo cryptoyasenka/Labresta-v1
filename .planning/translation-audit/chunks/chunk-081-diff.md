@@ -67,3 +67,33 @@
 
 **Verify:** 32 PASS / 0 FAIL. Без новых OQ.
 
+
+## b4 (SKU 25-32, rows 26-33)
+
+Категории: blk триплет 2 / blknotrip 0 / blknochg 5 / blkfix 0 / SKIP-НП 1.
+
+### TRIP
+
+| row | SKU | ART | модель |
+|---|---|---|---|
+| 31 | 30 | 2044227917 | Frosty H730T |
+| 32 | 31 | 2077841122 | Frosty H730S |
+
+### blknochg
+
+| row | SKU | ART | модель |
+|---|---|---|---|
+| 26 | 25 | 2144755547 | Tefcold ATOM MAXI F3DB |
+| 27 | 26 | 2144758114 | Tefcold UFSC1600GCP |
+| 28 | 27 | 2245914296 | Tefcold UF400-I |
+| 29 | 28 | 2331855260 | SARO KYRA GN 700 BT |
+| 30 | 29 | 2047212257 | Brillis BL4-R290 |
+
+### SKIP-НП
+
+| row | SKU | ART | модель | бренд |
+|---|---|---|---|---|
+| 33 | 32 | 2197275420 | FAGOR FMA-1650 | FAGOR |
+
+**Verify:** 39 PASS / 0 FAIL. Без новых OQ.
+
