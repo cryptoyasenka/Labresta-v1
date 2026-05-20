@@ -571,3 +571,5 @@ CURRENT-w2: chunk-079 b6 DONE 48/58 (cum TRIP 1 / blknotrip 0 / blknochg 47 / bl
 CURRENT-w2: chunk-079 b7 DONE 56/58 (cum TRIP 1 / blknotrip 0 / blknochg 55 / blkfix 0 / SKIP-НП 0; 505 PASS / 0 FAIL); blknochg 8 (Tehma 5 + Tefcold 3); без новых OQ; next b8 FINAL (SKU 57-58, rows 58-59, 2 SKU)
 
 CURRENT-w2: chunk-079 ЗАКРЫТ 58/58 (TRIP 1 / blknotrip 0 / blknochg 57 / blkfix 0 / SKIP-НП 0; 523 PASS / 0 FAIL); TRIP #1 r34 Tecnodom AF04EKOTN; 3 OQ (c079 #1/#2/#3); next chunk-080 scaffold
+
+CURRENT-w2: chunk-080 b1 DONE 8/53 (cum TRIP 3 / blknotrip 0 / blknochg 5 / blkfix 0 / SKIP-НП 0; 75 PASS / 0 FAIL); TRIP 3 (r7 COOLEQ + r8 REEDNEE + r9 FROSTY SNACK400BT) + blknochg 5 (Frosty 2 + GoodFood 2 + Tecnodom 1); без новых OQ; next b2 (SKU 9-16, rows 10-17)
