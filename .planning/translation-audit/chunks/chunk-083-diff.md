@@ -138,3 +138,28 @@
 | 39 | 38 | EWT INOX LG128 (барный) |
 
 **Verify:** 48 PASS / 0 FAIL. +1 OQ #13 (Tefcold DB301S-3 body модель mismatch).
+
+
+## b6 (SKU 41-48, rows 42-49)
+
+Категории: blk триплет 2 / blknotrip 0 / blknochg 6 / blkfix 0 / SKIP-НП 0.
+
+### blk триплет (TRIP)
+
+| row | SKU | модель | c5 (RU) | c36 |
+|---|---|---|---|---|
+| 42 | 41 | Frosty GN320HS | Шкаф барный Frosty GN320HS | UA→RU 320 л / +2..+8 / 0,254 кВт |
+| 43 | 42 | Hendi 236017 Budget Line | Шкаф холодильный Budget Line Hendi 236017 | UA→RU 200 л / 0..+8 / R600a / 230 В |
+
+### blknochg
+
+| row | SKU | модель |
+|---|---|---|
+| 44 | 43 | GoodFood BC46 |
+| 45 | 44 | GoodFood BC75 |
+| 46 | 45 | GoodFood BC90 |
+| 47 | 46 | GoodFood BC128 |
+| 48 | 47 | Tefcold DB106H |
+| 49 | 48 | GoodFood GF-SGD250SL-H6C (барный) |
+
+**Verify:** 32 PASS / 0 FAIL. Без новых OQ.

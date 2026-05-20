@@ -136,3 +136,26 @@
 **Verify:** 48 PASS / 0 FAIL. +1 OQ #13.
 
 **Cumulative chunk-083:** 40/62 (TRIP 22 / blknotrip 0 / blknochg 18 / blkfix 0 / SKIP-НП 0; 208 PASS / 0 FAIL).
+
+
+## b6 (SKU 41-48, rows 42-49) — DONE 48/62
+
+**Категории:** blk триплет 2 / blknotrip 0 / blknochg 6 / blkfix 0 / SKIP-НП 0.
+
+### blk триплет (TRIP — c5 переписан с UA→RU + c36 полный RU перевод)
+
+- **r42** SKU=41 ART=2106727503 Frosty GN320HS (320 л, +2..+8°C, 0,254 кВт, 1350×505×895 мм, барный, раздвижные двери, 95 кг) — c5 «Шкаф барный Frosty GN320HS». c36 переведен (c35==c36 source оба UA).
+- **r43** SKU=42 ART=2122655837 Hendi 236017 Budget Line (200 л, 0..+8°C, R600a, 598×623×838 мм, 38,5 кг, 124 Вт, 230 В, нержавеющая сталь) — c5 «Шкаф холодильный Budget Line Hendi 236017». c36 переведен полностью (c35==c36 source оба UA).
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r44** SKU=43 ART=2176113165 GoodFood BC46 — c5==c7 RU clean.
+- **r45** SKU=44 ART=2176115328 GoodFood BC75 — c5==c7 RU clean.
+- **r46** SKU=45 ART=2176117475 GoodFood BC90 — c5==c7 RU clean.
+- **r47** SKU=46 ART=2176118594 GoodFood BC128 — c5==c7 RU clean.
+- **r48** SKU=47 ART=2180063132 Tefcold DB106H — c5==c7 RU clean.
+- **r49** SKU=48 ART=2212960219 GoodFood GF-SGD250SL-H6C барный — c5==c7 RU clean.
+
+**Verify:** 32 PASS / 0 FAIL. Без новых OQ.
+
+**Cumulative chunk-083:** 48/62 (TRIP 24 / blknotrip 0 / blknochg 24 / blkfix 0 / SKIP-НП 0; 240 PASS / 0 FAIL).
