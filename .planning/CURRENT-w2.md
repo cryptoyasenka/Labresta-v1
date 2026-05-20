@@ -653,3 +653,5 @@ CURRENT-w2: chunk-085 b2 DONE 16/75 (cum TRIP 8 / blknotrip 0 / blknochg 7 / blk
 CURRENT-w2: chunk-085 b3 DONE 24/75 (cum TRIP 13 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 3; 144 PASS / 0 FAIL); TRIP 5 (EWT TK3L/HS5L шприц колбасный + Frosty EVS-15L/SEV15 электрические + Hendi 282588 Profi Line) + blknochg 1 (GoodFood SF12VS) + SKIP-НП 2 HURAKAN (r20 HKN-ISH5P + r21 HKN-ISV7P); +1 OQ #18 r21 c4 ISV5P vs c5/c7 ISV7P; next b4 (SKU 25-32, rows 26-33, включая r32 HURAKAN)
 
 CURRENT-w2: chunk-085 b4 DONE 32/75 (cum TRIP 17 / blknotrip 0 / blknochg 11 / blkfix 0 / SKIP-НП 4; 190 PASS / 0 FAIL); TRIP 4 (Airhot SV-7 + Frosty SEV10 + Frosty EVS-10L + Hendi 282571 Profi Line) + blknochg 3 (GoodFood SF3H/SF5H/SF7H) + SKIP-НП 1 HURAKAN (r32 HKN-ISV7P); без новых OQ; next b5 (SKU 33-40, rows 34-41)
+
+CURRENT-w2: chunk-085 b5 DONE 40/75 (cum TRIP 21 / blknotrip 0 / blknochg 15 / blkfix 0 / SKIP-НП 4; 238 PASS / 0 FAIL); TRIP 4 (Hendi 282083 + Fama FIN105/106/107) + blknochg 4 (Dadaux PHX60/TORSADO/PHX40/PH13); без новых OQ; next b6 (SKU 41-48, rows 42-49)
