@@ -1,7 +1,7 @@
 # chunk-073 MANUAL REVIEW (W2, продолжение chunk-072)
 
-**Status:** chunk-073 b1 DONE 8/61 (TRIP 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0; 40 PASS / 0 FAIL) — next b2 (SKU 9-16, rows 10-17)
-**Last updated:** chunk-073 b1 DONE 8/61
+**Status:** chunk-073 b2 DONE 16/61 (cum TRIP 0 / blknotrip 0 / blknochg 13 / blkfix 0 / SKIP-НП 3; 74 PASS / 0 FAIL) — next b3 (SKU 17-24, rows 18-25)
+**Last updated:** chunk-073 b2 DONE 16/61
 
 **Объём:** 61 SKU rows 2..62. ART 655872902..2289327088.
 
@@ -62,3 +62,33 @@
 **Iframes preserved:** нет.
 
 **Verify b1:** 40 PASS / 0 FAIL.
+
+
+## Batch 2 (SKU 9-16, rows 10-17)
+
+**Категории b2:**
+- blknochg 5 (KENLE F52 / LG стек / Grandimpianti / AGA E26 + E35)
+- SKIP-НП 3 (r13/14/15 FAGOR — forward-only)
+
+**Карточки b2:**
+- **r10 KENLE F52** — промышленная стиральная на 52 кг с 7-дюймовым сенсорным экраном, усовершенствованный ПЛК-контроллер.
+- **r11 LG FH0C7FD2MS+RV1840CD7 (18+17 кг)** — стирально-сушильный стек.
+- **r12 Grandimpianti GI 1418 E VT** — гладильный каток. Многоточечная система упоров обеспечивает отличное качество глажки.
+- **r13 FAGOR LA-14 TP2 E** — SKIP-НП (бренд FAGOR), тело из фида НП.
+- **r14 Fagor Compact LAP-10 TP2 E P** — SKIP-НП.
+- **r15 FAGOR SRP-10 M E COMPACT CONCEPT** — SKIP-НП.
+- **r16 AGA E 26 / r17 AGA E35** — сушильные индустриальные AGA Tech SRL, новая линейка.
+
+**Терминология b2 (новые UA→RU):**
+- «удосконалений ПЛК-контролер» → «усовершенствованный контроллер» (PLC controller)
+- «Багатоточкова контактна система упорів» → «Многоточечная контактная система упоров»
+- «прасувальної дошки» → «гладильной доски»
+- «KENLE F52 з завантаженням до 52 кг» → «KENLE F52 с загрузкой до 52 кг»
+
+**Открытые вопросы b2:** 0 новых.
+
+**Source-quirks:** нет новых (blknochg).
+
+**Iframes preserved:** нет.
+
+**Verify b2:** 34 PASS / 0 FAIL.

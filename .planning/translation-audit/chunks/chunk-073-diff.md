@@ -20,3 +20,20 @@
 - r9 LG RV1840CD4 (17 кг) — сушильная промышленная
 
 ### Verify b1: 40 PASS / 0 FAIL
+
+
+## Batch 2 (SKU 9-16, rows 10-17)
+
+### blknochg 5 (KENLE/LG/Grandimpianti/AGA прачечное)
+- r10 KENLE F52 (52 кг) — промышленная стиральная с сенсорным экраном
+- r11 LG FH0C7FD2MS+RV1840CD7 (18+17 кг) — стирально-сушильный стек
+- r12 Grandimpianti GI 1418 E VT — гладильный каток с многоточечной системой упоров
+- r16 AGA E 26 — сушильная индустриальная (AGA Tech SRL)
+- r17 AGA E35 — сушильная индустриальная (AGA Tech SRL)
+
+### SKIP-НП 3 (FAGOR прачечное — forward-only)
+- r13 FAGOR LA-14 TP2 E — стиральная (Touch Plus, 29 программ, режим АКВАЧИСТКИ)
+- r14 Fagor Compact LAP-10 TP2 E P — стиральная высокоскоростной отжим 11 кг
+- r15 FAGOR SRP-10 M E COMPACT CONCEPT — сушильная
+
+### Verify b2: 34 PASS / 0 FAIL
