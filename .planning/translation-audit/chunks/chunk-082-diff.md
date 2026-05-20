@@ -108,3 +108,33 @@
 | 30 | 29 | FROSTY KWS-102P |
 
 **Verify:** 44 PASS / 0 FAIL. Без новых OQ.
+
+
+## b5 (SKU 33-40, rows 34-41)
+
+Категории: blk триплет 4 / blknotrip 0 / blknochg 3 / blkfix 0 / SKIP-НП 1.
+
+### blk триплет (TRIP)
+
+| row | SKU | модель | c5 (RU) | c36 |
+|---|---|---|---|---|
+| 34 | 33 | Frosty H 120D | Шкаф холодильный для вина Frosty H 120D | UA→RU 320 л / 97-120 бутылок / 2 зоны |
+| 35 | 34 | Frosty H 168D | Шкаф холодильный для вина Frosty H 168D | UA→RU 430 л / 68-169 бутылок (OQ #12) / 2 зоны |
+| 40 | 39 | Tecfrigo Sommelier 482 | Шкаф холодильный для вина Tecfrigo Sommelier 482 | UA→RU 480 л / 181 бутылка / 2 зоны / R600a |
+| 41 | 40 | Tecfrigo Sommelier 481FG | Шкаф холодильный для вина Tecfrigo Sommelier 481FG | UA→RU 480 л / 168 бутылок / 1 зона |
+
+### blknochg
+
+| row | SKU | модель |
+|---|---|---|
+| 36 | 35 | Tefcold TFW200-2F |
+| 37 | 36 | Tefcold TFW200-2S |
+| 38 | 37 | Sirman COLLI ORIENTALI |
+
+### SKIP-НП
+
+| row | SKU | brand | модель |
+|---|---|---|---|
+| 39 | 38 | FAGOR | CWC-300 |
+
+**Verify:** 45 PASS / 0 FAIL. +1 OQ #12 W2 cum.
