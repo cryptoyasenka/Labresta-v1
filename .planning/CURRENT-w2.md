@@ -575,3 +575,5 @@ CURRENT-w2: chunk-079 ЗАКРЫТ 58/58 (TRIP 1 / blknotrip 0 / blknochg 57 / b
 CURRENT-w2: chunk-080 b1 DONE 8/53 (cum TRIP 3 / blknotrip 0 / blknochg 5 / blkfix 0 / SKIP-НП 0; 75 PASS / 0 FAIL); TRIP 3 (r7 COOLEQ + r8 REEDNEE + r9 FROSTY SNACK400BT) + blknochg 5 (Frosty 2 + GoodFood 2 + Tecnodom 1); без новых OQ; next b2 (SKU 9-16, rows 10-17)
 
 CURRENT-w2: chunk-080 b2 DONE 16/53 (cum TRIP 6 / blknotrip 0 / blknochg 9 / blkfix 0 / SKIP-НП 1; 143 PASS / 0 FAIL); TRIP 3 (r11 Tecnodom AF14PKMBT + r12 FROSTY GN650BT + r13 FROSTY GN1410BT) + blknochg 4 + SKIP-НП #1 r15 TATRA; без новых OQ; next b3 (SKU 17-24, rows 18-25, включая r19 Hurakan SKIP)
+
+CURRENT-w2: chunk-080 b3 DONE 24/53 (cum TRIP 8 / blknotrip 0 / blknochg 14 / blkfix 0 / SKIP-НП 2; 208 PASS / 0 FAIL); TRIP 2 (r20+r21 Frosty SS) + blknochg 5 (Juka + Tefcold 4) + SKIP-НП #2 r19 Hurakan; без новых OQ; next b4 (SKU 25-32, rows 26-33)
