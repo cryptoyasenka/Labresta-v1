@@ -1,6 +1,6 @@
 # chunk-077 manual review (W2)
 
-**Status:** chunk-077 b1 DONE 8/39 (cum TRIP 3 / blknotrip 0 / blknochg 5 / blkfix 0 / SKIP-НП 0; 65 PASS / 0 FAIL) — next b2 (SKU 9-16, rows 10-17). Preliminary SKIP-НП r13 HURAKAN (b2). Без новых OQ.
+**Status:** chunk-077 b2 DONE 16/39 (cum TRIP 5 / blknotrip 0 / blknochg 9 / blkfix 1 / SKIP-НП 1; 131 PASS / 0 FAIL) — next b3 (SKU 17-24, rows 18-25). SKIP-НП #1: r13 HURAKAN HKN-GX650TNS. Без новых OQ.
 
 ## Параметры
 
@@ -42,3 +42,30 @@ TRIP / blknotrip / blknochg / blkfix / SKIP-НП.
 - **r9** SKU=8 ART=2402044817 Forcold G-SNACK400TN-FC.
 
 **Verify:** 65 PASS / 0 FAIL. Без новых OQ.
+
+
+## b2 (SKU 9-16, rows 10-17) — DONE 16/39
+
+**Категории:** blk триплет 2 / blknotrip 0 / blknochg 4 / blkfix 1 / SKIP-НП 1.
+
+### TRIP (c5 ← c7; c36 ← faithful RU body)
+
+- **r11** SKU=10 ART=2804742189 Tecnodom P-AFD07TN-C-PK — c5→«Шкаф холодильный Tecnodom P-AFD07TN-C-PK»; c36 RU: «предназначен для хранения продуктов в магазинах, ресторанах, торговых залах»; глухие двери, 3 полки GN2/1 пласт., 700 л, -2..+8°С, R290, динамика, микровыключатель, нерж.сталь корпус, 710х800х2100, 0.22 кВт.
+- **r12** SKU=11 ART=2804758159 Tecnodom P-AFD14TN-B-PK — c5→«Шкаф холодильный Tecnodom P-AFD14TN-B-PK»; c36 RU: тот же intro; 2 глухие двери, 6 полок GN2/1 пласт., 1400 л, нерж.сталь, -2..+8°C, R290, микровыключатель, 1420х800х2100.
+
+### BLKFIX
+
+- **r15** SKU=14 ART=2379500515 Ubc Smart Cool — c5/c7 уже RU; в c36 фрагмент таблицы спецификаций был UA («Висота / Глибина / Об'єм / Напруга / Енергоспоживання / Робоча температура / Тип охолодження динамічний»), плюс Ё в «жёсткости / путём / объём». Применены замены: Висота→Высота, Глибина→Глубина, Об'єм→Объем, Напруга→Напряжение, Енергоспоживання→Энергопотребление, Робоча температура→Рабочая температура, Тип охолодження динамічний→Тип охлаждения динамический, жёсткости→жесткости, путём→путем, объём→объем.
+
+### SKIP-НП
+
+- **r13** SKU=12 ART=2854780002 **HURAKAN** HKN-GX650TNS — SKIP-НП (brand=HURAKAN, тело из фида НП позже). Ячейки в fixed не меняли. ⇒ SKIP-НП #1 по chunk-077.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r10** SKU=9 ART=2538704508 SARO SK 301 — c5==c7 RU.
+- **r14** SKU=13 ART=2376961665 Ubc S Line — c5==c7 RU; source c36 содержит Ё (естественное — не наш write).
+- **r16** SKU=15 ART=2379507918 Ubc Medium — c5==c7 RU; source Ё в c36.
+- **r17** SKU=16 ART=2379528652 Ubc Energy — c5==c7 RU; source Ё в c36.
+
+**Verify:** 66 PASS / 0 FAIL. Без новых OQ.
