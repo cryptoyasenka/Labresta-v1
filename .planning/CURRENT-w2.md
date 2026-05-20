@@ -422,3 +422,16 @@
 - Cumulative chunk-076: TRIP 20 / blknotrip 0 / blknochg 26 / blkfix 1 / SKIP-НП 1 = 48/57; 556 PASS / 0 FAIL.
 - OQ: без новых (OQ#6 SKU23 из b3 — единственный по chunk-076).
 - Next: chunk-076 b7 (SKU 49-56, rows 50-57). Preliminary SKIP-НП r50 Fagor.
+
+
+## chunk-076 b7 FINAL COMPLETE 57/57 (2026-05-20 12:17)
+
+- Категории: blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 1.
+- SKIP-НП #2: **r50 Fagor CUP-11G** (тело из фида НП позже).
+- blknochg: r51-r58 GoodFood (BC160NBB2LED, BC160BB2LED, BC360NBW2LED, BC360BW2LED, BC360BB2LED, BC480NBW2LED, BC480BW2LED, BC480NBB2LED).
+- Verify: 60 PASS / 0 FAIL.
+- **Chunk-076 ЗАКРЫТ** 57/57:
+  - TRIP 20 / blknotrip 0 / blknochg 34 / blkfix 1 / SKIP-НП 2 = 57.
+  - 616 PASS / 0 FAIL cumulative.
+  - OQ#6 (r24 Forcar G-ER200SS vs G-ER400) — единственный OQ.
+- Next: chunk-077 scaffold (W2, продолжение chunk-076).
