@@ -53,3 +53,6 @@ graphify-out/
 scripts/check_*.py
 scripts/diag_*.py
 scripts/regen_*.py
+
+# W2 Horoshop import xlsx (sweep of fixed chunks)
+*-horoshop-import-*.xlsx
