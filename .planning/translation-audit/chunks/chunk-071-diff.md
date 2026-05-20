@@ -1,7 +1,7 @@
 # chunk-071 diff (W2, продолжение chunk-070)
 
-**Status:** chunk-071 b1 DONE 8/83 (cum TRIP 8 / blknotrip 0 / blknochg 0 / blkfix 0 / SKIP-НП 0; 273 PASS / 0 FAIL) — next b2 (SKU 9-16, rows 10-17)
-**Last updated:** chunk-071 b1 DONE 8/83
+**Status:** chunk-071 b2 DONE 16/83 (cum TRIP 16 / blknotrip 0 / blknochg 0 / blkfix 0 / SKIP-НП 0; 297 PASS / 0 FAIL) — next b3 (SKU 17-24, rows 18-25)
+**Last updated:** chunk-071 b2 DONE 16/83
 
 **Источник:** `.planning/translation-audit/chunks/chunk-071.xlsx` (83 SKU, rows 2..84, ART 500478925..1173086863).
 **Фикс-таргет:** `.planning/translation-audit/chunks/chunk-071-fixed.xlsx` (gitignored).
@@ -30,3 +30,19 @@
 
 **Итого b1:** TRIP 8 + blknotrip 0 + blknochg 0 + blkfix 0 + SKIP-НП 0. Verify **273 PASS / 0 FAIL**.
 **Cum после b1:** TRIP 8 + blknotrip 0 + blknochg 0 + blkfix 0 + SKIP-НП 0 = **8/83**. UNPROC = 75 (rows 10-84).
+
+## b2 (SKU 9-16, rows 10-17) — 16/83
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 9 | 10 | 873565142 | Hendi 271162 термометр цифр с зондом 120 мм | **TRIP** | c5←c7 «ТЕРМОМЕТР ЦИФРОВОЙ С ЗОНДОМ Hendi 271162»; c36 ← RU 604 chars (1 para + 9 li). **Source-typo preserved** «Терометр» (missing «м»). Source gender-mismatch «цифрової з зондом» → standard RU «цифровой с зондом» (semantic faithful). Зонд 120 мм нерж, -50..+300°C, lock mode, автовыкл 10 мин. |
+| 2 | 10 | 11 | 873572737 | Hendi 224403 точило электрическое | **TRIP** | c5←c7 «ТОЧИЛО ЭЛЕКТРИЧЕСКОЕ ДЛЯ ЗАТОЧКИ НОЖЕЙ Hendi 224403»; c36 ← RU 231 chars (1 para + 3 li): быстрая заточка / удобная замена дисков / рыба-мясо-овощи-фрукты / 310х110х110. Literal `'` в «м'яса» drop. |
+| 3 | 11 | 12 | 873573291 | Hendi 820612 точило для ножей (3 функции) | **TRIP** | c5←c7 «ТОЧИЛО ДЛЯ НОЖЕЙ Hendi 820612»; c36 ← RU 530 chars (ul+ol+ul mixed structure). 3 функции (COARSE/FINE/CERAMIC) для всех типов ножей включая керамические. UA tail «Не використовувати для заточування зубчастих лез» → RU. |
+| 4 | 12 | 13 | 886827914 | Hendi 825617 доска HACCP красная | **TRIP** | c5←c7 «Доска разделочная Hendi 825617 HACCP 600x400 мм - красная»; c36 ← RU 979 chars (1 para + 4 li + 7-row HACCP table). Trailing 2 empty `<p> </p>` preserved (no iframe в этом SKU). |
+| 5 | 13 | 14 | 886828528 | Hendi 825631 доска HACCP зелёная | **TRIP** | c5←c7 «Доска разделочная Hendi 825631 HACCP 600x400 мм - зелёная» (Ё в c7 preserved — Ё запрещён только в c36). c36 ← RU 1117 chars. **Structural diff:** table в этом SKU БЕЗ header row (preserved faithful). Leading space `<p> Дошка` preserved. + iframe youtube. |
+| 6 | 14 | 15 | 886828693 | Hendi 825648 доска HACCP коричневая | **TRIP** | c5←c7 «Доска разделочная Hendi 825648 (600х400 мм) коричневая»; c36 ← RU 1178 chars. **Source-typo preserved:** missing «виготовлена/изготовлена» word — «Дошка обробна HACCP 600x400 мм - коричнева Hendi 825648 з поліетилену HDPE 500» → «Доска разделочная HACCP 600x400 мм - коричневая Hendi 825648 из полиэтилена HDPE 500» (без слова «изготовлена»). + iframe. |
+| 7 | 15 | 16 | 886828999 | Hendi 825655 доска HACCP жёлтая | **TRIP** | c5←c7 «Доска разделочная Hendi 825655 HACCP 600x400 мм - жёлтая» (Ё preserved); c36 ← RU 1176 chars. **Source-typo preserved:** «825655изготовлена» (no space, RU word в UA-тексте) — faithful. + iframe. |
+| 8 | 16 | 17 | 886829518 | Hendi 825624 доска HACCP синяя | **TRIP** | c5←c7 «Доска разделочная Hendi 825624 (600х400 мм) синяя»; c36 ← RU 1187 chars. **Structural quirk:** first sentence в `<h2>` а не `<p>` (preserved faithful). + iframe. |
+
+**Итого b2:** TRIP 8 + blknotrip 0 + blknochg 0 + blkfix 0 + SKIP-НП 0. Verify **297 PASS / 0 FAIL**.
+**Cum после b2:** TRIP 16 + blknotrip 0 + blknochg 0 + blkfix 0 + SKIP-НП 0 = **16/83**. UNPROC = 67 (rows 18-84).
