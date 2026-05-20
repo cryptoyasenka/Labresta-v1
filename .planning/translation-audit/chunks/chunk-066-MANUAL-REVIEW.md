@@ -2,9 +2,9 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-066 (90 SKU, rows 2..91; ART 2496038149 … 2153078504)
 **Apply key:** `Артикул` (col1, scoped per row)
-**Status:** b11 DONE 88/90 (b12 предстоит; batch=8 b1..b11 по 8 + b12=SKU89-90 2 SKU = 90)
+**Status:** b12 DONE 90/90 — **CHUNK-066 ЗАКРЫТ** (TRIP 29 / blknotrip 0 / blknochg 56 / SKIP-НП 5 / OQ 0 / glossary cum 867→941 +74)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-065
-**Last updated:** chunk-066 b11 (W2)
+**Last updated:** chunk-066 b12 (W2) — финальный, chunk-066 ЗАКРЫТ
 
 Эталон формата: chunk-019-MANUAL-REVIEW.md / chunk-065-MANUAL-REVIEW.md. Категории: blk триплет / blknotrip / blknochg / SKIP-НП.
 
@@ -335,3 +335,47 @@ _(нет)_
 
 ### SKIP-НП 0
 _(нет)_
+
+
+## b12 — SKU 89-90 (rows 90-91) — финальный 2-SKU батч
+
+**Verify:** REGR 88 (b1+b2+b3+b4+b5+b6+b7+b8+b9+b10+b11) + ART 90 + TRIP 1 + BLKNOCHG 1 + SKIP-НП 0 = 476 PASS / 0 FAIL.
+
+### blk триплет 1
+
+| SKU | row | ART | Название | Действие |
+|---|---|---|---|---|
+| 90 | 91 | 2153078504 | Гриль для курей CB GV24/28 MAN | c5←c7 genuine RU «Гриль для кур CB GV24/28 MAN»; c36 ← faithful RU тело (skel==UA, dims 16× — '4','5','24','28','0','250*','380','88','990','510','750','6.7','113','670','1070','900'; preserve «0-250*С» asterisk-deg notation verbatim; Лат x в дробях скорее всего нет — все цифры; structure: `<p>...</p> <p><strong>Технические характеристики:</strong></p> <ul>…</ul> <p>Размеры в упаковке </p> <ul>…</ul>`). Faithful RU translations: UA «курячих стегенець» → RU «куриных бедрышек» (UA-диминутив→RU без Ё); UA «карусельний» → RU «карусельный»; UA «Тип підключення: Електричний» → RU «Тип подключения: Электрический»; UA «Країна виробник: Італія» → RU «Страна производитель: Италия»; UA «Розміри в упаковці » → RU «Размеры в упаковке » (trailing space preserved). |
+
+### blknotrip 0
+_(нет)_
+
+### blknochg 1
+
+| SKU | row | ART | Название | Замечание |
+|---|---|---|---|---|
+| 89 | 90 | 2536925221 | Гриль для кур PIMAK M007-E электрический | c5==c7 genuine RU; c35!=c36 (1039/1049) — fixed НЕ тронут; soft-note +10 |
+
+### SKIP-НП 0
+_(нет)_
+
+---
+
+## chunk-066 — ИТОГИ (W2)
+
+**90 SKU (rows 2..91)**, ART 2496038149 … 2153078504, 12 батчей b1..b11 × 8 SKU + b12 × 2 SKU.
+
+| Категория | Count | Доля |
+|---|---|---|
+| blk триплет | 29 | 32% |
+| blknotrip | 0 | 0% |
+| blknochg | 56 | 62% |
+| SKIP-НП | 5 | 6% |
+| **Итого** | **90** | **100%** |
+
+**SKIP-НП confirmed:** 4 HURAKAN (#1 HKN-GES300 NUT b1 / #2 HKN-CSE400P b5 / #3 HKN-C1 b6 / #4 HKN-PCORN b8) + 1 TATRA (#5 TDM E 4B b9).
+**Глоссарий:** cum 867→941 (+74 net-new по chunk).
+**Открытые вопросы:** 0.
+**Final verify:** 476 PASS / 0 FAIL.
+
+**Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); chunk-066 закрыт, продолжение → chunk-067.

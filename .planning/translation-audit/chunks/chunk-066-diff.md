@@ -3,7 +3,7 @@
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-066 (90 SKU, rows 2..91; ART 2496038149 … 2153078504)
 **Apply key:** `Артикул` (col1, scoped per row)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-065
-**Status:** b11 DONE 88/90 (b12 предстоит; b1..b11 по 8 SKU + b12=SKU89-90 2 SKU)
+**Status:** b12 DONE 90/90 — **CHUNK-066 ЗАКРЫТ** (TRIP 29 / blknotrip 0 / blknochg 56 / SKIP-НП 5 / OQ 0 / glossary cum 867→941 +74)
 
 Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Формат — как chunk-065-diff.md.
 
@@ -263,3 +263,34 @@ _(нет)_
 
 ### SKIP-НП 0
 _(нет)_
+
+
+## b12 — SKU 89-90 (rows 90-91) — DONE 90/90 (cum) — финальный 2-SKU батч
+
+**Verify:** REGR 88 (b1+b2+b3+b4+b5+b6+b7+b8+b9+b10+b11) + ART 90 + TRIP 1 + BLKNOCHG 1 + SKIP-НП 0 = 476 PASS / 0 FAIL.
+
+### blk триплет 1
+- **SKU 90 r91 ART 2153078504** Гриль для курей CB GV24/28 MAN — `col5` ← c7 genuine RU «Гриль для кур CB GV24/28 MAN»; `col36` ← faithful RU тело (skel==UA, dims 16× preserved; `<p>+<p><strong>+<ul>+<p>+<ul>` структура preserved; UA «курячих стегенець» → RU «куриных бедрышек» — диминутив без Ё; UA «карусельний» → RU «карусельный»; UA «Електричний/Італія» → RU «Электрический/Италия»).
+
+### blknotrip 0
+_(нет)_
+
+### blknochg 1
+- **SKU 89 r90 ART 2536925221** PIMAK M007-E электрический (гриль для кур): c5==c7 genuine RU; c35!=c36 (1039/1049) — fixed НЕ тронут.
+
+### SKIP-НП 0
+_(нет)_
+
+---
+
+## chunk-066 — ИТОГИ (W2)
+
+**90 SKU** (rows 2..91, ART 2496038149 … 2153078504).
+
+- TRIP **29** (32%)
+- blknotrip **0** (0%)
+- blknochg **56** (62%)
+- SKIP-НП **5** (6%): #1 HURAKAN HKN-GES300 NUT (b1), #2 HURAKAN HKN-CSE400P (b5), #3 HURAKAN HKN-C1 (b6), #4 HURAKAN HKN-PCORN (b8), #5 TATRA TDM E 4B (b9)
+- Открытые вопросы: **0**
+- Глоссарий: **cum 867→941 (+74 net-new)**
+- Final verify: **476 PASS / 0 FAIL**

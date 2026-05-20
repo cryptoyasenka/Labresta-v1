@@ -980,3 +980,19 @@ Soft-note b10: чистый раунд, 0 TRIP — все 8 blknochg MARS/Silver
 - газовый / электрический / с газ-контролем (reuse cum)
 
 Soft-note b11: 2 TRIP (AIRHOT CGE-12/16 куры) — c7 уже genuine RU («Гриль для кур», «люлечный»), c5 пропагирован, c36 faithful RU body. Source typo SKU85 r86 «курячих віконець» нормализовано → «куриных ножек» (соответствует SKU86 r87 «ніжок» — same product family pattern). r86 содержит real ° (U+00B0), r87 содержит `&deg;` entity — preserved verbatim. 6 blknochg (Atalay/Pimak шаурма + GoodFood кур-гриль) — все c5==c7 genuine RU + c35!=c36, fixed НЕ тронут. 0 SKIP-НП в b11. OQ 0.
+
+## chunk-066 b12 (SKU 89-90, rows 90-91) — 90/90 — глоссарий +2 net-new (cum 939→941) — финальный 2-SKU батч
+
+**Net-new b12:**
+- CB (brand verbatim, Latin, новый бренд — карусельный куры-гриль CB GV24/28 MAN, Италия)
+- карусельний → карусельный (UA→RU термин для типа куры-гриля «carousel-type»)
+
+**Reuse from earlier batches (b12):**
+- PIMAK M007-E (PIMAK brand reuse from b11)
+- CB GV24/28 MAN (model variant — CB brand cum reuse после net-new строки)
+- Гриль для кур (RU reuse from b11)
+- электрический (reuse cum)
+- куряча стегенце → куриных бедрышек (UA-диминутив → RU без Ё; используется в b12 SKU90, не отдельная глоссарийная строка — это лексическая faithful-translation)
+- Тип подключения / Страна производитель / Италия / Размеры в упаковке (стандартные техн. характеристики, reuse cum)
+
+Soft-note b12: финальный 2-SKU батч chunk-066. 1 TRIP (SKU90 r91 CB GV24/28 MAN — c5←c7 genuine RU + c36 faithful RU body, full структура с двумя `<ul>` секциями + `<p><strong>`); 1 blknochg (SKU89 r90 PIMAK M007-E electric grill — c5==c7 genuine, fixed НЕ тронут). 0 SKIP-НП в b12. OQ 0. **CHUNK-066 ЗАКРЫТ** 90/90: TRIP 29 / blknotrip 0 / blknochg 56 / SKIP-НП 5 (4 HURAKAN + 1 TATRA) / OQ 0 / glossary cum 867→941 +74 net-new по чанку.
