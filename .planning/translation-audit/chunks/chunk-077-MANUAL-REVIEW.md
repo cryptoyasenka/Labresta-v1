@@ -1,6 +1,6 @@
 # chunk-077 manual review (W2)
 
-**Status:** chunk-077 b2 DONE 16/39 (cum TRIP 5 / blknotrip 0 / blknochg 9 / blkfix 1 / SKIP-НП 1; 131 PASS / 0 FAIL) — next b3 (SKU 17-24, rows 18-25). SKIP-НП #1: r13 HURAKAN HKN-GX650TNS. Без новых OQ.
+**Status:** chunk-077 b3 DONE 24/39 (cum TRIP 5 / blknotrip 0 / blknochg 17 / blkfix 1 / SKIP-НП 1; 203 PASS / 0 FAIL) — next b4 (SKU 25-32, rows 26-33). SKIP-НП #1: r13 HURAKAN HKN-GX650TNS. Без новых OQ.
 
 ## Параметры
 
@@ -69,3 +69,21 @@ TRIP / blknotrip / blknochg / blkfix / SKIP-НП.
 - **r17** SKU=16 ART=2379528652 Ubc Energy — c5==c7 RU; source Ё в c36.
 
 **Verify:** 66 PASS / 0 FAIL. Без новых OQ.
+
+
+## b3 (SKU 17-24, rows 18-25) — DONE 24/39
+
+**Категории:** blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r18** SKU=17 ART=2380244663 Ubc Energy AD ST нержавейка — c5==c7 RU clean.
+- **r19** SKU=18 ART=2380282992 Ubc Prime — c5==c7 RU clean.
+- **r20** SKU=19 ART=2380589534 Ubc Large — c5==c7 RU clean.
+- **r21** SKU=20 ART=2380598264 Ubc Active Large (Full Door) — c5==c7 RU; source c36 содержит Ё (естественное — не наш write).
+- **r22** SKU=21 ART=2380639333 Ubc Super Large — c5==c7 RU clean.
+- **r23** SKU=22 ART=2380647543 Ubc Super Large — c5==c7 RU clean (вторая позиция той же модели, другой ART).
+- **r24** SKU=23 ART=2380652781 Ubc Super Large AD — c5==c7 RU clean.
+- **r25** SKU=24 ART=2380653644 Ubc Super Large AD ST нержавейка — c5==c7 RU clean.
+
+**Verify:** 72 PASS / 0 FAIL. Без новых OQ.

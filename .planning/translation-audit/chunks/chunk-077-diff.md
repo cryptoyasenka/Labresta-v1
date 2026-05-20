@@ -71,3 +71,23 @@
 | 17 | 16 | 2379528652 | Ubc Energy | source Ё в c36 — допустимо |
 
 **Verify:** 66 PASS / 0 FAIL. Без новых OQ.
+
+
+## b3 (SKU 17-24, rows 18-25)
+
+Категории: blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+
+### blknochg
+
+| row | SKU | ART | модель | примечание |
+|---|---|---|---|---|
+| 18 | 17 | 2380244663 | Ubc Energy AD ST нержавейка | |
+| 19 | 18 | 2380282992 | Ubc Prime | |
+| 20 | 19 | 2380589534 | Ubc Large | |
+| 21 | 20 | 2380598264 | Ubc Active Large (Full Door) | source Ё в c36 — допустимо (не наш write) |
+| 22 | 21 | 2380639333 | Ubc Super Large | |
+| 23 | 22 | 2380647543 | Ubc Super Large | вторая позиция той же модели, другой ART |
+| 24 | 23 | 2380652781 | Ubc Super Large AD | |
+| 25 | 24 | 2380653644 | Ubc Super Large AD ST нержавейка | |
+
+**Verify:** 72 PASS / 0 FAIL. Без новых OQ.
