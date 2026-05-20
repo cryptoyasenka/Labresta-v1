@@ -1,7 +1,7 @@
 # chunk-071 diff (W2, продолжение chunk-070)
 
-**Status:** chunk-071 b4 DONE 32/83 (cum TRIP 29 / blknotrip 0 / blknochg 3 / blkfix 0 / SKIP-НП 0; 336 PASS / 0 FAIL) — next b5 (SKU 33-40, rows 34-41)
-**Last updated:** chunk-071 b4 DONE 32/83
+**Status:** chunk-071 b5 DONE 40/83 (cum TRIP 37 / blknotrip 0 / blknochg 3 / blkfix 0 / SKIP-НП 0; 360 PASS / 0 FAIL) — next b6 (SKU 41-48, rows 42-49)
+**Last updated:** chunk-071 b5 DONE 40/83
 
 **Источник:** `.planning/translation-audit/chunks/chunk-071.xlsx` (83 SKU, rows 2..84, ART 500478925..1173086863).
 **Фикс-таргет:** `.planning/translation-audit/chunks/chunk-071-fixed.xlsx` (gitignored).
@@ -78,3 +78,19 @@
 
 **Итого b4:** TRIP 8 + blknotrip 0 + blknochg 0 + blkfix 0 + SKIP-НП 0. Verify **336 PASS / 0 FAIL**.
 **Cum после b4:** TRIP 29 + blknotrip 0 + blknochg 3 + blkfix 0 + SKIP-НП 0 = **32/83**. UNPROC = 51 (rows 34-84).
+
+## b5 (SKU 33-40, rows 34-41) — 40/83
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 33 | 34 | 1157950566 | Hendi 582015 кухонный таймер аналоговый Ø80 мм | **TRIP** | c5←c7; c36 RU 325 chars (5 li-dash + 1 li-Ø). UA-typo «расстояни» (truncated) → RU faithful «расстояния». «Червона лінія» → «Красная линия». |
+| 2 | 34 | 35 | 1157954358 | Hendi 271339 термометр для стейков (4 шт в блистере) | **TRIP** | c5←c7; c36 RU 162 chars. «rare medium well» Latin preserved. «ТЕРМОМЕТР ДЛЯ СТЕЙКІВ» → «ТЕРМОМЕТР ДЛЯ СТЕЙКОВ». |
+| 3 | 35 | 36 | 1157959901 | Hendi 271216 термометр с зондом (0/+100°C) | **TRIP** | c5←c7; c36 RU 261 chars. **Source-typo «100C» missing ° preserved**. «вістря зонда» → «острие зонда» / «з кліпсою» → «с клипсой». |
+| 4 | 36 | 37 | 1157978504 | Hendi 271179 термометр универсальный для печей и духовок +50/+300°C | **TRIP** | c5←c7; c36 RU 281 chars. **Source-typo «Hendi 271179Температурный» (glued missing space) preserved**. «300C» missing ° preserve. «Дозвіл: 10°C» (BIG step) → «Разрешение: 10°C». «гачком і підставкою» → «крючком и подставкой». |
+| 5 | 37 | 38 | 1158144305 | Hendi Kitchen Line 572313 порционная ложка для мороженого 1/20 Ø56 | **TRIP** | c5←c7; c36 RU 408 chars (1 para + 6 li). **Source-typo «Місткість в л::» (двойное двоеточие) preserved**. «Виготовлений з нержавіючої сталі» → «Изготовлена из нержавеющей стали». 47х70х17 dims. |
+| 6 | 38 | 39 | 1158150087 | Hendi Kitchen Line 572511 порционная ложка для мороженого 1/30 Ø50 | **TRIP** | c5←c7; c36 RU 384 chars (1 para + 5 li). Близнец r38 с «Местимость в л:: 1/30» double colon. Без габ-li. |
+| 7 | 39 | 40 | 1158162948 | Hendi Profi Line 759240 порционная ложка для мороженого 1/30 Ø50 | **TRIP** | c5←c7; c36 RU 376 chars. **Source-typo лишние пробелы «<br/> <br/> Особливості» preserved**. «ручка з поліаміду» → «ручка из полиамида». Без «<br/><br/>» рядом (другой источник). |
+| 8 | 40 | 41 | 1158166263 | Hendi Profi Line 759257 порционная ложка для мороженого 1/36 Ø48 | **TRIP** | c5←c7; c36 RU 376 chars. Близнец r40 с 1/36 / Ø48. Лишние пробелы preserve. |
+
+**Итого b5:** TRIP 8 + blknotrip 0 + blknochg 0 + blkfix 0 + SKIP-НП 0. Verify **360 PASS / 0 FAIL**.
+**Cum после b5:** TRIP 37 + blknotrip 0 + blknochg 3 + blkfix 0 + SKIP-НП 0 = **40/83**. UNPROC = 43 (rows 42-84).
