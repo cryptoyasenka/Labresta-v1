@@ -645,3 +645,5 @@ CURRENT-w2: chunk-084 b8 DONE 64/71 (cum TRIP 32 / blknotrip 0 / blknochg 31 / b
 CURRENT-w2: chunk-084 ЗАКРЫТ 71/71 (TRIP 33 / blknotrip 0 / blknochg 37 / blkfix 1 / SKIP-НП 0; 396 PASS / 0 FAIL); b9 FINAL TRIP 1 (FROSTY FL-78 white) + blknochg 6 (GoodFood RTW160L Premium + FROSTY FL238 white + FROSTY RT280L white + GoodFood RT98L белая/черная + GoodFood RT68L черная); cum W2 OQ +4 в chunk-084 (#14 r4 FSC100 + #15 r6 UF50GCP RTD99L + #16 r21-r24 Latin c в чиcтки + #17 r39 RT78L/RT78B typo); next chunk-085 scaffold (FINAL chunk W2 range 055-085)
 
 CURRENT-w2: chunk-085 scaffold (W2, продолжение chunk-084); FINAL chunk в диапазоне W2 (chunk-055..085); 75 SKU rows 2-76, 5 SKIP-НП preliminary HURAKAN (r3 HKN-ISV5P шприц колбасный + r20 HKN-ISH5P + r21 HKN-ISV5P + r32 HKN-ISV7P + r69 HKN-EF16 чебуречница); next b1 (SKU 1-8, rows 2-9)
+
+CURRENT-w2: chunk-085 b1 DONE 8/75 (cum TRIP 4 / blknotrip 0 / blknochg 3 / blkfix 0 / SKIP-НП 1; 48 PASS / 0 FAIL); TRIP 4 (FROSTY SH-3/SH-5/SH-7 + SV-3 шприц колбасный) + blknochg 3 (FROSTY FL288 + Frosty EVS-15N + SEV12) + SKIP-НП 1 HURAKAN (r3 HKN-ISV5P); без новых OQ; next b2 (SKU 9-16, rows 10-17)
