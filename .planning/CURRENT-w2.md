@@ -617,3 +617,5 @@ CURRENT-w2: chunk-083 b3 DONE 24/62 (cum TRIP 11 / blknotrip 0 / blknochg 13 / b
 CURRENT-w2: chunk-083 b4 DONE 32/62 (cum TRIP 16 / blknotrip 0 / blknochg 16 / blkfix 0 / SKIP-НП 0; 160 PASS / 0 FAIL); TRIP 5 (REEDNEE DR200SL + F200SS + Frosty FCB-75 + SGD250SL + Gooder BBD230H) + blknochg 3 (Whirlpool ADN 140/140B + HATA DF200S); без новых OQ; next b5 (SKU 33-40, rows 34-41)
 
 CURRENT-w2: chunk-083 b5 DONE 40/62 (cum TRIP 22 / blknotrip 0 / blknochg 18 / blkfix 0 / SKIP-НП 0; 208 PASS / 0 FAIL); TRIP 6 (Gooder BBD230S + ВВT350H/S + Forcar G-BC3PS + Frosty GN126H/GN220HS барные) + blknochg 2 (Tefcold DB301S-3 + EWT INOX LG128); +1 OQ #13 r37 Tefcold DB301S-3 UA body модель DB201S; next b6 (SKU 41-48, rows 42-49)
+
+CURRENT-w2: chunk-083 b6 DONE 48/62 (cum TRIP 24 / blknotrip 0 / blknochg 24 / blkfix 0 / SKIP-НП 0; 240 PASS / 0 FAIL); TRIP 2 (Frosty GN320HS барный + Hendi 236017 Budget Line) + blknochg 6 (GoodFood BC46/BC75/BC90/BC128 + Tefcold DB106H + GoodFood GF-SGD250SL-H6C); без новых OQ; next b7 (SKU 49-56, rows 50-57, включая r51-r54 HURAKAN×4 SKIP)
