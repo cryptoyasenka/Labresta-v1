@@ -1,7 +1,7 @@
 # chunk-070 MANUAL REVIEW (W2)
 
-**Status:** chunk-070 b4 DONE 32/59 (cum TRIP 7 / blknotrip 0 / blknochg 23 / SKIP-НП 2; 214 PASS / 0 FAIL) — next b5 (SKU 33-40, rows 34-41)
-**Last updated:** chunk-070 b4 DONE 32/59
+**Status:** chunk-070 b5 DONE 40/59 (cum TRIP 8 / blknotrip 0 / blknochg 29 / blkfix 1 / SKIP-НП 2; 213 PASS / 0 FAIL) — next b6 (SKU 41-48, rows 42-49)
+**Last updated:** chunk-070 b5 DONE 40/59
 
 ## Структура
 
@@ -120,3 +120,27 @@
 **Открытые вопросы:** 0 новых в b4.
 
 **Verify:** 214 PASS / 0 FAIL.
+
+## b5 (SKU 33-40, rows 34-41) — 40/59
+
+**Категории:** TRIP 1 (r36 Sirman Sigix M20) + blknochg 6 (r34 METROOPACK TYPE-10 + r35 Metro-Plast MCS B 192 STRONG + r37 Orved Profi 3 + r39 Orved VGP60 с обрезкой + r40 Orved VGP60N O2 + r41 Orved VGP 60 Skin) + **blkfix 1** (r38 JPACK TSS102-R c36 Ё→Е x2) + SKIP-НП 0.
+
+**TRIP detail:**
+- **r36 Sirman Sigix M20** — c5 ← c7 «Термоупаковочная машина Sirman Sigix M20»; c36 ← RU 948 chars (14 li + 4 li tray sizes): машина для припаивания крышек к пластиковым/алюминиевым лоткам, AISI 304, электронное управление температурой и предварительным подогревом, счетчик лотков (UA «Відлік лотків» → «Счетчик лотков»), время запаивания 4 секунды, максимум 260x190 мм, персонализированные пресс-формы по чертежу, габариты 257x525x306 мм, упаковка 620x380x400, 18 кг, подключение 220 В Электро, исполнение Настольное, мощность 0.9 квт. Доступные размеры лотков: 137x95 / 190х137 / 230x190 / 260x190 мм. Все Ё избегаем (нерж**а**веющая, а не нерж**е**веющая).
+
+**blkfix detail (новая мини-категория для b5):**
+- **r38 JPACK TSS102-R** — c5/c7 уже RU OK; c36 имел 2× «плёнки» (Ё), исправлено в «пленки». Длина не изменилась (1917 chars). Остальные c5/c36 unchanged. UA marker в c4 source («Запайщик напівавтоматичний») faithful preserved.
+
+**blknochg detail (никаких изменений в c5/c36):**
+- r34 METROOPACK TYPE-10 — c5/c7 RU «Термоупаковочная машина METROOPACK TYPE-10», c36 2321 chars RU.
+- r35 Metro-Plast MCS B 192 STRONG — c5/c7 RU, c36 1385 chars RU.
+- r37 Orved Profi 3 — c5/c7 RU «Термоупаковочная машина Orved Profi 3», c36 856 chars RU.
+- r39 Orved VGP60 с обрезкой — c5/c7 RU; c4 имеет UA «з обрізкою» (faithful preserved, не изменяем UA-источник); c36 655 chars RU без UA-marks, без Ё.
+- r40 Orved VGP60N O2 — близнец r39, c36 655 chars RU.
+- r41 Orved VGP 60 Skin — c5/c7 RU, c36 1736 chars RU.
+
+**Открытые вопросы:** 0 новых в b5.
+
+**Категорийная заметка:** Введена новая мини-категория **blkfix** (b5+) — c5/c7 unchanged, но c36 требует минимальной фиксы по правилам RU (например, Ё→Е). Отличается от blknotrip (c5←c7 only, c36 unchanged) и от blknochg (полная сохранность).
+
+**Verify:** 213 PASS / 0 FAIL.

@@ -1,7 +1,7 @@
 # chunk-070 DIFF (W2)
 
-**Status:** chunk-070 b4 DONE 32/59 (cum TRIP 7 / blknotrip 0 / blknochg 23 / SKIP-НП 2)
-**Last updated:** chunk-070 b4 DONE 32/59
+**Status:** chunk-070 b5 DONE 40/59 (cum TRIP 8 / blknotrip 0 / blknochg 29 / blkfix 1 / SKIP-НП 2)
+**Last updated:** chunk-070 b5 DONE 40/59
 
 Source: `chunk-070.xlsx` (RO, 59 SKU rows 2..60, ART 2176091387..500051832) → operating: `chunk-070-fixed.xlsx` (gitignored, скопирован из source 1:1).
 
@@ -90,3 +90,19 @@ Batches заполняются после каждого закрытого ба
 
 **Итого b4:** TRIP 3 + blknotrip 0 + blknochg 5 + SKIP-НП 0. Verify **214 PASS / 0 FAIL**.
 **Cum после b4:** TRIP 7 + blknotrip 0 + blknochg 23 + SKIP-НП 2 = **32/59**.
+
+## b5 (SKU 33-40, rows 34-41) — 40/59
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 33 | 34 | 2396523353 | METROOPACK TYPE-10 | blknochg | — (c5/c7 RU «Термоупаковочная машина», c36 2321 chars RU) |
+| 2 | 34 | 35 | 2396921807 | Metro-Plast MCS B 192 STRONG | blknochg | — (c5/c7 RU, c36 1385 chars RU) |
+| 3 | 35 | 36 | 2396928077 | Sirman Sigix M20 | **TRIP** | c5←c7 «Термоупаковочная машина Sirman Sigix M20»; c36 ← RU 948 chars (припаивание крышек / AISI 304 / 4 секунды / 260x190 / 257x525x306 / 18 кг / 220 В / 0.9 квт + 4 размера лотков) |
+| 4 | 36 | 37 | 2396931248 | Orved Profi 3 | blknochg | — (c5/c7 RU, c36 856 chars RU) |
+| 5 | 37 | 38 | 2396940020 | JPACK TSS102-R | **blkfix** | c36 Ё→Е fix x2 (плёнки→пленки); c5/c7 unchanged |
+| 6 | 38 | 39 | 2396946439 | Orved VGP60 с обрезкой | blknochg | — (c5/c7 RU, c36 655 chars RU; UA marker в c4 «з обрізкою» faithful) |
+| 7 | 39 | 40 | 2396949577 | Orved VGP60N O2 | blknochg | — (близнец r39, c36 655 chars RU) |
+| 8 | 40 | 41 | 2396954882 | Orved VGP 60 Skin | blknochg | — (c5/c7 RU, c36 1736 chars RU) |
+
+**Итого b5:** TRIP 1 + blknotrip 0 + blknochg 6 + blkfix 1 + SKIP-НП 0. Verify **213 PASS / 0 FAIL**.
+**Cum после b5:** TRIP 8 + blknotrip 0 + blknochg 29 + blkfix 1 + SKIP-НП 2 = **40/59**.
