@@ -1,7 +1,7 @@
 # chunk-075 MANUAL REVIEW (W2, продолжение chunk-074)
 
-**Status:** chunk-075 b1 DONE 8/54 (cum TRIP 3 / blknotrip 0 / blknochg 3 / blkfix 0 / SKIP-НП 2; 709 PASS / 0 FAIL) — next b2 (SKU 9-16, rows 10-17)
-**Last updated:** chunk-075 b1 (8/54)
+**Status:** chunk-075 b2 DONE 16/54 (cum TRIP 3 / blknotrip 0 / blknochg 11 / blkfix 0 / SKIP-НП 2; 765 PASS / 0 FAIL) — next b3 (SKU 17-24, rows 18-25)
+**Last updated:** chunk-075 b2 (16/54)
 
 **Объём:** 54 SKU rows 2..55. ART 2044220842..1090581793.
 
@@ -49,3 +49,11 @@
 - SKIP-НП 2: r3 HURAKAN HKN-XLT196M, r4 APACH APE12ABQ D
 
 **Quirks:** r2 «м&#39;якішу»→«мякиша» (HTML-апостроф снят); r8 mixed source (RU intro + UA body); r8 «Дека для випічки»→«Противни для выпечки».
+
+---
+
+## b2 DONE 16/54 (Status update)
+
+**Status:** chunk-075 b2 DONE 16/54 (cum TRIP 3 / blknotrip 0 / blknochg 11 / blkfix 0 / SKIP-НП 2; 765 PASS / 0 FAIL) — next b3 (SKU 17-24, rows 18-25)
+
+**b2 распределение (SKU 9-16):** blknochg 8 — полный блок Эфес ШР-6/8/10 / GN1/1 / GN2/1 / -К варианты (r10-r17), все c5==c7 «Шкаф расстоечный Эфес ...» genuine RU, c36 genuine RU bodies. Fixed cells НЕ тронуты.
