@@ -625,3 +625,5 @@ CURRENT-w2: chunk-083 b7 DONE 56/62 (cum TRIP 24 / blknotrip 0 / blknochg 28 / b
 CURRENT-w2: chunk-083 ЗАКРЫТ 62/62 (TRIP 24 / blknotrip 0 / blknochg 34 / blkfix 0 / SKIP-НП 4 HURAKAN; 274 PASS / 0 FAIL); b8 FINAL blknochg 6 (Juka VD60G + TEFCOLD DB300S-3 + Snaige CC14SM-S6004F + Tefcold DB201S/BC25CP/FS60CP); cum OQ #1-13 (новый в chunk-083 — OQ #13 r37 Tefcold DB301S-3 body модель DB201S); SKIP-НП #1 r51 HKN-BCS143F + #2 r52 HKN-BCS143 + #3 r53 HKN-BC145 + #4 r54 HKN-UF100G; next chunk-084 scaffold
 
 CURRENT-w2: chunk-084 scaffold (W2, продолжение chunk-083); 71 SKU rows 2-72, 0 SKIP-НП preliminary (no HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA in c4/c5); next b1 (SKU 1-8, rows 2-9)
+
+CURRENT-w2: chunk-084 b1 DONE 8/71 (cum TRIP 0 / blknotrip 0 / blknochg 7 / blkfix 1 / SKIP-НП 0; 28 PASS / 0 FAIL); blknochg 7 (Tefcold FS80CP/SCU1220/FSC100/VOC100/UF200V/UF200VS/UF100GCP) + blkfix 1 (r6 UF50GCP — c36 RU prose была GoodFood RTD99L body, переписан в UF50GCP faithful RU); +2 OQ #14 r4 FSC100 prose body FS80CP + #15 r6 UF50GCP c36 RTD99L; next b2 (SKU 9-16, rows 10-17)
