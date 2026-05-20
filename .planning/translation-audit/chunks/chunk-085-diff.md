@@ -45,3 +45,9 @@
 
 - blknochg 8 (all): r42/r43 Dadaux PHX25/PHX15 + r44 GoodFood SF15VE электр + r45/r46/r47 SF3V/SF2VS/SF5VS + r48/r49 SF10VE/SF30VE электр
 - Verify 32 PASS / 0 FAIL; без новых OQ
+
+## b7 (rows 50-57, SKU 49-56) — 56/75 DONE
+
+- TRIP 7 Frosty чафиндиши: r50 CD-7055FG премиум 9 л электр + r52 CD-7055 GN 1/1 со съемной крышкой + r53 CD-723DRE стандарт со скользящей крышкой 180° + r54 CD-723E с подставкой под топливо + опциональный электроподогрев (c7 БЕЗ «электрический») + r55 CD-823 с крышкой + r56 CD-823FG со скользящей крышкой + r57 CD-723 GN 1/1 премиум
+- blknochg 1: r51 CD-723DR
+- Verify 60 PASS / 0 FAIL; без новых OQ
