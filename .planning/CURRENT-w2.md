@@ -649,3 +649,5 @@ CURRENT-w2: chunk-085 scaffold (W2, продолжение chunk-084); FINAL chu
 CURRENT-w2: chunk-085 b1 DONE 8/75 (cum TRIP 4 / blknotrip 0 / blknochg 3 / blkfix 0 / SKIP-НП 1; 48 PASS / 0 FAIL); TRIP 4 (FROSTY SH-3/SH-5/SH-7 + SV-3 шприц колбасный) + blknochg 3 (FROSTY FL288 + Frosty EVS-15N + SEV12) + SKIP-НП 1 HURAKAN (r3 HKN-ISV5P); без новых OQ; next b2 (SKU 9-16, rows 10-17)
 
 CURRENT-w2: chunk-085 b2 DONE 16/75 (cum TRIP 8 / blknotrip 0 / blknochg 7 / blkfix 0 / SKIP-НП 1; 96 PASS / 0 FAIL); TRIP 4 (FROSTY SV-5/SV-7/SV-10 шприц колбасный вертикальный + Hendi 282090 7 л наполнитель фарша расширенное тело) + blknochg 4 (GoodFood SF3VS/SF7VS/SF10VS/SF15VS); без новых OQ; next b3 (SKU 17-24, rows 18-25)
+
+CURRENT-w2: chunk-085 b3 DONE 24/75 (cum TRIP 13 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 3; 144 PASS / 0 FAIL); TRIP 5 (EWT TK3L/HS5L шприц колбасный + Frosty EVS-15L/SEV15 электрические + Hendi 282588 Profi Line) + blknochg 1 (GoodFood SF12VS) + SKIP-НП 2 HURAKAN (r20 HKN-ISH5P + r21 HKN-ISV7P); +1 OQ #18 r21 c4 ISV5P vs c5/c7 ISV7P; next b4 (SKU 25-32, rows 26-33, включая r32 HURAKAN)
