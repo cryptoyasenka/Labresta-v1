@@ -1,7 +1,7 @@
 # chunk-070 DIFF (W2)
 
-**Status:** chunk-070 b7 DONE 56/59 (cum TRIP 19 / blknotrip 0 / blknochg 31 / blkfix 4 / SKIP-НП 2)
-**Last updated:** chunk-070 b7 DONE 56/59
+**Status:** chunk-070 ЗАКРЫТ 59/59 (cum TRIP 22 / blknotrip 0 / blknochg 31 / blkfix 4 / SKIP-НП 2; 243 PASS / 0 FAIL)
+**Last updated:** chunk-070 ЗАКРЫТ 59/59 — финиш
 
 Source: `chunk-070.xlsx` (RO, 59 SKU rows 2..60, ART 2176091387..500051832) → operating: `chunk-070-fixed.xlsx` (gitignored, скопирован из source 1:1).
 
@@ -138,3 +138,14 @@ Batches заполняются после каждого закрытого ба
 
 **Итого b7:** TRIP 3 (r50/r51/r54) + blknotrip 0 + blknochg 2 (r52/r57) + blkfix 3 (r53/r55/r56) + SKIP-НП 0. Verify **234 PASS / 0 FAIL**.
 **Cum после b7:** TRIP 19 + blknotrip 0 + blknochg 31 + blkfix 4 + SKIP-НП 2 = **56/59**.
+
+## b8 ФИНАЛ (SKU 57-59, rows 58-60) — 59/59 ЗАКРЫТ
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 57 | 58 | 2044611060 | Frosty KS100T нож для шаурмы | **TRIP** | c5←c7 «Нож для шаурмы Frosty KS100T»; c36 ← RU 1717 chars (4 marketing paras + 3× ul): высококачественная нерж. сталь / лезвие 100 см (source-typo vs 100 мм во 2-м списке — preserved faithful) / толщина 0-8 мм / 2 лезвия (гладкое+зубчатое vs «круглое+зубчатое» — source list inconsistency preserved) / точило / отвертка / штифт / шнур 2,8 м / пластиковая ручка. UA `&#39;` («м'яса» x4) dropped. |
+| 2 | 58 | 59 | 500049851 | Hendi 588017 Profi Line 0,5 л сифон | **TRIP** | c5←c7 «Сифон для сливок HENDI 588017 Profi Line 0,5 л»; c36 ← RU 580 chars (1 para + 9 li): для взбитых сливок/муссов/кремов/соусов / 0,5 л / 85x235 / нерж. сталь / 3 наконечника / для мелких и средних точек / горячие кремы и соусы / в присутствии клиента / N2O картриджи (не включены) / «Посудомоечная машина безопасна» source phrasing faithful. Literal `'` в «Об'єм»→«Объем». |
+| 3 | 59 | 60 | 500051832 | Hendi 588024 Profi Line 1 л сифон | **TRIP** | c5←c7 «Сифон для сливок HENDI 588024 Profi Line 1 л»; c36 ← RU 392 chars: близнец r59 (1 л / 98x330) + «Данная модеь» (source-typo «модель»→«модеь») preserved + свежесть 14 дней / 2 насадки нерж + 1 полипропилен + щетка для чистки. Literal `'` в «Об'єм»→«Объем». |
+
+**Итого b8:** TRIP 3 + blknotrip 0 + blknochg 0 + blkfix 0 + SKIP-НП 0. Verify **243 PASS / 0 FAIL**.
+**Cum после b8 (ФИНАЛ chunk-070):** TRIP 22 + blknotrip 0 + blknochg 31 + blkfix 4 + SKIP-НП 2 = **59/59 ЗАКРЫТ**.
