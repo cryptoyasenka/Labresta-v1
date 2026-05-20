@@ -1,6 +1,6 @@
 # chunk-079 manual review (W2)
 
-**Status:** chunk-079 b1 DONE 8/58 (cum TRIP 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0; 72 PASS / 0 FAIL) — next b2 (SKU 9-16, rows 10-17). Без новых OQ.
+**Status:** chunk-079 b2 DONE 16/58 (cum TRIP 0 / blknotrip 0 / blknochg 16 / blkfix 0 / SKIP-НП 0; 144 PASS / 0 FAIL) — next b3 (SKU 17-24, rows 18-25). 2 новых OQ (c079 #1 r12 FSC1000H body=FSC1000S; c079 #2 r14 FSC1950S body=FS1202H).
 
 ## Параметры
 
@@ -39,3 +39,26 @@ TRIP / blknotrip / blknochg / blkfix / SKIP-НП.
 - **r9** SKU=8 ART=2140783030 Tefcold RKS600 — c5==c7 RU clean.
 
 **Verify:** 72 PASS / 0 FAIL. Без новых OQ.
+
+
+## b2 (SKU 9-16, rows 10-17) — DONE 16/58
+
+**Категории:** blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r10** SKU=9 ART=2141128896 Tefcold FS1002S — c5==c7 RU clean.
+- **r11** SKU=10 ART=2141131104 Tefcold FSC1000S — c5==c7 RU clean.
+- **r12** SKU=11 ART=2141133910 Tefcold FSC1000H — c5==c7 RU clean (⚠ c35/c36 body упоминает «FSC1000S» вместо FSC1000H — наследие источника, источник переиспользовал описание sibling-SKU). ⇒ OQ c079 #1.
+- **r13** SKU=12 ART=2141135512 Tefcold FS1202H — c5==c7 RU clean.
+- **r14** SKU=13 ART=2141140987 Tefcold FSC1950S — c5==c7 RU clean (⚠ c35/c36 body упоминает «FS1202H» — описание sibling-SKU, не FSC1950S). ⇒ OQ c079 #2.
+- **r15** SKU=14 ART=2141146470 Tefcold FSC1950H — c5==c7 RU clean.
+- **r16** SKU=15 ART=2141154883 Tefcold FS1202S — c5==c7 RU clean.
+- **r17** SKU=16 ART=2141159745 Tefcold ATOM MAXI C2DB — c5==c7 RU clean.
+
+**Verify:** 72 PASS / 0 FAIL. 2 новых OQ.
+
+### Открытые вопросы (новые)
+
+- **OQ c079 #1**: r12 SKU=11 ART=2141133910 Tefcold **FSC1000H** — название (c4/c5/c7) указывает на FSC1000H, но тело описания (c35/c36) дословно идентично r11 FSC1000S и упоминает модель «FSC1000S» в первом предложении. Источник: ETL переиспользовал описание sibling-SKU. Не наш write. Решение Yana: либо переписать body под FSC1000H (нужен спец-лист модели), либо принять как есть.
+- **OQ c079 #2**: r14 SKU=13 ART=2141140987 Tefcold **FSC1950S** — название указывает на FSC1950S, но тело описания (c35/c36) идентично r13 FS1202H и упоминает «FS1202H». Источник: cross-paste из соседнего SKU. Не наш write. Решение Yana: переписать body под FSC1950S или принять.

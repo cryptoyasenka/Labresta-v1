@@ -29,3 +29,23 @@
 | 9 | 8 | 2140783030 | Tefcold RKS600 | |
 
 **Verify:** 72 PASS / 0 FAIL. Без новых OQ.
+
+
+## b2 (SKU 9-16, rows 10-17)
+
+Категории: blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+
+### blknochg
+
+| row | SKU | ART | модель | примечание |
+|---|---|---|---|---|
+| 10 | 9 | 2141128896 | Tefcold FS1002S | |
+| 11 | 10 | 2141131104 | Tefcold FSC1000S | |
+| 12 | 11 | 2141133910 | Tefcold FSC1000H | ⚠ c35/c36 body=FSC1000S → OQ c079 #1 |
+| 13 | 12 | 2141135512 | Tefcold FS1202H | |
+| 14 | 13 | 2141140987 | Tefcold FSC1950S | ⚠ c35/c36 body=FS1202H → OQ c079 #2 |
+| 15 | 14 | 2141146470 | Tefcold FSC1950H | |
+| 16 | 15 | 2141154883 | Tefcold FS1202S | |
+| 17 | 16 | 2141159745 | Tefcold ATOM MAXI C2DB | |
+
+**Verify:** 72 PASS / 0 FAIL. 2 новых OQ (см. MR).
