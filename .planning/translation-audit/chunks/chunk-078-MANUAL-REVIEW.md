@@ -1,6 +1,6 @@
 # chunk-078 manual review (W2)
 
-**Status:** chunk-078 b6 DONE 48/53 (cum TRIP 0 / blknotrip 0 / blknochg 47 / blkfix 0 / SKIP-НП 1; 426 PASS / 0 FAIL) — next b7 FINAL (SKU 49-53, rows 50-54, 5 SKU). SKIP-НП #1: r19 TATRA TRC1400TN. Без новых OQ.
+**Status:** chunk-078 ЗАКРЫТ 53/53 (TRIP 0 / blknotrip 0 / blknochg 52 / blkfix 0 / SKIP-НП 1; 471 PASS / 0 FAIL). SKIP-НП #1: r19 TATRA TRC1400TN. Без новых OQ. Next: chunk-079 scaffold.
 
 ## Параметры
 
@@ -132,3 +132,25 @@ TRIP / blknotrip / blknochg / blkfix / SKIP-НП.
 - **r49** SKU=48 ART=2140092342 Tefcold FSC1450 — c5==c7 RU clean.
 
 **Verify:** 72 PASS / 0 FAIL. Без новых OQ.
+
+
+## b7 FINAL (SKU 49-53, rows 50-54, 5 SKU) — DONE 53/53
+
+**Категории:** blk триплет 0 / blknotrip 0 / blknochg 5 / blkfix 0 / SKIP-НП 0.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r50** SKU=49 ART=2140097830 Tefcold SCU1450CP — c5==c7 RU clean.
+- **r51** SKU=50 ART=2140103495 Tefcold SCU1425 FRAMELESS L/H — c5==c7 RU clean.
+- **r52** SKU=51 ART=2140746680 Tefcold UR550 — c5==c7 RU clean.
+- **r53** SKU=52 ART=2140749399 Tefcold UR550S — c5==c7 RU clean.
+- **r54** SKU=53 ART=2140758985 Tefcold UR600G — c5==c7 RU clean.
+
+**Verify:** 45 PASS / 0 FAIL. Без новых OQ.
+
+## chunk-078 ЗАКРЫТ 53/53
+
+- TRIP 0 / blknotrip 0 / blknochg 52 / blkfix 0 / SKIP-НП 1.
+- 471 PASS / 0 FAIL cumulative.
+- SKIP-НП #1: r19 TATRA TRC1400TN (тело из фида НП позже).
+- OQ: 0 новых на c078. Cumulative W2 OQ: 6 (#1 c071 SKU39 BCB10 / #2 c072 r43 Hendi 880906 / #3 c074 r39 ART=1166344539 9л vs 13,5л / #4 c075 r40 GoodFood BCF20→BCF40 / #5 c075 r41 Tecnodom 15 кг c35 vs 12 кг c36 / #6 c076 r24 Forcar G-ER200SS vs G-ER400).

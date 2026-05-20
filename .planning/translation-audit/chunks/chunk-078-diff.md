@@ -136,3 +136,26 @@
 | 49 | 48 | 2140092342 | Tefcold FSC1450 |
 
 **Verify:** 72 PASS / 0 FAIL. Без новых OQ.
+
+
+## b7 FINAL (SKU 49-53, rows 50-54, 5 SKU)
+
+Категории: blk триплет 0 / blknotrip 0 / blknochg 5 / blkfix 0 / SKIP-НП 0.
+
+### blknochg
+
+| row | SKU | ART | модель |
+|---|---|---|---|
+| 50 | 49 | 2140097830 | Tefcold SCU1450CP |
+| 51 | 50 | 2140103495 | Tefcold SCU1425 FRAMELESS L/H |
+| 52 | 51 | 2140746680 | Tefcold UR550 |
+| 53 | 52 | 2140749399 | Tefcold UR550S |
+| 54 | 53 | 2140758985 | Tefcold UR600G |
+
+**Verify:** 45 PASS / 0 FAIL. Без новых OQ.
+
+## chunk-078 ЗАКРЫТ 53/53
+
+- TRIP 0 / blknotrip 0 / blknochg 52 / blkfix 0 / SKIP-НП 1.
+- 471 PASS / 0 FAIL cumulative.
+- SKIP-НП #1: r19 TATRA TRC1400TN.
