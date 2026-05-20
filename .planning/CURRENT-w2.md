@@ -609,3 +609,5 @@ CURRENT-w2: chunk-082 b6 DONE 48/52 (cum TRIP 10 / blknotrip 0 / blknochg 34 / b
 CURRENT-w2: chunk-082 ЗАКРЫТ 52/52 (TRIP 10 / blknotrip 0 / blknochg 38 / blkfix 0 / SKIP-НП 4; 237 PASS / 0 FAIL); b7 FINAL blknochg 4 (Tefcold CPV1380E/Е дубликаты latin/cyrillic + TFW160S + TFW375S); cum OQ #1-12 (новый #12 r35 H 168D bottle range «169-68»); SKIP-НП #1 r22 HURAKAN + #2 r39 FAGOR + #3 r42 HURAKAN + #4 r43 HURAKAN; next chunk-083 scaffold
 
 CURRENT-w2: chunk-083 b1 DONE 8/62 (cum TRIP 5 / blknotrip 0 / blknochg 3 / blkfix 0 / SKIP-НП 0; 44 PASS / 0 FAIL); TRIP 5 (SIRMAN SOAVE винный 51 бутылка + Sirman Lison 250 бутылок + EWT INOX RT400L-2 + REEDNEE RT400L-2 + Frosty BD-32 минибар) + blknochg 3 (Tefcold/Tecfrigo/Frosty); без новых OQ; next b2 (SKU 9-16, rows 10-17)
+
+CURRENT-w2: chunk-083 b2 DONE 16/62 (cum TRIP 6 / blknotrip 0 / blknochg 10 / blkfix 0 / SKIP-НП 0; 72 PASS / 0 FAIL); TRIP 1 (Frosty FCB-90 для напитков, c35==c36 source оба UA, c36 полный RU) + blknochg 7 (Frosty FBB×3 барные + JC-75 + RT-99L + FTD200 + FBD200 морозильный); без новых OQ; next b3 (SKU 17-24, rows 18-25)
