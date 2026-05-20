@@ -613,3 +613,5 @@ CURRENT-w2: chunk-083 b1 DONE 8/62 (cum TRIP 5 / blknotrip 0 / blknochg 3 / blkf
 CURRENT-w2: chunk-083 b2 DONE 16/62 (cum TRIP 6 / blknotrip 0 / blknochg 10 / blkfix 0 / SKIP-НП 0; 72 PASS / 0 FAIL); TRIP 1 (Frosty FCB-90 для напитков, c35==c36 source оба UA, c36 полный RU) + blknochg 7 (Frosty FBB×3 барные + JC-75 + RT-99L + FTD200 + FBD200 морозильный); без новых OQ; next b3 (SKU 17-24, rows 18-25)
 
 CURRENT-w2: chunk-083 b3 DONE 24/62 (cum TRIP 11 / blknotrip 0 / blknochg 13 / blkfix 0 / SKIP-НП 0; 116 PASS / 0 FAIL); TRIP 5 (SCAN SK145 E + SCAN SF 115 X + FROSTY SGD315SL + Forcar G-ER200SS + Forcar G-EF200SS) + blknochg 3 (Frosty FBD200SS/GSS + GoodFood RTD99L); без новых OQ; next b4 (SKU 25-32, rows 26-33)
+
+CURRENT-w2: chunk-083 b4 DONE 32/62 (cum TRIP 16 / blknotrip 0 / blknochg 16 / blkfix 0 / SKIP-НП 0; 160 PASS / 0 FAIL); TRIP 5 (REEDNEE DR200SL + F200SS + Frosty FCB-75 + SGD250SL + Gooder BBD230H) + blknochg 3 (Whirlpool ADN 140/140B + HATA DF200S); без новых OQ; next b5 (SKU 33-40, rows 34-41)
