@@ -962,3 +962,21 @@ Soft-note b9: чистый раунд, 0 TRIP — все 7 blknochg Silver/Atala
 - электрический / газовый (reuse cum)
 
 Soft-note b10: чистый раунд, 0 TRIP — все 8 blknochg MARS/Silver/Atalay шаурма имеют c5==c7 genuine RU + c35!=c36 (UA-RU body разные тексты), fixed НЕ тронут. MARS — новый бренд (Latin), шаурма-машины 6 моделей (MED электрические 02/03/04 + MSD газовые 02/03/04). 0 SKIP-НП в b10. OQ 0.
+
+## chunk-066 b11 (SKU 81-88, rows 82-89) — 88/90 — глоссарий +3 net-new (cum 936→939)
+
+**Net-new b11:**
+- Pimak (brand verbatim, Latin, новый бренд — шаурма машины М76/М076/М075/М073 газовые)
+- люльковий → люлечный (UA→RU термин для типа гриля «cradle-style» / oscillating; чека-метка из c7 при triplete SKU85)
+- куряча віконець → faithful normalize «куриных ножек» (source typo нормалізація по шаблону SKU86 r87 «ніжок»)
+
+**Reuse from earlier batches (b11):**
+- AIRHOT CGE-12 / CGE-16 (AIRHOT brand reuse from chunk-063/-064/...)
+- GoodFood CR268 / CR266 (GoodFood brand reuse cum)
+- Atalay ADE-4 U (Atalay brand reuse from b8/b9/b10)
+- Pimak М76 / М075 / М073 (model variants — Pimak brand cum reuse после net-new строки)
+- Гриль для кур (RU термин, reuse cum — «Гриль для кур» уже встречался)
+- Аппарат для шаурмы (reuse cum)
+- газовый / электрический / с газ-контролем (reuse cum)
+
+Soft-note b11: 2 TRIP (AIRHOT CGE-12/16 куры) — c7 уже genuine RU («Гриль для кур», «люлечный»), c5 пропагирован, c36 faithful RU body. Source typo SKU85 r86 «курячих віконець» нормализовано → «куриных ножек» (соответствует SKU86 r87 «ніжок» — same product family pattern). r86 содержит real ° (U+00B0), r87 содержит `&deg;` entity — preserved verbatim. 6 blknochg (Atalay/Pimak шаурма + GoodFood кур-гриль) — все c5==c7 genuine RU + c35!=c36, fixed НЕ тронут. 0 SKIP-НП в b11. OQ 0.

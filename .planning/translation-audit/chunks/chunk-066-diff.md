@@ -3,7 +3,7 @@
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-066 (90 SKU, rows 2..91; ART 2496038149 … 2153078504)
 **Apply key:** `Артикул` (col1, scoped per row)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-065
-**Status:** b10 DONE 80/90 (b11 предстоит; b1..b11 по 8 SKU + b12=SKU89-90 2 SKU)
+**Status:** b11 DONE 88/90 (b12 предстоит; b1..b11 по 8 SKU + b12=SKU89-90 2 SKU)
 
 Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Формат — как chunk-065-diff.md.
 
@@ -237,6 +237,29 @@ _(нет)_
 - **SKU 78 r79 ART 2313008595** MARS MSD-04 газовый (шаурма): c5==c7 genuine RU; c35!=c36 (476/463) — fixed НЕ тронут.
 - **SKU 79 r80 ART 2424779373** Silver ED 04 электрический (шаурма): c5==c7 genuine RU; c35!=c36 (818/824) — fixed НЕ тронут.
 - **SKU 80 r81 ART 2424949061** Atalay ADE-5 U электрический (шаурма): c5==c7 genuine RU; c35!=c36 (503/521) — fixed НЕ тронут.
+
+### SKIP-НП 0
+_(нет)_
+
+
+## b11 — SKU 81-88 (rows 82-89) — DONE 88/88 (cum)
+
+**Verify:** REGR 80 (b1+b2+b3+b4+b5+b6+b7+b8+b9+b10) + ART 90 + TRIP 2 + BLKNOCHG 6 + SKIP-НП 0 = 466 PASS / 0 FAIL.
+
+### blk триплет 2
+- **SKU 85 r86 ART 1131831607** Гриль для курей AIRHOT CGE-12 люльковий — `col5` ← c7 genuine RU «Гриль для кур AIRHOT CGE-12 люлечный»; `col36` ← faithful RU тело (skel==UA, dims 10× — '12','50/','300','12','475','4','220','4,5','810х630х610','59'; real ° preserved; Cyrillic х в габаритах). Source typo c35 «курячих віконець» (нестандартний термін) → faithful RU «куриных ножек» (соответствует SKU86 r87 «ніжок»).
+- **SKU 86 r87 ART 1131840848** Гриль для курей AIRHOT CGE-16 — `col5` ← c7 genuine RU «Гриль для кур AIRHOT CGE-16»; `col36` ← faithful RU тело (skel==UA, dims 11× — '16','50/','300','16','670','4','220','5,1','1030x600x800','71','68'; `&deg;` entity preserved; Latin x в габаритах 1030x600x800).
+
+### blknotrip 0
+_(нет)_
+
+### blknochg 6
+- **SKU 81 r82 ART 2509677684** Atalay ADE-4 U электрический (шаурма): c5==c7 genuine RU; c35!=c36 (537/542) — fixed НЕ тронут.
+- **SKU 82 r83 ART 902424045** Pimak М76 (М076) газовый с газ-контролем (шаурма): c5==c7 genuine RU; c35!=c36 (343/354) — fixed НЕ тронут.
+- **SKU 83 r84 ART 902439006** Pimak М075 газовый (шаурма): c5==c7 genuine RU; c35!=c36 (287/281) — fixed НЕ тронут.
+- **SKU 84 r85 ART 902444155** Pimak М073 газовый (шаурма): c5==c7 genuine RU; c35!=c36 (286/280) — fixed НЕ тронут.
+- **SKU 87 r88 ART 2110269679** GoodFood CR268 (гриль для кур): c5==c7 genuine RU; c35!=c36 (763/761) — fixed НЕ тронут.
+- **SKU 88 r89 ART 2191303171** GoodFood CR266 (гриль для кур): c5==c7 genuine RU; c35!=c36 (801/793) — fixed НЕ тронут.
 
 ### SKIP-НП 0
 _(нет)_

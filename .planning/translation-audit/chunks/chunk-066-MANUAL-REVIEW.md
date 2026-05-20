@@ -2,9 +2,9 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-066 (90 SKU, rows 2..91; ART 2496038149 … 2153078504)
 **Apply key:** `Артикул` (col1, scoped per row)
-**Status:** b10 DONE 80/90 (b11 предстоит; batch=8 b1..b11 по 8 + b12=SKU89-90 2 SKU = 90)
+**Status:** b11 DONE 88/90 (b12 предстоит; batch=8 b1..b11 по 8 + b12=SKU89-90 2 SKU = 90)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-065
-**Last updated:** chunk-066 b10 (W2)
+**Last updated:** chunk-066 b11 (W2)
 
 Эталон формата: chunk-019-MANUAL-REVIEW.md / chunk-065-MANUAL-REVIEW.md. Категории: blk триплет / blknotrip / blknochg / SKIP-НП.
 
@@ -303,6 +303,35 @@ _(нет)_
 | 78 | 79 | 2313008595 | Аппарат для шаурмы газовый MARS MSD-04 | c5==c7 genuine RU; c35!=c36 (476/463) — fixed НЕ тронут; soft-note -13 |
 | 79 | 80 | 2424779373 | Аппарат для шаурмы электрический Silver ED 04 | c5==c7 genuine RU; c35!=c36 (818/824) — fixed НЕ тронут; soft-note +6 |
 | 80 | 81 | 2424949061 | Аппарат для шаурмы электрический Atalay ADE-5 U | c5==c7 genuine RU; c35!=c36 (503/521) — fixed НЕ тронут; soft-note +18 |
+
+### SKIP-НП 0
+_(нет)_
+
+
+## b11 — SKU 81-88 (rows 82-89)
+
+**Verify:** REGR 80 (b1+b2+b3+b4+b5+b6+b7+b8+b9+b10) + ART 90 + TRIP 2 + BLKNOCHG 6 + SKIP-НП 0 = 466 PASS / 0 FAIL.
+
+### blk триплет 2
+
+| SKU | row | ART | Название | Действие |
+|---|---|---|---|---|
+| 85 | 86 | 1131831607 | Гриль для курей AIRHOT CGE-12 люльковий | c5←c7 genuine RU «Гриль для кур AIRHOT CGE-12 люлечный»; c36 ← faithful RU тело (skel==UA, dims 10×, real ° preserved, Cyr х в 810х630х610); source typo c35 «курячих віконець» normalize → RU «куриных ножек» (соответствует шаблону SKU86 r87 «ніжок») |
+| 86 | 87 | 1131840848 | Гриль для курей AIRHOT CGE-16 | c5←c7 genuine RU «Гриль для кур AIRHOT CGE-16» (без «люлечный» в названии); c36 ← faithful RU тело (skel==UA, dims 11×, `&deg;` entity preserved, Lat x в 1030x600x800) |
+
+### blknotrip 0
+_(нет)_
+
+### blknochg 6
+
+| SKU | row | ART | Название | Замечание |
+|---|---|---|---|---|
+| 81 | 82 | 2509677684 | Аппарат для шаурмы электрический Atalay ADE-4 U | c5==c7 genuine RU; c35!=c36 (537/542) — fixed НЕ тронут; soft-note +5 |
+| 82 | 83 | 902424045 | Аппарат для шаурмы газовый Pimak М76 (М076) с газ-контролем | c5==c7 genuine RU; c35!=c36 (343/354) — fixed НЕ тронут; soft-note +11 |
+| 83 | 84 | 902439006 | Аппарат для шаурмы газовый Pimak М075 | c5==c7 genuine RU; c35!=c36 (287/281) — fixed НЕ тронут; soft-note -6 |
+| 84 | 85 | 902444155 | Аппарат для шаурмы газовый Pimak М073 | c5==c7 genuine RU; c35!=c36 (286/280) — fixed НЕ тронут; soft-note -6 |
+| 87 | 88 | 2110269679 | Гриль для кур GoodFood CR268 | c5==c7 genuine RU; c35!=c36 (763/761) — fixed НЕ тронут; soft-note -2 |
+| 88 | 89 | 2191303171 | Гриль для кур GoodFood CR266 | c5==c7 genuine RU; c35!=c36 (801/793) — fixed НЕ тронут; soft-note -8 |
 
 ### SKIP-НП 0
 _(нет)_
