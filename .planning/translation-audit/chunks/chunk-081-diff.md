@@ -48,3 +48,22 @@
 
 **Verify:** 32 PASS / 0 FAIL. Без новых OQ.
 
+## b3 (SKU 17-24, rows 18-25)
+
+Категории: blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+
+### blknochg
+
+| row | SKU | ART | модель |
+|---|---|---|---|
+| 18 | 17 | 2144708272 | Tefcold RF505 |
+| 19 | 18 | 2144714399 | Tefcold UFSC370GCP BLACK |
+| 20 | 19 | 2144722408 | Tefcold UFSC1450GCP NF |
+| 21 | 20 | 2144727092 | Tefcold UFSC1450GCP NF SILVER |
+| 22 | 21 | 2144732211 | Tefcold ATOM MAXI F1DB |
+| 23 | 22 | 2144735365 | Tefcold RF1010 |
+| 24 | 23 | 2144745038 | Tefcold ATOM MAXI F2DB |
+| 25 | 24 | 2144751676 | Tefcold NF7500G |
+
+**Verify:** 32 PASS / 0 FAIL. Без новых OQ.
+
