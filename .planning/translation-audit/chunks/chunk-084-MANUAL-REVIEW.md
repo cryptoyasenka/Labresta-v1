@@ -150,3 +150,26 @@
 **Verify:** 44 PASS / 0 FAIL.
 
 **Cumulative chunk-084:** 40/71 (TRIP 15 / blknotrip 0 / blknochg 24 / blkfix 1 / SKIP-НП 0; 200 PASS / 0 FAIL).
+
+
+## b6 (SKU 41-48, rows 42-49) — DONE 48/71
+
+**Категории:** blk триплет 6 / blknotrip 0 / blknochg 2 / blkfix 0 / SKIP-НП 0.
+
+### blk триплет (c5←c7 + c36 полный RU-перевод тела)
+
+- **r43** SKU=42 ART=1522548787 REEDNEE RT78B black (шкаф-витрина настольный холодильный, R600a, 78 л, 3 полки, 0..+12°C, 0,17 кВт, 428×386×960 мм) — c5 UA → "Шкаф-витрина холодильная REEDNEE RT78B black"; c35==c36 source UA → c36 переведен (575 chars).
+- **r44** SKU=43 ART=1536868268 FROSTY FL218 white (холодильный шкаф, 218 л, изогнутые двери, 4 полки, 0..+12°C, 0,25 кВт, 515×485×1595 мм) — c5 UA → "Шкаф холодильный FROSTY FL218 white"; c35==c36 UA с &#39; → c36 переведен (525 chars).
+- **r45** SKU=44 ART=1541752598 REEDNEE RT98B black (шкаф-витрина, двойное стекло, 98 л, 4 полки, R600a, 0..+12°C, 428×386×1110 мм) — c5 UA → "Шкаф-витрина холодильная REEDNEE RT98B black"; c35==c36 UA с &#39; → c36 переведен (593 chars).
+- **r46** SKU=45 ART=1833993194 FROSTY FL-78 black (шкаф настольный холодильный, 78 л, стекло 4 стороны, 3 полки, 0..+12°C, 0,19 кВт, 452×406×966 мм) — c5 UA → "Шкаф-витрина холодильная FROSTY FL-78, black"; c35==c36 UA → c36 переведен (538 chars).
+- **r47** SKU=46 ART=2072176037 Frosty FL-58 white (холодильный шкаф настольный, 58 л, 2 полки, замок, стекло 4 стороны, 0..+12°C) — c5 UA → "Шкаф холодильный Frosty FL-58 white"; c35==c36 UA с &#39; → c36 переведен (775 chars).
+- **r49** SKU=48 ART=2338680538 Frosty RT-58B-1 Black (холодильный шкаф настольный, 58 л, 2 полки, верхняя LED-подсветка, 0,18 кВт/220В, 428×386×810 мм, 30 кг) — c5 UA → "Шкаф холодильный Frosty RT-58B-1 Black"; c35==c36 UA с &#39; → c36 переведен (989 chars).
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r42** SKU=41 ART=1225378823 GoodFood RTW120L Premium — c5==c7 RU clean, c36 RU полный (881 chars).
+- **r48** SKU=47 ART=2072192111 Frosty FL-98 white — c5==c7 RU clean, c35 UA / c36 already translated to RU (816 chars).
+
+**Verify:** 56 PASS / 0 FAIL. Без новых OQ.
+
+**Cumulative chunk-084:** 48/71 (TRIP 21 / blknotrip 0 / blknochg 26 / blkfix 1 / SKIP-НП 0; 256 PASS / 0 FAIL).

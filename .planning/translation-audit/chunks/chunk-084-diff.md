@@ -129,3 +129,28 @@
 | 41 | 40 | GoodFood RT78L черная |
 
 **Verify:** 44 PASS / 0 FAIL. +1 OQ #17 r39 source h2 «RT78L» vs c4/c5/c7 RT78B typo.
+
+
+## b6 (SKU 41-48, rows 42-49)
+
+Категории: blk триплет 6 / blknotrip 0 / blknochg 2 / blkfix 0 / SKIP-НП 0.
+
+### blk триплет
+
+| row | SKU | модель |
+|---|---|---|
+| 43 | 42 | REEDNEE RT78B black (78 л, R600a) |
+| 44 | 43 | FROSTY FL218 white (218 л, 4 полки) |
+| 45 | 44 | REEDNEE RT98B black (98 л, двойное стекло) |
+| 46 | 45 | FROSTY FL-78 black (78 л, стекло 4 стороны) |
+| 47 | 46 | Frosty FL-58 white (58 л, 2 полки, замок) |
+| 49 | 48 | Frosty RT-58B-1 Black (58 л, 30 кг) |
+
+### blknochg
+
+| row | SKU | модель |
+|---|---|---|
+| 42 | 41 | GoodFood RTW120L Premium |
+| 48 | 47 | Frosty FL-98 white |
+
+**Verify:** 56 PASS / 0 FAIL. Без новых OQ.
