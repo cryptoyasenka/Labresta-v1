@@ -63,3 +63,28 @@
 | 17 | 16 | Frosty FBD200 (морозильный) |
 
 **Verify:** 28 PASS / 0 FAIL. Без новых OQ.
+
+
+## b3 (SKU 17-24, rows 18-25)
+
+Категории: blk триплет 5 / blknotrip 0 / blknochg 3 / blkfix 0 / SKIP-НП 0.
+
+### blk триплет (TRIP)
+
+| row | SKU | модель | c5 (RU) | c36 |
+|---|---|---|---|---|
+| 21 | 20 | SCAN SK145 E | Шкаф холодильный SCAN SK145 E | UA→RU 145 л / +0..+10 / Дания / 1 кВт |
+| 22 | 21 | SCAN SF 115 X | Шкаф морозильный SCAN SF 115 X | UA→RU 115 л / -16..-22 / 3 ящика / Дания |
+| 23 | 22 | FROSTY SGD315SL | Шкаф барный FROSTY SGD315SL | UA→RU 341 л / +2..+8 / 0,26 кВт |
+| 24 | 23 | Forcar G-ER200SS | Шкаф холодильный Forcar G-ER200SS | UA→RU 130 л / +2..+8 / R600A / барный |
+| 25 | 24 | Forcar G-EF200SS | Шкаф морозильный Forcar G-EF200SS | UA→RU 120 л / -18..-22 / R600A / барный |
+
+### blknochg
+
+| row | SKU | модель |
+|---|---|---|
+| 18 | 17 | Frosty FBD200SS (морозильный) |
+| 19 | 18 | Frosty FBD200GSS (морозильный) |
+| 20 | 19 | GoodFood RTD99L (морозильный) |
+
+**Verify:** 44 PASS / 0 FAIL. Без новых OQ.

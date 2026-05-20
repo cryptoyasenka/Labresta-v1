@@ -67,3 +67,26 @@
 **Verify:** 28 PASS / 0 FAIL. Без новых OQ.
 
 **Cumulative chunk-083:** 16/62 (TRIP 6 / blknotrip 0 / blknochg 10 / blkfix 0 / SKIP-НП 0; 72 PASS / 0 FAIL).
+
+
+## b3 (SKU 17-24, rows 18-25) — DONE 24/62
+
+**Категории:** blk триплет 5 / blknotrip 0 / blknochg 3 / blkfix 0 / SKIP-НП 0.
+
+### blk триплет (TRIP — c5 переписан с UA→RU + c36 полный RU перевод)
+
+- **r21** SKU=20 ART=2326903957 SCAN SK145 E (145 л, +0..+10°C, 1 кВт, н/с, Дания, 595×595×820 мм) — c5 «Шкаф холодильный SCAN SK145 E» (по c7, источник c5 «Шафа барна холодильна» — barна качество избыточно, тело без barна). c36 переведен полностью (c35==c36 source оба UA).
+- **r22** SKU=21 ART=2326905846 SCAN SF 115 X (115 л, -16..-22°C, 3 ящика, Дания, 595×595×820 мм, 0,76 кВт) — c5 «Шкаф морозильный SCAN SF 115 X» (по c7, источник c5 «глухі двері н/с» — описательно, не вариант SKU; нормализовано к c7-baseline). c36 переведен.
+- **r23** SKU=22 ART=807739653 FROSTY SGD315SL (341 л, +2..+8°C, 0,26 кВт, 1355×515×870 мм, стеклянные двери-купе) — c5 «Шкаф барный FROSTY SGD315SL». c36 переведен. Замечание: модель SGD315SL но тело упоминает 341 л — несоответствие в названии vs тело, но переводим как есть.
+- **r24** SKU=23 ART=953785561 Forcar G-ER200SS (130 л, +2..+8°C, R600A, 600×585×855 мм, 0,15 кВт, барный холодильный) — c5 «Шкаф холодильный Forcar G-ER200SS». c36 переведен. Замечание: см. OQ #6 c076 r24 G-ER200SS vs G-ER400 — здесь модель G-ER200SS body consistent с 130 л; OQ не reopen.
+- **r25** SKU=24 ART=953793828 Forcar G-EF200SS (120 л, -18..-22°C, R600A, 600×585×855 мм, 0,15 кВт, барный морозильный) — c5 «Шкаф морозильный Forcar G-EF200SS». c36 переведен.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r18** SKU=17 ART=2106851586 Frosty FBD200SS морозильный — c5==c7 RU clean.
+- **r19** SKU=18 ART=2106853346 Frosty FBD200GSS морозильный — c5==c7 RU clean.
+- **r20** SKU=19 ART=2110094971 GoodFood RTD99L морозильный — c5==c7 RU clean.
+
+**Verify:** 44 PASS / 0 FAIL. Без новых OQ.
+
+**Cumulative chunk-083:** 24/62 (TRIP 11 / blknotrip 0 / blknochg 13 / blkfix 0 / SKIP-НП 0; 116 PASS / 0 FAIL).
