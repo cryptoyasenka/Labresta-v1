@@ -90,3 +90,26 @@
 **Verify:** 44 PASS / 0 FAIL. Без новых OQ.
 
 **Cumulative chunk-083:** 24/62 (TRIP 11 / blknotrip 0 / blknochg 13 / blkfix 0 / SKIP-НП 0; 116 PASS / 0 FAIL).
+
+
+## b4 (SKU 25-32, rows 26-33) — DONE 32/62
+
+**Категории:** blk триплет 5 / blknotrip 0 / blknochg 3 / blkfix 0 / SKIP-НП 0.
+
+### blk триплет (TRIP — c5 переписан с UA→RU + c36 полный RU перевод)
+
+- **r26** SKU=25 ART=1551462571 REEDNEE DR200SL минибар (140 л, +0..+10°C, R600A, 595×637×830 мм, 46 кг, 0,32 кВт) — c5 «Шкаф холодильный REEDNEE DR200SL». c36 переведен (c35==c36 source оба UA).
+- **r27** SKU=26 ART=1551464669 REEDNEE F200SS минибар (97 л, -18..-23°C, R600A, 600×635×835 мм, 0,32 кВт, 2 фиксированные полки) — c5 «Шкаф морозильный REEDNEE F200SS». c36 переведен.
+- **r31** SKU=30 ART=2043422036 Frosty FCB-75 (66 л, +4..+16°C, LED, 0,066 кВт, 430×470×745 мм, 4+1 решетчатые полки) — c5 «Шкаф холодильный для напитков Frosty FCB- 75» (по c7, пробел «FCB- 75»). c36 переведен.
+- **r32** SKU=31 ART=2044229779 Frosty SGD250SL барный (227 л, +2..+8°C, 0,245 кВт, 920×515×905 мм, стеклянные раздвижные двери) — c5 «Шкаф барный Frosty SGD250SL». c36 переведен.
+- **r33** SKU=32 ART=2048298541 Gooder BBD230H (208 л, 0..+8°C, R600a, 0,133 кВт, 900×520×900 мм, Китай) — c5 «Шкаф холодильный Gooder BBD230H». c36 переведен.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r28** SKU=27 ART=1771771748 Whirlpool ADN 140 (со стеклянной дверью) — c5==c7 RU clean.
+- **r29** SKU=28 ART=1771823382 Whirlpool ADN 140B (со стеклянной дверью) — c5==c7 RU clean.
+- **r30** SKU=29 ART=1775900988 HATA DF200S S/S201 морозильный минибар — c5==c7 RU clean.
+
+**Verify:** 44 PASS / 0 FAIL. Без новых OQ.
+
+**Cumulative chunk-083:** 32/62 (TRIP 16 / blknotrip 0 / blknochg 16 / blkfix 0 / SKIP-НП 0; 160 PASS / 0 FAIL).

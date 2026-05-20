@@ -88,3 +88,28 @@
 | 20 | 19 | GoodFood RTD99L (морозильный) |
 
 **Verify:** 44 PASS / 0 FAIL. Без новых OQ.
+
+
+## b4 (SKU 25-32, rows 26-33)
+
+Категории: blk триплет 5 / blknotrip 0 / blknochg 3 / blkfix 0 / SKIP-НП 0.
+
+### blk триплет (TRIP)
+
+| row | SKU | модель | c5 (RU) | c36 |
+|---|---|---|---|---|
+| 26 | 25 | REEDNEE DR200SL | Шкаф холодильный REEDNEE DR200SL | UA→RU 140 л / +0..+10 / R600A / минибар |
+| 27 | 26 | REEDNEE F200SS | Шкаф морозильный REEDNEE F200SS | UA→RU 97 л / -18..-23 / R600A / минибар |
+| 31 | 30 | Frosty FCB-75 | Шкаф холодильный для напитков Frosty FCB- 75 | UA→RU 66 л / +4..+16 / LED / 0,066 кВт |
+| 32 | 31 | Frosty SGD250SL | Шкаф барный Frosty SGD250SL | UA→RU 227 л / +2..+8 / 0,245 кВт |
+| 33 | 32 | Gooder BBD230H | Шкаф холодильный Gooder BBD230H | UA→RU 208 л / 0..+8 / R600a / Китай |
+
+### blknochg
+
+| row | SKU | модель |
+|---|---|---|
+| 28 | 27 | Whirlpool ADN 140 |
+| 29 | 28 | Whirlpool ADN 140B |
+| 30 | 29 | HATA DF200S S/S201 (морозильный) |
+
+**Verify:** 44 PASS / 0 FAIL. Без новых OQ.
