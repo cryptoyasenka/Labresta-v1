@@ -579,3 +579,5 @@ CURRENT-w2: chunk-080 b2 DONE 16/53 (cum TRIP 6 / blknotrip 0 / blknochg 9 / blk
 CURRENT-w2: chunk-080 b3 DONE 24/53 (cum TRIP 8 / blknotrip 0 / blknochg 14 / blkfix 0 / SKIP-НП 2; 208 PASS / 0 FAIL); TRIP 2 (r20+r21 Frosty SS) + blknochg 5 (Juka + Tefcold 4) + SKIP-НП #2 r19 Hurakan; без новых OQ; next b4 (SKU 25-32, rows 26-33)
 
 CURRENT-w2: chunk-080 b4 DONE 32/53 (cum TRIP 13 / blknotrip 0 / blknochg 17 / blkfix 0 / SKIP-НП 2; 265 PASS / 0 FAIL); TRIP 5 (r27 Forcar G-EF400SS + r28 Forcar G-EF600SS + r29 GEMM EFB01 R290 + r30 GEMM EFB02 R290 + r33 Frosty FGN-600BT) + blknochg 3 (Tefcold NF5000G + Tefcold UF400G + BRILLIS BL9-LED-R290-EF-INV); без новых OQ; next b5 (SKU 33-40, rows 34-41, включая r36 Fagor + r39 HURAKAN — оба SKIP-НП)
+
+CURRENT-w2: chunk-080 b5 DONE 40/53 (cum TRIP 17 / blknotrip 0 / blknochg 19 / blkfix 0 / SKIP-НП 4; 315 PASS / 0 FAIL); TRIP 4 (r34 Frosty FGN-1400BT + r35 Forcar G-EF400GSS + r37 Tecnodom AF06PKMBT + r38 Tecnodom AF07PKMBT290C) + blknochg 2 (Ubc Energy LB + LB ST) + SKIP-НП #3 r36 Fagor + #4 r39 HURAKAN; +1 OQ (W2 cum #10) r35 G-EF400GSS body model mismatch; next b6 (SKU 41-48, rows 42-49)
