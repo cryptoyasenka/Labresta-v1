@@ -151,3 +151,20 @@
   - r69 SKU68 art=2197203396 HURAKAN HKN-EF16 (Чебуречниця электрическая; source c5/c7 содержит UA «Чебуречниця» — особенность брендового листинга, не трогаем; тело из фида НП позже)
 - **Verify:** 35 PASS / 0 FAIL
 - Без новых OQ (r69 SKIP-НП c5/c7 mismatch «Чебуречниця HURAKAN HKN-EF16» vs «Чебуречниця электрическая HURAKAN HKN-EF16» — оба UA «Чебуречниця», обычная особенность HURAKAN listing для НП-feed merge)
+
+### b10 FINAL (rows 74-76, SKU 73-75) — 75/75 DONE ✅
+
+- **blknochg 3** (all 3 SKU, c5==c7 genuine RU):
+  - r74 SKU73 art=2208297307 Трейдвест MB-15 — Центрифуга для белья, c36_len 758
+  - r75 SKU74 art=2208389957 Трейдвест MB-25 — Центрифуга для белья, c36_len 759
+  - r76 SKU75 art=2208407729 Трейдвест МВ-50 — Центрифуга для белья, c36_len 1142 (note: MB-15/MB-25 латиница / МВ-50 кириллица — особенность брендового листинга)
+- **Verify:** 9 PASS / 0 FAIL
+- Без новых OQ
+
+## ИТОГО chunk-085 — 75/75 ЗАКРЫТ ✅
+
+- **Cumulative:** TRIP 33 / blknotrip 0 / blknochg 37 / blkfix 0 / SKIP-НП 5
+- **HURAKAN SKIP-НП (5):** r3 HKN-ISV5P + r20 HKN-ISH5P + r21 HKN-ISV7P + r32 HKN-ISV7P + r69 HKN-EF16 чебуречница (все на НП-feed merge)
+- **OQ накоплено в этом chunk:** +1 (#18 r21 c4 ISV5P vs c5/c7 ISV7P)
+- **Total verify:** 396 PASS / 0 FAIL
+- **W2 range 055-085: ЗАКРЫТ** (chunk-085 был финальным)

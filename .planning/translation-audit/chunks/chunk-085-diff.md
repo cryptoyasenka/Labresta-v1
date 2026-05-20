@@ -64,3 +64,14 @@
 - blknochg 3: r67 Frosty DG-01 шаурма электр + r70 La Monferrina Dryer EC/NG 25 шкаф сушки макарон + r73 камень Нагура
 - SKIP-НП 1 HURAKAN: r69 HKN-EF16 чебуречница
 - Verify 35 PASS / 0 FAIL; без новых OQ
+
+## b10 FINAL (rows 74-76, SKU 73-75) — 75/75 ✅
+
+- blknochg 3: r74 Трейдвест MB-15 (758) + r75 Трейдвест MB-25 (759) + r76 Трейдвест МВ-50 (1142)
+- Verify 9 PASS / 0 FAIL; без новых OQ
+
+## chunk-085 ЗАКРЫТ ✅ — 75/75; W2 range 055-085 FINAL
+
+- TRIP 33 / blknotrip 0 / blknochg 37 / blkfix 0 / SKIP-НП 5 HURAKAN
+- 396 PASS / 0 FAIL total
+- +1 OQ в этом chunk (#18 r21 ISV5P/ISV7P)
