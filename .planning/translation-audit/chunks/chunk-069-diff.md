@@ -1,7 +1,7 @@
 # chunk-069 DIFF (W2)
 
-**Status:** b3 DONE 24/61 — батчи b1..b8 (8+8+8+8+8+8+8+5); next b4 (SKU 25-32, rows 26-33)
-**Last updated:** chunk-069 b3 DONE 24/61
+**Status:** b4 DONE 32/61 — батчи b1..b8 (8+8+8+8+8+8+8+5); next b5 (SKU 33-40, rows 34-41)
+**Last updated:** chunk-069 b4 DONE 32/61
 
 Source: `chunk-069.xlsx` (RO) → operating: `chunk-069-fixed.xlsx` (gitignored).
 Batches заполняются после каждого закрытого батча.
@@ -53,3 +53,19 @@ Batches заполняются после каждого закрытого ба
 
 **Итого b3:** TRIP 3 + blknotrip 0 + blknochg 4 + SKIP-НП 1. Verify **179 PASS / 0 FAIL**.
 **Cum после b3:** TRIP 9 + blknotrip 0 + blknochg 14 + SKIP-НП 1 = **24/61**.
+
+## b4 (SKU 25-32, rows 26-33) — 32/61
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 25 | 26 | 2060699885 | HURAKAN HKN-CNW430 термоупаковочная | **SKIP-НП** | — (НП forward-only; fixed строка не тронута) |
+| 2 | 26 | 27 | 454521621 | GGM VTB320 вакуумный упаковщик 16 л/мин | blknochg | — |
+| 3 | 27 | 28 | 454521622 | GGM VTB420 вакуумный упаковщик 28 л/мин | blknochg | — |
+| 4 | 28 | 29 | 489839797 | REEDNEE SW450L «горячий стол» упаковщик | **TRIP** | c5←c7 «Упаковщик "горячий стол" REEDNEE SW450L»; c36 ← RU body (`<h2>` + 7 li tech-char), dims `390х124/450/70-90&deg;С/380,400,430,450/7/620x515x160` |
+| 5 | 29 | 30 | 490566373 | Lavezzini Gofer 200x400 пакеты гофрированные | **TRIP** | c5←c7 «Пакеты гофрированные Lavezzini 200x400 (упаковка 100 шт.)»; c36 ← RU body (`<p>` + 3 li: 100шт/полиэтилен/200х400) |
+| 6 | 30 | 31 | 490575794 | Frosty 150x250 пакеты гофрированные | blknochg | — |
+| 7 | 31 | 32 | 490581287 | Frosty 200x300 пакеты гофрированные | blknochg | — |
+| 8 | 32 | 33 | 490587113 | Frosty 250x350 пакеты гофрированные | blknochg | — |
+
+**Итого b4:** TRIP 2 + blknotrip 0 + blknochg 5 + SKIP-НП 1. Verify **179 PASS / 0 FAIL**.
+**Cum после b4:** TRIP 11 + blknotrip 0 + blknochg 19 + SKIP-НП 2 = **32/61**.

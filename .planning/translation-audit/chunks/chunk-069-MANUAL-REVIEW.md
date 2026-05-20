@@ -1,7 +1,7 @@
 # chunk-069 MANUAL REVIEW (W2)
 
-**Status:** chunk-069 b3 DONE 24/61 (cum TRIP 9 + blknochg 14 + SKIP-НП 1; 179 PASS) — next b4 (SKU 25-32, rows 26-33)
-**Last updated:** chunk-069 b3 DONE 24/61
+**Status:** chunk-069 b4 DONE 32/61 (cum TRIP 11 + blknochg 19 + SKIP-НП 2; 179 PASS) — next b5 (SKU 33-40, rows 34-41)
+**Last updated:** chunk-069 b4 DONE 32/61
 
 ## Структура
 
@@ -111,4 +111,26 @@ TRIP 3 + blknotrip 0 + blknochg 4 + SKIP-НП 1 = 8/8. Verify **179 PASS / 0 FAI
 **Verify breakdown:** 61 ART regression + 4 b1-TRIP × 4 (modified c5/c36 + no-UA + no-Ё) = 16 + 4 b1-blknochg × 3 = 12 + 2 b2-TRIP × 4 = 8 + 6 b2-blknochg × 3 = 18 + 4 b3-blknochg × 4 (c5/c36/c7 + RU OK) = 16 + 1 SKIP-НП × 7 (all cols) = 7 + 3 b3-TRIP × ~14 (c5 match + body content checks + skel-eq + dim differentials) ≈ 41 = **179 PASS / 0 FAIL**.
 
 **Cum после b3:** TRIP 9 + blknotrip 0 + blknochg 14 + SKIP-НП 1 = **24/61**. Next b4 (SKU 25-32, rows 26-33).
+
+## b4 (SKU 25-32, rows 26-33) — DONE 32/61
+
+TRIP 2 + blknotrip 0 + blknochg 5 + SKIP-НП 1 = 8/8. Verify **179 PASS / 0 FAIL**.
+
+**TRIP (2):**
+- r29 SKU28 ART 489839797 **REEDNEE SW450L «горячий стол»** (c35==c36 UA dup, 584 chars, h2+7 li): c5←c7 «Упаковщик "горячий стол" REEDNEE SW450L»; c36 ← faithful RU body. Тефлоновая поверхность 390х124 мм, ширина пленки 450 мм, температура 70-90°С, термонож, стретч-пленка ПВХ 380/400/430/450 мм, вес 7 кг, габариты 620x515x160 мм. Без Ё.
+- r30 SKU29 ART 490566373 **Lavezzini Gofer 200x400 пакеты гофрированные** (c35==c36 UA dup, 148 chars, p+3 li): c5←c7 «Пакеты гофрированные Lavezzini 200x400 (упаковка 100 шт.)» (источник c5 был «Пакет Lavezzini Gofer 200x400 ( пакунок 100 шт.)» — UA «пакунок», переписали по c7); c36 ← faithful RU body «Пакеты гофрированные для вакуумного упаковщика. упаковка 100 шт. материал — полиэтилен размер 200х400 мм».
+
+**blknochg (5):**
+- r27 SKU26 ART 454521621 GGM VTB320 вакуумный упаковщик 16 л/мин: c5==c7 RU OK; fixed НЕ изменена.
+- r28 SKU27 ART 454521622 GGM VTB420 вакуумный упаковщик 28 л/мин: c5==c7 RU OK; fixed НЕ изменена.
+- r31 SKU30 ART 490575794 Frosty 150x250 пакеты гофрированные: c5==c7 RU OK; fixed НЕ изменена.
+- r32 SKU31 ART 490581287 Frosty 200x300 пакеты гофрированные: c5==c7 RU OK; fixed НЕ изменена.
+- r33 SKU32 ART 490587113 Frosty 250x350 пакеты гофрированные: c5==c7 RU OK; fixed НЕ изменена.
+
+**SKIP-НП (1):**
+- r26 SKU25 ART 2060699885 **HURAKAN HKN-CNW430** термоупаковочная машина: brand HURAKAN ∈ SKIP-НП list → forward-only, fixed строка НЕ тронута.
+
+**OQ:** 0.
+
+**Cum после b4:** TRIP 11 + blknotrip 0 + blknochg 19 + SKIP-НП 2 = **32/61**. Next b5 (SKU 33-40, rows 34-41).
 
