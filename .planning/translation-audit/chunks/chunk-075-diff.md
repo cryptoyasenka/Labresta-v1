@@ -184,3 +184,30 @@
 | 49 | 48 | 1825511820 | GGM Gastro ZBG158ND | 2885 | Холодильный стол-саладетта, 390 л, AISI 304 |
 
 **Verify:** 70 PASS / 0 FAIL (5 cells × 2 SKIP rows + 11 checks × 6 blknochg rows = 10 + 66 - корректировка по фактическим check_count, см. _w2_c075_b6verify.py).
+
+
+## b7 FINAL (SKU 49-54, rows 50-55)
+
+Категории: blk триплет 0 / blknotrip 0 / blknochg 5 / blkfix 0 / SKIP-НП 1.
+
+### SKIP-НП (forward-only, fixed cells unchanged)
+
+| row | SKU | ART | brand | примечание |
+|---|---|---|---|---|
+| 54 | 53 | 1082945513 | HURAKAN | HKN-GX650TN INOX; fixed row 54 без изменений |
+
+### blknochg (c5==c7 genuine RU, c36 genuine RU body, fixed без изменений)
+
+| row | SKU | ART | модель | c36 len | примечание |
+|---|---|---|---|---|---|
+| 50 | 49 | 2396395264 | GGM Gastro ZBG157ND | 2887 | Холодильный стол-саладетта |
+| 51 | 50 | 2396398752 | GGM Gastro ZBG207ND | 2853 | Холодильный стол-саладетта |
+| 52 | 51 | 2396400259 | GGM Gastro ZBG208ND | 2916 | Холодильный стол-саладетта |
+| 53 | 52 | 2661830503 | GGM Gastro ZBG157N4D | 1124 | Холодильный стол-саладетта |
+| 55 | 54 | 1090581793 | Tecnodom AF07PKMTN (DGD) | 511 | Шкаф холодильный |
+
+**Verify:** 55 PASS / 0 FAIL.
+
+## chunk-075 COMPLETE 54/54
+
+TRIP 4 / blknotrip 0 / blknochg 40 / blkfix 0 / SKIP-НП 10. Cumulative verify 1042 PASS / 0 FAIL.

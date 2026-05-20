@@ -1,7 +1,7 @@
 # chunk-075 MANUAL REVIEW (W2, продолжение chunk-074)
 
-**Status:** chunk-075 b6 DONE 48/54 (cum TRIP 4 / blknotrip 0 / blknochg 35 / blkfix 0 / SKIP-НП 9; 987 PASS / 0 FAIL) — next b7 FINAL (SKU 49-54, rows 50-55)
-**Last updated:** chunk-075 b6 (48/54)
+**Status:** chunk-075 b7 FINAL DONE 54/54 (COMPLETE; cum TRIP 4 / blknotrip 0 / blknochg 40 / blkfix 0 / SKIP-НП 10; 1042 PASS / 0 FAIL) — next chunk-076 scaffold
+**Last updated:** chunk-075 b7 (54/54 COMPLETE)
 
 **Объём:** 54 SKU rows 2..55. ART 2044220842..1090581793.
 
@@ -102,3 +102,27 @@
 **Verify:** 70 PASS / 0 FAIL.
 
 **Открытых вопросов:** 0 (новых не появилось; кумулятивный список без изменений).
+
+
+## b7 FINAL (SKU 49-54, rows 50-55) — DONE 6/6, chunk-075 COMPLETE
+
+**Категории:** blk триплет 0 / blknotrip 0 / blknochg 5 / blkfix 0 / SKIP-НП 1
+
+**Резюме:**
+- r50 SKU49 ART=2396395264 GGM Gastro ZBG157ND (Холодильный стол-саладетта, c36 2887) → **blknochg**.
+- r51 SKU50 ART=2396398752 GGM Gastro ZBG207ND (Холодильный стол-саладетта, c36 2853) → **blknochg**.
+- r52 SKU51 ART=2396400259 GGM Gastro ZBG208ND (Холодильный стол-саладетта, c36 2916) → **blknochg**.
+- r53 SKU52 ART=2661830503 GGM Gastro ZBG157N4D (Холодильный стол-саладетта, c36 1124) → **blknochg**.
+- r54 SKU53 ART=1082945513 HURAKAN HKN-GX650TN INOX → **SKIP-НП** forward-only, fixed cells unchanged.
+- r55 SKU54 ART=1090581793 Tecnodom AF07PKMTN (DGD) (Шкаф холодильный, c36 511) → **blknochg**.
+
+**Verify:** 55 PASS / 0 FAIL.
+
+**Открытых вопросов:** 0 (новых не появилось).
+
+## chunk-075 ИТОГ COMPLETE 54/54
+
+- TRIP 4 / blknotrip 0 / blknochg 40 / blkfix 0 / SKIP-НП 10 = 54/54 (100%)
+- Кумулятив verify: 1042 PASS / 0 FAIL
+- Открытых вопросов новых из chunk-075: 2 (r40 GoodFood intro h2 model mismatch BCF20→BCF40; r41 Tecnodom P-ATT10EA «15 кг» c35 vs «12 кг» c36)
+- Следующий: chunk-076 scaffold
