@@ -563,3 +563,5 @@ CURRENT-w2: chunk-079 b2 DONE 16/58 (cum TRIP 0 / blknotrip 0 / blknochg 16 / bl
 CURRENT-w2: chunk-079 b3 DONE 24/58 (cum TRIP 0 / blknotrip 0 / blknochg 24 / blkfix 0 / SKIP-НП 0; 216 PASS / 0 FAIL); blknochg 8 Tefcold; без новых OQ; next b4 (SKU 25-32, rows 26-33)
 
 CURRENT-w2: chunk-079 b4 DONE 32/58 (cum TRIP 0 / blknotrip 0 / blknochg 32 / blkfix 0 / SKIP-НП 0; 288 PASS / 0 FAIL); blknochg 8 (Tefcold ATOM MAXI C3DB / FSC1600H / NC7500G / UBC Large 1200 л / Ubc Energy AD / Atom Maxi C1DB / Atom Maxi C1DBB / Angelo Po AF1N); без новых OQ; next b5 (SKU 33-40, rows 34-41)
+
+CURRENT-w2: chunk-079 b5 DONE 40/58 (cum TRIP 1 / blknotrip 0 / blknochg 39 / blkfix 0 / SKIP-НП 0; 361 PASS / 0 FAIL); TRIP 1 (r34 Tecnodom AF04EKOTN) + blknochg 7; без новых OQ; next b6 (SKU 41-48, rows 42-49)
