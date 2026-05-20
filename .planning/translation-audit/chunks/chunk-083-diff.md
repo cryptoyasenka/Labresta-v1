@@ -38,3 +38,28 @@
 | 9 | 8 | Frosty FBB293F (барный) |
 
 **Verify:** 44 PASS / 0 FAIL. Без новых OQ.
+
+
+## b2 (SKU 9-16, rows 10-17)
+
+Категории: blk триплет 1 / blknotrip 0 / blknochg 7 / blkfix 0 / SKIP-НП 0.
+
+### blk триплет (TRIP)
+
+| row | SKU | модель | c5 (RU) | c36 |
+|---|---|---|---|---|
+| 13 | 12 | Frosty FCB-90 | Шкаф холодильный для напитков Frosty FCB- 90 | UA→RU 90 л / +4..+16 / LED / 0,075 кВт |
+
+### blknochg
+
+| row | SKU | модель |
+|---|---|---|
+| 10 | 9 | Frosty FBB320HS (барный тридверный) |
+| 11 | 10 | Frosty FBB220HS (барный) |
+| 12 | 11 | Frosty FBB150H (барный) |
+| 14 | 13 | Frosty JC-75 |
+| 15 | 14 | Frosty RT-99L |
+| 16 | 15 | Frosty FTD200 |
+| 17 | 16 | Frosty FBD200 (морозильный) |
+
+**Verify:** 28 PASS / 0 FAIL. Без новых OQ.

@@ -44,3 +44,26 @@
 **Verify:** 44 PASS / 0 FAIL. Без новых OQ.
 
 **Cumulative chunk-083:** 8/62 (TRIP 5 / blknotrip 0 / blknochg 3 / blkfix 0 / SKIP-НП 0; 44 PASS / 0 FAIL).
+
+
+## b2 (SKU 9-16, rows 10-17) — DONE 16/62
+
+**Категории:** blk триплет 1 / blknotrip 0 / blknochg 7 / blkfix 0 / SKIP-НП 0.
+
+### blk триплет (TRIP — c5 переписан с UA→RU + c36 полный RU перевод)
+
+- **r13** SKU=12 ART=2043423499 Frosty FCB-90 (90 л, +4..+16°C, LED голубой, 0,075 кВт, 450×490×790 мм, 4 решетчатые полки, перевешиваемая дверь) — c5 «Шкаф холодильный для напитков Frosty FCB- 90» (по c7, с пробелом «FCB- 90»). c36 переведен полностью (c35==c36 source оба UA). Замечание: c4/c6/c7 содержат пробел «FCB- 90» (модель FCB-90 без пробела, но в источнике стабильно с пробелом — сохранено).
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r10** SKU=9 ART=2037343744 Frosty FBB320HS барный тридверный — c5==c7 RU clean.
+- **r11** SKU=10 ART=2037360967 Frosty FBB220HS барный — c5==c7 RU clean.
+- **r12** SKU=11 ART=2037368159 Frosty FBB150H барный — c5==c7 RU clean.
+- **r14** SKU=13 ART=2043425566 Frosty JC-75 (для напитков) — c5==c7 RU clean.
+- **r15** SKU=14 ART=2080625607 Frosty RT-99L — c5==c7 RU clean.
+- **r16** SKU=15 ART=2106839174 Frosty FTD200 — c5==c7 RU clean.
+- **r17** SKU=16 ART=2106849059 Frosty FBD200 морозильный — c5==c7 RU clean.
+
+**Verify:** 28 PASS / 0 FAIL. Без новых OQ.
+
+**Cumulative chunk-083:** 16/62 (TRIP 6 / blknotrip 0 / blknochg 10 / blkfix 0 / SKIP-НП 0; 72 PASS / 0 FAIL).
