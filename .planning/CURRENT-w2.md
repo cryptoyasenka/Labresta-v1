@@ -330,3 +330,30 @@
 **Открытых вопросов:** 0.
 
 **Next:** b2 (SKU 9-16, rows 10-17). Tecnodom + Whirlpool + Tefcold + REEDNEE + Forcold + COOLEQ блок.
+
+
+## chunk-076 b2 DONE 16/57 (2026-05-20)
+
+**HEAD before:** 0ac6231 (b1 C2 marker)
+**HEAD C1:** 7cb93fd (b2 content)
+**Категории b2:** TRIP 3 / blknotrip 0 / blknochg 5 / blkfix 0 / SKIP-НП 0.
+
+**TRIP 3:**
+- r14 SKU13 ART=1048885139 REEDNEE GN1410TN — c5 UA→«Шкаф холодильный REEDNEE GN1410TN»; c36 ← faithful RU (2 глухие двери, 1300 л, 1480х830х2010, 6 полок GN 2/1, вентилируемое охлаждение, регулируемые ножки, подсветка, нерж.сталь, 220 В, 0,52 кВт).
+- r15 SKU14 ART=1048889612 REEDNEE GN650TN — c5 ← «Шкаф холодильный REEDNEE GN650TN (от -2°С до +8°С, нерж)»; c36 ← faithful RU (1 глухая дверь, 650 л, 740х830х2010, 3 полки GN 2/1, вентилируемое, авто разморозка, R290, ножки, подсветка, электронный блок, нерж.сталь, 220 В, 0,32 кВт; t°окр.среды +38°C / 65% влажность).
+- r16 SKU15 ART=1072407515 Forcold G-GN650TN-FC — c5 ← «Шкаф холодильный Forcold G-GN650TN-FC (-2...+8°С, нерж.)»; c36 ← faithful RU (650 л, 3 решетчатые GN 2/1 пласт.покрытие, глухая дверь, авто разморозка + испарение талой воды, R290, термоизоляция 60 мм, динамическое охлаждение, ножки, подсветка, электронный блок, 740х830х2010).
+
+**blknochg 5** (c5==c7 genuine RU, fixed без изменений):
+- r10 SKU9 ART=2493932591 Tecnodom AF07PKMTN290 (c36 876)
+- r11 SKU10 ART=953090210 Whirlpool ADN 221/2 (c36 806)
+- r12 SKU11 ART=1771754120 Whirlpool ADN 480S (c36 915)
+- r13 SKU12 ART=983017191 Tefcold UR400W1 (c36 808)
+- r17 SKU16 ART=1156089161 Tefcold CEV425 1 LED (c36 1459)
+
+**Verify b2:** 110 PASS / 0 FAIL.
+
+**Кумулятив chunk-076:** TRIP 5 / blknotrip 0 / blknochg 11 / blkfix 0 / SKIP-НП 0 = 16/57; 208 PASS / 0 FAIL.
+
+**Открытых вопросов:** 0.
+
+**Next:** b3 (SKU 17-24, rows 18-25).
