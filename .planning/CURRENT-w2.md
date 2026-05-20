@@ -671,3 +671,45 @@ CURRENT-w2: chunk-085 b10 FINAL DONE 75/75 ✅ ЗАКРЫТ (cum TRIP 33 / blkno
 
 === W2 RANGE 055-085 ЗАКРЫТ ✅ ===
 chunk-085 был финальным в диапазоне W2 (chunk-055 .. chunk-085). Все chunks обработаны.
+
+
+=== W2 OQ ANSWERS APPLIED ✅ (2026-05-21) ===
+
+Yana ответила на 9 открытых вопросов W2 (chunks 055-085) через AskUserQuestion. Все правки применены в chunk-fixed.xlsx и зафиксированы в `.planning/translation-audit/chunks/W2-OQ-ANSWERS.md` (commit `e2bd5ac`). Sweep xlsx (`w2-horoshop-import-055-085.xlsx` + `w2-horoshop-import-TEST-1.xlsx`) пересобраны после применения.
+
+**Applied (W2 RU side):**
+- OQ #1 c055 r10/r11 Hendi: r10 SKU9 ART 2123249689 = белый 843468 / r11 SKU10 ART 2123250967 = чёрный 843499 (verified, уже выровнено)
+- OQ #2 c056 r68 Nuova Simonelli Appia Life V 1Gr (verified — RU = `Appia Life 1Gr V`, токен-order вариация OK)
+- OQ #3 c058 r32 Cancan 0103 — лид-`<p>` RU заменён переводом UA-абзаца (verified, уже применено в fixed.xlsx)
+- OQ #5 c072 r43 — добавлен канон `Hendi 470190` в c5/c7 RU (контейнер для еды); blknochg → blkfix
+- OQ #6 c074 r39 — rollback c5/c7 RU на «Кастрюля 9 л HENDI 837306» (837306=9л, 837405=1,5л; r39 = дубль r38, отметка для удаления в Horoshop)
+- OQ #7 c075 r40 GoodFood — c36 RU: `BCF20-HC → BCF40-HC` (опечатка в лид-`<p>`)
+- OQ #8 c075 r41 Tecnodom — c36 RU: `заморозка 12 кг → 15 кг` (выровнено с UA c35)
+- OQ #9 c085 r21 Hurakan — RU canon HKN-ISV7P уже корректно (SKIP-НП категория, тело из НП-фида позже)
+
+**OUT OF SCOPE для W2:**
+- OQ #4 SKU39 BCB10 — реально в chunk-021 (W1 диапазон ≤054); snapshot ошибочно указывал «c071». Forward к W1.
+
+**Forward к W1 (UA-правки, НЕ зона W2):**
+- c056 r68: UA `APPIA II V 1GR → Appia Life V 1Gr (1 група)` (если ещё не правлено)
+- c072 r43: UA полный retranslation с RU про контейнер для еды Hendi 470190
+- c085 r21: UA `HKN-ISV5P → HKN-ISV7P`
+- **c021 b5 SKU39 Bartscher BCB10** (W1 chunk): col5/col7 RU + col4/col6 UA — убрать NC если есть; blknochg → blkfix
+
+**Forward к НП-feed merge:**
+- c085 r21 Hurakan canon HKN-ISV7P
+
+**Sweep import xlsx (gitignored, 3-column safe format):**
+- `.planning/translation-audit/w2-horoshop-import-055-085.xlsx` — 964 SKU + header (only_nm=1 / only_dsc=92 / both=871)
+- `.planning/translation-audit/w2-horoshop-import-TEST-1.xlsx` — 1 SKU (Frosty TR8SH ART 2293278253) для безопасной тестовой загрузки в Horoshop перед массовой
+- 0 empty cells (always-write tgt value: пустая ячейка внутри присутствующей колонки = wipe в Horoshop partial-update)
+- Headers: `Артикул` / `Название модификации (RU)` / `Описание товара (RU)` — Horoshop partial-update по списку колонок безопасен (не указанные колонки не трогаются)
+
+**Commits в этой волне (после e2bd5ac W2-OQ-ANSWERS):**
+- `2feb5e3` c075 OQ#7+#8 ANSWERED
+- `29b21fa` c072 OQ#2 ANSWERED
+- `0f6f3d2` W2-OQ-ANSWERS исправление OQ#4 (chunk-021 а не chunk-071)
+- `25b0d2c` c074 OQ#3 ANSWERED + r39 rollback
+- `794c23e` ANSWERED markers для c055/c056/c058/c085 questions.md
+
+W2 RANGE 055-085 ✅ FULLY CLOSED после применения 9 OQ. Готово для тестовой загрузки `w2-horoshop-import-TEST-1.xlsx` в Horoshop, затем полная загрузка `w2-horoshop-import-055-085.xlsx` (964 SKU).
