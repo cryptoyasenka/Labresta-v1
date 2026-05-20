@@ -92,3 +92,27 @@
 
 **Verify:** 65 PASS / 0 FAIL. Без новых OQ.
 
+## b4 (SKU 25-32, rows 26-33)
+
+Категории: blk триплет 5 / blknotrip 0 / blknochg 3 / blkfix 0 / SKIP-НП 0.
+
+### TRIP
+
+| row | SKU | ART | модель | действие |
+|---|---|---|---|---|
+| 27 | 26 | 2147683364 | Forcar G-EF400SS | c5 UA→RU; c36 полный RU-перевод (дубль c35) |
+| 28 | 27 | 2197594489 | Forcar G-EF600SS | c5 UA→RU; c36 полный RU-перевод (дубль c35) |
+| 29 | 28 | 2227189426 | GEMM EFB01 R290 | c5 UA→RU; c36 полный RU-перевод (дубль c35) |
+| 30 | 29 | 2227191655 | GEMM EFB02 R290 | c5 UA→RU; c36 полный RU-перевод (дубль c35) |
+| 33 | 32 | 2367451631 | Frosty FGN-600BT | c5 UA→RU; c36 полный RU-перевод (дубль c35) |
+
+### blknochg
+
+| row | SKU | ART | модель |
+|---|---|---|---|
+| 26 | 25 | 2144737441 | Tefcold NF5000G |
+| 31 | 30 | 2245896435 | Tefcold UF400G |
+| 32 | 31 | 2284538874 | BRILLIS BL9-LED-R290-EF-INV |
+
+**Verify:** 57 PASS / 0 FAIL. Без новых OQ.
+
