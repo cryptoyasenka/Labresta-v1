@@ -629,3 +629,5 @@ CURRENT-w2: chunk-084 scaffold (W2, продолжение chunk-083); 71 SKU ro
 CURRENT-w2: chunk-084 b1 DONE 8/71 (cum TRIP 0 / blknotrip 0 / blknochg 7 / blkfix 1 / SKIP-НП 0; 28 PASS / 0 FAIL); blknochg 7 (Tefcold FS80CP/SCU1220/FSC100/VOC100/UF200V/UF200VS/UF100GCP) + blkfix 1 (r6 UF50GCP — c36 RU prose была GoodFood RTD99L body, переписан в UF50GCP faithful RU); +2 OQ #14 r4 FSC100 prose body FS80CP + #15 r6 UF50GCP c36 RTD99L; next b2 (SKU 9-16, rows 10-17)
 
 CURRENT-w2: chunk-084 b2 DONE 16/71 (cum TRIP 4 / blknotrip 0 / blknochg 11 / blkfix 1 / SKIP-НП 0; 68 PASS / 0 FAIL); TRIP 4 (FROSTY SGD150 + Forcar G-ER200GSS нерж + Frosty FTD200GSS + Forcar G-EF200GSS) + blknochg 4 (Tefcold UF200VG/VSG/GF200VSG + Forcar G-EF200); без новых OQ; next b3 (SKU 17-24, rows 18-25)
+
+CURRENT-w2: chunk-084 b3 DONE 24/71 (cum TRIP 10 / blknotrip 0 / blknochg 13 / blkfix 1 / SKIP-НП 0; 116 PASS / 0 FAIL); TRIP 6 (Hendi 525630 + Hendi 617700 + Gi Metal AC-SP/ACH-SP/AC-SPN2/AC-SPG2 — щётки/щипцы для пиццы и гриля) + blknochg 2 (Frosty FTD200SS + Gi Metal AC-SPT); +1 OQ #16 Latin c в чиcтки source typo; next b4 (SKU 25-32, rows 26-33)
