@@ -163,3 +163,28 @@
 | 49 | 48 | GoodFood GF-SGD250SL-H6C (барный) |
 
 **Verify:** 32 PASS / 0 FAIL. Без новых OQ.
+
+
+## b7 (SKU 49-56, rows 50-57)
+
+Категории: blk триплет 0 / blknotrip 0 / blknochg 4 / blkfix 0 / SKIP-НП 4.
+
+### blknochg
+
+| row | SKU | модель |
+|---|---|---|
+| 50 | 49 | GoodFood GF-SGD315-H6C (барный) |
+| 55 | 54 | Juka NG60G (морозильный) |
+| 56 | 55 | Juka ND60G (морозильный) |
+| 57 | 56 | Juka VG60G (холодильный среднетемпературный) |
+
+### SKIP-НП
+
+| row | SKU | brand | модель |
+|---|---|---|---|
+| 51 | 50 | HURAKAN | HKN-BCS143F (морозильный барный) |
+| 52 | 51 | HURAKAN | HKN-BCS143 (холодильный барный) |
+| 53 | 52 | HURAKAN | HKN-BC145 (холодильный барный) |
+| 54 | 53 | HURAKAN | HKN-UF100G (морозильный барный) |
+
+**Verify:** 16 PASS / 0 FAIL. Без новых OQ.

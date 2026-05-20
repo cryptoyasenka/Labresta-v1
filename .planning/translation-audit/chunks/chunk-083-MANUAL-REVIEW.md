@@ -159,3 +159,26 @@
 **Verify:** 32 PASS / 0 FAIL. Без новых OQ.
 
 **Cumulative chunk-083:** 48/62 (TRIP 24 / blknotrip 0 / blknochg 24 / blkfix 0 / SKIP-НП 0; 240 PASS / 0 FAIL).
+
+
+## b7 (SKU 49-56, rows 50-57) — DONE 56/62
+
+**Категории:** blk триплет 0 / blknotrip 0 / blknochg 4 / blkfix 0 / SKIP-НП 4.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r50** SKU=49 ART=2212966847 GoodFood GF-SGD315-H6C барный — c5==c7 RU clean.
+- **r55** SKU=54 ART=2095026936 Juka NG60G морозильный — c5==c7 RU clean.
+- **r56** SKU=55 ART=2095037415 Juka ND60G морозильный — c5==c7 RU clean.
+- **r57** SKU=56 ART=2095045906 Juka VG60G холодильный среднетемпературный — c5==c7 RU clean.
+
+### SKIP-НП (brand=HURAKAN, тело из фида НП позже)
+
+- **r51** SKU=50 ART=2657537335 HURAKAN HKN-BCS143F (морозильный барный) — SKIP-НП #1. Ячейки fixed.xlsx не изменены. Замечание: source c35/c36 идентичны (оба UA).
+- **r52** SKU=51 ART=2657577444 HURAKAN HKN-BCS143 (холодильный барный) — SKIP-НП #2. Ячейки fixed.xlsx не изменены. Замечание: source body имеет typo «HKN-HKN-BCS143» (дублированный префикс).
+- **r53** SKU=52 ART=2657582966 HURAKAN HKN-BC145 (холодильный барный, 100 л, стеклянные распашные двери) — SKIP-НП #3. Ячейки fixed.xlsx не изменены. Замечание: source body имеет typo «HKN-HKN-BC145»; c5 source также UA (Шафа холодильна барна Hurakan...) — оставлено as-is per SKIP-НП forward-only правило.
+- **r54** SKU=53 ART=2657604599 HURAKAN HKN-UF100G (морозильный барный, 88 л, стеклянные распашные двери) — SKIP-НП #4. Ячейки fixed.xlsx не изменены. Замечание: c5 source также UA — оставлено as-is per SKIP-НП forward-only правило.
+
+**Verify:** 16 PASS / 0 FAIL. Без новых OQ.
+
+**Cumulative chunk-083:** 56/62 (TRIP 24 / blknotrip 0 / blknochg 28 / blkfix 0 / SKIP-НП 4; 256 PASS / 0 FAIL).
