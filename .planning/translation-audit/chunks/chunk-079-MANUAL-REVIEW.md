@@ -1,6 +1,6 @@
 # chunk-079 manual review (W2)
 
-**Status:** chunk-079 b5 DONE 40/58 (cum TRIP 1 / blknotrip 0 / blknochg 39 / blkfix 0 / SKIP-НП 0; 361 PASS / 0 FAIL) — next b6 (SKU 41-48, rows 42-49). 2 OQ (c079 #1 r12 FSC1000H; c079 #2 r14 FSC1950S).
+**Status:** chunk-079 b6 DONE 48/58 (cum TRIP 1 / blknotrip 0 / blknochg 47 / blkfix 0 / SKIP-НП 0; 433 PASS / 0 FAIL) — next b7 (SKU 49-56, rows 50-57). 3 OQ (c079 #1 r12 FSC1000H; #2 r14 FSC1950S; #3 r46/r47 Tehma 3-door body=2-door).
 
 ## Параметры
 
@@ -119,3 +119,25 @@ TRIP / blknotrip / blknochg / blkfix / SKIP-НП.
 - **r41** SKU=40 ART=2239439273 GoodFood BC160BW2LEDCOL — c5==c7 RU clean.
 
 **Verify:** 73 PASS / 0 FAIL. Без новых OQ.
+
+
+## b6 (SKU 41-48, rows 42-49) — DONE 48/58
+
+**Категории:** blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r42** SKU=41 ART=2239461449 GoodFood BC360BW2LEDCOL — c5==c7 RU clean.
+- **r43** SKU=42 ART=2239481157 GoodFood BC480BW2LEDCOL — c5==c7 RU clean.
+- **r44** SKU=43 ART=507525747 Tehma двухдверный 1400х600 — c5==c7 RU clean.
+- **r45** SKU=44 ART=507526237 Tehma двухдверный 1400х700 — c5==c7 RU clean.
+- **r46** SKU=45 ART=676001802 Tehma трехдверный 1860х600 — c5==c7 RU clean (⚠ c36 body начинается «Двухдверный...» — generic body 2-door применён к 3-door модели). ⇒ OQ c079 #3.
+- **r47** SKU=46 ART=676001803 Tehma трехдверный 1860х700 — c5==c7 RU clean (та же проблема — generic body 2-door для 3-door). ⇒ OQ c079 #3 (та же).
+- **r48** SKU=47 ART=482287828 GGM KTS147ND#2T (-2…+8°С) 1,36х0,7 м — c5==c7 RU clean (c36 содержит «столGGM» без пробела — наследие источника).
+- **r49** SKU=48 ART=676001805 Tehma четырехдверный 2320х600 — c5==c7 RU clean.
+
+**Verify:** 72 PASS / 0 FAIL. 1 новый OQ (#3 покрывает r46/r47).
+
+### Открытые вопросы (новые)
+
+- **OQ c079 #3**: r46 ART=676001802 + r47 ART=676001803 Tehma **трёхдверные** холодильные столы (1860х600 / 1860х700) — c4/c5/c7 корректно указывают «трехдверный», но c36 body начинается «Двухдверный холодильный стол в стандартном исполнении...» — описание двухдверного стола применено к 3-door SKU. Источник: переиспользовал body sibling-модели (2-door). Не наш write. Решение Yana: либо «Двухдверный» → «Трёхдверный» (без Ё → «Трехдверный»), либо принять как generic body.
