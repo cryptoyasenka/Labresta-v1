@@ -1,7 +1,7 @@
 # chunk-072 MANUAL REVIEW (W2, продолжение chunk-071)
 
-**Status:** chunk-072 b7 DONE 56/89 (cum TRIP 36 / blknotrip 0 / blknochg 20 / blkfix 0 / SKIP-НП 0; 56 PASS / 0 FAIL) — next b8 (SKU 57-64, rows 58-65)
-**Last updated:** chunk-072 b7 DONE 56/89
+**Status:** chunk-072 b8 DONE 64/89 (cum TRIP 39 / blknotrip 0 / blknochg 25 / blkfix 0 / SKIP-НП 0; 66 PASS / 0 FAIL) — next b9 (SKU 65-72, rows 66-73)
+**Last updated:** chunk-072 b8 DONE 64/89
 
 **Объём:** 89 SKU rows 2..90. Hendi 88 (NORMAL) + FAGOR 1 SKIP-НП (r83).
 
@@ -334,3 +334,39 @@
 - KING точильные камни pattern (короткие 3-line bodies)
 
 **Verify:** 56 PASS / 0 FAIL (+ 3 INFO source-Ё preservation flags).
+
+
+## b8 (SKU 57-64, rows 58-65) — 64/89
+
+**Категории:** TRIP 3 (Hendi 845035/845059/845028 японские ножи SANTOKU/SASHIMI/NAKIRI) + blknochg 5 (SEKIRYU SRP-240S + точильные камни SAN TIGER #240 / KING DX1000 / KING K80 / KING DXB).
+
+**TRIP detail:**
+- **r63 Hendi 845035 SANTOKU 16 см** — лезвие 165 мм / 2 мм толщина / нож 295 мм. HENDI_KNIFE_BODY template применён.
+- **r64 Hendi 845059 SASHIMI 21 см** — лезвие 210 мм / 4 мм / нож 340 мм. То же тело.
+- **r65 Hendi 845028 NAKIRI 18 см** — лезвие 180 мм / 4 мм / нож 325 мм. То же тело.
+
+**blknochg detail:**
+- **r58 SEKIRYU SRP-240S** — нож янагиба 24 см (perforated серия). c5/c36 RU. **Source-Ё «её» preserve** (тот же SEKIRYU template что r52/53/57 b7).
+- **r59 SAN TIGER #240** — точильный камень 205x50x25 мм. c5/c36 RU. UA в c35.
+- **r60 KING DX1000 #1000** — точильный камень 207x63x34 мм. c5/c36 RU.
+- **r61 KING K80 #250/1000** — точильный камень комбинированный 205x50x25 мм. c5/c36 RU.
+- **r62 KING DXB #1000** — точильный камень 210x70x60 мм. c5/c36 RU.
+
+**Терминология b8 (новые UA→RU):**
+- «Ніж японський Hendi SANTOKU/SASHIMI/NAKIRI» → «Нож японский Hendi SANTOKU/SASHIMI/NAKIRI»
+- «Традиційні японські ножі з дерев'яною ручкою» → «Традиционные японские ножи с деревянной ручкой» (drop literal `'`)
+- «Зроблені з високоякісної вуглецевої сталі X50CrMoV15» → «Сделаны из высококачественной углеродистой стали X50CrMoV15»
+- «Процес виробництва складається з 50 етапів» → «Процесс производства состоит из 50 этапов»
+- «Кожен ніж в естетичній блістерній упаковці» → «Каждый нож в эстетичной блистерной упаковке»
+- «Довжина леза / Довжина ножа» → «Длина лезвия / Длина ножа»
+- «товщина» → «толщина»
+
+**Открытые вопросы b8:** 0 новых.
+**Source-quirks preserved в b8:**
+- r58 c36 source-Ё «её» preserve (blknochg forward-only)
+
+**Iframes preserved:** нет (b8 без iframe).
+
+**Reusable artifact b8:** `HENDI_KNIFE_BODY(blade_mm, thick_mm, knife_mm)` — function template для Hendi 845xxx японских ножей (применён r63/r64/r65).
+
+**Verify:** 66 PASS / 0 FAIL (+ 1 INFO source-Ё «её» preservation r58 SEKIRYU).

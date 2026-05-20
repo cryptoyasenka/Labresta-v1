@@ -137,3 +137,20 @@
 
 **Итого b7:** TRIP 0 + blknotrip 0 + blknochg 8 + blkfix 0 + SKIP-НП 0. Verify **56 PASS / 0 FAIL** (3 INFO-flags: source Ё preserved в r52/53/57 SEKIRYU «её» blknochg forward-only).
 **Cum после b7:** TRIP 36 + blknotrip 0 + blknochg 20 + blkfix 0 + SKIP-НП 0 = **56/89**. UNPROC = 33 (rows 58-90).
+
+
+## b8 (SKU 57-64, rows 58-65) — 64/89
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 57 | 58 | 514049913 | SEKIRYU SRP-240S нож ЯНАГИБА 24 см | **blknochg** | c5 уже RU == c7 (36 chars); c36 уже pure RU. UA в c35. **Source-Ё «её» preserve** в c36 (тот же template что r52/53/57 b7 SEKIRYU). |
+| 2 | 58 | 59 | 596729475 | SAN TIGER точильный камень #240 | **blknochg** | c5 уже RU == c7 (33 chars); c36 уже pure RU 107 chars («для заточки японских ножей, зернистость #240, 205x50x25 мм»). UA в c35. |
+| 3 | 59 | 60 | 596731635 | KING DX1000 точильный камень #1000 | **blknochg** | c5 уже RU == c7 (36 chars); c36 уже pure RU («#1000, 207x63x34 мм»). UA в c35. |
+| 4 | 60 | 61 | 596734877 | KING K80 точильный камень #250/1000 комбинированный | **blknochg** | c5 уже RU == c7 (52 chars); c36 уже pure RU («комбинированный, зернистость #250/#1000, 205x50x25 мм»). UA в c35. |
+| 5 | 61 | 62 | 596739475 | KING DXB точильный камень #1000 | **blknochg** | c5 уже RU == c7 (33 chars); c36 уже pure RU («#1000, 210x70x60 мм»). UA в c35. |
+| 6 | 62 | 63 | 672970176 | Hendi 845035 нож японский SANTOKU 16 см | **TRIP** | c5←c7 (41 chars); c36 RU 376 chars (HENDI_KNIFE_BODY template). Литерал `'` в «дерев'яною» drop → «деревянной». Сталь X50CrMoV15 preserve. Лезвие 165 мм / 2 мм / нож 295 мм. |
+| 7 | 63 | 64 | 672975407 | Hendi 845059 нож японский SASHIMI 21 см | **TRIP** | c5←c7 (41 chars); c36 RU 376 chars (HENDI_KNIFE_BODY). Лезвие 210 мм / 4 мм / нож 340 мм. |
+| 8 | 64 | 65 | 672978019 | Hendi 845028 нож японский NAKIRI 18 см | **TRIP** | c5←c7 (40 chars); c36 RU 376 chars (HENDI_KNIFE_BODY). Лезвие 180 мм / 4 мм / нож 325 мм. |
+
+**Итого b8:** TRIP 3 + blknotrip 0 + blknochg 5 + blkfix 0 + SKIP-НП 0. Verify **66 PASS / 0 FAIL** (+ 1 INFO source-Ё «её» preserved r58).
+**Cum после b8:** TRIP 39 + blknotrip 0 + blknochg 25 + blkfix 0 + SKIP-НП 0 = **64/89**. UNPROC = 25 (rows 66-90).
