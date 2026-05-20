@@ -9,3 +9,23 @@
 **SKIP-НП preliminary:** r33 FAGOR FMA-1650 (b4).
 
 **Распределение батчей:** b1 (2-9, 8) → b2 (10-17, 8) → b3 (18-25, 8) → b4 (26-33, 8) → b5 (34-41, 8) → b6 (42-49, 8) → b7 (50-53, 4 финальный).
+
+## b1 (SKU 1-8, rows 2-9)
+
+Категории: blk триплет 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0.
+
+### blknochg
+
+| row | SKU | ART | модель |
+|---|---|---|---|
+| 2 | 1 | 2133530800 | Tefcold BF850 |
+| 3 | 2 | 2134166130 | Tefcold UF100G |
+| 4 | 3 | 2134354481 | Tefcold UF50G-P |
+| 5 | 4 | 2141752605 | Tefcold UF400 |
+| 6 | 5 | 2141761331 | Tefcold UF400V |
+| 7 | 6 | 2143853708 | Tefcold UF550 |
+| 8 | 7 | 2143858217 | Tefcold UF400VS |
+| 9 | 8 | 2143877088 | Tefcold UF400SG |
+
+**Verify:** 32 PASS / 0 FAIL. Без новых OQ.
+
