@@ -357,3 +357,34 @@
 **Открытых вопросов:** 0.
 
 **Next:** b3 (SKU 17-24, rows 18-25).
+
+
+## chunk-076 b3 DONE 24/57 (2026-05-20)
+
+**HEAD before:** 39a19d7 (b2 C2 marker)
+**HEAD C1:** 8bd2805 (b3 content)
+**Категории b3:** TRIP 4 / blknotrip 0 / blknochg 3 / blkfix 1 / SKIP-НП 0.
+
+**TRIP 4:**
+- r19 SKU18 ART=1355309476 Forcold M-GN1410TN-FC — c5 UA→«Шкаф холодильный Forcold M-GN1410TN-FC»; c36 ← faithful RU (1300 л, 6 GN 2/1 пласт.покрытие, глухие двери, 0...+8°C, R290, 60мм термоизоляция, 0,52 кВт/220В, 1480х830х2010).
+- r20 SKU19 ART=1407653946 FROSTY SNACK400TN — c5 UA→«Шкаф холодильный FROSTY SNACK400TN»; c36 ← faithful RU (429 л, статическое охлаждение с вентилятором, нерж.сталь, 0,18 кВт, 680x710x2010, -2..+8°C при +38°C окр).
+- r24 SKU23 ART=1999339124 Forcar G-ER200SS — **OQ#6 NEW: c4 G-ER200SS vs c7 G-ER400 модельный mismatch upstream.** c5 ← c7 «Шкаф холодильный Forcar G-ER400» per workflow. c36 ← faithful RU (Барный холодильный шкаф, 130 л, 600х585х855, 0,15 кВт, R600А, 3 решетчатые полки 2х500х415+1х500х211, без подсветки).
+- r25 SKU24 ART=2008346168 COOLEQ GN650TN — c5 UA→«Шкаф холодильный COOLEQ GN650TN»; c36 ← faithful RU (685 л, цифровой контроллер, динамическое охлаждение, нерж.сталь, 740х830х2010).
+
+**blknochg 3** (fixed без изменений):
+- r18 SKU17 ART=1282195225 COOLEQ GN1410TN (1476 л; c36 содержит естественную Ё в «объёма» — допустимо в blknochg)
+- r21 SKU20 ART=1507862535 SNAIGE CC35DM-P600FD (c36 725)
+- r23 SKU22 ART=1880359754 Tefcold CEV425 BLACK (c36 1080)
+
+**blkfix 1:**
+- r22 SKU21 ART=1771711024 Whirlpool ADN 221C — одно UA-слово в c36 «вібором» → «выбором» (c5/c7 уже OK)
+
+**Verify b3:** 107 PASS / 0 FAIL.
+
+**Кумулятив chunk-076:** TRIP 9 / blknotrip 0 / blknochg 14 / blkfix 1 / SKIP-НП 0 = 24/57; 315 PASS / 0 FAIL.
+
+**Открытых вопросов новых:** 1 (OQ#6 r24 Forcar модель upstream catalog).
+
+**Кумулятив W2 OQ:** #1 c071 SKU39 BCB10/BCB10 NC; #2 c072 r43 Hendi 880906; #3 c074 r39 ART=1166344539 9л vs 13,5л; #4 c075 r40 GoodFood intro model; #5 c075 r41 Tecnodom 15 vs 12 кг; **#6 c076 r24 Forcar G-ER200SS vs G-ER400 catalog**.
+
+**Next:** b4 (SKU 25-32, rows 26-33).
