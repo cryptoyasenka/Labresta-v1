@@ -589,3 +589,5 @@ CURRENT-w2: chunk-080 ЗАКРЫТ 53/53 (TRIP 17 / blknotrip 0 / blknochg 32 / 
 CURRENT-w2: chunk-081 b1 DONE 8/52 (TRIP 0 / blknotrip 0 / blknochg 8 / blkfix 0 / SKIP-НП 0; 32 PASS / 0 FAIL); blknochg 8 (Tefcold семья BF850 + UF100G + UF50G-P + UF400 + UF400V + UF550 + UF400VS + UF400SG); без новых OQ; next b2 (SKU 9-16, rows 10-17)
 
 CURRENT-w2: chunk-081 b2 DONE 16/52 (cum TRIP 0 / blknotrip 0 / blknochg 16 / blkfix 0 / SKIP-НП 0; 64 PASS / 0 FAIL); blknochg 8 (Tefcold семья UFFS371G + UFFS370G + UFFS371G LEFT + UFFS371GCP + UFFS370GCP + UF400VG + RF500SNACK + UF400VSG); без новых OQ; next b3 (SKU 17-24, rows 18-25)
+
+CURRENT-w2: chunk-081 b3 DONE 24/52 (cum TRIP 0 / blknotrip 0 / blknochg 24 / blkfix 0 / SKIP-НП 0; 96 PASS / 0 FAIL); blknochg 8 (Tefcold семья RF505 + UFSC370GCP BLACK + UFSC1450GCP NF ×2 + ATOM MAXI F1DB/F2DB + RF1010 + NF7500G); без новых OQ; next b4 (SKU 25-32, rows 26-33, включая r33 Fagor FMA-1650 SKIP-НП)
