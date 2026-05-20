@@ -83,3 +83,28 @@
 | 22 | 21 | HURAKAN | HKN-WNC160CDW |
 
 **Verify:** 42 PASS / 0 FAIL. Без новых OQ.
+
+
+## b4 (SKU 25-32, rows 26-33)
+
+Категории: blk триплет 3 / blknotrip 0 / blknochg 5 / blkfix 0 / SKIP-НП 0.
+
+### blk триплет (TRIP)
+
+| row | SKU | модель | c5 (RU) | c36 |
+|---|---|---|---|---|
+| 31 | 30 | Frosty FCB-128 | Шкаф холодильный для вина Frosty FCB-128 | UA→RU 128 л / 45 бутылок / 1 зона / черный |
+| 32 | 31 | Frosty H 46D | Шкаф холодильный для вина Frosty H 46D | UA→RU 150 л / 38-46 бутылок / 2 зоны |
+| 33 | 32 | Frosty H 80D | Шкаф холодильный для вина Frosty H 80D | UA→RU 228 л / 65-80 бутылок / 2 зоны |
+
+### blknochg
+
+| row | SKU | модель |
+|---|---|---|
+| 26 | 25 | TEFCOLD SC85 BLACK |
+| 27 | 26 | Tefcold TFW265-2F |
+| 28 | 27 | TEFCOLD TFW200-F |
+| 29 | 28 | FROSTY JC-128 |
+| 30 | 29 | FROSTY KWS-102P |
+
+**Verify:** 44 PASS / 0 FAIL. Без новых OQ.
