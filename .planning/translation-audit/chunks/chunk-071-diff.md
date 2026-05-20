@@ -1,7 +1,7 @@
 # chunk-071 diff (W2, продолжение chunk-070)
 
-**Status:** chunk-071 b7 DONE 56/83 (cum TRIP 53 / blknotrip 0 / blknochg 3 / blkfix 0 / SKIP-НП 0; 408 PASS / 0 FAIL) — next b8 (SKU 57-64, rows 58-65)
-**Last updated:** chunk-071 b7 DONE 56/83
+**Status:** chunk-071 b8 DONE 64/83 (cum TRIP 60 / blknotrip 0 / blknochg 4 / blkfix 0 / SKIP-НП 0; 429 PASS / 0 FAIL) — next b9 (SKU 65-72, rows 66-73)
+**Last updated:** chunk-071 b8 DONE 64/83
 
 **Источник:** `.planning/translation-audit/chunks/chunk-071.xlsx` (83 SKU, rows 2..84, ART 500478925..1173086863).
 **Фикс-таргет:** `.planning/translation-audit/chunks/chunk-071-fixed.xlsx` (gitignored).
@@ -126,3 +126,19 @@
 
 **Итого b7:** TRIP 8 + blknotrip 0 + blknochg 0 + blkfix 0 + SKIP-НП 0. Verify **408 PASS / 0 FAIL**.
 **Cum после b7:** TRIP 53 + blknotrip 0 + blknochg 3 + blkfix 0 + SKIP-НП 0 = **56/83**. UNPROC = 27 (rows 58-84).
+
+## b8 (SKU 57-64, rows 58-65) — 64/83
+
+| # | SKU | row | ART | Brand+Model | Category | Изменения |
+|---|-----|-----|-----|-------------|----------|-----------|
+| 1 | 57 | 58 | 1160159230 | Hendi Kitchen Line 515068 резак для теста | **blknochg** | c5/c7 уже RU «Резак для теста Hendi Kitchen Line 515068»; c36 уже pure RU (UA только в c35). Нет изменений. |
+| 2 | 58 | 59 | 1160167764 | Hendi 515006 скалка для раскатки теста Ø65×250/470, 1,8 кг | **TRIP** | c5←c7; c36 RU 142 chars. UA «Качалка для розкочування тіста» → RU «Скалка для раскатки теста». UA alt «неіржавіючої» → RU «нержавеющей». «На втулках ковзання» → «На втулках скольжения». |
+| 3 | 59 | 60 | 1160174458 | Hendi 554173 декоративный скребок для теста прямоугольный 110×72, 6 шт | **TRIP** | c5←c7; c36 RU 491 chars. «Декоративний кондитерський скребок для тортів, мусів, мас і кремів» → «Декоративный кондитерский скребок для тортов, муссов, масс и кремов». «прямокутна форма - гребінець» → «прямоугольная форма - гребень». Белый полипропилен. |
+| 4 | 60 | 61 | 1160190700 | Hendi 659304 скребок для теста 70×116×L358 + iframe | **TRIP** | c5←c7; c36 RU 648 chars. **Literal `'` в «110'C» drop → «110C»** (источник использует `'` как °, faithful to source-typo style). АБС-пластик / синтетический каучук. iframe Gnw_h-FEhHY preserved. |
+| 5 | 61 | 62 | 1160209022 | Hendi 659465 скребок для теста в форме ложки 75×112×L356 | **TRIP** | c5←c7; c36 RU 441 chars. ABS пластик / синтетический каучук / подходит для горячих блюд. |
+| 6 | 62 | 63 | 1160220125 | Hendi 659472 скребок в форме ложки 75×117×L408 | **TRIP** | c5←c7; c36 RU 440 chars. Близнец r62. **Source-quirk: «(L)408мм» glued no space preserve в `<h2>` (отличие от r62: 356 мм с пробелом)**. |
+| 7 | 63 | 64 | 1160224561 | Hendi 658604 скребок из нейлона 55×90×L250 | **TRIP** | c5←c7; c36 RU 473 chars. Нейлон, армированный стекловолокном / натуральный каучук / **НЕ подходит** для горячих блюд. |
+| 8 | 64 | 65 | 1160229352 | Hendi 658703 скребок из нейлона 55×90×L320 | **TRIP** | c5←c7; c36 RU 473 chars. Близнец r64. |
+
+**Итого b8:** TRIP 7 + blknotrip 0 + blknochg 1 + blkfix 0 + SKIP-НП 0. Verify **429 PASS / 0 FAIL**.
+**Cum после b8:** TRIP 60 + blknotrip 0 + blknochg 4 + blkfix 0 + SKIP-НП 0 = **64/83**. UNPROC = 19 (rows 66-84).
