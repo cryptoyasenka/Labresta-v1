@@ -659,3 +659,6 @@ CURRENT-w2: chunk-085 b5 DONE 40/75 (cum TRIP 21 / blknotrip 0 / blknochg 15 / b
 CURRENT-w2: chunk-085 b6 DONE 48/75 (cum TRIP 21 / blknotrip 0 / blknochg 23 / blkfix 0 / SKIP-НП 4; 270 PASS / 0 FAIL); blknochg 8 (Dadaux PHX25/PHX15 + GoodFood SF15VE/SF3V/SF2VS/SF5VS/SF10VE/SF30VE); без новых OQ; next b7 (SKU 49-56, rows 50-57)
 
 CURRENT-w2: chunk-085 b7 DONE 56/75 (cum TRIP 28 / blknotrip 0 / blknochg 24 / blkfix 0 / SKIP-НП 4; 330 PASS / 0 FAIL); TRIP 7 Frosty чафиндиши CD-7055FG/CD-7055/CD-723DRE/CD-723E/CD-823/CD-823FG/CD-723 + blknochg 1 CD-723DR; без новых OQ; next b8 (SKU 57-64, rows 58-65)
+
+
+CURRENT-w2: chunk-085 b8 DONE 64/75 (cum TRIP 29 / blknotrip 0 / blknochg 31 / blkfix 0 / SKIP-НП 4; 352 PASS / 0 FAIL); TRIP 1 Frosty ZC-801 чафиндиш + blknochg 7 (SARO CARLA/LORENA/ANOUK1 + GoodFood CD100E/CD200/CD300/CD65P); без новых OQ; next b9 (SKU 65-72, rows 66-73, включая r69 HURAKAN HKN-EF16 чебуречница SKIP)
