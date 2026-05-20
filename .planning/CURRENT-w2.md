@@ -411,3 +411,14 @@
 - Cumulative chunk-076: TRIP 16 / blknotrip 0 / blknochg 22 / blkfix 1 / SKIP-НП 1 = 40/57; 473 PASS / 0 FAIL.
 - OQ: без новых (OQ#6 SKU23 из b3 — единственный по chunk-076).
 - Next: chunk-076 b6 (SKU 41-48, rows 42-49).
+
+
+## chunk-076 b6 DONE 48/57 (2026-05-20 12:14)
+
+- Категории: blk триплет 4 / blknotrip 0 / blknochg 4 / blkfix 0 / SKIP-НП 0.
+- TRIP: r46 Forcar G-ER400SS, r47 Forcar G-ER600G, r48 GEMM EFN01 R290, r49 GEMM EFN02 R290.
+- blknochg: r42-r45 Tefcold (UR200G-I, BA25H, UR600S, RK505).
+- Verify: 83 PASS / 0 FAIL.
+- Cumulative chunk-076: TRIP 20 / blknotrip 0 / blknochg 26 / blkfix 1 / SKIP-НП 1 = 48/57; 556 PASS / 0 FAIL.
+- OQ: без новых (OQ#6 SKU23 из b3 — единственный по chunk-076).
+- Next: chunk-076 b7 (SKU 49-56, rows 50-57). Preliminary SKIP-НП r50 Fagor.
