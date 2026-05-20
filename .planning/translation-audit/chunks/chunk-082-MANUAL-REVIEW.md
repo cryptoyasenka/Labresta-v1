@@ -135,3 +135,26 @@
 **Verify:** 45 PASS / 0 FAIL. +1 OQ #12 (r35 H 168D bottle range typo source «169-68»).
 
 **Cumulative chunk-082:** 40/52 (TRIP 10 / blknotrip 0 / blknochg 28 / blkfix 0 / SKIP-НП 2; 195 PASS / 0 FAIL).
+
+
+## b6 (SKU 41-48, rows 42-49) — DONE 48/52
+
+**Категории:** blk триплет 0 / blknotrip 0 / blknochg 6 / blkfix 0 / SKIP-НП 2.
+
+### blknochg (c5==c7 genuine RU, c36 unchanged)
+
+- **r44** SKU=43 ART=515127099 TEFCOLD TFW80S — c5==c7 RU clean.
+- **r45** SKU=44 ART=1154451764 TEFCOLD TFW160-2F — c5==c7 RU clean.
+- **r46** SKU=45 ART=1156063154 TEFCOLD TFW160F — c5==c7 RU clean.
+- **r47** SKU=46 ART=2050766440 Snaige WD35SM-S3JJSG — c5==c7 RU clean.
+- **r48** SKU=47 ART=2052973738 Tefcold TFW400-F — c5==c7 RU clean.
+- **r49** SKU=48 ART=2052996206 Tefcold TFW400-2S — c5==c7 RU clean.
+
+### SKIP-НП #3, #4
+
+- **r42** SKU=41 ART=2657445402 HURAKAN HKN-WNC110T — SKIP-НП #3 (brand=HURAKAN, тело из фида НП позже). Ячейки fixed.xlsx не менялись.
+- **r43** SKU=42 ART=2657449796 HURAKAN HKN-WNC470CDW — SKIP-НП #4 (brand=HURAKAN, тело из фида НП позже). Ячейки fixed.xlsx не менялись.
+
+**Verify:** 26 PASS / 0 FAIL. Без новых OQ.
+
+**Cumulative chunk-082:** 48/52 (TRIP 10 / blknotrip 0 / blknochg 34 / blkfix 0 / SKIP-НП 4; 221 PASS / 0 FAIL).

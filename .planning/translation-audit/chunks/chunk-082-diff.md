@@ -138,3 +138,28 @@
 | 39 | 38 | FAGOR | CWC-300 |
 
 **Verify:** 45 PASS / 0 FAIL. +1 OQ #12 W2 cum.
+
+
+## b6 (SKU 41-48, rows 42-49)
+
+Категории: blk триплет 0 / blknotrip 0 / blknochg 6 / blkfix 0 / SKIP-НП 2.
+
+### blknochg
+
+| row | SKU | модель |
+|---|---|---|
+| 44 | 43 | TEFCOLD TFW80S |
+| 45 | 44 | TEFCOLD TFW160-2F |
+| 46 | 45 | TEFCOLD TFW160F |
+| 47 | 46 | Snaige WD35SM-S3JJSG |
+| 48 | 47 | Tefcold TFW400-F |
+| 49 | 48 | Tefcold TFW400-2S |
+
+### SKIP-НП
+
+| row | SKU | brand | модель |
+|---|---|---|---|
+| 42 | 41 | HURAKAN | HKN-WNC110T |
+| 43 | 42 | HURAKAN | HKN-WNC470CDW |
+
+**Verify:** 26 PASS / 0 FAIL. Без новых OQ.
