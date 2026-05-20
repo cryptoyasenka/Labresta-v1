@@ -3,7 +3,7 @@
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-067 (74 SKU, rows 2..75; ART 2045345276 … 2033010783)
 **Apply key:** `Артикул` (col1, scoped per row)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-066
-**Status:** b1 DONE 8/74 (TRIP 5 / blknotrip 0 / blknochg 3 / SKIP-НП 0; b2 предстоит; b1..b9 по 8 SKU + b10=SKU73-74 2 SKU)
+**Status:** b2 DONE 16/74 (cum: TRIP 7 / blknotrip 0 / blknochg 9 / SKIP-НП 0; b3 предстоит; b1..b9 по 8 SKU + b10=SKU73-74 2 SKU)
 
 Категории: blk триплет / blknotrip / blknochg / SKIP-НП. Формат — как chunk-066-diff.md.
 
@@ -39,3 +39,30 @@ SKIP-НП prelim (forward-only, тело из фида НП позже): FAGOR/F
 ### SKIP-НП (0)
 
 В b1 нет brand-locked НП. (prelim 8 на b6/b7/b9.)
+
+
+## Батч 2 (SKU 9-16, rows 10-17) — DONE
+
+**Итог:** TRIP 2 / blknotrip 0 / blknochg 6 / SKIP-НП 0 / verify 150 PASS / 0 FAIL.
+
+### blk триплет (2)
+
+| SKU | row | Артикул | Бренд+модель | col5: UA→RU | col36 |
+|---|---|---|---|---|---|
+| 11 | 12 | 2519699987 | Frosty BM-100 | `Прес для гамбургерів Frosty BM-100` → `Пресс для гамбургеров Frosty BM-100` | faithful RU body (&Oslash;100, 210x290x275) skel==UA; UA typo «мясом» без апострофа → RU «мясом» faithful normalize |
+| 12 | 13 | 2519715501 | Frosty BM-130 | `Прес для гамбургерів Frosty BM-130` → `Пресс для гамбургеров Frosty BM-130` | faithful RU body (&Oslash;130, 240x310x295) skel==UA |
+
+### blknochg (6)
+
+| SKU | row | Артикул | Бренд+модель | Причина |
+|---|---|---|---|---|
+| 9 | 10 | 2110646917 | GoodFood HF150 | c5==c7 genuine RU, c36 genuine RU; не трогаем |
+| 10 | 11 | 2180891014 | PIMAK BKS.100 (люля-кебаб) | c5==c7 mixed `Пресс для люля-кебабу PIMAK BKS.100` live; c36 genuine RU |
+| 13 | 14 | 900549160 | Hendi 272411 обогреватель газовый | c5==c7 genuine RU; c36 genuine RU (с ё в source — не трогаем) |
+| 14 | 15 | 900598472 | Hendi 272602 обогреватель газовый | c5==c7 genuine RU; c36 genuine RU |
+| 15 | 16 | 900604409 | Hendi 272404 обогреватель пирамида | c5==c7 genuine RU; c36 genuine RU |
+| 16 | 17 | 900609589 | Hendi 272701 обогреватель регулир. высота | c5==c7 genuine RU; c36 genuine RU |
+
+### SKIP-НП (0)
+
+В b2 нет brand-locked НП. (prelim 8 на b6/b7/b9.)

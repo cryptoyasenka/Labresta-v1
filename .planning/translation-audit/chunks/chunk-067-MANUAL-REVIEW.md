@@ -2,9 +2,9 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-067 (74 SKU, rows 2..75; ART 2045345276 … 2033010783)
 **Apply key:** `Артикул` (col1, scoped per row)
-**Status:** b1 DONE 8/74 (TRIP 5 / blknotrip 0 / blknochg 3 / SKIP-НП 0 / OQ 0; b2 предстоит; batch=8 b1..b9 по 8 + b10=SKU73-74 2 SKU = 74)
+**Status:** b2 DONE 16/74 (cum: TRIP 7 / blknotrip 0 / blknochg 9 / SKIP-НП 0 / OQ 0; b3 предстоит; batch=8 b1..b9 по 8 + b10=SKU73-74 2 SKU = 74)
 **Worker:** W2 (параллельный, диапазон chunk-055 … chunk-085); продолжение chunk-066
-**Last updated:** chunk-067 b1 (W2)
+**Last updated:** chunk-067 b2 (W2)
 
 Эталон формата: chunk-019-MANUAL-REVIEW.md / chunk-066-MANUAL-REVIEW.md. Категории: blk триплет / blknotrip / blknochg / SKIP-НП.
 
@@ -65,5 +65,36 @@ _(нумерация отдельная, начинается с #1; пока н
 (prelim 8 на b6/b7/b9; в b1 НП брендов нет.)
 
 ### Открытые вопросы b1
+
+Нет.
+
+
+## Батч 2 (SKU 9-16, rows 10-17) — DONE
+
+**Итог:** TRIP 2 / blknotrip 0 / blknochg 6 / SKIP-НП 0 / OQ 0 / verify 150 PASS / 0 FAIL / cum 16/74.
+
+### blk триплет (TRIP) — 2 SKU
+
+- **SKU 11 row 12 ART 2519699987 — Прес для гамбургерів Frosty BM-100**
+  - col5 UA→genuine RU: `Прес для гамбургерів Frosty BM-100` → `Пресс для гамбургеров Frosty BM-100` (как c7)
+  - col36 faithful RU: «Пресс для гамбургеров Frosty BM-100 предназначен для формирования котлет из фарша. Технические характеристики: размер гамбургеров &Oslash;100 мм; в комплекте — набор пергаментных прокладок для гамбургеров; размеры (Д*Ш*В) 210мм x 290мм x 275мм; вес 4.00. Материал: корпус анодированный алюминий; части, контактирующие с мясом — нержавеющая сталь.» skel==UA, dims [100,100,210,290,275,4.00] match. `&Oslash;` preserved. Источник UA в `частини, що контактують з мясом` — `мясом` без апострофа (source typo), RU faithful normalize «мясом» без апострофа.
+- **SKU 12 row 13 ART 2519715501 — Прес для гамбургерів Frosty BM-130**
+  - col5 UA→genuine RU: → `Пресс для гамбургеров Frosty BM-130`
+  - col36 faithful RU: то же, &Oslash;130 мм, размеры 240мм x 310мм x 295мм, вес 5.20. skel==UA, dims [130,130,240,310,295,5.20] match.
+
+### blknochg — 6 SKU (c5/c35/c36 НЕ тронуты; genuine RU в источнике)
+
+- SKU 9 row 10 ART 2110646917 — GoodFood HF150 пресс для гамбургеров (c5==c7 `Пресс для гамбургеров GoodFood HF150`; c36 genuine RU)
+- SKU 10 row 11 ART 2180891014 — PIMAK BKS.100 пресс для люля-кебабу (c5==c7 `Пресс для люля-кебабу PIMAK BKS.100`, mixed `люля-кебабу` UA form preserved in source live; c36 genuine RU)
+- SKU 13 row 14 ART 900549160 — Hendi 272411 обогреватель газовый (c5==c7 `ОБОГРЕВАТЕЛЬ ГАЗОВЫЙ Hendi 272411`; c36 genuine RU, source содержит ё в genuine RU не трогаем)
+- SKU 14 row 15 ART 900598472 — Hendi 272602 обогреватель газовый (c5==c7 `ОБОГРЕВАТЕЛЬ ГАЗОВЫЙ Hendi 272602`; c36 genuine RU)
+- SKU 15 row 16 ART 900604409 — Hendi 272404 обогреватель газовый пирамида (c5==c7; c36 genuine RU)
+- SKU 16 row 17 ART 900609589 — Hendi 272701 обогреватель газовый с регулируемой высотой (c5==c7; c36 genuine RU)
+
+### SKIP-НП — 0 SKU
+
+В b2 нет brand-locked НП. (prelim 8 на b6/b7/b9.)
+
+### Открытые вопросы b2
 
 Нет.
