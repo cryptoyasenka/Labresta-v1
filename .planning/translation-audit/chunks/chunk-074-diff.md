@@ -1,6 +1,6 @@
 # chunk-074 DIFF (W2, продолжение chunk-073)
 
-**Status:** chunk-074 b1 DONE 8/87 (cum TRIP 5 / blknotrip 0 / blknochg 3 / blkfix 0 / SKIP-НП 0; 36 PASS / 0 FAIL) — next b2 (SKU 9-16, rows 10-17)
+**Status:** chunk-074 b2 DONE 16/87 (cum TRIP 11 / blknotrip 0 / blknochg 5 / blkfix 0 / SKIP-НП 0; 76 PASS / 0 FAIL) — next b3 (SKU 17-24, rows 18-25)
 
 **Объём:** 87 SKU rows 2..88. ART 2289333310..2044217237.
 
@@ -22,3 +22,20 @@
 - r7 Pavoni New Cookmatic — Машина для формовки и выпечки тарталеток
 
 ### Verify b1: 36 PASS / 0 FAIL
+
+
+## Batch 2 (SKU 9-16, rows 10-17)
+
+### TRIP 6
+- **r10 Pavoni Ovospray** — c5 UA→RU; c36 full RU (распыление яиц/масла/сиропа/смазки; тележка+компрессор; AISI 304; 55 кг; 650х500х1000 мм; 700 Вт; 220 В; 400 куб.см/мин.; 0,5-4,5 бар). iframe ov1pBifREDw preserved.
+- **r11 Pavoni Minitemper** — Темперирующая машина. c5 ← c7 (source c5 имел UA-RU гибрид «Темперуюча»). c36 RU (темперирование шоколада, 5 настраиваемых режимов, электронный термостат трехступенчатый, чаша 5 л, 3 кг шоколада разовая загрузка, AISI304, 300 Вт, 420х400х400, 20 кг). iframe t-JRy0_oHHE preserved. Source-quirks: «Розове» → «Разовая» (UA typo), «темперазування» → «темперирования».
+- **r13 RATIONAL Self Cooking Center (100шт)** — c5 RU + c36 «Чистящие таблетки Rational 56.00.210, во всех моделях пароконвектоматов Self Cooking Center, в пачке 100 штук». Source-quirk «парокостоматів» → «пароконвектоматов».
+- **r14 RATIONAL с Care Control (150шт)** — Ополаскивающие таблетки Care 56.00.562, моделях пароконвектоматов Rational Self Cooking Center с системой Care Control, в упаковке 150 штук.
+- **r15 RATIONAL без Care Control (50шт)** — Ополаскивающие таблетки 56.00.211, без системы Care Control, в пачке 50 штук.
+- **r17 Unox DB1016A0 (2х5 л.)** — Средство моющее. 1104 chars. Моюще-ополаскивающее средство для печей серии Evolution с автоматической системой мойки. AISI пароконвектоматы, пекарские шкафы, режим пара +80 °C, Rotor.KLEAN. 2 канистры по 5 л. Source-quirks: «Шматково-ополіскувальний» → «Моюще-ополаскивающее» (UA term корявый), «парокоптоматів» → «пароконвектоматов», «пікарськими шафами» → «пекарскими шкафами», «сяйною» → «сияющей», «неабияк» → «значительно».
+
+### blknochg 2
+- r12 EWT INOX EGO04-20W (REEDNEE bridge) — Уничтожитель насекомых (на 10 метров)
+- r16 RATIONAL Ополаскиватель (10 л.)
+
+### Verify b2: 40 PASS / 0 FAIL
