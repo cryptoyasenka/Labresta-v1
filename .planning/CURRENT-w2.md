@@ -305,3 +305,28 @@
 - Кумулятив W2 OQ: #1 c071 SKU39 BCB10 vs BCB10 NC; #2 c072 r43 Hendi 880906; #3 c074 r39 ART=1166344539 9л vs 13,5л; #4 c075 r40 model intro; #5 c075 r41 заморозка numerical
 
 **Next:** chunk-076 scaffold (W2, продолжение chunk-075).
+
+
+## chunk-076 b1 DONE 8/57 (2026-05-20)
+
+**HEAD before:** 386fc0f (chunk-076 scaffold)
+**HEAD C1:** 600a27c (b1 content)
+**Категории b1:** TRIP 2 / blknotrip 0 / blknochg 6 / blkfix 0 / SKIP-НП 0.
+
+**TRIP 2:**
+- r8 SKU7 ART=2326907236 SCAN SD 430 BE — c5 UA «Шафа холодильна SCAN SD 430 BE» → RU «Шкаф холодильный SCAN SD 430 BE»; c36 ← faithful RU body (360 л; стеклянные самозакрывающиеся двери с замком; 5 проволочных полок; 2 светодиода; вентилируемое охлаждение; 4 колесика; 0-10°C; 578х605х1980мм; 1,95 кВт; 220В; Дания; 68,5 кг).
+- r9 SKU8 ART=2464196151 Bartscher 700183 — c5 UA → RU «Шкаф холодильный Bartscher 700183»; c36 ← faithful RU body (46 л; 1 стеклянная дверь; +4...+18°C; 1 решетчатая полка 365х165; компрессорное охлаждение; 5 уровней регулировки; пластик; 14.8 кг; 435х480х520; 0.09 кВт; 220V; Китай; pack 16.4 кг, 435х480х520).
+
+**blknochg 6** (c5==c7 genuine RU, fixed без изменений):
+- r2 SKU1 ART=2106845309 Frosty FTD400 (c36 805)
+- r3 SKU2 ART=2106846812 Frosty FTD600 (c36 890)
+- r4 SKU3 ART=2212807455 GoodFood GF-GN650TN-HC (c36 821)
+- r5 SKU4 ART=2212810082 GoodFood GF-GN1200TN-HC (c36 826)
+- r6 SKU5 ART=2212810687 GoodFood GF-GN1410TN-HC (c36 826)
+- r7 SKU6 ART=2239449208 GoodFood BC360NBB2LED (Шкаф холодильный для напитков, c36 845)
+
+**Verify b1:** 98 PASS / 0 FAIL.
+
+**Открытых вопросов:** 0.
+
+**Next:** b2 (SKU 9-16, rows 10-17). Tecnodom + Whirlpool + Tefcold + REEDNEE + Forcold + COOLEQ блок.
