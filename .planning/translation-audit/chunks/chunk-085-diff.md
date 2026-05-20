@@ -34,3 +34,9 @@
 - blknochg 3: r26/r27/r28 GoodFood SF3H/SF5H/SF7H горизонтальные
 - SKIP-НП 1 HURAKAN: r32 HKN-ISV7P
 - Verify 46 PASS / 0 FAIL; без новых OQ
+
+## b5 (rows 34-41, SKU 33-40) — 40/75 DONE
+
+- TRIP 4: r34 Hendi 282083 (электрический 15 л с педалью 60 Вт 230В) + r38/r39/r40 Fama FIN105/FIN106/FIN107 горизонтальные ручные 3/5/8 л
+- blknochg 4: r35/r36/r37/r41 Dadaux PHX60/TORSADO/PHX40/PH13
+- Verify 48 PASS / 0 FAIL; без новых OQ
