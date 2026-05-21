@@ -1030,3 +1030,150 @@
 
 ---
 
+## SKU 49/79 — Печь для пиццы конвейерная APACH AMT 50 (Артикул 1504744336) — SKIP-НП (NP-эксклюзив)
+
+**Поле:** Все ячейки
+**Было:** UA-leak (`desc UA==RU` False но `nm_ua`==`nm_ru` True UA-leak)
+**Стало:** без изменений — тело из фида НП позже
+
+*(SKIP-НП — brand=Apach ∈ NP-эксклюзив SET (word-boundary Lat caps + Cyr match `Apach` U+0041..U+0068). POL3 правило activated: НЕ переписываем RU, НЕ trogaem UA, cells в `chunk-029-fixed.xlsx` не модифицируем. **ТРЕТИЙ Apach в chunk-029** (после b6 SKU 47/48 AMT 40 + AMT 65). AMT 50 = конвейерная pizza-печь sister-model AMT-серия 35-45 піц/год Ø45 cm 14,2 кВт 380 В 320°С 230 кг 1860×1210×1030. mirror b6 SKU 47/48 SKIP-НП формат. Open questions 0.)*
+
+*(scoped к row Артикул=1504744336)*
+
+---
+
+## SKU 50/79 — Печь для пиццы Frosty WP2ST (Артикул 2037446783) — RU корректен; правок нет
+
+**Поле:** Название модификации (RU)
+**Было:** (чистый рус. бренд+код, украинского leak нет)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (RU уже корректный русский перевод — НЕ 🔴 RU=UA)
+**Стало:** без изменений
+
+*(blknochg pure — `desc UA==RU` **False** (genuine отдельный RU перевод ~720/730 байт; UA `Пекти для піци двокамерна FROSTY WP2ST` archaic UA verb form `Пекти` supplier UA-source artefact LIVE preserve vs RU `Печь для пиццы двухкамерная FROSTY WP2ST` correctly translated); `nm_ua`!=`nm_ru`; `nm_ru`==`nazv_ru` clean. **WP-серия NEW model line в FROSTY pizza-печь family** (после F-серия SKU 39/40 b5 + SKU 41 b6 + теперь WP-серия SKU 50/51 b7 + HGD-серия SKU 52/53 b7 — FROSTY pizza-oven brand-portfolio расширяется до **четырёх model lines** в проекте). FROSTY НЕ ∈ NP-SET → обычная обработка. WP2ST = двухкамерная электромеханическая пицца-печь 2 камеры 400×400×125 мм для 2 пицц Ø40 см на камеру + 3 термостата + температурный диапазон 50-300°С + таймер 60 мин. LIVE source artefacts preserve verbatim: (1) **критический UA-source artefact** `Пекти для піци` archaic UA verb instead of standard `Піч для піци` — supplier UA-side LIVE preserve обе локали верно translated (continuation pattern — SKU 50/51/52/53 same UA artefact `Пекти` 4 SKU FROSTY pizza-печь WP/HGD series consistent); (2) supplier symmetric `&deg;` HTML entity обе локали `от 50 &deg; C до 300 &deg; C` UA + RU `от 50&deg;C до 300&deg;C` no-space RU vs UA с space — supplier asymmetric &deg;-spacing pattern LIVE preserve; (3) **`со стеклом и подсветкой` UA RU-leak continuation pattern** SKU 50/51/52/53 b7 + previous b5/b6 — кумул. 7 SKU FROSTY pizza-печи same supplier semantic-translate-skip phrase (POL5 candidate); (4) `&Oslash;40см` HTML entity capital Ø supplier symmetric обе локали (varies от Gi Metal SKU 44/45 b6 `&oslash;` lowercase — FROSTY-family chose `&Oslash;` capital consistent в pizza-печь body); (5) `400х400х125 мм` Cyr х symmetric (inner-dim blknochg LIVE preserve не применяем Policy B/C); (6) `<strong>Технічні характеристики:</strong>` HTML `<strong>` tag preserve обе локали; (7) RU `<li>Электромеханическое управление</li>` symmetric translated. **POL2 НЕ trigger** (нет U+02DA, оба `&deg;` HTML entity). **POL1/POL4 НЕ trigger** (blknochg pure pizza-domain). **POL3 N/A** (FROSTY НЕ ∈ NP-SET). UA-cell mod b7 += 0. WP2ST LIVE Horoshop preserve. META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=2037446783)*
+
+---
+
+## SKU 51/79 — Печь для пиццы Frosty WP1ST (Артикул 2037461007) — RU корректен; правок нет
+
+**Поле:** Название модификации (RU)
+**Было:** (чистый рус. бренд+код, украинского leak нет)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (RU уже корректный русский перевод — НЕ 🔴 RU=UA)
+**Стало:** без изменений
+
+*(blknochg pure — `desc UA==RU` **False**; `nm_ua`!=`nm_ru`; `nm_ru`==`nazv_ru` clean. **WP-серия sister SKU 50** WP1ST = однокамерная version WP2ST: 1 камера 400×400×125 мм для 1 пицца Ø40 см + 2 термостата + 50-300°С + таймер 60 мин. LIVE preserve mirror SKU 50: `Пекти` UA archaic + `&deg;` HTML entity + `&Oslash;` capital + `со стеклом и подсветкой` UA RU-leak phrase + `400х400х125 мм` Cyr х inner-dim. **POL non-triggered** mirror SKU 50. UA-cell mod b7 += 0. WP1ST LIVE Horoshop preserve. META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=2037461007)*
+
+---
+
+## SKU 52/79 — Печь для пиццы Frosty HGD-202S (Артикул 2037466306) — RU корректен; правок нет
+
+**Поле:** Название модификации (RU)
+**Было:** (чистый рус. бренд+код, украинского leak нет)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (RU уже корректный русский перевод — НЕ 🔴 RU=UA)
+**Стало:** без изменений
+
+*(blknochg pure — `desc UA==RU` **False**; `nm_ua`!=`nm_ru`; `nm_ru`==`nazv_ru` clean. **HGD-серия NEW model line в FROSTY pizza-печь family** — SKU 52/53 HGD-серия + SKU 50/51 WP-серия + SKU 39/40/41 F-серия = **5+2+2 model lines** FROSTY pizza-oven portfolio расширение в b7. HGD-202S = двухкамерная HGD-серия 2 камеры 630×430×180 мм для 4 пицц Ø30 см на камеру + 4 термостата + раздельное регулирование верхних/нижних ТЭНов + 50-300°С + таймер 60 мин. LIVE preserve mirror SKU 50/51 supplier-side pattern: `Пекти` UA archaic + `&deg;` HTML entity asymmetric spacing + `&Oslash;30см` capital + `со стеклом и подсветкой` UA RU-leak + `630х430х180 мм` Cyr х inner-dim. **HGD-серия distinguishes от WP-серия**: HGD больший размер камеры (630×430 vs 400×400) + раздельное регулирование верх/низ ТЭНов (WP не имеет) + 4 термостата (vs 3 в WP2ST). **POL non-triggered** mirror SKU 50. UA-cell mod b7 += 0. HGD-202S LIVE Horoshop preserve. META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=2037466306)*
+
+---
+
+## SKU 53/79 — Печь для пиццы Frosty HGD-101S (Артикул 2037472151) — RU корректен; правок нет
+
+**Поле:** Название модификации (RU)
+**Было:** (чистый рус. бренд+код, украинского leak нет)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (RU уже корректный русский перевод — НЕ 🔴 RU=UA)
+**Стало:** без изменений
+
+*(blknochg pure — `desc UA==RU` **False**; `nm_ua`!=`nm_ru`; `nm_ru`==`nazv_ru` clean. **HGD-серия sister SKU 52** HGD-101S = однокамерная version HGD-202S: 1 камера 630×430×180 мм для 2 пиццы Ø30 см + 2 термостата + раздельное регулирование верх/низ ТЭНов + 50-300°С + таймер 60 мин. LIVE preserve mirror SKU 52 supplier pattern: `Пекти` UA archaic + `&deg;` HTML entity + `&Oslash;` capital + `со стеклом и подсветкой` UA RU-leak. **POL non-triggered** mirror SKU 50. UA-cell mod b7 += 0. HGD-101S LIVE Horoshop preserve. META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=2037472151)*
+
+---
+
+## SKU 54/79 — Лопата для пиццы квадратная Gi Metal A-32RF/120 (Артикул 2102780616) — 🔴 RU=UA + Назв.мод (RU) UA-leak
+
+**Поле:** Название модификации (RU)
+**Было:** `Лопата для піци квадратна Gi Metal A-32RF/120`
+**Стало:** `Лопата для пиццы квадратная Gi Metal A-32RF/120`
+
+**Поле:** Описание товара (RU)
+**Было:** (полностью идентично UA — украинский текст)
+**Стало:** (полный перевод RU тег-в-tag):
+
+```
+<p>Лопата для пиццы AZZURRA. Лёгкая гибкая лопата для загрузки пиццы выполнена полностью из алюминиевого сплава. Ручка лопаты овальной формы значительно облегчает её вес</p> <ul>
+<li>перфорированная, прямоугольная</li>
+<li>цвет ручки: голубой, электро</li>
+<li>размер лопаты: 330х330 мм</li>
+<li>длина ручки: 1200 мм</li>
+<li>размеры (Д*Ш*В): 330мм x 330мм x 1560мм</li>
+<li>вес: 0.63 кг</li>
+</ul> <p>Материал:</p> <ul>
+<li>корпус: алюминиевый анодированный сплав</li>
+</ul> <p> </p>
+```
+
+*(blknotrip — `desc UA==RU` **True** 🔴 (RU = полная UA копия 428/428 байт identical — magazine скопировал UA в RU cell); `nm_ua`==`nm_ru` `Лопата для піци квадратна Gi Metal A-32RF/120` (UA-leak в RU nm); `nm_ru`!=`nazv_ru` genuine RU `Лопата для пиццы квадратная Gi Metal A-32RF/120` → AUTO Назв.мод (RU) = `nazv_ru`. **A-серия NEW model line в Gi Metal family** (после R-серия SKU 44/45 b6 + BASIC 2 kit SKU 46 b6 + теперь A-серия SKU 54 b7 + I-серия SKU 55 b7 = Gi Metal portfolio расширение до 4 model lines). Gi Metal НЕ ∈ NP-SET → обычная обработка. A-32RF/120 = квадратная перфорированная алюминиевая загрузочная лопата AZZURRA-series Italian-color-line (голубой/blue электро) для пиццы 330×330 mm полотно + 1200 mm ручка + 1560 mm full length + 0.63 кг lightweight aluminum anodized. AUTHORED RU 1:1 mirror UA structure 1 `<p>` opening + 1 `<ul>/6li` + 1 `<p>Материал:</p>` + 1 `<ul>/1li` + 1 `<p> </p>` trailing whitespace `<p>`. SOFT применено: (1) UA `Лопата для піци AZZURRA. Легка гнучка лопата для завантаження піци виконана повністю з алюмінієвого сплаву` → RU `Лопата для пиццы AZZURRA. Лёгкая гибкая лопата для загрузки пиццы выполнена полностью из алюминиевого сплава` correctly translated `AZZURRA` Italian color-line name preserve Lat; (2) UA `Ручка лопати овальної форми значно полегшує її вагу` → RU `Ручка лопаты овальной формы значительно облегчает её вес` correctly translated; (3) `перфорована, прямокутна` → `перфорированная, прямоугольная`; (4) `колір ручки: блакитний, електро` → `цвет ручки: голубой, электро` `електро`→`электро` correctly translated electric-blue color modifier; (5) `розмір лопати: 330х330 мм` → `размер лопаты: 330х330 мм` Cyr х inner-blade-dim LIVE preserve verbatim (blknotrip не blk триплет — Policy B/C не применяем к inner-dim); (6) `довжина ручки: 1200 мм` → `длина ручки: 1200 мм`; (7) `розміри (Д*Ш*В): 330мм x 330мм x 1560мм` → `размеры (Д*Ш*В): 330мм x 330мм x 1560мм` supplier-formatted Lat x + `мм` слитно per axis уже supplier-provided UA — Policy B/C-compatible mirror в RU 1:1; (8) `вага: 0.63 кг` → `вес: 0.63 кг` ASCII dot decimal preserve (supplier inconsistent decimal-format — varies от запятая comma decimal SKU 32 b4 + SKU 44/45 b6 Gi Metal R-серия — A-серия supplier translate-time chose ASCII dot decimal `0.63` instead of comma `0,63` — POL5 candidate decimal-format inconsistency continuation); (9) `Матеріал:` → `Материал:`; (10) `корпус: алюмінієвий анодований сплав` → `корпус: алюминиевый анодированный сплав` correctly translated technical-term. **POL1 НЕ trigger** (UA cell SKU 54 clean без `двецею`/`хладогент`/`автоотайка`/`подстветки` closed-set typos). **POL2 НЕ trigger** (нет U+02DA, нет degree-glyph в accessory body). **POL3 N/A** (Gi Metal НЕ ∈ NP-SET). **POL4 N/A** (blknotrip category accessory-domain). **POL5 unchanged**. UA-cell mod b7 += 0 (SKU 54 UA clean — single AUTHORED RU + AUTO Назв.мод). Gi Metal A-32RF/120 — квадратная перфорированная алюминиевая лопата AZZURRA 330×330 mm полотно 1200 mm ручка 1560 mm full 0.63 кг lightweight aluminum anodized NEW A-серия Gi Metal accessory pizza-loading. META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=2102780616)*
+
+---
+
+## SKU 55/79 — Лопата для пиццы Gi Metal I-20 (Артикул 2375875203) — 🔴 RU=UA + Назв.мод (RU) UA-leak
+
+**Поле:** Название модификации (RU)
+**Было:** `Лопата для піци Gi Metal I-20`
+**Стало:** `Лопата для пиццы Gi Metal I-20`
+
+**Поле:** Описание товара (RU)
+**Было:** (полностью идентично UA — украинский текст)
+**Стало:** (полный перевод RU тег-в-tag):
+
+```
+<p>Поворотная лопата для извлечения готовой пиццы.</p> <ul>
+<li>Пластмассовый держатель на ручке подвижный, разборный</li>
+<li>Длина ручки: 1500 мм</li>
+<li>Материал: лопата и ручка - нержавеющая сталь</li>
+<li>Размеры (Д*Ш*В): 200мм x 200мм x 1710мм</li>
+<li>Вес: 0.81</li>
+</ul>
+```
+
+*(blknotrip — `desc UA==RU` **True** 🔴 (RU = полная UA копия 247/247 байт identical); `nm_ua`==`nm_ru` `Лопата для піци Gi Metal I-20` (UA-leak в RU nm); `nm_ru`!=`nazv_ru` genuine RU → AUTO Назв.мод (RU) = `nazv_ru`. **I-серия NEW model line в Gi Metal family** (sister-distinguishes от A-серия SKU 54 = AZZURRA-color-blade + R-серия SKU 44/45 = rotation-handle). Gi Metal НЕ ∈ NP-SET → обычная обработка. I-20 = поворотная лопата для извлечения готовой пиццы 200×200 mm полотно (квадратное steel blade) + 1500 mm ручка + 1710 mm full length + 0.81 кг нерж.сталь stainless steel + разборный пластмассовый держатель. AUTHORED RU 1:1 mirror UA structure 1 `<p>` opening + 1 `<ul>/5li`. SOFT применено: (1) UA `Поворотна лопата для вилучення готової піци.` → RU `Поворотная лопата для извлечения готовой пиццы.`; (2) `Пластмасовий тримач на ручці рухливий, розбірний` → `Пластмассовый держатель на ручке подвижный, разборный` correctly translated `тримач`→`держатель` semantic-match holder-bracket terminology; (3) `Довжина ручки: 1500 мм` → `Длина ручки: 1500 мм` capitalized; (4) `Матеріал: лопата та ручка - нержавіюча сталь` → `Материал: лопата и ручка - нержавеющая сталь` ASCII hyphen + space mirror supplier formatting; (5) `Розміри (Д*Ш*В): 200мм x 200мм x 1710мм` → `Размеры (Д*Ш*В): 200мм x 200мм x 1710мм` supplier-formatted Lat x + `мм` слитно per axis уже UA-supplied; (6) `Вага: 0.81` → `Вес: 0.81` ASCII dot decimal preserve **supplier-typo missing `кг` unit** LIVE preserve обе локали (NEW supplier-typo category в b7 — supplier UA-source missing unit symbol after numeric — RU mirror preserve без unit-completion); (7) UA `вилучення`→`извлечения` extraction-noun correctly translated; (8) UA `обертання` rotation context implicit removed в short-body version. **POL1 НЕ trigger** (UA cell SKU 55 clean без closed-set typos). **POL2 НЕ trigger** (нет U+02DA, нет degree-glyph). **POL3 N/A** (Gi Metal НЕ ∈ NP-SET). **POL4 N/A** (blknotrip accessory-domain). **POL5 unchanged**. UA-cell mod b7 += 0 (SKU 55 UA clean). Gi Metal I-20 — поворотная лопата для извлечения готовой пиццы 200×200 mm полотно 1500 mm ручка 1710 mm full 0.81 кг нерж.сталь NEW I-серия Gi Metal accessory pizza-extraction. META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=2375875203)*
+
+---
+
+## SKU 56/79 — Печь для пиццы Silver PF-62 G газовая (Артикул 2424820545) — RU корректен; правок нет
+
+**Поле:** Название модификации (RU)
+**Было:** (чистый рус. бренд+код, украинского leak нет)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (RU уже корректный русский перевод — НЕ 🔴 RU=UA)
+**Стало:** без изменений
+
+*(blknochg pure — `desc UA==RU` **False** (genuine отдельный RU перевод ~830/870 байт; UA `Пекти для піци Silver PF-62 G ідеально підходить як для свіжої, так і замороженої піци` archaic UA `Пекти` continuation pattern + LIVE preserve vs RU `Печь для пиццы Silver PF-62 G идеально подходит как для свежей, так и замороженной пиццы` correctly translated); `nm_ua`!=`nm_ru` (UA `Піч для піци Silver PF-62 G газова` vs RU `Печь для пиццы Silver PF-62 G газовая`); `nm_ru`==`nazv_ru` clean. **Silver NEW brand-family в проекте** (Italian-supplier pizza-печь газовая) — sister-distinguishes от FROSTY электрические/конвейерные family same pizza-печь category но Silver gas-fired vs FROSTY electric. Silver НЕ ∈ NP-SET → обычная обработка. PF-62 G = одноярусная газовая пицца-печь на 4 пиццы Ø30 cm + камень-под (refractory-stone каменный подовый камень) + 7 кВт газовой мощности + электронная система зажигания + непрерывный контроль пламени + газ балонный или природный 0,741 m³/час + диапазон 50-350°С + 980×910×560 mm + 65 кг + хромированные ножки. LIVE source artefacts preserve verbatim: (1) UA `Пекти для піци Silver PF-62 G` archaic UA `Пекти` continuation FROSTY family pattern SKU 50-53 b7 — **5 SKU same UA artefact `Пекти`** в b7 cumul (4 FROSTY + 1 Silver) supplier-side same UA-source same-archaic-verb pattern; (2) UA `&Oslash; 30 см` + RU `&Oslash; 30 см` HTML entity capital symmetric supplier choice consistent с pizza-печь family; (3) **UA `&#39;` ASCII apostrophe entity x3** `полум&#39;я`/`Кам&#39;яний`/`Кам&#39;яний` — supplier UA-side `&#39;` apostrophe entity LIVE preserve (correct UA `'` U+2019 right-single-quote — supplier `&#39;` entity-encoded variability continuation pattern SKU 33 b5 + SKU 42 b6 supplier ASCII vs entity vs proper U+2019 variability); (4) `<li>Термометр Є</li>` UA `Є` U+0404 Cyrillic capital ukrainian letter (archaic Old-Slavonic form `Є`=is/есть в church-slavonic) supplier UA-side artefact LIVE preserve vs RU `<li>Термометр Есть</li>` correctly translated semantic-noun (RU sense `есть` = "is present") — supplier semantic-translate UA shortform → RU full-noun pattern; (5) `<li>Витрата газу, кг / год 0,741m3/год.</li>` UA whitespace `, ` + ` / ` asymmetric vs RU `<li>Расход газа, кг/час 0,741m3/час.</li>` no-space slash + no-space `m3` mixed Lat-3 numerical compact-format — supplier UA verbose / RU compact unit-format variability LIVE preserve; (6) `<li>Кам&#39;яний подовий камінь.</li>` → `<li>Каменный подовый камень.</li>` `Кам&#39;яний`=`Каменный` translated `&#39;` apostrophe entity dropped in RU correctly (correct RU без apostrophe); (7) UA `Безперервний контроль полум&#39;я.` → RU `Непрерывный контроль пламени.`; (8) UA `Електронна система запалювання.` → RU `Электронная система зажигания.`; (9) UA `Підключення до балонного газу або природного газу.` → RU `Подключение к баллонному газу или природному газу.`; (10) `Хромовані ніжки` → `Хромированные ножки`; (11) `980x910x560` mixed Lat x dim symmetric supplier-formatted обе локали; (12) `62x62x15мм` inner-dim Lat x supplier-formatted symmetric (blknochg → main+inner dims LIVE preserve verbatim не применяем Policy B/C). **POL1 НЕ trigger** (blknochg pure, не blk триплет; closed-set typos `двецею`/`хладогент`/`автоотайка`/`подстветки` отсутствуют в SKU 56 pizza-печь газовая domain). **POL2 НЕ trigger** (нет U+02DA, оба `Є`/`&#39;` ≠ degree-glyph). **POL3 N/A** (Silver НЕ ∈ NP-SET). **POL4 N/A** (pizza-domain без refrigerator-terminology closed-set). **POL5 unchanged** (forward+retroactive deferred). UA-cell mod b7 += 0. Silver PF-62 G — одноярусная газовая пицца-печь 4 пиццы Ø30 cm каменный-под 7 кВт газ балонный/природный 0,741 m³/час 50-350°С 65 кг 980×910×560 хромированные ножки NEW brand-family Silver Italian gas-fired pizza-печь. META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=2424820545)*
+
+---
+
