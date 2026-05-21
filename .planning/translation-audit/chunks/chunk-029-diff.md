@@ -1177,3 +1177,195 @@
 
 ---
 
+## SKU 57/79 — Пресс для пиццы Cuppone PZF35DS (Артикул 469726392) — 🔴 RU=UA + Назв.мод (RU) UA-leak
+
+**Поле:** Название модификации (RU)
+**Было:** `Прес для піци Cuppone PZF35DS (35 см)`
+**Стало:** `Пресс для пиццы Cuppone PZF35DS (35 см)`
+
+**Поле:** Описание товара (RU)
+**Было:** (полностью идентично UA — украинский текст)
+**Стало:** (полный перевод RU тег-в-тег):
+
+```
+<p>Пресс для пиццы используется для приготовления тестовых заготовок для пиццы &mdash; карстов. Пресс для пиццы не только формует карст, но и слегка его подпекает, чтобы сохранить форму основы и подрум&#39;янить её. Таким образом, карст не будет впитывать влагу от начинки и пицца хорошо пропечётся.</p> <p>Технические характеристики:</p> <ul>
+<li>диаметр &mdash; 350 мм</li>
+<li>корпус из нержавеющей стали</li>
+<li>производительность &mdash; 400 порций в час</li>
+<li>максимальное потребление 4,13 кВт</li>
+<li>среднее потребление 2,9 кВт</li>
+<li>напряжение 380 В</li>
+<li>габариты 500х610х770 мм</li>
+<li>вес 147 кг</li>
+</ul>
+```
+
+*(blknotrip — `desc UA==RU` **True** 🔴 (RU = полная UA копия — magazine скопировал UA в RU cell); `nm_ua`==`nm_ru` `Прес для піци Cuppone PZF35DS (35 см)` (UA-leak в RU nm); `nazv_ru` genuine `Пресс для пиццы Cuppone PZF35DS (35 см)` → AUTO Назв.мод (RU) = `nazv_ru`. **NEW pizza-PRESS Cuppone domain** в проекте (после Cuppone TZ-серия oven-domain — Cuppone portfolio расширение до 2 model lines: PZF press + TZ oven). Cuppone НЕ ∈ NP-SET → обычная обработка. PZF35DS = пицца-пресс 35 см диаметром заготовки 400 порций/час 4,13 кВт max / 2,9 кВт avg 380 В 500×610×770 мм 147 кг неіржавка сталь. AUTHORED RU 1:1 mirror UA structure 2 `<p>` + 1 `<ul>/8li`. SOFT применено: (1) `Прес для піци` → `Пресс для пиццы`; (2) `тістових заготівок` → `тестовых заготовок`; (3) `карстів` → `карстов`; (4) `формує` → `формует`; (5) `підпікає` → `подпекает`; (6) `підрум&#39;янити` → `подрум&#39;янити` (apostrophe HTML entity preserve); (7) `Отже, карст не вбиратиме вологу` → `Таким образом, карст не будет впитывать влагу`; (8) `піца добре пропечеться` → `пицца хорошо пропечётся`; (9) `Технічні характеристики` → `Технические характеристики`; (10) `діаметр` → `диаметр`; (11) `корпус з неіржавкої стали` → `корпус из нержавеющей стали`; (12) `продуктивність` → `производительность`; (13) `порцій на годину` → `порций в час`; (14) `споживання` → `потребление`; (15) `напруга` → `напряжение`; (16) `габарити 500х610х770 мм` → `габариты 500х610х770 мм` Cyr х inner-dim LIVE preserve (blknotrip не blk триплет — Policy B/C не применяем); (17) `вага` → `вес`. **POL1/POL2/POL3/POL4 НЕ trigger** (Cuppone НЕ ∈ NP-SET, нет U+02DA, нет closed-set typos, accessory-domain без refrigerator). UA-cell mod b8 += 0. Cuppone PZF35DS NEW pizza-PRESS Cuppone-family. META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=469726392)*
+
+---
+
+## SKU 58/79 — Печь для пиццы GGF ES 4 (Артикул 478685063) — RU корректен; правок нет
+
+**Поле:** Название модификации (RU)
+**Было:** (чистый рус. бренд+код, украинского leak нет)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (RU уже корректный русский перевод — НЕ 🔴 RU=UA)
+**Стало:** без изменений
+
+*(blknochg pure — `desc UA==RU` **False** (genuine отдельный RU перевод); `nm_ua`!=`nm_ru` `Піч для піци GGF ES 4` vs `Печь для пиццы GGF ES 4` correctly translated; `nm_ru`==`nazv_ru` clean. **GGF NEW brand-family в проекте** Italian pizza-oven. GGF НЕ ∈ NP-SET → обычная обработка. ES 4 = пицца-печь 1 секция натуральный под камера 660×660×140 мм 380 В 4,2 кВт 50-500°С 73 кг. LIVE source artefacts preserve verbatim: (1) **asymmetric `&deg;` HTML entity spacing** — UA `від 50 &deg;C до 500 &deg;C` с пробелом перед `&deg;` + Lat `C`, RU `от 50&deg;С до 500&deg;С` БЕЗ пробела + **Cyr `С` U+0421** vs UA Lat `C` U+0043 — supplier-side translate-time asymmetry — supplier выбрал Cyr `С` для RU-локали и Lat `C` для UA — LIVE preserve (POL5 candidate cross-locale glyph-asymmetry continuation pattern); (2) RU `неіржавкої сталі` → wait в RU `нержавеющей стали` correctly translated; (3) META keywords RU содержит остатки UA `піч дляпіци, піч для піцци, піца, піцца` artifacts из UA META — supplier translate-time partial replace — LIVE preserve META always faithful. **POL2 НЕ trigger** (нет U+02DA, оба `&deg;` HTML entity ≠ degree-glyph). **POL1/POL4 НЕ trigger** (RU clean без closed-set typos). **POL3 N/A** (GGF НЕ ∈ NP-SET). UA-cell mod b8 += 0. GGF ES 4 LIVE Horoshop preserve — body & cells как есть. META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=478685063)*
+
+---
+
+## SKU 59/79 — Печь для пиццы Cuppone TZ435/1M (Артикул 1156136206) — RU корректен; правок нет
+
+**Поле:** Название модификации (RU)
+**Было:** (чистый рус., перевод корректный)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (RU уже корректный русский перевод)
+**Стало:** без изменений
+
+*(blknochg pure — `desc UA==RU` **False** (genuine отдельный RU перевод); `nm_ua`!=`nm_ru` `Піч для піци Cuppone TZ435/1M` vs `Печь для пиццы Cuppone TZ435/1M` correctly translated; `nm_ru`==`nazv_ru` clean. **NEW Cuppone TZ435-серия model line в Cuppone family** (sister TZ430-серия SKU 61/62 b8). Cuppone НЕ ∈ NP-SET → обычная обработка. TZ435/1M = пицца-печь Tiziano-серия 1 камера 720×720×140 мм 4 пиццы Ø35 см 380 В 5,2 кВт max / 3,2 кВт avg 50-400°С 1030×950×540 мм неіржавка сталь кордієритова цегла теплоізоляція минеральная вата подсветка 2 термостата захищені электрические нагревательные элементы окремо верх/под. LIVE source artefacts preserve verbatim: (1) symmetric body structure UA/RU 2 `<p>` + 1 `<ul>/Nli`; (2) META keywords RU clean (без UA artifacts в отличие от SKU 58). **POL2 НЕ trigger** (нет U+02DA, нет degree-glyph). **POL1/POL4 НЕ trigger** (RU clean). **POL3 N/A** (Cuppone НЕ ∈ NP-SET). UA-cell mod b8 += 0. Cuppone TZ435/1M LIVE Horoshop preserve. META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=1156136206)*
+
+---
+
+## SKU 60/79 — Пресс для пиццы Cuppone PZF30DS (Артикул 1217661796) — 🔴 RU=UA + Назв.мод (RU) UA-leak
+
+**Поле:** Название модификации (RU)
+**Было:** `Прес для піци Cuppone PZF30DS (30 см)`
+**Стало:** `Пресс для пиццы Cuppone PZF30DS (30 см)`
+
+**Поле:** Описание товара (RU)
+**Было:** (полностью идентично UA — украинский текст)
+**Стало:** (полный перевод RU тег-в-тег — mirror SKU 57 с заменой dims):
+
+```
+<p>Пресс для пиццы используется для приготовления тестовых заготовок для пиццы &mdash; карстов. Пресс для пиццы не только формует карст, но и слегка его подпекает, чтобы сохранить форму основы и подрум&#39;янить её. Таким образом, карст не будет впитывать влагу от начинки и пицца хорошо пропечётся.</p> <p>Технические характеристики:</p> <ul>
+<li>диаметр &mdash; 300 мм</li>
+<li>корпус из нержавеющей стали</li>
+<li>производительность &mdash; 400 порций в час</li>
+<li>максимальное потребление 4,13 кВт</li>
+<li>среднее потребление 2,9 кВт</li>
+<li>напряжение 380 В</li>
+<li>габариты 500х610х770 мм</li>
+<li>вес 143 кг</li>
+</ul>
+```
+
+*(blknotrip — `desc UA==RU` **True** 🔴; `nm_ua`==`nm_ru` UA-leak; `nazv_ru` genuine. **Sister SKU 57** Cuppone PZF30DS = pizza-press 30 см sister 35-см SKU 57 различия только diameter 300 vs 350 + вес 143 vs 147 кг — rest identical. AUTHORED RU 1:1 mirror SKU 57 RU. NEW pizza-PRESS Cuppone-family continuation. SOFT применено: identical SKU 57 set (17 правил перевода) кроме (a) `діаметр 300 мм` → `диаметр 300 мм`; (b) `вага 143 кг` → `вес 143 кг`. **POL1/POL2/POL3/POL4 НЕ trigger**. UA-cell mod b8 += 0. Cuppone PZF30DS sister SKU 57 NEW pizza-PRESS Cuppone-family. META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=1217661796)*
+
+---
+
+## SKU 61/79 — Печь для пиццы Cuppone TZ430/1M (Артикул 420822899) — RU корректен; правок нет
+
+**Поле:** Название модификации (RU)
+**Было:** (чистый рус.)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (RU уже корректный русский перевод)
+**Стало:** без изменений
+
+*(blknochg pure — `desc UA==RU` **False** (genuine RU); `nm_ua`!=`nm_ru` `Піч для піци Cuppone TZ430/1M` vs `Печь для пиццы Cuppone TZ430/1M`; `nm_ru`==`nazv_ru` clean. **NEW Cuppone TZ430-серия 1M model в Cuppone family** (sister TZ435-серия SKU 59 + TZ430-серия 2M SKU 62 b8 — 2 model lines TZ-oven в b8 Cuppone). TZ430/1M = пицца-печь Tiziano-серия 1 камера 620×620×144 мм 380 В 4,6 кВт Ш764×Г902×В385 мм неіржавка сталь кордієритова цегла подсветка 2 термостата. SOURCE RU body — **используется как mirror-template для SKU 62 TZ430/2M AUTHORED RU** (2-chamber sister). **POL2 НЕ trigger** (нет U+02DA, нет degree-glyph). **POL1/POL4 НЕ trigger**. **POL3 N/A**. UA-cell mod b8 += 0. Cuppone TZ430/1M LIVE Horoshop preserve. META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=420822899)*
+
+---
+
+## SKU 62/79 — Печь для пиццы Cuppone TZ430/2M (Артикул 420822900) — 🔴 RU=UA + Назв.мод (RU) UA-leak
+
+**Поле:** Название модификации (RU)
+**Было:** `Піч для піци Cuppone TZ430/2M`
+**Стало:** `Печь для пиццы Cuppone TZ430/2M`
+
+**Поле:** Описание товара (RU)
+**Было:** (полностью идентично UA — украинский текст)
+**Стало:** (полный перевод RU — mirror SKU 61 RU с 2-chamber adjust):
+
+```
+<p>Печь для пиццы, имеет 2 камеры по 620х620х144 мм, облицовка из нержавеющей стали, под из кордиеритовых кирпичей, теплоизоляция из минеральной ваты, подсветка, 2 термостата для камеры. Рабочая температура до 400 градусов. Пароотвод во время приготовления.</p> <p>Система электромеханического управления с возможностью установки температуры камеры и пода по отдельности. Защищенные электрические нагревательные элементы отдельно для верха и под подом.</p> <ul>
+<li>Напряжение 380 В</li>
+<li>Мощность 9,2 кВт</li>
+<li>Габариты: Ш 764 х Г 902 х В 700 мм</li>
+</ul>
+```
+
+*(blknotrip — `desc UA==RU` **True** 🔴; `nm_ua`==`nm_ru` UA-leak `Піч для піци Cuppone TZ430/2M`; `nazv_ru` genuine `Печь для пиццы Cuppone TZ430/2M` → AUTO. **Sister SKU 61 Cuppone TZ430/1M** — RU body в source для SKU 61 = template для SKU 62 AUTHORED RU adjustments: (a) `1 камера` → `2 камеры по`; (b) `Мощность 4,6 кВт` → `Мощность 9,2 кВт`; (c) `В 385 мм` → `В 700 мм`; (d) UA SKU 62 ends sentences with `.` while SKU 61 doesn't — mirror punctuation в RU. AUTHORED RU 1:1 mirror UA structure 2 `<p>` + 1 `<ul>/3li`. SOFT применено: (1) `Піч для піци, має 2 камери по` → `Печь для пиццы, имеет 2 камеры по`; (2) `облицювання з неіржавкої сталі` → `облицовка из нержавеющей стали`; (3) `під з кордієритової цегли` → `под из кордиеритовых кирпичей`; (4) `теплоізоляція з мінеральної вати` → `теплоизоляция из минеральной ваты`; (5) `підсвітка` → `подсветка`; (6) `термостати для камери` → `термостата для камеры`; (7) `Робоча температура` → `Рабочая температура`; (8) `до 400 градусів` → `до 400 градусов`; (9) `Паровідвід під час приготування` → `Пароотвод во время приготовления`; (10) `Система електромеханічного керування з можливістю встановлення температури камери та пода окремо` → `Система электромеханического управления с возможностью установки температуры камеры и пода по отдельности`; (11) `Захищені електричні нагрівальні елементи окремо для верху та під подом` → `Защищенные электрические нагревательные элементы отдельно для верха и под подом`; (12) `Напруга` → `Напряжение`; (13) `Потужність` → `Мощность`; (14) `Габарити: Ш 764 х Г 902 х В 700 мм` → `Габариты: Ш 764 х Г 902 х В 700 мм` Cyr х LIVE preserve dimension axis prefix labels Ш/Г/В preserve. **POL1/POL2/POL3/POL4 НЕ trigger**. UA-cell mod b8 += 0. Cuppone TZ430/2M sister SKU 61 — 2-chamber Cuppone TZ430-серия. META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=420822900)*
+
+---
+
+## SKU 63/79 — Печь для пиццы Pizza Group Entry Max 4 (380) (Артикул 420822915) — 🔴 RU=UA + Назв.мод (RU) UA-leak
+
+**Поле:** Название модификации (RU)
+**Было:** `Піч для піци Pizza Group Entry Max 4 (380)`
+**Стало:** `Печь для пиццы Pizza Group Entry Max 4 (380)`
+
+**Поле:** Описание товара (RU)
+**Было:** (полностью идентично UA — украинский текст)
+**Стало:** (полный перевод RU тег-в-тег с `<h2>` preserve):
+
+```
+<h2>Печь для пиццы Pizza Group Entry Max 4 имеет 1 камеру размером 700х700х150 мм.</h2> <ul>
+<li>облицовка изготовлена из нержавеющей стали</li>
+<li>механическая панель управления</li>
+<li>главный переключатель</li>
+<li>подсветка</li>
+<li>толщина шамотного камня 14 мм</li>
+<li>максимальная температура 450 градусов</li>
+<li>2 нагревательных элемента для каждой камеры</li>
+<li>напряжение 380 В</li>
+<li>мощность 5,6 кВт</li>
+<li>габариты: Ш 890 х Г 950 х В 390 мм</li>
+</ul>
+```
+
+*(blknotrip — `desc UA==RU` **True** 🔴; `nm_ua`==`nm_ru` UA-leak; `nazv_ru` genuine. **Pizza Group NEW brand-family в проекте** Italian pizza-oven brand. Pizza Group НЕ ∈ NP-SET → обычная обработка. Entry Max 4 = пицца-печь 1 камера 700×700×150 мм 4 пиццы Ø35 шамотный камень 14 мм 450°С 380 В 5,6 кВт Ш890×Г950×В390 мм неіржавка сталь механическая панель головной переключатель подсветка 2 ТЭНа. AUTHORED RU 1:1 mirror UA structure 1 `<h2>` opening + 1 `<ul>/10li` — **NEW `<h2>` tag в этом батче** (b8 SKU 63 first `<h2>`-style body в проекте — supplier-side semantic chose H2 instead of P). SOFT применено: (1) `Піч для піци ... має 1 камеру розміром` → `Печь для пиццы ... имеет 1 камеру размером`; (2) `облицювання виготовлене з неіржавкої сталі` → `облицовка изготовлена из нержавеющей стали`; (3) `механічна панель керування` → `механическая панель управления`; (4) `головний перемикач` → `главный переключатель`; (5) `підсвітка` → `подсветка`; (6) `товщина шамотного каменю 14 мм` → `толщина шамотного камня 14 мм`; (7) `максимальна температура 450 градусів` → `максимальная температура 450 градусов`; (8) `2 нагрівальні елементи для кожної камери` → `2 нагревательных элемента для каждой камеры`; (9) `напруга` → `напряжение`; (10) `потужність` → `мощность`; (11) `габарити: Ш 890 х Г 950 х В 390 мм` → `габариты: Ш 890 х Г 950 х В 390 мм` Cyr х axis labels LIVE preserve. **POL1/POL2/POL3/POL4 НЕ trigger**. UA-cell mod b8 += 0. Pizza Group Entry Max 4 NEW brand-family Italian pizza-oven. META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=420822915)*
+
+---
+
+## SKU 64/79 — Печь для пиццы Pizza Group Entry Max 8 (380В) (Артикул 420822916) — 🔴 RU=UA + Назв.мод (RU) UA-leak
+
+**Поле:** Название модификации (RU)
+**Было:** `Піч для піци Pizza Group Entry Max 8 (380В)`
+**Стало:** `Печь для пиццы Pizza Group Entry Max 8 (380В)`
+
+**Поле:** Описание товара (RU)
+**Было:** (полностью идентично UA — украинский текст с `&deg;` glyph)
+**Стало:** (полный перевод RU тег-в-тег с `&deg;` preserve):
+
+```
+<p>Печь для пиццы, имеет 2 камеры размером по 700х700х150 мм каждая.</p> <ul>
+<li>Облицовка изготовлена из нержавеющей стали</li>
+<li>Механическая панель управления</li>
+<li>Толщина шамотного камня 14 мм</li>
+<li>Главный переключатель</li>
+<li>Подсветка</li>
+<li>Максимальная температура 450 &deg;C</li>
+<li>2 нагревательных элемента для каждой камеры</li>
+<li>Напряжение 380 В</li>
+<li>Мощность 11,2 кВт</li>
+<li>Габариты: Ш 920 х Г 990 х В 680 мм</li>
+</ul>
+```
+
+*(blknotrip — `desc UA==RU` **True** 🔴; `nm_ua`==`nm_ru` UA-leak; `nazv_ru` genuine. **Sister SKU 63** Pizza Group Entry Max 8 2-chamber version. Pizza Group NEW brand-family continuation. AUTHORED RU 1:1 mirror UA structure 1 `<p>` + 1 `<ul>/10li`. Differences vs SKU 63: (a) opening `<p>` instead of `<h2>` (supplier inconsistency intra-brand same supplier); (b) 2 chambers vs 1; (c) `450 &deg;C` HTML entity (vs SKU 63 plain `450 градусов`); (d) capitalized li-text (`Облицовка`, `Механическая`, etc) vs SKU 63 lowercase — supplier translate-time inconsistency LIVE preserve mirror UA capitalization; (e) Мощность 11,2 кВт vs 5,6; (f) Габариты Ш 920 × Г 990 × В 680 vs 890/950/390. SOFT применено: identical SKU 63 set + `&deg;` HTML entity preserve verbatim (symmetric — supplier preserved UA `&deg;` в RU без modification — no `&deg;` asymmetric spacing issue here). **POL1/POL4 НЕ trigger** (RU clean). **POL2 НЕ trigger** (`&deg;` HTML entity ≠ U+02DA degree-glyph). **POL3 N/A** (Pizza Group НЕ ∈ NP-SET). UA-cell mod b8 += 0. Pizza Group Entry Max 8 sister SKU 63 NEW brand-family 2-chamber. META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=420822916)*
+
+---
+
