@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-030 (96 SKU)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 0/96
+**Status:** IN PROGRESS 8/96
 
 Здесь собираю всё, что требует твоего подтверждения (не авто-фиксы). Авто-фиксы по locked-паттернам перечислены в сводках по батчам, отдельного подтверждения не требуют. Открытые вопросы накапливаются в нумерованный список и финализируются при закрытии chunk-030. SKIP-НП SKU (НП-эксклюзивные бренды) помечаются здесь и не переписываются.
 
@@ -10,7 +10,13 @@
 
 ## Открытые вопросы chunk-030
 
-_(пока пусто — наполняется при аудите батчей)_
+1. **SKU 1 (Артикул 526929616, ITPIZZA ML6, b1)** — UA `Напруга: 380 Ст.` (Cyr `Ст.` U+0421+U+0442) — клавиатурный typo вместо канонической формы `Напруга: 380 В.` (cf. SKU 2 same brand ITPIZZA `Напруга: 380 В.` — single-source precedent). Out-of-precedent Rule A scope (только `Nдив`→`Nсм` точно по precedent chunk-029 b9 SKU 72). RU mirror verbatim `Напряжение: 380 Ст.`. **Решение Yana:** fix UA `380 Ст.`→`380 В.` (и RU mirror)? или preserve verbatim как supplier-side artifact?
+
+2. **SKU 5 (Артикул 616390848, FROSTY F630, b1)** — UA `<li>завантаження: 6 піц O30 см</li>` — Latin `O` U+004F вместо `Ø` U+00D8 (символ диаметра). SKU 6/7 same brand FROSTY используют `Ø34 см` корректно — likely typo в SKU 5 только. Out-of-precedent Rule A. RU mirror verbatim `O30 см`. **Решение Yana:** fix UA `O30`→`Ø30` (и RU mirror)? или preserve verbatim?
+
+3. **SKU 6 (Артикул 616390851, FROSTY M 9, b1)** — UA `<li>со стеклом и подсветкой</li>` (между `Ø34 см` и `2 термостата`) — Russian-leak в UA-cell (фраза 100% русская в украинском body). Supplier-side artefact (supplier выдал mixed UA+RU phrase, magazine скопировал as-is). Out-of-precedent Rule A. RU mirror verbatim. **Решение Yana:** translate UA → `зі склом і підсвічуванням` (canonical UA, cf. SKU 5 same brand UA `зі склом і підсвічуванням` правильная UA-форма)? или preserve verbatim как supplier-side artifact?
+
+4. **SKU 7 (Артикул 616390852, FROSTY M 12, b1)** — UA `<li>со стеклом и подсветкой</li>` — Russian-leak в UA-cell, **mirror SKU 6** same brand same artefact. Out-of-precedent. RU mirror verbatim. **Решение Yana:** fix вместе с SKU 6 одним правилом (если решение SKU 6 = fix)? или preserve verbatim?
 
 ---
 

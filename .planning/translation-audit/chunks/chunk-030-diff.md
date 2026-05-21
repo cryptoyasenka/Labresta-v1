@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-030 (96 SKU, продолжение chunk-029)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 0/96
+**Status:** IN PROGRESS 8/96
 
 **Состав (по типу товара):** первый SKU — Артикул `526929616`, бренд ITPIZZA (`Піч для піци ITPIZZA ML6`, раздел `Обладнання для піцерії/Печі для піци` — продолжение pizza-equipment блока, начатого в chunk-029 SKU 39-79). chunk-030 — целиком в разделе `Обладнання для піцерії` с 3 чередующимися подразделами: `Печі для піци` (40 SKU non-contiguous) + `Аксесуари для піцерії` (54 SKU) + `Преси для піци` (2 SKU). Section transitions interleaved (14 переходов): SKU 1-7 Печі / 8-19 Аксесуари / 20-28 Печі / 29-40 Аксесуари / 41 Печі / 42-46 Аксесуари / 47-49 Печі / 50 Преси / 51-53 Печі / 54 Преси / 55-78 Аксесуари / 79-90 Печі / 91 Аксесуари / 92-96 Печі. Бренды per-SKU (12 total): GI.Metal ×30 + Hendi ×24 + FROSTY ×13 + ITPIZZA ×6 + Moretti Forni ×6 + GGF ×5 + GoodFood ×4 + Hurakan ×2 + EWT INOX ×2 + Apach ×2 + Cuppone ×1 + REEDNEE ×1 — из них Hurakan (×2 SKU 27/84) + Apach (×2 SKU 51/54) = 4 SKU → SKIP-НП по правилу forward-only. Последний SKU 96 — Артикул `2385515101`, бренд Moretti Forni, `Піч для піци Moretti Forni PM72.72`. Тип товара определяется per-SKU.
 
@@ -23,5 +23,218 @@
 - **4 формат-политики A/B/C → GLOBAL assembly-time pass — НЕ per-SKU diff, НЕ FLAG.** A вес `NN.00`→`NN кг.`/целое · B латинская `x`→кириллическая `х` в габаритах · C пробел перед `мм/см` (вкл. UA `18кВт`/`27кВт` слитно). Спека `.planning/translation-audit/GLOBAL-SWEEP-format.md`; применяется `apply_chunk_diff.py` при сборке master-xlsx ко всем чанкам. **В chunk-030 вес `NN.00` / латинскую `x` / `NNмм` НЕ диффать и НЕ флагать — закрыто глобально.**
 - **F (структурный, per-SKU):** HTML `<br />`-склейка двух+ характеристик в одном `<li>` → раздельные `<li>` зеркально чистой стороне. Применять при встрече.
 - FLAG (НЕ авто, → MANUAL-REVIEW русский): T5 surface conflict (текст/код vs spec); RU temp values ≠ UA; spec single vs text dual zone; UA title без дескриптора что есть в body+RU; source data error UA=RU → soft note / Открытые вопросы. **Вес `NN.00` БОЛЬШЕ НЕ флагается (policy A глобально).**
+
+---
+
+## SKU 1/96 — Печь для пиццы ITPIZZA ML6 (Артикул 526929616) — 🔴 RU=UA + Rule A `35 див`→`35 см` + Rule B 2× `°С`→`°C`
+
+**Поле:** Название модификации (RU)
+**Было:** `Піч для піци ITPIZZA ML6`
+**Стало:** `Печь для пиццы ITPIZZA ML6`
+
+**Поле:** Описание товара (UA) — Rule A typo `Nдив`→`Nсм` + Rule B 2× `°С`→`°C`
+**Было:** `…діаметром до 35 див…температурний режим від 50°С до 500°С…`
+**Стало:** Rule A `35 див`→`35 см` (точечная замена); Rule B `50°С`→`50 °C` (Cyr С U+0421→Lat C U+0043 + пробел перед `°`) ×2 (`50°С`/`500°С`).
+
+**Поле:** Описание товара (RU)
+**Было:** (полностью идентично UA — украинский текст)
+**Стало:** (полный перевод RU тег-в-tag):
+
+```
+<p>Печь для пиццы имеет одну секцию на 6 пицц диаметром до 35 см. Фронтальная панель изготовлена из высококачественной нержавеющей стали. Боковые и задняя панели изготовлены из окрашенной стали. Жаропрочное стекло дверцы камеры выпечки. Внутренняя подсветка камеры выпечки. Поверхность для выпечки изготовлена из огнеупорного материала (шамот)</p> <p>Технические характеристики:</p> <ul> <li>натуральный под</li> <li>температурный режим от 50 °C до 500 °C</li> <li>внутренний размер камеры: 720x1080x140 мм.</li> <li>габариты: 1005x1350x415 мм</li> <li>мощность: 9,0 кВт.</li> <li>Напряжение: 380 Ст.</li> <li>Вес: 135кг</li> </ul>
+```
+
+*(blk триплет — `desc UA==RU` True 🔴 (UA-копия в RU cell); `nm_ua`==`nm_ru` `Піч для піци ITPIZZA ML6` UA-leak; `nm_ru`!=`nazv_ru` → AUTO Назв.мод (RU) = `Печь для пиццы ITPIZZA ML6`. **ITPIZZA НЕ ∈ НП-эксклюзив-set** {HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA} → обычная обработка. **ПЕРВЫЙ blk триплет в chunk-030** в разделе `Обладнання для піцерії/Печі для піци` (продолжение pizza-equipment-блока из chunk-029 SKU 39-79). Rule A (Yana 2026-05-21 durable forward) `Nдив`→`Nсм` precedent chunk-029 b9 SKU 72 ITPIZZA `32 див`→`32 см` — same brand same typo-pattern. Rule B (Yana 2026-05-21 durable forward) `°С` Cyr U+0421 → `°C` Lat U+0043 + space-before `°` ×2 ITPIZZA UA глиф-форма без `&deg;` entity (vs SKU 2 same brand `&deg;С` entity). **UA `Напруга: 380 Ст.`** — клавиатурный typo (Cyr `В.` U+0412 vs Cyr `Ст.` U+0421+U+0442) — **out-of-precedent Rule A scope** (только `Nдив`→`Nсм` точно) → preserve verbatim UA, RU mirror verbatim `Напряжение: 380 Ст.`, OQ#1 для финализации Yana. UA `нержавейющей` (RU-leak inside UA `нержавейющей` vs canonical UA `нержавіючої`) — supplier-side faithful preserve, out-of-precedent. Структура RU: 1 `<p>` opening + 1 `<p>Технические характеристики:</p>` + 1 `<ul>` + 7 `<li>` (зеркало UA single-line `<ul> <li>…</li> </ul>` без `\n`-разделителей; vs SKU 2 same brand `\n`-separated). META always faithful. Открытых вопросов 1 (OQ#1).)*
+
+*(scoped к row Артикул=526929616)*
+
+---
+
+## SKU 2/96 — Печь для пиццы ITPIZZA ML66 (Артикул 526929617) — 🔴 RU=UA + Rule B 2× `&deg;С`→`°C`
+
+**Поле:** Название модификации (RU)
+**Было:** `Піч для піци ITPIZZA ML66`
+**Стало:** `Печь для пиццы ITPIZZA ML66`
+
+**Поле:** Описание товара (UA) — Rule B 2× `&deg;С`→`°C` (entity replace + Cyr→Lat + space-before)
+**Было:** `…температурний режим від 50&deg;С до 500&deg;С…`
+**Стало:** Rule B `50&deg;С`→`50 °C` + `500&deg;С`→`500 °C` ×2 (`&deg;` HTML entity → `°` U+00B0; Cyr `С` U+0421 → Lat `C` U+0043; пробел перед `°`).
+
+**Поле:** Описание товара (RU)
+**Было:** (полностью идентично UA — украинский текст)
+**Стало:** (полный перевод RU тег-в-tag):
+
+```
+<p>Печь для пиццы имеет две секции на 12 пицц диаметром до 35 см, в каждый ярус по 6 пицц загрузки. Фронтальная панель изготовлена из высококачественной нержавеющей стали. Боковые и задняя панели изготовлены из окрашенной стали. Жаропрочное стекло дверцы камеры выпечки. Внутренняя подсветка камеры выпечки. Поверхность для выпечки изготовлена из огнеупорного материала (шамот)</p> <p>Технические характеристики:</p> <ul>
+<li>натуральный под</li>
+<li>температурный режим от 50 °C до 500 °C</li>
+<li>внутренний размер камеры: 720x1080x140 мм.</li>
+<li>габариты: 1005x1350x745 мм</li>
+<li>мощность: 18,0 кВт.</li>
+<li>Напряжение: 380 В.</li>
+<li>Вес: 213 кг</li>
+</ul>
+```
+
+*(blk триплет — `desc UA==RU` True 🔴; `nm_ua`==`nm_ru` UA-leak; `nm_ru`!=`nazv_ru` → AUTO Назв.мод (RU) = `Печь для пиццы ITPIZZA ML66`. ITPIZZA НЕ ∈ НП-эксклюзив. Rule B применён `&deg;С` entity-form ×2 — vs SKU 1 same brand `°С` без entity → ITPIZZA mixed-glyph-form per-SKU. Структура RU `\n`-separated `<li>` (зеркало UA с `\n` после `<ul>` и между `<li>`) vs SKU 1 без `\n`. UA `Напруга: 380 В.` correct (vs SKU 1 typo `Ст.` — same brand desync). `Вага: 213 кг` со space ok (vs SKU 1 `135кг` слитно — Policy C global). META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=526929617)*
+
+---
+
+## SKU 3/96 — Печь для пиццы GoodFood PO1 (Артикул 567433384) — blknochg + Rule B 2× RU `&deg;C`→`°C`
+
+**Поле:** Название модификации (RU)
+**Было:** (чистый рус. бренд+код, украинского leak нет)
+**Стало:** без изменений
+
+**Поле:** Описание товара (UA)
+**Было:** (UA канонический, уже `350 °C`/`300 °C` Lat C + space — НЕ требует Rule B)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU) — Rule B 2× `&deg;C`→`°C` RU only
+**Было:** `…350&deg;C…300 &deg;C…`
+**Стало:**
+
+```
+<p>Печь для пиццы имеет одну камеру на 4 пиццы диаметром по 20 см.</p> <p>Технические характеристики:</p> <ul> <li>Внутренние габариты камеры 400x400x120 мм.</li> <li>Регулировка температуры 350 °C.</li> <li>Датчик температуры камеры.</li> <li>Внутренняя подсветка.</li> <li>Большое смотровое окно.</li> <li>Корпус из высококачественной стали.</li> <li>Изоляция из стекловолокна.</li> <li>Термостойкие материалы.</li> <li>Приготовление непосредственно на шамотном камне позволяет получить идеальный продукт.</li> <li>Верхний и нижний подогрев.</li> <li>Таймер.</li> <li>Мощность 2 кВт.</li> <li>Напряжение 220 В </li> <li>Габариты 560x570х280 мм.</li> <li>Вес 20 кг.</li> <li>Внимание! Перед вводом печи в эксплуатацию ее необходимо прогреть в течение как минимум 8 часов при 300 °C. </li> </ul>
+```
+
+*(blknochg + Rule B RU only — `desc UA==RU` False (genuine отдельный корректный RU перевод поставщика); `nm_ua`!=`nm_ru` (UA `Піч для піци GoodFood PO1` vs RU `Печь для пиццы GoodFood PO1`); `nm_ru`==`nazv_ru` clean RU. **GoodFood НЕ ∈ НП-эксклюзив-set** → обычная обработка. Rule B применяется **только в RU** (`350&deg;C`→`350 °C` entity-replace + space-before; `300 &deg;C`→`300 °C` entity-replace, space уже был) — UA-сторона уже canonical `350 °C`/`300 °C` Lat C + space. **ПЕРВЫЙ blknochg+Rule B-RU-only в chunk-030**. **ПЕРВЫЙ GoodFood в chunk-030** (GoodFood ×4 candidate в chunk-030 — SKU 3/4 в b1 + ещё 2 позже). LIVE source artefact preserve в blknochg RU body: `Габариты 560x570х280 мм.` mixed `x` U+0078 + `х` U+0445 (Lat x + Cyr х в одной строке) — Policy B global at assembly-time для подстрановки. META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=567433384)*
+
+---
+
+## SKU 4/96 — Печь для пиццы GoodFood PO2 (Артикул 567434365) — blknochg + Rule B 2× RU `&deg;C`→`°C`
+
+**Поле:** Название модификации (RU)
+**Было:** (чистый рус. бренд+код)
+**Стало:** без изменений
+
+**Поле:** Описание товара (UA)
+**Было:** (UA канонический, уже `350 °C`/`300 °C` — НЕ требует Rule B)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU) — Rule B 2× `&deg;C`→`°C` RU only (mirror SKU 3 pattern)
+**Было:** `…350&deg;C…300 &deg;C…`
+**Стало:**
+
+```
+<p>Печь для пиццы имеет две камеры на 8 пицц диаметром по 20 см.</p> <p>Технические характеристики:</p> <ul> <li>Внутренние габариты камеры 400x400x120 мм.</li> <li>Регулировка температуры 350 °C.</li> <li>Датчик температуры камеры.</li> <li>Внутренняя подсветка.</li> <li>Большое смотровое окно.</li> <li>Корпус из высококачественной стали.</li> <li>Изоляция из стекловолокна.</li> <li>Термостойкие материалы.</li> <li>Приготовление непосредственно на шамотном камне позволяет получить идеальный продукт.</li> <li>Верхний и нижний подогрев.</li> <li>Таймер.</li> <li>Мощность 3 кВт.</li> <li>Напряжение 220 В </li> <li>Габариты 560x570х440 мм.</li> <li>Вес 32 кг.</li> <li>Внимание! Перед вводом печи в эксплуатацию ее необходимо прогреть в течение как минимум 8 часов при 300 °C. </li> </ul> <p><iframe allowfullscreen="allowfullscreen" frameborder="0" height="315" src="//www.youtube.com/embed/08Ah-nC1uCE?rel=0&loop=0&autoplay=0&controls=1&showinfo=1&disablekb=0&modestbranding=0" width="560"></iframe> </p>
+```
+
+*(blknochg + Rule B RU only — mirror SKU 3 GoodFood PO1 pattern (двухкамерная версия с iframe YouTube `08Ah-nC1uCE` в конце RU body — SKU 4-specific element vs SKU 3 без iframe). `desc UA==RU` False genuine; `nm_ua`!=`nm_ru`; `nm_ru`==`nazv_ru`. GoodFood НЕ ∈ НП-эксклюзив. Rule B 2× в RU. **ВТОРОЙ GoodFood blknochg в chunk-030** (mirror SKU 3 supplier RU body). META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=567434365)*
+
+---
+
+## SKU 5/96 — Печь для пиццы FROSTY F630 (Артикул 616390848) — 🔴 RU=UA + Rule B `450°C`→`450 °C`
+
+**Поле:** Название модификации (RU)
+**Было:** `Піч для піци FROSTY F630`
+**Стало:** `Печь для пиццы FROSTY F630`
+
+**Поле:** Описание товара (UA) — Rule B `450°C`→`450 °C` (space-before только; Lat C уже, без entity, без Cyr)
+**Было:** `…температура до 450°C…`
+**Стало:** Rule B `450°C`→`450 °C` (добавить пробел перед `°` U+00B0; `C` уже U+0043 Lat). **OQ#2**: UA `завантаження: 6 піц O30 см` — Latin `O` U+004F вместо `Ø` U+00D8 (cf. SKU 6 `Ø34 см`, SKU 7 `Ø34 см` тот же бренд) — out-of-precedent Rule A scope → preserve, finalize Yana.
+
+**Поле:** Описание товара (RU)
+**Было:** (полностью идентично UA — украинский текст)
+**Стало:** (полный перевод RU тег-в-tag):
+
+```
+<p>Печь для пиццы односекционная на 6 пицц.</p> <ul> <li>камера 620х910х130 мм</li> <li>загрузка: 6 пицц O30 см</li> <li>со стеклом и подсветкой</li> <li>2 термостата </li> <li>температура до 450 °C</li> <li>механическое управление</li> <li>мощность 6,0 кВт</li> <li>напряжение 380 В</li> <li>фасад - нержавеющая сталь</li> <li>габариты 855х1110х330 мм</li> </ul>
+```
+
+*(blk триплет — `desc UA==RU` True 🔴; `nm_ua`==`nm_ru` `Піч для піци FROSTY F630` UA-leak; `nm_ru`!=`nazv_ru` → AUTO Назв.мод (RU) = `Печь для пиццы FROSTY F630`. **FROSTY НЕ ∈ НП-эксклюзив-set** → обычная обработка (precedent chunk-029 b1 SKU 1/3/6 FROSTY mini-bar same brand-membership). Rule B `450°C`→`450 °C` минимальная форма — только space-before (`°` U+00B0 уже, `C` U+0043 Lat уже, без `&deg;` entity, без Cyr С) → vs SKU 1 ITPIZZA `°С` Cyr+spaceless (Rule B full) vs SKU 2 ITPIZZA `&deg;С` entity+Cyr (Rule B full+entity) vs SKU 6/7 same brand `450 °C` уже canonical → бренд FROSTY mixed-glyph-form per-SKU. Структура: 1 `<p>` opening + 1 `<ul>` + 10 `<li>` (no Технічні характеристики p-header — отличие от SKU 1/2 ITPIZZA). UA `O30 см` Latin O (codepoint U+004F) → mirror в RU verbatim `O30 см` (out-of-precedent OQ#2). UA `фасад - нержавіюча сталь` ASCII hyphen (vs SKU 6/7 same brand em-dash `—`) — supplier per-SKU drift, preserve verbatim. META always faithful. Открытых вопросов 1 (OQ#2).)*
+
+*(scoped к row Артикул=616390848)*
+
+---
+
+## SKU 6/96 — Печь для пиццы FROSTY M 9 (Артикул 616390851) — 🔴 RU=UA, no Rule B (`450 °C` уже canonical)
+
+**Поле:** Название модификации (RU)
+**Было:** `Піч для піци FROSTY M 9`
+**Стало:** `Печь для пиццы FROSTY M 9`
+
+**Поле:** Описание товара (UA)
+**Было:** (UA канонический `450 °C` уже Rule-B-compliant; нет fix). **OQ#3**: UA `<li>со стеклом и подсветкой</li>` — Russian-leak в UA-cell (между `Ø34 см` и `2 термостата`) — supplier-side faithful preserve, out-of-precedent Rule A scope.
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (полностью идентично UA — украинский текст)
+**Стало:** (полный перевод RU тег-в-tag):
+
+```
+<p>Печь для пиццы односекционная на 9 пицц.</p> <ul> <li>камера 600х900х150 мм</li> <li>загрузка: 9 пицц Ø34 см</li> <li>со стеклом и подсветкой</li> <li>2 термостата </li> <li>температура до 450 °C</li> <li>механическое управление</li> <li>мощность 12,9 кВт</li> <li>напряжение 380 В</li> <li>фасад — нержавеющая сталь</li> <li>габариты 1340x1270х380 мм</li> </ul>
+```
+
+*(blk триплет — `desc UA==RU` True 🔴; `nm_ua`==`nm_ru` UA-leak; `nm_ru`!=`nazv_ru` → AUTO Назв.мод (RU) = `Печь для пиццы FROSTY M 9`. FROSTY НЕ ∈ НП-эксклюзив. **NO Rule B fix** — UA `температура до 450 °C` уже canonical форма (Lat C U+0043 + space-before + `°` U+00B0 без entity, без Cyr) → vs SKU 5 same brand `450°C` spaceless → бренд FROSTY mixed-form. Структура: 1 `<p>` opening + 1 `<ul>` + 10 `<li>` (mirror SKU 5 structure). UA `<li>со стеклом и подсветкой</li>` Russian-leak (явный RU phrase в UA-cell) → RU translate mirror verbatim `со стеклом и подсветкой` (фраза уже корректный русский) — out-of-precedent OQ#3. UA `фасад — неіржавка сталь` em-dash + UA `неіржавка` (synonym `нержавіюча`) → RU `фасад — нержавеющая сталь`. UA mixed inner-dim `1340x1270х380` (Lat x + Cyr х per-axis) → mirror в RU verbatim (Policy B global at assembly). META always faithful. Открытых вопросов 1 (OQ#3).)*
+
+*(scoped к row Артикул=616390851)*
+
+---
+
+## SKU 7/96 — Печь для пиццы FROSTY M 12 (Артикул 616390852) — 🔴 RU=UA, no Rule B (`450 °C` уже canonical)
+
+**Поле:** Название модификации (RU)
+**Было:** `Піч для піци FROSTY M 12`
+**Стало:** `Печь для пиццы FROSTY M 12`
+
+**Поле:** Описание товара (UA)
+**Было:** (UA канонический `450 °C`). **OQ#4**: UA `<li>со стеклом и подсветкой</li>` — Russian-leak в UA-cell (mirror SKU 6 same brand same artefact) — supplier-side faithful preserve, out-of-precedent.
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (полностью идентично UA — украинский текст)
+**Стало:** (полный перевод RU тег-в-tag):
+
+```
+<p>Печь для пиццы двухсекционная на 12 пицц.</p> <ul>
+<li>камера 700х1050х150 мм</li>
+<li>загрузка: 6+6 пицц Ø34 см</li>
+<li>со стеклом и подсветкой</li>
+<li>4 термостата</li>
+<li>температура до 450 °C</li>
+<li>механическое управление</li>
+<li>мощность 14,6 кВт</li>
+<li>напряжение 380 В</li>
+<li>фасад — нержавеющая сталь</li>
+<li>габариты 990x1270х680 мм</li>
+</ul>
+```
+
+*(blk триплет — `desc UA==RU` True 🔴; `nm_ua`==`nm_ru` UA-leak; AUTO Назв.мод (RU) = `Печь для пиццы FROSTY M 12`. FROSTY НЕ ∈ НП-эксклюзив. NO Rule B fix (`450 °C` уже canonical mirror SKU 6 same brand). Структура `\n`-separated `<li>` (зеркало UA `\n` после `<ul>` и между `<li>`) vs SKU 5/6 same brand без `\n` → FROSTY mixed-structure-form per-SKU. UA `<li>со стеклом и подсветкой</li>` Russian-leak (mirror SKU 6 same artefact) → RU mirror verbatim OQ#4. UA `двосекційна на 12 піц`/`6+6 піц` → RU `двухсекционная на 12 пицц`/`6+6 пицц`. UA `фасад — неіржавка сталь` em-dash + `неіржавка` → RU `фасад — нержавеющая сталь`. META always faithful. Открытых вопросов 1 (OQ#4).)*
+
+*(scoped к row Артикул=616390852)*
+
+---
+
+## SKU 8/96 — Нож-ролик для пиццы Hendi 617007 (Артикул 659939683) — 🔴 RU=UA, мини-body (1p + 1ul + 1li)
+
+**Поле:** Название модификации (RU)
+**Было:** `Ніж-ролик для піци Hendi 617007`
+**Стало:** `Нож-ролик для пиццы Hendi 617007`
+
+**Поле:** Описание товара (UA)
+**Было:** (UA канонический, нет fix — без temp, без typos)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (полностью идентично UA — украинский текст)
+**Стало:** (полный перевод RU тег-в-tag):
+
+```
+<p>Нож-ролик для пиццы с режущим диском из нержавеющей стали.</p> <ul> <li>Габариты: диаметр диска 100 мм, общая длина 230 мм</li> </ul>
+```
+
+*(blk триплет — `desc UA==RU` True 🔴; `nm_ua`==`nm_ru` UA-leak; AUTO Назв.мод (RU) = `Нож-ролик для пиццы Hendi 617007`. **Hendi НЕ ∈ НП-эксклюзив-set** → обычная обработка. **ПЕРВЫЙ Hendi в chunk-030** (Hendi ×24 candidate — в chunk-030 крупнейший Hendi-блок проекта). **СМЕНА раздела: SKU 1-7 в `Обладнання для піцерії/Печі для піци`, SKU 8 в `Обладнання для піцерії/Аксесуари для піцерії`** — первый переход section внутри chunk-030 (см. chunk-header: 14 переходов всего). Мини-body: 1 `<p>` + 1 `<ul>` + 1 `<li>` (самый короткий blk триплет в chunk-030 b1). NO Rule B (нет temp). UA `Ніж-ролик для піци` → RU `Нож-ролик для пиццы` (UA `і`→RU `и` ×2 в `Ніж`/`піци`). UA `ріжучим диском з нержавіючої сталі` → RU `режущим диском из нержавеющей стали`. UA `діаметр диска`/`загальна довжина` → RU `диаметр диска`/`общая длина`. META always faithful. Открытых вопросов 0.)*
+
+**Наблюдения по батчу SKU 1-8 (8/96) — chunk-030 (ПЕРВЫЙ батч chunk-030; смешанный blk триплет + blknochg в разделе `Обладнання для піцерії/Печі для піци` SKU 1-7 → `Аксесуари для піцерії` SKU 8, переход section #1 внутри chunk-030):** **blk триплет 6 (SKU 1 ITPIZZA ML6 + SKU 2 ITPIZZA ML66 + SKU 5 FROSTY F630 + SKU 6 FROSTY M 9 + SKU 7 FROSTY M 12 + SKU 8 Hendi 617007 — UA-копия в RU cell, AUTO полный перевод тег-в-tag). blknotrip 0. blkv 0. blknochg 2 (SKU 3 GoodFood PO1 + SKU 4 GoodFood PO2 — LIVE Horoshop genuine RU body + Rule B RU-only). blknochgeq 0. SKIP-НП 0** (ITPIZZA + GoodFood + FROSTY + Hendi — все НЕ ∈ НП-эксклюзив-set {HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA}; SKIP-НП candidates chunk-030 = 4 SKU 27/51/54/84, появятся в b4/b7 позже). **Rule A применений: 1** (SKU 1 ITPIZZA `35 див`→`35 см` precedent chunk-029 b9 SKU 72 ITPIZZA `32 див`→`32 см` — same brand same typo-pattern). **Rule B применений: 5 SKU × ε** (SKU 1 UA 2× `°С`→`°C` Cyr+spaceless full form; SKU 2 UA 2× `&deg;С`→`°C` entity+Cyr full form; SKU 3 RU 2× `&deg;C`→`°C` entity+spaceless mini form; SKU 4 RU 2× `&deg;C`→`°C` mirror SKU 3; SKU 5 UA 1× `450°C`→`450 °C` minimal space-before-only form). **ПЕРВЫЙ blk триплет в chunk-030** SKU 1 (раздел `Обладнання для піцерії/Печі для піци` — продолжение pizza-equipment блока из chunk-029 SKU 39-79). **ПЕРВЫЙ Hendi в chunk-030** SKU 8 (Hendi ×24 candidate — крупнейший Hendi-блок проекта). **ПЕРВЫЙ GoodFood в chunk-030** SKU 3 (GoodFood ×4 candidate). **ПЕРВЫЙ переход section** SKU 7→8 (`Печі для піци`→`Аксесуари для піцерії`). FROSTY mixed-glyph + mixed-structure per-SKU (SKU 5 spaceless/no-`\n`/ASCII-hyphen vs SKU 6 canonical/no-`\n`/em-dash vs SKU 7 canonical/`\n`/em-dash — drift в одном бренде в одном чанке). ITPIZZA mixed-glyph (SKU 1 Cyr+spaceless vs SKU 2 entity+Cyr — `&deg;` entity per-SKU). GoodFood blknochg consistent (SKU 3 + SKU 4 mirror, SKU 4 +iframe). **Открытых вопросов по батчу: 4** (OQ#1 SKU 1 UA `380 Ст.` likely typo `380 В.`; OQ#2 SKU 5 UA `O30` likely typo `Ø30`; OQ#3 SKU 6 UA `со стеклом и подсветкой` Russian-leak; OQ#4 SKU 7 UA `со стеклом и подсветкой` Russian-leak — mirror SKU 6). Кумулятивно chunk-030 = **4** (questions финализируются при закрытии). Кумулятивно SKIP-НП chunk-030 = **0** (b1 0). NEXT: chunk-030 b2 SKU 9-16.
+
+*(scoped к row Артикул=659939683)*
 
 ---
