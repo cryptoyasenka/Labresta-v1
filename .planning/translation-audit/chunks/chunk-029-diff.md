@@ -1569,3 +1569,174 @@
 
 ---
 
+## SKU 73/79 — Печь для пиццы ITPIZZA MS44 (Артикул 490788757) — 🔴 RU=UA + Назв.мод (RU) UA-leak
+
+**Поле:** Название модификации (RU)
+**Было:** `Піч для піци ITPIZZA MS44`
+**Стало:** `Печь для пиццы ITPIZZA MS44`
+
+**Поле:** Описание товара (UA)
+**Было:** (UA уже Rule B clean — Unicode `°` + Lat C + пробел, нет typos / entity):
+```
+<p>Піч для піци має дві камери, кожна на 4 піци діаметром до 32 см. Фронтальна панель виготовлена з високоякісної неіржавкої сталі. Бічні та задня панелі виготовлені з пофарбованої сталі. Жароміцне скло дверцят камери випічки. Внутрішня підсвітка камери випічки. Поверхня для випікання виготовлена з вогнетривкого матеріалу (шамот)</p> <p>Технічні характеристики:</p> <ul> <li>натуральний під</li> <li>температурний режим від 50 °C до 500 °C</li> <li>розмір камери внутрішній: 660х660х140 мм.</li> <li>габарити: 975x920x745 мм</li> <li>потужність: 9,4 кВт.</li> <li>Напруга: 380 В.</li> <li>Вага: 135 кг</li> </ul>
+```
+**Стало:** без изменений (UA чистый — Rule A N/A, Rule B N/A).
+
+**Поле:** Описание товара (RU)
+**Было:** (полностью идентично UA — украинский текст в RU cell, blknotrip 🔴 RU=UA)
+**Стало:** (полный AUTHORED перевод RU 1:1 mirror UA structure 1 `<p>` + 1 `<p>Технические</p>` + 1 `<ul>/7li` inline):
+```
+<p>Печь для пиццы имеет две камеры, каждая на 4 пиццы диаметром до 32 см. Фронтальная панель изготовлена из высококачественной нержавеющей стали. Боковые и задняя панели изготовлены из крашеной стали. Жаропрочное стекло дверец камеры выпечки. Внутренняя подсветка камеры выпечки. Поверхность для выпекания изготовлена из огнеупорного материала (шамот)</p> <p>Технические характеристики:</p> <ul> <li>натуральный под</li> <li>температурный режим от 50 °C до 500 °C</li> <li>внутренний размер камеры: 660х660х140 мм.</li> <li>габариты: 975x920x745 мм</li> <li>мощность: 9,4 кВт.</li> <li>Напряжение: 380 В.</li> <li>Вес: 135 кг</li> </ul>
+```
+
+*(blknotrip + AUTHORED RU 1:1 mirror UA structure. `desc UA==RU` **True** 🔴; `nm_ua`==`nm_ru` UA-leak; `nazv_ru` genuine `Печь для пиццы ITPIZZA MS44` → AUTO. **ITPIZZA MS-серия continuation** (4th ITPIZZA MS-серия SKU после MS1/MS1+1/MS4 в b9, MS44 = 2-камера sister-of-MS4). MS44 = пицца-печь 2-камера, каждая 4 пиццы Ø32 см / 660×660×140 мм / 380 В / 9,4 кВт / 50-500°C / 135 кг / шамот / 975×920×745. SOFT-rules ~14: Піч→Печь, має дві камери, кожна→имеет две камеры, каждая, високоякісної неіржавкої сталі→высококачественной нержавеющей стали, Бічні та задня панелі виготовлені з пофарбованої сталі→Боковые и задняя панели изготовлены из крашеной стали, Жароміцне скло дверцят камери випічки→Жаропрочное стекло дверец камеры выпечки, Внутрішня підсвітка камери випічки→Внутренняя подсветка камеры выпечки, Поверхня для випікання виготовлена з вогнетривкого матеріалу (шамот)→Поверхность для выпекания изготовлена из огнеупорного материала (шамот) (UA-supplier intra-cell asymmetry `випічки` 2x для камеры + `випікання` 1x для поверхности → RU mirrors `выпечки`/`выпекания` asymmetry preserved), Технічні характеристики→Технические характеристики, натуральний під→натуральный под, температурний режим→температурный режим, розмір камери внутрішній→внутренний размер камеры (word-order normalize per b9 SKU 72 precedent), габарити→габариты, потужність→мощность, Напруга→Напряжение, Вага→Вес. **Inner-dim Cyr `х` U+0445 LIVE preserve** (`660х660х140` Cyr х; `975x920x745` Lat x — supplier intra-string mixed convention LIVE preserve, blknotrip не blk триплет — Policy B/C НЕ применяем). UA-cell не модифицируем (UA уже корректный supplier copy в RU cell + UA already Rule B clean — Unicode `°` + Lat C + пробел). **Rule A N/A** (UA grammar clean); **Rule B N/A** (UA `50 °C до 500 °C` уже clean Unicode + RU body authored с normalized `50 °C до 500 °C` format с самого начала, нет existing RU entity для substring replace). META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=490788757)*
+
+---
+
+## SKU 74/79 — Печь для пиццы FROSTY F1 (Артикул 499950721) — 🔴 RU=UA + Назв.мод (RU) UA-leak
+
+**Поле:** Название модификации (RU)
+**Было:** `Піч для піци FROSTY F1`
+**Стало:** `Печь для пиццы FROSTY F1`
+
+**Поле:** Описание товара (UA)
+**Было:** (UA уже Rule B clean + intra-cell RU-drift `<li>со стеклом и подсветкой</li>` supplier-side cross-locale lift LIVE preserve):
+```
+<p>Піч для піци односекційна.</p> <ul>
+<li>камера 350х410х75 мм</li>
+<li>завантаження 1 піца Ø34 см</li>
+<li>со стеклом и подсветкой</li>
+<li>2 термостати для роздільного керування ТЕНами</li>
+<li>температура до 350 °C</li>
+<li>механічне керування</li>
+<li>потужність 1.75 кВт</li>
+<li>напруга 220 В</li>
+<li>фасад — неіржавка сталь</li>
+<li>габарити 510х590х210 мм</li>
+</ul>
+```
+**Стало:** без изменений (UA чистый — Rule A N/A: decimal `1.75` UA dot supplier-convention LIVE preserve; Rule B N/A — `350 °C` уже Unicode + space + Lat C; intra-cell RU drift LIVE preserve).
+
+**Поле:** Описание товара (RU)
+**Было:** (полностью идентично UA — украинский текст в RU cell, blknotrip 🔴 RU=UA)
+**Стало:** (полный AUTHORED перевод RU 1:1 mirror UA structure 1 `<p>` + 1 `<ul>/10li` multi-line preserving `\n` между `<li>`; decimal normalized UA `1.75`→RU `1,75` per Yana decimal-comma RU rule):
+```
+<p>Печь для пиццы односекционная.</p> <ul>
+<li>камера 350х410х75 мм</li>
+<li>загрузка 1 пицца Ø34 см</li>
+<li>со стеклом и подсветкой</li>
+<li>2 термостата для раздельного управления ТЭНами</li>
+<li>температура до 350 °C</li>
+<li>механическое управление</li>
+<li>мощность 1,75 кВт</li>
+<li>напряжение 220 В</li>
+<li>фасад — нержавеющая сталь</li>
+<li>габариты 510х590х210 мм</li>
+</ul>
+```
+
+*(blknotrip + AUTHORED RU 1:1 mirror UA structure + UA `1.75` LIVE preserve (supplier intra-cell convention) + RU normalized `1,75` per Yana decimal-comma rule. `desc UA==RU` **True** 🔴; `nm_ua`==`nm_ru` UA-leak; `nazv_ru` genuine `Печь для пиццы FROSTY F1` → AUTO. **FROSTY continuation** (chunk-028 26 hits + chunk-029 prior 48 hits + b10 SKU 74 — много FROSTY SKU в проекте). F1 = пицца-печь 1-секция / 1 пицца Ø34 см / 350×410×75 мм / 220 В / 1,75 кВт / 350°C / нержавеющая сталь / 510×590×210. SOFT-rules ~10: Піч для піци односекційна→Печь для пиццы односекционная, завантаження→загрузка, піца→пицца, термостати→термостата (gen.sg. после числительного), роздільного керування→раздельного управления, ТЕНами→ТЭНами (Cyr Е→Э для слова ТЭНы), механічне керування→механическое управление, потужність `1.75`→мощность `1,75` (dot→comma per Yana decimal-comma RU rule, UA dot LIVE preserve), напруга→напряжение, неіржавка сталь→нержавеющая сталь, габарити→габариты. **U+2014 `—` em-dash + `Ø` U+00D8 LIVE preserve**. **UA-cell intra-cell RU drift** `<li>со стеклом и подсветкой</li>` — supplier-side data lift, LIVE preserve в UA (precedent SKU 75/76 b10 dual-cell pattern: supplier translation не полностью локализована — faithful preservation only, no UA-fix); RU body использует тот же `со стеклом и подсветкой` (idiomatic RU — естественная reuse от supplier). UA-cell не модифицируем (Rule A N/A — supplier decimal-convention `1.75` UA dot LIVE preserve, intra-cell RU drift НЕ Rule A trigger). **Rule B N/A** (UA + RU body authored уже clean — Unicode `°` + Lat C + space). Multi-line `<li>` newlines preserved в RU body. META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=499950721)*
+
+---
+
+## SKU 75/79 — Печь для пиццы GGM PDKG20 (8 пицц х 20 см) (Артикул 505189712) — blknochg pure + Rule B UA+RU dual-cell glyph-normalize
+
+**Поле:** Название модификации (RU)
+**Было:** (чистый рус. бренд+код)
+**Стало:** без изменений
+
+**Поле:** Описание товара (UA)
+**Было:** (UA содержит 🚨 HTML entity `&deg;` в температурном диапазоне + Lat C):
+`<li>Температура до 350&deg;C, плавне регулювання</li>`
+**Стало:** (substring replace `350&deg;C` → `350 °C` — entity → Unicode `°` + добавлен пробел перед `°` + Lat C сохранён):
+`<li>Температура до 350 °C, плавне регулювання</li>`
+
+**Поле:** Описание товара (RU)
+**Было:** (RU genuine отдельный перевод, но cell содержал 🚨 ту же HTML entity glyph mess + Lat C):
+`<li>Температура до 350&deg;C, плавная регулировка</li>`
+**Стало:** (substring replace `350&deg;C` → `350 °C` — entity → Unicode `°` + добавлен пробел перед `°` + Lat C сохранён):
+`<li>Температура до 350 °C, плавная регулировка</li>`
+
+*(blknochg pure + **Rule B glyph-normalize applied UA+RU dual-cell**. `desc UA!=RU` (genuine отдельный RU перевод но оба cells содержали тот же glyph mess `350&deg;C`); `nm_ua`!=`nm_ru` `Піч для піци GGM PDKG20 (8 піц х 20 см)` vs `Печь для пиццы GGM PDKG20 (8 пицц х 20 см)` correctly translated; `nm_ru`==`nazv_ru` clean. **GGM Gastro International continuation** (chunk-005 EGK55 prior + многие prior — давний бренд в проекте). PDKG20 = двухсекционная электрическая пицца-печь / 2 камеры 415×400×120 мм / 4+4 пиццы Ø20 см или 2 Ø40 см / 220 В / 3 кВт / 350°C / нержавеющая сталь / 560×570×440. **Rule B applied dual-cell**: (UA) `Температура до 350&deg;C` → `Температура до 350 °C` (entity → Unicode `°` + пробел добавлен + Lat C preserve); (RU) идентичный pattern — `350&deg;C` → `350 °C`. UA-cell mod += 1 (Rule B). RU-cell mod += 1. Остальные части UA + RU body unchanged (genuine LIVE Horoshop RU). **POL2 НЕ trigger** (нет U+02DA Polish ring above — это `&deg;` HTML entity, обрабатывается через Rule B). **POL1/POL4 НЕ trigger**. **POL3 N/A** (GGM Gastro International НЕ ∈ NP-SET). META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=505189712)*
+
+---
+
+## SKU 76/79 — Печь для пиццы GGM PEKG20 (4 пиццы х 20 см) (Артикул 505189713) — blknochg pure + Rule B RU only glyph-normalize
+
+**Поле:** Название модификации (RU)
+**Было:** (чистый рус. бренд+код)
+**Стало:** без изменений
+
+**Поле:** Описание товара (UA)
+**Было:** (UA уже Rule B clean — Unicode `°` + пробел + Lat C):
+`<li>Температура до 350 °C, плавне регулювання</li>`
+**Стало:** без изменений (UA чистый — Rule B N/A).
+
+**Поле:** Описание товара (RU)
+**Было:** (RU genuine отдельный перевод, но cell содержал 🚨 HTML entity glyph mess + Lat C — asymmetric vs UA уже clean):
+`<li>Температура до 350&deg;C, плавная регулировка</li>`
+**Стало:** (substring replace `350&deg;C` → `350 °C` — entity → Unicode `°` + добавлен пробел перед `°` + Lat C сохранён):
+`<li>Температура до 350 °C, плавная регулировка</li>`
+
+*(blknochg pure + **Rule B glyph-normalize applied RU only** (UA уже clean Unicode — asymmetric cross-locale glyph supply-side artefact: UA-supplier для UA cell написал clean Unicode `°` + space, для RU cell написал HTML entity `&deg;` без пробела — supplier translate-time не-consistent). `desc UA!=RU` (genuine отдельный RU перевод); `nm_ua`!=`nm_ru` `Піч для піци GGM PEKG20 (4 піци х 20 см)` vs `Печь для пиццы GGM PEKG20 (4 пиццы х 20 см)` correctly translated; `nm_ru`==`nazv_ru` clean. **GGM Gastro International continuation** sister SKU 75 (b10 introduced PDKG20 + PEKG20 dual-SKU; PEKG20 = 1-секция version, PDKG20 = 2-секции version). PEKG20 = односекционная электрическая пицца-печь / 1 камера 400×400×120 мм / 4 пиццы Ø20 см или 1 пицца Ø до 40 см / 220 В / 1,6 кВт / 350°C / минеральная вата isolation / 560×570×280. **Rule B applied RU only**: substring replace `Температура до 350&deg;C` → `Температура до 350 °C` (entity → Unicode `°` + пробел добавлен + Lat C preserve). UA-cell mod += 0 (UA already clean). RU-cell mod += 1. **Sister-pair SKU 75/76 GGM PDKG20/PEKG20 cross-locale glyph supply-side asymmetry**: SKU 75 оба cells содержали `&deg;C` (dual-cell mess), SKU 76 UA cell already clean Unicode + RU cell содержал `&deg;C` (asymmetric mess) — POL5 candidate intra-brand supplier cross-locale inconsistency continuation pattern (b9 GGF same pattern). **POL2 НЕ trigger**. **POL1/POL4 НЕ trigger**. **POL3 N/A** (GGM Gastro International НЕ ∈ NP-SET). META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=505189713)*
+
+---
+
+## SKU 77/79 — Печь для пиццы Apach AML4X (380В) (Артикул 526722492) — SKIP-НП (бренд НП-эксклюзив, тело из фида НП позже)
+
+**Бренд:** Apach (НП-эксклюзивный — forward-only SKIP-правило)
+**Поле:** Название модификации (RU)
+**Было:** (ячейка не трогается — тело из фида НП позже)
+**Стало:** не трогаем (SKIP-НП — тело из фида НП позже)
+
+**Поле:** Описание товара (RU)
+**Было:** (ячейка не трогается — тело из фида НП позже)
+**Стало:** не трогаем (SKIP-НП — тело из фида НП позже)
+
+*(SKIP-НП — `brand`=`Apach` ∈ {APACH/Apach/Апач} word-boundary NP-hit → forward-only SKIP-правило: тело из фида НП позже, ячейки chunk-029-fixed.xlsx НЕ трогаем (Назв.мод RU + Описание RU без изменений). **Apach ∈ НП-эксклюзивный список** (word-boundary NP-hit в бренд-SET {HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA}) → forward-only SKIP-правило. Source signature: `du==dr` True (UA-leak в RU cell — RU body содержит украинский text), `nm_ua==nm_ru` True (UA-leak Назв.мод RU), `nazv_ua!=nazv_ru` (Назв.карт. genuine разные), но brand=Apach NP-hit → SKIP-НП **независимо** от signature (правило forward-only по brand-membership, не по signature). AML4X = пицца-печь 1-секция / 4 пиццы Ø35 см или 1 Ø70 см / 720×720×140 / 380 В / 6 кВт / 500°C / 95 кг / шамотный камень 20 мм / нержавеющая сталь + алюминиевое покрытие + кам&#39;яные плиты пода / двойной термостат + раздельное регулирование / черный или синий цвет. RU cell содержит UA-leak полный (`Піч для піци...нержавіючої сталі...кам&#39;яними плитами...вогнетривкий камінь...+500&deg;С` Cyr С U+0421 + HTML entity) — SKIP-НП НЕ трогаем (downstream NP-feed). **Cyr `С` U+0421 + `&deg;` HTML entity в SKIP-НП cells LIVE preserve** — Rule B N/A для SKIP-НП (тело из NP-feed позже заменит весь cell). **ПЯТЫЙ Apach SKIP-НП в chunk-029** (после b1 Apach×3). Кумул. SKIP-НП chunk-029 = 9 (Hurakan×5 + Apach×4) после SKU 77. META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=526722492)*
+
+---
+
+## SKU 78/79 — Печь для пиццы Apach AMM4X (380В) (Артикул 526788766) — SKIP-НП (бренд НП-эксклюзив, тело из фида НП позже)
+
+**Бренд:** Apach (НП-эксклюзивный — forward-only SKIP-правило)
+**Поле:** Название модификации (RU)
+**Было:** (ячейка не трогается — тело из фида НП позже)
+**Стало:** не трогаем (SKIP-НП — тело из фида НП позже)
+
+**Поле:** Описание товара (RU)
+**Было:** (ячейка не трогается — тело из фида НП позже)
+**Стало:** не трогаем (SKIP-НП — тело из фида НП позже)
+
+*(SKIP-НП — `brand`=`Apach` ∈ {APACH/Apach/Апач} word-boundary NP-hit → forward-only SKIP-правило: тело из фида НП позже, ячейки chunk-029-fixed.xlsx НЕ трогаем. Source signature: `du==dr` True (UA-leak в RU cell), `nm_ua==nm_ru` True (UA-leak Назв.мод RU), `nazv_ua!=nazv_ru` (genuine разные). AMM4X = пицца-печь 1-секция / 4 пиццы Ø34 см / 700×700×140 / 380 В / 4,8 кВт / 450°C / 52 кг / шамотный камень 10 мм. **Sister-pair SKU 77/78** (Apach AML4X/AMM4X — оба 1-секция но разные размеры: AML4X 720×720×140 + 6 кВт + 500°C + 95 кг + 20 мм камень; AMM4X 700×700×140 + 4,8 кВт + 450°C + 52 кг + 10 мм камень). RU cell содержит UA-leak (`Піч для піци...+450&deg;С` Cyr С + entity) — SKIP-НП НЕ трогаем. **ШЕСТОЙ Apach SKIP-НП в chunk-029** (после b1 ×3 + SKU 77 ×1). Кумул. SKIP-НП chunk-029 = 10 (Hurakan×5 + Apach×5) после SKU 78. META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=526788766)*
+
+---
+
+## SKU 79/79 — Печь для пиццы Apach AMM44X (380В) (Артикул 526857503) — SKIP-НП (бренд НП-эксклюзив, тело из фида НП позже)
+
+**Бренд:** Apach (НП-эксклюзивный — forward-only SKIP-правило)
+**Поле:** Название модификации (RU)
+**Было:** (ячейка не трогается — тело из фида НП позже)
+**Стало:** не трогаем (SKIP-НП — тело из фида НП позже)
+
+**Поле:** Описание товара (RU)
+**Было:** (ячейка не трогается — тело из фида НП позже)
+**Стало:** не трогаем (SKIP-НП — тело из фида НП позже)
+
+*(SKIP-НП — `brand`=`Apach` ∈ {APACH/Apach/Апач} word-boundary NP-hit → forward-only SKIP-правило: тело из фида НП позже, ячейки chunk-029-fixed.xlsx НЕ трогаем. Source signature: `du==dr` True (UA-leak в RU cell), `nm_ua==nm_ru` True (UA-leak Назв.мод RU), `nazv_ua!=nazv_ru` (genuine разные). AMM44X = пицца-печь 2-секции / 4+4 пиццы Ø34 см / 2 камеры 700×700×140 / 380 В / 9,6 кВт / 450°C / 97 кг / шамотный камень 14 мм. **Sister-of-SKU-78 + 2-секции version** (AMM4X 1-секция / 52 кг / 4,8 кВт vs AMM44X 2-секции / 97 кг / 9,6 кВт — same 700×700×140 chamber dimensions). RU cell содержит UA-leak (`Піч для піци двосекційна...+450 &deg; С` Cyr С + entity + extra `&Oslash;` для Ø34) — SKIP-НП НЕ трогаем. **`&Oslash;` HTML entity в SKIP-НП cell LIVE preserve** (Rule B N/A для SKIP-НП — тело из NP-feed позже заменит весь cell). **СЕДЬМОЙ Apach SKIP-НП в chunk-029** (после b1 ×3 + SKU 77/78 ×2). Кумул. SKIP-НП chunk-029 = **11** (Hurakan×5 + Apach×6) после SKU 79 = FINAL chunk-029. **3 Apach в b10 = sister-triple** (AML4X 1-секция + AMM4X 1-секция + AMM44X 2-секции). META always faithful. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=526857503)*
+
+---
