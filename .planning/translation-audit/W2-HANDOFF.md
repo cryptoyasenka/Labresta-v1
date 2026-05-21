@@ -286,4 +286,36 @@ $env:PYTHONIOENCODING='utf-8'
 
 ---
 
+## 12. Post-handoff issues (выявлены после первичного закрытия)
+
+### Issue #1 — «хенди» (кириллица) в описании 4 Hendi-тендерайзеров (RESOLVED 2026-05-21)
+
+**Триггер:** Yana увидела на live `Тендерайзер Hendi 843468` фразу «размягчитель мяса **хенди**» (кириллица) в первом абзаце.
+
+**Audit (расширенный):** прогнан `_audit_brands_v2.py` по всем 31 chunk W2 на 34 бренда, word-boundary regex (исключает FP типа `максима` в `максимальный`). Результат:
+- **c36 (descriptions RU) — затронуто 4 SKU**, все из `chunk-055-fixed.xlsx` r9-r12 (тендерайзеры Hendi разных размеров). Шаблонный лид-абзац.
+- **c5/c7 (имена) — 0 ячеек** (имена уже латиницей).
+- **c25 (META keywords RU) — 940 ячеек cyr** (Hendi 272, GoodFood 64, Krupps 31, Bartscher 13 и т.д.) — Yana ack: **keywords оставить кириллицей**, в keywords cyrillic OK для SEO.
+- **c35 (descriptions UA) — forward к W1**, W2 UA не правит.
+
+**Applied fix:**
+- `chunk-055-fixed.xlsx` r9/r10/r11/r12 col36 — лид-абзац объединён без дубля + грамматическая опечатка `рекомендованная` → `рекомендована`.
+- Before: `<p>Современный размягчитель мяса хенди, ... Продукция Hendi отличается ...</p>`
+- After:  `<p>Современный размягчитель мяса Hendi отличается высоким качеством и универсальностью, особенно полезен для приготовления мяса на гриле. Представленная модель рекомендована для использования на профессиональной кухне, ее можно успешно использовать в домашних условиях.</p>`
+- Проверка post-patch: `хенди=0`, `Hendi=1` per cell ✓
+
+**Patch-bundle для Horoshop:**
+- Файл: `.planning/translation-audit/w2-horoshop-import-PATCH-hendi-lead.xlsx`
+- 4 строки × 9 cols (схема идентична main bundle)
+- 0 пустых ячеек, 0 fallback-cases
+- ARTs: `2123243855`, `2123249689`, `2123250967`, `2123251224`
+
+**Что осталось НЕ сделано (forward to next session):**
+- **Forward к W1:** UA лид-абзац (c35) тех же 4 SKU имеет ту же проблему (Хенді → Hendi + дубль). W1 fix симметричный.
+- **c25 keywords** — НЕ ТРОГАТЬ (Yana ack).
+
+**Scripts:** `_audit_brands_v2.py` (audit с word boundary, актуальный), `_w2_apply_hendi_lead_fix.py`, `_w2_build_patch_bundle.py`. Полный audit-отчёт: `W2-POST-HANDOFF-AUDIT-BRANDS.md`.
+
+---
+
 **Конец handoff документа W2.**
