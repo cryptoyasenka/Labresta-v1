@@ -41,3 +41,36 @@ Yana дала ответы через AskUserQuestion. Применяю прав
 **Commit author:** `LabResta <labresta@labresta.ua>`
 **Branch:** `translation-audit/w2` (НЕ main)
 **No AI traces in commits**
+
+---
+
+## Cumulative OQ #10-17 — ANSWERED Yana 2026-05-21 (AskUserQuestion x2)
+
+| # | Chunk | r | ART | Decision | Applied |
+|---|---|---|---|---|---|
+| 10 | 080 | 35 | 2402036548 | Body → G-EF400GSS; UA forward W1 | RU c36 ✓ (1× replace) |
+| 11 | 081 | 48 | 908202884 | Body → BLACK (fix copypasta VIP) | RU c36 + UA c35 ✓ (1× each) |
+| 12 | 082 | 35 | 2043415778 | Body → 68-168 (под имя H168D); UA forward W1 | RU c36 ✓ (1× replace) |
+| 13 | 083 | 37 | 2052609907 | UA forward W1 DB201S→DB301S-3 | RU уже сделан в c083 b5; **forward only** |
+| 14 | 084 | 4 | 2139145953 | Body → FSC100 (verified canon via tefcold.com); UA forward W1 | RU c36 ✓ (1× replace) |
+| 15 | 084 | 6 | 2141730389 | **PENDING** Yana проверит UF50GCP на tefcold.com (404 на /uf50gcp). RU body 908 chars уже faithful UA→RU, specs соответствуют. | — |
+| 16 | 084 | 21-24 | (Gi Metal AC-SP) | c5+c7 Latin c → Cyrillic с (4 SKU × 2 cells = 8 правок) | ✓ |
+| 17 | 084 | 39 | 641916589 | Body model RT78L → RT78B (specs verified canon REEDNEE via maresto.ua: 78л/0..+12°C/0.17кВт совпадают) | RU c36 ✓ (1× replace) |
+
+## Forward к W1 (UA-правки + chunk-021 OQ#4) — cum #10-17
+
+- **080 r35 (OQ#10):** UA col35 `Forcar G-EF400SS → Forcar G-EF400GSS` (синхронизация с RU)
+- **082 r35 (OQ#12):** UA col35 `місткість 169-68 пляшок → місткість 68-168 пляшок`
+- **083 r37 (OQ#13):** UA col35 `Шафа барна холодильна DB201S Tefcold → Шафа барна холодильна DB301S-3 Tefcold`
+- **084 r4 (OQ#14):** UA col35 `FS80CP → FSC100`
+
+## Forward к НП-feed merge — cum #10-17
+
+(нет SKIP-НП SKU в этом батче OQ)
+
+## Verification sources
+
+- Tefcold FSC100: https://www.tefcold.com/fsc100-16077 + https://www.whitegoods.ru/goods/shkaf-kholodilnyy-barnyy-tefcold-fsc100/
+- REEDNEE RT78B white: https://maresto.ua/ua/catalog/kholodilnoe_oborudovanie/shkaf_vitrina_kholodilnaya_reednee_rt78b_white.html
+- Tefcold UF50GCP: pending (`/uf50gcp` 404, нужен alt URL)
+
