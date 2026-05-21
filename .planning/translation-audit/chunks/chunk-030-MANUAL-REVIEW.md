@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-030 (96 SKU)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 16/96
+**Status:** IN PROGRESS 24/96
 
 Здесь собираю всё, что требует твоего подтверждения (не авто-фиксы). Авто-фиксы по locked-паттернам перечислены в сводках по батчам, отдельного подтверждения не требуют. Открытые вопросы накапливаются в нумерованный список и финализируются при закрытии chunk-030. SKIP-НП SKU (НП-эксклюзивные бренды) помечаются здесь и не переписываются.
 
@@ -17,6 +17,20 @@
 3. **SKU 6 (Артикул 616390851, FROSTY M 9, b1)** — UA `<li>со стеклом и подсветкой</li>` (между `Ø34 см` и `2 термостата`) — Russian-leak в UA-cell (фраза 100% русская в украинском body). Supplier-side artefact (supplier выдал mixed UA+RU phrase, magazine скопировал as-is). Out-of-precedent Rule A. RU mirror verbatim. **Решение Yana:** translate UA → `зі склом і підсвічуванням` (canonical UA, cf. SKU 5 same brand UA `зі склом і підсвічуванням` правильная UA-форма)? или preserve verbatim как supplier-side artifact?
 
 4. **SKU 7 (Артикул 616390852, FROSTY M 12, b1)** — UA `<li>со стеклом и подсветкой</li>` — Russian-leak в UA-cell, **mirror SKU 6** same brand same artefact. Out-of-precedent. RU mirror verbatim. **Решение Yana:** fix вместе с SKU 6 одним правилом (если решение SKU 6 = fix)? или preserve verbatim?
+
+5. **SKU 20 (Артикул 665924706, GoodFood PO11, b3)** — UA `<p>Внимание! Перед введенням печі в експлуатацію її необхідно прогріти впродовж щонайменше 8 годин за 450 °C. </p>` — Russian-leak `Внимание!` (русское слово в украинском body; supplier продолжил по-украински). Out-of-precedent. **Решение Yana:** translate UA `Внимание!`→`Увага!` (canonical UA)? или preserve verbatim?
+
+6. **SKU 20 (Артикул 665924706, GoodFood PO11, b3)** — RU `<li>Cмотровое окно.</li>` — Latin `C` U+0043 вместо Cyr `С` U+0421 в начале слова. Visual-ambiguity supplier typo. blknochg preserve в LIVE Horoshop body. **Решение Yana:** fix RU `Cмотровое`→`Смотровое` (Cyr С)? или preserve как LIVE artifact?
+
+7. **SKU 21 (Артикул 878056222, GoodFood PO22, b3)** — UA `<li>Внимание! Перед введенням печі…</li>` Russian-leak `Внимание!` — **mirror SKU 20** same brand same artefact. **Решение Yana:** fix вместе с SKU 20?
+
+8. **SKU 21 (Артикул 878056222, GoodFood PO22, b3)** — RU `<li>Cмотровое окно.</li>` Latin C — **mirror SKU 20** same brand same artefact. **Решение Yana:** fix вместе с SKU 20?
+
+9. **SKU 23 (Артикул 945098467, FROSTY M12L, b3)** — UA `<li>со стеклом и подсветкой</li>` Russian-leak — **mirror SKU 6/7** (chunk-030 b1) same brand same artefact. **Решение Yana:** translate UA → `зі склом і підсвічуванням` (canonical UA)?
+
+10. **SKU 24 (Артикул 945104692, FROSTY M18, b3)** — UA `<li>со стеклом и подсветкой</li>` Russian-leak — **mirror SKU 23** same brand same artefact. **Решение Yana:** fix вместе с SKU 23?
+
+11. **SKU 24 (Артикул 945104692, FROSTY M18, b3)** — UA `<li>камера 105х105х15 мм</li>` — supplier dims typo (камера в 100 раз меньше реальной; M12L SKU 23 same brand `1050х700х150`; M18 на 18 пицц должна быть крупнее). Out-of-precedent Rule A. **Решение Yana:** fix UA → `1050х1050х150 мм`? или preserve?
 
 ---
 
