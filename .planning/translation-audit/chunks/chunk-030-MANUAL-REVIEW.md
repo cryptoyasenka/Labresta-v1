@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-030 (96 SKU)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 24/96
+**Status:** IN PROGRESS 32/96
 
 Здесь собираю всё, что требует твоего подтверждения (не авто-фиксы). Авто-фиксы по locked-паттернам перечислены в сводках по батчам, отдельного подтверждения не требуют. Открытые вопросы накапливаются в нумерованный список и финализируются при закрытии chunk-030. SKIP-НП SKU (НП-эксклюзивные бренды) помечаются здесь и не переписываются.
 
@@ -31,6 +31,12 @@
 10. **SKU 24 (Артикул 945104692, FROSTY M18, b3)** — UA `<li>со стеклом и подсветкой</li>` Russian-leak — **mirror SKU 23** same brand same artefact. **Решение Yana:** fix вместе с SKU 23?
 
 11. **SKU 24 (Артикул 945104692, FROSTY M18, b3)** — UA `<li>камера 105х105х15 мм</li>` — supplier dims typo (камера в 100 раз меньше реальной; M12L SKU 23 same brand `1050х700х150`; M18 на 18 пицц должна быть крупнее). Out-of-precedent Rule A. **Решение Yana:** fix UA → `1050х1050х150 мм`? или preserve?
+
+12. **SKU 25 (Артикул 953822811, ITPIZZA ML4, b4)** — UA `Фронтальна панель виготовлена з високоякісної нержавейющей сталі` — broken mixed UA+RU spelling (`нержавей` UA + `ющей` RU вместо canonical UA `неіржавкої` или canonical RU `нержавеющей`). Out-of-precedent Rule A (НЕ `Nдив`→`Nсм` precedent). **Решение Yana:** fix UA `нержавейющей`→`неіржавкої` (canonical UA)? или preserve verbatim как supplier artefact?
+
+13. **SKU 28 (Артикул 1156124963, Cuppone TP635/2СM, b4)** — UA mod + RU mod оба содержат `TP635/2СM` — Cyr `С` U+0421 в latin model code (vs Lat `C` U+0043). Visual-ambiguity supplier typo. Precedent — SKU 20/21 b3 `Cмотровое` Lat-C-in-Cyr-word + chunk-027 b7 SKU 45/52/53 Lat-`p` artifact same pattern (Latin-glyph mixed-script). **Решение Yana:** fix `2СM`→`2CM` (Cyr С→Lat C) обе локали? или preserve как LIVE artifact?
+
+14. **SKU 32 (Артикул 1166354248, Hendi 617106 Форма, b4)** — **mod-vs-desc mismatch**: Название модификации `Форма для піци Hendi 617106 - Ø260 мм` (Ø260) vs Описание `<h2>Форма для піци - Ø280 мм Hendi 617106. </h2>` + `Розміри: ø280x(H)25мм` (Ø280). Out-of-precedent (не typo, а смысловое противоречие supplier-side). Hendi 617106 — separate code из 617083 (Ø240 SKU 30/31). **Решение Yana:** (a) fix mod Ø260→Ø280 (если desc корректен)? (b) fix desc Ø280→Ø260 (если mod корректен)? (c) preserve verbatim до verification supplier-side?
 
 ---
 
