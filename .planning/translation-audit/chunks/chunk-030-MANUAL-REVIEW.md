@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-030 (96 SKU)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 32/96
+**Status:** IN PROGRESS 40/96
 
 Здесь собираю всё, что требует твоего подтверждения (не авто-фиксы). Авто-фиксы по locked-паттернам перечислены в сводках по батчам, отдельного подтверждения не требуют. Открытые вопросы накапливаются в нумерованный список и финализируются при закрытии chunk-030. SKIP-НП SKU (НП-эксклюзивные бренды) помечаются здесь и не переписываются.
 
@@ -37,6 +37,8 @@
 13. **SKU 28 (Артикул 1156124963, Cuppone TP635/2СM, b4)** — UA mod + RU mod оба содержат `TP635/2СM` — Cyr `С` U+0421 в latin model code (vs Lat `C` U+0043). Visual-ambiguity supplier typo. Precedent — SKU 20/21 b3 `Cмотровое` Lat-C-in-Cyr-word + chunk-027 b7 SKU 45/52/53 Lat-`p` artifact same pattern (Latin-glyph mixed-script). **Решение Yana:** fix `2СM`→`2CM` (Cyr С→Lat C) обе локали? или preserve как LIVE artifact?
 
 14. **SKU 32 (Артикул 1166354248, Hendi 617106 Форма, b4)** — **mod-vs-desc mismatch**: Название модификации `Форма для піци Hendi 617106 - Ø260 мм` (Ø260) vs Описание `<h2>Форма для піци - Ø280 мм Hendi 617106. </h2>` + `Розміри: ø280x(H)25мм` (Ø280). Out-of-precedent (не typo, а смысловое противоречие supplier-side). Hendi 617106 — separate code из 617083 (Ø240 SKU 30/31). **Решение Yana:** (a) fix mod Ø260→Ø280 (если desc корректен)? (b) fix desc Ø280→Ø260 (если mod корректен)? (c) preserve verbatim до verification supplier-side?
+
+15. **SKU 38 (Артикул 1166382609, Hendi 617908 aluminum-coated, b5)** — UA-cell desc-body `<p>Виконана з блакитної сталі. Гарантує рівномірну випічку піци</p>` — supplier-side **copy-paste из blue-steel forms-template** (SKU 30 Hendi 617083) для aluminum-coated SKU. UA mod корректно `з алюмінієвим покриттям`, а UA desc сообщает неправильный материал (blue steel вместо carbon-steel-with-aluminum-coating). RU-side `Выполнена из углеродистой стали с алюминиевым покрытием` корректно (supplier translated mod's spec, не UA desc body). Out-of-precedent Rule A. **Решение Yana:** fix UA desc body — заменить на `<p>Виконана з вуглецевої сталі з алюмінієвим покриттям.</p>` + добавить warning `<p>Увага: він не безпечний в посудомийній машині! Опір листа до 220 градусів.</p>` (mirror SKU 39 Hendi 617953 same brand same sub-категория)? или preserve verbatim как supplier-side artifact?
 
 ---
 

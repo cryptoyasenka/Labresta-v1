@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-030 (96 SKU, продолжение chunk-029)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 32/96
+**Status:** IN PROGRESS 40/96
 
 **Состав (по типу товара):** первый SKU — Артикул `526929616`, бренд ITPIZZA (`Піч для піци ITPIZZA ML6`, раздел `Обладнання для піцерії/Печі для піци` — продолжение pizza-equipment блока, начатого в chunk-029 SKU 39-79). chunk-030 — целиком в разделе `Обладнання для піцерії` с 3 чередующимися подразделами: `Печі для піци` (40 SKU non-contiguous) + `Аксесуари для піцерії` (54 SKU) + `Преси для піци` (2 SKU). Section transitions interleaved (14 переходов): SKU 1-7 Печі / 8-19 Аксесуари / 20-28 Печі / 29-40 Аксесуари / 41 Печі / 42-46 Аксесуари / 47-49 Печі / 50 Преси / 51-53 Печі / 54 Преси / 55-78 Аксесуари / 79-90 Печі / 91 Аксесуари / 92-96 Печі. Бренды per-SKU (12 total): GI.Metal ×30 + Hendi ×24 + FROSTY ×13 + ITPIZZA ×6 + Moretti Forni ×6 + GGF ×5 + GoodFood ×4 + Hurakan ×2 + EWT INOX ×2 + Apach ×2 + Cuppone ×1 + REEDNEE ×1 — из них Hurakan (×2 SKU 27/84) + Apach (×2 SKU 51/54) = 4 SKU → SKIP-НП по правилу forward-only. Последний SKU 96 — Артикул `2385515101`, бренд Moretti Forni, `Піч для піци Moretti Forni PM72.72`. Тип товара определяется per-SKU.
 
@@ -893,3 +893,190 @@
 ---
 
 **Наблюдения по батчу SKU 25-32 (32/96) — chunk-030 b4 (mixed Печі 25-28 → Аксесуари 29-32, **1-я SKIP-НП** в chunk-030):** **blk триплет 6** (SKU 25 ITPIZZA ML4 + 26 ITPIZZA ML44 + 29 Hendi ополоник + 30/31 Hendi Форма Ø240 duplicate + 32 Hendi Форма Ø280). **blknotrip 0. blkv 0. blknochg 1** (SKU 28 Cuppone TP635/2СM — genuine RU перевод supplier-side, отличается от UA). **blknochgeq 0. SKIP-НП 1** (SKU 27 Hurakan HKN-MD1 — **1-я НП в chunk-030 из 4 ожидаемых**: Hurakan 27/84 + Apach 51/54). Rule A применений: 0 (UA `нержавейющей` SKU 25 → OQ#12 out-of-precedent). **Rule B применений: 1 SKU × 4 правки** (SKU 25 UA 2× + RU 2× = 4 entity→Unicode + Cyr С→Lat C + space-before). **2 новые sub-категории Hendi** в одном батче: ополоник (SKU 29) + формы для пиццы (SKU 30/31/32) — после Hendi-сеток b2 + Hendi-лопат b3. **SKU 30/31 duplicate** supplier-side (same Hendi 617083 + same UA mod + same UA desc + разные артикулы 1166330695/1166334388). **Section transition #3 внутри chunk-030**: `Печі для піци` SKU 25-28 (вкл. SKIP Hurakan 27) → `Аксесуари для піцерії` SKU 29-32. **Открытых вопросов по батчу: 3** (OQ#12 SKU 25 `нержавейющей` UA-typo broken mixed UA+RU; OQ#13 SKU 28 `2СM` Cyr С в latin model code Cuppone; OQ#14 SKU 32 mod Ø260 vs desc Ø280 mismatch). Кумулятивно chunk-030 = **14 OQ** (b1 4 + b3 7 + b4 3). Кумулятивно SKIP-НП chunk-030 = **1** (b1+b2+b3 = 0; +b4 Hurakan 27). NEXT: chunk-030 b5 SKU 33-40.
+
+## SKU 33/96 — Форма для пиццы Hendi 617106 - Ø260 мм (Артикул 1166357630) — 🔴 RU=UA, Hendi forms-series blue-steel uniform + mod-vs-desc mismatch (mirror SKU 32 OQ#14)
+
+**Поле:** Название модификации (RU)
+**Было:** `Форма для піци Hendi 617106 - Ø260 мм`
+**Стало:** `Форма для пиццы Hendi 617106 - Ø260 мм`
+
+**Поле:** Описание товара (UA)
+**Было:** (UA канонический мини-body 3p — uniform Hendi forms-template)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (полностью идентично UA — украинский текст)
+**Стало:** (полный перевод RU тег-в-tag):
+
+```
+<h2>Форма для пиццы - Ø280 мм Hendi 617106. </h2>
+<p>Изготовлена из голубой стали. Гарантирует равномерное выпекание пиццы</p>
+<p>Размеры: ø280x(H)25мм </p>
+```
+
+*(blk триплет — `desc UA==RU` True 🔴; `nm_ua`==`nm_ru` UA-leak; AUTO Назв.мод (RU). Hendi НЕ ∈ НП-эксклюзив. NO Rule B (нет `°` glyphs во всех blue-steel formas-series). **Продолжение Hendi blue-steel forms-series** (после Hendi 617083 SKU 30/31 Ø240 + 617106 SKU 32 Ø260). UA `Форма для піци` → RU `Форма для пиццы`. UA `Виконана з блакитної сталі. Гарантує рівномірну випічку піци` → RU `Изготовлена из голубой стали. Гарантирует равномерное выпекание пиццы`. UA `Розміри` → RU `Размеры`. Unicode `Ø` (U+00D8) + `ø` (U+00F8) preserve verbatim. mirror SKU 32 mod-Ø260/desc-Ø280 mismatch. **OQ refresh (mirror #14)**: mod `Ø260` vs desc `Ø280`+`ø280x(H)25` — DUPLICATE supplier-side same artifact как SKU 32 Hendi 617106 (same Hendi code, разные артикулы 1166354248 vs 1166357630 → magazine catalog imported one Hendi-code twice; mismatch carries over). Без дополнительного OQ — reference OQ#14. Открытых вопросов refresh OQ#14 mirror.)*
+
+*(scoped к row Артикул=1166357630)*
+
+---
+## SKU 34/96 — Форма для пиццы Hendi 617304 - Ø320 мм (Артикул 1166363474) — 🔴 RU=UA, Hendi forms-series blue-steel uniform
+
+**Поле:** Название модификации (RU)
+**Было:** `Форма для піци Hendi 617304 - Ø320 мм`
+**Стало:** `Форма для пиццы Hendi 617304 - Ø320 мм`
+
+**Поле:** Описание товара (UA)
+**Было:** (UA канонический мини-body 3p — uniform Hendi forms-template)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (полностью идентично UA — украинский текст)
+**Стало:** (полный перевод RU тег-в-tag):
+
+```
+<h2>Форма для пиццы - Ø320 мм Hendi 617304. </h2>
+<p>Изготовлена из голубой стали. Гарантирует равномерное выпекание пиццы</p>
+<p>Размеры: ø320x(H)25мм </p>
+```
+
+*(blk триплет — `desc UA==RU` True 🔴; `nm_ua`==`nm_ru` UA-leak; AUTO Назв.мод (RU). Hendi НЕ ∈ НП-эксклюзив. NO Rule B (нет `°` glyphs во всех blue-steel formas-series). **Продолжение Hendi blue-steel forms-series** (после Hendi 617083 SKU 30/31 Ø240 + 617106 SKU 32 Ø260). UA `Форма для піци` → RU `Форма для пиццы`. UA `Виконана з блакитної сталі. Гарантує рівномірну випічку піци` → RU `Изготовлена из голубой стали. Гарантирует равномерное выпекание пиццы`. UA `Розміри` → RU `Размеры`. Unicode `Ø` (U+00D8) + `ø` (U+00F8) preserve verbatim. uniform Ø320. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=1166363474)*
+
+---
+## SKU 35/96 — Форма для пиццы Hendi 617403 - Ø360 мм (Артикул 1166364135) — 🔴 RU=UA, Hendi forms-series blue-steel uniform
+
+**Поле:** Название модификации (RU)
+**Было:** `Форма для піци Hendi 617403 - Ø360 мм`
+**Стало:** `Форма для пиццы Hendi 617403 - Ø360 мм`
+
+**Поле:** Описание товара (UA)
+**Было:** (UA канонический мини-body 3p — uniform Hendi forms-template)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (полностью идентично UA — украинский текст)
+**Стало:** (полный перевод RU тег-в-tag):
+
+```
+<h2>Форма для пиццы - Ø360 мм Hendi 617403. </h2>
+<p>Изготовлена из голубой стали. Гарантирует равномерное выпекание пиццы</p>
+<p>Размеры: ø360x(H)25мм </p>
+```
+
+*(blk триплет — `desc UA==RU` True 🔴; `nm_ua`==`nm_ru` UA-leak; AUTO Назв.мод (RU). Hendi НЕ ∈ НП-эксклюзив. NO Rule B (нет `°` glyphs во всех blue-steel formas-series). **Продолжение Hendi blue-steel forms-series** (после Hendi 617083 SKU 30/31 Ø240 + 617106 SKU 32 Ø260). UA `Форма для піци` → RU `Форма для пиццы`. UA `Виконана з блакитної сталі. Гарантує рівномірну випічку піци` → RU `Изготовлена из голубой стали. Гарантирует равномерное выпекание пиццы`. UA `Розміри` → RU `Размеры`. Unicode `Ø` (U+00D8) + `ø` (U+00F8) preserve verbatim. uniform Ø360. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=1166364135)*
+
+---
+## SKU 36/96 — Форма для пиццы Hendi 617427 - Ø450 мм (Артикул 1166365296) — 🔴 RU=UA, Hendi forms-series blue-steel uniform
+
+**Поле:** Название модификации (RU)
+**Было:** `Форма для піци Hendi 617427 - Ø450 мм`
+**Стало:** `Форма для пиццы Hendi 617427 - Ø450 мм`
+
+**Поле:** Описание товара (UA)
+**Было:** (UA канонический мини-body 3p — uniform Hendi forms-template)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (полностью идентично UA — украинский текст)
+**Стало:** (полный перевод RU тег-в-tag):
+
+```
+<h2>Форма для пиццы - Ø450 мм Hendi 617427. </h2>
+<p>Изготовлена из голубой стали. Гарантирует равномерное выпекание пиццы</p>
+<p>Размеры: ø450x(H)38мм </p>
+```
+
+*(blk триплет — `desc UA==RU` True 🔴; `nm_ua`==`nm_ru` UA-leak; AUTO Назв.мод (RU). Hendi НЕ ∈ НП-эксклюзив. NO Rule B (нет `°` glyphs во всех blue-steel formas-series). **Продолжение Hendi blue-steel forms-series** (после Hendi 617083 SKU 30/31 Ø240 + 617106 SKU 32 Ø260). UA `Форма для піци` → RU `Форма для пиццы`. UA `Виконана з блакитної сталі. Гарантує рівномірну випічку піци` → RU `Изготовлена из голубой стали. Гарантирует равномерное выпекание пиццы`. UA `Розміри` → RU `Размеры`. Unicode `Ø` (U+00D8) + `ø` (U+00F8) preserve verbatim. uniform Ø450 H=38 taller. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=1166365296)*
+
+---
+## SKU 37/96 — Форма для пиццы Hendi 617434 - Ø500 мм (Артикул 1166379341) — 🔴 RU=UA, Hendi forms-series blue-steel uniform
+
+**Поле:** Название модификации (RU)
+**Было:** `Форма для піци Hendi 617434 - Ø500 мм`
+**Стало:** `Форма для пиццы Hendi 617434 - Ø500 мм`
+
+**Поле:** Описание товара (UA)
+**Было:** (UA канонический мини-body 3p — uniform Hendi forms-template)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** (полностью идентично UA — украинский текст)
+**Стало:** (полный перевод RU тег-в-tag):
+
+```
+<h2>Форма для пиццы - Ø500 мм Hendi 617434. </h2>
+<p>Изготовлена из голубой стали. Гарантирует равномерное выпекание пиццы</p>
+<p>Размеры: ø500x(H)38мм </p>
+```
+
+*(blk триплет — `desc UA==RU` True 🔴; `nm_ua`==`nm_ru` UA-leak; AUTO Назв.мод (RU). Hendi НЕ ∈ НП-эксклюзив. NO Rule B (нет `°` glyphs во всех blue-steel formas-series). **Продолжение Hendi blue-steel forms-series** (после Hendi 617083 SKU 30/31 Ø240 + 617106 SKU 32 Ø260). UA `Форма для піци` → RU `Форма для пиццы`. UA `Виконана з блакитної сталі. Гарантує рівномірну випічку піци` → RU `Изготовлена из голубой стали. Гарантирует равномерное выпекание пиццы`. UA `Розміри` → RU `Размеры`. Unicode `Ø` (U+00D8) + `ø` (U+00F8) preserve verbatim. uniform Ø500 H=38 taller. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=1166379341)*
+
+---
+## SKU 38/96 — Форма для пиццы Hendi 617908 с алюминиевым покрытием ø240x(H)25 мм (Артикул 1166382609) — blknochg + OQ#15 (UA-desc copy-paste blue-steel)
+
+**Поле:** Название модификации (RU)
+**Было:** `Форма для пиццы Hendi 617908 с алюминиевым покрытием ø240x(H)25 мм` (clean RU — supplier-side)
+**Стало:** без изменений
+
+**Поле:** Описание товара (UA)
+**Было:** `<h2>Форма для піци - Ø240 мм Hendi 617908. </h2>\n<p>Виконана з блакитної сталі. Гарантує рівномірну випічку піци</p>\n<p>Розміри: ø240x(H)25мм </p>` (UA-body = blue-steel template ← **copy-paste from SKU 30 Hendi 617083 verbatim!** UA-side **не упоминает алюминиевое покрытие** при том что mod явно говорит `з алюмінієвим покриттям`)
+**Стало:** без изменений (preserve verbatim — OQ#15 для Yana)
+
+**Поле:** Описание товара (RU)
+**Было:** `<h2>Форма для пиццы - &Oslash;240 мм Hendi 617908. </h2>\n<p>Выполнена из углеродистой стали с алюминиевым покрытием.</p>\n<p>Размеры: &oslash;240x(H)25мм </p>\n<p>Внимание: он не безопасен в посудомоечной машине! Сопротивление листа до 220 градусов.</p>` (genuine отдельный RU с правильным материалом + warning + HTML entities `&Oslash;`/`&oslash;`)
+**Стало:** без изменений
+
+*(blknochg + OQ#15 — `desc UA==RU` False (genuine genuine RU translation); `nm_ua`!=`nm_ru` (UA `Форма для піци` vs RU `Форма для пиццы`); `nm_ru`==`nazv_ru` clean. Hendi НЕ ∈ НП-эксклюзив. NO Rule B. **Новая sub-категория**: Hendi aluminum-coated forms (после blue-steel forms 30/31/32/33-37). RU-body uses HTML entities `&Oslash;`/`&oslash;` (vs blue-steel forms Unicode `Ø`/`ø` — mixed glyph-form per-SKU same Hendi брендa). RU adds extra `<p>Внимание:` warning paragraph + carbon-steel-with-aluminum-coating material. **OQ#15**: UA-cell desc-body — supplier copy-pasted blue-steel template `<p>Виконана з блакитної сталі...</p>` для aluminum-coated SKU; UA mod `з алюмінієвим покриттям` правильно, а UA desc сообщает неправильный материал. Out-of-precedent Rule A. Открытых вопросов 1 (OQ#15).)*
+
+*(scoped к row Артикул=1166382609)*
+
+---
+
+## SKU 39/96 — Форма для пиццы Hendi 617953 с алюминиевым покрытием ø360x(H)25 мм (Артикул 1166389847) — blknochg (mirror SKU 38 шаблон, UA-cell консистентен mod)
+
+**Поле:** Название модификации (RU)
+**Было:** `Форма для пиццы Hendi 617953 с алюминиевым покрытием ø360x(H)25 мм`
+**Стало:** без изменений
+
+**Поле:** Описание товара (UA)
+**Было:** `<h2>Форма для піци - Ø360 мм Hendi 617953. </h2>\n<p>Виконана з вуглецевої сталі з алюмінієвим покриттям.</p>\n<p>Розміри: ø360x(H)25мм </p>\n<p>Увага: він не безпечний в посудомийній машині! Опір листа до 220 градусів.</p>` (UA-cell **корректно** указывает carbon-steel + aluminum-coating — vs SKU 38 broken)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** `<h2>Форма для пиццы - &Oslash;360 мм Hendi 617953. </h2>\n<p>Выполнена из углеродистой стали с алюминиевым покрытием.</p>\n<p>Размеры: &oslash;360x(H)25мм </p>\n<p>Внимание: он не безопасен в посудомоечной машине! Сопротивление листа до 220 градусов.</p>` (genuine RU с правильным материалом + warning)
+**Стало:** без изменений
+
+*(blknochg — `desc UA==RU` False (genuine); `nm_ua`!=`nm_ru`; `nm_ru`==`nazv_ru`. Hendi НЕ ∈ НП-эксклюзив. NO Rule B. UA-cell корректно описывает product (vs SKU 38 broken UA copy-paste). RU-body HTML entities `&Oslash;`/`&oslash;` + warning paragraph. Открытых вопросов 0.)*
+
+*(scoped к row Артикул=1166389847)*
+
+---
+
+## SKU 40/96 — Форма для пиццы Hendi 617984 с алюминиевым покрытием ø500x(H)38 мм (Артикул 1166394719) — blknochg (mirror SKU 39 H=38)
+
+**Поле:** Название модификации (RU)
+**Было:** `Форма для пиццы Hendi 617984 с алюминиевым покрытием ø500x(H)38 мм`
+**Стало:** без изменений
+
+**Поле:** Описание товара (UA)
+**Было:** `<h2>Форма для піци - Ø500 мм Hendi 617984. </h2>\n<p>Виконана з вуглецевої сталі з алюмінієвим покриттям.</p>\n<p>Розміри: ø500x(H)38 мм </p>\n<p>Увага: він не безпечний в посудомийній машині! Опір листа до 220 градусів.</p>` (UA корректно)
+**Стало:** без изменений
+
+**Поле:** Описание товара (RU)
+**Было:** `<h2>Форма для пиццы - &Oslash;500 мм Hendi 617984. </h2>\n<p>Выполнена из углеродистой стали с алюминиевым покрытием.</p>\n<p>Размеры: &oslash;500x(H)38 мм </p>\n<p>Внимание: он не безопасен в посудомоечной машине! Сопротивление листа до 220 градусов.</p>` (genuine RU)
+**Стало:** без изменений
+
+*(blknochg — `desc UA==RU` False (genuine); `nm_ua`!=`nm_ru`. Hendi НЕ ∈ НП-эксклюзив. NO Rule B. Mirror SKU 39 шаблон (UA-cell корректен), но H=38 instead of 25 (high-rim variant). Открытых вопросов 0.)*
+
+*(scoped к row Артикул=1166394719)*
+
+---
+**Наблюдения по батчу SKU 33-40 (40/96) — chunk-030 b5 (uniform Hendi forms продолжение раздела `Аксесуари для піцерії`):** **blk триплет 5** (SKU 33 Ø260/Ø280 mismatch mirror SKU 32 + 34/35/36/37 uniform Hendi blue-steel forms-series Ø320/Ø360/Ø450/Ø500). **blknotrip 0. blkv 0. blknochg 3** (SKU 38/39/40 Hendi aluminum-coated forms — supplier-side genuine RU bodies с HTML entities `&Oslash;`/`&oslash;` + warning paragraph). **blknochgeq 0. SKIP-НП 0** (все Hendi). Rule A применений: 0. **Rule B применений: 0** (нет `°` glyphs в b5). **Hendi forms-series consolidation в b5**: 8 Hendi formas SKU подряд (33-40) — две sub-категории: blue-steel (33-37) + aluminum-coated (38/39/40); mixed glyph-form (blue-steel Unicode `Ø`/`ø` vs aluminum HTML `&Oslash;`/`&oslash;`). **Открытых вопросов по батчу: 1** (OQ#15 SKU 38 — UA-desc copy-paste blue-steel-template вместо aluminum-coating; UA mod упоминает aluminum, UA desc — blue steel; supplier UA-side copy-paste error из SKU 30 Hendi 617083). SKU 33 повторяет mod-vs-desc mismatch SKU 32 (OQ#14) — без отдельного OQ, refresh reference. Кумулятивно chunk-030 = **15 OQ** (b1 4 + b3 7 + b4 3 + b5 1). Кумулятивно SKIP-НП chunk-030 = **1** (без изменений от b4 Hurakan 27). NEXT: chunk-030 b6 SKU 41-48.
+
