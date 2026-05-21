@@ -1,14 +1,25 @@
 """W2 Horoshop import bundle rebuild — chunks 055-085, post-OQ-apply.
 
-Schema: same as prior bundle (4 RU cols).
+Schema v2 (9 cols RU+UA, expanded per Yana 2026-05-21):
   c01 Артикул
-  c02 Название модификации (RU)  ← source c05
-  c03 Название (RU)              ← source c07
-  c04 Описание товара (RU)       ← source c36
+  c04 Название модификации (UA)
+  c05 Название модификации (RU)
+  c06 Название (UA)
+  c07 Название (RU)
+  c24 META keywords (UA)
+  c25 META keywords (RU)
+  c35 Описание товара (UA)
+  c36 Описание товара (RU)
+
+NOT included (always empty in W2 fixed.xlsx → would wipe Horoshop):
+  c22/c23 HTML title (UA/RU)
+  c26/c27 META description (UA/RU)
+  c28/c29 h1 (UA/RU)
+  c37/c38 Короткое описание (UA/RU)
 
 Filters:
-  - SKIP-НП brands (HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA) → excluded
-  - Rows unchanged vs source chunk-NN.xlsx (W2 did no cleanup) → excluded
+  - SKIP-НП brands (HURAKAN/APACH/FAGOR/TATRA/COLD/PROJECT SYSTEMS/ASTORIA/ARRIS/MAXIMA) → excluded (exact match, не substring)
+  - Rows unchanged vs source chunk-NN.xlsx across ALL 8 trans cols (W2 did no cleanup) → excluded
 
 Safety rule (Yana): NO empty cells in bundle, иначе Horoshop сотрёт данные.
   - Empty in fixed.xlsx → fallback to Horoshop export (current live value)
@@ -23,15 +34,20 @@ HOROSHOP_EXPORT = r"C:\Projects\labresta-sync\horoshop-export 21.05.26.xlsx"
 OUT_PATH = r"C:\Projects\labresta-sync-w2\.planning\translation-audit\w2-horoshop-import-055-085.xlsx"
 TEST_PATH = r"C:\Projects\labresta-sync-w2\.planning\translation-audit\w2-horoshop-import-TEST-1.xlsx"
 
-# Schema: source col index in chunk-NN-fixed.xlsx → output col name
+# Schema v2: source col index in chunk-NN-fixed.xlsx → output col name (9 cols, RU+UA)
 SOURCE_COLS = [
     (1,  "Артикул"),
+    (4,  "Название модификации (UA)"),
     (5,  "Название модификации (RU)"),
+    (6,  "Название (UA)"),
     (7,  "Название (RU)"),
+    (24, "META keywords (UA)"),
+    (25, "META keywords (RU)"),
+    (35, "Описание товара (UA)"),
     (36, "Описание товара (RU)"),
 ]
 OUT_HEADER = [name for _, name in SOURCE_COLS]
-TRANS_COLS = [c for c, _ in SOURCE_COLS if c != 1]  # cols to validate non-empty: 5, 7, 36
+TRANS_COLS = [c for c, _ in SOURCE_COLS if c != 1]  # 8 trans cols for unchanged-detection
 
 SKIP_BRANDS = [
     "hurakan", "apach", "fagor", "tatra", "cold",

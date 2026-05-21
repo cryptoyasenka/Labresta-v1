@@ -70,5 +70,68 @@ RU-only, 4 столбца. UA-правки и SEO RU-поля (HTML title / META
 ## Next step (Yana)
 
 1. **Safe-mode test:** загрузить `w2-horoshop-import-TEST-1.xlsx` в Horoshop через `/import` UI → проверить что 1 SKU обновился корректно (не сотерлось ничего лишнего) → визуально на сайте.
-2. **Full bundle:** если TEST OK → загрузить `w2-horoshop-import-055-085.xlsx` (1009 SKU).
-3. Если что-то пойдёт не так → restore via `w2-horoshop-import-055-085.bak-21.05.26-pre-OQ-apply.xlsx` (старая версия до OQ apply).
+2. **Full bundle:** если TEST OK → загрузить `w2-horoshop-import-055-085.xlsx` (1248 SKU × 9 cols — см. v2 ниже).
+3. Если что-то пойдёт не так → restore via `w2-horoshop-import-055-085.bak-21.05.26-pre-OQ-apply.xlsx` (старая версия до OQ apply) или `w2-horoshop-import-055-085.bak-21.05.26-4col-ru-only.xlsx` (предыдущий rebuild без UA).
+
+---
+
+## v2 expansion — 9 cols RU+UA (Yana ack 2026-05-21)
+
+**Causa:** v1 содержал только 3 RU translation-cols, но W2 чистил и UA, и META keywords RU/UA. Yana pushback: «а что по укр столбцам?»
+
+### Coverage check (всё на 2168 строк по 31 chunk)
+
+| col | non_empty | changed | поле | в bundle? |
+|---|---|---|---|---|
+| c04 | 2168 | 3 | Название модификации (UA) | ✅ v2 |
+| c05 | 2168 | 874 | Название модификации (RU) | ✅ v1+v2 |
+| c06 | 2168 | 3 | Название (UA) | ✅ v2 |
+| c07 | 2168 | 11 | Название (RU) | ✅ v1+v2 |
+| c22 | **0** | 0 | HTML title (UA) | ⛔ всегда пусто |
+| c23 | **0** | 0 | HTML title (RU) | ⛔ всегда пусто |
+| c24 | 2168 | 0 | META keywords (UA) | ✅ v2 (write-through) |
+| c25 | 2168 | **523** | META keywords (RU) | ✅ v2 |
+| c26 | **0** | 0 | META description (UA) | ⛔ всегда пусто |
+| c27 | **0** | 0 | META description (RU) | ⛔ всегда пусто |
+| c28 | **0** | 0 | h1 (UA) | ⛔ всегда пусто |
+| c29 | **0** | 0 | h1 (RU) | ⛔ всегда пусто |
+| c35 | 2168 | **7** | Описание товара (UA) | ✅ v2 |
+| c36 | 2168 | **1007** | Описание товара (RU) | ✅ v1+v2 |
+| c37 | **0** | 0 | Короткое описание (UA) | ⛔ всегда пусто |
+| c38 | **0** | 0 | Короткое описание (RU) | ⛔ всегда пусто |
+
+**8/16 cells всегда пусты в W2 fixed.xlsx** — их НЕ включаем (Horoshop сотрёт).
+
+### Schema v2 (9 cols)
+
+```
+c01 Артикул
+c04 Название модификации (UA)
+c05 Название модификации (RU)
+c06 Название (UA)
+c07 Название (RU)
+c24 META keywords (UA)
+c25 META keywords (RU)
+c35 Описание товара (UA)
+c36 Описание товара (RU)
+```
+
+### Stats v2
+
+- written: **1248 строк × 9 cols** (vs v1 1009 строк × 4 cols)
+- +239 строк восстановлено (где W2 правил UA/META, а RU был без изменений)
+- skip_np: 115
+- unchanged_vs_source: 805 (детекция по всем 8 trans cols)
+- empty_filled_from_horoshop: 0
+- row_excluded_empty_after_fallback: 0
+- **0 пустых ячеек в bundle ✓**
+
+### OQ apply v2 verification (13/13 PASS)
+
+Проверены OQ #10, #11 (RU+UA), #12, #14, #15 (RU+UA), #17 — все токены present/absent как ожидалось.
+
+### Backup tree
+
+- `*.bak-21.05.26-pre-OQ-apply.xlsx` — оригинал до OQ apply (4 col RU-only)
+- `*.bak-21.05.26-4col-ru-only.xlsx` — rebuild v1 (4 col RU-only post-OQ)
+- `*.xlsx` (current) — rebuild v2 (9 col RU+UA post-OQ)
