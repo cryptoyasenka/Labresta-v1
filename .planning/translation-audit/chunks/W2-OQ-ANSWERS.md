@@ -53,7 +53,7 @@ Yana дала ответы через AskUserQuestion. Применяю прав
 | 12 | 082 | 35 | 2043415778 | Body → 68-168 (под имя H168D); UA forward W1 | RU c36 ✓ (1× replace) |
 | 13 | 083 | 37 | 2052609907 | UA forward W1 DB201S→DB301S-3 | RU уже сделан в c083 b5; **forward only** |
 | 14 | 084 | 4 | 2139145953 | Body → FSC100 (verified canon via tefcold.com); UA forward W1 | RU c36 ✓ (1× replace) |
-| 15 | 084 | 6 | 2141730389 | **PENDING** Yana проверит UF50GCP на tefcold.com (404 на /uf50gcp). RU body 908 chars уже faithful UA→RU, specs соответствуют. | — |
+| 15 | 084 | 6 | 2141730389 | APPLIED 2026-05-21: Yana дала canonical URL https://www.tefcold.com/uf50gcp-16332 (URL pattern `/<model>-<id>`). Все 12 specs body совпали с Tefcold canon. Numeric fix: `220-230V → 220-240V` (canon = 220-240/50 V/Hz). | RU c36 + UA c35 ✓ (1× each); blknochg → blkfix |
 | 16 | 084 | 21-24 | (Gi Metal AC-SP) | c5+c7 Latin c → Cyrillic с (4 SKU × 2 cells = 8 правок) | ✓ |
 | 17 | 084 | 39 | 641916589 | Body model RT78L → RT78B (specs verified canon REEDNEE via maresto.ua: 78л/0..+12°C/0.17кВт совпадают) | RU c36 ✓ (1× replace) |
 
@@ -72,5 +72,5 @@ Yana дала ответы через AskUserQuestion. Применяю прав
 
 - Tefcold FSC100: https://www.tefcold.com/fsc100-16077 + https://www.whitegoods.ru/goods/shkaf-kholodilnyy-barnyy-tefcold-fsc100/
 - REEDNEE RT78B white: https://maresto.ua/ua/catalog/kholodilnoe_oborudovanie/shkaf_vitrina_kholodilnaya_reednee_rt78b_white.html
-- Tefcold UF50GCP: pending (`/uf50gcp` 404, нужен alt URL)
+- Tefcold UF50GCP: https://www.tefcold.com/uf50gcp-16332 ✓ APPLIED 2026-05-21 (`/uf50gcp` без id → 404, canonical URL содержит item-id `-16332`)
 
