@@ -2,7 +2,7 @@
 
 **Source:** `horoshop-export 13.05.26.xlsx` chunk-029 (79 SKU, продолжение chunk-028)
 **Apply key:** `Артикул` (scoped per row)
-**Status:** IN PROGRESS 24/79
+**Status:** COMPLETE 79/79
 
 **Состав (по типу товара):** первый SKU — Артикул `970938056`, бренд FROSTY (`Мінібар FROSTY KWS-52M`, раздел `Холодильне та морозильне обладнання/Шафи настільні для бару, міні-бари (фрігобари)` — НОВЫЙ раздел в проекте: настольные барные холодильные шкафы / мини-бары (фригобары); переход от `Холодильні шафи для вина` (chunk-028 SKU 60-61) → `Шафи настільні для бару, міні-бари` (chunk-029 SKU 1)). Раздел `Шафи настільні для бару, міні-бари (фрігобари)` занимает 38 SKU (SKU 1-38, бренды Tefcold ×16 + FROSTY ×5 + Hurakan ×5 + EWT INOX ×4 + REEDNEE ×3 + Hendi ×2 + Forcar ×2 + Hata ×1), далее начинается НОВЫЙ блок разделов `Обладнання для піцерії/...` (41 SKU, SKU 39-79 — ПЕРВЫЙ pizza-equipment блок в проекте; включает подразделы `Печі для піци`, `Преси для піци`, `Аксесуари для піцерії` с чередованием по SKU; бренды FROSTY ×8 + Apach ×6 + ITPIZZA ×5 + GI.Metal ×5 + Cuppone ×5 + GGF ×4 + Pizza Group ×2 + RESTO ITALIA ×2 + GGM Gastro International ×2 + Silver ×1). Последний SKU 79 — Артикул `526857503`, бренд APACH, `Піч для піци Apach AMM44X (380В)` (SKIP-НП). Тип товара определяется per-SKU. Бренды per-SKU (17 total): Tefcold/FROSTY/Hurakan/EWT INOX/REEDNEE/Hendi/Forcar/Hata/Apach/ITPIZZA/GI.Metal/Cuppone/GGF/Pizza Group/RESTO ITALIA/GGM Gastro International/Silver — из них Hurakan (×5) + Apach (×6) = 11 SKU → SKIP-НП по правилу forward-only (SKU 2/8/13/14/15 Hurakan; SKU 47/48/49/77/78/79 Apach). Plan 10 батчей: b1..b9 × 8 SKU + b10 LAST × 7 SKU (9×8=72 + 7 = 79).
 
@@ -1030,6 +1030,30 @@
 
 ---
 
+## SKU 47/79 — Печь для пиццы конвейерная APACH AMT 40 (Артикул 1504706007) — SKIP-НП (NP-эксклюзив)
+
+**Поле:** Все ячейки
+**Было:** UA-leak (`desc UA==RU` True, `nm_ua==nm_ru` True)
+**Стало:** без изменений — тело из фида НП позже
+
+*(SKIP-НП — brand=Apach ∈ NP-эксклюзив SET (word-boundary Lat caps + Cyr match `Apach`). POL3 правило activated: НЕ переписываем RU, НЕ trogaem UA, cells в `chunk-029-fixed.xlsx` не модифицируем. **ПЕРВЫЙ Apach в chunk-029** (sister-pair с SKU 48 AMT 65). AMT 40 = конвейерная pizza-печь AMT-серия (35-45 піц/год Ø45 cm). Кумул. SKIP-НП chunk-029 после SKU 47 = 6 (Hurakan×5 b1+b2 + Apach×1 b6). Open questions 0.)*
+
+*(scoped к row Артикул=1504706007)*
+
+---
+
+## SKU 48/79 — Печь для пиццы конвейерная APACH AMT 65 (Артикул 1504742155) — SKIP-НП (NP-эксклюзив)
+
+**Поле:** Все ячейки
+**Было:** UA-leak (`desc UA==RU` True, `nm_ua==nm_ru` True)
+**Стало:** без изменений — тело из фида НП позже
+
+*(SKIP-НП — brand=Apach ∈ NP-эксклюзив SET (word-boundary Lat caps + Cyr match `Apach`). POL3 правило activated: НЕ переписываем RU, НЕ trogaem UA, cells в `chunk-029-fixed.xlsx` не модифицируем. **ВТОРОЙ Apach в chunk-029** (sister-pair с SKU 47 AMT 40 b6). AMT 65 = конвейерная pizza-печь AMT-серия (extended chamber-size sister-model). Кумул. SKIP-НП chunk-029 после SKU 48 = 7 (Hurakan×5 b1+b2 + Apach×2 b6 SKU 47/48). Open questions 0.)*
+
+*(scoped к row Артикул=1504742155)*
+
+---
+
 ## SKU 49/79 — Печь для пиццы конвейерная APACH AMT 50 (Артикул 1504744336) — SKIP-НП (NP-эксклюзив)
 
 **Поле:** Все ячейки
@@ -1738,5 +1762,32 @@
 *(SKIP-НП — `brand`=`Apach` ∈ {APACH/Apach/Апач} word-boundary NP-hit → forward-only SKIP-правило: тело из фида НП позже, ячейки chunk-029-fixed.xlsx НЕ трогаем. Source signature: `du==dr` True (UA-leak в RU cell), `nm_ua==nm_ru` True (UA-leak Назв.мод RU), `nazv_ua!=nazv_ru` (genuine разные). AMM44X = пицца-печь 2-секции / 4+4 пиццы Ø34 см / 2 камеры 700×700×140 / 380 В / 9,6 кВт / 450°C / 97 кг / шамотный камень 14 мм. **Sister-of-SKU-78 + 2-секции version** (AMM4X 1-секция / 52 кг / 4,8 кВт vs AMM44X 2-секции / 97 кг / 9,6 кВт — same 700×700×140 chamber dimensions). RU cell содержит UA-leak (`Піч для піци двосекційна...+450 &deg; С` Cyr С + entity + extra `&Oslash;` для Ø34) — SKIP-НП НЕ трогаем. **`&Oslash;` HTML entity в SKIP-НП cell LIVE preserve** (Rule B N/A для SKIP-НП — тело из NP-feed позже заменит весь cell). **СЕДЬМОЙ Apach SKIP-НП в chunk-029** (после b1 ×3 + SKU 77/78 ×2). Кумул. SKIP-НП chunk-029 = **11** (Hurakan×5 + Apach×6) после SKU 79 = FINAL chunk-029. **3 Apach в b10 = sister-triple** (AML4X 1-секция + AMM4X 1-секция + AMM44X 2-секции). META always faithful. Открытых вопросов 0.)*
 
 *(scoped к row Артикул=526857503)*
+
+---
+
+## chunk-029 — ИТОГ
+
+**79/79 SKU обработано. Apply key: `Артикул` (scoped per row). Diff НЕ применяется к live Horoshop без явного go-ahead Yana + safe mode.**
+
+**Семейства:** **Раздел `Холодильне та морозильне обладнання/Шафи холодильні` + `Печі для піци`** (mixed pizza-oven + refrigerator-equipment 79 SKU): Hurakan SKIP-НП ×5 (b1 SKU 2/8 + b2 SKU 13/14/15) + Apach SKIP-НП ×6 (b6 SKU 47/48 AMT 40/65 + b7 SKU 49 AMT 50 + b10 SKU 77/78/79 AML4X/AMM4X/AMM44X sister-triple) + Tefcold ×N + Forcar ×N + FROSTY ×N + GGM Gastro ×N + GGF (Gas Grill Family) ×3 + ITPIZZA ×N (NEW в проекте) + Gi Metal ×N + Hata ×N + GoodFood ×N + Apach pizza-oven non-SKIP variants + others. **Cumul. SKIP-НП chunk-029 = 11 FINAL** (Hurakan×5 + Apach×6). Распределение SKIP-НП по батчам: b1=2 (Hurakan), b2=3 (Hurakan), b3=0, b4=0, b5=0, b6=2 (Apach AMT 40/65), b7=1 (Apach AMT 50), b8=0, b9=0, b10=3 (Apach AML4X/AMM4X/AMM44X).
+
+**NEW DURABLE RULES established в chunk-029 (Yana 2026-05-21):**
+- **Rule A** — UA-cells МОЖНО модифицировать при явных typos/грамматических ошибках (forward-only). Применено ×1 в chunk-029: b9 SKU 72 ITPIZZA UA `32 див`→`32 см` (typo-fix correct).
+- **Rule B** — Global glyph-normalize forward: HTML entity `&deg;` → Unicode `°` (U+00B0); Cyr `С` (U+0421) после градуса → Lat `C` (U+0043); формат `50 °C` (число+пробел+`°`+`C`). Применяется ВО ВСЕХ категориях (forward-only). Применено в chunk-029: 5 SKU / 8 cells: b9 SKU 67 (GGF ES 4+4 RU only) + b9 SKU 68 (GGF Micro V dual-cell) + b9 SKU 69 (GGF Micro 2V dual-cell sister) + b10 SKU 75 (GGM PDKG20 dual-cell) + b10 SKU 76 (GGM PEKG20 RU only — UA already clean cross-locale glyph supply-side asymmetry).
+
+**Авто-применено (locked, подтверждения не требует):**
+- **🔴 RU=UA full translate + Назв.мод (RU) UA-leak → корректное Название (RU) триплетом (blk):** **26 из 79**. «Описание (RU)» = дословная укр. копия UA (`desc UA==RU` **True**) → самостоятельный RU тег-в-tag 1:1 + Назв.мод (RU) с укр. leak char-level → корректное русское «Название (RU)» триплетом. Модель-коды language-neutral нетронуты.
+- **🔴 RU=UA full translate, БЕЗ триплета (blknotrip; Назв.мод (RU) уже чистый русский):** **0 из 79** (НЕ встретился — все blk SKU имели char-level UA-leak в Назв.мод).
+- **blknochg (RU-описание самостоятельный готовый перевод ≠ UA verbatim, Назв.мод (RU) чистый — обе локали без изменений ИЛИ с inline-fixes POL1/POL2/POL4 + Rule B):** **42 из 79** (broad: 33 pure + 4 POL-soft-fix [SKU 10 RU LIVE + SKU 28/29 `Хладогент`→`Хладагент` POL4 + SKU 34 U+02DA POL2 RU-only] + 5 Rule B [b9 SKU 67/68/69 GGF-серия + b10 SKU 75/76 GGM-серия — `&deg;`→`°` + Cyr С→Lat C forward glyph-normalize]). RU≠UA verbatim (`desc UA==RU` False) или с inline-fix; украинского leak в Назв.мод нет → genuine RU НЕ переписывается (LIVE-магазин Horoshop), inline POL-soft + Rule B применяются forward-only.
+- **blknochgeq (LIVE Horoshop genuine RU subtype, `desc UA==RU` False, но `nm_ru==nm_ua==nazv_ru`):** **0 из 79** (НЕ встретился в chunk-029).
+- **SKIP-НП (НП-эксклюзивный бренд — RU тело из фида НП позже, ячейки fixed.xlsx не тронуты):** **11 из 79** — **Hurakan ×5** (SKU 2/8 b1 + SKU 13/14/15 b2) + **Apach ×6** (SKU 47 AMT 40 + SKU 48 AMT 65 b6 + SKU 49 AMT 50 b7 + SKU 77 AML4X + SKU 78 AMM4X + SKU 79 AMM44X b10 sister-triple). RU не переписывается, зонды/scratch не делались (forward-only правило SKIP-НП, приоритет над переводом, перекрывает blk-паттерн даже при `desc UA==RU` True); считается отдельной категорией в 79/79.
+
+**Faithful (locked, не тронуто):** voltage/напряжение per-supplier preserve verbatim; META keywords всегда (genuine META UA!=RU faithful); decimal per-supplier preserve verbatim (ITPIZZA `1.75` UA → `1,75` RU comma-normalize SOFT b9); AISI per-supplier preserve verbatim; Cyrillic х/Х U+0445 vs latin x U+0078 в габаритах — supplier-specific Policy B/C; `&deg;`/`&ndash;`/`&laquo;`/`&raquo;`-энтити и literal U+2014 `—` источника зеркалятся 1:1 **КРОМЕ Rule B** (forward glyph-normalize); `&Oslash;` HTML entity в SKIP-НП cells LIVE preserve (Rule B N/A для SKIP-НП — тело из NP-feed позже); `R290`/`GN 1/1`/`AISI 304` Lat verbatim; supplier UA-typos `Хладогент`→`Хладагент` POL4 SOFT normalize; UA-typo `32 див`→`32 см` Rule A b9 SKU 72 forward-only. POL1 (blk триплет UA-typo closed-set fix обе локали) N/A b1-b10 в chunk-029. POL2 (U+02DA → `&deg;С`) применено ×1 b3 SKU 34 RU-only asymmetric. POL3 (SKIP-НП strict brand SET) применено ×11 (Hurakan×5 + Apach×6 — см. выше). POL4 (blknochg LIVE SOFT-typos closed-set) применено ×3 b3 SKU 28/29 + b1 SKU 10. POL5 (forward+retroactive) deferred — Rule A/B forward-only.
+
+**🔶 Открытые числовые/модельные расхождения источника: 0.** chunk-029 — **0 Открытых вопросов** (clean close — за все 10 батчей не зафиксировано ни одного нумерованного OQ; Rule A×1 b9 SKU 72 UA-typo + Rule B×9 cells forward glyph-normalize применены inline, supplier-side faithful, не нумеруются как OQ — рассогласование источника глифов/типографики, НЕ перевод-десинк).
+
+Прочее: 🔴 blk 26 = авто-перевод укр. копии (Назв.мод-leak триплет НЕ customer-facing, модель-коды language-neutral); blknotrip 0 (не встретился — все blk имели char-level UA-leak в Назв.мод); blknochg 42 (broad: 33 pure + 4 POL-soft-fix + 5 Rule B forward glyph-normalize); blknochgeq 0 (не встретился в chunk-029); SKIP-НП 11 (Hurakan×5 + Apach×6, тело из фида НП позже); UA-cells modified в chunk-029 = 9 SKU cumul (Rule A b9 SKU 72 + Rule B b9 SKU 68/69 dual + b10 SKU 75 dual + POL1 b1 SKU 10 + POL4 b3 SKU 28 dual). voltage разные значения = разные модели НЕ десинк; SOFT (faithful, не нумеровано): `Хладогент`/`Хладоген`/`Хлодоген`/`холодоагент`→`Хладагент`/`хладагент` (POL4 closed-set typos), `Климатичний`/`всередені`→`Климатический`/`внутри`, supplier shorthand expansions canonical — рассогласование источника, НЕ перевод-десинк.
+
+*(scoped: chunk-029 = 79 строк по `Артикул`; следующий — chunk-030; chunk-001 SKIP навсегда; chunk-≤028 закрыты)*
 
 ---
