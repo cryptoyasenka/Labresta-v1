@@ -1,0 +1,9759 @@
+{
+  "497705126": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "no opening block tag"
+        ]
+      },
+      {
+        "field": "Описание товара (UA)",
+        "reasons": [
+          "no opening block tag"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 702,
+    "exp_desc_ua_len": 694,
+    "exp_meta_kw_ru_len": 160
+  },
+  "497705127": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "no opening block tag"
+        ]
+      },
+      {
+        "field": "Описание товара (UA)",
+        "reasons": [
+          "no opening block tag"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 703,
+    "exp_desc_ua_len": 695,
+    "exp_meta_kw_ru_len": 160
+  },
+  "497705128": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "no opening block tag"
+        ]
+      },
+      {
+        "field": "Описание товара (UA)",
+        "reasons": [
+          "no opening block tag"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 764,
+    "exp_desc_ua_len": 755,
+    "exp_meta_kw_ru_len": 177
+  },
+  "497705129": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "no opening block tag"
+        ]
+      },
+      {
+        "field": "Описание товара (UA)",
+        "reasons": [
+          "no opening block tag"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 705,
+    "exp_desc_ua_len": 697,
+    "exp_meta_kw_ru_len": 171
+  },
+  "497705130": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "no opening block tag"
+        ]
+      },
+      {
+        "field": "Описание товара (UA)",
+        "reasons": [
+          "no opening block tag"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 706,
+    "exp_desc_ua_len": 696,
+    "exp_meta_kw_ru_len": 171
+  },
+  "507515724": {
+    "fixes": [
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 414,
+    "exp_desc_ua_len": 403,
+    "exp_meta_kw_ru_len": 187
+  },
+  "1009182279": {
+    "fixes": [
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 482,
+    "exp_desc_ua_len": 488,
+    "exp_meta_kw_ru_len": 212
+  },
+  "1426266671": {
+    "fixes": [
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 885,
+    "exp_desc_ua_len": 872,
+    "exp_meta_kw_ru_len": 254
+  },
+  "419429603": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "no opening block tag"
+        ]
+      },
+      {
+        "field": "Описание товара (UA)",
+        "reasons": [
+          "no opening block tag"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 325,
+    "exp_desc_ua_len": 325,
+    "exp_meta_kw_ru_len": 255
+  },
+  "479380952": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "no opening block tag"
+        ]
+      },
+      {
+        "field": "Описание товара (UA)",
+        "reasons": [
+          "no opening block tag"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 325,
+    "exp_desc_ua_len": 325,
+    "exp_meta_kw_ru_len": 249
+  },
+  "479380954": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "no opening block tag"
+        ]
+      },
+      {
+        "field": "Описание товара (UA)",
+        "reasons": [
+          "no opening block tag"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 360,
+    "exp_desc_ua_len": 360,
+    "exp_meta_kw_ru_len": 255
+  },
+  "627967812": {
+    "fixes": [
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1033,
+    "exp_desc_ua_len": 991,
+    "exp_meta_kw_ru_len": 255
+  },
+  "627967813": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "no opening block tag"
+        ]
+      },
+      {
+        "field": "Описание товара (UA)",
+        "reasons": [
+          "no opening block tag"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 358,
+    "exp_desc_ua_len": 358,
+    "exp_meta_kw_ru_len": 255
+  },
+  "627967815": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "no opening block tag"
+        ]
+      },
+      {
+        "field": "Описание товара (UA)",
+        "reasons": [
+          "no opening block tag"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 368,
+    "exp_desc_ua_len": 368,
+    "exp_meta_kw_ru_len": 255
+  },
+  "802716993": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "no opening block tag"
+        ]
+      },
+      {
+        "field": "Описание товара (UA)",
+        "reasons": [
+          "no opening block tag"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 447,
+    "exp_desc_ua_len": 447,
+    "exp_meta_kw_ru_len": 255
+  },
+  "524323435": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "starts <li>"
+        ]
+      },
+      {
+        "field": "Описание товара (UA)",
+        "reasons": [
+          "starts <li>"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 683,
+    "exp_desc_ua_len": 683,
+    "exp_meta_kw_ru_len": 102
+  },
+  "524323432": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "starts <li>"
+        ]
+      },
+      {
+        "field": "Описание товара (UA)",
+        "reasons": [
+          "starts <li>"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 699,
+    "exp_desc_ua_len": 667,
+    "exp_meta_kw_ru_len": 119
+  },
+  "524323436": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "starts <li>"
+        ]
+      },
+      {
+        "field": "Описание товара (UA)",
+        "reasons": [
+          "starts <li>"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 746,
+    "exp_desc_ua_len": 746,
+    "exp_meta_kw_ru_len": 157
+  },
+  "524323438": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "starts <li>"
+        ]
+      },
+      {
+        "field": "Описание товара (UA)",
+        "reasons": [
+          "starts <li>"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 707,
+    "exp_desc_ua_len": 707,
+    "exp_meta_kw_ru_len": 131
+  },
+  "524323433": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "starts <li>"
+        ]
+      },
+      {
+        "field": "Описание товара (UA)",
+        "reasons": [
+          "starts <li>"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 639,
+    "exp_desc_ua_len": 610,
+    "exp_meta_kw_ru_len": 121
+  },
+  "781296769": {
+    "fixes": [
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 592,
+    "exp_desc_ua_len": 592,
+    "exp_meta_kw_ru_len": 181
+  },
+  "925656640": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 3379,
+    "exp_desc_ua_len": 3379,
+    "exp_meta_kw_ru_len": 181
+  },
+  "925686772": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 3387,
+    "exp_desc_ua_len": 3387,
+    "exp_meta_kw_ru_len": 179
+  },
+  "927869275": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 750,
+    "exp_desc_ua_len": 750,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1131875858": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 750,
+    "exp_desc_ua_len": 750,
+    "exp_meta_kw_ru_len": 239
+  },
+  "1132488173": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 563,
+    "exp_desc_ua_len": 563,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1557035491": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 977,
+    "exp_desc_ua_len": 977,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2060590919": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 526,
+    "exp_desc_ua_len": 526,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2309200640": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 860,
+    "exp_desc_ua_len": 860,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2460109996": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 705,
+    "exp_desc_ua_len": 705,
+    "exp_meta_kw_ru_len": 255
+  },
+  "900625827": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 272,
+    "exp_desc_ua_len": 272,
+    "exp_meta_kw_ru_len": 106
+  },
+  "1162383611": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 981,
+    "exp_desc_ua_len": 981,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1162393164": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1045,
+    "exp_desc_ua_len": 1045,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2121019658": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 569,
+    "exp_desc_ua_len": 569,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1557025542": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 977,
+    "exp_desc_ua_len": 977,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2042403452": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 634,
+    "exp_desc_ua_len": 634,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2177212402": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1524,
+    "exp_desc_ua_len": 1524,
+    "exp_meta_kw_ru_len": 181
+  },
+  "2177221942": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1123,
+    "exp_desc_ua_len": 1123,
+    "exp_meta_kw_ru_len": 181
+  },
+  "2177226262": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 904,
+    "exp_desc_ua_len": 904,
+    "exp_meta_kw_ru_len": 181
+  },
+  "2463608004": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 687,
+    "exp_desc_ua_len": 687,
+    "exp_meta_kw_ru_len": 255
+  },
+  "554663072": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 371,
+    "exp_desc_ua_len": 371,
+    "exp_meta_kw_ru_len": 115
+  },
+  "554663079": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 367,
+    "exp_desc_ua_len": 367,
+    "exp_meta_kw_ru_len": 129
+  },
+  "1582657493": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 562,
+    "exp_desc_ua_len": 562,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2084240296": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 812,
+    "exp_desc_ua_len": 812,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2126980645": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 715,
+    "exp_desc_ua_len": 715,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2301256894": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 734,
+    "exp_desc_ua_len": 734,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2301261823": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 719,
+    "exp_desc_ua_len": 719,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2301263657": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 720,
+    "exp_desc_ua_len": 720,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2301264278": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 730,
+    "exp_desc_ua_len": 730,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2301279584": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 712,
+    "exp_desc_ua_len": 712,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2463601177": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 884,
+    "exp_desc_ua_len": 884,
+    "exp_meta_kw_ru_len": 255
+  },
+  "428056878": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 423,
+    "exp_desc_ua_len": 423,
+    "exp_meta_kw_ru_len": 25
+  },
+  "428056881": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 434,
+    "exp_desc_ua_len": 434,
+    "exp_meta_kw_ru_len": 25
+  },
+  "428056882": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 417,
+    "exp_desc_ua_len": 417,
+    "exp_meta_kw_ru_len": 138
+  },
+  "428056883": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 325,
+    "exp_desc_ua_len": 325,
+    "exp_meta_kw_ru_len": 142
+  },
+  "428056884": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 429,
+    "exp_desc_ua_len": 429,
+    "exp_meta_kw_ru_len": 25
+  },
+  "428056885": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 503,
+    "exp_desc_ua_len": 503,
+    "exp_meta_kw_ru_len": 25
+  },
+  "428056886": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 531,
+    "exp_desc_ua_len": 531,
+    "exp_meta_kw_ru_len": 80
+  },
+  "428056888": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 358,
+    "exp_desc_ua_len": 358,
+    "exp_meta_kw_ru_len": 205
+  },
+  "544855952": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 681,
+    "exp_desc_ua_len": 681,
+    "exp_meta_kw_ru_len": 89
+  },
+  "544855953": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 773,
+    "exp_desc_ua_len": 773,
+    "exp_meta_kw_ru_len": 91
+  },
+  "544855956": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 497,
+    "exp_desc_ua_len": 497,
+    "exp_meta_kw_ru_len": 159
+  },
+  "544855957": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 772,
+    "exp_desc_ua_len": 772,
+    "exp_meta_kw_ru_len": 89
+  },
+  "554663073": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 380,
+    "exp_desc_ua_len": 380,
+    "exp_meta_kw_ru_len": 137
+  },
+  "554663074": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 365,
+    "exp_desc_ua_len": 365,
+    "exp_meta_kw_ru_len": 123
+  },
+  "554663075": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 370,
+    "exp_desc_ua_len": 370,
+    "exp_meta_kw_ru_len": 125
+  },
+  "554663076": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 366,
+    "exp_desc_ua_len": 366,
+    "exp_meta_kw_ru_len": 123
+  },
+  "554663077": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 367,
+    "exp_desc_ua_len": 367,
+    "exp_meta_kw_ru_len": 129
+  },
+  "554663078": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 366,
+    "exp_desc_ua_len": 366,
+    "exp_meta_kw_ru_len": 123
+  },
+  "617666954": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 629,
+    "exp_desc_ua_len": 629,
+    "exp_meta_kw_ru_len": 131
+  },
+  "617666956": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 644,
+    "exp_desc_ua_len": 644,
+    "exp_meta_kw_ru_len": 179
+  },
+  "617666957": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 678,
+    "exp_desc_ua_len": 678,
+    "exp_meta_kw_ru_len": 182
+  },
+  "631394855": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 589,
+    "exp_desc_ua_len": 589,
+    "exp_meta_kw_ru_len": 255
+  },
+  "663682433": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 894,
+    "exp_desc_ua_len": 894,
+    "exp_meta_kw_ru_len": 255
+  },
+  "663685256": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 920,
+    "exp_desc_ua_len": 920,
+    "exp_meta_kw_ru_len": 254
+  },
+  "663686231": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 846,
+    "exp_desc_ua_len": 846,
+    "exp_meta_kw_ru_len": 254
+  },
+  "663687887": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 905,
+    "exp_desc_ua_len": 905,
+    "exp_meta_kw_ru_len": 136
+  },
+  "663689139": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 885,
+    "exp_desc_ua_len": 885,
+    "exp_meta_kw_ru_len": 255
+  },
+  "781296773": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 505,
+    "exp_desc_ua_len": 505,
+    "exp_meta_kw_ru_len": 159
+  },
+  "1045641515": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 282,
+    "exp_desc_ua_len": 282,
+    "exp_meta_kw_ru_len": 169
+  },
+  "1136053161": {
+    "fixes": [
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 467,
+    "exp_desc_ua_len": 438,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1136148249": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 505,
+    "exp_desc_ua_len": 505,
+    "exp_meta_kw_ru_len": 254
+  },
+  "1149597094": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 505,
+    "exp_desc_ua_len": 505,
+    "exp_meta_kw_ru_len": 221
+  },
+  "1149602136": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 514,
+    "exp_desc_ua_len": 514,
+    "exp_meta_kw_ru_len": 208
+  },
+  "1149604593": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 459,
+    "exp_desc_ua_len": 459,
+    "exp_meta_kw_ru_len": 196
+  },
+  "1478471369": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 545,
+    "exp_desc_ua_len": 545,
+    "exp_meta_kw_ru_len": 162
+  },
+  "1478486566": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 422,
+    "exp_desc_ua_len": 422,
+    "exp_meta_kw_ru_len": 206
+  },
+  "1489860302": {
+    "fixes": [
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 443,
+    "exp_desc_ua_len": 429,
+    "exp_meta_kw_ru_len": 254
+  },
+  "1582800395": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 611,
+    "exp_desc_ua_len": 611,
+    "exp_meta_kw_ru_len": 254
+  },
+  "1582804831": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "no opening block tag",
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 674,
+    "exp_desc_ua_len": 674,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2043360195": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 681,
+    "exp_desc_ua_len": 681,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2061527374": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 509,
+    "exp_desc_ua_len": 509,
+    "exp_meta_kw_ru_len": 254
+  },
+  "2062009706": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 447,
+    "exp_desc_ua_len": 447,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2094186445": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 655,
+    "exp_desc_ua_len": 655,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2094234501": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 610,
+    "exp_desc_ua_len": 610,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2126978825": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 715,
+    "exp_desc_ua_len": 715,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2126979724": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 724,
+    "exp_desc_ua_len": 724,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2126981710": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 720,
+    "exp_desc_ua_len": 720,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2153053237": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 716,
+    "exp_desc_ua_len": 716,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2153059142": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 653,
+    "exp_desc_ua_len": 653,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2193312260": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 846,
+    "exp_desc_ua_len": 846,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2193323215": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 850,
+    "exp_desc_ua_len": 850,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2237326167": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 828,
+    "exp_desc_ua_len": 828,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2254861702": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 525,
+    "exp_desc_ua_len": 525,
+    "exp_meta_kw_ru_len": 248
+  },
+  "2301259016": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 728,
+    "exp_desc_ua_len": 728,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2301262542": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 728,
+    "exp_desc_ua_len": 728,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2301265523": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 722,
+    "exp_desc_ua_len": 722,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2301273006": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 734,
+    "exp_desc_ua_len": 734,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2301275135": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 705,
+    "exp_desc_ua_len": 705,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2301277445": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 716,
+    "exp_desc_ua_len": 716,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2301281080": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 721,
+    "exp_desc_ua_len": 721,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2301282824": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 714,
+    "exp_desc_ua_len": 714,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2461343617": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1163,
+    "exp_desc_ua_len": 1163,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2463597440": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 734,
+    "exp_desc_ua_len": 734,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2519634537": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 692,
+    "exp_desc_ua_len": 692,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2565704494": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 733,
+    "exp_desc_ua_len": 733,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2807628230": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 616,
+    "exp_desc_ua_len": 616,
+    "exp_meta_kw_ru_len": 251
+  },
+  "2807634760": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 519,
+    "exp_desc_ua_len": 519,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1146310784": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 852,
+    "exp_desc_ua_len": 852,
+    "exp_meta_kw_ru_len": 162
+  },
+  "544855951": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 512,
+    "exp_desc_ua_len": 512,
+    "exp_meta_kw_ru_len": 89
+  },
+  "544855958": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 798,
+    "exp_desc_ua_len": 798,
+    "exp_meta_kw_ru_len": 89
+  },
+  "781296776": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 566,
+    "exp_desc_ua_len": 566,
+    "exp_meta_kw_ru_len": 170
+  },
+  "2043349926": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 739,
+    "exp_desc_ua_len": 739,
+    "exp_meta_kw_ru_len": 255
+  },
+  "428056887": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 373,
+    "exp_desc_ua_len": 373,
+    "exp_meta_kw_ru_len": 165
+  },
+  "631839767": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 529,
+    "exp_desc_ua_len": 529,
+    "exp_meta_kw_ru_len": 176
+  },
+  "2079091519": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 560,
+    "exp_desc_ua_len": 560,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2227319550": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 637,
+    "exp_desc_ua_len": 637,
+    "exp_meta_kw_ru_len": 254
+  },
+  "475237552": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 447,
+    "exp_desc_ua_len": 447,
+    "exp_meta_kw_ru_len": 23
+  },
+  "631839766": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 543,
+    "exp_desc_ua_len": 543,
+    "exp_meta_kw_ru_len": 173
+  },
+  "680130267": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 441,
+    "exp_desc_ua_len": 441,
+    "exp_meta_kw_ru_len": 149
+  },
+  "1048777046": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 843,
+    "exp_desc_ua_len": 843,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1132541777": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 586,
+    "exp_desc_ua_len": 586,
+    "exp_meta_kw_ru_len": 239
+  },
+  "1136199583": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1085,
+    "exp_desc_ua_len": 1085,
+    "exp_meta_kw_ru_len": 254
+  },
+  "1149659001": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 551,
+    "exp_desc_ua_len": 551,
+    "exp_meta_kw_ru_len": 215
+  },
+  "2079097849": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 745,
+    "exp_desc_ua_len": 745,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2784066508": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 477,
+    "exp_desc_ua_len": 477,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1136048893": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 783,
+    "exp_desc_ua_len": 783,
+    "exp_meta_kw_ru_len": 216
+  },
+  "1541927527": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 107,
+    "exp_desc_ua_len": 107,
+    "exp_meta_kw_ru_len": 67
+  },
+  "2554054328": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 559,
+    "exp_desc_ua_len": 559,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2554068777": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 540,
+    "exp_desc_ua_len": 540,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2554112901": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 614,
+    "exp_desc_ua_len": 614,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2554126657": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 629,
+    "exp_desc_ua_len": 629,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2554135664": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 482,
+    "exp_desc_ua_len": 482,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2554151962": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 569,
+    "exp_desc_ua_len": 569,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2519514305": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 498,
+    "exp_desc_ua_len": 498,
+    "exp_meta_kw_ru_len": 254
+  },
+  "2567533338": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 734,
+    "exp_desc_ua_len": 734,
+    "exp_meta_kw_ru_len": 255
+  },
+  "902150496": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 490,
+    "exp_desc_ua_len": 490,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1132415146": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 470,
+    "exp_desc_ua_len": 470,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1132429798": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 492,
+    "exp_desc_ua_len": 492,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1148384331": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 402,
+    "exp_desc_ua_len": 402,
+    "exp_meta_kw_ru_len": 220
+  },
+  "1157452958": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 323,
+    "exp_desc_ua_len": 323,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2111168138": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 394,
+    "exp_desc_ua_len": 394,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2123154004": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 448,
+    "exp_desc_ua_len": 448,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2152480284": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 688,
+    "exp_desc_ua_len": 688,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2152493145": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 701,
+    "exp_desc_ua_len": 701,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2152499987": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 698,
+    "exp_desc_ua_len": 698,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1132422993": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 468,
+    "exp_desc_ua_len": 468,
+    "exp_meta_kw_ru_len": 254
+  },
+  "1132435380": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 491,
+    "exp_desc_ua_len": 491,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1157469824": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 256,
+    "exp_desc_ua_len": 256,
+    "exp_meta_kw_ru_len": 254
+  },
+  "902138662": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 502,
+    "exp_desc_ua_len": 502,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2061540159": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 491,
+    "exp_desc_ua_len": 491,
+    "exp_meta_kw_ru_len": 255
+  },
+  "881337875": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 727,
+    "exp_desc_ua_len": 727,
+    "exp_meta_kw_ru_len": 200
+  },
+  "881360570": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 726,
+    "exp_desc_ua_len": 726,
+    "exp_meta_kw_ru_len": 200
+  },
+  "1149589807": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "no opening block tag",
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "Описание товара (UA)",
+        "reasons": [
+          "no opening block tag"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 686,
+    "exp_desc_ua_len": 686,
+    "exp_meta_kw_ru_len": 160
+  },
+  "1149593260": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "no opening block tag",
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "Описание товара (UA)",
+        "reasons": [
+          "no opening block tag"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 800,
+    "exp_desc_ua_len": 800,
+    "exp_meta_kw_ru_len": 167
+  },
+  "1179530098": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 850,
+    "exp_desc_ua_len": 850,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2062005085": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 401,
+    "exp_desc_ua_len": 401,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2153098142": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 817,
+    "exp_desc_ua_len": 817,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2193287271": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 835,
+    "exp_desc_ua_len": 835,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1122650393": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 556,
+    "exp_desc_ua_len": 556,
+    "exp_meta_kw_ru_len": 172
+  },
+  "1179543475": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 847,
+    "exp_desc_ua_len": 847,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2065657808": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 534,
+    "exp_desc_ua_len": 534,
+    "exp_meta_kw_ru_len": 254
+  },
+  "1501530843": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 708,
+    "exp_desc_ua_len": 708,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2094246372": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 540,
+    "exp_desc_ua_len": 540,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1152261908": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 606,
+    "exp_desc_ua_len": 606,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2503784223": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1965,
+    "exp_desc_ua_len": 1965,
+    "exp_meta_kw_ru_len": 255
+  },
+  "419358573": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1991,
+    "exp_desc_ua_len": 1991,
+    "exp_meta_kw_ru_len": 144
+  },
+  "908081852": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1335,
+    "exp_desc_ua_len": 1335,
+    "exp_meta_kw_ru_len": 255
+  },
+  "908202440": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1949,
+    "exp_desc_ua_len": 1949,
+    "exp_meta_kw_ru_len": 228
+  },
+  "908210117": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1949,
+    "exp_desc_ua_len": 1949,
+    "exp_meta_kw_ru_len": 240
+  },
+  "908216082": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1339,
+    "exp_desc_ua_len": 1339,
+    "exp_meta_kw_ru_len": 252
+  },
+  "656920542": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 770,
+    "exp_desc_ua_len": 770,
+    "exp_meta_kw_ru_len": 243
+  },
+  "1070126268": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 769,
+    "exp_desc_ua_len": 769,
+    "exp_meta_kw_ru_len": 229
+  },
+  "471691347": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 679,
+    "exp_desc_ua_len": 679,
+    "exp_meta_kw_ru_len": 86
+  },
+  "471692672": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 680,
+    "exp_desc_ua_len": 680,
+    "exp_meta_kw_ru_len": 95
+  },
+  "1542955172": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1156,
+    "exp_desc_ua_len": 1156,
+    "exp_meta_kw_ru_len": 254
+  },
+  "2060690509": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 536,
+    "exp_desc_ua_len": 536,
+    "exp_meta_kw_ru_len": 210
+  },
+  "2375855259": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 627,
+    "exp_desc_ua_len": 627,
+    "exp_meta_kw_ru_len": 255
+  },
+  "625659540": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1000,
+    "exp_desc_ua_len": 1000,
+    "exp_meta_kw_ru_len": 92
+  },
+  "1065460736": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1641,
+    "exp_desc_ua_len": 1641,
+    "exp_meta_kw_ru_len": 255
+  },
+  "631325362": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 895,
+    "exp_desc_ua_len": 895,
+    "exp_meta_kw_ru_len": 255
+  },
+  "923493247": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 167,
+    "exp_desc_ua_len": 167,
+    "exp_meta_kw_ru_len": 254
+  },
+  "1889520726": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1248,
+    "exp_desc_ua_len": 1248,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2123159356": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 292,
+    "exp_desc_ua_len": 292,
+    "exp_meta_kw_ru_len": 255
+  },
+  "964765301": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 503,
+    "exp_desc_ua_len": 503,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2123162134": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 281,
+    "exp_desc_ua_len": 281,
+    "exp_meta_kw_ru_len": 255
+  },
+  "475144743": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 472,
+    "exp_desc_ua_len": 472,
+    "exp_meta_kw_ru_len": 94
+  },
+  "518661591": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 273,
+    "exp_desc_ua_len": 273,
+    "exp_meta_kw_ru_len": 73
+  },
+  "518661592": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 335,
+    "exp_desc_ua_len": 335,
+    "exp_meta_kw_ru_len": 72
+  },
+  "732745638": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 705,
+    "exp_desc_ua_len": 705,
+    "exp_meta_kw_ru_len": 150
+  },
+  "885027031": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 268,
+    "exp_desc_ua_len": 268,
+    "exp_meta_kw_ru_len": 71
+  },
+  "1033556595": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 309,
+    "exp_desc_ua_len": 309,
+    "exp_meta_kw_ru_len": 103
+  },
+  "1110574295": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 417,
+    "exp_desc_ua_len": 417,
+    "exp_meta_kw_ru_len": 122
+  },
+  "1110576512": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 382,
+    "exp_desc_ua_len": 382,
+    "exp_meta_kw_ru_len": 130
+  },
+  "1527065711": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 366,
+    "exp_desc_ua_len": 366,
+    "exp_meta_kw_ru_len": 159
+  },
+  "1527074785": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 370,
+    "exp_desc_ua_len": 370,
+    "exp_meta_kw_ru_len": 142
+  },
+  "2566572706": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 613,
+    "exp_desc_ua_len": 613,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2567445276": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 552,
+    "exp_desc_ua_len": 552,
+    "exp_meta_kw_ru_len": 255
+  },
+  "475131853": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 369,
+    "exp_desc_ua_len": 369,
+    "exp_meta_kw_ru_len": 17
+  },
+  "1122652997": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 627,
+    "exp_desc_ua_len": 627,
+    "exp_meta_kw_ru_len": 169
+  },
+  "1122656036": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 601,
+    "exp_desc_ua_len": 601,
+    "exp_meta_kw_ru_len": 181
+  },
+  "707420339": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 781,
+    "exp_desc_ua_len": 781,
+    "exp_meta_kw_ru_len": 245
+  },
+  "631396372": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 829,
+    "exp_desc_ua_len": 829,
+    "exp_meta_kw_ru_len": 134
+  },
+  "705871662": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 806,
+    "exp_desc_ua_len": 806,
+    "exp_meta_kw_ru_len": 223
+  },
+  "942243242": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 834,
+    "exp_desc_ua_len": 834,
+    "exp_meta_kw_ru_len": 166
+  },
+  "1439020669": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 560,
+    "exp_desc_ua_len": 560,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1466724410": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1039,
+    "exp_desc_ua_len": 1039,
+    "exp_meta_kw_ru_len": 178
+  },
+  "2087849623": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1174,
+    "exp_desc_ua_len": 1174,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2087858192": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1199,
+    "exp_desc_ua_len": 1199,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2087859946": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1095,
+    "exp_desc_ua_len": 1095,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2087861824": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1202,
+    "exp_desc_ua_len": 1202,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2269483280": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 949,
+    "exp_desc_ua_len": 949,
+    "exp_meta_kw_ru_len": 227
+  },
+  "525347674": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1892,
+    "exp_desc_ua_len": 1892,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1279486873": {
+    "fixes": [
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1471,
+    "exp_desc_ua_len": 1413,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1288861889": {
+    "fixes": [
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 763,
+    "exp_desc_ua_len": 757,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1288863008": {
+    "fixes": [
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1243,
+    "exp_desc_ua_len": 1207,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1288865392": {
+    "fixes": [
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1474,
+    "exp_desc_ua_len": 1415,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1288866515": {
+    "fixes": [
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 787,
+    "exp_desc_ua_len": 783,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1994297810": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 3074,
+    "exp_desc_ua_len": 3074,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2037416827": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2694,
+    "exp_desc_ua_len": 2694,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2037422227": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2274,
+    "exp_desc_ua_len": 2274,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2289567013": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1411,
+    "exp_desc_ua_len": 1411,
+    "exp_meta_kw_ru_len": 255
+  },
+  "405421403": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1853,
+    "exp_desc_ua_len": 1853,
+    "exp_meta_kw_ru_len": 255
+  },
+  "443746911": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1861,
+    "exp_desc_ua_len": 1861,
+    "exp_meta_kw_ru_len": 255
+  },
+  "443746912": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2404,
+    "exp_desc_ua_len": 2404,
+    "exp_meta_kw_ru_len": 255
+  },
+  "443746914": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2271,
+    "exp_desc_ua_len": 2271,
+    "exp_meta_kw_ru_len": 255
+  },
+  "451894299": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2454,
+    "exp_desc_ua_len": 2454,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1140471779": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1441,
+    "exp_desc_ua_len": 1441,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1151682553": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1542,
+    "exp_desc_ua_len": 1542,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1169551375": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1920,
+    "exp_desc_ua_len": 1920,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1200373297": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1720,
+    "exp_desc_ua_len": 1720,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2120038185": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2366,
+    "exp_desc_ua_len": 2366,
+    "exp_meta_kw_ru_len": 255
+  },
+  "417925358": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1723,
+    "exp_desc_ua_len": 1723,
+    "exp_meta_kw_ru_len": 255
+  },
+  "419423432": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2770,
+    "exp_desc_ua_len": 2770,
+    "exp_meta_kw_ru_len": 255
+  },
+  "443746913": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1950,
+    "exp_desc_ua_len": 1950,
+    "exp_meta_kw_ru_len": 255
+  },
+  "477739756": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1958,
+    "exp_desc_ua_len": 1958,
+    "exp_meta_kw_ru_len": 254
+  },
+  "477739760": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2307,
+    "exp_desc_ua_len": 2307,
+    "exp_meta_kw_ru_len": 255
+  },
+  "477739781": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1218,
+    "exp_desc_ua_len": 1218,
+    "exp_meta_kw_ru_len": 255
+  },
+  "505661168": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2502,
+    "exp_desc_ua_len": 2502,
+    "exp_meta_kw_ru_len": 255
+  },
+  "505816134": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1126,
+    "exp_desc_ua_len": 1126,
+    "exp_meta_kw_ru_len": 255
+  },
+  "525347671": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2235,
+    "exp_desc_ua_len": 2235,
+    "exp_meta_kw_ru_len": 255
+  },
+  "525347672": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1927,
+    "exp_desc_ua_len": 1927,
+    "exp_meta_kw_ru_len": 255
+  },
+  "525347673": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2064,
+    "exp_desc_ua_len": 2064,
+    "exp_meta_kw_ru_len": 255
+  },
+  "525347675": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2232,
+    "exp_desc_ua_len": 2232,
+    "exp_meta_kw_ru_len": 255
+  },
+  "525866388": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2522,
+    "exp_desc_ua_len": 2522,
+    "exp_meta_kw_ru_len": 255
+  },
+  "525866390": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1856,
+    "exp_desc_ua_len": 1856,
+    "exp_meta_kw_ru_len": 255
+  },
+  "527283031": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2171,
+    "exp_desc_ua_len": 2171,
+    "exp_meta_kw_ru_len": 255
+  },
+  "527283032": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 3073,
+    "exp_desc_ua_len": 3073,
+    "exp_meta_kw_ru_len": 255
+  },
+  "527283033": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 3312,
+    "exp_desc_ua_len": 3312,
+    "exp_meta_kw_ru_len": 255
+  },
+  "631871298": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2162,
+    "exp_desc_ua_len": 2162,
+    "exp_meta_kw_ru_len": 255
+  },
+  "633799765": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2450,
+    "exp_desc_ua_len": 2450,
+    "exp_meta_kw_ru_len": 255
+  },
+  "659826285": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 66,
+    "exp_desc_ua_len": 66,
+    "exp_meta_kw_ru_len": 197
+  },
+  "659829969": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 78,
+    "exp_desc_ua_len": 78,
+    "exp_meta_kw_ru_len": 212
+  },
+  "659831710": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 66,
+    "exp_desc_ua_len": 66,
+    "exp_meta_kw_ru_len": 255
+  },
+  "659834425": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 109,
+    "exp_desc_ua_len": 109,
+    "exp_meta_kw_ru_len": 250
+  },
+  "659842667": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 78,
+    "exp_desc_ua_len": 78,
+    "exp_meta_kw_ru_len": 227
+  },
+  "659873425": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 151,
+    "exp_desc_ua_len": 151,
+    "exp_meta_kw_ru_len": 153
+  },
+  "659874607": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 98,
+    "exp_desc_ua_len": 98,
+    "exp_meta_kw_ru_len": 145
+  },
+  "659884424": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 90,
+    "exp_desc_ua_len": 90,
+    "exp_meta_kw_ru_len": 155
+  },
+  "659891115": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 113,
+    "exp_desc_ua_len": 113,
+    "exp_meta_kw_ru_len": 153
+  },
+  "659893328": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 140,
+    "exp_desc_ua_len": 140,
+    "exp_meta_kw_ru_len": 152
+  },
+  "659928885": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 147,
+    "exp_desc_ua_len": 147,
+    "exp_meta_kw_ru_len": 145
+  },
+  "663025509": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 211,
+    "exp_desc_ua_len": 211,
+    "exp_meta_kw_ru_len": 168
+  },
+  "663029990": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 209,
+    "exp_desc_ua_len": 209,
+    "exp_meta_kw_ru_len": 168
+  },
+  "663030662": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 211,
+    "exp_desc_ua_len": 211,
+    "exp_meta_kw_ru_len": 170
+  },
+  "663035756": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 211,
+    "exp_desc_ua_len": 211,
+    "exp_meta_kw_ru_len": 170
+  },
+  "663036895": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 211,
+    "exp_desc_ua_len": 211,
+    "exp_meta_kw_ru_len": 170
+  },
+  "663037316": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 209,
+    "exp_desc_ua_len": 209,
+    "exp_meta_kw_ru_len": 168
+  },
+  "663037728": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 209,
+    "exp_desc_ua_len": 209,
+    "exp_meta_kw_ru_len": 168
+  },
+  "663521963": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 213,
+    "exp_desc_ua_len": 213,
+    "exp_meta_kw_ru_len": 170
+  },
+  "663523701": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 209,
+    "exp_desc_ua_len": 209,
+    "exp_meta_kw_ru_len": 168
+  },
+  "663524107": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 209,
+    "exp_desc_ua_len": 209,
+    "exp_meta_kw_ru_len": 168
+  },
+  "800416521": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1668,
+    "exp_desc_ua_len": 1668,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1069893201": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1153,
+    "exp_desc_ua_len": 1153,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1091650117": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2374,
+    "exp_desc_ua_len": 2374,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1091653385": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1982,
+    "exp_desc_ua_len": 1982,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1091655640": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2481,
+    "exp_desc_ua_len": 2481,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1091661295": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2309,
+    "exp_desc_ua_len": 2309,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1091664925": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2166,
+    "exp_desc_ua_len": 2166,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1091701025": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2642,
+    "exp_desc_ua_len": 2642,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1091703754": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2392,
+    "exp_desc_ua_len": 2392,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1104894508": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1379,
+    "exp_desc_ua_len": 1379,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1104898340": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1829,
+    "exp_desc_ua_len": 1829,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1140435882": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 978,
+    "exp_desc_ua_len": 978,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1140439515": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 852,
+    "exp_desc_ua_len": 852,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1140463041": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1811,
+    "exp_desc_ua_len": 1811,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1140464596": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1524,
+    "exp_desc_ua_len": 1524,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1140478448": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1802,
+    "exp_desc_ua_len": 1802,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1140493664": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1672,
+    "exp_desc_ua_len": 1672,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1140496020": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1550,
+    "exp_desc_ua_len": 1550,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1151626651": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1871,
+    "exp_desc_ua_len": 1871,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1151675064": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1663,
+    "exp_desc_ua_len": 1663,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1151679653": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1543,
+    "exp_desc_ua_len": 1543,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1157419902": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 328,
+    "exp_desc_ua_len": 328,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1157422918": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 153,
+    "exp_desc_ua_len": 153,
+    "exp_meta_kw_ru_len": 207
+  },
+  "1175102892": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1751,
+    "exp_desc_ua_len": 1751,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1182138414": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2874,
+    "exp_desc_ua_len": 2874,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1182192326": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 3457,
+    "exp_desc_ua_len": 3457,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1182208910": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 3216,
+    "exp_desc_ua_len": 3216,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1201240486": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1993,
+    "exp_desc_ua_len": 1993,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1248790450": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1792,
+    "exp_desc_ua_len": 1792,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1279276784": {
+    "fixes": [
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 202,
+    "exp_desc_ua_len": 194,
+    "exp_meta_kw_ru_len": 179
+  },
+  "1279291947": {
+    "fixes": [
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 222,
+    "exp_desc_ua_len": 214,
+    "exp_meta_kw_ru_len": 138
+  },
+  "1279296807": {
+    "fixes": [
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 224,
+    "exp_desc_ua_len": 216,
+    "exp_meta_kw_ru_len": 138
+  },
+  "1279297874": {
+    "fixes": [
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 226,
+    "exp_desc_ua_len": 218,
+    "exp_meta_kw_ru_len": 138
+  },
+  "1387368641": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1529,
+    "exp_desc_ua_len": 1529,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1486001360": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1645,
+    "exp_desc_ua_len": 1645,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1486019375": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1624,
+    "exp_desc_ua_len": 1624,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1486023518": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1836,
+    "exp_desc_ua_len": 1836,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1909556683": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1835,
+    "exp_desc_ua_len": 1835,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1910258771": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2165,
+    "exp_desc_ua_len": 2165,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1910264280": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1815,
+    "exp_desc_ua_len": 1815,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1938175137": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2183,
+    "exp_desc_ua_len": 2183,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1938204361": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2475,
+    "exp_desc_ua_len": 2436,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1980649907": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 3598,
+    "exp_desc_ua_len": 3598,
+    "exp_meta_kw_ru_len": 254
+  },
+  "1980775973": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2394,
+    "exp_desc_ua_len": 2394,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1994512017": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2142,
+    "exp_desc_ua_len": 2142,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2037407063": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2303,
+    "exp_desc_ua_len": 2303,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2043133894": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2321,
+    "exp_desc_ua_len": 2321,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2062021637": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2602,
+    "exp_desc_ua_len": 2602,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2115408487": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1309,
+    "exp_desc_ua_len": 1309,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2115428300": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2724,
+    "exp_desc_ua_len": 2724,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2119219672": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2495,
+    "exp_desc_ua_len": 2495,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2119232605": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2547,
+    "exp_desc_ua_len": 2547,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2120042718": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2533,
+    "exp_desc_ua_len": 2533,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2120048594": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2515,
+    "exp_desc_ua_len": 2515,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2130158606": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2099,
+    "exp_desc_ua_len": 2099,
+    "exp_meta_kw_ru_len": 254
+  },
+  "2176572019": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2162,
+    "exp_desc_ua_len": 2162,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2229476130": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2494,
+    "exp_desc_ua_len": 2494,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2289556549": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1271,
+    "exp_desc_ua_len": 1271,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2289571581": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1137,
+    "exp_desc_ua_len": 1137,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2289577295": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1515,
+    "exp_desc_ua_len": 1515,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2375834826": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 3680,
+    "exp_desc_ua_len": 3680,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2494024457": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1131,
+    "exp_desc_ua_len": 1131,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2551261210": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1954,
+    "exp_desc_ua_len": 1954,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2551390739": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1019,
+    "exp_desc_ua_len": 1019,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2551403350": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1868,
+    "exp_desc_ua_len": 1868,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2552421222": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2078,
+    "exp_desc_ua_len": 2078,
+    "exp_meta_kw_ru_len": 254
+  },
+  "2553041860": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1361,
+    "exp_desc_ua_len": 1361,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2553061170": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1495,
+    "exp_desc_ua_len": 1495,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2553085705": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1304,
+    "exp_desc_ua_len": 1304,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2553117899": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1440,
+    "exp_desc_ua_len": 1440,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2553128375": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 977,
+    "exp_desc_ua_len": 977,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2553134972": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1076,
+    "exp_desc_ua_len": 1076,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2553890697": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 532,
+    "exp_desc_ua_len": 532,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2553916104": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 518,
+    "exp_desc_ua_len": 518,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2553927341": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 687,
+    "exp_desc_ua_len": 687,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2553931518": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 627,
+    "exp_desc_ua_len": 627,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2553941664": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 533,
+    "exp_desc_ua_len": 533,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2553947259": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 565,
+    "exp_desc_ua_len": 565,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2553950322": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 629,
+    "exp_desc_ua_len": 629,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2553995578": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 572,
+    "exp_desc_ua_len": 572,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2554000341": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 549,
+    "exp_desc_ua_len": 549,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2554003458": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 753,
+    "exp_desc_ua_len": 753,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2554042037": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 753,
+    "exp_desc_ua_len": 753,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2554045814": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 782,
+    "exp_desc_ua_len": 782,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2618189683": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 749,
+    "exp_desc_ua_len": 749,
+    "exp_meta_kw_ru_len": 255
+  },
+  "659213739": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 284,
+    "exp_desc_ua_len": 284,
+    "exp_meta_kw_ru_len": 173
+  },
+  "659222136": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 299,
+    "exp_desc_ua_len": 299,
+    "exp_meta_kw_ru_len": 235
+  },
+  "659868427": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 103,
+    "exp_desc_ua_len": 103,
+    "exp_meta_kw_ru_len": 152
+  },
+  "659871591": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 136,
+    "exp_desc_ua_len": 136,
+    "exp_meta_kw_ru_len": 147
+  },
+  "659931288": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 83,
+    "exp_desc_ua_len": 83,
+    "exp_meta_kw_ru_len": 126
+  },
+  "659932976": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 72,
+    "exp_desc_ua_len": 72,
+    "exp_meta_kw_ru_len": 81
+  },
+  "1130507122": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2122,
+    "exp_desc_ua_len": 2122,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1157411449": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 410,
+    "exp_desc_ua_len": 410,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1157426655": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 139,
+    "exp_desc_ua_len": 139,
+    "exp_meta_kw_ru_len": 208
+  },
+  "1158043647": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 364,
+    "exp_desc_ua_len": 364,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1162257410": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 107,
+    "exp_desc_ua_len": 107,
+    "exp_meta_kw_ru_len": 176
+  },
+  "1162377809": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 107,
+    "exp_desc_ua_len": 107,
+    "exp_meta_kw_ru_len": 184
+  },
+  "1182186421": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 3477,
+    "exp_desc_ua_len": 3477,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1980670921": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1991,
+    "exp_desc_ua_len": 1991,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1129295991": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2232,
+    "exp_desc_ua_len": 2232,
+    "exp_meta_kw_ru_len": 255
+  },
+  "422433108": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1163,
+    "exp_desc_ua_len": 1163,
+    "exp_meta_kw_ru_len": 255
+  },
+  "422433110": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1299,
+    "exp_desc_ua_len": 1299,
+    "exp_meta_kw_ru_len": 255
+  },
+  "422433111": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1220,
+    "exp_desc_ua_len": 1220,
+    "exp_meta_kw_ru_len": 255
+  },
+  "463338525": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2601,
+    "exp_desc_ua_len": 2601,
+    "exp_meta_kw_ru_len": 255
+  },
+  "906749402": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1791,
+    "exp_desc_ua_len": 1791,
+    "exp_meta_kw_ru_len": 255
+  },
+  "923434561": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1463,
+    "exp_desc_ua_len": 1463,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1091617043": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2308,
+    "exp_desc_ua_len": 2308,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1140497045": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1273,
+    "exp_desc_ua_len": 1273,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1175071709": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2173,
+    "exp_desc_ua_len": 2173,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1175117409": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1858,
+    "exp_desc_ua_len": 1858,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1362456118": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2251,
+    "exp_desc_ua_len": 2251,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1861648653": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1410,
+    "exp_desc_ua_len": 1410,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2043130562": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 2314,
+    "exp_desc_ua_len": 2314,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2054628361": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 594,
+    "exp_desc_ua_len": 594,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2054619239": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 595,
+    "exp_desc_ua_len": 595,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2316483752": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 862,
+    "exp_desc_ua_len": 862,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2316502124": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 890,
+    "exp_desc_ua_len": 890,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2043433914": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1156,
+    "exp_desc_ua_len": 1156,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2043435326": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1156,
+    "exp_desc_ua_len": 1156,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2226832251": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1131,
+    "exp_desc_ua_len": 1131,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2226833939": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1134,
+    "exp_desc_ua_len": 1134,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2226835773": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1128,
+    "exp_desc_ua_len": 1128,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2494076512": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 831,
+    "exp_desc_ua_len": 831,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2545794952": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 826,
+    "exp_desc_ua_len": 826,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1090623546": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 689,
+    "exp_desc_ua_len": 689,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1861616417": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1049,
+    "exp_desc_ua_len": 1049,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2237341591": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 740,
+    "exp_desc_ua_len": 740,
+    "exp_meta_kw_ru_len": 255
+  },
+  "924748004": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1454,
+    "exp_desc_ua_len": 1454,
+    "exp_meta_kw_ru_len": 255
+  },
+  "924754635": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1493,
+    "exp_desc_ua_len": 1493,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1069132413": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 581,
+    "exp_desc_ua_len": 581,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1069249560": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 489,
+    "exp_desc_ua_len": 489,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1071720919": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 554,
+    "exp_desc_ua_len": 554,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1072398019": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 555,
+    "exp_desc_ua_len": 555,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1089820485": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1391,
+    "exp_desc_ua_len": 1391,
+    "exp_meta_kw_ru_len": 254
+  },
+  "1089824330": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1393,
+    "exp_desc_ua_len": 1393,
+    "exp_meta_kw_ru_len": 254
+  },
+  "1089873770": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 814,
+    "exp_desc_ua_len": 814,
+    "exp_meta_kw_ru_len": 254
+  },
+  "1090626741": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 595,
+    "exp_desc_ua_len": 595,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1167142953": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 812,
+    "exp_desc_ua_len": 812,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1167157249": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 565,
+    "exp_desc_ua_len": 565,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1284528051": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 845,
+    "exp_desc_ua_len": 845,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1365916483": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 854,
+    "exp_desc_ua_len": 854,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1398739492": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 553,
+    "exp_desc_ua_len": 553,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1528087972": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 822,
+    "exp_desc_ua_len": 822,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1528193440": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 714,
+    "exp_desc_ua_len": 714,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1542717269": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 760,
+    "exp_desc_ua_len": 760,
+    "exp_meta_kw_ru_len": 224
+  },
+  "1551545429": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 942,
+    "exp_desc_ua_len": 942,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1551551207": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 600,
+    "exp_desc_ua_len": 600,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1551554511": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 358,
+    "exp_desc_ua_len": 358,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1551592571": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 661,
+    "exp_desc_ua_len": 661,
+    "exp_meta_kw_ru_len": 254
+  },
+  "1962156255": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 321,
+    "exp_desc_ua_len": 321,
+    "exp_meta_kw_ru_len": 254
+  },
+  "2048251980": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 676,
+    "exp_desc_ua_len": 676,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2048258100": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 762,
+    "exp_desc_ua_len": 762,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2048262261": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 762,
+    "exp_desc_ua_len": 762,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2048265359": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 614,
+    "exp_desc_ua_len": 614,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2080403763": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 550,
+    "exp_desc_ua_len": 550,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2082921897": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1144,
+    "exp_desc_ua_len": 1144,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2082935257": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1150,
+    "exp_desc_ua_len": 1150,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2084225399": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1125,
+    "exp_desc_ua_len": 1125,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2120035409": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 612,
+    "exp_desc_ua_len": 612,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2123165486": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1255,
+    "exp_desc_ua_len": 1255,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2126968792": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 484,
+    "exp_desc_ua_len": 484,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2147693208": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1140,
+    "exp_desc_ua_len": 1140,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2149973560": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1006,
+    "exp_desc_ua_len": 1006,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2447457846": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 832,
+    "exp_desc_ua_len": 832,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2545760815": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 643,
+    "exp_desc_ua_len": 643,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2545778409": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 669,
+    "exp_desc_ua_len": 669,
+    "exp_meta_kw_ru_len": 254
+  },
+  "641208803": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1188,
+    "exp_desc_ua_len": 1188,
+    "exp_meta_kw_ru_len": 254
+  },
+  "2082655505": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1141,
+    "exp_desc_ua_len": 1141,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1919343504": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 407,
+    "exp_desc_ua_len": 407,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1970076459": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 722,
+    "exp_desc_ua_len": 722,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1167082549": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1553,
+    "exp_desc_ua_len": 1553,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1167098336": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1539,
+    "exp_desc_ua_len": 1539,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2643839031": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 639,
+    "exp_desc_ua_len": 639,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2643913805": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 607,
+    "exp_desc_ua_len": 607,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1158570291": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 624,
+    "exp_desc_ua_len": 624,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1158583836": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 630,
+    "exp_desc_ua_len": 630,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2043108491": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 763,
+    "exp_desc_ua_len": 763,
+    "exp_meta_kw_ru_len": 255
+  },
+  "465819469": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 397,
+    "exp_desc_ua_len": 397,
+    "exp_meta_kw_ru_len": 255
+  },
+  "472564250": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 559,
+    "exp_desc_ua_len": 559,
+    "exp_meta_kw_ru_len": 230
+  },
+  "506131299": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 495,
+    "exp_desc_ua_len": 495,
+    "exp_meta_kw_ru_len": 254
+  },
+  "506131300": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 452,
+    "exp_desc_ua_len": 452,
+    "exp_meta_kw_ru_len": 255
+  },
+  "646863554": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 629,
+    "exp_desc_ua_len": 629,
+    "exp_meta_kw_ru_len": 252
+  },
+  "881193065": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 604,
+    "exp_desc_ua_len": 604,
+    "exp_meta_kw_ru_len": 255
+  },
+  "885059119": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 586,
+    "exp_desc_ua_len": 586,
+    "exp_meta_kw_ru_len": 255
+  },
+  "920131700": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 493,
+    "exp_desc_ua_len": 493,
+    "exp_meta_kw_ru_len": 255
+  },
+  "920153407": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 601,
+    "exp_desc_ua_len": 601,
+    "exp_meta_kw_ru_len": 255
+  },
+  "924690975": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 407,
+    "exp_desc_ua_len": 407,
+    "exp_meta_kw_ru_len": 168
+  },
+  "924705373": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 407,
+    "exp_desc_ua_len": 407,
+    "exp_meta_kw_ru_len": 160
+  },
+  "924736591": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 408,
+    "exp_desc_ua_len": 408,
+    "exp_meta_kw_ru_len": 162
+  },
+  "924738120": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 359,
+    "exp_desc_ua_len": 359,
+    "exp_meta_kw_ru_len": 221
+  },
+  "924741002": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 373,
+    "exp_desc_ua_len": 373,
+    "exp_meta_kw_ru_len": 255
+  },
+  "924777216": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 373,
+    "exp_desc_ua_len": 373,
+    "exp_meta_kw_ru_len": 226
+  },
+  "924841376": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 374,
+    "exp_desc_ua_len": 374,
+    "exp_meta_kw_ru_len": 218
+  },
+  "924842720": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 388,
+    "exp_desc_ua_len": 388,
+    "exp_meta_kw_ru_len": 255
+  },
+  "924844738": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 367,
+    "exp_desc_ua_len": 367,
+    "exp_meta_kw_ru_len": 220
+  },
+  "924851748": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 371,
+    "exp_desc_ua_len": 371,
+    "exp_meta_kw_ru_len": 204
+  },
+  "953083671": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 543,
+    "exp_desc_ua_len": 543,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1188004796": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 471,
+    "exp_desc_ua_len": 471,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1188049415": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 618,
+    "exp_desc_ua_len": 618,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1197569246": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 566,
+    "exp_desc_ua_len": 566,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1197576635": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 575,
+    "exp_desc_ua_len": 575,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1394268564": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1092,
+    "exp_desc_ua_len": 1092,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1417384356": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 604,
+    "exp_desc_ua_len": 604,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1551529027": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 568,
+    "exp_desc_ua_len": 568,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1849964619": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 424,
+    "exp_desc_ua_len": 424,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1860575594": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 424,
+    "exp_desc_ua_len": 424,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2037384264": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 354,
+    "exp_desc_ua_len": 354,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2042449928": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1043,
+    "exp_desc_ua_len": 1043,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2043073540": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 729,
+    "exp_desc_ua_len": 729,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2043114776": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 797,
+    "exp_desc_ua_len": 797,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2043116160": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 550,
+    "exp_desc_ua_len": 550,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2086908072": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 542,
+    "exp_desc_ua_len": 542,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2086919201": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 714,
+    "exp_desc_ua_len": 714,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2086921537": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 659,
+    "exp_desc_ua_len": 659,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2086923985": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 517,
+    "exp_desc_ua_len": 517,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2086926393": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1026,
+    "exp_desc_ua_len": 1026,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2086932953": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1071,
+    "exp_desc_ua_len": 1071,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2086935767": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 945,
+    "exp_desc_ua_len": 945,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2086942316": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 830,
+    "exp_desc_ua_len": 830,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2086945579": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1078,
+    "exp_desc_ua_len": 1078,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2086950966": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 927,
+    "exp_desc_ua_len": 927,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2086952882": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1070,
+    "exp_desc_ua_len": 1070,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2120091691": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 475,
+    "exp_desc_ua_len": 475,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2149982788": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1074,
+    "exp_desc_ua_len": 1074,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2149993898": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 996,
+    "exp_desc_ua_len": 996,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2385524786": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 977,
+    "exp_desc_ua_len": 977,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2504814450": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 965,
+    "exp_desc_ua_len": 965,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2504820786": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 872,
+    "exp_desc_ua_len": 872,
+    "exp_meta_kw_ru_len": 255
+  },
+  "625106603": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 463,
+    "exp_desc_ua_len": 463,
+    "exp_meta_kw_ru_len": 202
+  },
+  "625111391": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 419,
+    "exp_desc_ua_len": 419,
+    "exp_meta_kw_ru_len": 231
+  },
+  "498054957": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 273,
+    "exp_desc_ua_len": 273,
+    "exp_meta_kw_ru_len": 176
+  },
+  "506131301": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 453,
+    "exp_desc_ua_len": 453,
+    "exp_meta_kw_ru_len": 255
+  },
+  "497661400": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 454,
+    "exp_desc_ua_len": 454,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1860599142": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 454,
+    "exp_desc_ua_len": 454,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2087805639": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 907,
+    "exp_desc_ua_len": 907,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2087809999": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 902,
+    "exp_desc_ua_len": 902,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2087811994": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 893,
+    "exp_desc_ua_len": 893,
+    "exp_meta_kw_ru_len": 255
+  },
+  "976768460": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1178,
+    "exp_desc_ua_len": 1178,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2352435750": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 552,
+    "exp_desc_ua_len": 552,
+    "exp_meta_kw_ru_len": 255
+  },
+  "701178117": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 300,
+    "exp_desc_ua_len": 300,
+    "exp_meta_kw_ru_len": 184
+  },
+  "701182492": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 301,
+    "exp_desc_ua_len": 301,
+    "exp_meta_kw_ru_len": 206
+  },
+  "953644585": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 741,
+    "exp_desc_ua_len": 741,
+    "exp_meta_kw_ru_len": 255
+  },
+  "953660113": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 770,
+    "exp_desc_ua_len": 770,
+    "exp_meta_kw_ru_len": 255
+  },
+  "953665474": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 756,
+    "exp_desc_ua_len": 756,
+    "exp_meta_kw_ru_len": 255
+  },
+  "971680835": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1150,
+    "exp_desc_ua_len": 1150,
+    "exp_meta_kw_ru_len": 255
+  },
+  "976767847": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1150,
+    "exp_desc_ua_len": 1150,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1042057453": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 579,
+    "exp_desc_ua_len": 579,
+    "exp_meta_kw_ru_len": 245
+  },
+  "1042567057": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 577,
+    "exp_desc_ua_len": 577,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1089869334": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 647,
+    "exp_desc_ua_len": 647,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1089900163": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 699,
+    "exp_desc_ua_len": 699,
+    "exp_meta_kw_ru_len": 254
+  },
+  "1090637637": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 692,
+    "exp_desc_ua_len": 692,
+    "exp_meta_kw_ru_len": 254
+  },
+  "1090687473": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 827,
+    "exp_desc_ua_len": 827,
+    "exp_meta_kw_ru_len": 254
+  },
+  "1188775960": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 845,
+    "exp_desc_ua_len": 845,
+    "exp_meta_kw_ru_len": 254
+  },
+  "1188785152": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 786,
+    "exp_desc_ua_len": 786,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2077805742": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 519,
+    "exp_desc_ua_len": 519,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2081551304": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 688,
+    "exp_desc_ua_len": 688,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2083144569": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1133,
+    "exp_desc_ua_len": 1133,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2083154671": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 945,
+    "exp_desc_ua_len": 945,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2083163166": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 896,
+    "exp_desc_ua_len": 896,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2083167871": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 941,
+    "exp_desc_ua_len": 941,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2083172170": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 942,
+    "exp_desc_ua_len": 942,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2084230334": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 793,
+    "exp_desc_ua_len": 793,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2199363405": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 889,
+    "exp_desc_ua_len": 889,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2226838746": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 788,
+    "exp_desc_ua_len": 788,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2352423600": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 561,
+    "exp_desc_ua_len": 561,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2488325492": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 786,
+    "exp_desc_ua_len": 786,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2488328465": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 747,
+    "exp_desc_ua_len": 747,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2783152244": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 314,
+    "exp_desc_ua_len": 314,
+    "exp_meta_kw_ru_len": 227
+  },
+  "2783176307": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 314,
+    "exp_desc_ua_len": 314,
+    "exp_meta_kw_ru_len": 227
+  },
+  "2226843276": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 886,
+    "exp_desc_ua_len": 886,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2488351204": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 789,
+    "exp_desc_ua_len": 789,
+    "exp_meta_kw_ru_len": 255
+  },
+  "678703950": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 672,
+    "exp_desc_ua_len": 672,
+    "exp_meta_kw_ru_len": 121
+  },
+  "811759973": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 545,
+    "exp_desc_ua_len": 545,
+    "exp_meta_kw_ru_len": 164
+  },
+  "811771083": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 561,
+    "exp_desc_ua_len": 561,
+    "exp_meta_kw_ru_len": 208
+  },
+  "477628326": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 420,
+    "exp_desc_ua_len": 420,
+    "exp_meta_kw_ru_len": 30
+  },
+  "483836219": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1038,
+    "exp_desc_ua_len": 1038,
+    "exp_meta_kw_ru_len": 255
+  },
+  "483989708": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 734,
+    "exp_desc_ua_len": 734,
+    "exp_meta_kw_ru_len": 254
+  },
+  "631854506": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 880,
+    "exp_desc_ua_len": 880,
+    "exp_meta_kw_ru_len": 149
+  },
+  "698342819": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 757,
+    "exp_desc_ua_len": 762,
+    "exp_meta_kw_ru_len": 255
+  },
+  "913702902": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 578,
+    "exp_desc_ua_len": 578,
+    "exp_meta_kw_ru_len": 166
+  },
+  "965290558": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 566,
+    "exp_desc_ua_len": 566,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2079335604": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 628,
+    "exp_desc_ua_len": 628,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2520951547": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 838,
+    "exp_desc_ua_len": 838,
+    "exp_meta_kw_ru_len": 216
+  },
+  "2520963852": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 839,
+    "exp_desc_ua_len": 839,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2576042598": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 731,
+    "exp_desc_ua_len": 731,
+    "exp_meta_kw_ru_len": 254
+  },
+  "631850610": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 605,
+    "exp_desc_ua_len": 605,
+    "exp_meta_kw_ru_len": 105
+  },
+  "512815156": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 569,
+    "exp_desc_ua_len": 569,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2130365317": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 778,
+    "exp_desc_ua_len": 778,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2130973736": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1160,
+    "exp_desc_ua_len": 1160,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2130978029": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 881,
+    "exp_desc_ua_len": 881,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2130980574": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1162,
+    "exp_desc_ua_len": 1162,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2130985537": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1162,
+    "exp_desc_ua_len": 1162,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2130988108": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 886,
+    "exp_desc_ua_len": 886,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2130990656": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1165,
+    "exp_desc_ua_len": 1165,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2130994858": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1613,
+    "exp_desc_ua_len": 1613,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2131003831": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1333,
+    "exp_desc_ua_len": 1333,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2131006319": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1622,
+    "exp_desc_ua_len": 1622,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2131010101": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1622,
+    "exp_desc_ua_len": 1622,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2131012175": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1343,
+    "exp_desc_ua_len": 1343,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2131014640": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1341,
+    "exp_desc_ua_len": 1341,
+    "exp_meta_kw_ru_len": 255
+  },
+  "965261118": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 556,
+    "exp_desc_ua_len": 556,
+    "exp_meta_kw_ru_len": 255
+  },
+  "965280379": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 562,
+    "exp_desc_ua_len": 562,
+    "exp_meta_kw_ru_len": 254
+  },
+  "722728743": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 690,
+    "exp_desc_ua_len": 690,
+    "exp_meta_kw_ru_len": 255
+  },
+  "732164153": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 706,
+    "exp_desc_ua_len": 706,
+    "exp_meta_kw_ru_len": 254
+  },
+  "802520057": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 571,
+    "exp_desc_ua_len": 571,
+    "exp_meta_kw_ru_len": 219
+  },
+  "1919404141": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 963,
+    "exp_desc_ua_len": 963,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1048846219": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 888,
+    "exp_desc_ua_len": 888,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1355076468": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1171,
+    "exp_desc_ua_len": 1171,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2048293590": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 887,
+    "exp_desc_ua_len": 887,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2048296593": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 924,
+    "exp_desc_ua_len": 924,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2245447082": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 963,
+    "exp_desc_ua_len": 963,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2245460392": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1016,
+    "exp_desc_ua_len": 1016,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2633573771": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 730,
+    "exp_desc_ua_len": 730,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2640112372": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 742,
+    "exp_desc_ua_len": 742,
+    "exp_meta_kw_ru_len": 255
+  },
+  "976770291": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 677,
+    "exp_desc_ua_len": 677,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1045628525": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 617,
+    "exp_desc_ua_len": 617,
+    "exp_meta_kw_ru_len": 254
+  },
+  "1045631303": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 582,
+    "exp_desc_ua_len": 582,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1091477214": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 836,
+    "exp_desc_ua_len": 836,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1395790396": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 299,
+    "exp_desc_ua_len": 299,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1398723073": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 545,
+    "exp_desc_ua_len": 545,
+    "exp_meta_kw_ru_len": 253
+  },
+  "1755813685": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 682,
+    "exp_desc_ua_len": 682,
+    "exp_meta_kw_ru_len": 255
+  },
+  "1905663779": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 541,
+    "exp_desc_ua_len": 541,
+    "exp_meta_kw_ru_len": 247
+  },
+  "2082652131": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 958,
+    "exp_desc_ua_len": 958,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2199328286": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 869,
+    "exp_desc_ua_len": 869,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2199337912": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 907,
+    "exp_desc_ua_len": 907,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2545751551": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 548,
+    "exp_desc_ua_len": 548,
+    "exp_meta_kw_ru_len": 255
+  },
+  "961986157": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      },
+      {
+        "field": "META keywords (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1186,
+    "exp_desc_ua_len": 1186,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2199341644": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 899,
+    "exp_desc_ua_len": 899,
+    "exp_meta_kw_ru_len": 255
+  },
+  "2147701038": {
+    "fixes": [
+      {
+        "field": "Описание товара (RU)",
+        "reasons": [
+          "ua_leak_in_ru"
+        ]
+      }
+    ],
+    "exp_has": true,
+    "exp_desc_ru_len": 1048,
+    "exp_desc_ua_len": 1048,
+    "exp_meta_kw_ru_len": 255
+  }
+}

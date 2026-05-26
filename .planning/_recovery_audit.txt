@@ -1,0 +1,23 @@
+=== STEP 1: read broken import xlsx ===
+IMP headers (9): ['Артикул', 'Название модификации (RU)', 'META keywords (UA)', 'META keywords (RU)', 'Описание товара (RU)', 'Название (RU)', 'Описание товара (UA)', 'Название (UA)', 'Название модификации (UA)']
+IMP rows with non-empty Артикул: 943
+
+=== STEP 2: read pre-incident export (13.05.26) ===
+EXP headers (59): ['Артикул', 'Родительский артикул', 'Артикул для отображения на сайте', 'Название модификации (UA)', 'Название модификации (RU)', 'Название (UA)', 'Название (RU)', 'Бренд', 'Раздел', 'Цена', 'Старая цена', 'Валюта', 'Отображать', 'Наличие', 'Дополнительные разделы', 'Фото', 'Галерея', 'Обзор 360', 'Алиас', 'Ссылка', 'Дата добавления', 'HTML title (UA)', 'HTML title (RU)', 'META keywords (UA)', 'META keywords (RU)', 'META description (UA)', 'META description (RU)', 'h1 заголовок (UA)', 'h1 заголовок (RU)', 'Поставщик']
+EXP col indexes: art=0 desc_ua=34 desc_ru=35 meta_kw_ru=24 meta_kw_ua=23
+EXP rows with non-empty Артикул: 5632
+
+=== STEP 3: classify broken rows in IMP ===
+Broken rows count by category:
+  desc_ru_broken: 595
+  meta_ru_ua_leak: 198
+  desc_ua_broken: 18
+
+Total broken artikuls: 611
+Coverage in pre-incident export (13.05.26): 611/611 (100.0%)
+NOT in pre-incident export: 0
+Need RU desc fix but pre-incident export has EMPTY desc_ru: 0
+Need UA desc fix but pre-incident export has EMPTY desc_ua: 0
+
+Wrote: C:\Projects\labresta-sync\.planning\_recovery_audit.txt
+Wrote: C:\Projects\labresta-sync\.planning\_recovery_audit_rows.json

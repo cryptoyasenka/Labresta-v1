@@ -1,0 +1,40 @@
+{
+  "Описание товара (UA)": [
+    {
+      "art": "2062006550",
+      "labels": [
+        "imp_truncated_to_46_from_691"
+      ],
+      "imp_snip": "<p>Поверхня для смаження TATRA TET.87S гладка.",
+      "exp_snip": "<p>Поверхня для смаження TATRA TET.87S гладкая. Підтримка чистоти робочого прост"
+    }
+  ],
+  "Описание товара (RU)": [
+    {
+      "art": "2110282234",
+      "labels": [
+        "imp_truncated_to_166_from_737"
+      ],
+      "imp_snip": "<p>Жарочная поверхность GoodFood EG55R предназначена для прожарки мясного и рыбн",
+      "exp_snip": "<p>Жарочная поверхность GoodFood EG55R предназначена для прожарки мясного и рыбн"
+    },
+    {
+      "art": "1582804831",
+      "labels": [
+        "imp_struct_no-block_exp_ok"
+      ],
+      "imp_snip": "220 ВФритюрниця BECKERS FR 8 LT призначена для обсмажування різноманітних продук",
+      "exp_snip": "<h2>Фритюрниця BECKERS FR 8 LT призначена для обсмажування різноманітних продукт"
+    }
+  ],
+  "Название модификации (RU)": [
+    {
+      "art": "1766968161",
+      "labels": [
+        "imp_has_ua_leak_exp_clean"
+      ],
+      "imp_snip": "Термопроцессор SIRMAN Softcooker LIGHT (Sous Vide) / &deg; / &plusmn; / <ul> / А",
+      "exp_snip": "Термопроцесор SIRMAN Softcooker LIGHT (Sous Vide)"
+    }
+  ]
+}

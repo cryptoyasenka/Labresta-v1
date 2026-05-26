@@ -1,0 +1,3342 @@
+{
+  "desc_ru": {
+    "A": [],
+    "B": [
+      {
+        "art": "497705127",
+        "imp_reason": "no opening block tag",
+        "exp_reason": "no opening block tag",
+        "imp_snip": "Плита электрическая промышленная на 4 круглые конфорки диаме",
+        "exp_snip": "Плита электрическая промышленная на 4 круглые конфорки диаме"
+      },
+      {
+        "art": "497705129",
+        "imp_reason": "no opening block tag",
+        "exp_reason": "no opening block tag",
+        "imp_snip": "Плита электрическая промышленная на 2 квадратные конфорки ра",
+        "exp_snip": "Плита электрическая промышленная на 2 квадратные конфорки ра"
+      },
+      {
+        "art": "497705130",
+        "imp_reason": "no opening block tag",
+        "exp_reason": "no opening block tag",
+        "imp_snip": "Плита электрическая промышленная на 4 квадратные конфорки ра",
+        "exp_snip": "Плита электрическая промышленная на 4 квадратные конфорки ра"
+      },
+      {
+        "art": "419429603",
+        "imp_reason": "no opening block tag",
+        "exp_reason": "ua_leak",
+        "imp_snip": "Расстоечный шкаф итальянского бренда Unox на 8 противней. Ру",
+        "exp_snip": "Розстоєчна шафа італійського бренду Unox на 8 дек. Ручне упр"
+      },
+      {
+        "art": "479380952",
+        "imp_reason": "no opening block tag",
+        "exp_reason": "ua_leak",
+        "imp_snip": "Расстоечный шкаф итальянского бренда Unox на 8 противней. Ру",
+        "exp_snip": "Розстоєчна шафа італійського бренду Unox на 8 дек. Ручне упр"
+      },
+      {
+        "art": "479380954",
+        "imp_reason": "no opening block tag",
+        "exp_reason": "ua_leak",
+        "imp_snip": "Расстоечный шкаф итальянского бренда Unox на 12 противней. Р",
+        "exp_snip": "Розстоєчна шафа італійського бренду Unox на 12 дек. Ручне уп"
+      },
+      {
+        "art": "627967813",
+        "imp_reason": "no opening block tag",
+        "exp_reason": "ua_leak",
+        "imp_snip": "Расстоечный шкаф итальянского бренда Apach, ручное управлени",
+        "exp_snip": "Розстоєчна шафу італійського бренду Apach, ручне управління,"
+      },
+      {
+        "art": "627967815",
+        "imp_reason": "no opening block tag",
+        "exp_reason": "ua_leak",
+        "imp_snip": "Расстоечный шкаф итальянского бренда Apach APE12ABQ, ручное ",
+        "exp_snip": "Розстоєчна шафа італійського бренду Apach APE12ABQ, ручне уп"
+      },
+      {
+        "art": "802716993",
+        "imp_reason": "no opening block tag",
+        "exp_reason": "ua_leak",
+        "imp_snip": "Расстоечный шкаф итальянского бренда Unox, управляется через",
+        "exp_snip": "Розстоєчна шафа італійського бренду Unox, управляється через"
+      },
+      {
+        "art": "524323435",
+        "imp_reason": "starts <li>",
+        "exp_reason": "ua_leak",
+        "imp_snip": "<li>Профессиональная жарочная поверхность - гриль хромирован",
+        "exp_snip": "<li>Професійна жарочна поверхня - гриль хромована (9 мм). Ро"
+      },
+      {
+        "art": "524323432",
+        "imp_reason": "starts <li>",
+        "exp_reason": "starts <li>",
+        "imp_snip": "<li>Профессиональная жарочная поверхность- гриль. Зоны нагре",
+        "exp_snip": "<li>Профессиональная жарочная поверхность- гриль. Зоны нагре"
+      },
+      {
+        "art": "524323436",
+        "imp_reason": "starts <li>",
+        "exp_reason": "ua_leak",
+        "imp_snip": "<li>Профессиональная жарочная поверхность - гриль закалённая",
+        "exp_snip": "<li>Професійна жарочна поверхня - гриль загартована сталь. Р"
+      },
+      {
+        "art": "524323438",
+        "imp_reason": "starts <li>",
+        "exp_reason": "ua_leak",
+        "imp_snip": "<li>Профессиональная жарочная поверхность - гриль Хромирован",
+        "exp_snip": "<li>Професійна жарочна поверхня - гриль Хромована поверхня д"
+      },
+      {
+        "art": "524323433",
+        "imp_reason": "starts <li>",
+        "exp_reason": "starts <li>",
+        "imp_snip": "<li>Профессиональная жарочная поверхность- гриль. Зоны нагре",
+        "exp_snip": "<li>Профессиональная жарочная поверхность- гриль. Зоны нагре"
+      },
+      {
+        "art": "925656640",
+        "imp_reason": "ua_leak",
+        "exp_reason": "ua_leak",
+        "imp_snip": "<p><font><font>…</font></font><strong>Вапо-гриль Arris дає з",
+        "exp_snip": "<p><font><font>Вапо-гриль Arris дає змогу завдяки запатентов"
+      },
+      {
+        "art": "925686772",
+        "imp_reason": "ua_leak",
+        "exp_reason": "ua_leak",
+        "imp_snip": "<p><p><font><font>Вапо-гриль Arris позволяет благодаря запат",
+        "exp_snip": "<p><font><font>Вапо-гриль Arris дає змогу завдяки запатентов"
+      },
+      {
+        "art": "1582804831",
+        "imp_reason": "ua_leak",
+        "exp_reason": "ua_leak",
+        "imp_snip": "220 ВФритюрниця BECKERS FR 8 LT призначена для обсмажування ",
+        "exp_snip": "<h2>Фритюрниця BECKERS FR 8 LT призначена для обсмажування р"
+      }
+    ],
+    "C": [
+      {
+        "art": "497705126",
+        "reason": "no opening block tag"
+      },
+      {
+        "art": "497705128",
+        "reason": "no opening block tag"
+      },
+      {
+        "art": "927869275",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1131875858",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1132488173",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1557035491",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2060590919",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2309200640",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2460109996",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "900625827",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1162383611",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1162393164",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2121019658",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1557025542",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2042403452",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2177212402",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2177221942",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2177226262",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2463608004",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "554663072",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "554663079",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1582657493",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2084240296",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2126980645",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2301256894",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2301261823",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2301263657",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2301264278",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2301279584",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2463601177",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "428056878",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "428056881",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "428056882",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "428056883",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "428056884",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "428056885",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "428056886",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "428056888",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "544855952",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "544855953",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "544855956",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "544855957",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "554663073",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "554663074",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "554663075",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "554663076",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "554663077",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "554663078",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "617666954",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "617666956",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "617666957",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "631394855",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "663682433",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "663685256",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "663686231",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "663687887",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "663689139",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "781296773",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1045641515",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1136148249",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1149597094",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1149602136",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1149604593",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1478471369",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1478486566",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1582800395",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2043360195",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2061527374",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2062009706",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2094186445",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2094234501",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2126978825",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2126979724",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2126981710",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2153053237",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2153059142",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2193312260",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2193323215",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2237326167",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2254861702",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2301259016",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2301262542",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2301265523",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2301273006",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2301275135",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2301277445",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2301281080",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2301282824",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2461343617",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2463597440",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2519634537",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2565704494",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2807628230",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2807634760",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1146310784",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "544855951",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "544855958",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "781296776",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2043349926",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "428056887",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "631839767",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2079091519",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2227319550",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "475237552",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "631839766",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "680130267",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1048777046",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1132541777",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1136199583",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1149659001",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2079097849",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2784066508",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1136048893",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1541927527",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2554054328",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2554068777",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2554112901",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2554126657",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2554135664",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2554151962",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2519514305",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2567533338",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "902150496",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1132415146",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1132429798",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1148384331",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1157452958",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2111168138",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2123154004",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2152480284",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2152493145",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2152499987",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1132422993",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1132435380",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1157469824",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "902138662",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2061540159",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "881337875",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "881360570",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1149589807",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1149593260",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1179530098",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2062005085",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2153098142",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2193287271",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1122650393",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1179543475",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2065657808",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1501530843",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2094246372",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1152261908",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2503784223",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "419358573",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "908081852",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "908202440",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "908210117",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "908216082",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "656920542",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1070126268",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "471691347",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "471692672",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1542955172",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2060690509",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2375855259",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "625659540",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1065460736",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "631325362",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "923493247",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1889520726",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2123159356",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "964765301",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2123162134",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "475144743",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "518661591",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "518661592",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "732745638",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "885027031",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1033556595",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1110574295",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1110576512",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1527065711",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1527074785",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2566572706",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2567445276",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "475131853",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1122652997",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1122656036",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "707420339",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "631396372",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "705871662",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "942243242",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1439020669",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1466724410",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2087849623",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2087858192",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2087859946",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2087861824",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2269483280",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "525347674",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1994297810",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2037416827",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2037422227",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2289567013",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "405421403",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "443746911",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "443746912",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "443746914",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "451894299",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1140471779",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1151682553",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1169551375",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1200373297",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2120038185",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "417925358",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "419423432",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "443746913",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "477739756",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "477739760",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "477739781",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "505661168",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "505816134",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "525347671",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "525347672",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "525347673",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "525347675",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "525866388",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "525866390",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "527283031",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "527283032",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "527283033",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "631871298",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "633799765",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "659826285",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "659829969",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "659831710",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "659834425",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "659842667",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "659873425",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "659874607",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "659884424",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "659891115",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "659893328",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "659928885",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "663025509",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "663029990",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "663030662",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "663035756",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "663036895",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "663037316",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "663037728",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "663521963",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "663523701",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "663524107",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "800416521",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1069893201",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1091650117",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1091653385",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1091655640",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1091661295",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1091664925",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1091701025",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1091703754",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1104894508",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1104898340",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1140435882",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1140439515",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1140463041",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1140464596",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1140478448",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1140493664",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1140496020",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1151626651",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1151675064",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1151679653",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1157419902",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1157422918",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1175102892",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1182138414",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1182192326",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1182208910",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1201240486",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1248790450",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1387368641",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1486001360",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1486019375",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1486023518",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1909556683",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1910258771",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1910264280",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1938175137",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1938204361",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1980649907",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1980775973",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1994512017",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2037407063",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2043133894",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2062021637",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2115408487",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2115428300",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2119219672",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2119232605",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2120042718",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2120048594",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2130158606",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2176572019",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2229476130",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2289556549",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2289571581",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2289577295",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2375834826",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2494024457",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2551261210",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2551390739",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2551403350",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2552421222",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2553041860",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2553061170",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2553085705",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2553117899",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2553128375",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2553134972",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2553890697",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2553916104",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2553927341",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2553931518",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2553941664",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2553947259",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2553950322",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2553995578",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2554000341",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2554003458",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2554042037",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2554045814",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2618189683",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "659213739",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "659222136",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "659868427",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "659871591",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "659931288",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "659932976",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1130507122",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1157411449",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1157426655",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1158043647",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1162257410",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1162377809",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1182186421",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1980670921",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1129295991",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "422433108",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "422433110",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "422433111",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "463338525",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "906749402",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "923434561",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1091617043",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1140497045",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1175071709",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1175117409",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1362456118",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1861648653",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2043130562",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2054628361",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2054619239",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2316483752",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2316502124",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2043433914",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2043435326",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2226832251",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2226833939",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2226835773",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2494076512",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2545794952",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1090623546",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1861616417",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2237341591",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "924748004",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "924754635",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1069132413",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1069249560",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1071720919",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1072398019",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1089820485",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1089824330",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1089873770",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1090626741",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1167142953",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1167157249",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1284528051",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1365916483",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1398739492",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1528087972",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1528193440",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1542717269",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1551545429",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1551551207",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1551554511",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1551592571",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1962156255",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2048251980",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2048258100",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2048262261",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2048265359",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2080403763",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2082921897",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2082935257",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2084225399",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2120035409",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2123165486",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2126968792",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2147693208",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2149973560",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2447457846",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2545760815",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2545778409",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "641208803",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2082655505",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1919343504",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1970076459",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1167082549",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1167098336",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2643839031",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2643913805",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1158570291",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1158583836",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2043108491",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "465819469",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "472564250",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "506131299",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "506131300",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "646863554",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "881193065",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "885059119",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "920131700",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "920153407",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "924690975",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "924705373",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "924736591",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "924738120",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "924741002",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "924777216",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "924841376",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "924842720",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "924844738",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "924851748",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "953083671",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1188004796",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1188049415",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1197569246",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1197576635",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1394268564",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1417384356",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1551529027",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1849964619",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1860575594",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2037384264",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2042449928",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2043073540",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2043114776",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2043116160",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2086908072",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2086919201",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2086921537",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2086923985",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2086926393",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2086932953",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2086935767",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2086942316",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2086945579",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2086950966",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2086952882",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2120091691",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2149982788",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2149993898",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2385524786",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2504814450",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2504820786",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "625106603",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "625111391",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "498054957",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "506131301",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "497661400",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1860599142",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2087805639",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2087809999",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2087811994",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "976768460",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2352435750",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "701178117",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "701182492",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "953644585",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "953660113",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "953665474",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "971680835",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "976767847",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1042057453",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1042567057",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1089869334",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1089900163",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1090637637",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1090687473",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1188775960",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1188785152",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2077805742",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2081551304",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2083144569",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2083154671",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2083163166",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2083167871",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2083172170",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2084230334",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2199363405",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2226838746",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2352423600",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2488325492",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2488328465",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2783152244",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2783176307",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2226843276",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2488351204",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "678703950",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "811759973",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "811771083",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "477628326",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "483836219",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "483989708",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "631854506",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "698342819",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "913702902",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "965290558",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2079335604",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2520951547",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2520963852",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2576042598",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "631850610",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "512815156",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2130365317",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2130973736",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2130978029",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2130980574",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2130985537",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2130988108",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2130990656",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2130994858",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2131003831",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2131006319",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2131010101",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2131012175",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2131014640",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "965261118",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "965280379",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "722728743",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "732164153",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "802520057",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1919404141",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1048846219",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1355076468",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2048293590",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2048296593",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2245447082",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2245460392",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2633573771",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2640112372",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "976770291",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1045628525",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1045631303",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1091477214",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1395790396",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1398723073",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1755813685",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1905663779",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2082652131",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2199328286",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2199337912",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2545751551",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "961986157",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2199341644",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2147701038",
+        "reason": "ua_leak"
+      }
+    ]
+  },
+  "desc_ua": {
+    "A": [],
+    "B": [
+      {
+        "art": "524323432",
+        "imp_reason": "starts <li>",
+        "exp_reason": "starts <li>",
+        "imp_snip": "<li>Професійна жарочна поверхня-гриль. Зони нагрівання: 2.</",
+        "exp_snip": "<li>Професійна жаркова поверхня-гриль. Зони нагрівання: 2.</"
+      },
+      {
+        "art": "524323433",
+        "imp_reason": "starts <li>",
+        "exp_reason": "starts <li>",
+        "imp_snip": "<li>Професійна жарочна поверхня-гриль. Зони нагрівання: 1.</",
+        "exp_snip": "<li>Професійна жаркова поверхня-гриль. Зони нагрівання: 1.</"
+      }
+    ],
+    "C": [
+      {
+        "art": "497705126",
+        "reason": "no opening block tag"
+      },
+      {
+        "art": "497705127",
+        "reason": "no opening block tag"
+      },
+      {
+        "art": "497705128",
+        "reason": "no opening block tag"
+      },
+      {
+        "art": "497705129",
+        "reason": "no opening block tag"
+      },
+      {
+        "art": "497705130",
+        "reason": "no opening block tag"
+      },
+      {
+        "art": "419429603",
+        "reason": "no opening block tag"
+      },
+      {
+        "art": "479380952",
+        "reason": "no opening block tag"
+      },
+      {
+        "art": "479380954",
+        "reason": "no opening block tag"
+      },
+      {
+        "art": "627967813",
+        "reason": "no opening block tag"
+      },
+      {
+        "art": "627967815",
+        "reason": "no opening block tag"
+      },
+      {
+        "art": "802716993",
+        "reason": "no opening block tag"
+      },
+      {
+        "art": "524323435",
+        "reason": "starts <li>"
+      },
+      {
+        "art": "524323436",
+        "reason": "starts <li>"
+      },
+      {
+        "art": "524323438",
+        "reason": "starts <li>"
+      },
+      {
+        "art": "1149589807",
+        "reason": "no opening block tag"
+      },
+      {
+        "art": "1149593260",
+        "reason": "no opening block tag"
+      }
+    ]
+  },
+  "meta_kw_ru": {
+    "A": [],
+    "B": [
+      {
+        "art": "1426266671",
+        "imp_reason": "ua_leak",
+        "exp_reason": "ua_leak",
+        "imp_snip": "индукционка, індукційна, плита, goodfood, ic30, good, food, ",
+        "exp_snip": "индукционка, індукційна, плита, goodfood, ic30, good, food, "
+      },
+      {
+        "art": "419429603",
+        "imp_reason": "ua_leak",
+        "exp_reason": "ua_leak",
+        "imp_snip": "розстойка для тіста, unox xlt133, unox xlt 133, унокс xlt133",
+        "exp_snip": "розстойка для тіста, unox xlt133, unox xlt 133, унокс xlt133"
+      },
+      {
+        "art": "627967812",
+        "imp_reason": "ua_leak",
+        "exp_reason": "ua_leak",
+        "imp_snip": "розстойка, для, тіста, unox, xebpc08euc, xebpc 08eu c, xebpc",
+        "exp_snip": "розстойка, для, тіста, unox, xebpc08euc, xebpc 08eu c, xebpc"
+      },
+      {
+        "art": "627967813",
+        "imp_reason": "ua_leak",
+        "exp_reason": "ua_leak",
+        "imp_snip": "розстойка, для, тіста, apach, ape8ads, ape 8 ads, ape, 8, ad",
+        "exp_snip": "розстойка, для, тіста, apach, ape8ads, ape 8 ads, ape, 8, ad"
+      },
+      {
+        "art": "627967815",
+        "imp_reason": "ua_leak",
+        "exp_reason": "ua_leak",
+        "imp_snip": "розстойка, для, тіста, apach, ape12ab, ape 8 ad, ape, 8, ad,",
+        "exp_snip": "розстойка, для, тіста, apach, ape12ab, ape 8 ad, ape, 8, ad,"
+      },
+      {
+        "art": "802716993",
+        "imp_reason": "ua_leak",
+        "exp_reason": "ua_leak",
+        "imp_snip": "розстойка, для, тіста, unox, xebpc08euc, xebpc 08eu c, xebpc",
+        "exp_snip": "розстойка, для, тіста, unox, xebpc08euc, xebpc 08eu c, xebpc"
+      }
+    ],
+    "C": [
+      {
+        "art": "507515724",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1009182279",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "479380952",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "479380954",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "781296769",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1582657493",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "428056886",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "544855956",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "631394855",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "781296773",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1136053161",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1489860302",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2094186445",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2094234501",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "781296776",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "631839767",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2079091519",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "631839766",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "680130267",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1048777046",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1132541777",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1136199583",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1149659001",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2079097849",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2784066508",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1136048893",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2554054328",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2554068777",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2554112901",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2554126657",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2554135664",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2554151962",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "902150496",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1132415146",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1132429798",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1148384331",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1157452958",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1132422993",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1132435380",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1157469824",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "902138662",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "881337875",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "881360570",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1179530098",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1179543475",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1501530843",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "908081852",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "908216082",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "707420339",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "705871662",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "942243242",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1279486873",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1288861889",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1288863008",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1288865392",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1288866515",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "405421403",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "631871298",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "659873425",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "659874607",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "659884424",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "659891115",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "659893328",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "659928885",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "663025509",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "663029990",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "663030662",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "663035756",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "663036895",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "663037316",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "663037728",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "663521963",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "663523701",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "663524107",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1157419902",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1157422918",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1279276784",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1279291947",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1279296807",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1279297874",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1980649907",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2115408487",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2553890697",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2553916104",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2553927341",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2553931518",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2553941664",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2553947259",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2553950322",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2553995578",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2554000341",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2554003458",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2554042037",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2554045814",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "659213739",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "659222136",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "659868427",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "659871591",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "659931288",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "659932976",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1130507122",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1157411449",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1157426655",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1158043647",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1162257410",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1162377809",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1090623546",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1861616417",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "924748004",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "924754635",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1069132413",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1069249560",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1089820485",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1089824330",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1089873770",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1167142953",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1542717269",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1551551207",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1551592571",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1962156255",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1919343504",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1970076459",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2643839031",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2643913805",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "465819469",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "472564250",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "506131299",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "506131300",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "646863554",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "881193065",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "885059119",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "920153407",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "924690975",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "924705373",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "924736591",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "924738120",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "924741002",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "924777216",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "924841376",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "924842720",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "924844738",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "924851748",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "953083671",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1188004796",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1188049415",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1197569246",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1394268564",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1417384356",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1551529027",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1849964619",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1860575594",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2037384264",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2120091691",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "625106603",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "625111391",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "498054957",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "506131301",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "497661400",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1860599142",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "976768460",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "701178117",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "701182492",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "971680835",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "976767847",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1042057453",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1042567057",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1089869334",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1089900163",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1090637637",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1090687473",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1188775960",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1188785152",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2783152244",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2783176307",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "698342819",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "965290558",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "2576042598",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "512815156",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "965280379",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "732164153",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1919404141",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1048846219",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1355076468",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "976770291",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1045628525",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1045631303",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1091477214",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1395790396",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1398723073",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1755813685",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "1905663779",
+        "reason": "ua_leak"
+      },
+      {
+        "art": "961986157",
+        "reason": "ua_leak"
+      }
+    ]
+  }
+}
