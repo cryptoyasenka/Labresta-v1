@@ -1,5 +1,38 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
+## 🌙 ACTIVE (2026-05-27, НОЧНОЙ РЕЖИМ) — Канал 2: НП-контент (код + тесты)
+
+**Запрос Yana:** «сделай все что можешь сам с тестами без меня в ночном режиме».
+Пишу КОД Канала 2 для НП-эксклюзивов (имя UA/RU + описание UA/RU + фото-галерея +
+бренд) на ветке `feat/np-content-channel2`, против ЛОКАЛЬНОЙ `instance/labresta.db`.
+Тесты через `.venv/Scripts/python.exe -m pytest`.
+
+**Решения Yana 2026-05-27:** (1) W1 свободен → код в репо МОЖНО; (2) состав = описание
++ фото + ИМЕНА (UA/RU) — полный Канал 2.
+
+**Авторитет:** `.planning/plans/np-feed/FINAL-MODEL.md` (при расхождении верить ему),
+`SPEC-PHASE3.md` (код-уровень), `FINDINGS.md` (GATE-факты). НП = supplier_id=2,
+slug novyy-proekt. Якорь моста = col B Артикул == SupplierProduct.article(sup2).
+9 scope-брендов: HURAKAN APACH FAGOR TATRA COLD PROJECT SYSTEMS ASTORIA ARRIS MAXIMA.
+Доставка контента = нативный [КАТАЛОГ] Excel (НЕ YML — дропает description_ru).
+
+**Прогресс (атомарные коммиты на ветке):**
+- [x] (1) Миграция + модель `SupplierProduct.description_ru` + тест — commit `4bd771d`, 2 passed
+- [x] (2) `app/services/np_parser.py` (`parse_np_feed` + `enrich_sp_bodies`) + тест — commit `30eca87`, 14 passed, валидирован на реальном фиде (690 строк, 0 ошибок)
+- [x] (3) `scripts/np_sync_bodies.py` (sp→pp, --dry-run default) + тест — commit `93da9ef`, 10 passed. Локальный dry-run = 0 изменений (snapshot БД от 15.05 без enrich, корректный no-op)
+- [x] (4) массовый Excel-билдер `scripts/build_np_catalog_xlsx.py` (обобщил `build_canary_xlsx.py` 1→все scope SKU, нативная [КАТАЛОГ]-схема, цена/наличие из реальных хелперов yml_generator) + тест — commit `5e47930`, 8 passed. (YML sync_np_body НЕ строю — противоречит FINAL-MODEL §1). Прим.: реальный прогон против локального snapshot БД от 15.05 падает на `suppliers.auto_sync_enabled` (колонка появилась позже снимка) — окружение, не логика; тесты на in-memory БD с актуальной схемой зелёные
+- [x] (5) `snapshot_np_match.py` против ЛОКАЛЬНОЙ БД (`?mode=ro&immutable=1`, raw sqlite — иммунен к дрейфу ORM): **335 SKU в scope** matched&published (HURAKAN 206 / APACH 89 / TATRA 22 / FAGOR 13 / COLD 3 / ARRIS 2), из 370 matched / 690 НП всего. Канарейка HKN-PICO12M confirmed, has_ua=1 has_ru=1, есть фото. Выход: `C:\Users\Yana\labresta-np-feed-plan\scratch_np_snapshot.txt`
+- [ ] (6) UI-эндпоинт + pipeline-hook (Ф3.6-3.8) если хватит контекста
+
+**ВНЕ scope (рука Yana, НЕ трогать):** live Horoshop import (Імпортувати), любые
+записи в прод/Railway, live-канарейка, W3 (перевод имён НП). Блокировка на них —
+НЕ повод останавливаться раньше времени.
+
+**Порядок (SPEC-PHASE3 §чек-лист):** миграция → модель → np_parser+enrich →
+np_sync_bodies → sync_np_body → regenerate_np_body_feed → роут → UI → pipeline-hook.
+
+---
+
 ## ✅ DONE (2026-05-26) — глубокий аудит кода + фиксы
 
 **Запрос Yana:** «сделай аудит глубокий проекта (задеплоенный матчер), выяви ошибки
