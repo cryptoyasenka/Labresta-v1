@@ -12,8 +12,10 @@ Authenticated:
   /feeds/custom/<token>/delete    — POST: drop file + registry row
 """
 
+import io
 import os
 import re
+from datetime import datetime, timezone
 
 from flask import (
     Blueprint,
@@ -22,6 +24,7 @@ from flask import (
     flash,
     redirect,
     render_template,
+    send_file,
     send_from_directory,
     url_for,
 )
@@ -32,6 +35,10 @@ from app.extensions import db
 from app.models.custom_feed import CustomFeed
 from app.models.supplier import Supplier
 from app.services.yml_generator import delete_custom_feed
+
+_XLSX_MIME = (
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+)
 
 feed_bp = Blueprint("feed", __name__)
 
@@ -106,6 +113,55 @@ def serve_availability_yml():
     return _serve_file(
         current_app.config["YML_AVAILABILITY_FILENAME"],
         label="фид наличия",
+    )
+
+
+@feed_bp.route("/feeds/np-catalog.xlsx")
+@login_required
+def download_np_catalog():
+    """Build & download the НП Channel-2 catalog import file (native Horoshop xlsx).
+
+    Operator-facing (auth required): produces the same file as
+    scripts/build_np_catalog_xlsx.py for the in-scope NP-exclusive matches
+    (supplier 2, confirmed/manual, published, 9 exclusive brands), then Yana
+    imports it by hand in Horoshop — Імпортувати is a human action (FINAL-MODEL §3).
+    Read-only against the DB; the workbook is streamed from memory.
+    """
+    from app.services.np_catalog import (
+        DEFAULT_FEED,
+        build_catalog_rows,
+        build_workbook,
+    )
+
+    feed_path = current_app.config.get("NP_FEED_PATH") or DEFAULT_FEED
+    if not os.path.isfile(feed_path):
+        flash(
+            "Фид НП не найден на сервере. Положите np-feed.xlsx в "
+            ".planning/plans/np-feed/ или задайте NP_FEED_PATH.",
+            "error",
+        )
+        return redirect(url_for("feed.custom_feeds_list"))
+
+    headers, rows, _errors = build_catalog_rows(feed_path)
+    if not rows:
+        flash(
+            "Нет подходящих НП-эксклюзивов для экспорта "
+            "(matched & published & в scope-брендах).",
+            "error",
+        )
+        return redirect(url_for("feed.custom_feeds_list"))
+
+    wb = build_workbook(headers, rows)
+    buf = io.BytesIO()
+    wb.save(buf)
+    wb.close()
+    buf.seek(0)
+    ts = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S")
+    return send_file(
+        buf,
+        as_attachment=True,
+        download_name=f"np-catalog-{ts}.xlsx",
+        mimetype=_XLSX_MIME,
     )
 
 
