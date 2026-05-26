@@ -29,6 +29,7 @@ class SupplierProduct(db.Model):
     # do not want to catalog at all.
     ignored = db.Column(db.Boolean, default=False, server_default="0")
     description = db.Column(db.Text, nullable=True)
+    description_ru = db.Column(db.Text, nullable=True)  # RU body from NP [КАТАЛОГ] feed
     image_url = db.Column(db.String(500), nullable=True)  # Main picture from feed
     images = db.Column(db.Text, nullable=True)  # All picture URLs, JSON array
     params = db.Column(db.Text, nullable=True)  # Characteristics from feed, JSON object
