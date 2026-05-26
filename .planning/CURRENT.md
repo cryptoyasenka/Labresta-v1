@@ -22,7 +22,9 @@ slug novyy-proekt. Якорь моста = col B Артикул == SupplierProdu
 - [x] (3) `scripts/np_sync_bodies.py` (sp→pp, --dry-run default) + тест — commit `93da9ef`, 10 passed. Локальный dry-run = 0 изменений (snapshot БД от 15.05 без enrich, корректный no-op)
 - [x] (4) массовый Excel-билдер `scripts/build_np_catalog_xlsx.py` (обобщил `build_canary_xlsx.py` 1→все scope SKU, нативная [КАТАЛОГ]-схема, цена/наличие из реальных хелперов yml_generator) + тест — commit `5e47930`, 8 passed. (YML sync_np_body НЕ строю — противоречит FINAL-MODEL §1). Прим.: реальный прогон против локального snapshot БД от 15.05 падает на `suppliers.auto_sync_enabled` (колонка появилась позже снимка) — окружение, не логика; тесты на in-memory БD с актуальной схемой зелёные
 - [x] (5) `snapshot_np_match.py` против ЛОКАЛЬНОЙ БД (`?mode=ro&immutable=1`, raw sqlite — иммунен к дрейфу ORM): **335 SKU в scope** matched&published (HURAKAN 206 / APACH 89 / TATRA 22 / FAGOR 13 / COLD 3 / ARRIS 2), из 370 matched / 690 НП всего. Канарейка HKN-PICO12M confirmed, has_ua=1 has_ru=1, есть фото. Выход: `C:\Users\Yana\labresta-np-feed-plan\scratch_np_snapshot.txt`
-- [ ] (6) UI-эндпоинт + pipeline-hook (Ф3.6-3.8) если хватит контекста
+- [x] (6) UI-эндпоинт `GET /feeds/np-catalog.xlsx` (login_required, стримит каталог из памяти) + кнопка «Скачать каталог НП» на странице кастомных фидов + 4 теста — commit `8c5a983`. Билдер вынесен в `app/services/np_catalog.py` (скрипт стал тонкой CLI-обёрткой), чтобы вью не импортировал из scripts/. Путь фида конфигурируем через `NP_FEED_PATH`. Pipeline-hook (авто-enrich в sync) НЕ делал — меняет поведение live-синка, рука Yana
+
+**ИТОГ ночного режима 2026-05-27:** все 5 обязательных + опц.6 готовы. Полный прогон `pytest` = **736 passed, 2 skipped** (0 регрессий, +34 новых теста). Ветка `feat/np-content-channel2` запушена. Канал 2 покрывает 335 НП-эксклюзивов. Импорт в Horoshop — рука Yana (review ветки → merge → import).
 
 **ВНЕ scope (рука Yana, НЕ трогать):** live Horoshop import (Імпортувати), любые
 записи в прод/Railway, live-канарейка, W3 (перевод имён НП). Блокировка на них —
