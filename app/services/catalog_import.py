@@ -228,20 +228,39 @@ def parse_catalog_file(file_path: str, filename: str) -> list[dict]:
         )
 
 
-def save_catalog_products(products: list[dict]) -> dict:
+def save_catalog_products(products: list[dict], preserve_translations: bool = True) -> dict:
     """
     Upsert parsed products into the PromProduct table.
 
     Matches on external_id (unique). Updates existing records, inserts new ones.
 
-    Contract: the input is assumed to be a FULL Horoshop catalog export.
-    Every column is overwritten from the row — including nullable fields
-    like description_ua/image_url — so a partial export would WIPE any
-    field absent from the file. Never feed this function a delta/filtered
-    snapshot; use a separate partial-update pipeline for that.
+    Two-channel separation (mirrors the feed Path B design):
+      * Matcher / catalog channel — name (UA), brand, article, display_article,
+        price, currency, page_url, image_url, images, description_ua.
+        These are CATALOG-owned: a Horoshop export is authoritative for them,
+        so they are always overwritten on update.
+      * Translation channel — name_ru, description_ru.
+        These are WORKER-owned (filled by the parallel translation terminals
+        and stored only here in pp). Horoshop's RU fields are corrupted/stale
+        (the YML <name>->"Назва модифікації (RU)" bug), so re-importing a
+        Horoshop export would clobber clean translations with corrupted text.
+
+    With preserve_translations=True (default), an UPDATE of an existing product
+    leaves name_ru / description_ru UNTOUCHED — the catalog import can never
+    overwrite worker output. INSERTs (brand-new products) still take all fields
+    from the row, since no translation exists yet to protect.
+
+    Set preserve_translations=False only when the source IS authoritative for
+    RU text (e.g. a native [КАТАЛОГ] export produced after translation).
+
+    Note: with translations preserved, this function NO LONGER does a blind
+    full-overwrite of every column, so a partial Horoshop export is safer than
+    before — but it will still null catalog-owned fields absent from the row.
 
     Args:
         products: List of product dicts from parse_catalog_file.
+        preserve_translations: When True, never overwrite name_ru/description_ru
+            on update of an existing product.
 
     Returns:
         Dict with keys: created, updated, skipped, total.
@@ -285,8 +304,8 @@ def save_catalog_products(products: list[dict]) -> dict:
         ).scalar_one_or_none()
 
         if existing:
+            # Catalog-owned fields: Horoshop export is authoritative — always overwrite.
             existing.name = name
-            existing.name_ru = name_ru
             existing.brand = brand
             existing.article = article
             existing.display_article = display_article
@@ -296,7 +315,10 @@ def save_catalog_products(products: list[dict]) -> dict:
             existing.image_url = image_url
             existing.images = images
             existing.description_ua = description_ua
-            existing.description_ru = description_ru
+            # Worker-owned translation fields: protected unless caller opts out.
+            if not preserve_translations:
+                existing.name_ru = name_ru
+                existing.description_ru = description_ru
             existing.imported_at = datetime.now(timezone.utc)
             updated += 1
         else:
