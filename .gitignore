@@ -53,3 +53,38 @@ graphify-out/
 scripts/check_*.py
 scripts/diag_*.py
 scripts/regen_*.py
+
+# Chunk-by-chunk translation workflow scratch (regenerated per chunk).
+# NOTE: deliberately scoped so saved artifacts survive — _build_horoshop*,
+# _recover*, _regression_full, _audit_phase*, _audit_partial_fix.py,
+# _validate*, _extract_blk*, _full_imp*, _xcheck_round2, _admin_*.js,
+# _verify_live*.js, _verify_tatra*.js, _dl_probe.js, _get_tatra_id.js
+# are NOT matched by the patterns below.
+scripts/_probe*
+scripts/_apply*
+scripts/_close*
+scripts/_cur*
+scripts/_cpprobe*
+scripts/_scaffold*
+scripts/_dump*
+scripts/_b[0-9]*
+scripts/_verify[0-9]*
+
+# .planning scratch from the same workflow (probes, dumps, commit msgs, logs).
+# Saved planning artifacts (_recovery_*, _regressions.json,
+# _exp_dirty_broken_sku.json, STATE-AUDIT*, translation-audit/chunks/*) are
+# NOT matched by these patterns.
+.planning/scratch_*
+.planning/_commit_msg_*
+.planning/_b*
+.planning/_probe*
+.planning/_close*
+.planning/_chunk*
+.planning/_replace*
+.planning/_restore_placeholder*
+.planning/_partial*
+.planning/_audit_partial_fix.txt
+.planning/tatra-desc-*.txt
+.planning/*.log
+.planning/translation-audit/_dump-*.txt
+.planning/translation-audit/_xcheck-*.txt
