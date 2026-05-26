@@ -215,16 +215,21 @@ class TestYmlGenerator:
         assert root.find("shop") is not None
         assert root.find("shop/offers") is not None
         offer = root.find("shop/offers/offer")
-        assert offer.findtext("name") is not None
+        # Path B: matcher feed offers carry no product name (price/availability only).
+        assert offer.find("name") is None
         assert offer.findtext("price") is not None
         assert offer.findtext("currencyId") == "EUR"
 
 
-class TestYmlDescriptionPropagation:
-    """Catalog edits (name_ru, description_ua, description_ru) must land in YML
-    so Horoshop updates them on next import."""
+class TestYmlPathBNoTextFields:
+    """Path B (Channel 1): matcher feeds carry ONLY price + availability bearers.
+    Name/name_ru/description/description_ru/vendor are deliberately NOT emitted —
+    Horoshop's YML parser cross-maps <name> into the RU name field and drops the
+    unrecognised <name_ru>, which corrupted clean Russian names on every auto-pull.
+    Catalog text is owned by Horoshop, delivered via the native [КАТАЛОГ] Excel
+    channel (Channel 2), never through the feed."""
 
-    def test_name_ru_written_when_present(self, session, yml_output_dir):
+    def test_name_and_name_ru_never_emitted(self, session, yml_output_dir):
         _seed_confirmed_match(
             session, external_id="n1",
             name="Кавомашина TestModel",
@@ -234,61 +239,15 @@ class TestYmlDescriptionPropagation:
         result = regenerate_yml_feed()
         tree = etree.parse(result["path"])
         offer = tree.find(".//offer")
-        assert offer.findtext("name") == "Кавомашина TestModel"
-        assert offer.findtext("name_ru") == "Кофемашина TestModel"
-
-    def test_name_ru_absent_when_null(self, session, yml_output_dir):
-        _seed_confirmed_match(
-            session, external_id="n2",
-            name="Плита UA only", name_ru=None, price_cents=50000,
-        )
-        result = regenerate_yml_feed()
-        tree = etree.parse(result["path"])
-        offer = tree.find(".//offer")
+        assert offer.find("name") is None
         assert offer.find("name_ru") is None
 
-    def test_description_ua_written_with_cdata(self, session, yml_output_dir):
-        """Description must round-trip through YML as raw HTML (CDATA wrapped)."""
-        html_body = "<p>Потужна <b>кавомашина</b></p><ul><li>пункт</li></ul>"
+    def test_descriptions_never_emitted(self, session, yml_output_dir):
         _seed_confirmed_match(
             session, external_id="d1",
             name="Кавомашина ProX", price_cents=100000,
-            description_ua=html_body,
-        )
-        result = regenerate_yml_feed()
-        # Parse XML then verify element text is preserved verbatim
-        tree = etree.parse(result["path"])
-        offer = tree.find(".//offer")
-        desc = offer.find("description")
-        assert desc is not None
-        assert desc.text == html_body
-
-        # Also verify CDATA wrapping is present in raw bytes so Horoshop
-        # sees HTML, not escaped entities.
-        with open(result["path"], "rb") as f:
-            raw = f.read().decode("utf-8")
-        assert "<![CDATA[" in raw
-        assert html_body in raw  # unescaped
-
-    def test_description_ru_written_with_cdata(self, session, yml_output_dir):
-        _seed_confirmed_match(
-            session, external_id="d2",
-            name="Плита BigChef",
-            price_cents=200000,
+            description_ua="<p>Потужна <b>кавомашина</b></p>",
             description_ru="<p>Большая <em>плита</em></p>",
-        )
-        result = regenerate_yml_feed()
-        tree = etree.parse(result["path"])
-        offer = tree.find(".//offer")
-        desc_ru = offer.find("description_ru")
-        assert desc_ru is not None
-        assert desc_ru.text == "<p>Большая <em>плита</em></p>"
-
-    def test_descriptions_absent_when_null(self, session, yml_output_dir):
-        """If nothing to write, description tags should not appear at all."""
-        _seed_confirmed_match(
-            session, external_id="d3",
-            name="Пустышка", price_cents=1000,
         )
         result = regenerate_yml_feed()
         tree = etree.parse(result["path"])
@@ -296,12 +255,8 @@ class TestYmlDescriptionPropagation:
         assert offer.find("description") is None
         assert offer.find("description_ru") is None
 
-
-class TestYmlVendorTag:
-    """`_seed_confirmed_match` already sets brand='TestBrand' on the
-    PromProduct, so the default fixture exercises the populated path."""
-
-    def test_vendor_written_when_brand_present(self, session, yml_output_dir):
+    def test_vendor_never_emitted(self, session, yml_output_dir):
+        # _seed_confirmed_match sets brand='TestBrand'; even so, no <vendor>.
         _seed_confirmed_match(
             session, external_id="v1",
             name="Кавомашина TestModel", price_cents=50000,
@@ -309,30 +264,42 @@ class TestYmlVendorTag:
         result = regenerate_yml_feed()
         tree = etree.parse(result["path"])
         offer = tree.find(".//offer")
-        assert offer.findtext("vendor") == "TestBrand"
+        assert offer.find("vendor") is None
 
-    def test_vendor_absent_when_brand_null(self, session, yml_output_dir):
+    def test_price_bearers_still_present(self, session, yml_output_dir):
+        """The fields the feed DOES carry must survive: id/vendorCode/price/
+        currencyId/available, plus oldprice when a discount applies."""
         m = _seed_confirmed_match(
-            session, external_id="v2",
-            name="Безбрендовый", price_cents=10000,
+            session, external_id="pb1",
+            name="Любое имя", price_cents=100000,
         )
-        m.prom_product.brand = None
+        # Force a discount so oldprice is emitted (retail > price).
+        m.supplier_product.price_cents = 100000
         session.commit()
         result = regenerate_yml_feed()
         tree = etree.parse(result["path"])
         offer = tree.find(".//offer")
-        assert offer.find("vendor") is None
+        assert offer.get("id") == "pb1"
+        assert offer.get("available") in ("true", "false")
+        assert offer.findtext("vendorCode") == "pb1"
+        assert offer.findtext("price") is not None
+        assert offer.findtext("currencyId") in ("EUR", "UAH")
 
-    def test_vendor_in_per_supplier_feed(self, session, yml_output_dir):
+    def test_per_supplier_feed_also_text_free(self, session, yml_output_dir):
+        """Invariant #14: per-supplier feed shares the same offer shape — also
+        carries no name/description/vendor."""
         from app.services.yml_generator import regenerate_supplier_feed
         m = _seed_confirmed_match(
-            session, external_id="v3",
+            session, external_id="ps1",
             name="Поставщикский", price_cents=10000,
         )
         result = regenerate_supplier_feed(m.supplier_product.supplier_id)
         tree = etree.parse(result["path"])
         offer = tree.find(".//offer")
-        assert offer.findtext("vendor") == "TestBrand"
+        assert offer.find("name") is None
+        assert offer.find("description") is None
+        assert offer.find("vendor") is None
+        assert offer.findtext("price") is not None
 
 
 class TestPublishFlag:

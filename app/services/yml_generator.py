@@ -9,8 +9,11 @@ and writes atomic YML files for Horoshop import. Five flavors:
   - sync_availability: narrow feed, only availability attribute (same)
 
 Per-supplier and custom feeds use the SAME offer shape as the main feed
-(name, vendorCode, price, available, description) — Horoshop import config
-chooses what to update. Only the main feed touches the in_feed flag.
+(id/vendorCode/url/price/oldprice/currencyId/available) — Path B: matcher
+feeds carry ONLY price + availability bearers, never name/description/vendor,
+so Horoshop's YML parser has nothing to cross-map into RU name fields.
+Catalog text is delivered separately via the native [КАТАЛОГ] Excel channel.
+Only the main feed touches the in_feed flag.
 """
 
 import hashlib
@@ -92,9 +95,13 @@ def _build_offer_xml(parent_el, match) -> bool:
         id=str(pp.external_id),
         available=avail_str,
     )
-    etree.SubElement(offer, "name").text = match.feed_name or pp.name
-    if pp.name_ru:
-        etree.SubElement(offer, "name_ru").text = pp.name_ru
+    # Path B (Channel 1): matcher feeds carry ONLY price + availability bearers.
+    # Name/description are deliberately NOT emitted — Horoshop's YML parser maps
+    # <name> -> "Назва модифікації (RU)" and drops the unrecognised <name_ru>,
+    # which silently overwrote clean Russian names with Ukrainian text on every
+    # scheduled auto-pull. Catalog names/descriptions are owned by Horoshop and
+    # delivered separately via the native [КАТАЛОГ] Excel channel (Channel 2).
+    # Do NOT re-add <name>/<name_ru>/<description>/<description_ru>/<vendor> here.
     if pp.page_url:
         etree.SubElement(offer, "url").text = pp.page_url
     etree.SubElement(offer, "price").text = f"{price_eur:.1f}"
@@ -106,15 +113,6 @@ def _build_offer_xml(parent_el, match) -> bool:
     currency_id = (sp.currency or "EUR") if sp.currency in ("EUR", "UAH") else "EUR"
     etree.SubElement(offer, "currencyId").text = currency_id
     etree.SubElement(offer, "vendorCode").text = str(pp.external_id)
-    if pp.brand:
-        etree.SubElement(offer, "vendor").text = pp.brand
-
-    if pp.description_ua:
-        desc_el = etree.SubElement(offer, "description")
-        desc_el.text = etree.CDATA(pp.description_ua)
-    if pp.description_ru:
-        desc_ru_el = etree.SubElement(offer, "description_ru")
-        desc_ru_el.text = etree.CDATA(pp.description_ru)
     return is_available
 
 
