@@ -228,6 +228,145 @@ def parse_catalog_file(file_path: str, filename: str) -> list[dict]:
         )
 
 
+# Catalog-owned fields: a Horoshop export is authoritative — overwritten on update.
+CATALOG_FIELDS = [
+    "name",
+    "brand",
+    "article",
+    "display_article",
+    "price",
+    "currency",
+    "page_url",
+    "image_url",
+    "images",
+    "description_ua",
+]
+# Worker-owned fields: filled by the translation terminals, protected on update.
+TRANSLATION_FIELDS = ["name_ru", "description_ru"]
+
+
+def _normalize_product(product: dict) -> dict | None:
+    """Normalize one parsed row into typed field values.
+
+    Returns a dict keyed by internal field name (external_id, name, price as
+    int cents, the rest as str-or-None), or None if the row is missing a
+    required field (external_id / name) and must be skipped.
+    """
+    ext_id = product.get("external_id", "").strip()
+    name = product.get("name", "").strip()
+    if not ext_id or not name:
+        return None
+
+    # Parse price: string -> float -> cents (int)
+    price = None
+    raw_price = product.get("price", "").strip()
+    if raw_price:
+        try:
+            price = int(round(float(raw_price) * 100))
+        except (ValueError, TypeError):
+            price = None
+
+    def _opt(field: str) -> str | None:
+        return product.get(field, "").strip() or None
+
+    return {
+        "external_id": ext_id,
+        "name": name,
+        "price": price,
+        "currency": _opt("currency"),
+        "article": _opt("article"),
+        "display_article": _opt("display_article"),
+        "brand": _opt("brand"),
+        "page_url": _opt("page_url"),
+        "name_ru": _opt("name_ru"),
+        "image_url": _opt("image_url"),
+        "images": _opt("images"),
+        "description_ua": _opt("description_ua"),
+        "description_ru": _opt("description_ru"),
+    }
+
+
+def preview_catalog_import(
+    products: list[dict], preserve_translations: bool = True
+) -> dict:
+    """Compute what a catalog import WOULD do, without writing anything.
+
+    Read-only counterpart of save_catalog_products: it walks the same fields
+    via the same _normalize_product helper and compares each row to the current
+    DB state, so the preview can never drift from what the real import does.
+
+    Returns a dict:
+      * created / updated / skipped / total — same shape as save result.
+      * changed: {field: n} — among existing products, how many would have this
+        CATALOG-owned field's value actually change.
+      * cleared: {field: n} — among existing products, how many would have a
+        non-empty value REPLACED BY EMPTY (the file lacks/blanks that column).
+        This is the key "wrong file" signal — e.g. price cleared on 5000 rows.
+      * translations_protected — existing products whose name_ru/description_ru
+        currently hold a value that the import will leave untouched.
+      * samples — up to 12 example field changes [{external_id, field, old, new}].
+    """
+    created = 0
+    updated = 0
+    skipped = 0
+    changed: dict[str, int] = {f: 0 for f in CATALOG_FIELDS}
+    cleared: dict[str, int] = {f: 0 for f in CATALOG_FIELDS}
+    translations_protected = 0
+    samples: list[dict] = []
+
+    for product in products:
+        norm = _normalize_product(product)
+        if norm is None:
+            skipped += 1
+            continue
+
+        existing = db.session.execute(
+            db.select(PromProduct).where(
+                PromProduct.external_id == norm["external_id"]
+            )
+        ).scalar_one_or_none()
+
+        if not existing:
+            created += 1
+            continue
+
+        updated += 1
+
+        if preserve_translations and (
+            existing.name_ru or existing.description_ru
+        ):
+            translations_protected += 1
+
+        for field in CATALOG_FIELDS:
+            old = getattr(existing, field)
+            new = norm[field]
+            if old == new:
+                continue
+            changed[field] += 1
+            if old not in (None, "") and new in (None, ""):
+                cleared[field] += 1
+            if len(samples) < 12:
+                samples.append(
+                    {
+                        "external_id": norm["external_id"],
+                        "field": field,
+                        "old": old,
+                        "new": new,
+                    }
+                )
+
+    return {
+        "created": created,
+        "updated": updated,
+        "skipped": skipped,
+        "total": created + updated,
+        "changed": changed,
+        "cleared": cleared,
+        "translations_protected": translations_protected,
+        "samples": samples,
+    }
+
+
 def save_catalog_products(products: list[dict], preserve_translations: bool = True) -> dict:
     """
     Upsert parsed products into the PromProduct table.
@@ -270,72 +409,45 @@ def save_catalog_products(products: list[dict], preserve_translations: bool = Tr
     skipped = 0
 
     for product in products:
-        ext_id = product.get("external_id", "").strip()
-        name = product.get("name", "").strip()
+        norm = _normalize_product(product)
 
         # Skip rows missing required fields
-        if not ext_id or not name:
+        if norm is None:
             skipped += 1
             continue
 
-        # Parse price: string -> float -> cents (int)
-        price = None
-        raw_price = product.get("price", "").strip()
-        if raw_price:
-            try:
-                price = int(round(float(raw_price) * 100))
-            except (ValueError, TypeError):
-                price = None
-
-        currency = product.get("currency", "").strip() or None
-        article = product.get("article", "").strip() or None
-        display_article = product.get("display_article", "").strip() or None
-        brand = product.get("brand", "").strip() or None
-        page_url = product.get("page_url", "").strip() or None
-        name_ru = product.get("name_ru", "").strip() or None
-        image_url = product.get("image_url", "").strip() or None
-        images = product.get("images", "").strip() or None
-        description_ua = product.get("description_ua", "").strip() or None
-        description_ru = product.get("description_ru", "").strip() or None
-
         # Check if product already exists
         existing = db.session.execute(
-            db.select(PromProduct).where(PromProduct.external_id == ext_id)
+            db.select(PromProduct).where(
+                PromProduct.external_id == norm["external_id"]
+            )
         ).scalar_one_or_none()
 
         if existing:
             # Catalog-owned fields: Horoshop export is authoritative — always overwrite.
-            existing.name = name
-            existing.brand = brand
-            existing.article = article
-            existing.display_article = display_article
-            existing.price = price
-            existing.currency = currency
-            existing.page_url = page_url
-            existing.image_url = image_url
-            existing.images = images
-            existing.description_ua = description_ua
+            for field in CATALOG_FIELDS:
+                setattr(existing, field, norm[field])
             # Worker-owned translation fields: protected unless caller opts out.
             if not preserve_translations:
-                existing.name_ru = name_ru
-                existing.description_ru = description_ru
+                for field in TRANSLATION_FIELDS:
+                    setattr(existing, field, norm[field])
             existing.imported_at = datetime.now(timezone.utc)
             updated += 1
         else:
             new_product = PromProduct(
-                external_id=ext_id,
-                name=name,
-                name_ru=name_ru,
-                brand=brand,
-                article=article,
-                display_article=display_article,
-                price=price,
-                currency=currency,
-                page_url=page_url,
-                image_url=image_url,
-                images=images,
-                description_ua=description_ua,
-                description_ru=description_ru,
+                external_id=norm["external_id"],
+                name=norm["name"],
+                name_ru=norm["name_ru"],
+                brand=norm["brand"],
+                article=norm["article"],
+                display_article=norm["display_article"],
+                price=norm["price"],
+                currency=norm["currency"],
+                page_url=norm["page_url"],
+                image_url=norm["image_url"],
+                images=norm["images"],
+                description_ua=norm["description_ua"],
+                description_ru=norm["description_ru"],
             )
             db.session.add(new_product)
             created += 1

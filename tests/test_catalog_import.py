@@ -7,7 +7,7 @@ live only here in pp and Horoshop's RU columns are corrupted/stale.
 """
 
 from app.models.catalog import PromProduct
-from app.services.catalog_import import save_catalog_products
+from app.services.catalog_import import preview_catalog_import, save_catalog_products
 
 
 def test_update_preserves_translations_by_default(session):
@@ -136,3 +136,94 @@ def test_update_still_overwrites_catalog_fields(session):
     assert orm.price == 9900
     assert orm.page_url == "http://new"
     assert orm.image_url == "http://new.jpg"
+
+
+# --- preview_catalog_import: read-only dry-run -------------------------------
+
+
+def test_preview_counts_created_updated_skipped_without_writing(session):
+    """Preview reports created/updated/skipped and does NOT touch the DB."""
+    session.add(PromProduct(external_id="E1", name="старое имя", price=1000))
+    session.commit()
+
+    rows = [
+        {"external_id": "E1", "name": "новое имя", "price": "20.0"},  # update
+        {"external_id": "NEW", "name": "новый товар", "price": "30.0"},  # create
+        {"external_id": "", "name": "без id"},  # skip
+    ]
+    result = preview_catalog_import(rows)
+
+    assert result["created"] == 1
+    assert result["updated"] == 1
+    assert result["skipped"] == 1
+    assert result["total"] == 2
+
+    # Nothing written: existing row unchanged, no NEW row inserted.
+    obj = session.query(PromProduct).filter_by(external_id="E1").one()
+    assert obj.name == "старое имя"
+    assert obj.price == 1000
+    assert session.query(PromProduct).filter_by(external_id="NEW").first() is None
+
+
+def test_preview_changed_counts_only_real_differences(session):
+    """changed[field] counts a field only when its value actually differs."""
+    session.add(
+        PromProduct(external_id="E2", name="имя", brand="Apach", price=1000)
+    )
+    session.commit()
+
+    rows = [
+        # name same, brand same, price differs -> only price counted
+        {"external_id": "E2", "name": "имя", "brand": "Apach", "price": "50.0"}
+    ]
+    result = preview_catalog_import(rows)
+
+    assert result["changed"]["price"] == 1
+    assert result["changed"]["name"] == 0
+    assert result["changed"]["brand"] == 0
+
+
+def test_preview_flags_cleared_fields_wrong_file_signal(session):
+    """A file missing a column that the row had populated shows as 'cleared'."""
+    session.add(
+        PromProduct(
+            external_id="E3",
+            name="имя",
+            price=1000,
+            brand="Apach",
+            page_url="http://x",
+        )
+    )
+    session.commit()
+
+    # Row carries only name — brand/price/page_url absent => would be cleared.
+    rows = [{"external_id": "E3", "name": "имя"}]
+    result = preview_catalog_import(rows)
+
+    assert result["cleared"]["price"] == 1
+    assert result["cleared"]["brand"] == 1
+    assert result["cleared"]["page_url"] == 1
+    # name is unchanged, so not cleared
+    assert result["cleared"]["name"] == 0
+
+
+def test_preview_counts_protected_translations(session):
+    """translations_protected counts existing rows holding worker translations."""
+    session.add(
+        PromProduct(
+            external_id="E4",
+            name="имя",
+            name_ru="перевод воркера",
+            price=1000,
+        )
+    )
+    session.add(PromProduct(external_id="E5", name="имя2", price=2000))  # no RU
+    session.commit()
+
+    rows = [
+        {"external_id": "E4", "name": "имя", "price": "50.0"},
+        {"external_id": "E5", "name": "имя2", "price": "60.0"},
+    ]
+    result = preview_catalog_import(rows)
+
+    assert result["translations_protected"] == 1  # only E4 has a translation
