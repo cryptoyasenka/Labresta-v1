@@ -1,6 +1,6 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
-## 🔧 ACTIVE TASK (2026-05-26) — catalog-import: разделить воркер и матчер
+## ✅ DONE (2026-05-26) — catalog-import: разделить воркер и матчер
 
 **Запрос Yana:** внесла правки в товары прямо в Horoshop → выгрузит Excel из Horoshop
 → хочет залить через экран приложения «Импорт каталога Horoshop» чтобы обновить
@@ -31,10 +31,20 @@
 `scripts/backup_before_catalog_import.py`, креды стёрты, в чат не попали). Restore:
 `scripts/restore_pp_from_backup.py <файл>`.
 
-**⏳ ОСТАЛОСЬ (рука Yana):** Yana грузит свой Horoshop-xlsx через экран «Импорт
-каталога» — теперь безопасно для переводов by construction. Вьюха
-`catalog_import_upload` вызывает `save_catalog_products(products)` без опций →
-preserve_translations=True. Прод уже на новом коде (деплой подтверждён).
+**✅ ИМПОРТ ВЫПОЛНЕН И ВЕРИФИЦИРОВАН (2026-05-26 22:19):** Yana залила
+`horoshop-export 26.05.26.xlsx` через экран «Импорт каталога». Результат:
+«5632 обновлено, 0 новых, 0 пропущено» (совпало с dry-run прогнозом).
+Снят пост-импортный снимок `backups/pre-catalog-import_2026-05-26_2219.json`,
+сделан diff против дореимпортного `..._2155.json` по external_id (5633↔5633,
+нет потерянных/новых):
+- **name_ru изменено: 0**, **description_ru изменено: 0** — переводы НЕ тронуты.
+- WIPED translations: name_ru=0, description_ru=0. POST: 5633/5633 имеют оба перевода.
+- Catalog-поля обновились (правки Yana применились): name(UA)=19, description_ua=272,
+  price=6, image_url=4.
+Двухканальное разделение доказано на боевых данных — воркер защищён by construction.
+
+**B2 (отдельно, не эта задача):** уже-испорченные RU в Horoshop лечатся аудит-
+проходом — не катит обратно через импорт.
 
 **B2 (отдельно, не эта задача):** уже-испорченные RU в Horoshop лечатся аудит-
 проходом W1/W2 либо корректирующим нативным xlsx — не катит обратно через импорт.
