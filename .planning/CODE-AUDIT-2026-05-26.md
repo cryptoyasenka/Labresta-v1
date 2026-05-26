@@ -45,9 +45,29 @@ Low-risk note only: `_pp_already_claimed` (matches.py:42) returns an arbitrary
 conflicter IF the 1:1 invariant is already violated in data — acceptable since its
 job is existence detection.
 
+### 🟠 P-3 — effective-discount logic duplicated (drift risk)
+The same "resolve base discount → clamp for min-margin (skip if per-match override,
+rate=1 for UAH)" sequence is implemented TWICE:
+- `app/services/pricing.py:184-194` (`compute_match_pricing`, used by the UI)
+- `app/services/yml_generator.py:210-225` (`_compute_price_eur`, used by the feed)
+They currently agree, so the price shown in the UI == the price emitted to Horoshop.
+But there is no shared helper enforcing that — a future edit to one (e.g. changing
+cost_rate handling or clamp rounding) silently desyncs the feed from the UI, which
+on a live store means the customer sees a different price than the operator approved.
+**Fix idea:** extract one `resolve_effective_discount(match) -> float` and call it
+from both. Add a test asserting `compute_match_pricing(m)['price_eur'] ==
+_compute_price_eur(m)` for a few fixtures.
+
+### ✅ POSITIVE — Path B (matcher feed) correctly enforced
+`yml_generator._build_offer_xml` emits ONLY `<price>/<oldprice>/<available>/
+<vendorCode>` — no `<name>/<name_ru>/<description>/<vendor>`. The original
+corruption bug (Horoshop mapping `<name>`→"Назва модифікації (RU)") cannot recur
+through these feeds. Comment block documents the invariant clearly.
+
 ---
 
 ## Next checks (resume order)
+0. (this session covered: pricing, .first(), except, yml Path B + feed/UI price parity)
 1. Read `find_match_candidates` (matcher.py 929–1925) — the 1000-line core: gate
    ordering, early-returns, score mutation, candidate truncation vs oversample.
 2. Read the 5 `.first()` sites in matches.py + supplier.py:89 — uniqueness.
