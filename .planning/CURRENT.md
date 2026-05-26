@@ -1,6 +1,42 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
-## 🔧 ACTIVE TASK (2026-05-26) — fix matcher feed (Path B Channel 1)
+## 🔧 ACTIVE TASK (2026-05-26) — catalog-import: разделить воркер и матчер
+
+**Запрос Yana:** внесла правки в товары прямо в Horoshop → выгрузит Excel из Horoshop
+→ хочет залить через экран приложения «Импорт каталога Horoshop» чтобы обновить
+смэтченные товары (цены и пр.). «Раздели работу воркера и матчер. Сейчас воркеры
+не работают». DB импорта = **Railway (боевое)**.
+
+**Проблема:** `save_catalog_products` делал слепой full-overwrite ВСЕХ колонок по
+`external_id`. RU-колонки в Horoshop-выгрузке ИСПОРЧЕНЫ (тот же баг что во фиде).
+Импорт затёр бы чистые переводы воркера (`name_ru`/`description_ru`, живут только
+в pp) испорченными значениями из Horoshop.
+
+**✅ РЕШЕНО (commit `119e11d`, на main, запушен):** двухканальное разделение —
+зеркало фид-фикса Path B.
+- `save_catalog_products(products, preserve_translations=True)` (default).
+- На UPDATE существующего товара: catalog-owned поля (name UA, brand, article,
+  display_article, price, currency, page_url, image_url, images, description_ua)
+  перезаписываются всегда (Horoshop = источник истины для них); worker-owned
+  `name_ru`/`description_ru` НЕ трогаются.
+- На INSERT нового товара: берутся все поля (защищать нечего).
+- `preserve_translations=False` — опт-аут для авторитетного RU-источника
+  (нативный `[КАТАЛОГ]`-экспорт после перевода).
+- Новый тест-файл `tests/test_catalog_import.py` (4 теста). Полный прогон:
+  **683 passed, 2 skipped**.
+
+**⏳ ОСТАЛОСЬ (рука Yana):** после редеплоя Railway — (1) бэкап прод-БД ПЕРЕД
+загрузкой (правило: import overwrites PP fields), (2) Yana грузит свой Horoshop-xlsx
+через экран — теперь это безопасно для переводов by construction. Вьюха
+`catalog_import_upload` вызывает `save_catalog_products(products)` без опций →
+preserve_translations=True по умолчанию.
+
+**B2 (отдельно, не эта задача):** уже-испорченные RU в Horoshop лечатся аудит-
+проходом W1/W2 либо корректирующим нативным xlsx — не катит обратно через импорт.
+
+---
+
+## ✅ DONE (2026-05-26) — fix matcher feed (Path B Channel 1)
 
 **Запрос Yana:** общий матчер-фид при загрузке портит перевод (укр в ру). Пофиксить
 так, чтобы он обновлял **только цену и наличие** и больше ничего не трогал. Возможно
