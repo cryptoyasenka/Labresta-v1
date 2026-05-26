@@ -88,3 +88,10 @@ scripts/_verify[0-9]*
 .planning/*.log
 .planning/translation-audit/_dump-*.txt
 .planning/translation-audit/_xcheck-*.txt
+
+# Relocated feature-plan folders (np-feed, speedup). Track the docs/scripts;
+# ignore prototyping scratch + the re-downloadable tunnel binary.
+.planning/plans/**/_serve/
+.planning/plans/**/scratch_*
+.planning/plans/**/*-dump.txt
+.planning/plans/**/canary-*.json

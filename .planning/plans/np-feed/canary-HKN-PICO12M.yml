@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE yml_catalog SYSTEM "shops.dtd">
+<yml_catalog date="2026-05-18 22:08">
+  <shop>
+    <name>LabResta</name>
+    <company>LabResta</company>
+    <url>https://labresta.com</url>
+    <currencies>
+      <currency id="EUR" rate="1"/>
+      <currency id="UAH" rate="1"/>
+    </currencies>
+    <offers>
+      <offer id="1546341257" available="true">
+        <name>Хліборізка Hurakan HKN-PICO12M</name>
+        <name_ru>Хлеборезка Hurakan HKN-PICO12M</name_ru>
+        <price>718.3</price>
+        <oldprice>845.0</oldprice>
+        <currencyId>EUR</currencyId>
+        <vendorCode>1546341257</vendorCode>
+        <description><![CDATA[Тип: настільна хліборізка.<br>Продуктивність: до 240 батонів/год.<br>Кількість ножів: 32 шт.<br>Товщина нарізання: 12 мм.<br>Максимальний розмір хлібини: 165х375 мм.<br>Матеріал робочої частини та ножів: нержавіюча сталь.<br>Габарити (ШхГхВ): 745х510х710 мм.<br>Потужність: 0,37 кВт.<br>Напруга: 220 В.<br>Вага: 62 кг.]]></description>
+        <description_ru><![CDATA[Тип: настольная хлеборезка.<br>Производительность: до 240 батонов/ч.<br>Количество ножей: 32 шт.<br>Толщина нарезки: 12 мм.<br>Максимальный размер буханки: 165х375 мм.<br>Материал рабочей части и ножей: нержавеющая сталь.<br>Габариты (ШхГхВ): 745х510х710 мм.<br>Мощность: 0,37 кВт.<br>Напряжение: 220 В.<br>Вес: 62 кг.]]></description_ru>
+        <picture>https://np.com.ua/wp-content/uploads/2023/02/2-15-1.jpg</picture>
+        <picture>https://np.com.ua/wp-content/uploads/2023/02/3-13-1.jpg</picture>
+      </offer>
+    </offers>
+  </shop>
+</yml_catalog>
