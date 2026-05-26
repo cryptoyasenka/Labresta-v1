@@ -35,10 +35,8 @@ from app.models.supplier import Supplier
 from app.models.supplier_product import SupplierProduct
 from app.services.pricing import (
     calculate_price_eur,
-    clamp_discount_for_min_margin,
     is_valid_price,
-    resolve_discount_percent,
-    resolve_eur_rate,
+    resolve_effective_discount,
 )
 
 logger = logging.getLogger(__name__)
@@ -204,25 +202,11 @@ def _compute_price_eur(match) -> float:
     operator intent wins.
     """
     sp = match.supplier_product
-    supplier = sp.supplier
     if not is_valid_price(sp.price_cents):
         return 0.0
-    effective_discount = resolve_discount_percent(
-        match.discount_percent, supplier, sp.brand
-    )
-    if match.discount_percent is None and supplier is not None:
-        min_margin = float(getattr(supplier, "min_margin_uah", 0.0) or 0.0)
-        if min_margin > 0:
-            rate = resolve_eur_rate(supplier)
-            if getattr(sp, "currency", "EUR") == "UAH":
-                rate = 1.0
-            effective_discount = clamp_discount_for_min_margin(
-                effective_discount,
-                sp.price_cents,
-                rate,
-                min_margin,
-                float(getattr(supplier, "cost_rate", 0.75) or 0.75),
-            )
+    # Shared with the UI (pricing.compute_match_pricing) so the feed price the
+    # customer sees equals the price the operator approved on screen.
+    _base_d, effective_discount = resolve_effective_discount(match)
     return calculate_price_eur(sp.price_cents, effective_discount)
 
 

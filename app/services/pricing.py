@@ -160,6 +160,48 @@ def is_valid_price(price_cents: int | None) -> bool:
     return price_cents is not None and price_cents > 0
 
 
+def resolve_effective_discount(match) -> tuple[float, float]:
+    """Return ``(base_discount, effective_discount)`` for a match.
+
+    Single source of truth for the discount that turns a supplier price into the
+    customer price. Shared by the UI (``compute_match_pricing``) and the feed
+    (``yml_generator._compute_price_eur``) so the price the operator approves on
+    screen is byte-for-byte the price emitted to Horoshop.
+
+    ``effective`` equals ``base`` unless the supplier has ``min_margin_uah > 0``
+    and the match has no per-match override, in which case the base is clamped
+    DOWN via ``clamp_discount_for_min_margin``. A per-match override always wins
+    (operator intent), bypassing the clamp.
+    """
+    sp = match.supplier_product
+    supplier = sp.supplier if sp is not None else None
+    base_d = float(
+        resolve_discount_percent(
+            match.discount_percent, supplier, getattr(sp, "brand", None)
+        )
+        or 0.0
+    )
+    eff_d = base_d
+    if (
+        match.discount_percent is None
+        and supplier is not None
+        and sp is not None
+        and is_valid_price(sp.price_cents)
+    ):
+        min_margin = float(getattr(supplier, "min_margin_uah", 0.0) or 0.0)
+        if min_margin > 0:
+            rate = resolve_eur_rate(supplier)
+            if getattr(sp, "currency", "EUR") == "UAH":
+                rate = 1.0
+            cost_rate_v = float(getattr(supplier, "cost_rate", 0.75) or 0.75)
+            eff_d = float(
+                clamp_discount_for_min_margin(
+                    base_d, sp.price_cents, rate, min_margin, cost_rate_v
+                )
+            )
+    return base_d, eff_d
+
+
 def compute_match_pricing(match) -> dict | None:
     """Return pricing breakdown for a match, or None if retail price is missing.
 
@@ -181,20 +223,19 @@ def compute_match_pricing(match) -> dict | None:
     cost_rate_v = float(getattr(supplier, "cost_rate", 0.75) or 0.75)
     min_margin = float(getattr(supplier, "min_margin_uah", 0.0) or 0.0)
 
-    base_d = float(resolve_discount_percent(match.discount_percent, supplier, sp.brand) or 0.0)
-    eff_d = base_d
-    clamp_applied = False
-    if match.discount_percent is None and min_margin > 0:
-        clamped = clamp_discount_for_min_margin(
-            base_d, sp.price_cents, rate, min_margin, cost_rate_v
-        )
-        if float(clamped) != base_d:
-            clamp_applied = True
-        eff_d = float(clamped)
+    # Single source of truth for the discount (shared with the feed generator).
+    base_d, eff_d = resolve_effective_discount(match)
+    # clamp_applied means the min-margin clamp actually REDUCED the discount —
+    # not the mere integer flooring of a fractional base (e.g. 19.5 → 19), which
+    # clamp_discount_for_min_margin always does. Compare against floor(base_d).
+    clamp_applied = eff_d < math.floor(base_d)
 
     price_eur = calculate_price_eur(sp.price_cents, eff_d)
     retail_eur = sp.price_cents / 100.0
-    margin_eur = retail_eur * (1 - cost_rate_v - eff_d / 100.0)
+    # Reconcile the displayed margin with the displayed (rounded) price:
+    # margin = sell_price − cost, where cost = retail × cost_rate. Using price_eur
+    # (already rounded to tenths) keeps the two numbers on the row consistent.
+    margin_eur = price_eur - retail_eur * cost_rate_v
     margin_uah = margin_eur * rate
     return {
         "base_discount": base_d,

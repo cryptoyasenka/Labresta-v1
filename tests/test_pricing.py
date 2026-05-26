@@ -370,3 +370,108 @@ def test_resolve_eur_rate_negative_falls_back():
     s = SimpleNamespace(eur_rate_uah=-1.0, slug="bad")
     rate = resolve_eur_rate(s)
     assert rate == _EUR_RATE_FALLBACK
+
+
+# --- resolve_effective_discount + compute_match_pricing / feed parity ---
+
+
+def _match(
+    *,
+    price_cents,
+    override=None,
+    mode="flat",
+    default=19.0,
+    brand="HURAKAN",
+    brand_rows=None,
+    min_margin=0.0,
+    cost_rate=0.75,
+    eur_rate=51.15,
+    currency="EUR",
+):
+    """Build a duck-typed match mirroring the ORM shape both callers read."""
+    supplier = SimpleNamespace(
+        pricing_mode=mode,
+        discount_percent=default,
+        brand_discounts=brand_rows or [],
+        min_margin_uah=min_margin,
+        cost_rate=cost_rate,
+        eur_rate_uah=eur_rate,
+        slug="test-supplier",
+    )
+    sp = SimpleNamespace(
+        price_cents=price_cents,
+        brand=brand,
+        currency=currency,
+        supplier=supplier,
+    )
+    return SimpleNamespace(discount_percent=override, supplier_product=sp)
+
+
+def test_ui_price_equals_feed_price_parity():
+    """compute_match_pricing price MUST equal the feed _compute_price_eur price.
+
+    Guards against the two duplicated discount paths drifting (P-3): a desync
+    would show the operator one price and emit another to Horoshop.
+    """
+    from app.services.pricing import compute_match_pricing, resolve_effective_discount
+    from app.services.yml_generator import _compute_price_eur
+
+    cases = [
+        _match(price_cents=19999, default=19.0),                    # flat
+        _match(price_cents=19999, override=25.0),                   # per-match override
+        _match(price_cents=50000, min_margin=500.0),                # margin-clamped
+        _match(price_cents=800, min_margin=500.0),                  # cheap → 0% clamp
+        _match(price_cents=30000, default=19.5),                    # fractional base
+        _match(price_cents=30000, default=19.5, min_margin=300.0),  # fractional + clamp
+        _match(price_cents=12000, currency="UAH", min_margin=400.0, eur_rate=51.15),
+        _match(
+            price_cents=40000, mode="per_brand", default=10.0,
+            brand_rows=[_brand_row("HURAKAN", 22.0)], min_margin=600.0,
+        ),
+    ]
+    for m in cases:
+        ui = compute_match_pricing(m)
+        feed = _compute_price_eur(m)
+        assert ui is not None
+        assert ui["price_eur"] == feed, (
+            f"UI {ui['price_eur']} != feed {feed} for {m.supplier_product.price_cents}"
+        )
+        # effective discount used by the UI is the same value fed to the price calc
+        _base, eff = resolve_effective_discount(m)
+        assert ui["effective_discount"] == eff
+
+
+def test_clamp_applied_false_on_fractional_base_with_healthy_margin():
+    """P-1: a fractional base (19.5) flooring to 19 is NOT a margin clamp.
+
+    High retail price → margin is comfortable, so the only change is integer
+    flooring. clamp_applied must stay False (it previously read True).
+    """
+    from app.services.pricing import compute_match_pricing
+
+    m = _match(price_cents=100000, default=19.5, min_margin=500.0, eur_rate=51.15)
+    p = compute_match_pricing(m)
+    assert p["base_discount"] == 19.5
+    assert p["clamp_applied"] is False
+
+
+def test_clamp_applied_true_when_margin_forces_reduction():
+    """P-1: a low-priced item where min-margin genuinely cuts the discount."""
+    from app.services.pricing import compute_match_pricing
+
+    m = _match(price_cents=4000, default=19.0, min_margin=700.0, eur_rate=51.15)
+    p = compute_match_pricing(m)
+    assert p["effective_discount"] < p["base_discount"]
+    assert p["clamp_applied"] is True
+
+
+def test_margin_reconciles_with_displayed_price():
+    """P-2: margin shown == displayed (rounded) price − cost, not the unrounded sell."""
+    from app.services.pricing import compute_match_pricing
+
+    m = _match(price_cents=19999, default=19.0, cost_rate=0.75, eur_rate=50.0)
+    p = compute_match_pricing(m)
+    retail_eur = 19999 / 100.0
+    expected_margin_eur = p["price_eur"] - retail_eur * 0.75
+    assert p["margin_eur"] == pytest.approx(expected_margin_eur)
+    assert p["margin_uah"] == pytest.approx(expected_margin_eur * 50.0)
