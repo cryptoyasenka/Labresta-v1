@@ -270,6 +270,10 @@ def _sync_single_supplier(supplier: Supplier) -> str:
 
     except Exception as e:
         logger.error("Sync failed for supplier '%s': %s", supplier.name, e)
+        # If the failure was a DB error mid-flush the session is left needing a
+        # rollback; without this the finally-block commit raises and the SyncRun
+        # error status would be lost (run stuck "running" forever).
+        db.session.rollback()
         sync_run.status = "error"
         sync_run.error_message = str(e)[:1000]
         notify_sync_failure(supplier.name, str(e), attempt_count=3)

@@ -65,6 +65,47 @@ def test_disabled_supplier_never_synced(suppliers, captured):
     assert "asTestDisabled" not in captured
 
 
+def test_sync_records_error_after_db_level_failure(db, monkeypatch):
+    """Error path records status='error' + completed_at, even when the failing
+    stage left the session needing a rollback (M-1 fix: rollback in except).
+
+    NOTE: the test harness wraps each test in a SAVEPOINT, which auto-recovers
+    the session, so this passes with or without the fix — it can't reproduce the
+    production stuck-'running' condition (a real top-level transaction). It's a
+    smoke test of the error path; the M-1 rollback is a defensive prod-only fix.
+    """
+    from sqlalchemy import text
+
+    from app.models.sync_run import SyncRun
+
+    sup = Supplier(name="asTestDbErr", is_enabled=True, feed_url="http://x/feed.xml")
+    db.session.add(sup)
+    db.session.commit()
+
+    def _boom(*_a, **_k):
+        try:
+            db.session.execute(text("SELECT * FROM no_such_table_xyz"))
+        except Exception:
+            pass  # session now needs a rollback (mimics a flush failure)
+        raise RuntimeError("boom")
+
+    monkeypatch.setattr(sync_pipeline, "fetch_feed_with_retry", _boom)
+    monkeypatch.setattr(sync_pipeline, "notify_sync_failure", lambda *a, **k: None)
+
+    result = sync_pipeline._sync_single_supplier(sup)
+    assert result == "error"
+
+    run = (
+        db.session.query(SyncRun)
+        .filter_by(supplier_id=sup.id)
+        .order_by(SyncRun.id.desc())
+        .first()
+    )
+    assert run.status == "error"
+    assert "boom" in (run.error_message or "")
+    assert run.completed_at is not None
+
+
 class TestToggleAutoSyncEndpoint:
     def test_toggle_flips_flag(self, client, db):
         sup = Supplier(name="Toggle-me", is_enabled=True, auto_sync_enabled=True)
