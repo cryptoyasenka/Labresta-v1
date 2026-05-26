@@ -64,14 +64,15 @@ _compute_price_eur(m)` for a few fixtures.
 corruption bug (Horoshop mapping `<name>`→"Назва модифікації (RU)") cannot recur
 through these feeds. Comment block documents the invariant clearly.
 
-### 🟠 P-4 — margin_below FILTER ignores UAH currency (latent, found during dedup)
+### ✅ P-4 — FIXED — margin_below FILTER ignored UAH currency
 `app/views/matches.py` margin_below branch computes the filter margin with
 `rate = resolve_eur_rate(supplier)` but, unlike `compute_match_pricing`, does NOT
 force `rate=1.0` for UAH-priced suppliers. So for a UAH supplier the filter margin
 is inflated ~51× → UAH items effectively never match a "margin below X" filter.
-Display-filter only — does NOT affect price, discount, or the feed. Left UNCHANGED
-in the dedup commit (kept it a pure refactor); fix is a 2-line UAH guard mirroring
-`compute_match_pricing`. Awaiting go-ahead (changes which rows the filter surfaces).
+Display-filter only — does NOT affect price, discount, or the feed. FIXED: added the
+`if currency == 'UAH': rate = 1.0` guard mirroring `compute_match_pricing`, plus a
+regression test (`test_filter_respects_uah_currency`). UAH low-margin items now
+surface correctly in the filter.
 
 ### ✅ POSITIVE — `find_match_candidates` core has no correctness bug
 Full read of the ~1000-line core (matcher.py 929–1922). Gate pipeline is layered

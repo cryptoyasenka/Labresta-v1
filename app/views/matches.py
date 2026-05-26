@@ -272,6 +272,11 @@ def review():
             supplier = sp.supplier
             from app.services.pricing import margin_from_sell, resolve_eur_rate
             rate = resolve_eur_rate(supplier)
+            # UAH-priced supplier: price_cents are already UAH, so rate=1 keeps
+            # the margin in UAH (mirrors compute_match_pricing). Without this the
+            # filter margin is inflated ~51× and UAH items never match.
+            if getattr(sp, "currency", "EUR") == "UAH":
+                rate = 1.0
             cost_rate_v = float(getattr(supplier, "cost_rate", 0.75) or 0.75)
             # Margin at the BASE (pre-clamp) discount, unrounded sell — deliberately
             # different from the displayed row margin (which is at the effective,

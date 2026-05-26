@@ -1081,6 +1081,40 @@ class TestMarginBelowFilter:
         body = resp.data.decode("utf-8")
         assert "Маржа UAH" in body
 
+    def test_filter_respects_uah_currency(self, client, db):
+        """P-4: a UAH-priced supplier must use rate=1 in the filter, not the EUR
+        rate. Without the fix the margin is inflated ~51× and the cheap UAH item
+        (margin 250 UAH) never matches `margin_below=500`."""
+        supplier = Supplier(
+            name="UAH-supplier", feed_url="http://uah.xml",
+            discount_percent=0.0, eur_rate_uah=51.15,
+            min_margin_uah=0.0, cost_rate=0.75,
+            pricing_mode="flat", is_enabled=True,
+        )
+        db.session.add(supplier)
+        db.session.flush()
+        # retail 1000 UAH at 0% → margin = 1000*(1-0.75) = 250 UAH (under 500)
+        sp = SupplierProduct(
+            supplier_id=supplier.id, external_id="UAHSP0",
+            name="UAH cheap item", brand="NoBrand",
+            price_cents=100000, currency="UAH", available=True,
+        )
+        db.session.add(sp)
+        pp = PromProduct(external_id="PROM_UAH0", name="UAH cheap item",
+                         brand="NoBrand", price=100000)
+        db.session.add(pp)
+        db.session.flush()
+        db.session.add(ProductMatch(
+            supplier_product_id=sp.id, prom_product_id=pp.id, score=95.0,
+            status="confirmed", discount_percent=None,
+            confirmed_at=datetime.now(timezone.utc), confirmed_by="seed",
+        ))
+        db.session.commit()
+
+        resp = client.get("/matches/?margin_below=500")
+        assert resp.status_code == 200
+        assert "UAH cheap item" in resp.data.decode("utf-8")
+
 
 class TestBulkClampMargin:
     def test_clamp_margin_dry_run_returns_preview_without_writing(self, client, db):
