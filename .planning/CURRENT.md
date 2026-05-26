@@ -1,5 +1,43 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
+## 🔧 ACTIVE TASK (2026-05-26) — fix matcher feed (Path B Channel 1)
+
+**Запрос Yana:** общий матчер-фид при загрузке портит перевод (укр в ру). Пофиксить
+так, чтобы он обновлял **только цену и наличие** и больше ничего не трогал. Возможно
+дело и в колонках импорта Horoshop. Проверять через AgentX профиль 1.
+
+**Диагноз (доказан, не переисследовать):** Horoshop-YML-парсер жёстко мапит тег
+`<offer><name>` → поле «Назва модиф. (RU)». Наш `<name>` = украинский
+(`match.feed_name or pp.name`); `<name_ru>` парсер не знает → дроп. То же
+`<description>`(UA)→«Опис (RU)». Каждый плановый авто-pull накапливает порчу.
+НАШИ ДАННЫЕ ЧИСТЫ (probe: name_ru 5633, укр-буква ровно в 1). Порча — в импорте
+Horoshop, не в БД/матчере.
+
+**Решённый фикс (Yana 2026-05-19, Path B, 2 канала):**
+- Канал 1 = ВСЕ матчер-фиды по ссылке (main+per-supplier+custom): в `<offer>`
+  оставить только `id`/`vendorCode`/`currencyId`/`price`/`oldprice`/`available`
+  (+`url` keep). УБРАТЬ `<name>`/`<name_ru>`/`<description>`/`<description_ru>`/
+  `<vendor>`. Крест-маппить нечего → порча структурно невозможна. Авто-расписание.
+- Канал 2 = НП-контент (имя UA/RU+опис+бренд+произв+фото): отдельно, вручную,
+  нативный `[КАТАЛОГ]`-Excel. НЕ эта задача.
+
+**Точная правка** (`.planning/plans/np-feed/PATH-B-SPEC.md` §2): удалить в
+`app/services/yml_generator.py::_build_offer_xml` блок A (`:95-97` name/name_ru) +
+блок B (`:112-117` description/description_ru) + `<vendor>` (`:109-110`). Тривиально,
+весь риск — в синхронной правке тестов (`TestYmlDescriptionPropagation`,
+`test_yml_generator.py:223-298` + `:216-220`) на инверсный контракт.
+Скоуп §3 = Опция 1 (все фиды). НЕ трогать matcher/pricing.py/gates/узкие фиды.
+
+**⚠️ GATE (блокер, спека §6):** код в репо ТОЛЬКО после сигнала 0.5 = W1 освободил
+main. W1 СЕЙЧАС АКТИВЕН (chunk-030 batch 5 ✅, next batch 6 SKU 41-48). Инвариант
+#13 — одно живое изменение за раз. Решение Yana: ждать конца перевода или править
+сейчас. **Live-превью/импорт — рука Yana + свежий Cloudflare-туннель.**
+
+**B2:** Path B останавливает НАКОПЛЕНИЕ порчи, но НЕ лечит уже-испорченные RU —
+это аудит-проход W1/W2 либо разовый корректирующий нативный xlsx.
+
+---
+
 ## ✅ STATE AUDIT — completed 2026-05-21
 
 **Inputs:** PRE-INCIDENT `horoshop-export 20.05.26.xlsx` (5632 SKU) vs LIVE-NOW `horoshop-export 21.05.26.xlsx` (5632 SKU). Read-only audit.
