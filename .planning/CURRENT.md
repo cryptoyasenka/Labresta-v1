@@ -1,5 +1,32 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
+## ✅ DONE (2026-05-26) — catalog-import: двухшаговый импорт (превью + подтверждение)
+
+**Запрос Yana:** «оператор ведь может случайно не тот файл в папке открыть» —
+импорт применялся в один шаг (кнопка «Импортировать» = сразу запись). Сделать
+двухшаговый: загрузил → превью что изменится → подтвердил.
+
+**✅ РЕШЕНО (commit `97fde0d`, на main, задеплоено на прод):**
+- Сервис: `preview_catalog_import(products)` — read-only dry-run. Считает
+  created/updated/skipped, по-полевые `changed`, отдельно `cleared` (было значение
+  → в файле пусто = сигнал «не тот файл»), `translations_protected`, samples.
+  `save_catalog_products` отрефакторен на общий `_normalize_product` +
+  `CATALOG_FIELDS`/`TRANSLATION_FIELDS` — превью не может разойтись с реальным импортом.
+- Вьюхи: POST `/catalog/import` стейджит файл в `instance/import_staging/<uuid>`
+  (трекинг через session, токен валидируется как uuid-hex, без client-путей; stale
+  чистятся через 1ч) и рендерит превью; POST `/catalog/import/confirm` дочитывает
+  тот же файл и пишет; POST `/catalog/import/cancel` выкидывает. Кнопка на форме →
+  «Загрузить и проверить».
+- Шаблоны: `import.html` (новая кнопка/подсказка) + новый `import_preview.html`
+  (карточки-счётчики, warning про очищаемые поля, таблица изменений, примеры,
+  кнопки Подтвердить/Отмена).
+- Тесты: 4 unit превью + 4 интеграционных (upload→preview без записи; confirm
+  применяет+сохраняет перевод; cancel выкидывает; confirm без сессии). Полный
+  прогон **691 passed, 2 skipped**.
+- Деплой подтверждён: POST `/catalog/import/confirm` отдаёт 400 (CSRF), не 404.
+
+---
+
 ## ✅ DONE (2026-05-26) — catalog-import: разделить воркер и матчер
 
 **Запрос Yana:** внесла правки в товары прямо в Horoshop → выгрузит Excel из Horoshop
