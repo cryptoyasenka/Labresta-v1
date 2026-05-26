@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}Проверка импорта - LabResta Sync{% endblock %}
+
+{% set field_labels = {
+    "name": "Название (UA)",
+    "brand": "Бренд",
+    "article": "Артикул (код)",
+    "display_article": "Артикул на сайте",
+    "price": "Цена",
+    "currency": "Валюта",
+    "page_url": "Ссылка",
+    "image_url": "Фото",
+    "images": "Галерея",
+    "description_ua": "Описание (UA)"
+} %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <h2>Проверка импорта каталога</h2>
+
+        <p class="text-muted mb-1">Файл:</p>
+        <p class="fs-5 fw-bold mb-3">{{ filename }}</p>
+        <p class="text-muted">
+            Это предпросмотр. <strong>В базу пока ничего не записано.</strong>
+            Проверьте цифры ниже — если это не тот файл, нажмите «Отмена».
+        </p>
+
+        <!-- Summary cards -->
+        <div class="row g-3 mb-4">
+            <div class="col-6 col-md-3">
+                <div class="card text-center"><div class="card-body">
+                    <div class="fs-3 fw-bold text-primary">{{ preview.updated }}</div>
+                    <div class="text-muted small">обновится</div>
+                </div></div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card text-center"><div class="card-body">
+                    <div class="fs-3 fw-bold text-success">{{ preview.created }}</div>
+                    <div class="text-muted small">новых</div>
+                </div></div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card text-center"><div class="card-body">
+                    <div class="fs-3 fw-bold text-secondary">{{ preview.skipped }}</div>
+                    <div class="text-muted small">пропущено</div>
+                </div></div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card text-center"><div class="card-body">
+                    <div class="fs-3 fw-bold">{{ preview.total }}</div>
+                    <div class="text-muted small">всего к записи</div>
+                </div></div>
+            </div>
+        </div>
+
+        <p class="mb-4">
+            <span class="badge bg-info text-dark">Переводы защищены</span>
+            У <strong>{{ preview.translations_protected }}</strong> товаров есть переводы воркера
+            (RU) — импорт их <strong>не тронет</strong>.
+        </p>
+
+        {% set cleared_fields = preview.cleared.items() | selectattr("1", "gt", 0) | list %}
+        {% if cleared_fields %}
+        <div class="alert alert-warning">
+            <h5 class="alert-heading">⚠️ Внимание: эти поля будут ОЧИЩЕНЫ</h5>
+            <p class="mb-2">
+                В файле эти колонки пустые/отсутствуют, а в базе значения есть.
+                Если вы этого не ожидали — возможно, открыт не тот файл.
+            </p>
+            <ul class="mb-0">
+                {% for field, n in cleared_fields %}
+                <li><strong>{{ field_labels.get(field, field) }}</strong> — очистится у {{ n }} товаров</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <!-- Changed fields -->
+        <h5>Что изменится (среди обновляемых)</h5>
+        {% set changed_fields = preview.changed.items() | selectattr("1", "gt", 0) | list %}
+        {% if changed_fields %}
+        <table class="table table-sm w-auto">
+            <thead><tr><th>Поле</th><th class="text-end">Товаров изменится</th></tr></thead>
+            <tbody>
+                {% for field, n in changed_fields %}
+                <tr>
+                    <td>{{ field_labels.get(field, field) }}</td>
+                    <td class="text-end">{{ n }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="text-muted">Изменений в полях существующих товаров не обнаружено.</p>
+        {% endif %}
+
+        <!-- Sample changes -->
+        {% if preview.samples %}
+        <h5 class="mt-4">Примеры изменений</h5>
+        <table class="table table-sm table-bordered">
+            <thead><tr>
+                <th>Внешний ID</th><th>Поле</th><th>Было</th><th>Станет</th>
+            </tr></thead>
+            <tbody>
+                {% for s in preview.samples %}
+                <tr>
+                    <td class="text-nowrap">{{ s.external_id }}</td>
+                    <td class="text-nowrap">{{ field_labels.get(s.field, s.field) }}</td>
+                    <td class="text-muted small">{{ (s.old if s.old is not none else "—") | string | truncate(60) }}</td>
+                    <td class="small">{{ (s.new if s.new is not none else "—") | string | truncate(60) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+
+        <!-- Confirm / cancel -->
+        <div class="d-flex gap-2 mt-4">
+            <form method="POST" action="{{ url_for('catalog.catalog_import_confirm') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-primary">Подтвердить импорт</button>
+            </form>
+            <form method="POST" action="{{ url_for('catalog.catalog_import_cancel') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-outline-secondary">Отмена</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
