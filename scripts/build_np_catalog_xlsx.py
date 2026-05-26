@@ -52,8 +52,8 @@ def run(feed_path: str, out_path: str | None) -> None:
             ts = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S")
             out_path = str(Path(app.instance_path) / f"np-catalog-{ts}.xlsx")
         path = write_workbook(headers, rows, out_path)
-        print(f"Wrote {len(rows)} rows → {path}")
-        print("Import by hand in Horoshop; map the «Галерея» column (FINAL-MODEL §3).")
+        print(f"Wrote {len(rows)} rows -> {path}")
+        print("Import by hand in Horoshop; map the Gallery column (FINAL-MODEL section 3).")
 
 
 def main() -> None:
