@@ -25,11 +25,16 @@
 - Новый тест-файл `tests/test_catalog_import.py` (4 теста). Полный прогон:
   **683 passed, 2 skipped**.
 
-**⏳ ОСТАЛОСЬ (рука Yana):** после редеплоя Railway — (1) бэкап прод-БД ПЕРЕД
-загрузкой (правило: import overwrites PP fields), (2) Yana грузит свой Horoshop-xlsx
-через экран — теперь это безопасно для переводов by construction. Вьюха
+**✅ БЭКАП ПРОДА СНЯТ (2026-05-26 21:55):** `backups/pre-catalog-import_2026-05-26_2155.json`
+(gitignored) — 5633 pp + 2691 matches, у всех 5633 есть name_ru+description_ru. Снят
+через публичный proxy `switchyard.proxy.rlwy.net:40821` (DATABASE_URL прокинут в
+`scripts/backup_before_catalog_import.py`, креды стёрты, в чат не попали). Restore:
+`scripts/restore_pp_from_backup.py <файл>`.
+
+**⏳ ОСТАЛОСЬ (рука Yana):** Yana грузит свой Horoshop-xlsx через экран «Импорт
+каталога» — теперь безопасно для переводов by construction. Вьюха
 `catalog_import_upload` вызывает `save_catalog_products(products)` без опций →
-preserve_translations=True по умолчанию.
+preserve_translations=True. Прод уже на новом коде (деплой подтверждён).
 
 **B2 (отдельно, не эта задача):** уже-испорченные RU в Horoshop лечатся аудит-
 проходом W1/W2 либо корректирующим нативным xlsx — не катит обратно через импорт.
