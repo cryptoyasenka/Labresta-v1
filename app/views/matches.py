@@ -270,11 +270,16 @@ def review():
                 continue
             sp = m.supplier_product
             supplier = sp.supplier
-            from app.services.pricing import resolve_eur_rate
+            from app.services.pricing import margin_from_sell, resolve_eur_rate
             rate = resolve_eur_rate(supplier)
             cost_rate_v = float(getattr(supplier, "cost_rate", 0.75) or 0.75)
-            retail_eur = sp.price_cents / 100.0
-            margin_at_base = retail_eur * (1 - cost_rate_v - p["base_discount"] / 100.0) * rate
+            # Margin at the BASE (pre-clamp) discount, unrounded sell — deliberately
+            # different from the displayed row margin (which is at the effective,
+            # rounded price). Sell at base = retail × (1 − base_discount/100).
+            sell_base_eur = (sp.price_cents / 100.0) * (1 - p["base_discount"] / 100.0)
+            _, margin_at_base = margin_from_sell(
+                sell_base_eur, sp.price_cents, cost_rate_v, rate
+            )
             if margin_at_base < threshold:
                 kept.append(m)
                 pricing_map[m.id] = p

@@ -465,6 +465,20 @@ def test_clamp_applied_true_when_margin_forces_reduction():
     assert p["clamp_applied"] is True
 
 
+def test_margin_from_sell_helper():
+    """Pure margin arithmetic: (sell - retail*cost_rate) * rate, both EUR and UAH."""
+    from app.services.pricing import margin_from_sell
+
+    # retail 200 EUR, cost_rate 0.75 -> buy 150; sell 162 -> margin 12 EUR
+    margin_eur, margin_uah = margin_from_sell(162.0, 20000, 0.75, 50.0)
+    assert margin_eur == pytest.approx(12.0)
+    assert margin_uah == pytest.approx(600.0)
+    # UAH supplier: rate=1 keeps the math in UAH
+    m_eur, m_uah = margin_from_sell(162.0, 20000, 0.75, 1.0)
+    assert m_eur == pytest.approx(12.0)
+    assert m_uah == pytest.approx(12.0)
+
+
 def test_margin_reconciles_with_displayed_price():
     """P-2: margin shown == displayed (rounded) price − cost, not the unrounded sell."""
     from app.services.pricing import compute_match_pricing

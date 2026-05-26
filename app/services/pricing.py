@@ -47,6 +47,29 @@ def calculate_price_eur(retail_price_cents: int, discount_percent: float) -> flo
     return tenths / 10.0
 
 
+def margin_from_sell(
+    sell_eur: float,
+    retail_price_cents: int,
+    cost_rate: float,
+    eur_rate_uah: float,
+) -> tuple[float, float]:
+    """Margin for a given sell price: ``(margin_eur, margin_uah)``.
+
+    Pure arithmetic only — it does NOT resolve any discount. Callers compute the
+    discount (per-brand / per-supplier / override) themselves and pass in the
+    resulting ``sell_eur``. Buy cost = ``retail × cost_rate``; margin = sell − buy.
+
+        margin_eur = sell_eur − (retail_price_cents / 100) × cost_rate
+        margin_uah = margin_eur × eur_rate_uah
+
+    For UAH-priced suppliers callers pass ``eur_rate_uah=1.0`` so the math stays
+    in UAH end to end.
+    """
+    retail_eur = retail_price_cents / 100.0
+    margin_eur = sell_eur - retail_eur * cost_rate
+    return margin_eur, margin_eur * eur_rate_uah
+
+
 def get_effective_discount(
     match_discount: float | None,
     supplier_discount: float,
@@ -231,12 +254,12 @@ def compute_match_pricing(match) -> dict | None:
     clamp_applied = eff_d < math.floor(base_d)
 
     price_eur = calculate_price_eur(sp.price_cents, eff_d)
-    retail_eur = sp.price_cents / 100.0
-    # Reconcile the displayed margin with the displayed (rounded) price:
-    # margin = sell_price − cost, where cost = retail × cost_rate. Using price_eur
-    # (already rounded to tenths) keeps the two numbers on the row consistent.
-    margin_eur = price_eur - retail_eur * cost_rate_v
-    margin_uah = margin_eur * rate
+    # Reconcile the displayed margin with the displayed (rounded) price: margin is
+    # derived from price_eur (already rounded to tenths), not the unrounded sell
+    # fraction, so the two numbers on the row stay consistent.
+    margin_eur, margin_uah = margin_from_sell(
+        price_eur, sp.price_cents, cost_rate_v, rate
+    )
     return {
         "base_discount": base_d,
         "effective_discount": eff_d,
