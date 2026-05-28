@@ -165,6 +165,30 @@ POSITIVE здесь же: preview/save шарят `_normalize_product`+`CATALOG_
 петлю редиректа вместо «аккаунт отключён», и `last_login_at` обновится ложно. Минор UX.
 Нет rate-limit на логин (brute-force) — informational, внутр. инструмент.
 
+### M-8 (this audit) — `force_price` без валидации → 500 или «липкая» плохая цена в фиде
+**Файл:** `products.py:631-647`. `int(price_cents)` без try/except: нечисловой ввод →
+500. Нет проверки `> 0`: отрицательная/нулевая цена принимается. Так как ставится
+`price_forced=True`, плохая цена НЕ чинится последующим sync (по дизайну forced
+переопределяет фид) и течёт в живой Horoshop через `_compute_price_eur`. Валюта не
+валидируется против известного набора. Оператор доверенный, но опечатка = липкий
+дефект в живом магазине. Фикс: `try int + проверка price_cents>0 + currency in {EUR,UAH}`.
+Severity low-medium (нужен ручной ввод мусора, но эффект на живой фид + sticky).
+
+### M-9 (this audit) — Telegram HTML не экранирует имена товаров
+**Файл:** `notification_service.py:199-229` + `telegram_notifier`. Сообщение шлётся с
+parse_mode=HTML (предположительно), но `product.name` с `&`/`<`/`>` не экранируется →
+Telegram API вернёт 400 (битый HTML) и уведомление не уйдёт. Имена товаров реально
+содержат `&`. Фикс: `html.escape(name)` в `_format_notification_message` и
+`_send_telegram_for_rule`. Severity low (уведомления, не фид). _Проверить parse_mode в
+telegram_notifier — если там не HTML, находка отпадает._
+
+### M-10 (this audit) — price_range: cents vs EUR неоднозначность
+**Файл:** `notification_service.py:162-176`. `criteria_value="1000-5000"` парсится как
+min/max **CENTS** и сравнивается с `price_cents`. Оператор почти наверняка вводит EUR →
+правило ловит 10–50 EUR вместо 1000–5000 EUR (100× рассинхрон) → price_range-уведомления
+не срабатывают как ожидается. Severity low (advisory). Решение: документировать единицу
+в UI-подсказке либо делить на 100. **Проверить у Yana,** что ожидается.
+
 ### INFO-1 (this audit) — feed_fetcher без SSRF-фильтра приватных IP
 **Файл:** `feed_fetcher.py:45`. `requests.get(url)` без ограничения схемы/хоста и без
 ограничения редиректов на приватные диапазоны. URL берётся из `supplier.feed_url`,
@@ -188,10 +212,56 @@ private/loopback IP и `file://`. Informational, не блокер.
 - `manual_match` (c313b0f) корректно реюзает existing_pair вместо INSERT → нет uq_match_pair 500.
 - Scheduler: single worker (`--workers 1 --threads 4`) → cron не дублируется; debug-guard корректен.
 - Sync-trigger guard (409 already_running) есть для manual-пути.
+- `supplier_delete` — каскад корректен: SupplierBrandDiscount через ORM `all, delete-orphan`
+  + DB `ondelete=CASCADE`; Notification/ProductMatch/SupplierProduct/SyncRun — Core-удаление
+  в правильном FK-порядке; AuditLog без FK (orphan-логи безвредны/желательны). Не падает на Postgres.
+- `settings.py` user-mgmt — `@admin_required` (403 для не-admin) на всех, last-admin protection,
+  нельзя деактивировать себя, min-8 пароль, email-uniqueness, role-валидация. Нет privilege escalation.
+- `pricing.py` — P-1/P-2/P-3/P-4 ВСЕ на месте, clamp-математика верна, UAH rate=1 в трёх местах,
+  `margin_from_sell` extracted. `yml._compute_price_eur` зовёт тот же `resolve_effective_discount`
+  → цена-в-UI == цена-в-фиде (parity). `<oldprice>` override (ed8182f) присутствует.
+- `rematch_job` — сериализация через `_LOCK`, `session.remove()` в finally, wipe только
+  `candidate` (rejected/confirmed/manual сохраняются — честит инвариант).
+- `ftp_upload` — креды параметрами/из env, не хардкод (+ активного push нет, pull-модель).
 
 ---
 
+## ИТОГ (2026-05-28)
+
+**Прочитано целиком/прицельно:** app core, sync_pipeline, dashboard, matcher (dedup +
+find_match_for_product; ядро гейтов — прошлый аудит), matches.py (все write-эндпоинты),
+feed_parser, kodaki/gooder/astim adapters, catalog_import, excel_parser, rp_parser,
+feed_fetcher, rule_matcher, rematch_job, notification_service, telegram_notifier, pricing,
+yml_generator (parity), catalog.py, suppliers.py (delete/fetch), products.py (write-эндпоинты),
+settings.py (user-mgmt + authz), auth.py, ftp_upload, export_service, orphan_detector
+(прицельно), все models + FK/cascade/constraints.
+
+**Вердикт:** корректностных багов в денежной/матчинг-логике НЕ найдено — ядро (гейты
+матчера, pricing P-1..P-4, yml parity, 1pp↔1supplier инвариант, supplier_delete cascade,
+authz) надёжно и консистентно. Найдена **1 дыра консистентности (P-1)** + **10 minor/
+защитных** + 2 INFO. 2 безопасных фикса применены на ветке.
+
+**Счёт:** P=1 (документирован, не фикшен — решение за Yana) · M=10 (2 fixed, 8 открыто) ·
+INFO=2 · POSITIVE=17.
+
+### Что фиксить (приоритет)
+1. **P-1 reject-delete → resurface** — главная находка. Меняет видимое поведение + тест →
+   решение Yana. Рекомендация: `delete`→`status="rejected"` в `reject_match`+bulk-reject.
+   Затрагивает и rematch (воскрешает удалённые reject'ы).
+2. **M-8 force_price** — дёшево+важно (липкая плохая цена в живой фид). Фикс+тест.
+3. **M-3 SECRET_KEY** — проверить env на Railway; hard-fail в проде.
+4. **M-6 article-wipe** — проверить наличие prom.ua-товаров; убрать `article` из CATALOG_FIELDS.
+5. **M-9 telegram-escape**, **M-10 price_range units**, **M-5 N+1** — по желанию.
+
+### ✅ Сделано на ветке `audit/2026-05-28-hardening` (НЕ в main — review+merge за Yana)
+- M-4 XXE hardening (feed_parser._parse_xml) + 3 теста.
+- M-7 open-redirect guard (auth) + 3 теста.
+- Полный сьют: **708 passed, 2 skipped** (было 702).
+
+### Осознанно НЕ трогаем
+- M-1, M-2 (S-1 carryover), INFO-1/2 — by-design / низкий риск / threat model = 1 оператор.
+- Ядро матчера/pricing — проверено, консистентно, не менять.
+
 ## Last touched
-2026-05-28 — прочитано: app core, sync_pipeline, dashboard, matcher dedup, matches.py
-(query builder, reject/confirm/bulk/manual/resolve-conflict). Найдено P-1 + 3×M.
-Дальше: products.py, suppliers.py, settings.py, catalog.py, parser-сервисы.
+2026-05-28 — аудит завершён. P-1 + 10×M + 2 INFO + 17 POSITIVE. M-4/M-7 пофикшены на
+ветке audit/2026-05-28-hardening (708 passed). main НЕ трогался (нет ночного авто-деплоя).
