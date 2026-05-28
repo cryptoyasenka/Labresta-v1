@@ -93,3 +93,35 @@ class TestParsePriceCentsRounding:
     def test_integer_price_unchanged(self):
         products = parse_supplier_feed(self._yml_with_price("100"), supplier_id=1)
         assert products[0]["price_cents"] == 10000
+
+
+class TestSaveBatchDedup:
+    """M-5 preload refactor must keep the original upsert semantics: the
+    per-product SELECT (which autoflush made dedup-aware) is replaced by a
+    single preload + in-batch dict, so a duplicate external_id within one feed
+    must still update the row (not insert a uq collision), and a re-import must
+    update rather than duplicate."""
+
+    def test_duplicate_external_id_in_one_feed_collapses_to_one_row(self, session, supplier):
+        result = save_supplier_products([
+            _row(supplier.id, external_id="dup", name="First", price_cents=1000),
+            _row(supplier.id, external_id="dup", name="Second", price_cents=2000),
+        ])
+        rows = SupplierProduct.query.filter_by(
+            supplier_id=supplier.id, external_id="dup"
+        ).all()
+        assert len(rows) == 1
+        assert rows[0].name == "Second"  # later occurrence wins (update path)
+        assert rows[0].price_cents == 2000
+        assert result["created"] == 1
+        assert result["updated"] == 1
+
+    def test_reimport_updates_not_duplicates(self, session, supplier):
+        save_supplier_products([_row(supplier.id, external_id="sku-9", name="A")])
+        result = save_supplier_products([_row(supplier.id, external_id="sku-9", name="B")])
+        rows = SupplierProduct.query.filter_by(
+            supplier_id=supplier.id, external_id="sku-9"
+        ).all()
+        assert len(rows) == 1
+        assert rows[0].name == "B"
+        assert result == {"created": 0, "updated": 1, "total": 1}

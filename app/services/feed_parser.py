@@ -145,14 +145,22 @@ def save_supplier_products(products: list[dict]) -> dict:
     for p in products:
         p["brand"] = canonicalize_brand(p.get("brand"), canon)
 
+    # Preload all existing rows for this supplier in ONE query, keyed by
+    # external_id (unique within a supplier), instead of a SELECT per product.
+    # A feed carries hundreds-to-thousands of offers, so the per-item lookup
+    # was thousands of round-trips per sync.
+    existing_by_ext = {
+        row.external_id: row
+        for row in db.session.execute(
+            select(SupplierProduct).where(
+                SupplierProduct.supplier_id == supplier_id
+            )
+        ).scalars().all()
+    }
+
     try:
         for p in products:
-            existing = db.session.execute(
-                select(SupplierProduct).where(
-                    SupplierProduct.supplier_id == p["supplier_id"],
-                    SupplierProduct.external_id == p["external_id"],
-                )
-            ).scalar_one_or_none()
+            existing = existing_by_ext.get(p["external_id"])
 
             if existing:
                 existing.name = p["name"]
@@ -197,6 +205,10 @@ def save_supplier_products(products: list[dict]) -> dict:
                     params=p.get("params"),
                 )
                 db.session.add(new_product)
+                # Track within the batch so a duplicate external_id later in the
+                # same feed updates this row instead of inserting a collision
+                # (previously handled implicitly by autoflush before each SELECT).
+                existing_by_ext[p["external_id"]] = new_product
                 created += 1
 
         # Update supplier fetch metadata
