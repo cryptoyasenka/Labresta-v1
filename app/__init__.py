@@ -23,6 +23,16 @@ def _wants_json_response() -> bool:
     )
 
 
+def _secret_key_is_insecure(uri: str, secret_key: str, is_testing: bool) -> bool:
+    """True when the app must refuse to boot: a production deployment (Postgres
+    on Railway — local dev uses sqlite) still signing sessions and CSRF tokens
+    with the publicly-known placeholder key, which makes them forgeable. Tests
+    and local sqlite dev keep the default harmlessly."""
+    if is_testing:
+        return False
+    return uri.startswith("postgresql") and secret_key == "dev-key-change-me"
+
+
 def create_app(config_name="default"):
     app = Flask(__name__, instance_relative_config=True)
 
@@ -42,7 +52,8 @@ def create_app(config_name="default"):
     # Overriding SQLALCHEMY_DATABASE_URI after db.init_app() has no effect —
     # the engine is already bound. Tests that forget to pass an in-memory URI
     # before create_app() would silently wipe instance/labresta.db on cleanup.
-    if os.environ.get("TESTING") == "1" or app.config.get("TESTING"):
+    is_testing = os.environ.get("TESTING") == "1" or app.config.get("TESTING")
+    if is_testing:
         uri = app.config.get("SQLALCHEMY_DATABASE_URI", "")
         if ":memory:" not in uri and "labresta.db" in uri:
             raise RuntimeError(
@@ -50,6 +61,19 @@ def create_app(config_name="default"):
                 "Set SQLALCHEMY_DATABASE_URI to 'sqlite:///:memory:' in the "
                 "config BEFORE calling create_app()."
             )
+
+    # SAFETY: refuse to boot a production (Postgres) app with the placeholder
+    # SECRET_KEY — sessions and CSRF tokens would be forgeable.
+    if _secret_key_is_insecure(
+        app.config.get("SQLALCHEMY_DATABASE_URI", ""),
+        app.config.get("SECRET_KEY", ""),
+        is_testing,
+    ):
+        raise RuntimeError(
+            "SECRET_KEY is the insecure default 'dev-key-change-me' on a "
+            "production (Postgres) deployment. Set the SECRET_KEY environment "
+            "variable — sessions and CSRF tokens are forgeable otherwise."
+        )
 
     # Init extensions
     db.init_app(app)
