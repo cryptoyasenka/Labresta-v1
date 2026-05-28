@@ -41,7 +41,13 @@ def login():
         ).scalar_one_or_none()
 
         if user and user.check_password(password):
-            login_user(user, remember=remember)
+            if not login_user(user, remember=remember):
+                # Flask-Login refuses inactive users (is_active=False) and sets
+                # no session. Without this branch the code below would still
+                # stamp last_login_at and redirect, leaving the operator in a
+                # login → @login_required → login loop with no explanation.
+                flash("Аккаунт отключён. Обратитесь к администратору.", "danger")
+                return render_template("auth/login.html")
             user.last_login_at = datetime.now(timezone.utc)
             db.session.commit()
 

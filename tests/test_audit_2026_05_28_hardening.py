@@ -116,3 +116,32 @@ def test_login_ignores_offsite_next(client, db):
         assert resp.status_code in (301, 302)
         location = resp.headers.get("Location", "")
         assert "evil.com" not in location
+
+
+# ---------------------------------------------------------------------------
+# INFO-2 — login must reject a deactivated user (is_active=False)
+# ---------------------------------------------------------------------------
+
+def test_login_rejects_deactivated_user(client, db):
+    """A user with is_active=False must not be logged in: Flask-Login sets no
+    session, so the page must re-render (200, not a redirect to index) and
+    last_login_at must not be falsely stamped."""
+    from app.models.user import User
+
+    u = User(email="off@test.com", name="Off", role="operator", is_active=False)
+    u.set_password("pw12345")
+    db.session.add(u)
+    db.session.commit()
+    uid = u.id
+
+    with client.application.test_client() as anon:
+        resp = anon.post(
+            "/auth/login",
+            data={"email": "off@test.com", "password": "pw12345"},
+            follow_redirects=False,
+        )
+        # Rendered login page, not a redirect into the protected area.
+        assert resp.status_code == 200
+
+    db.session.expire_all()
+    assert db.session.get(User, uid).last_login_at is None
