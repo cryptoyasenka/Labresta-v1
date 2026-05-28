@@ -4,8 +4,11 @@
 
 **Запрос Yana:** «подумай над аудитом критически, и начни все фиксить».
 
-**Ветка `audit/2026-05-28-hardening` (НЕ main — review+merge за Yana). 722 passed, 2 skipped.**
-Каждый фикс = атомарный коммит + тест. main НЕ трогался (нет авто-деплоя на живой магазин).
+**✅ ЗАДЕПЛОЕНО НА ПРОД (2026-05-29 00:0x):** Yana дала go-ahead → FF-merge ветки
+`audit/2026-05-28-hardening` в `main` → push → Railway deploy `eea4cb9c` **SUCCESS**.
+Live healthcheck `/`→302 login, `/auth/login`→200. Перед мержем проверила: SECRET_KEY на
+Railway выставлен и не плейсхолдер (M-3 не уронит boot), секретов в диффе нет, схема не менялась
+(миграции не затронуты). 722 passed, 2 skipped. Каждый фикс = атомарный коммит + тест.
 
 - **P-1** (`b8562f0`) reject_match + bulk-reject → `status="rejected"` (не delete) → нет
   воскрешения на sync; bulk заодно получил uq reuse-guard (был латентный 500). Критич.
@@ -24,8 +27,9 @@ cents, совпадает с инструкцией оператору. Допу
 **Flagged, НЕ авто-фикшу:** M-2 (sync-мьютекс = >1ч арх-изменение, п.2→discuss-phase, риск
 на живом sync), INFO-1 (SSRF, threat model = 1 оператор).
 
-**Next step:** Yana — ревью + мерж ветки `audit/2026-05-28-hardening` в main (деплой на
-Railway). Опц.: решить по M-2 (нужен ли sync-мьютекс — отдельный discuss-phase).
+**Next step:** дискуссия по спорным/отложенным моментам (по запросу Yana). Главный —
+**M-2** (глобальный sync-мьютекс): нужен ли, и если да — `/gsd:discuss-phase` (>1ч арх).
+Также на столе: INFO-1 (SSRF defense-in-depth) и любые сомнения по уже сделанным фиксам.
 
 ---
 
