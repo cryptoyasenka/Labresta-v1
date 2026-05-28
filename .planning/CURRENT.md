@@ -1,5 +1,43 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
+## ✅ DONE (2026-05-28) — второй глубокий аудит (ночной режим)
+
+**Запрос Yana:** «сделай полный глубокий аудит проекта. Ищи ошибки кода, консистентности
+и дырки. Работай в ночном режиме.»
+
+**Деливерабл:** `.planning/CODE-AUDIT-2026-05-28.md` (полный). Базовая точка HEAD=`c313b0f`.
+Покрыл области, слабо затронутые прошлым аудитом: web-слой (matches/products/suppliers/
+settings/catalog/auth), парсеры/адаптеры (feed_parser/kodaki/excel/rp/catalog_import),
+notification, rematch threading, models+FK/cascade, authz.
+
+**Вердикт:** корректностных багов в денежной/матчинг-логике НЕТ. Ядро надёжно (гейты
+матчера, pricing P-1..P-4, yml parity UI==feed, 1pp↔1supplier, supplier_delete cascade,
+admin authz — всё проверено POSITIVE). Счёт: **P=1, M=10 (2 fixed), INFO=2, POSITIVE=17.**
+
+**Главная находка — P-1 (НЕ пофикшена, нужно решение Yana):** reject-кнопка
+(`matches.py:688` + bulk `1199`) делает `db.session.delete(match)` вместо
+`status="rejected"`. Все остальные reject-пути (mark_new/conflict-keep/rebind/disappeared/
+rematch) сохраняют 'rejected'. → матчер на следующем sync (и rematch) может заново
+сгенерировать отклонённую пару (оператор снова видит то, что отклонил; риск подтвердить
+неверный матч → плохая цена в живой Horoshop). Тест `test_reject_reuses_stale_rejected_row`
+фиксирует delete → фикс требует обновления теста + согласия Yana.
+
+**✅ 2 безопасных фикса на ветке `audit/2026-05-28-hardening` (НЕ в main — review+merge):**
+- M-4: XXE/entity-bomb hardening в `feed_parser._parse_xml` (зеркало kodaki_adapter;
+  валидные фиды byte-identical) + 3 теста.
+- M-7: open-redirect guard в `auth` (`?next=https://evil.com` больше не уводит) + 3 теста.
+- Полный сьют: **708 passed, 2 skipped** (было 702). main НЕ трогался (нет ночного авто-деплоя).
+
+**Открытые M для Yana (по приоритету):** M-8 force_price без валидации (липкая плохая цена
+в живой фид — дёшево фиксить), M-3 SECRET_KEY дефолт (проверить env Railway), M-6
+Horoshop-импорт обнуляет pp.article (латентно), M-9 telegram HTML-escape, M-10 price_range
+cents/EUR, M-5 N+1 в save_supplier_products. Детали — в аудит-доке.
+
+**Next step:** Yana решает по P-1 (фиксить delete→rejected или оставить); ревью+мерж ветки
+`audit/2026-05-28-hardening`; опц. M-8/M-3/M-6. Ветка запушена для durability.
+
+---
+
 ## ✅ DONE (2026-05-26) — глубокий аудит кода + фиксы
 
 **Запрос Yana:** «сделай аудит глубокий проекта (задеплоенный матчер), выяви ошибки
