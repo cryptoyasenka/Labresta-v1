@@ -1,32 +1,33 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
-## 🔜 ACTIVE (2026-05-29, ночной режим) — НП-фид: эксклюзивные бренды «Нового проекта»
+## ✅ DONE (2026-05-29, ночной режим) — НП-фид: файл-генератор по эксклюзивным брендам
 
 **Запрос Yana:** кнопки в UI → оператор выбирает 9 эксклюзивных брендов НП → кнопкой
-обновляет описание+фото+цену+наличие → матчер даёт правильный **ФАЙЛ** для загрузки в
-Хорошоп. Внедрять автономно в ночном режиме, довести до конца.
+обновляет описание+фото+цену+наличие → матчер даёт правильный **ФАЙЛ** для Хорошопа.
 
-**✅ Под-вопрос «затирание» РЕШЁН (commit `f239c06`, в main, запушен):** риск, что авто-pull
-YML затрёт описания НП / испортит RU-имена (UA→RU крест-маппинг Хорошопа) — оказался УЖЕ
-закрыт. PATH-B (`381b656`): матчер-фид несёт ТОЛЬКО цену+наличие, ни name/desc/vendor.
-Проверено вживую на проде (`33eb430`: 2545 офферов, 0 name·desc·vendor) + тест-замок
-`TestYmlPathBNoTextFields`. Я лишь: (а) исправила 3 устаревших комментария, которые ещё
-врали «имя/описание идут в фид» (ловушка-регрессия — из-за неё моя память ошиблась);
-(б) добавила `test_custom_feed_also_text_free` (закрыт последний непокрытый тип фида).
-**31 тест зелёный.** Файлы: `matches.py`, `product_match.py`, `tests/test_yml_generator.py`.
-ОТКРЫТЫЙ ВОПРОС Yana: `feed_name` (кнопка «переименовать в фиде» в /matches) теперь
-no-op (PATH-B убрал имя из фида) → решить: удалить колонку+endpoint+UI или оставить заметкой.
+**✅ ГОТОВО И ЗАПУШЕНО (main). Полный сьют 765 passed, 2 skipped.**
+- **«Затирание» РЕШЕНО** (`f239c06`): риск авто-pull YML затирал описания/RU-имена — оказался
+  УЖЕ закрыт (PATH-B `381b656`: фид несёт только цену+наличие; на проде 2545 офферов/0
+  name·desc·vendor). Я исправила 3 устаревших комментария (ловушка-регрессия) + тест на кастом-фид.
+- **Step 1** `app/services/np_parser.py` (`04564a4`, 9 тестов): `parse_np_feed(path)` →
+  `{article:{brand,description,description_ru,photos}}`; header-guard; колонки B/D/H/J/Q.
+- **Step 2** `app/services/np_horoshop_file.py` (`52bb11d`, 12 тестов): `build_np_file(brands,
+  feed_path)`→`(xlsx_bytes, manifest)`; 8 проверенных колонок (Артикул=`pp.external_id` ключ,
+  Цена/Старая цена/Валюта/Наличие/Галерея/Описание UA/RU), БЕЗ имени/Бренд/Отображать. Pure
+  `_shape_rows`/`_workbook_bytes`. Цена через `compute_match_pricing` (per_brand ок).
+- **Step 3** UI `/feeds/np` (`b8da400`, 4 endpoint-теста): 9 чекбоксов + счётчики + «Згенерувати
+  файл» → POST fetch живого фіду НП → build_np_file → download xlsx. Линк «Файл НП» в навбаре.
+- **✅ Проверено на РЕАЛЬНОЙ локальной БД (mode=ro):** НП = supplier id=2, slug=novyy-proekt,
+  per_brand, **370 опубл. матчей, все 370 с article**; бренды HURAKAN206/APACH89/TATRA22/FAGOR13/
+  COLD3/Arris2 → ~335 строк для 9 брендов (case-insensitive ловит Arris→ARRIS). Sirman/CEADO/
+  ASBER/SCAN/Bartscher (не из 9 эксклюзивных) корректно НЕ попадают.
+- **Step 5** (sample-файл из реального фіда) ПРОПУЩЕН: фикстуры `np-feed.xlsx` нет на диске,
+  а реальный путь данных = живой fetch в UI. Тесты самодостаточны (строят xlsx в tmp_path).
 
-**Next step — сам ФАЙЛ-генератор (ещё НЕ начат), Approach A = read-only, ноль записей в БД:**
-План в `.planning/plans/np-feed/` (FINAL-MODEL.md = истина). Прототип `build_canary_xlsx.py`
-доказан вживую 3×. Шаги, каждый = атомарный коммит + тест:
-1. `app/services/np_parser.py` — `parse_np_feed(path)->({article:{brand,description,description_ru,photos:[urls]}}, errors)`; openpyxl read_only, образец `app/services/rp_parser.py`. Фид: sheet "Worksheet", колонки B1=Артикул, H7=desc_uk, Q16=desc_ru, D3=фото(`;`-sep), J9=brand_uk.
-2. `app/services/np_horoshop_file.py` — `build_np_file(selected_brands)->(xlsx,manifest)`: feed_fetcher→parse→query NP(supplier_id=2) confirmed/manual published→join по article→`compute_match_pricing`→нативный XLSX. Заголовки колонок копировать из `build_canary_xlsx.py` `_HDR_OVERRIDE` (НЕ перенабирать кириллицу). Ключ=`pp.external_id`. БЕЗ имени/Бренд/Отображать.
-3. UI `/feeds/np` — 9 чекбоксов брендов + превью-счётчики + «Згенерувати файл»→download. Шаблон endpoint = `matches.py regenerate_custom`. Линк в `base.html` (меню Фіди).
-4. Тесты: фикстура `C:\Users\Yana\labresta-np-feed-plan\np-feed.xlsx` (без сети).
-5. Локальный dry-run → sample в `labresta-np-feed-plan\_serve\np-bulk-sample.xlsx`.
-9 брендов: HURAKAN/Хуракан, APACH/Апач, FAGOR/Фагор, TATRA/Татра, COLD/Колд, PROJECT SYSTEMS, ASTORIA, ARRIS, MAXIMA. Live-импорт = рука Yana (инвариант #13).
-**Запуск тестов: `./.venv/Scripts/python.exe -m pytest` — НЕ `uv run` (ломает venv, чинила pip --ignore-installed).**
+**Live-импорт в Хорошоп = рука Yana (инвариант #13)** — кнопка отдаёт файл, импорт вручную.
+**ОТКРЫТЫЙ ВОПРОС Yana:** `feed_name` (кнопка «переименовать в фиде» в /matches) теперь no-op
+(PATH-B убрал имя из фида) → удалить колонку+endpoint+UI или оставить заметкой? (твоё решение)
+**Запуск тестов: `./.venv/Scripts/python.exe -m pytest` — НЕ `uv run` (ломает venv).**
 
 **Last touched:** 2026-05-29 (ночной режим)
 
