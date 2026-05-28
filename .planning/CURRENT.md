@@ -1,5 +1,53 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
+## 📋 «Что осталось по фичам» — инвентарь + research (2026-05-29, ночной режим)
+
+**Запрос Yana:** «продолжаем проект, что осталось делать по фичам?» Затем ушла спать → ночной
+режим. Код фич НЕ начинала (все они >1ч → п.2 требует `/gsd:discuss-phase`; + live-store
+правится только с go-ahead). Сделала безопасную подготовку.
+
+**Главное (проверено по роутам, не по докам):** весь плановый роадмап ОТГРУЖЕН. Numbered 1–8,
+lettered K/L, feed-mgmt A–E — всё в коде (rebind, resolve-conflict, sync-prices/availability,
+unpublish/republish, feed/yml/supplier+custom, feeds/np, deletion-candidates). Проект в
+maintenance; открытого feature-milestone нет.
+
+### Реально НЕ построено (отложено в backlog; проверила — в коде отсутствует)
+1. **MARESTO 4-значный статус наличия** 🔴 приоритет (правило «доделать Maresto первым»).
+   `stock_status` в коде нет; YML сейчас бинарный `available`. RESEARCH ↓ закрыл открытый вопрос.
+2. **Phase G — авто «+Horoshop»**: флаг `mark_new` («Позначено для додавання») есть; нет
+   генерации new-offers файла, чтобы Horoshop создавал карточки. RESEARCH ↓ закрыл вопрос.
+3. **Rich per-supplier фид** (`include_rich` → desc+фото в YML). Сейчас rich только у НП через
+   отдельный XLSX-генератор. Обобщение отложено.
+
+### Решения, ждущие Yana (не код)
+- **`feed_name` cleanup**: после PATH-B стал no-op → удалить колонку+endpoint+UI или оставить?
+- **Apply-discount UI (per-brand НП)**: нужен batch-пересчёт или live-кламп достаточно? (BACKLOG.md)
+- **Audit #15**: при 1pp↔1supplier конфликте (SIRMAN TC-12, UNOX XFT193) кто из RP/maresto?
+
+### Matching-чистка (maintenance, не фичи): #10 stage A, #12 (~279 канд.), Softcooker type-gate
+(вариант C предложен), sp#683 Neapolis «4». Детали — STATE.md «Open issues» + apach-*-analysis.md.
+
+### ✅ Сделано ночью (docs-only, безопасно)
+- **RESEARCH** `.planning/RESEARCH-horoshop-availability-and-new-offers.md` — закрыла 2 открытых
+  вопроса офиц. доками Horoshop (help.horoshop.ua):
+  - **MARESTO stock:** Horoshop поддерживает >2 статусов (In stock/Out of stock/Coming soon +
+    кастомные) через поле «Наявність». Нюанс: в YML `available` бинарный → для 3-го статуса лучше
+    **переиспользовать XLSX-путь** (np_horoshop_file уже строит native XLSX с колонкой «Наявність»).
+    Нужен 1-строчный empirical import-тест перед фиксацией механизма.
+  - **Phase G:** импорт создаёт карточки; обязательны **SKU + Назва + Розділ**; матч по SKU. Открытый
+    суб-вопрос Yana: какой **Розділ** присваивать новому SP (SP-фиды категорию не несут).
+- **ROADMAP.md фикс**: таблица врала «Phase 7 Planned 0/2» → исправила на «Complete 2/2 2026-04-10»
+  (подтверждено STATE.md 18/18 + роут `/matches/<id>/discount` + 07-02-SUMMARY).
+
+### Next step (когда Yana вернётся)
+1. Выбрать фичу. Рекомендация: **MARESTO 4-значный статус наличия** (блокирует «Maresto первым»).
+2. Для неё → `/gsd:discuss-phase` (фича >1ч). RESEARCH-док уже даёт факты + рекомендацию (route 1: XLSX).
+3. Решить отложенные decision-вопросы выше (feed_name / apply-discount / #15).
+
+**Last touched:** 2026-05-29 (ночной режим)
+
+---
+
 ## ✅ DONE (2026-05-29, ночной режим) — НП-фид: файл-генератор по эксклюзивным брендам
 
 **Запрос Yana:** кнопки в UI → оператор выбирает 9 эксклюзивных брендов НП → кнопкой

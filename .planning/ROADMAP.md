@@ -21,7 +21,7 @@
 
 - [x] **Phase 5: Cleanup and UX Fixes** - Remove dead code, fix notification bell for operators, load notifications.js globally
 - [x] **Phase 6: Excel Supplier Support** - Add Excel/Google Sheets as supplier feed type with parsing and sync pipeline integration
-- [ ] **Phase 7: Matching and Pricing Enhancements** - Activate MatchRule auto-apply during sync, add per-product discount UI
+- [x] **Phase 7: Matching and Pricing Enhancements** - Activate MatchRule auto-apply during sync, add per-product discount UI
 
 ## Phase Details
 
@@ -84,7 +84,7 @@ Phases execute in numeric order: 5 → 6 → 7
 | 4. Management UI and Authentication | v1.0 | 7/7 | Complete | 2026-02-28 |
 | 5. Cleanup and UX Fixes | v1.1 | 2/2 | Complete | 2026-03-01 |
 | 6. Excel Supplier Support | v1.1 | 2/2 | Complete | 2026-03-01 |
-| 7. Matching and Pricing Enhancements | v1.1 | 0/2 | Planned | - |
+| 7. Matching and Pricing Enhancements | v1.1 | 2/2 | Complete | 2026-04-10 |
 
 ---
 *Full v1.0 details: milestones/v1.0-ROADMAP.md*
