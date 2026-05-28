@@ -100,7 +100,86 @@ singleton) затрётся. Это carryover S-1 из прошлого ауди
 `not DEBUG and SECRET_KEY == "dev-key-change-me"` поднимать RuntimeError. Низкий риск
 (скорее всего уже выставлен), но дёшево закрыть. **Проверить у Yana, выставлен ли env.**
 
+### ✅ M-4 — FIXED (branch audit/2026-05-28-hardening) — XXE/entity-bomb hardening
+**Фикс применён:** `feed_parser._parse_xml` теперь оба пути через
+`etree.XMLParser(resolve_entities=False, no_network=True, huge_tree=False)` (зеркало
+kodaki_adapter). Поведение для валидных фидов byte-identical (предопределённые сущности
+`&amp;` и пр. резолвятся, кастомные/внешние — нет). Тесты: `test_audit_2026_05_28_hardening.py`
+(3 шт.: кастомная сущность не разворачивается, внешняя SYSTEM не фетчится, `&amp;`+обычный
+фид парсятся как раньше). Полный сьют 708 passed. ⚠️ НА ВЕТКЕ, не в main — Yana review+merge.
+
+### M-4 (this audit) — XXE/entity-bomb: один XML-путь без hardening (инконсистентность)
+**Файл:** `feed_parser.py:235` и `:243` (`_parse_xml`).
+Все три адаптера в `kodaki_adapter.py` (kodaki/gooder/astim) парсят строго через
+`etree.XMLParser(recover=True, resolve_entities=False, no_network=True, huge_tree=False)`.
+А основной `_parse_xml` (путь для YML-фидов: НП, РП-через?, любой не-адаптерный
+поставщик) использует голый `etree.fromstring(raw_bytes)` БЕЗ этих защит, и в fallback
+тоже только `recover=True` без `resolve_entities=False/no_network=True`. → единственный
+XML-вход без защиты от entity-expansion (billion laughs) и внешних сущностей.
+Поставщики semi-trusted (URL настраивает оператор), риск низкий, но это явная
+инконсистентность с уже принятым в проекте паттерном. **Фикс дёшев и безопасен**
+(чистое добавление защиты, happy-path не меняется): вынести общий hardened-parser и
+звать его в обоих ветках `_parse_xml`. Кандидат на автономный фикс + тест.
+
+### M-5 (this audit) — N+1 в `save_supplier_products`
+**Файл:** `feed_parser.py:150`. По одному `SELECT ... WHERE supplier_id AND external_id`
+на каждый товар фида (НП ~700, Кодаки ~559, итого тысячи round-trip'ов за sync). Не
+корректность — perf. Можно one-shot предзагрузить `{(supplier_id, external_id): row}`
+по `supplier_id`. Низкий приоритет (sync асинхронный, не в request-path для cron).
+
+### M-6 (this audit) — латентно: Horoshop-импорт обнуляет `pp.article`
+**Файл:** `catalog_import.py:232-243,428-429`. `article` входит в `CATALOG_FIELDS`
+(перезаписывается всегда на UPDATE), НО среди Horoshop-алиасов (`COLUMN_ALIASES`) нет
+ни одного, дающего поле `article` — Horoshop отдаёт `артикул`→`external_id` и
+`артикул для відображення`→`display_article`. Только prom.ua-формат (`код_товару`)
+маппится в `article`. → Импорт Horoshop-выгрузки делает `setattr(existing,"article",None)`
+для всех товаров. **Сейчас не кусается**: у Horoshop-товаров `article` и так None
+(подтверждается отчётом импорта 2026-05-26 — `changed["article"]` не фигурировал =0),
+поэтому None→None = no-op. **Риск латентный:** если в БД попадут prom.ua-товары с
+заполненным `article`, последующий Horoshop-импорт его сотрёт. Матчер читает `pp.article`
+(article fast-path). Фикс: либо убрать `article` из `CATALOG_FIELDS` (Horoshop им не
+владеет), либо защищать как translation-поле. Низкий приоритет, но это реальная
+кросс-форматная инконсистентность. **Проверить у Yana:** есть ли prom.ua-товары в проде.
+POSITIVE здесь же: preview/save шарят `_normalize_product`+`CATALOG_FIELDS` → не разойдутся;
+`preserve_translations` защищает name_ru/description_ru by construction; commit атомарный.
+
+### ✅ M-7 — FIXED (branch audit/2026-05-28-hardening) — open-redirect guard
+**Фикс применён:** `auth._is_safe_next()` пропускает только path-absolute same-site URL
+(`/...`, не `//`, без scheme/netloc); `login` обнуляет небезопасный `next` перед redirect.
+Тесты: unit на `_is_safe_next` (accept local / reject offsite+empty+js:) + integration
+(POST login с `next=https://evil.com` не уводит на evil.com). ⚠️ НА ВЕТКЕ, не в main.
+
+### M-7 (this audit) — open redirect в login через `next`
+**Файл:** `auth.py:33-34`. `next_page = request.args.get("next")` → `redirect(next_page or ...)`
+без проверки, что URL локальный. `/auth/login?next=https://evil.com` после успешного
+логина уводит оператора на внешний сайт (фишинг-вектор). Severity низкая (внутренний
+инструмент на 1 оператора), но это учебный open-redirect. Фикс: валидировать через
+`url_has_allowed_host_and_scheme(next_page, request.host)` (есть в werkzeug/flask-login)
+или отбрасывать любой next с непустым netloc. Безопасный автономный фикс + тест.
+
+### INFO-2 (this audit) — login игнорирует результат `login_user()` + is_active
+**Файл:** `auth.py:28-31`. Проверяется только `check_password`; возврат `login_user()`
+не используется. Flask-Login `login_user` сам откажет деактивированному (`is_active=False`)
+юзеру и вернёт False — но код всё равно пишет `last_login_at` и редиректит. Деактивированный
+не получит доступ (сессия не выставится → @login_required отбросит назад), но увидит
+петлю редиректа вместо «аккаунт отключён», и `last_login_at` обновится ложно. Минор UX.
+Нет rate-limit на логин (brute-force) — informational, внутр. инструмент.
+
+### INFO-1 (this audit) — feed_fetcher без SSRF-фильтра приватных IP
+**Файл:** `feed_fetcher.py:45`. `requests.get(url)` без ограничения схемы/хоста и без
+ограничения редиректов на приватные диапазоны. URL берётся из `supplier.feed_url`,
+который ставит ТОЛЬКО аутентифицированный оператор (login_required) → реальной SSRF-дыры
+нет (threat model = единственный доверенный оператор). Defense-in-depth: блокировать
+private/loopback IP и `file://`. Informational, не блокер.
+
 ### POSITIVE (проверено, багов нет)
+- `catalog.py` — staging импорта защищён: token-regex `^[0-9a-f]{32}$`, suffix-whitelist,
+  синтетическое имя файла парсеру, stale-cleanup, `preserve_translations=True` на confirm.
+  Path traversal невозможен.
+- `rule_matcher.apply_match_rules` — корректен: skip confirmed/manual, respect rejected
+  (line 148), upgrade candidate→confirmed, 1:1 через нарастающий `claimed_pp_ids`, no N+1.
+- `excel_parser` / `rp_parser` — защитный парсинг, round() в cents корректен, EUR-only
+  документирован, two-step preview не даёт залить мусор вслепую.
 - `sync_pipeline.py:276` — M-1 (rollback на error-пути) из прошлого аудита НА МЕСТЕ.
 - `matches.py:278` — P-4 (rate=1 для UAH в margin_below фильтре) НА МЕСТЕ.
 - Матчер dedup надёжен: `existing_pairs`/`rejected_pairs`/`claimed_pp_ids`, SA-Row→tuple

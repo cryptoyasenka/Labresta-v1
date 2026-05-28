@@ -229,17 +229,35 @@ def _parse_xml(raw_bytes: bytes) -> etree._Element:
 
     1. Try lxml native parsing (respects XML declaration encoding).
     2. Fallback: detect encoding with chardet, parse with explicit encoding.
+
+    Both paths use a hardened parser (resolve_entities=False, no_network=True,
+    huge_tree=False) to block XXE / external-entity fetches / billion-laughs
+    expansion from a malformed or hostile supplier feed. This mirrors the
+    parsers already used in kodaki_adapter; the predefined XML entities
+    (&amp; &lt; &gt; &quot; &apos;) still resolve, so valid feeds parse
+    byte-identically — only custom DTD/external entities are left untouched.
     """
-    # First try: let lxml handle encoding from XML declaration
+    # First try: strict parse, lets lxml read encoding from the XML declaration.
     try:
-        return etree.fromstring(raw_bytes)
+        return etree.fromstring(
+            raw_bytes,
+            parser=etree.XMLParser(
+                resolve_entities=False, no_network=True, huge_tree=False
+            ),
+        )
     except etree.XMLSyntaxError:
         pass
 
-    # Fallback: detect encoding with chardet
+    # Fallback: detect encoding with chardet, recover from minor corruption.
     detected = chardet.detect(raw_bytes)
     encoding = detected.get("encoding", "utf-8") or "utf-8"
-    parser = etree.XMLParser(encoding=encoding, recover=True)
+    parser = etree.XMLParser(
+        encoding=encoding,
+        recover=True,
+        resolve_entities=False,
+        no_network=True,
+        huge_tree=False,
+    )
     return etree.fromstring(raw_bytes, parser=parser)
 
 
