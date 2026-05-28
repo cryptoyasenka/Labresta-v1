@@ -598,7 +598,12 @@ def match_details(match_id):
 @matches_bp.route("/<int:match_id>/feed-name", methods=["POST"])
 @login_required
 def set_feed_name(match_id):
-    """Set or clear a custom offer name for the Horoshop YML feed.
+    """Set or clear ProductMatch.feed_name.
+
+    NOTE: vestigial since Path B (commit 381b656). The matcher YML feed no
+    longer emits <name>, so this override has NO effect on what Horoshop
+    receives — it is kept only as an operator annotation (shown in the review
+    table + audit log). Removing the column/endpoint/UI is a separate decision.
 
     POST body (JSON or form): name=<string>  (empty string = clear override).
     Only allowed for confirmed/manual matches.
@@ -1025,8 +1030,11 @@ def update_prom_fields(match_id):
     Used from the details modal when the operator spots a typo or wants to
     improve the Horoshop catalog entry. Only updates fields that are present
     in the request body AND non-null — empty strings clear the field.
-    Changes go into prom_product and will be pushed to Horoshop on the next
-    YML feed regeneration (name + description are written into the feed).
+    Changes go into prom_product (the local catalog mirror) ONLY. Since
+    Path B (commit 381b656) the matcher YML feed carries price + availability
+    only — name/description are NEVER emitted, so these edits are NOT pushed
+    to Horoshop through the feed. Catalog text reaches Horoshop exclusively
+    via the native [КАТАЛОГ] Excel channel (Channel 2).
     """
     match = db.get_or_404(ProductMatch, match_id)
     pp = match.prom_product

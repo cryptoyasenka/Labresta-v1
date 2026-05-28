@@ -301,6 +301,29 @@ class TestYmlPathBNoTextFields:
         assert offer.find("vendor") is None
         assert offer.findtext("price") is not None
 
+    def test_custom_feed_also_text_free(self, session, yml_output_dir):
+        """Custom ad-hoc selection feeds share the same offer shape — also
+        carry no name/name_ru/description/vendor. A custom feed can be built
+        over ARBITRARY matches (incl. the NP exclusive brands), so the
+        text-free guarantee — which prevents Horoshop's YML parser from
+        cross-mapping <name> into the RU name field — must hold here too."""
+        from app.services.yml_generator import regenerate_custom_feed
+        m = _seed_confirmed_match(
+            session, external_id="cf1",
+            name="Кавомашина Custom", name_ru="Кофемашина Custom",
+            price_cents=50000,
+            description_ua="<p>ua</p>", description_ru="<p>ru</p>",
+        )
+        result = regenerate_custom_feed(match_ids=[m.id])
+        tree = etree.parse(result["path"])
+        offer = tree.find(".//offer")
+        assert offer.find("name") is None
+        assert offer.find("name_ru") is None
+        assert offer.find("description") is None
+        assert offer.find("description_ru") is None
+        assert offer.find("vendor") is None
+        assert offer.findtext("price") is not None
+
 
 class TestPublishFlag:
     """Phase C — published=False excludes match from feed but keeps the row."""
