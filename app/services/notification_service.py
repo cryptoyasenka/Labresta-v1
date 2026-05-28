@@ -163,8 +163,11 @@ def _match_products(
     elif criteria_type == "price_range":
         try:
             parts = criteria_value.split("-")
-            min_cents = int(parts[0].strip())
-            max_cents = int(parts[1].strip()) if len(parts) > 1 else float("inf")
+            # Operator enters whole currency units (EUR/UAH), not cents — the
+            # UI hint says so. Convert to cents to compare against price_cents.
+            min_cents = int(round(float(parts[0].strip()) * 100))
+            max_part = parts[1].strip() if len(parts) > 1 else ""
+            max_cents = int(round(float(max_part) * 100)) if max_part else float("inf")
         except (ValueError, IndexError):
             logger.warning(
                 "Invalid price_range criteria '%s' for rule %d",

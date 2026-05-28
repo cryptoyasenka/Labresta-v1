@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const hints = {
             keyword: { placeholder: 'espresso, latte, кофе', hint: 'Через запятую для нескольких слов' },
             brand: { placeholder: 'De\'Longhi', hint: 'Название бренда (частичное совпадение)' },
-            price_range: { placeholder: '100000-500000', hint: 'Мин-макс в копейках (напр. 100000 = 1000.00)' },
+            price_range: { placeholder: '1000-5000', hint: 'Мин-макс в гривнах/евро (напр. 1000-5000)' },
             category: { placeholder: 'кофемашины', hint: 'Ключевое слово в названии (категории пока нет)' },
         };
 
