@@ -306,6 +306,127 @@ class TestManualMatchEndpoint:
         refreshed = db.session.get(ProductMatch, match_id)
         assert refreshed.status == "confirmed"
 
+    def test_promotes_rejected_pair_instead_of_500(self, client, db):
+        """Repro: operator rejected a (sp, pp) pair earlier, then re-picks
+        the same pp in 'Сопоставить вручную'. Old behavior: INSERT collides
+        with uq_match_pair → HTTP 500. New behavior: promote in place to
+        status=manual."""
+        match, sp, pp = _seed_confirmed_match(db.session, status="rejected")
+        sp_id, pp_id, match_id = sp.id, pp.id, match.id
+
+        resp = client.post(
+            "/matches/manual",
+            json={"supplier_product_id": sp_id, "prom_product_id": pp_id},
+        )
+        assert resp.status_code == 200, resp.get_data(as_text=True)
+        body = resp.get_json()
+        assert body["status"] == "ok"
+        # Same row promoted, not a new one inserted.
+        assert body["match_id"] == match_id
+
+        db.session.expire_all()
+        refreshed = db.session.get(ProductMatch, match_id)
+        assert refreshed.status == "manual"
+        assert refreshed.score == 100.0
+        assert refreshed.confirmed_at is not None
+
+    def test_promotes_candidate_pair_instead_of_500(self, client, db):
+        """Same idempotency on a stale candidate row (e.g. the auto-matcher
+        scored this exact pair, operator picks it via manual UI). Old code
+        deleted candidates then INSERTed → collision avoided only by accident
+        of timing. New code: promote the candidate row directly."""
+        match, sp, pp = _seed_confirmed_match(db.session, status="candidate")
+        sp_id, pp_id, match_id = sp.id, pp.id, match.id
+
+        resp = client.post(
+            "/matches/manual",
+            json={"supplier_product_id": sp_id, "prom_product_id": pp_id},
+        )
+        assert resp.status_code == 200, resp.get_data(as_text=True)
+        body = resp.get_json()
+        assert body["status"] == "ok"
+        assert body["match_id"] == match_id
+
+        db.session.expire_all()
+        refreshed = db.session.get(ProductMatch, match_id)
+        assert refreshed.status == "manual"
+
+    def test_rejected_pair_with_dangling_candidates_cleaned(self, client, db):
+        """Rejected (sp, pp_A) + dangling candidate (sp, pp_B). Operator picks
+        pp_A in manual UI. Expected: pp_A row promoted, pp_B candidate gone."""
+        match, sp, pp_a = _seed_confirmed_match(db.session, status="rejected")
+        pp_b = PromProduct(external_id="PP_B", name="Other catalog", brand="TestBrand")
+        db.session.add(pp_b)
+        db.session.flush()
+        dangling = ProductMatch(
+            supplier_product_id=sp.id, prom_product_id=pp_b.id,
+            score=70.0, status="candidate",
+        )
+        db.session.add(dangling)
+        db.session.commit()
+        sp_id, pp_a_id, match_id, dangling_id = sp.id, pp_a.id, match.id, dangling.id
+
+        resp = client.post(
+            "/matches/manual",
+            json={"supplier_product_id": sp_id, "prom_product_id": pp_a_id},
+        )
+        assert resp.status_code == 200, resp.get_data(as_text=True)
+        body = resp.get_json()
+        assert body["match_id"] == match_id
+
+        db.session.expire_all()
+        refreshed = db.session.get(ProductMatch, match_id)
+        assert refreshed.status == "manual"
+        # Sibling candidate gone.
+        assert db.session.get(ProductMatch, dangling_id) is None
+
+
+class TestRejectMatchUniqueGuard:
+    """POST /matches/<id>/reject — when the rematcher proposes a candidate
+    on a (sp, pp) pair that already has a stale 'rejected' row from an
+    earlier cycle, the endpoint must reuse that row instead of INSERTing
+    (would hit uq_match_pair → 500)."""
+
+    def test_reject_reuses_stale_rejected_row_for_rematch(self, client, db, monkeypatch):
+        match, sp, pp_current = _seed_confirmed_match(db.session, status="candidate")
+        pp_alt = PromProduct(external_id="PP_ALT", name="Alt catalog", brand="TestBrand")
+        db.session.add(pp_alt)
+        db.session.flush()
+        # Stale rejected row from a previous reject cycle on this same SP.
+        stale = ProductMatch(
+            supplier_product_id=sp.id, prom_product_id=pp_alt.id,
+            score=72.0, status="rejected",
+        )
+        db.session.add(stale)
+        db.session.commit()
+        sp_id, pp_alt_id, match_id, stale_id = sp.id, pp_alt.id, match.id, stale.id
+
+        # Force find_match_for_product to return a candidate on (sp, pp_alt)
+        # — the exact pair the stale row already occupies.
+        def fake_find(supplier_product, exclude_prom_ids=None):
+            return ProductMatch(
+                supplier_product_id=supplier_product.id,
+                prom_product_id=pp_alt_id,
+                score=72.0,
+                status="candidate",
+            )
+
+        monkeypatch.setattr("app.views.matches.find_match_for_product", fake_find)
+
+        resp = client.post(f"/matches/{match_id}/reject")
+        assert resp.status_code == 200, resp.get_data(as_text=True)
+        body = resp.get_json()
+        assert body["status"] == "ok"
+        # The stale row was promoted back to candidate — same id, not a new row.
+        assert body["new_candidate_id"] == stale_id
+
+        db.session.expire_all()
+        refreshed = db.session.get(ProductMatch, stale_id)
+        assert refreshed is not None
+        assert refreshed.status == "candidate"
+        # And the rejected match is gone (delete from reject_match path).
+        assert db.session.get(ProductMatch, match_id) is None
+
 
 class TestApplyNameDiff:
     """Unit tests for _apply_name_diff — safe RU name update from UA diff."""

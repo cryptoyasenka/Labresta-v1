@@ -693,9 +693,24 @@ def reject_match(match_id):
     )
     new_candidate_id = None
     if new_match:
-        db.session.add(new_match)
-        db.session.flush()
-        new_candidate_id = new_match.id
+        # uq_match_pair: if a row already exists for (sp, new_pp) from an
+        # earlier session (e.g. a stale 'rejected' from a previous reject),
+        # promote it back to candidate instead of inserting a duplicate.
+        existing = ProductMatch.query.filter_by(
+            supplier_product_id=new_match.supplier_product_id,
+            prom_product_id=new_match.prom_product_id,
+        ).first()
+        if existing is not None:
+            if existing.status not in ("confirmed", "manual"):
+                existing.status = "candidate"
+                existing.score = new_match.score
+                existing.confirmed_at = None
+                existing.confirmed_by = None
+            new_candidate_id = existing.id
+        else:
+            db.session.add(new_match)
+            db.session.flush()
+            new_candidate_id = new_match.id
 
     log_action("reject", match_id=rejected_match_id,
                supplier_product_id=rejected_sp_id,
@@ -1477,18 +1492,20 @@ def manual_match():
     if existing_on_pp:
         return _pp_claim_error(existing_on_pp)
 
-    # If this exact (supplier, prom) pair already has a non-candidate match,
-    # treat it as "already matched" — clean up dangling candidates for the
-    # same supplier product so the operator's queue refreshes cleanly, but
-    # don't try to insert a duplicate (would hit UNIQUE constraint).
-    existing_pair = ProductMatch.query.filter(
-        ProductMatch.supplier_product_id == supplier_product_id,
-        ProductMatch.prom_product_id == prom_product_id,
-        ProductMatch.status.in_(["confirmed", "manual"]),
+    # Look up any existing row on this exact (sp, pp) pair, regardless of
+    # status. The uq_match_pair UNIQUE index allows only one row per pair,
+    # so if a row already exists (candidate / rejected / confirmed / manual)
+    # we MUST update it in place — a fresh INSERT would 500 on the constraint.
+    existing_pair = ProductMatch.query.filter_by(
+        supplier_product_id=supplier_product_id,
+        prom_product_id=prom_product_id,
     ).first()
-    if existing_pair:
+
+    if existing_pair and existing_pair.status in ("confirmed", "manual"):
+        # Already linked — just tidy up the operator's queue.
         cleaned = ProductMatch.query.filter(
             ProductMatch.supplier_product_id == supplier_product_id,
+            ProductMatch.id != existing_pair.id,
             ProductMatch.status == "candidate",
         ).delete(synchronize_session="fetch")
         db.session.commit()
@@ -1502,26 +1519,46 @@ def manual_match():
             "match_id": existing_pair.id,
         }), 409
 
-    # Delete all existing candidate matches for this supplier product.
-    # synchronize_session="fetch" purges the deleted rows from the session
-    # identity map, so the manual match inserted below cannot collide with
-    # a stale identity when SQLite reuses a freed rowid.
-    ProductMatch.query.filter(
+    now = datetime.now(timezone.utc)
+
+    # Delete all OTHER candidate matches for this supplier product. We keep
+    # existing_pair (if any) because we're about to promote it; deleting it
+    # would either lose audit history or, worse, hit the unique constraint
+    # again on re-insert if SQLite's identity-map drift kicked in.
+    other_candidates_q = ProductMatch.query.filter(
         ProductMatch.supplier_product_id == supplier_product_id,
         ProductMatch.status == "candidate",
-    ).delete(synchronize_session="fetch")
+    )
+    if existing_pair is not None:
+        other_candidates_q = other_candidates_q.filter(
+            ProductMatch.id != existing_pair.id
+        )
+    other_candidates_q.delete(synchronize_session="fetch")
     db.session.flush()
 
-    # Create manual match
-    new_match = ProductMatch(
-        supplier_product_id=supplier_product_id,
-        prom_product_id=prom_product_id,
-        score=100.0,
-        status="manual",
-        confirmed_at=datetime.now(timezone.utc),
-        confirmed_by=current_user.name,
-    )
-    db.session.add(new_match)
+    if existing_pair is not None:
+        # Promote the prior candidate/rejected row in place — preserves the
+        # audit trail and sidesteps uq_match_pair. Reset sync timestamps so
+        # the new link gets re-pushed to Horoshop on the next sync.
+        existing_pair.status = "manual"
+        existing_pair.score = 100.0
+        existing_pair.confirmed_at = now
+        existing_pair.confirmed_by = current_user.name
+        existing_pair.published = True
+        existing_pair.in_feed = False
+        existing_pair.price_synced_at = None
+        existing_pair.availability_synced_at = None
+        new_match = existing_pair
+    else:
+        new_match = ProductMatch(
+            supplier_product_id=supplier_product_id,
+            prom_product_id=prom_product_id,
+            score=100.0,
+            status="manual",
+            confirmed_at=now,
+            confirmed_by=current_user.name,
+        )
+        db.session.add(new_match)
     db.session.flush()
 
     # Optionally create a remembered rule
