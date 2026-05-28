@@ -1,5 +1,6 @@
 """Notification service: check rules against new products and dispatch alerts."""
 
+import html
 import logging
 
 from sqlalchemy import select
@@ -212,15 +213,21 @@ def _send_telegram_for_rule(
     if not products:
         return False
 
-    lines = [f"<b>Правило: {rule.name}</b>"]
-    lines.append(f"Тип: {rule.criteria_type} = {rule.criteria_value}")
+    # Message is sent with parse_mode=HTML, so every interpolated value must be
+    # HTML-escaped — product names routinely contain '&' (and sometimes <,>),
+    # which would make Telegram reject the whole message (HTTP 400) and the
+    # notification would silently never arrive.
+    lines = [f"<b>Правило: {html.escape(rule.name)}</b>"]
+    lines.append(
+        f"Тип: {html.escape(rule.criteria_type)} = {html.escape(rule.criteria_value)}"
+    )
     lines.append(f"Найдено товаров: {len(products)}\n")
 
     for p in products[:10]:  # Limit to 10 products per message
         price_str = ""
         if p.price_cents is not None:
             price_str = f" - {p.price_cents / 100:.2f} {p.currency or 'EUR'}"
-        lines.append(f"- {p.name}{price_str}")
+        lines.append(f"- {html.escape(p.name or '')}{price_str}")
 
     if len(products) > 10:
         lines.append(f"\n... и ещё {len(products) - 10} товаров")
