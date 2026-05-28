@@ -1,5 +1,37 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
+## 🔜 ACTIVE (2026-05-29, ночной режим) — НП-фид: эксклюзивные бренды «Нового проекта»
+
+**Запрос Yana:** кнопки в UI → оператор выбирает 9 эксклюзивных брендов НП → кнопкой
+обновляет описание+фото+цену+наличие → матчер даёт правильный **ФАЙЛ** для загрузки в
+Хорошоп. Внедрять автономно в ночном режиме, довести до конца.
+
+**✅ Под-вопрос «затирание» РЕШЁН (commit `f239c06`, в main, запушен):** риск, что авто-pull
+YML затрёт описания НП / испортит RU-имена (UA→RU крест-маппинг Хорошопа) — оказался УЖЕ
+закрыт. PATH-B (`381b656`): матчер-фид несёт ТОЛЬКО цену+наличие, ни name/desc/vendor.
+Проверено вживую на проде (`33eb430`: 2545 офферов, 0 name·desc·vendor) + тест-замок
+`TestYmlPathBNoTextFields`. Я лишь: (а) исправила 3 устаревших комментария, которые ещё
+врали «имя/описание идут в фид» (ловушка-регрессия — из-за неё моя память ошиблась);
+(б) добавила `test_custom_feed_also_text_free` (закрыт последний непокрытый тип фида).
+**31 тест зелёный.** Файлы: `matches.py`, `product_match.py`, `tests/test_yml_generator.py`.
+ОТКРЫТЫЙ ВОПРОС Yana: `feed_name` (кнопка «переименовать в фиде» в /matches) теперь
+no-op (PATH-B убрал имя из фида) → решить: удалить колонку+endpoint+UI или оставить заметкой.
+
+**Next step — сам ФАЙЛ-генератор (ещё НЕ начат), Approach A = read-only, ноль записей в БД:**
+План в `.planning/plans/np-feed/` (FINAL-MODEL.md = истина). Прототип `build_canary_xlsx.py`
+доказан вживую 3×. Шаги, каждый = атомарный коммит + тест:
+1. `app/services/np_parser.py` — `parse_np_feed(path)->({article:{brand,description,description_ru,photos:[urls]}}, errors)`; openpyxl read_only, образец `app/services/rp_parser.py`. Фид: sheet "Worksheet", колонки B1=Артикул, H7=desc_uk, Q16=desc_ru, D3=фото(`;`-sep), J9=brand_uk.
+2. `app/services/np_horoshop_file.py` — `build_np_file(selected_brands)->(xlsx,manifest)`: feed_fetcher→parse→query NP(supplier_id=2) confirmed/manual published→join по article→`compute_match_pricing`→нативный XLSX. Заголовки колонок копировать из `build_canary_xlsx.py` `_HDR_OVERRIDE` (НЕ перенабирать кириллицу). Ключ=`pp.external_id`. БЕЗ имени/Бренд/Отображать.
+3. UI `/feeds/np` — 9 чекбоксов брендов + превью-счётчики + «Згенерувати файл»→download. Шаблон endpoint = `matches.py regenerate_custom`. Линк в `base.html` (меню Фіди).
+4. Тесты: фикстура `C:\Users\Yana\labresta-np-feed-plan\np-feed.xlsx` (без сети).
+5. Локальный dry-run → sample в `labresta-np-feed-plan\_serve\np-bulk-sample.xlsx`.
+9 брендов: HURAKAN/Хуракан, APACH/Апач, FAGOR/Фагор, TATRA/Татра, COLD/Колд, PROJECT SYSTEMS, ASTORIA, ARRIS, MAXIMA. Live-импорт = рука Yana (инвариант #13).
+**Запуск тестов: `./.venv/Scripts/python.exe -m pytest` — НЕ `uv run` (ломает venv, чинила pip --ignore-installed).**
+
+**Last touched:** 2026-05-29 (ночной режим)
+
+---
+
 ## ✅ DONE (2026-05-28) — критический пересмотр аудита + ВСЕ фиксы
 
 **Запрос Yana:** «подумай над аудитом критически, и начни все фиксить».
