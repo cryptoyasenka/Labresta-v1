@@ -424,8 +424,50 @@ class TestRejectMatchUniqueGuard:
         refreshed = db.session.get(ProductMatch, stale_id)
         assert refreshed is not None
         assert refreshed.status == "candidate"
-        # And the rejected match is gone (delete from reject_match path).
-        assert db.session.get(ProductMatch, match_id) is None
+        # The rejected match now persists as 'rejected' (no longer deleted) so
+        # the next full sync lands it in rejected_pairs and won't resurrect it.
+        refreshed_rejected = db.session.get(ProductMatch, match_id)
+        assert refreshed_rejected is not None
+        assert refreshed_rejected.status == "rejected"
+
+
+class TestRejectNoResurrection:
+    """P-1: reject must persist the pair as 'rejected' so a later full sync
+    cannot re-create the exact candidate the operator rejected. The old
+    delete-based reject left the pair absent from rejected_pairs, so
+    run_matching_for_supplier regenerated it on the next cycle."""
+
+    def test_reject_then_resync_does_not_resurrect_pair(self, client, db):
+        from app.services.matcher import run_matching_for_supplier
+
+        match, sp, pp = _seed_confirmed_match(db.session, status="candidate")
+        supplier_id, sp_id, pp_id, match_id = (
+            sp.supplier_id, sp.id, pp.id, match.id,
+        )
+
+        resp = client.post(f"/matches/{match_id}/reject")
+        assert resp.status_code == 200, resp.get_data(as_text=True)
+
+        # The rejected pair persists as 'rejected' (not deleted).
+        db.session.expire_all()
+        rejected = db.session.get(ProductMatch, match_id)
+        assert rejected is not None
+        assert rejected.status == "rejected"
+
+        # A full re-sync must NOT regenerate the rejected (sp, pp) candidate.
+        run_matching_for_supplier(supplier_id)
+
+        db.session.expire_all()
+        rows = (
+            db.session.query(ProductMatch)
+            .filter_by(supplier_product_id=sp_id, prom_product_id=pp_id)
+            .all()
+        )
+        assert len(rows) == 1, (
+            f"Rejected pair must not be resurrected. Got: "
+            f"{[(r.id, r.status) for r in rows]}"
+        )
+        assert rows[0].status == "rejected"
 
 
 class TestApplyNameDiff:

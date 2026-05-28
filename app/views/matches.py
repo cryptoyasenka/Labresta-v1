@@ -685,7 +685,17 @@ def reject_match(match_id):
     rejected_match_id = match.id
     rejected_sp_id = match.supplier_product_id
 
-    db.session.delete(match)
+    # Persist the rejection instead of deleting the row. A deleted (sp, pp)
+    # pair is absent from both existing_pairs and rejected_pairs in
+    # run_matching_for_supplier, so the next full sync re-creates the exact
+    # candidate the operator just rejected (matcher.py:2062 declares
+    # "user-rejected candidates are never recreated" — only this path broke
+    # that). Keeping status='rejected' lands the pair in rejected_pairs and
+    # blocks resurrection, matching every other reject path (mark-new,
+    # conflict-keep, rebind, disappeared).
+    match.status = "rejected"
+    match.confirmed_at = datetime.now(timezone.utc)
+    match.confirmed_by = current_user.name
     db.session.flush()
 
     new_match = find_match_for_product(
@@ -1196,14 +1206,32 @@ def bulk_action():
                 continue
             supplier_product = match.supplier_product
             rejected_prom_id = match.prom_product_id
-            db.session.delete(match)
+            # Persist as rejected (not delete) — same resurrection guard as
+            # single reject_match; a deleted pair gets re-created next sync.
+            match.status = "rejected"
+            match.confirmed_at = datetime.now(timezone.utc)
+            match.confirmed_by = current_user.name
             db.session.flush()
 
             new_match = find_match_for_product(
                 supplier_product, exclude_prom_ids=[rejected_prom_id]
             )
             if new_match:
-                db.session.add(new_match)
+                # Reuse any existing (sp, pp) row instead of INSERTing — an
+                # INSERT onto an existing pair hits uq_match_pair → 500
+                # (single reject_match already guards this; bulk did not).
+                existing = ProductMatch.query.filter_by(
+                    supplier_product_id=new_match.supplier_product_id,
+                    prom_product_id=new_match.prom_product_id,
+                ).first()
+                if existing is not None:
+                    if existing.status not in ("confirmed", "manual"):
+                        existing.status = "candidate"
+                        existing.score = new_match.score
+                        existing.confirmed_at = None
+                        existing.confirmed_by = None
+                else:
+                    db.session.add(new_match)
             processed += 1
         elif action == "recalc_discount":
             if match.status not in ("confirmed", "manual"):
