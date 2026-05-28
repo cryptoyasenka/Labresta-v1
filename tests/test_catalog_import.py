@@ -52,6 +52,40 @@ def test_update_preserves_translations_by_default(session):
     assert obj.description_ru == "описание RU чистое от воркера"
 
 
+def test_update_preserves_article_when_horoshop_row_lacks_it(session):
+    """M-6: a Horoshop export has no 'article' column (its "артикул" maps to
+    external_id, "артикул для відображення" to display_article), so a catalog
+    re-import must NOT null an existing pp.article — the matcher's article
+    fast-path reads it."""
+    pp = PromProduct(
+        external_id="P1",
+        name="Слайсер (стара UA)",
+        article="PROM-CODE-123",  # set earlier (prom.ua import / manual)
+        display_article="DA-1",
+        brand="Fimar",
+        price=10000,
+        currency="EUR",
+    )
+    session.add(pp)
+    session.commit()
+
+    # Horoshop row — no 'article' key at all.
+    rows = [{
+        "external_id": "P1",
+        "name": "Слайсер (новий UA)",
+        "display_article": "DA-1",
+        "brand": "Fimar",
+        "price": "150.0",
+        "currency": "EUR",
+    }]
+    result = save_catalog_products(rows)
+    assert result["updated"] == 1
+
+    obj = session.get(PromProduct, pp.id)
+    assert obj.name == "Слайсер (новий UA)"  # catalog-owned: updated
+    assert obj.article == "PROM-CODE-123"  # preserved, NOT nulled
+
+
 def test_insert_takes_all_fields_including_translations(session):
     """Brand-new product: no translation to protect, so name_ru is taken from row."""
     rows = [

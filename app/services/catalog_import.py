@@ -229,10 +229,15 @@ def parse_catalog_file(file_path: str, filename: str) -> list[dict]:
 
 
 # Catalog-owned fields: a Horoshop export is authoritative — overwritten on update.
+# NOTE: 'article' is intentionally absent. No Horoshop column maps to it
+# (Horoshop's "артикул" -> external_id, "артикул для відображення" ->
+# display_article); only the legacy prom.ua "код_товару" feeds it. Listing it
+# here made every Horoshop UPDATE null pp.article — which the matcher's article
+# fast-path reads — so it was wiped on each re-import. New products still get it
+# from the row on INSERT below; updates now leave any existing article intact.
 CATALOG_FIELDS = [
     "name",
     "brand",
-    "article",
     "display_article",
     "price",
     "currency",
@@ -374,7 +379,7 @@ def save_catalog_products(products: list[dict], preserve_translations: bool = Tr
     Matches on external_id (unique). Updates existing records, inserts new ones.
 
     Two-channel separation (mirrors the feed Path B design):
-      * Matcher / catalog channel — name (UA), brand, article, display_article,
+      * Matcher / catalog channel — name (UA), brand, display_article,
         price, currency, page_url, image_url, images, description_ua.
         These are CATALOG-owned: a Horoshop export is authoritative for them,
         so they are always overwritten on update.
