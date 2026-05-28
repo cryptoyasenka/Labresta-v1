@@ -1,5 +1,34 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
+## ✅ DONE (2026-05-28) — критический пересмотр аудита + ВСЕ фиксы
+
+**Запрос Yana:** «подумай над аудитом критически, и начни все фиксить».
+
+**Ветка `audit/2026-05-28-hardening` (НЕ main — review+merge за Yana). 722 passed, 2 skipped.**
+Каждый фикс = атомарный коммит + тест. main НЕ трогался (нет авто-деплоя на живой магазин).
+
+- **P-1** (`b8562f0`) reject_match + bulk-reject → `status="rejected"` (не delete) → нет
+  воскрешения на sync; bulk заодно получил uq reuse-guard (был латентный 500). Критич.
+  пересмотр: это приведение к инварианту матчера, НЕ product-решение; «передумала»=manual_match.
+- **M-8** (`412ab2e`) force_price: int→400, reject `<=0`, currency∈{EUR,UAH}.
+- **M-6** (`9bb7a69`) убран `article` из CATALOG_FIELDS (Horoshop его обнулял).
+- **M-3** (`86e488a`) прод(Postgres)+дефолтный SECRET_KEY → RuntimeError на старте.
+- **M-9** (`0dfce0f`) html.escape имён в Telegram (имя с `&` ломало отправку).
+- **M-5** (`d06fef5`) убран N+1 в save_supplier_products (preload + in-batch dict).
+- **INFO-2** (`bb5a8fd`) login проверяет login_user() → деактивированный не зацикливается.
+- (ранее) M-4 XXE + M-7 open-redirect.
+
+**❌ M-10 ОТОЗВАН** (не баг): UI `notifications.js:13` явно «Мин-макс в копейках» — код парсит
+cents, совпадает с инструкцией оператору. Допущение прошлого аудита было ошибочным.
+
+**Flagged, НЕ авто-фикшу:** M-2 (sync-мьютекс = >1ч арх-изменение, п.2→discuss-phase, риск
+на живом sync), INFO-1 (SSRF, threat model = 1 оператор).
+
+**Next step:** Yana — ревью + мерж ветки `audit/2026-05-28-hardening` в main (деплой на
+Railway). Опц.: решить по M-2 (нужен ли sync-мьютекс — отдельный discuss-phase).
+
+---
+
 ## ✅ DONE (2026-05-28) — второй глубокий аудит (ночной режим)
 
 **Запрос Yana:** «сделай полный глубокий аудит проекта. Ищи ошибки кода, консистентности
