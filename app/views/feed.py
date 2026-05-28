@@ -12,8 +12,11 @@ Authenticated:
   /feeds/custom/<token>/delete    — POST: drop file + registry row
 """
 
+import io
 import os
 import re
+import tempfile
+from datetime import datetime, timezone
 
 from flask import (
     Blueprint,
@@ -22,15 +25,22 @@ from flask import (
     flash,
     redirect,
     render_template,
+    request,
+    send_file,
     send_from_directory,
     url_for,
 )
 from flask_login import login_required
-from sqlalchemy import select
+from sqlalchemy import func, select
 
 from app.extensions import db
 from app.models.custom_feed import CustomFeed
+from app.models.product_match import ProductMatch
 from app.models.supplier import Supplier
+from app.models.supplier_product import SupplierProduct
+from app.services.audit_service import log_action
+from app.services.feed_fetcher import fetch_feed_with_retry
+from app.services.np_horoshop_file import NP_SUPPLIER_SLUG, build_np_file
 from app.services.yml_generator import delete_custom_feed
 
 feed_bp = Blueprint("feed", __name__)
@@ -131,3 +141,113 @@ def custom_feed_delete(token: str):
     else:
         flash(f"Кастомный фид {token} не найден.", "error")
     return redirect(url_for("feed.custom_feeds_list"))
+
+
+# ========== НП exclusive-brands → native Horoshop content file (Channel 2) ==========
+# The operator ticks brands, clicks generate; we fetch the live NP feed, join it
+# with the matcher DB and hand back a native-schema XLSX to import by hand into
+# Horoshop (description UA/RU + photo + price + availability). The live import
+# stays Yana's hand (invariant #13) — we only produce the file.
+
+# The 9 exclusive «Новый проект» brands (latin labels as they appear in the feed).
+NP_BRANDS = [
+    "HURAKAN", "APACH", "FAGOR", "TATRA", "COLD",
+    "PROJECT SYSTEMS", "ASTORIA", "ARRIS", "MAXIMA",
+]
+
+
+def _np_supplier_or_none():
+    return db.session.execute(
+        select(Supplier).where(Supplier.slug == NP_SUPPLIER_SLUG)
+    ).scalar_one_or_none()
+
+
+def _np_brand_match_counts(supplier_id: int) -> dict[str, int]:
+    """Indicative per-brand count of NP published matches — DB only, no feed
+    fetch (so the page loads instantly). The exact, feed-joined numbers come
+    back in the manifest after generation."""
+    rows = db.session.execute(
+        select(SupplierProduct.brand, func.count(ProductMatch.id))
+        .join(ProductMatch, ProductMatch.supplier_product_id == SupplierProduct.id)
+        .where(
+            SupplierProduct.supplier_id == supplier_id,
+            ProductMatch.status.in_(("confirmed", "manual")),
+            ProductMatch.published.is_(True),
+        )
+        .group_by(SupplierProduct.brand)
+    ).all()
+    by_norm: dict[str, int] = {}
+    for brand, cnt in rows:
+        key = (brand or "").strip().lower()
+        by_norm[key] = by_norm.get(key, 0) + cnt
+    return {b: by_norm.get(b.strip().lower(), 0) for b in NP_BRANDS}
+
+
+@feed_bp.route("/feeds/np")
+@login_required
+def np_file_page():
+    """Brand-picker page for the NP Horoshop content file."""
+    supplier = _np_supplier_or_none()
+    counts = _np_brand_match_counts(supplier.id) if supplier else {b: 0 for b in NP_BRANDS}
+    return render_template(
+        "feeds/np.html",
+        brands=NP_BRANDS,
+        counts=counts,
+        supplier=supplier,
+    )
+
+
+@feed_bp.route("/feeds/np/generate", methods=["POST"])
+@login_required
+def np_file_generate():
+    """Fetch the live NP feed, build the native Horoshop XLSX for the ticked
+    brands, and return it as a download."""
+    supplier = _np_supplier_or_none()
+    if supplier is None:
+        flash("Постачальник «Новий проект» не знайдений.", "error")
+        return redirect(url_for("feed.np_file_page"))
+    if not supplier.feed_url:
+        flash("У постачальника «Новий проект» не вказано feed_url.", "error")
+        return redirect(url_for("feed.np_file_page"))
+
+    selected = request.form.getlist("brands")
+    if not selected:
+        flash("Оберіть хоча б один бренд.", "error")
+        return redirect(url_for("feed.np_file_page"))
+
+    # Download the live NP feed to a temp file — build_np_file is pure over a
+    # local path, keeping the network out of the builder (and its tests).
+    try:
+        raw = fetch_feed_with_retry(supplier.feed_url)
+    except Exception as exc:  # network / HTTP / SSRF guard
+        flash(f"Не вдалося завантажити фід НП: {exc}", "error")
+        return redirect(url_for("feed.np_file_page"))
+
+    tmp_path = None
+    try:
+        with tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False) as tmp:
+            tmp.write(raw)
+            tmp_path = tmp.name
+        xlsx_bytes, manifest = build_np_file(selected, tmp_path)
+    finally:
+        if tmp_path and os.path.exists(tmp_path):
+            os.unlink(tmp_path)
+
+    log_action("np_file_generate", details={
+        "brands": selected,
+        "total": manifest.get("total"),
+        "with_photo": manifest.get("with_photo"),
+        "no_photo": manifest.get("no_photo"),
+        "unmatched": manifest.get("unmatched"),
+        "missing_feed_row": manifest.get("missing_feed_row"),
+        "skipped_no_price": manifest.get("skipped_no_price"),
+    })
+    db.session.commit()
+
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M")
+    return send_file(
+        io.BytesIO(xlsx_bytes),
+        mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        as_attachment=True,
+        download_name=f"np-horoshop-{stamp}.xlsx",
+    )
