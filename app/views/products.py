@@ -637,10 +637,21 @@ def force_price(product_id):
         return jsonify({"status": "error", "message": "Товар не найден"}), 404
     data = request.get_json(silent=True) or {}
     price_cents = data.get("price_cents")
-    currency = data.get("currency", product.currency)
+    currency = (data.get("currency") or product.currency or "EUR").upper()
     if price_cents is None:
         return jsonify({"status": "error", "message": "Укажите price_cents"}), 400
-    product.price_cents = int(price_cents)
+    # Validate before persisting: price_forced=True makes this value sticky
+    # (sync won't overwrite it), so a non-numeric value would 500 and a
+    # zero/negative one would leak a broken price straight into the live feed.
+    try:
+        price_cents = int(price_cents)
+    except (TypeError, ValueError):
+        return jsonify({"status": "error", "message": "price_cents должно быть целым числом"}), 400
+    if price_cents <= 0:
+        return jsonify({"status": "error", "message": "Цена должна быть больше нуля"}), 400
+    if currency not in ("EUR", "UAH"):
+        return jsonify({"status": "error", "message": "Валюта должна быть EUR или UAH"}), 400
+    product.price_cents = price_cents
     product.currency = currency
     product.price_forced = True
     db.session.commit()

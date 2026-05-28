@@ -126,3 +126,71 @@ def test_brand_dropdown_preserves_active_filter_when_out_of_scope(client, sessio
     # Sirman should still be listed so user sees the applied filter.
     assert 'value="Sirman"' in body
     assert 'value="Sirman" selected' in body or 'selected>Sirman' in body
+
+
+class TestForcePriceValidation:
+    """POST /products/supplier/<id>/force-price — must validate before
+    persisting: price_forced=True makes the value sticky (sync won't fix it),
+    so a non-numeric input must 400 (not 500) and a zero/negative/foreign
+    currency must be rejected before it reaches the live feed."""
+
+    def _one(self, session):
+        supplier = Supplier(
+            name="FP", feed_url="http://fp.xml", discount_percent=0, is_enabled=True
+        )
+        session.add(supplier)
+        session.flush()
+        sp = SupplierProduct(
+            supplier_id=supplier.id, external_id="FP1", name="Test",
+            brand="B", price_cents=10000, currency="EUR", available=True,
+        )
+        session.add(sp)
+        session.commit()
+        return sp.id
+
+    def test_valid_force_sets_price(self, client, session):
+        sp_id = self._one(session)
+        resp = client.post(
+            f"/products/supplier/{sp_id}/force-price",
+            json={"price_cents": 25000, "currency": "EUR"},
+        )
+        assert resp.status_code == 200, resp.get_data(as_text=True)
+        session.expire_all()
+        sp = session.get(SupplierProduct, sp_id)
+        assert sp.price_cents == 25000
+        assert sp.price_forced is True
+
+    def test_non_numeric_price_returns_400_not_500(self, client, session):
+        sp_id = self._one(session)
+        resp = client.post(
+            f"/products/supplier/{sp_id}/force-price",
+            json={"price_cents": "abc"},
+        )
+        assert resp.status_code == 400
+        session.expire_all()
+        sp = session.get(SupplierProduct, sp_id)
+        assert sp.price_cents == 10000  # untouched
+        assert sp.price_forced is False
+
+    def test_non_positive_price_rejected(self, client, session):
+        sp_id = self._one(session)
+        for bad in (0, -500):
+            resp = client.post(
+                f"/products/supplier/{sp_id}/force-price",
+                json={"price_cents": bad},
+            )
+            assert resp.status_code == 400, f"price_cents={bad} should be rejected"
+        session.expire_all()
+        sp = session.get(SupplierProduct, sp_id)
+        assert sp.price_forced is False
+
+    def test_foreign_currency_rejected(self, client, session):
+        sp_id = self._one(session)
+        resp = client.post(
+            f"/products/supplier/{sp_id}/force-price",
+            json={"price_cents": 5000, "currency": "USD"},
+        )
+        assert resp.status_code == 400
+        session.expire_all()
+        sp = session.get(SupplierProduct, sp_id)
+        assert sp.price_forced is False
