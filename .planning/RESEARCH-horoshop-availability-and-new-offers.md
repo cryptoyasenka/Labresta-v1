@@ -85,3 +85,22 @@ Both features are now **unblocked at the research level**. Remaining before code
 
 Live-store rule still applies: any real import is Yana's hand, with go-ahead
 (see feedback_labresta_live_import).
+
+---
+
+## Internal touch-points for MARESTO stock-status (our code, verified 2026-05-29)
+Where the 4-value `<stock>` is currently dropped, and what a future phase must touch
+(facts for discuss-phase — NOT a locked plan):
+- **`app/services/feed_parser.py:70-71`** — reads ONLY the binary `offer.get("available","true")`
+  attribute; the richer `<stock>` element is **never read**. ← root of the flattening.
+- **`feed_parser.py:107-110`** — product dict assembled (would add `stock_status` here).
+- **`feed_parser.py:173` & `:200`** — written to `existing.available` / `SupplierProduct(available=...)`
+  on update/insert (would also persist `stock_status`).
+- **Model** — `SupplierProduct` needs a new nullable `stock_status` column (+ idempotent migration).
+- **Output** — `yml_generator._is_available_for_offer` (binary) stays for YML; the 4-value status
+  goes out via the **XLSX «Наявність» path** (extend `np_horoshop_file.py`, recommended route 1).
+- **UI** — colored badge + 4-option filter on `/matches` and `/products/supplier`.
+Note: feed_parser is the generic YML parser shared by suppliers; MARESTO emits both the binary
+`available` attr (captured) AND `<stock>` (ignored). Adding `stock_status` is additive and does
+NOT change current YML output until the mapping step is wired — so step 1 (parse+store) is safe
+and isolated, but per CLAUDE.md п.2 the whole feature still goes through `/gsd:discuss-phase` first.
