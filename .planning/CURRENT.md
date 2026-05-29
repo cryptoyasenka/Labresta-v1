@@ -66,7 +66,7 @@ Yana выбрала MARESTO статус наличия. Фид проверен
 4 коммита `feat(maresto)` на main:
 - `app/services/maresto_stock.py` — mapper `(stock, vendor)` → «Наявність» + 9 тестов.
 - парсер ловит `<stock>` → `SupplierProduct.stock_status` (nullable колонка + SQLite/PG миграции, PG вплетён в `railway.toml`) + 1 тест.
-- `app/services/maresto_horoshop_file.py` — XLSX-генератор (Артикул + «[КАТАЛОГ] Наличие», значения = укр. статусы) + 3 теста.
+- `app/services/maresto_horoshop_file.py` — XLSX-генератор **цена + наличие** (Артикул + Цена + Старая цена + Валюта + «[КАТАЛОГ] Наличие»-статус) + 3 теста.
 - `scripts/generate_maresto_availability.py` — CLI (fetch→parse→save→build, гард «только локальная sqlite»).
 Полный сьют: **778 passed, 2 skipped**. E2E на живом фиде: **849 строк из 856 матчей — В наявності 453 / Під замовлення 347 / Немає 49**; 7 без `<stock>` пропущены.
 
@@ -74,10 +74,17 @@ Yana выбрала MARESTO статус наличия. Фид проверен
 `./.venv/Scripts/python.exe scripts/generate_maresto_availability.py`
 → тянет фид, populate'ит `stock_status`, пишет `instance/maresto_availability.xlsx`. `--no-fetch` = из текущей БД.
 
+### 🔧 Правка по фидбеку Yana (2026-05-29): цена+наличие, НЕ avail-only
+Первый заход дал файл «только наличие» — Yana поправила: матчер должен отдавать фид с **ценой+наличием
+как обычно**, а MARESTO-наличие = под-заказ-логика. Генератор переделан: Артикул + Цена + Старая цена +
+Валюта + Наличие(статус). Канал = Excel `[КАТАЛОГ]` (в YML `available` бинарный → именованный статус
+только через Excel-колонку «Наличие»). 1-row import-preview ПОДТВЕРДИЛ механизм: колонка авто-распозналась,
+«Під замовлення» принят.
+
 ### ⏳ Осталось ЗА YANA (не код)
-1. **1-строчный empirical import-тест** на живом магазине: проверить, что 4 укр. статуса реально мапятся через колонку «[КАТАЛОГ] Наличие» (заголовок проверен на бинарном НП-canary; именованные статусы — НЕТ). На 1 артикуле ПЕРЕД bulk.
-2. После успешного теста → bulk-импорт `instance/maresto_availability.xlsx` (партиальный, тронет только наличие) + backup. Рука Yana (feedback_labresta_live_import).
-3. Прод: `stock_status` там NULL (фид 403) — фича намеренно локальная. Авто на проде = отдельная задача (разблокировать фид).
+1. ✅ Механизм проверен (preview артикул 1156682931 Rational → «Під замовлення», колонка auto-map).
+2. Bulk-импорт `instance/maresto_availability.xlsx` (Артикул+Цена+Старая цена+Валюта+Наличие; партиальный — цена+наличие) + **backup ПЕРЕД импортом**. Рука Yana (feedback_labresta_live_import).
+3. Прод: `stock_status` NULL (фид 403) — фича локальная by design. Авто на проде = отдельная задача.
 
 **Last touched:** 2026-05-29
 
