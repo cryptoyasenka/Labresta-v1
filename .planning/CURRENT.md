@@ -61,13 +61,23 @@ Yana выбрала MARESTO статус наличия. Фид проверен
 Доставка: **локальная генерация + ручной импорт** (фид 403 с Railway, 200 с локали — Yana выбрала локаль).
 Реально статусы поедут только на сматченные MARESTO-товары (~857 confirmed).
 
-### Next step (КОД — отдельная фаза, НЕ начата; ждёт пост-компакт)
-1. `feed_parser.py:70` — читать `_text(offer,"stock")` в product dict (ключ `stock_status`); сейчас только бинарный `available`.
-2. `SupplierProduct` — nullable колонка `stock_status` (сырое значение MARESTO) + идемпотентная миграция; персист в `save_supplier_products` (≈:173 update / :200 insert).
-3. Маппер `(stock_status, vendor)` → строка «Наявність» (таблица ↑). Список 4 брендов = константа/конфиг.
-4. Экспорт: расширить XLSX-путь (`app/services/np_horoshop_file.py`) колонкой «Наявність» для MARESTO confirmed-матчей. Scope = только MARESTO.
-5. UI badge+фильтр (опц., позже). Перед bulk-импортом → 1-строчный empirical import-тест на живом магазине + backup + go-ahead Yana (feedback_labresta_live_import).
-П.2: это спека discuss-phase; сборка = след. фаза. Тесты: `./.venv/Scripts/python.exe -m pytest` (НЕ uv run).
+### ✅ СОБРАНО И ЗАПУШЕНО (2026-05-29) — фича работает end-to-end
+
+4 коммита `feat(maresto)` на main:
+- `app/services/maresto_stock.py` — mapper `(stock, vendor)` → «Наявність» + 9 тестов.
+- парсер ловит `<stock>` → `SupplierProduct.stock_status` (nullable колонка + SQLite/PG миграции, PG вплетён в `railway.toml`) + 1 тест.
+- `app/services/maresto_horoshop_file.py` — XLSX-генератор (Артикул + «[КАТАЛОГ] Наличие», значения = укр. статусы) + 3 теста.
+- `scripts/generate_maresto_availability.py` — CLI (fetch→parse→save→build, гард «только локальная sqlite»).
+Полный сьют: **778 passed, 2 skipped**. E2E на живом фиде: **849 строк из 856 матчей — В наявності 453 / Під замовлення 347 / Немає 49**; 7 без `<stock>` пропущены.
+
+**Как пользоваться** (локально — фид 403 с Railway, 200 с локали):
+`./.venv/Scripts/python.exe scripts/generate_maresto_availability.py`
+→ тянет фид, populate'ит `stock_status`, пишет `instance/maresto_availability.xlsx`. `--no-fetch` = из текущей БД.
+
+### ⏳ Осталось ЗА YANA (не код)
+1. **1-строчный empirical import-тест** на живом магазине: проверить, что 4 укр. статуса реально мапятся через колонку «[КАТАЛОГ] Наличие» (заголовок проверен на бинарном НП-canary; именованные статусы — НЕТ). На 1 артикуле ПЕРЕД bulk.
+2. После успешного теста → bulk-импорт `instance/maresto_availability.xlsx` (партиальный, тронет только наличие) + backup. Рука Yana (feedback_labresta_live_import).
+3. Прод: `stock_status` там NULL (фид 403) — фича намеренно локальная. Авто на проде = отдельная задача (разблокировать фид).
 
 **Last touched:** 2026-05-29
 
