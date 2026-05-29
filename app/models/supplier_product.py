@@ -16,6 +16,10 @@ class SupplierProduct(db.Model):
     price_cents = db.Column(db.Integer, nullable=True)  # retail price in cents
     currency = db.Column(db.String(10), default="EUR")
     available = db.Column(db.Boolean, default=True)
+    # Raw MARESTO <stock> value (In stock / Running low / Reserved / Out of stock),
+    # mapped to a Horoshop «Наявність» status by services/maresto_stock.py. NULL for
+    # suppliers whose feed has no <stock> element.
+    stock_status = db.Column(db.String(50), nullable=True)
     needs_review = db.Column(db.Boolean, default=False)
     last_seen_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     last_modified_at = db.Column(db.DateTime, nullable=True)

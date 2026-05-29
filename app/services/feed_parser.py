@@ -70,6 +70,11 @@ def parse_supplier_feed(raw_bytes: bytes, supplier_id: int) -> list[dict]:
         available_str = offer.get("available", "true")
         available = available_str.lower() in ("true", "1", "yes")
 
+        # MARESTO carries a 4-value <stock> (In stock / Running low / Reserved /
+        # Out of stock) richer than the binary `available`; keep it for the
+        # Horoshop «Наявність» status mapping (see services/maresto_stock.py).
+        stock_status = _text(offer, "stock")
+
         name = _text(offer, "name")
         if not name:
             continue  # skip offers without a name
@@ -107,6 +112,7 @@ def parse_supplier_feed(raw_bytes: bytes, supplier_id: int) -> list[dict]:
             "price_cents": price_cents,
             "currency": _text(offer, "currencyId") or "EUR",
             "available": available,
+            "stock_status": stock_status,
             "supplier_id": supplier_id,
             "description": description,
             "image_url": image_url,
@@ -171,6 +177,7 @@ def save_supplier_products(products: list[dict]) -> dict:
                     existing.price_cents = p["price_cents"]
                     existing.currency = p["currency"]
                 existing.available = p["available"]
+                existing.stock_status = p.get("stock_status")
                 existing.last_seen_at = now
                 # Preserve existing optional fields when the feed omits them —
                 # a partial/broken feed dropping a field should not wipe data.
@@ -198,6 +205,7 @@ def save_supplier_products(products: list[dict]) -> dict:
                     price_cents=p["price_cents"],
                     currency=p["currency"],
                     available=p["available"],
+                    stock_status=p.get("stock_status"),
                     last_seen_at=now,
                     description=p.get("description"),
                     image_url=p.get("image_url"),

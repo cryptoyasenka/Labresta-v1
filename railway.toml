@@ -2,7 +2,7 @@
 builder = "nixpacks"
 
 [deploy]
-startCommand = "python scripts/migrate_add_feed_name_pg.py && python scripts/migrate_add_deletion_candidate.py && python scripts/migrate_add_supplier_auto_sync_pg.py && python scripts/add_astim_supplier.py && (python scripts/regenerate_yml_on_startup.py || echo 'YML regen skipped, will rebuild at next sync') && gunicorn run:app --bind 0.0.0.0:$PORT --workers 1 --threads 4 --timeout 120"
+startCommand = "python scripts/migrate_add_feed_name_pg.py && python scripts/migrate_add_deletion_candidate.py && python scripts/migrate_add_supplier_auto_sync_pg.py && python scripts/migrate_add_sp_stock_status_pg.py && python scripts/add_astim_supplier.py && (python scripts/regenerate_yml_on_startup.py || echo 'YML regen skipped, will rebuild at next sync') && gunicorn run:app --bind 0.0.0.0:$PORT --workers 1 --threads 4 --timeout 120"
 healthcheckPath = "/"
 healthcheckTimeout = 30
 restartPolicyType = "on_failure"
