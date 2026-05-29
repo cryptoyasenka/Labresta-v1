@@ -1,4 +1,4 @@
-"""Generate the MARESTO availability XLSX for manual Horoshop import.
+"""Generate the MARESTO price + availability XLSX for manual Horoshop import.
 
 WHY a local script (not a web button): MARESTO's feed returns 403 from Railway
 (prod) but 200 from a local machine, so `stock_status` can only be populated
@@ -89,7 +89,7 @@ def main() -> int:
         out_path.parent.mkdir(parents=True, exist_ok=True)
         out_path.write_bytes(data)
 
-        print("\n=== MARESTO availability file ===")
+        print("\n=== MARESTO price + availability file ===")
         print(f"  rows: {manifest['total']} (from {manifest['matches_considered']} confirmed matches)")
         for status, n in sorted(manifest["per_status"].items(), key=lambda kv: -kv[1]):
             print(f"    {status}: {n}")
