@@ -39,12 +39,37 @@ maintenance; открытого feature-milestone нет.
 - **ROADMAP.md фикс**: таблица врала «Phase 7 Planned 0/2» → исправила на «Complete 2/2 2026-04-10»
   (подтверждено STATE.md 18/18 + роут `/matches/<id>/discount` + 07-02-SUMMARY).
 
-### Next step (когда Yana вернётся)
-1. Выбрать фичу. Рекомендация: **MARESTO 4-значный статус наличия** (блокирует «Maresto первым»).
-2. Для неё → `/gsd:discuss-phase` (фича >1ч). RESEARCH-док уже даёт факты + рекомендацию (route 1: XLSX).
-3. Решить отложенные decision-вопросы выше (feed_name / apply-discount / #15).
+### ✅ DISCUSS-PHASE ГОТОВ — РЕШЕНИЕ ПО MARESTO ЗАФИКСИРОВАНО (2026-05-29)
 
-**Last touched:** 2026-05-29 (ночной режим)
+Yana выбрала MARESTO статус наличия. Фид проверен вживую (mrst.com.ua/include/price.xml, 200 OK
+с локали, 4489 офферов). **Факты, не догадки:**
+- Сигнал наличия = `<stock>`, 4 значения: In stock 481 / Running low 280 / Reserved 211 / Out of stock 3517.
+  Бинарный атрибут `available` читается, `<stock>` ВЫКИДЫВАЕТСЯ (`feed_parser.py:70`).
+- Поля «дата/ожидается поставка» в фиде НЕТ (перебраны все 70 `<param>`). → «Очікується» наполнять нечем, НЕ используем.
+- `Країна виробник` есть, но КИТАЙ=781 у 16 брендов (вкл. Bartscher 254 / Sirman / Fimar — европ.)
+  → страна как сигнал ОТВЕРГНУТА. «Китайские» = ровно 4 бренда по `vendor`.
+- Статусы Horoshop (со скрина Yana): В наявності / Під замовлення / Очікується / Немає в наявності.
+
+**🔒 ЗАФИКСИРОВАННЫЙ МАППИНГ `<stock>` → «Наявність» (правки Yana ×2, финал):**
+- `In stock`     → **В наявності**
+- `Running low`  → **В наявності**
+- `Reserved`     → **Під замовлення** (под заказ)
+- `Out of stock` И `vendor` ∈ {EWT INOX, REEDNEE, Forcar, Forcold} → **Немає в наявності**
+- `Out of stock` И прочие бренды → **Під замовлення** (под заказ)
+3 статуса: В наявності / Під замовлення / Немає. «Очікується» НЕ используется.
+Числа (весь фид): В наявності 761 · Під замовлення 3451 (211 Reserved + 3240 OOS-европ) · Немає 277.
+Доставка: **локальная генерация + ручной импорт** (фид 403 с Railway, 200 с локали — Yana выбрала локаль).
+Реально статусы поедут только на сматченные MARESTO-товары (~857 confirmed).
+
+### Next step (КОД — отдельная фаза, НЕ начата; ждёт пост-компакт)
+1. `feed_parser.py:70` — читать `_text(offer,"stock")` в product dict (ключ `stock_status`); сейчас только бинарный `available`.
+2. `SupplierProduct` — nullable колонка `stock_status` (сырое значение MARESTO) + идемпотентная миграция; персист в `save_supplier_products` (≈:173 update / :200 insert).
+3. Маппер `(stock_status, vendor)` → строка «Наявність» (таблица ↑). Список 4 брендов = константа/конфиг.
+4. Экспорт: расширить XLSX-путь (`app/services/np_horoshop_file.py`) колонкой «Наявність» для MARESTO confirmed-матчей. Scope = только MARESTO.
+5. UI badge+фильтр (опц., позже). Перед bulk-импортом → 1-строчный empirical import-тест на живом магазине + backup + go-ahead Yana (feedback_labresta_live_import).
+П.2: это спека discuss-phase; сборка = след. фаза. Тесты: `./.venv/Scripts/python.exe -m pytest` (НЕ uv run).
+
+**Last touched:** 2026-05-29
 
 ---
 
