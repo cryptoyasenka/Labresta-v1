@@ -2,16 +2,18 @@
 
 **Researched:** 2026-05-30 (ночной режим, GSD researcher)
 **Domain:** Native-Horoshop XLSX *create*-file generation for supplier products that have no live card; category-by-analogy resolution
-**Confidence:** HIGH on create-schema, price path, models, filter/query design, builder shape (all read from disk). MEDIUM on category-by-analogy quality (sound design, needs the real-data sample to prove). One genuinely empirical unknown remains: which exact header string Horoshop's importer keys category from on a *create* (see Q1 / Open for Yana).
+**Confidence:** HIGH on create-schema, category/visibility headers, price path, models, filter/query design, builder shape — all read from disk and cross-checked against the live-proven canary. MEDIUM only on category-by-analogy *quality* (sound design; needs the real-data sample to prove) and on one residual: `[КАТАЛОГ] Раздел` is the correct header but has never been pushed end-to-end with a real category value (the canary left it empty) → confirm with a 1–2 row canary before bulk.
 
-> Tooling note: the Bash tool stalled intermittently late in this session (empty returns). Every
-> load-bearing fact below was read directly from disk while the tool was live: all 4 xlsx header rows
-> via `openpyxl`, `np_horoshop_file.py`, `maresto_horoshop_file.py`, `pricing.py`, `feed.py`,
-> `catalog_import.py`, `catalog.py`, `supplier_product.py`, `supplier.py`,
-> `supplier_brand_discount.py`, `product_match.py`, `np_parser.py`, `kodaki_adapter.py`, and the
-> `matcher.py` function inventory. The only items NOT pinned: the canary's data-cell *literal* for
-> `[КАТАЛОГ] Отображать` (read it at plan time — file is on disk) and the live help.horoshop docs page
-> (cyclic language redirect; prior research already extracted the required-fields rule from it).
+> Tooling note: the Bash tool stalled intermittently late in this session (empty returns), but every
+> load-bearing fact below was read directly from disk: all 4 xlsx header rows + the canary DATA row
+> via `openpyxl`, plus `np_horoshop_file.py`, `maresto_horoshop_file.py`, `pricing.py`, `feed.py`,
+> `catalog_import.py`, `catalog.py`, `supplier_product.py`, `supplier.py`, `supplier_brand_discount.py`,
+> `product_match.py`, `np_parser.py`, `kodaki_adapter.py`, the `matcher.py` inventory, and
+> `CANARY-IMPORT-GUIDE.md` + `build_canary_xlsx.py`. Two things previously flagged "read at plan time"
+> are now RESOLVED here: the visibility literal (`"1"`) and the category header (`[КАТАЛОГ] Раздел`,
+> NOT `categories_uk`). The only doc I could not re-open is the live help.horoshop page (cyclic
+> language redirect); its required-fields rule is taken from the prior research + confirmed via two
+> WebSearches.
 
 ---
 
@@ -76,9 +78,14 @@ not `Розділ`). Visibility is **`Отображать`** (col 12).
 The proven **import** dialect (live-validated `canary-HKN-PICO12M.xlsx`, and the shipped
 `np_horoshop_file.py` + `maresto_horoshop_file.py` builders) prefixes catalog leaves with
 **`[КАТАЛОГ] `** and uses a bare `Артикул` key, sheet **`Worksheet`**. So the create file is the
-existing NP builder pattern **plus the columns the update-files deliberately omit**: `Название (UA)`
-(+RU), `[КАТАЛОГ] Бренд`, `[КАТАЛОГ] Отображать`, **and a category column**. The update-files omit
-these on purpose ("Horoshop only updates columns present"); a *create* file must include them.
+existing NP builder pattern **plus the columns the update-files deliberately omit**:
+`[КАТАЛОГ] Название (UA)` (+RU), `[КАТАЛОГ] Бренд`, `[КАТАЛОГ] Отображать`, **and the category column
+`[КАТАЛОГ] Раздел`**. The update-files omit these on purpose ("Horoshop only updates columns
+present"); a *create* file must include them. The live canary preview (CANARY-IMPORT-GUIDE §7, 11/12
+fields auto-mapped) settled two of these as fact: `[КАТАЛОГ] Отображать` auto-maps and its visible
+value is **`"1"`**; the category belongs in **`[КАТАЛОГ] Раздел`** — the canary's `categories_uk`
+column was np.com.ua's internal export code that auto-mapped to *"do not import"*, NOT a Horoshop
+category field.
 
 Price for an **unmatched** SupplierProduct does NOT go through `compute_match_pricing(match)` (there
 is no match). Use the existing pure pricing primitives directly: `resolve_discount_percent(None,
@@ -88,16 +95,10 @@ price; old price = `sp.price_cents/100` when a real discount applies. This is ex
 fields (`pricing_mode`, `discount_percent`, `min_margin_uah`, `cost_rate`, `eur_rate_uah`) and the
 `SupplierBrandDiscount` shape (`brand`, `discount_percent`) are **verified in the models**.
 
-**Primary recommendation:** Build one new builder `app/services/add_horoshop_file.py` (mirror
-`np_horoshop_file.py`) + one picker view (mirror `/feeds/np`). Resolve category at **generate-time**
-by reading the on-disk Horoshop export (the column `catalog_import.py` drops) — **no PromProduct
-schema migration**. Ship a `category_resolver` strategy interface with `analogy` + `fallback` built
-and an `ai` stub; default to the **`analogy → fallback` chain**, AI disabled. Run the analogy
-resolver over a real sample of unmatched products and table the results for Yana (REQ-06).
-
 **Primary recommendation (one-liner):** Clone the NP builder/picker; add name+brand+visibility+category
-columns; price unmatched SPs via the pure `pricing.py` functions; resolve category at generate-time
-from the uploaded export via a pluggable resolver (analogy→fallback, AI gated).
+columns (`[КАТАЛОГ] Раздел`, `Отображать="1"`); price unmatched SPs via the pure `pricing.py`
+functions; resolve category at generate-time from the uploaded export via a pluggable resolver
+(analogy→fallback, AI gated). **No PromProduct schema migration.**
 
 ---
 
@@ -164,28 +165,29 @@ catalog schema; header row identical to `horoshop-export 13.05.26.xlsx`, also ve
 [58] Электронный товар
 ```
 
-**`.planning/plans/np-feed/canary-HKN-PICO12M.xlsx`** — sheet **`Worksheet`**, **26 cols**. This is
-the **live-proven IMPORT dialect** (CANARY-IMPORT-GUIDE §7: 11/12 auto-mapped, zero UA→RU
-corruption). Catalog fields carry the **`[КАТАЛОГ] `** prefix; key is bare `Артикул`:
+**`.planning/plans/np-feed/canary-HKN-PICO12M.xlsx`** — sheet **`Worksheet`**, **26 cols, 1 data
+row** (HKN-PICO12M). This is the **live-proven IMPORT dialect** (CANARY-IMPORT-GUIDE §7: 11/12
+auto-mapped, zero UA→RU corruption). Catalog fields carry the **`[КАТАЛОГ] `** prefix; key is bare
+`Артикул`. Header + the real data values read this session:
 
 ```
-[00] id
-[01] Артикул                               ← bare key
-[02] [КАТАЛОГ] Цена
-[03] [КАТАЛОГ] Галерея
-[04] [КАТАЛОГ] Наличие
-[05] [КАТАЛОГ] Отображать                  ← VISIBILITY (import dialect, [КАТАЛОГ]-prefixed) — LIVE-PROVEN
+[00] id                                    = (blank)
+[01] Артикул                               = "1546341257"   ← bare key
+[02] [КАТАЛОГ] Цена                        = "718.3"
+[03] [КАТАЛОГ] Галерея                      = np.com.ua URLs ;-joined  (auto-mapped to "do not import" by design — gallery is manual)
+[04] [КАТАЛОГ] Наличие                      = "В наличии"
+[05] [КАТАЛОГ] Отображать                   = "1"           ← VISIBILITY value = "1" (visible), auto-mapped LIVE
 [06] [КАТАЛОГ] Название модификации (UA)
 [07] [КАТАЛОГ] Описание товара (UA)
-[08] categories_uk                         ← CATEGORY in this live-proven import file (NOT [КАТАЛОГ] Раздел)
-[09] [КАТАЛОГ] Бренд
-[10..14] attr_contry_uk / attr_dimensions_uk / attr_power_uk / attr_voltage_uk / attr_weight_uk
+[08] categories_uk                         = (blank)        ← np.com.ua INTERNAL code → auto-mapped "do not import". NOT a Horoshop category field.
+[09] [КАТАЛОГ] Бренд                        = "HURAKAN"
+[10..14] attr_contry_uk / attr_dimensions_uk / attr_power_uk / attr_voltage_uk / attr_weight_uk   (np.com.ua codes, "do not import")
 [15] [КАТАЛОГ] Название модификации (RU)
 [16] [КАТАЛОГ] Описание товара (RU)
-[17] categories_ru                         ← RU category counterpart
+[17] categories_ru                         = (blank)        ← same: np.com.ua code, not a Horoshop field
 [18..23] attr_brend_ru / attr_contry_ru / attr_dimensions_ru / attr_power_ru / attr_voltage_ru / attr_weight_ru
-[24] [КАТАЛОГ] Старая цена
-[25] [КАТАЛОГ] Валюта
+[24] [КАТАЛОГ] Старая цена                  = "845.0"
+[25] [КАТАЛОГ] Валюта                       = "EUR"
 ```
 
 **`horoshop-import-mini-5.xlsx`** — sheet **`Sheet`**, **9 cols**, **bare** (no `[КАТАЛОГ] ` prefix):
@@ -197,45 +199,58 @@ file is also accepted, but it does not create (no SKU+category+price intent).
 **`horoshop-export-extended.xlsx`** — **corrupt: `BadZipFile: Bad magic number`** (not a valid
 .xlsx). Use `horoshop-export 20.05.26.xlsx` as the canonical reference. Do not depend on -extended.
 
-### The exact category + visibility headers (the core answer)
+### The exact category + visibility headers (the core answer — RESOLVED)
 
-| Concept | Export header (bare) | Import-dialect header | Evidence |
+| Concept | Export header (bare) | Import-dialect header (use this) | Evidence |
 |---|---|---|---|
-| **Category / Розділ** | **`Раздел`** (col 8) | `[КАТАЛОГ] Раздел` *(by the prefix rule)* **OR** `categories_uk` + `categories_ru` *(what the live canary actually used)* | export col 8; canary cols 8/17 |
-| **Visibility** | **`Отображать`** (col 12) | **`[КАТАЛОГ] Отображать`** (canary col 5, **live-proven**) | export col 12; canary col 5 |
+| **Category / Розділ** | **`Раздел`** (col 8) | **`[КАТАЛОГ] Раздел`** (qualified-name rule). **NOT** `categories_uk`/`_ru` — those are np.com.ua export codes Horoshop maps to *"do not import"* | export col 8; CANARY §7 + `build_canary_xlsx.py:21-23` |
+| **Visibility** | **`Отображать`** (col 12) | **`[КАТАЛОГ] Отображать`**, value **`"1"`** = visible (live-proven) | export col 12; canary col 5 = `"1"`; CANARY §7; `build_canary_xlsx.py:179` |
+
+**Why `[КАТАЛОГ] Раздел`, not `categories_uk`.** Horoshop auto-maps a column → catalog field ONLY when
+the header equals the field's qualified name (`[КАТАЛОГ] <leaf>`, or a bare top-level name like
+`Артикул`) — proven by the NP/MARESTO builders. The canary's `categories_uk`/`categories_ru`/`attr_*`
+columns are **np.com.ua's own dealer-export internal codes**; at the live preview they auto-mapped to
+**"Не імпортувати" (do NOT import)** and were left empty on purpose (`build_canary_xlsx.py:21-23`:
+"categories_uk/ru и attr_* … НЕ трогаем (пусто) — это характеристики/категория, отдельный
+import_type"; CANARY §7 table row: "categories_* … (Не імпортувати)"). The bare export col 8 is
+literally `Раздел`, so the qualified Horoshop catalog header is **`[КАТАЛОГ] Раздел`**.
 
 **Key nuance — the export is RU-localized.** CONTEXT/REQUIREMENTS say `Розділ` (UA), but the actual
 dealer export on disk is **Russian**, so the column is **`Раздел`**. The shipped `np_horoshop_file.py`
 already emits RU leaves (`[КАТАЛОГ] Наличие`, `Описание товара (UA/RU)`) that auto-map live → the
 store's importer recognizes the RU qualified names. Use **RU** leaf names in the create file (match
-the proven canary): `[КАТАЛОГ] Название (UA)`, `[КАТАЛОГ] Бренд`, `[КАТАЛОГ] Отображать`.
+the proven canary): `[КАТАЛОГ] Название (UA)`, `[КАТАЛОГ] Бренд`, `[КАТАЛОГ] Отображать`,
+`[КАТАЛОГ] Раздел`.
 
 **Is create-import schema == export schema (round-trip)?** No. The **export** uses bare top-level RU
-headers (`Раздел`, `Отображать`, `Цена`…). The **import Horoshop auto-maps** is the
-**`[КАТАЛОГ] `-prefixed** dialect (np_horoshop_file docstring: auto-map happens "ONLY when the column
-header equals the field's qualified name — `[КАТАЛОГ] <leaf>`, or a bare top-level name like
-`Артикул`"). So: **key = bare `Артикул`; catalog leaves = `[КАТАЛОГ] <leaf>`.** A raw round-trip of
-the bare export is NOT the proven import path; the `[КАТАЛОГ]` dialect is.
+headers (`Раздел`, `Отображать`, `Цена`…). The import Horoshop auto-maps is the
+**`[КАТАЛОГ] `-prefixed** dialect (np_horoshop_file docstring). So: **key = bare `Артикул`; catalog
+leaves = `[КАТАЛОГ] <leaf>`.** A raw round-trip of the bare export is NOT the proven import path.
 
-> **OPEN (empirical — see Open for Yana):** category import header. The export column is `Раздел`, so
-> `[КАТАЛОГ] Раздел` is the natural create header — BUT the only file proven live used
-> `categories_uk`/`categories_ru` (bare, no prefix) for category. The planner must NOT guess: a
-> 1–2-row canary import (Yana's hand) decides whether `[КАТАЛОГ] Раздел` lands the card in the right
-> section or whether `categories_uk`/`_ru` is required. **Make the category header a single
-> switchable constant.** HIGH confidence the column is the only open detail; MEDIUM on which exact
-> header string the importer keys on. (NB: `categories_uk` came from np.com.ua's own dealer export,
-> so it is a known-good Horoshop category column — the safer default of the two.)
+**Category format (from help.horoshop.ua "preparing files" + two WebSearches):** the `Раздел` value
+is a path `Категория/2-й уровень/3-й уровень`, **case-sensitive, no extra spaces**, and **every
+category in the file must already exist in Horoshop** — the importer does NOT create missing
+categories (a row with a non-existent `Раздел` errors). The analogy strategy copies categories from
+the export (so they exist by construction); the fallback holding-category must be one Yana created in
+admin first.
+
+> **RESIDUAL (confirm before bulk):** `[КАТАЛОГ] Раздел` is the correct header by the qualified-name
+> rule + the export column name, but the live canary left it EMPTY — so a real `[КАТАЛОГ] Раздел`
+> value has never been pushed end-to-end. Keep the category header a single switchable constant and
+> have Yana run a 1–2 row canary that actually sets a category before any bulk import. HIGH confidence
+> on the header choice; the end-to-end push is simply unexercised.
 
 ---
 
 ## Q2 — Is category required to create a card? + full field list
 
 **Category IS required.** Prior research (`.planning/RESEARCH-horoshop-availability-and-new-offers.md`
-Q2, from help.horoshop.ua "Importing products from a file"): *"Required fields for a NEW product:
-SKU + Title (Назва) + Category (Розділ). Matching key = SKU."* The category column exists in the
-export (`Раздел`, col 8), confirming the catalog stores it; `catalog_import.py` simply has no alias
-for it (Q6), so our DB never captured it. (Live docs re-verification was blocked by a cyclic
-language-redirect on help.horoshop.com; the rule stands from the prior research extraction.)
+Q2, from help.horoshop.ua "Importing products from a file") + two WebSearches this session all agree:
+**Required fields for a NEW product = SKU (Артикул) + Title (Назва/Название) + Category (Раздел);
+matching key = SKU.** The category column exists in the export (`Раздел`, col 8), confirming the
+catalog stores it; `catalog_import.py` simply has no alias for it (Q6), so our DB never captured it.
+(Live docs re-verification was blocked by a cyclic language-redirect on help.horoshop.com; the rule
+stands from the prior research + WebSearch confirmation.)
 
 ### Fields for a clean new card (create file column set)
 
@@ -243,12 +258,12 @@ language-redirect on help.horoshop.com; the rule stands from the prior research 
 |---|---|---|---|
 | SKU / key | `Артикул` (bare) | **REQUIRED** (key) | `SupplierProduct.article` (== feed Артикул / `<vendorCode>`) — see note |
 | Title UA | `[КАТАЛОГ] Название (UA)` | **REQUIRED** | `SupplierProduct.name` |
-| Category | `[КАТАЛОГ] Раздел` *(or `categories_uk`/`_ru`)* | **REQUIRED** | category resolver (Q4) |
+| Category | `[КАТАЛОГ] Раздел` | **REQUIRED** | category resolver (Q4); format `Cat/Sub/Sub`, must pre-exist in Horoshop |
 | Price | `[КАТАЛОГ] Цена` | strongly recommended | pricing (Q3) |
 | Old price | `[КАТАЛОГ] Старая цена` | optional (strike-through) | retail when discounted (Q3) |
 | Currency | `[КАТАЛОГ] Валюта` | recommended | `sp.currency` ∈ {EUR,UAH} else EUR |
 | Availability | `[КАТАЛОГ] Наличие` | recommended | `В наличии` / `Нет в наличии` |
-| Visibility | `[КАТАЛОГ] Отображать` | recommended for create | see note |
+| Visibility | `[КАТАЛОГ] Отображать` | recommended for create | value `"1"` (see note) |
 | Brand | `[КАТАЛОГ] Бренд` | recommended | `sp.brand` (NP: feed `attr_brend_uk`) |
 | Title RU | `[КАТАЛОГ] Название (RU)` | optional | blank (NP feed has no name col — D2) |
 | Gallery | `[КАТАЛОГ] Галерея` | recommended | `sp.images` JSON / NP feed photos |
@@ -262,12 +277,11 @@ language-redirect on help.horoshop.com; the rule stands from the prior research 
   PromProduct, so the key is the **supplier's article** (`SupplierProduct.article`, == `<vendorCode>`,
   == the NP feed `Артикул`). It becomes the new card's external_id in Horoshop. **Skip + report rows
   with empty article** (mirror `np_parser`/`maresto_horoshop_file._shape_rows` `skipped_no_artikul`).
-- **`Отображать` value (plan-time read).** Need the literal Horoshop expects (likely `Да`/`Нет` or
-  `+`/`-`). The canary has the column (col 5) with a real value — **read the canary data row at plan
-  time** (`.planning/plans/np-feed/canary-HKN-PICO12M.xlsx`; this session's Bash stalled before
-  printing it). Default proposal: use the canary's literal for "visible"; if still unknown, **omit
-  the column** and let Horoshop default new cards to its configured visibility (omitting is lower-risk
-  than guessing a wrong literal that hides every card — see Pitfall 4).
+- **`Отображать` value = `"1"` (RESOLVED).** Read from the canary data row this session:
+  `[КАТАЛОГ] Отображать = "1"` (auto-mapped live to "Отображать", CANARY §7; `build_canary_xlsx.py:179`
+  `out[5] = "1"`). Use the string **`"1"`** for visible. (Horoshop docs also accept `Да`/`Нет`, and
+  warn an EMPTY visibility *hides* the item — so never leave it blank on a create. `"1"` is the
+  live-proven token; use it.)
 - **Currency:** mirror `np_horoshop_file.py:218` — `sp.currency if in ("EUR","UAH") else "EUR"`.
 
 ---
@@ -303,6 +317,11 @@ discount comes from. Recommended: a small pure function in `pricing.py`, e.g.
 "price the operator approves == price emitted" invariant (`pricing.py:186-198`) and avoids the P-3
 divergence bug class. If a refactor is too invasive for this phase, the builder may inline steps 1–4
 (all pure) — but a shared helper is the correct K2/K3 move.
+
+**Worked example (real, from the canary):** HURAKAN HKN-PICO12M, retail 845 EUR, supplier `per_brand`
+discount 15% on HURAKAN, min-margin clamp did NOT fire (margin ≥ 500 ₴) → `[КАТАЛОГ] Цена = 718.3`,
+`[КАТАЛОГ] Старая цена = 845.0`, `[КАТАЛОГ] Валюта = EUR` (CANARY §3 v3 table). The unmatched path
+above reproduces these exact numbers for a SP that simply has no match yet.
 
 **Where discount lives (verified in models):**
 - Per-supplier default: **`Supplier.discount_percent`** (Float, `supplier.py:37`; read at
@@ -368,7 +387,9 @@ discriminator). Tunables: `SCORE_CUTOFF=60`, `MATCH_LIMIT=3`, `MODEL_BOOST_POINT
 
 **Confidence: MEDIUM.** The approach is sound and reuses proven primitives; real quality depends on
 how cleanly brands cluster into single categories in the export. The sample run (step 5) converts
-this to a defensible recommendation — do it.
+this to a defensible recommendation — do it. Note: because the export `Раздел` values are existing
+Horoshop categories, every analogy-assigned category is guaranteed to already exist (no
+"missing category" import error) — only the fallback constant needs to be pre-created in admin.
 
 ### `kodaki_adapter.py` + `Кодаки поставщик категории.xlsx` — reusable prior art?
 
@@ -391,8 +412,8 @@ this to a defensible recommendation — do it.
 
 | Strategy | How | Pros | Cons | Verdict |
 |---|---|---|---|---|
-| **(a) Analogy from export (no AI)** | brand-block + name token similarity vs export `Раздел` corpus (Q4) | zero external deps; deterministic; testable; uses live category truth | quality varies; needs threshold tuning; weak when brand spans many categories or SP brand empty | **BUILD — default tier 1** |
-| **(b) Safe holding-category fallback** | one constant category (e.g. «Новые товары / на разбор») for low-confidence / no-analogy rows | lowest risk; guarantees every row has a Раздел (REQ-03); Yana re-sorts in admin | extra manual re-sort step | **BUILD — default tier 2 (always present)** |
+| **(a) Analogy from export (no AI)** | brand-block + name token similarity vs export `Раздел` corpus (Q4) | zero external deps; deterministic; testable; uses live category truth; categories guaranteed to exist | quality varies; needs threshold tuning; weak when brand spans many categories or SP brand empty | **BUILD — default tier 1** |
+| **(b) Safe holding-category fallback** | one constant category (e.g. «Новые товары / на разбор») for low-confidence / no-analogy rows | lowest risk; guarantees every row has a Раздел (REQ-03); Yana re-sorts in admin | extra manual re-sort step; the constant must be pre-created in Horoshop | **BUILD — default tier 2 (always present)** |
 | **(c) AI (NVIDIA free)** | give model the existing category list + product name/desc → classify into a leaf | handles no-brand / novel items; potentially higher accuracy than fuzzy | external dep + key + latency + 40 RPM cap; non-determinism; must validate | **RESEARCH + PROPOSE ONLY — Yana-gated** |
 
 ### AI option design (NVIDIA `build.nvidia.com`)
@@ -527,9 +548,11 @@ unmatched = db.session.execute(
 
 ### New files (mirror existing, don't reinvent)
 1. **`app/services/add_horoshop_file.py`** — the create-file builder. Mirror `np_horoshop_file.py` /
-   `maresto_horoshop_file.py`: module-level `[КАТАЛОГ]`-prefixed `HEADERS` constant (now *with*
-   `Название (UA/RU)`, `Бренд`, `Отображать`, and the category header constant), pure `_shape_rows()`,
-   pure `_workbook_bytes()`, read-only `_query_unmatched(supplier_id, brands)`, and
+   `maresto_horoshop_file.py`: module-level `[КАТАЛОГ]`-prefixed `HEADERS` constant — the NP eight
+   (`Артикул`, `[КАТАЛОГ] Цена/Старая цена/Валюта/Наличие/Галерея/Описание товара (UA)/(RU)`) **plus**
+   `[КАТАЛОГ] Название (UA)`, `[КАТАЛОГ] Название (RU)`, `[КАТАЛОГ] Бренд`, `[КАТАЛОГ] Отображать`, and
+   the category constant `H_CATEGORY = "[КАТАЛОГ] Раздел"` (single switchable constant). Pure
+   `_shape_rows()`, pure `_workbook_bytes()`, read-only `_query_unmatched(supplier_id, brands)`, and
    `build_add_file(supplier_id, selected_brands, export_path, *, np_feed_path=None) -> (bytes,
    manifest)`. Sheet `Worksheet`. Key = bare `Артикул` from `sp.article`; skip+report empty article.
 2. **`app/services/category_resolver.py`** — strategy interface + `analogy` + `fallback` (+ `ai`
@@ -548,12 +571,12 @@ unmatched = db.session.execute(
 [КАТАЛОГ] Название (UA)          = sp.name
 [КАТАЛОГ] Название (RU)          = "" (NP feed has no name col; D2)
 [КАТАЛОГ] Бренд                  = sp.brand
-[КАТАЛОГ] Раздел  (or categories_uk/_ru — empirically decide)  = resolver.resolve(sp).category
+[КАТАЛОГ] Раздел                 = resolver.resolve(sp).category   # qualified Horoshop name, NOT categories_uk
 [КАТАЛОГ] Цена                  = f"{price_eur:.1f}"     # Q3
 [КАТАЛОГ] Старая цена            = oldprice or ""         # Q3 (retail when discounted)
 [КАТАЛОГ] Валюта                 = sp.currency in {EUR,UAH} else EUR
 [КАТАЛОГ] Наличие                = "В наличии"/"Нет в наличии"   # from sp.available (bool)
-[КАТАЛОГ] Отображать             = <visible literal from canary>  # or omit if literal unknown
+[КАТАЛОГ] Отображать             = "1"                    # live-proven visible token (CANARY §7)
 [КАТАЛОГ] Галерея                = ";".join(photos)       # sp.images JSON / NP feed photos
 [КАТАЛОГ] Описание товара (UA)   = sp.description / NP feed desc_uk
 [КАТАЛОГ] Описание товара (RU)   = NP feed description_ru  # D2
@@ -565,7 +588,8 @@ helper only because they had a match; no match here).
 ### Category strategy recommendation
 Default **chain `analogy` → `fallback`** (add `mapping` only if Yana supplies a clean table), AI
 **disabled** (stubbed behind the interface). Resolve at **generate-time** from the uploaded export.
-Produce the real-data analogy sample table for Yana (REQ-06).
+Produce the real-data analogy sample table for Yana (REQ-06). Pre-create the fallback holding-category
+in Horoshop (the importer won't create missing categories).
 
 ### Persist vs generate-time recommendation
 **Generate-time read of the export. No PromProduct schema migration.** (Q6.)
@@ -587,24 +611,28 @@ logic is the category resolver — and even that reuses matcher primitives.
 
 ## Common Pitfalls
 
-1. **Wrong category header → cards land in wrong/no section.** Export says `Раздел`; the only
-   live-proven import used `categories_uk`/`_ru`. **Decide empirically with a 1–2 row canary (Yana's
-   hand)** before any bulk import. Make the header a single switchable constant.
-2. **UA vs RU header locale.** The export is **Russian** (`Раздел`, `Отображать`, `Цена`). Use RU
+1. **Wrong category header → cards land in wrong/no section.** Use **`[КАТАЛОГ] Раздел`** (the
+   qualified Horoshop name); do NOT use `categories_uk`/`_ru` — those are np.com.ua export codes that
+   Horoshop maps to "do not import" (CANARY §7). Confirm with a 1–2 row canary before bulk; keep the
+   header a single switchable constant.
+2. **Category that doesn't exist in Horoshop → row errors.** The importer does NOT create missing
+   categories. Analogy copies existing categories (safe); the fallback constant must be pre-created in
+   admin. Category value format = `Cat/Sub/Sub`, case-sensitive, no extra spaces.
+3. **UA vs RU header locale.** The export is **Russian** (`Раздел`, `Отображать`, `Цена`). Use RU
    leaf names (the proven canary did) — don't emit UA `Розділ`/`Відображати`.
-3. **Empty `sp.article` → uncreatable row.** Skip + report (mirror `np_parser` /
+4. **Empty `sp.article` → uncreatable row.** Skip + report (mirror `np_parser` /
    `maresto_horoshop_file` `skipped_no_artikul`). The key for a *create* is the supplier article, not
    a PromProduct external_id.
-4. **Wrong `Отображать` literal → every new card hidden.** Don't guess; read it from the canary data
-   row, or omit the column and rely on Horoshop's default.
-5. **Reusing the full matcher pipeline for analogy → over-rejection.** Its price/voltage gates reject
+5. **Empty/blank `Отображать` → every new card hidden.** Horoshop hides items with empty visibility.
+   Use the live-proven token **`"1"`**; never leave it blank.
+6. **Reusing the full matcher pipeline for analogy → over-rejection.** Its price/voltage gates reject
    same-category items. Use only the brand block + token similarity.
-6. **Mutating DB on generate → breaks read-only invariant (REQ-04).** Don't set `needs_catalog_add`
+7. **Mutating DB on generate → breaks read-only invariant (REQ-04).** Don't set `needs_catalog_add`
    on generate unless Yana asks.
-7. **Prod DB.** Any sample/test run must be LOCAL sqlite; abort if the URL contains
+8. **Prod DB.** Any sample/test run must be LOCAL sqlite; abort if the URL contains
    `rlwy|railway|postgres|psycopg` (CLAUDE.md #10/#13; `scripts/generate_maresto_availability.py`
    guard; `app/__init__.py:20-31` `TESTING=1`+prod → RuntimeError).
-8. **Corrupt input files on disk.** `horoshop-export-extended.xlsx` and `Кодаки поставщик
+9. **Corrupt input files on disk.** `horoshop-export-extended.xlsx` and `Кодаки поставщик
    категории.xlsx` are corrupt (no sharedStrings). Use `horoshop-export 20.05.26.xlsx`; ignore the
    Kodaki categories file unless Yana re-exports it cleanly.
 
@@ -653,16 +681,21 @@ def _workbook_bytes(rows, HEADERS):
 
 ## Open Questions
 
-1. **Category import header — `[КАТАЛОГ] Раздел` vs `categories_uk`/`categories_ru`.** Export uses
-   `Раздел`; the only live-proven import used `categories_uk`/`_ru` (and that file came from a real
-   Horoshop dealer export, so `categories_uk` is known-good). *Recommendation:* default to
-   `categories_uk`(+`categories_ru`) as a single switchable constant; Yana runs a 1–2 row canary to
-   confirm before bulk. (MEDIUM)
-2. **`Отображать` visible literal.** Need the exact string. *Recommendation:* read the canary data row
-   at plan time; else omit and rely on default. (LOW until canary row read)
+1. **Category import header = `[КАТАЛОГ] Раздел` (RESOLVED, but never exercised with a value).**
+   Evidence: only `[КАТАЛОГ] <leaf>` qualified names auto-map; the canary's `categories_uk`/`_ru`
+   auto-mapped to *"Не імпортувати"* (np.com.ua internal codes, not Horoshop fields) and were left
+   empty. So use `[КАТАЛОГ] Раздел`. *Residual:* the canary never actually pushed a category value, so
+   confirm with a 1–2 row canary (Yana's hand) that a real `[КАТАЛОГ] Раздел` value lands the card in
+   the right section before bulk. Keep the header a single switchable constant. (HIGH on the header
+   choice; the end-to-end push is unexercised.)
+2. **`Отображать` visible literal = `"1"` (RESOLVED).** Read from the canary. Use `"1"`; never leave
+   blank (empty hides the card per Horoshop docs).
 3. **`ANALOGY_CUTOFF` value + real quality.** *Recommendation:* start at 60 (matcher's cutoff), tune
    on the real-data sample run; that run is the deliverable for Yana. (MEDIUM)
-4. **Clean Kodaki category table?** Current file corrupt. If Yana re-exports, evaluate as a `mapping`
+4. **Do all assigned categories already exist in Horoshop?** Horoshop won't create missing categories
+   on import. Analogy copies existing ones (safe by construction); the **fallback** holding-category
+   must be one Yana created in admin first. Flag for the plan. (MEDIUM)
+5. **Clean Kodaki category table?** Current file corrupt. If Yana re-exports, evaluate as a `mapping`
    tier. (Deferred)
 
 ## Environment Availability
@@ -696,7 +729,7 @@ are corrupt — use `horoshop-export 20.05.26.xlsx`; not blocking.)
 | Req | Behavior | Type | Automated command | File exists? |
 |---|---|---|---|---|
 | REQ-01 | picker lists unmatched, filters by supplier+brand, login_required | view | `pytest tests/test_views_add_horoshop.py -x` | ❌ Wave 0 |
-| REQ-02 | builder emits all create columns incl. category, correct `[КАТАЛОГ]` headers, sheet `Worksheet` | unit | `pytest tests/test_add_horoshop_file.py -x` | ❌ Wave 0 |
+| REQ-02 | builder emits all create columns incl. `[КАТАЛОГ] Раздел` + `Отображать="1"`, correct headers, sheet `Worksheet` | unit | `pytest tests/test_add_horoshop_file.py -x` | ❌ Wave 0 |
 | REQ-02 | price/oldprice for unmatched SP correct (flat / per_brand / clamp / UAH) | unit | `pytest tests/test_add_horoshop_file.py -k pricing -x` | ❌ Wave 0 |
 | REQ-03 | every row has a category (analogy hit or fallback); threshold honored | unit | `pytest tests/test_category_resolver.py -x` | ❌ Wave 0 |
 | REQ-04 | builder/query writes nothing to DB | unit | `pytest tests/test_add_horoshop_file.py -k readonly -x` | ❌ Wave 0 |
@@ -708,7 +741,7 @@ are corrupt — use `horoshop-export 20.05.26.xlsx`; not blocking.)
 - **Phase gate:** full suite green before `/gsd:verify-work`.
 
 ### Wave 0 Gaps
-- [ ] `tests/test_add_horoshop_file.py` — builder shape, headers, pricing, availability, read-only (REQ-02/04)
+- [ ] `tests/test_add_horoshop_file.py` — builder shape, headers (incl. `[КАТАЛОГ] Раздел` + `Отображать="1"`), pricing, availability, read-only (REQ-02/04)
 - [ ] `tests/test_category_resolver.py` — analogy block+rank, fallback, threshold, source/confidence (REQ-03)
 - [ ] `tests/test_views_add_horoshop.py` — picker GET + generate POST, login_required (REQ-01)
 - [ ] Reuse existing `tests/conftest.py` fixtures (no new framework install needed)
@@ -736,8 +769,13 @@ are corrupt — use `horoshop-export 20.05.26.xlsx`; not blocking.)
 ### Primary (HIGH — read from disk this session)
 - `horoshop-export 20.05.26.xlsx` + `horoshop-export 13.05.26.xlsx` (openpyxl) — 59-col export schema;
   category = `Раздел` (col 8), visibility = `Отображать` (col 12).
-- `.planning/plans/np-feed/canary-HKN-PICO12M.xlsx` — live-proven `[КАТАЛОГ] ` import dialect:
-  `categories_uk`/`categories_ru`, `[КАТАЛОГ] Отображать`, sheet `Worksheet`.
+- `.planning/plans/np-feed/canary-HKN-PICO12M.xlsx` — live-proven `[КАТАЛОГ] ` import dialect (header
+  + data row): `[КАТАЛОГ] Отображать="1"`, `Цена=718.3`, `Старая цена=845.0`, `Валюта=EUR`,
+  `Наличие="В наличии"`, `Бренд=HURAKAN`; `categories_uk`/`_ru` blank (np.com.ua codes, "do not
+  import"). Sheet `Worksheet`.
+- `.planning/plans/np-feed/CANARY-IMPORT-GUIDE.md` §7 + `build_canary_xlsx.py` — proves auto-map
+  ruleset (11/12), `Отображать="1"`, and that `categories_*`/`attr_*` are np.com.ua internal codes
+  mapped to "do not import".
 - `horoshop-import-mini-5.xlsx` — bare-header update-file example.
 - `app/services/np_horoshop_file.py` (261 ln) — builder template, proven headers, read-only query.
 - `app/services/maresto_horoshop_file.py` (195 ln) — sibling builder; confirms `[КАТАЛОГ]` pattern,
@@ -758,26 +796,30 @@ are corrupt — use `horoshop-export 20.05.26.xlsx`; not blocking.)
 - `app/services/matcher.py` — thresholds + reusable primitive inventory.
 - `.planning/RESEARCH-horoshop-availability-and-new-offers.md` — create requires SKU+Назва+Розділ.
 
-### Secondary (MEDIUM)
+### Secondary (MEDIUM — verified via WebSearch)
+- help.horoshop.ua "Importing products from a file" / "Preparing files" (via two WebSearches):
+  required fields = Артикул + Название + Раздел; `Отображать` ∈ {Да, Нет}, EMPTY hides the item;
+  category format `Cat/Sub/Sub`, case-sensitive, all categories must pre-exist.
 - NVIDIA endpoint/model (memory `reference_nvidia_build_api`) — verify at wire time.
 
-### Tertiary (LOW — needs validation / blocked)
-- Live help.horoshop docs page — blocked by cyclic language redirect; required-fields rule taken from
-  prior research.
+### Tertiary (LOW — blocked / unknown)
+- Live help.horoshop docs page direct fetch — blocked by cyclic language redirect + TLS altname
+  error; content covered via WebSearch + prior research instead.
 - `Кодаки поставщик категории.xlsx` — corrupt (no sharedStrings), shape unknown.
-- Canary `[КАТАЛОГ] Отображать` data-cell literal — read at plan time.
 
 ## Metadata
 
 **Confidence breakdown:**
-- Create schema / category+visibility headers: **HIGH** (read from disk). One empirical detail — which
-  category header the importer keys on for a create — is **MEDIUM** (resolve via canary).
-- Price path for unmatched SP: **HIGH** (pure functions + all model fields verified).
+- Create schema / category+visibility headers: **HIGH** (read from disk + canary data row + CANARY
+  guide; `[КАТАЛОГ] Раздел` + `Отображать="1"` resolved). Residual: a real category value never
+  pushed end-to-end → confirm via 1–2 row canary.
+- Price path for unmatched SP: **HIGH** (pure functions + all model fields verified; reproduces the
+  canary's real 718.3/845.0/EUR numbers).
 - Filter/query design: **HIGH** (direct inversion of verified NP queries; enum verified).
 - Models/builders/adapters: **HIGH** (all read this session).
 - Category-by-analogy: **MEDIUM** (sound + reuses primitives; quality needs the real-data sample).
 - Kodaki prior-art reuse: **resolved NO** (adapter is feed-format; categories file corrupt).
 
 **Research date:** 2026-05-30
-**Valid until:** ~2026-06-29 (stable internal code). Re-verify the category import header empirically
-before any live import; re-verify the NVIDIA endpoint/model if/when AI is enabled.
+**Valid until:** ~2026-06-29 (stable internal code). Confirm the `[КАТАЛОГ] Раздел` category push with
+a 1–2 row canary before any bulk import; re-verify the NVIDIA endpoint/model if/when AI is enabled.
