@@ -823,3 +823,66 @@ are corrupt — use `horoshop-export 20.05.26.xlsx`; not blocking.)
 **Research date:** 2026-05-30
 **Valid until:** ~2026-06-29 (stable internal code). Confirm the `[КАТАЛОГ] Раздел` category push with
 a 1–2 row canary before any bulk import; re-verify the NVIDIA endpoint/model if/when AI is enabled.
+
+---
+
+## ADDENDUM — second-pass verification (2026-05-30, independent re-research)
+
+A second researcher independently re-ran this phase against disk/code and **confirms every
+load-bearing fact above** (exact headers `Раздел`/`Отображать`; canary = UPDATE not create so
+category-required still holds; `[КАТАЛОГ] Раздел` + `Отображать="1"`; duck-typed unmatched pricing;
+generate-time over persist; **no live Alembic** — `app/__init__.py:216` `db.create_all()` + the
+`scripts/migrate_add_*.py` (+ `_pg`) idempotent-ALTER pattern; NOT-EXISTS unmatched query; matcher
+primitives reusable but the full pipeline over-rejects for category use). One **material new finding**
+revises Q2/Q4/D2; one minor correction follows.
+
+### ★ NEW: the NP feed self-contains category AND RU name (revises Q4/Q2/D2 for NP)
+
+Reading the **full NP dealer-export** `.planning/plans/np-feed/np-feed.xlsx` (sheet `Worksheet`, 24
+cols) — NOT the narrow extract `np_parser` currently reads — its header row contains, beyond the
+columns `np_parser` takes today:
+
+```
+title_uk        ← name UA   (e.g. "Льодогенератор заливного типу Hurakan HKN-IMC25, кубик")
+title_ru        ← name RU   (e.g. "Ледогенератор заливного типа Hurakan HKN-IMC25, кубик")
+categories_uk   ← CATEGORY UA path (e.g. "Холодильне обладнання/Льодогенератори")
+categories_ru   ← CATEGORY RU path (e.g. "Холодильное оборудование/Льдогенераторы")
+attr_brend_uk   ← brand
+```
+
+**Why this matters:** for **NP — the ~205-item bucket, i.e. the bulk of this phase's work — category,
+name UA, and name RU all come straight from the feed. No analogy is needed for NP.** Analogy
+(Q4) is only required for **non-NP suppliers** whose feeds carry no Horoshop category.
+
+**Reconciling with this doc's Q1/canary analysis:** Q1 correctly says the canary's `categories_uk`
+column auto-mapped to *"do not import"* **as a column in the import file** (it's np.com.ua's own export
+header, not the qualified `[КАТАЛОГ] Раздел`). That remains true. The new point is orthogonal: the
+feed's `categories_uk` still holds a real category **string value** the builder can READ and place
+into the `[КАТАЛОГ] Раздел` column it emits. So the NP path is: read `categories_uk` from the feed →
+write it into `[КАТАЛОГ] Раздел`. (Same idea this doc already uses for desc/photos via `np_parser`.)
+
+**⚠️ Caveat (verification step for the plan):** the NP feed's top-level category wording differs
+slightly from the store's `Раздел` tree. Feed: `Холодильне обладнання/Льодогенератори`. Store export
+(Q1 col 8): `Холодильне та морозильне обладнання/Льодогенератори`. Per Q2/Pitfall 2, Horoshop will
+NOT create a missing category — a feed path that doesn't exactly match an existing store category
+would error or mis-place the card. So for NP the plan must either (a) reconcile feed→store category
+paths (a small lookup/normalization, or run the same analogy over the feed category text), or
+(b) treat NP feed category as a strong *hint* fed into the analogy/fallback resolver rather than
+pushed verbatim. **Recommend:** include a one-shot reconciliation report (distinct `categories_uk`
+feed values vs distinct store `Раздел` values) in the plan and surface the delta to Yana before bulk.
+
+### Minor correction
+- D2 / Q2 / Q4 state "NP feed has no name column / `name_ru` blank for NP." Accurate for the **current
+  `np_parser`** (it reads only article/brand/desc/desc_ru/photos), but **not for the raw feed**, which
+  has `title_uk`/`title_ru`. The plan should **extend `np_parser.parse_np_feed`** to also surface
+  `title_uk`, `title_ru`, and `categories_uk` (the columns exist; add positional reads + keep the
+  header sanity-check). Then NP create-rows get name UA+RU from the feed (better than blank RU name).
+
+### Net effect on the recommendation
+- Category resolver gains a **tier 0 = feed category** ahead of `analogy` → `fallback`:
+  `feed_category? → analogy → fallback` (still AI-gated). For NP, tier 0 resolves most rows (after the
+  reconciliation check); analogy carries non-NP suppliers; fallback guarantees REQ-03 for everyone.
+- Everything else in this document stands as written and verified.
+
+**Addendum confidence:** HIGH on the feed columns (read the actual header + a data row from
+`np-feed.xlsx`); MEDIUM on feed↔store category exact-match rate (needs the reconciliation report).
