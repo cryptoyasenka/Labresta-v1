@@ -22,11 +22,14 @@ AI опционально — **research+предложение, вслепую 
 
 ### Прогресс ночного прогона
 - [x] discuss-doc (09-CONTEXT.md) + ветка + CURRENT обновлён
-- [ ] research (CREATE-схема из экспортов + политика категории + AI-опция) → 09-RESEARCH.md
-- [ ] plan (09-01-PLAN.md ядро, 09-02 категория) → plan-check
-- [ ] execute ядро (UI выбор + builder + тесты)
-- [ ] категория: baseline аналогия + fallback (+ тест на реальных данных = «проверь теорию»)
+- [x] research → 09-RESEARCH.md (888 стр; `[КАТАЛОГ] Раздел` ОБЯЗАТЕЛЬНА, generate-time без миграции, цепочка feed→analogy→fallback)
+- [x] plan: 09-01-PLAN (ядро, 4 задачи, fallback-resolver → валидный файл) + 09-02-PLAN (умная категория, 7 задач, Task7=checkpoint решения Yana)
+- [ ] plan-check (gsd-plan-checker) ← СЕЙЧАС (idempotent: если вердикт уже есть → к executor)
+- [ ] execute ядро 09-01 (builder add_horoshop_file.py + price_unmatched + fallback resolver + пикер /feeds/add + тесты)
+- [ ] категория: feed_category(НП) + аналогия + fallback (+ прогон на реальных данных = «проверь теорию»)
 - [ ] verify + предложение по категории для Yana
+
+**Поправки research к CONTEXT:** Alembic НЕТ (db.create_all + ручные `scripts/migrate_add_*.py`); НП-фид сам несёт `title_uk/ru`+`categories_uk/ru` (np_parser их не читает); цена непривязанного = `resolve_discount_percent(None,supplier,brand)`→`clamp_discount_for_min_margin`→`calculate_price_eur(price_cents,eff_d)`; канон-схема `horoshop-export 26.05.26.xlsx`; ключ create=`sp.article`; видимость `Отображать`="1".
 
 ---
 

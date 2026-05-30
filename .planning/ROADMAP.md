@@ -22,6 +22,7 @@
 - [x] **Phase 5: Cleanup and UX Fixes** - Remove dead code, fix notification bell for operators, load notifications.js globally
 - [x] **Phase 6: Excel Supplier Support** - Add Excel/Google Sheets as supplier feed type with parsing and sync pipeline integration
 - [x] **Phase 7: Matching and Pricing Enhancements** - Activate MatchRule auto-apply during sync, add per-product discount UI
+- [ ] **Phase 9: Add Unmatched Products to Horoshop** - Select supplier products with no live card and generate a native-Horoshop XLSX that creates them as new cards (content + price + category)
 
 ## Phase Details
 
@@ -71,10 +72,27 @@ Plans:
 - [x] 07-01-PLAN.md — MatchRule auto-apply in sync pipeline with TDD (rule_matcher.py + pipeline integration + review.html rule indicator)
 - [x] 07-02-PLAN.md — Per-product discount UI (AJAX endpoint, discount column, detail panel input with live price preview)
 
+### Phase 9: Add Unmatched Products to Horoshop (new-card create file)
+**Goal**: A logged-in operator can select supplier products that have no confirmed/manual match and download a native-Horoshop XLSX that CREATES them as new cards (name UA+RU, price, discount, availability, description UA+RU, photos, Артикул, brand, visibility, and category Раздел), with category resolved by feed → analogy → fallback and an AI tier shipped disabled for Yana to evaluate.
+**Depends on**: Phase 7
+**Requirements**: REQ-01, REQ-02, REQ-03, REQ-04, REQ-05, REQ-06
+**Success Criteria** (what must be TRUE):
+  1. Operator opens a page, filters unmatched products by supplier + brand, ticks rows, and downloads a native-Horoshop XLSX
+  2. The XLSX on a "New products: Import" run creates cards carrying name, price, discount (old price), availability, description (UA+RU where the feed has it), photos, Артикул, brand, visibility, and a Раздел for every row
+  3. Every row has a category (feed/analogy where confident, fallback otherwise) — no row missing the required Раздел
+  4. Builder is read-only over the DB; no live import is performed by the app (Yana's hand + backup)
+  5. Tests pass (`./.venv/Scripts/python.exe -m pytest`), mirroring existing builder tests
+  6. A written category proposal (analogy vs AI vs hybrid) + real-data evidence is left for Yana; AI not enabled without her go-ahead
+**Plans**: 2 plans (Wave 1: 09-01 core; Wave 2: 09-02 smart category)
+
+Plans:
+- [ ] 09-01-PLAN.md — CORE: unmatched-products picker (/feeds/add) + native create-file builder (add_horoshop_file.py) + fallback-only category_resolver + unit/endpoint tests; yields an importable file on its own
+- [ ] 09-02-PLAN.md — SMART CATEGORY: extend np_parser (title/category), export Раздел corpus reader, feed→analogy→fallback resolvers + disabled AI stub, real-data evidence audit script, CATEGORY-PROPOSAL.md (ends at Yana decision checkpoint)
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 5 → 6 → 7
+Phases execute in numeric order: 5 → 6 → 7 → 9
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
@@ -85,6 +103,7 @@ Phases execute in numeric order: 5 → 6 → 7
 | 5. Cleanup and UX Fixes | v1.1 | 2/2 | Complete | 2026-03-01 |
 | 6. Excel Supplier Support | v1.1 | 2/2 | Complete | 2026-03-01 |
 | 7. Matching and Pricing Enhancements | v1.1 | 2/2 | Complete | 2026-04-10 |
+| 9. Add Unmatched Products to Horoshop | v1.1 | 0/2 | Planned | — |
 
 ---
 *Full v1.0 details: milestones/v1.0-ROADMAP.md*
