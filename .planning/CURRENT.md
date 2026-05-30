@@ -132,7 +132,7 @@ YML-экспорт Horoshop (`labresta.com.ua/content/export/…xml`, 9.5 МБ, 
 
 ### ⏳ Осталось ЗА YANA (не код)
 1. ✅ Механизм проверен (preview артикул 1156682931 Rational → «Під замовлення», колонка auto-map).
-2. Bulk-импорт `instance/maresto_availability.xlsx` (Артикул+Цена+Старая цена+Валюта+Наличие; партиальный — цена+наличие) + **backup ПЕРЕД импортом**. Рука Yana (feedback_labresta_live_import).
+2. Bulk-импорт `instance/maresto_availability.xlsx` (Артикул+Цена+Старая цена+Валюта+Наличие; партиальный — цена+наличие) + **backup ПЕРЕД импортом**. Рука Yana (feedback_labresta_live_import). ✅ Файл **свежерегенерирован + проверен 2026-05-30** (849 строк: 453/347/49, заголовки и статусы корректный UTF-8). ⚠️ Фид MARESTO дал 429 (rate-limit) → данные с прошлого синка; для самых свежих чисел перезапустить `generate_maresto_availability.py` без `--no-fetch` позже.
 3. Прод: `stock_status` NULL (фид 403) — фича локальная by design. Авто на проде = отдельная задача.
 4. ❌ YML-путь для именованного статуса ИСКЛЮЧЁН (см. YML-РАЗВЕДКА ↑): Horoshop YML бинарный → используем Excel.
 
