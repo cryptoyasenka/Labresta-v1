@@ -1,6 +1,6 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
-## 🟢 АКТИВНО (2026-05-30, ночной режим) — Phase 9: добавление НЕпривязанных товаров в Хорошоп
+## 🟢 АКТИВНО (2026-05-31, ночной режим) — Phase 9: добавление НЕпривязанных товаров в Хорошоп
 
 **Запрос Yana:** выбрать в матчере товары БЕЗ матча → сгенерить файл для ДОБАВЛЕНИЯ их новыми
 карточками в Хорошоп (всё: название/цена/скидка/наличие/описание/фото). Пройти через GSD ночью.
@@ -27,8 +27,8 @@ AI опционально — **research+предложение, вслепую 
 - [x] plan-check → `09-PLAN-CHECK.md` (в main-потоке: 1-й сабагент-чекер thrash'нул контекст, агента ae1727b НЕ возобновлять). Вердикт: **09-01 PASS / 09-02 PASS-WITH-FLAGS**. Анкоры (pricing/matcher/feed/np_horoshop) grep-проверены — символы реальны, строки совпадают.
 - [x] execute ядро 09-01 ✅ (builder `add_horoshop_file.py` + `price_unmatched` + fallback `category_resolver` + пикер `/feeds/add` + 36 тестов). MINOR-A вшит (`_query_unmatched` → пары `(sp, row_input)`). Коммиты: `a90af42` (T0 red) → `0a319f7` (T1 builder) → `71849a1` (T2 resolver) → `e9b69e8` (T3 view). Полный набор: **814 passed, 2 skipped**. Summary: `09-01-SUMMARY.md`.
 - [x] execute 09-02 умная категория ✅ T1–T6 (2026-05-31): np_parser title/category (`1b4def4`) → category_export corpus-reader (`514506d`) → feed/analogy/AI-stub резолверы (`ae92685`) → wire chain+FLAG-1/2 в build_add_file+feed.py+шаблон (`df626e0`) → evidence-скрипт (`7c95c07`) → CATEGORY-PROPOSAL.md (`2b07378`). FLAG-1+FLAG-2 вшиты, MINOR-B проверен (у НП нет колонки name_ru, description пуст → RU/desc из фида). Audit над 320 непривязанными НП: feed 40.6% / analogy 54.7% / fallback 4.7%; 50/76 feed-категорий НЕ сматчились в дерево (полный список в proposal). Полный набор **835 passed, 2 skipped**. Summary: `09-02-SUMMARY.md`. AI OFF, в main НЕ влито, импорт НЕ делался.
-- [ ] **T7 = РЕШЕНИЕ YANA (БЛОКЕР, см. STATE #16)** ← СЛЕДУЮЩИЙ: стратегия категории — **ship-no-ai** (feed→analogy→fallback, рекоменд. первой) / **enable-ai** (NVIDIA-тир, НЕ построен: флип+реализация+тесты) / **mapping-table** (~50 feed-категорий → ярлыки магазина) + подтвердить канарейку 1–2 строки `[КАТАЛОГ] Раздел` перед bulk-импортом (рука Yana + backup, инвариант #13). Доки: `.planning/phases/09-add-unmatched-to-horoshop/CATEGORY-PROPOSAL.md`.
-- [ ] verify (gsd-verifier) → 09-VERIFICATION.md (после решения Yana по T7)
+- [ ] **T7 = РЕШЕНИЕ YANA (БЛОКЕР, см. STATE #16)** ← ЕДИНСТВЕННОЕ открытое (вся автономная работа GSD закрыта: discuss→research→plan→plan-check→execute→verify ✅): стратегия категории — **ship-no-ai** (feed→analogy→fallback, рекоменд. первой) / **enable-ai** (NVIDIA-тир, НЕ построен: флип+реализация+тесты) / **mapping-table** (~50 feed-категорий → ярлыки магазина) + подтвердить канарейку 1–2 строки `[КАТАЛОГ] Раздел` перед bulk-импортом (рука Yana + backup, инвариант #13). Доки: `.planning/phases/09-add-unmatched-to-horoshop/CATEGORY-PROPOSAL.md`.
+- [x] verify (gsd-verifier) ✅ 2026-05-31 → `09-VERIFICATION.md`. Вердикт **PASS-WITH-NOTES**, 9/9 деливераблов подтверждены кодом, gaps НЕТ. Полный набор перепрогнан независимо: **835 passed, 2 skipped** (24.39s). AI OFF (0 сетевых вызовов в резолверах), read-only соблюдён, git чист (без Claude-следов/секретов), в main НЕ влито, импорт НЕ делался. (verify не зависит от T7 — это goal-backward по построенному, запущен сразу после execute.)
 
 **Plan-check FLAGS (вшить при execute 09-02; НЕ блокеры 09-01):**
 - **FLAG-1:** T4 тянет из фида ТОЛЬКО категорию → НП-карточки уедут с пустым RU. Обогащать `row_input` полями `name_ru/description_ru` (+`description/name`) из распарсенного НП-фида по артикулу (D2 «RU из фида»). `SupplierProduct.description` = «(non-NP)», RU у НП только в фиде.
