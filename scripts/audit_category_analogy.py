@@ -24,6 +24,7 @@ Usage:
 
 import argparse
 import csv
+import json
 import sys
 from collections import Counter
 from pathlib import Path
@@ -60,8 +61,36 @@ def _parse_args(argv) -> argparse.Namespace:
     p.add_argument("--supplier", default=DEFAULT_SUPPLIER, help="supplier slug (default: NP)")
     p.add_argument("--np-feed", default=None, help="local NP feed .xlsx (enables the feed tier)")
     p.add_argument("--cutoff", type=float, default=DEFAULT_ANALOGY_CUTOFF, help="analogy cutoff 0..100")
+    p.add_argument(
+        "--mapping",
+        default=None,
+        help=(
+            "OPTIONAL draft feed->store category map (.json). When given, the feed "
+            "tier consults it FIRST: an exact feed-label key is rewritten to its "
+            "store-label value before reconcile, so a mapped label exact-matches the "
+            "store set and resolves at confidence 100 (Option B what-if). null values "
+            "and unmapped labels fall through to the unchanged fuzzy reconcile. OMITTED "
+            "=> behaviour is byte-for-byte the baseline. Does NOT change shipped code."
+        ),
+    )
     p.add_argument("--out", default=str(DEFAULT_OUT), help="CSV output path")
     return p.parse_args(argv)
+
+
+def _load_mapping(path: str | None) -> dict[str, str]:
+    """Load the optional feed->store draft map; keys with ``_`` prefix and null
+    values are ignored (null = genuine gap, no override → fuzzy reconcile runs).
+
+    Returns an empty dict when ``path`` is None so the default path is unchanged.
+    """
+    if not path:
+        return {}
+    raw = json.loads(Path(path).read_text(encoding="utf-8"))
+    return {
+        k.strip(): v
+        for k, v in raw.items()
+        if not k.startswith("_") and isinstance(v, str) and v.strip()
+    }
 
 
 def main(argv=None) -> int:
@@ -109,9 +138,21 @@ def main(argv=None) -> int:
         else:
             print("NP feed: none (feed tier disabled → analogy→fallback).")
 
+        # Optional Option-B draft map. When supplied, an exact feed-label key is
+        # rewritten to its store-label value HERE — before the resolver's
+        # reconcile() sees it — so a mapped label lands in the store set verbatim
+        # and FeedCategoryResolver returns it at confidence 100. Unmapped / null
+        # labels return the raw feed category, i.e. the unchanged fuzzy path.
+        mapping = _load_mapping(args.mapping)
+        if mapping:
+            print(f"Mapping: {len(mapping)} feed->store overrides loaded (Option B what-if).")
+
         def _feed_getter(sp):
             fr = feed_by_article.get((getattr(sp, "article", None) or "").strip())
-            return fr.get("category") if fr else None
+            raw = fr.get("category") if fr else None
+            if raw is None:
+                return None
+            return mapping.get(raw.strip(), raw)
 
         resolver = build_resolver(
             corpus,
@@ -170,9 +211,11 @@ def main(argv=None) -> int:
                 for r in feed_by_article.values()
                 if (r.get("category") or "").strip()
             }
+            # Apply the optional override before reconcile so the delta reflects
+            # Option B; with no mapping this is identity → baseline unchanged.
             unreconciled = sorted(
                 fc for fc in feed_cats
-                if fr_resolver.reconcile(fc).category is None
+                if fr_resolver.reconcile(mapping.get(fc, fc)).category is None
             )
             print(
                 f"\n=== FEED <-> STORE RECONCILIATION ===\n"
