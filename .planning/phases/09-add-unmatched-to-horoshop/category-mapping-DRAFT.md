@@ -121,6 +121,12 @@ fits; the chain falls through to analogy/fallback as today.
 - **Теплове обладнання/Паназійська кухня** — "Pan-Asian cuisine" is a marketing bucket, not an equipment leaf; no store equivalent. (No products in this 320-НП slice.)
 - **Холодильне обладнання/Вітрини вертикальні холодильні** (#42) — heterogeneous bucket (confectionery SW 504 + 10× upright display HKN-UPD* + tabletop RT 82 BE + cabinet RTC 237 + demo RT 82 WE); **no single store leaf fits all 13** → nulled 2026-05-31, routed to per-product analogy (re-measured: fallback stayed 0, all classified by same-brand cards).
 
+### Integrity check (2026-05-31, read-only — verified, not asserted)
+
+Checked the JSON directly against the export's **130 distinct `[КАТАЛОГ] Раздел`** values:
+- **[A] All 45 non-null targets are verbatim store labels — 0 misses.** Every Option-B category already exists in Horoshop, so no card can land in a non-existent section (invariant #13 / live-store safety).
+- **[B] All 5 nulls confirmed genuine gaps.** Keyword scans returned only false-positives: *Подрібнювачі відходів* → ice-crushers / food-cutters (not waste disposers); *Стерилізатори ножів* → knife sharpeners / knife inventory (not sterilizers); *Стерилізатори яєць* & *Паназійська кухня* → no store label at all; *#42* → only `…/Гірки-регали пристінні` (the wall-multideck label the 13 SKUs don't fit — re-confirms the null). The probe was throwaway and read-only; it changed no values.
+
 ### `UNSURE` — triaged against real audit data (2026-05-31)
 
 Triage method (read-only, baseline Option-A audit `instance/category-analogy-audit.csv` + the NP feed, prod-guard intact): for each UNSURE feed label I counted how many of the **320 unmatched НП products** actually carry it this import, and — for the affected rows — what «Раздел» the **analogy tier picked independently** (no mapping). The audit CSV carries `chosen_category`/`source`/`confidence` per article; it has no per-row feed-category column, so the feed label per article was re-joined from the NP feed (`categories_uk`). Outcome below.
