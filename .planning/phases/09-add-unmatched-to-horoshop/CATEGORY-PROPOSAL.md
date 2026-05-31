@@ -124,7 +124,7 @@ Use the chain exactly as shipped. 95.3% auto-categorised, 4.7% to the holding
 bucket for manual triage.
 
 - **Pros:** zero new dependencies, zero network, fully deterministic and
-  reproducible, already tested (835 passed). The holding bucket is small and
+  reproducible, already tested (843 passed). The holding bucket is small and
   visible — you can re-categorise those 15 in Horoshop after import.
 - **Cons:** the 45 analogy cards at 60–69 confidence are plausible-but-unverified;
   the 50 unreconciled feed categories don't benefit the feed tier yet.
@@ -164,6 +164,15 @@ suggestion, constrained to the 130 real store categories.
 **My recommendation:** ship **A** now (or **A + a 1–2 row canary** below), then
 do **B** as the next pass since НП is the durable bucket. Treat **C** as opt-in
 only if a measured residual justifies the build + network dependency.
+
+> **Update (2026-05-31) — converged & verified.** Option B is now built, wired
+> opt-in, and **measured with #42 nulled: feed 312/320 = 97.5% conf-100, analogy
+> 8, fallback 0** (no card orphaned). Integrity-checked against the export:
+> **all 45 non-null targets are verbatim store labels (0 misses), all 5 nulls are
+> genuine gaps.** UNSURE triage resolved: **#13 + #48 SKU-corroborated → CONFIRM;
+> #42 nulled** (heterogeneous SKUs — vetoable). Full suite **843 passed, 2
+> skipped**. Specifics: `category-mapping-DRAFT.md`. Your call stays A / B / C
+> (REQ-06/D3); the import remains your hand + backup (invariant #13).
 
 ---
 
