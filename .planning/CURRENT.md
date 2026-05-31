@@ -25,8 +25,8 @@ AI опционально — **research+предложение, вслепую 
 - [x] research → 09-RESEARCH.md (888 стр; `[КАТАЛОГ] Раздел` ОБЯЗАТЕЛЬНА, generate-time без миграции, цепочка feed→analogy→fallback)
 - [x] plan: 09-01-PLAN (ядро, 4 задачи, fallback-resolver → валидный файл) + 09-02-PLAN (умная категория, 7 задач, Task7=checkpoint решения Yana)
 - [x] plan-check → `09-PLAN-CHECK.md` (в main-потоке: 1-й сабагент-чекер thrash'нул контекст, агента ae1727b НЕ возобновлять). Вердикт: **09-01 PASS / 09-02 PASS-WITH-FLAGS**. Анкоры (pricing/matcher/feed/np_horoshop) grep-проверены — символы реальны, строки совпадают.
-- [ ] execute ядро 09-01 ← СЛЕДУЮЩИЙ (builder add_horoshop_file.py + price_unmatched + fallback resolver + пикер /feeds/add + тесты). **Пин MINOR-A:** `_query_unmatched` → возвращать пары `(sp, row_input)` (резолверы 09-02 видят живой SP).
-- [ ] execute 09-02 умная категория: feed_category(НП)+аналогия+fallback + AI-stub(off) + evidence-скрипт + CATEGORY-PROPOSAL. **Вшить FLAG-1+FLAG-2 в T4** (↓). T7=checkpoint Yana (СТОП).
+- [x] execute ядро 09-01 ✅ (builder `add_horoshop_file.py` + `price_unmatched` + fallback `category_resolver` + пикер `/feeds/add` + 36 тестов). MINOR-A вшит (`_query_unmatched` → пары `(sp, row_input)`). Коммиты: `a90af42` (T0 red) → `0a319f7` (T1 builder) → `71849a1` (T2 resolver) → `e9b69e8` (T3 view). Полный набор: **814 passed, 2 skipped**. Summary: `09-01-SUMMARY.md`.
+- [ ] execute 09-02 умная категория ← СЛЕДУЮЩИЙ: feed_category(НП)+аналогия+fallback + AI-stub(off) + evidence-скрипт + CATEGORY-PROPOSAL. **Вшить FLAG-1+FLAG-2 в T4** (↓). T7=checkpoint Yana (СТОП).
 - [ ] verify (gsd-verifier) → 09-VERIFICATION.md + предложение по категории для Yana
 
 **Plan-check FLAGS (вшить при execute 09-02; НЕ блокеры 09-01):**
