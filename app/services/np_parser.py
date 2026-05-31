@@ -27,6 +27,17 @@ Feed shape (np.com.ua dealer-export xlsx, sheet "Worksheet", verified 2026-05-19
                  9  (J) attr_brend_uk        → brand (for UI filtering)
                  16 (Q) description_ru       → raw HTML, passed through as-is
 
+  Additionally located by HEADER LABEL (not a fixed index — they were never read
+  by the original content-only parser and their position is not part of the
+  legacy fixed-column contract). Verified live positions 2026-05-31 are
+  title_uk=6, title_ru=15, categories_uk=8, but a label scan is used so a feed
+  column reorder cannot silently mis-read these (consistent with the col-B
+  «Артикул» header-drift guard philosophy):
+                 (label) title_uk           → name UA  (create-card name)
+                 (label) title_ru           → name RU  (create-card name, RU)
+                 (label) categories_uk      → feed category path UA
+                                              (e.g. "Холодильне обладнання/Льодогенератори")
+
 Invariants:
   - Keyed by stripped Артикул string. Empty Артикул → row skipped (cannot join);
     flagged only if the row actually carries content (description / photo).
@@ -52,6 +63,12 @@ _COL_PHOTOS = 3      # D — «[КАТАЛОГ] Фото» (';'-separated galler
 _COL_DESC_UA = 7     # H — description_uk (raw HTML)
 _COL_BRAND_UA = 9    # J — attr_brend_uk (brand, for UI filtering)
 _COL_DESC_RU = 16    # Q — description_ru (raw HTML)
+
+# Header LABELS for the name/category columns located by scan (not fixed index).
+# Lower-cased exact-match against the header row labels.
+_LBL_NAME_UA = "title_uk"
+_LBL_NAME_RU = "title_ru"
+_LBL_CATEGORY_UA = "categories_uk"
 
 _NP_SHEET = "Worksheet"
 
@@ -90,6 +107,20 @@ def _split_photos(value) -> list[str]:
     return out
 
 
+def _find_col(header, label: str) -> int | None:
+    """0-based index of the first header cell whose label == ``label`` (ci).
+
+    Returns None if no cell matches — the caller then leaves that field None
+    and emits a non-fatal warning (these columns are additive, not part of the
+    legacy fixed-column contract).
+    """
+    target = label.strip().lower()
+    for idx, cell in enumerate(header):
+        if isinstance(cell, str) and cell.strip().lower() == target:
+            return idx
+    return None
+
+
 def parse_np_feed(file_path: str) -> tuple[dict[str, dict], list[str]]:
     """Parse an NP dealer-export xlsx into an article-keyed content map.
 
@@ -97,9 +128,12 @@ def parse_np_feed(file_path: str) -> tuple[dict[str, dict], list[str]]:
         file_path: Path to the downloaded NP native-Horoshop .xlsx.
 
     Returns:
-        ``(content, errors)`` where content maps
-        ``article -> {"brand", "description", "description_ru", "photos": [url]}``
-        and errors is a list of human-readable warnings. On header drift the
+        ``(content, errors)`` where content maps ``article -> {"brand",
+        "description", "description_ru", "photos": [url], "name", "name_ru",
+        "category"}`` and errors is a list of human-readable warnings. The
+        name/name_ru/category fields come from the title_uk/title_ru/
+        categories_uk columns (located by header label); a missing label leaves
+        that field None with a non-fatal warning. On col-B header drift the
         content is empty and errors holds a single abort message.
     """
     wb = openpyxl.load_workbook(file_path, read_only=True, data_only=True)
@@ -125,6 +159,23 @@ def parse_np_feed(file_path: str) -> tuple[dict[str, dict], list[str]]:
             f"expected 'Артикул'. Aborting — fixed column indices can't be trusted."
         ]
 
+    # Locate the name/category columns by header label (additive — not part of
+    # the legacy fixed-index contract). A missing label is non-fatal: that field
+    # stays None and a warning is appended, while brand/desc/photo keep working.
+    col_name_ua = _find_col(header, _LBL_NAME_UA)
+    col_name_ru = _find_col(header, _LBL_NAME_RU)
+    col_category = _find_col(header, _LBL_CATEGORY_UA)
+    for label, col in (
+        (_LBL_NAME_UA, col_name_ua),
+        (_LBL_NAME_RU, col_name_ru),
+        (_LBL_CATEGORY_UA, col_category),
+    ):
+        if col is None:
+            errors.append(
+                f"NP feed missing optional column {label!r} — that field "
+                f"will be None (brand/desc/photos unaffected)."
+            )
+
     for row_idx, row in enumerate(rows, start=2):  # header consumed = row 1
         article_raw = _cell(row, _COL_ARTICLE)
         article = str(article_raw).strip() if article_raw is not None else ""
@@ -144,6 +195,9 @@ def parse_np_feed(file_path: str) -> tuple[dict[str, dict], list[str]]:
             "description": _clean_text(_cell(row, _COL_DESC_UA)),
             "description_ru": _clean_text(_cell(row, _COL_DESC_RU)),
             "photos": _split_photos(_cell(row, _COL_PHOTOS)),
+            "name": _clean_text(_cell(row, col_name_ua)) if col_name_ua is not None else None,
+            "name_ru": _clean_text(_cell(row, col_name_ru)) if col_name_ru is not None else None,
+            "category": _clean_text(_cell(row, col_category)) if col_category is not None else None,
         }
 
     wb.close()
