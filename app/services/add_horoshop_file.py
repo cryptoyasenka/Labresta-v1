@@ -37,6 +37,7 @@ from __future__ import annotations
 import io
 import json
 import logging
+from pathlib import Path
 
 import openpyxl
 from sqlalchemy import exists, select
@@ -317,6 +318,24 @@ def _query_unmatched(supplier_id: int, selected_brands=None) -> list[tuple]:
     return pairs
 
 
+def _load_category_mapping(path: str | None) -> dict[str, str]:
+    """Parse the optional Option-B feed→store map (.json) into a dict.
+
+    Mirrors the audit script's ``_load_mapping`` semantics EXACTLY so the live
+    path and the measured what-if stay consistent: ``_``-prefixed meta keys and
+    null/blank values are dropped (null = genuine gap → unchanged fuzzy
+    reconcile). Returns {} when ``path`` is None so the default path is unchanged.
+    """
+    if not path:
+        return {}
+    raw = json.loads(Path(path).read_text(encoding="utf-8"))
+    return {
+        k.strip(): v
+        for k, v in raw.items()
+        if not k.startswith("_") and isinstance(v, str) and v.strip()
+    }
+
+
 def _enrich_from_feed(row_input: dict, feed_row: dict | None) -> None:
     """Fill name/name_ru/category/description(_ru) on row_input from an NP feed.
 
@@ -347,6 +366,7 @@ def build_add_file(
     *,
     resolver=None,
     np_feed_path: str | None = None,
+    category_mapping_path: str | None = None,
 ) -> tuple[bytes, dict]:
     """Build the Horoshop create-file for a supplier's unmatched products.
 
@@ -368,6 +388,11 @@ def build_add_file(
         np_feed_path: optional NP feed path. When given, its parsed content
             supplies a per-article feed category (for the feed tier) AND enriches
             each NP row's name/name_ru/description(_ru) (FLAG-1/MINOR-B).
+        category_mapping_path: optional Option-B feed→store map (.json). When
+            given, the feed tier rewrites a mapped feed label to its store value
+            BEFORE reconcile (mapped label → confidence 100). None ⇒ behaviour is
+            byte-for-byte the shipped default (Option A) — exactly like an absent
+            np_feed_path.
 
     Returns:
         (xlsx_bytes, manifest). manifest carries by_source = {feed, analogy,
@@ -398,6 +423,10 @@ def build_add_file(
         fr = feed_by_article.get((getattr(sp, "article", None) or "").strip())
         return fr.get("category") if fr else None
 
+    # OPT-IN Option-B feed→store map. Absent ⇒ {} ⇒ feed tier unchanged
+    # (byte-for-byte the shipped default), exactly like an absent np_feed_path.
+    category_mapping = _load_category_mapping(category_mapping_path)
+
     if resolver is None:
         if corpus or feed_by_article:
             # SMART chain. Feed tier only engages when a feed is present; AI off.
@@ -408,6 +437,7 @@ def build_add_file(
                     _feed_category_getter if feed_by_article else None
                 ),
                 ai_enabled=False,
+                category_mapping=category_mapping,
             )
         else:
             # No export, no feed: fallback-only (still a valid importable file).
@@ -427,6 +457,7 @@ def build_add_file(
     rows, manifest = _shape_rows(row_inputs, selected_brands)
     manifest["export_path"] = export_path
     manifest["np_feed_path"] = np_feed_path
+    manifest["category_mapping_path"] = category_mapping_path
     manifest["candidates"] = len(pairs)
     manifest["by_source"] = by_source
 

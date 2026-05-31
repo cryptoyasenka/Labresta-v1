@@ -92,6 +92,19 @@
           </div>
         </div>
 
+        <div class="mb-3">
+          <label for="add-category-mapping" class="form-label fw-semibold">
+            Мапінг категорій (.json) — опц., Option B: feed→розділ магазину
+          </label>
+          <input class="form-control" type="file" name="category_mapping"
+                 id="add-category-mapping" accept=".json">
+          <div class="form-text">
+            Необов'язково. Перезаписує категорію фіду на точний «Розділ» магазину
+            до узгодження (мапована категорія → впевненість 100). Без нього —
+            Option A (типова поведінка, без змін).
+          </div>
+        </div>
+
         <button type="submit" class="btn btn-primary">Згенерувати файл</button>
         <span class="text-muted small ms-2">
             Порожній вибір брендів = усі товари постачальника без матчу.

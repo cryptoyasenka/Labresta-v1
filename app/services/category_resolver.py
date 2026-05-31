@@ -116,11 +116,20 @@ class FeedCategoryResolver:
     missing category — so the feed value is reconciled to the store label set and
     a value NOT in that set never leaves this resolver (the chain falls through).
 
+    Optionally an explicit feed→store ``mapping`` (Option B, opt-in) is consulted
+    FIRST: when a feed label is a key in the mapping, it is rewritten to the store
+    value BEFORE reconcile, so a mapped label exact-matches the store set and
+    resolves at confidence 100 (source unchanged = "feed"). ``None``/``{}`` ⇒
+    behaviour is byte-for-byte the baseline (unchanged fuzzy reconcile). This is
+    the SAME ``mapping.get(label, label)`` rewrite the audit ``--mapping`` flag
+    applies — kept consistent so the live path matches the measured what-if.
+
     Args:
         store_categories: the allowed «Раздел» label set (distinct export values).
         feed_category_getter: callable ``sp -> str | None`` returning the SP's
             feed category (None when the SP carries none → chain falls through).
         reconcile_cutoff: min token_sort_ratio for a non-exact reconcile (0..100).
+        mapping: optional feed→store override dict (Option B). None/{} ⇒ no-op.
     """
 
     def __init__(
@@ -129,10 +138,13 @@ class FeedCategoryResolver:
         feed_category_getter: Callable[[object], str | None],
         *,
         reconcile_cutoff: float = DEFAULT_RECONCILE_CUTOFF,
+        mapping: dict[str, str] | None = None,
     ):
         self.store_categories = {c for c in (store_categories or set()) if c}
         self.feed_category_getter = feed_category_getter
         self.reconcile_cutoff = reconcile_cutoff
+        # Opt-in feed→store rewrite map. Empty by default → reconcile unchanged.
+        self.mapping = dict(mapping) if mapping else {}
         # Pre-normalize the store labels once (full path + leaf) for matching.
         self._store_norm = [
             (c, normalize_text(c), normalize_text(_leaf(c)))
@@ -140,10 +152,17 @@ class FeedCategoryResolver:
         ]
 
     def reconcile(self, feed_category: str | None) -> CategoryResult:
-        """Reconcile a feed category to a store label (public for the audit)."""
+        """Reconcile a feed category to a store label (public for the audit).
+
+        When an opt-in ``mapping`` is set, the feed label is first rewritten via
+        ``mapping.get(label, label)`` (same expression as the audit's getter);
+        with no mapping this is the identity, so the path below is unchanged.
+        """
         fc = (feed_category or "").strip()
         if not fc:
             return CategoryResult(None, 0.0, "feed")
+        # Opt-in Option-B rewrite (no-op when mapping is empty).
+        fc = self.mapping.get(fc, fc)
 
         # Exact match wins outright.
         if fc in self.store_categories:
@@ -305,6 +324,7 @@ def build_resolver(
     ai_model: str | None = None,
     analogy_cutoff: float = DEFAULT_ANALOGY_CUTOFF,
     reconcile_cutoff: float = DEFAULT_RECONCILE_CUTOFF,
+    category_mapping: dict[str, str] | None = None,
 ) -> CategoryResolver:
     """Factory for the resolver chain.
 
@@ -329,6 +349,8 @@ def build_resolver(
         ai_enabled: insert the AI tier as ENABLED (default False → disabled stub).
         ai_model: model id for the (future) enabled AI path.
         analogy_cutoff / reconcile_cutoff: thresholds (0..100).
+        category_mapping: optional feed→store override dict (Option B, opt-in).
+            Threaded into the feed tier; None/{} ⇒ behaviour unchanged.
 
     Returns:
         A ChainResolver whose ``resolve`` always returns a non-empty category
@@ -346,6 +368,7 @@ def build_resolver(
                 store_categories,
                 feed_category_getter,
                 reconcile_cutoff=reconcile_cutoff,
+                mapping=category_mapping,
             )
         )
     if "analogy" in strategies:

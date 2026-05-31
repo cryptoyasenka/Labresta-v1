@@ -355,8 +355,10 @@ def add_file_generate():
     # UA/RU names + descriptions + the feed category for НП cards (FLAG-2).
     export_path = None
     np_feed_path = None
+    mapping_path = None
     upload = request.files.get("export")
     np_upload = request.files.get("np_feed")
+    mapping_upload = request.files.get("category_mapping")
     try:
         if upload and upload.filename:
             with tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False) as tmp:
@@ -374,14 +376,25 @@ def add_file_generate():
                 np_upload.save(tmp)
                 np_feed_path = tmp.name
 
+        # OPTIONAL third upload (Option B): a feed→store category map (.json).
+        # Absent ⇒ build_add_file uses the shipped default (Option A) unchanged.
+        if mapping_upload and mapping_upload.filename:
+            with tempfile.NamedTemporaryFile(suffix=".json", delete=False) as tmp:
+                mapping_upload.save(tmp)
+                mapping_path = tmp.name
+
         xlsx_bytes, manifest = build_add_file(
-            supplier.id, selected, export_path, np_feed_path=np_feed_path
+            supplier.id, selected, export_path,
+            np_feed_path=np_feed_path,
+            category_mapping_path=mapping_path,
         )
     finally:
         if export_path and os.path.exists(export_path):
             os.unlink(export_path)
         if np_feed_path and os.path.exists(np_feed_path):
             os.unlink(np_feed_path)
+        if mapping_path and os.path.exists(mapping_path):
+            os.unlink(mapping_path)
 
     log_action("add_file_generate", details={
         "supplier": supplier.slug,
@@ -393,6 +406,7 @@ def add_file_generate():
         "skipped_no_price": manifest.get("skipped_no_price"),
         "by_source": manifest.get("by_source"),
         "np_feed": bool(np_feed_path),
+        "category_mapping": bool(mapping_path),
     })
     db.session.commit()
 

@@ -269,6 +269,108 @@ def test_generate_np_feed_fills_ru_name_and_description(client, session):
     assert data[H_NAME_UA]
 
 
+def _seed_np_mapping_case(session):
+    """NP supplier with one unmatched SP whose feed category does NOT reconcile
+    to the store tree — the surface where Option B's mapping changes the «Раздел».
+    Returns (supplier, article, feed_category, store_label)."""
+    supplier = Supplier(
+        name="НП Мапінг", slug="np-mapping-supplier",
+        discount_percent=15.0, pricing_mode="flat", is_enabled=True,
+    )
+    session.add(supplier)
+    session.flush()
+    sp = SupplierProduct(
+        supplier_id=supplier.id, external_id="np-map-ext-1",
+        name="Шейкер для коктейлів", description=None,
+        brand="HURAKAN", article="NP-SHAKER-1",
+        price_cents=50000, currency="UAH", available=True, needs_review=False,
+    )
+    session.add(sp)
+    session.commit()
+    # Feed category uses a taxonomy the store export below does NOT carry, so it
+    # cannot fuzzy-reconcile; only an explicit mapping can place it.
+    return supplier, "NP-SHAKER-1", "Обладнання для барів/Шейкери ручні", "Барне обладнання/Шейкери"
+
+
+def _mapping_export_bytes(store_label):
+    """Tiny Horoshop export whose «Раздел» corpus contains `store_label` so a
+    mapped feed value can exact-match it (HURAKAN brand for the analogy index)."""
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Worksheet"
+    ws.append(["Артикул", "Название (UA)", "Бренд", "Раздел"])
+    ws.append(["EX-SH", "Шейкер бостонський", "HURAKAN", store_label])
+    buf = io.BytesIO()
+    wb.save(buf)
+    wb.close()
+    return buf.getvalue()
+
+
+def test_generate_no_category_mapping_is_baseline(client, session):
+    """No category_mapping upload ≡ shipped default (Option A): the unreconcilable
+    feed category does NOT become the store label — it falls back to the holding
+    category (the analogy/fallback path), proving the default is unchanged."""
+    supplier, article, feed_cat, store_label = _seed_np_mapping_case(session)
+    export = _mapping_export_bytes(store_label)
+    feed = _np_feed_bytes(
+        article, name_uk="Шейкер UA", name_ru="Шейкер RU",
+        desc_uk="опис", desc_ru="описание", category=feed_cat,
+    )
+    resp = client.post(
+        "/feeds/add/generate",
+        data={
+            "supplier_id": str(supplier.id),
+            "brands": ["HURAKAN"],
+            "export": (io.BytesIO(export), "export.xlsx"),
+            "np_feed": (io.BytesIO(feed), "np-feed.xlsx"),
+            # NO category_mapping file → Option A.
+        },
+        content_type="multipart/form-data",
+    )
+    assert resp.status_code == 200
+    rows = _load_rows(resp)
+    assert len(rows) == 2
+    data = dict(zip(HEADERS, rows[1]))
+    # Without the map, the feed label can't reconcile and there's no same-brand
+    # analog token-match → the holding fallback category, NOT the store label.
+    assert data[H_CATEGORY] != store_label
+    assert data[H_CATEGORY] == DEFAULT_FALLBACK_CATEGORY
+
+
+def test_generate_with_category_mapping_applies_store_label(client, session):
+    """With a small category_mapping (.json) upload (Option B), the NP row whose
+    feed category is mapped gets the mapped store «Раздел» — opt-in via the UI."""
+    import json
+
+    supplier, article, feed_cat, store_label = _seed_np_mapping_case(session)
+    export = _mapping_export_bytes(store_label)
+    feed = _np_feed_bytes(
+        article, name_uk="Шейкер UA", name_ru="Шейкер RU",
+        desc_uk="опис", desc_ru="описание", category=feed_cat,
+    )
+    mapping_json = json.dumps(
+        {"_README": "test map", feed_cat: store_label}, ensure_ascii=False
+    ).encode("utf-8")
+    resp = client.post(
+        "/feeds/add/generate",
+        data={
+            "supplier_id": str(supplier.id),
+            "brands": ["HURAKAN"],
+            "export": (io.BytesIO(export), "export.xlsx"),
+            "np_feed": (io.BytesIO(feed), "np-feed.xlsx"),
+            "category_mapping": (io.BytesIO(mapping_json), "map.json"),
+        },
+        content_type="multipart/form-data",
+    )
+    assert resp.status_code == 200
+    rows = _load_rows(resp)
+    assert len(rows) == 2
+    data = dict(zip(HEADERS, rows[1]))
+    # The mapped feed label exact-matches the store set → the mapped «Раздел».
+    assert data[H_CATEGORY] == store_label
+    assert data[H_CATEGORY] != DEFAULT_FALLBACK_CATEGORY
+
+
 def test_generate_unknown_supplier_redirects(client, session):
     _seed(session)
     resp = client.post(

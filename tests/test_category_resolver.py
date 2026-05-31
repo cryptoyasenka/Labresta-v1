@@ -218,6 +218,75 @@ def test_feed_no_feed_category_returns_none():
     assert res.source == "feed"
 
 
+# --- Phase 9: OPT-IN feed→store mapping (Option B) ------------------------- #
+# A feed label that would NOT reconcile on its own is rewritten by an explicit
+# mapping to a store label and resolves at confidence 100 — and WITHOUT the
+# mapping the SAME input behaves exactly as the baseline (pin equivalence).
+_UNRECONCILED_FEED = "Барне обладнання/Шейкери"  # see test_feed_no_match_falls_through
+_MAPPED_STORE = "Печі/Конвекційні печі"          # a real store label in _STORE_CATS
+
+
+def test_feed_mapping_rewrites_unreconciled_label_to_store_at_100():
+    # Opt-in: the unreconcilable feed label is mapped → store label, conf 100.
+    r = FeedCategoryResolver(
+        _STORE_CATS,
+        lambda sp: _UNRECONCILED_FEED,
+        mapping={_UNRECONCILED_FEED: _MAPPED_STORE},
+    )
+    res = r.resolve(_SP())
+    assert res.category == _MAPPED_STORE       # rewritten to the mapped store value
+    assert res.category in _STORE_CATS         # still never invents a category
+    assert res.source == "feed"                # source unchanged
+    assert res.confidence == 100.0             # exact store hit after rewrite
+
+
+def test_feed_mapping_none_is_baseline_equivalence():
+    # WITHOUT a mapping (None) the SAME input is byte-for-byte the baseline:
+    # the unreconcilable feed label still falls through (category None).
+    getter = lambda sp: _UNRECONCILED_FEED  # noqa: E731
+    baseline = FeedCategoryResolver(_STORE_CATS, getter).resolve(_SP())
+    mapped_none = FeedCategoryResolver(
+        _STORE_CATS, getter, mapping=None
+    ).resolve(_SP())
+    mapped_empty = FeedCategoryResolver(
+        _STORE_CATS, getter, mapping={}
+    ).resolve(_SP())
+    assert baseline.category is None
+    assert (mapped_none.category, mapped_none.source) == (None, "feed")
+    assert (mapped_empty.category, mapped_empty.source) == (None, "feed")
+    # An unmapped label under a NON-empty mapping also passes through unchanged.
+    other = FeedCategoryResolver(
+        _STORE_CATS, getter, mapping={"Інше/Геть інше": _MAPPED_STORE}
+    ).resolve(_SP())
+    assert other.category is None and other.source == "feed"
+
+
+def test_build_resolver_threads_category_mapping_into_feed_tier():
+    # build_resolver passes category_mapping into the feed tier; an unreconciled
+    # feed label resolves via the map at conf 100, else (no map) falls through to
+    # fallback. Pins the factory-level opt-in wiring.
+    mapped = build_resolver(
+        export_rows=[],
+        strategies=("feed", "analogy", "fallback"),
+        store_categories=_STORE_CATS,
+        feed_category_getter=lambda sp: _UNRECONCILED_FEED,
+        category_mapping={_UNRECONCILED_FEED: _MAPPED_STORE},
+    ).resolve(_SP())
+    assert mapped.category == _MAPPED_STORE
+    assert mapped.source == "feed"
+    assert mapped.confidence == 100.0
+
+    # No mapping → the same unreconciled label falls through to fallback.
+    unmapped = build_resolver(
+        export_rows=[],
+        strategies=("feed", "analogy", "fallback"),
+        store_categories=_STORE_CATS,
+        feed_category_getter=lambda sp: _UNRECONCILED_FEED,
+    ).resolve(_SP())
+    assert unmapped.source == "fallback"
+    assert unmapped.category == DEFAULT_FALLBACK_CATEGORY
+
+
 # =========================================================================== #
 # Task 3: AnalogyResolver
 # =========================================================================== #
