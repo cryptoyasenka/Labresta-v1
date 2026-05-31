@@ -24,10 +24,15 @@ AI опционально — **research+предложение, вслепую 
 - [x] discuss-doc (09-CONTEXT.md) + ветка + CURRENT обновлён
 - [x] research → 09-RESEARCH.md (888 стр; `[КАТАЛОГ] Раздел` ОБЯЗАТЕЛЬНА, generate-time без миграции, цепочка feed→analogy→fallback)
 - [x] plan: 09-01-PLAN (ядро, 4 задачи, fallback-resolver → валидный файл) + 09-02-PLAN (умная категория, 7 задач, Task7=checkpoint решения Yana)
-- [ ] plan-check (gsd-plan-checker) ← СЕЙЧАС (idempotent: если вердикт уже есть → к executor)
-- [ ] execute ядро 09-01 (builder add_horoshop_file.py + price_unmatched + fallback resolver + пикер /feeds/add + тесты)
-- [ ] категория: feed_category(НП) + аналогия + fallback (+ прогон на реальных данных = «проверь теорию»)
-- [ ] verify + предложение по категории для Yana
+- [x] plan-check → `09-PLAN-CHECK.md` (в main-потоке: 1-й сабагент-чекер thrash'нул контекст, агента ae1727b НЕ возобновлять). Вердикт: **09-01 PASS / 09-02 PASS-WITH-FLAGS**. Анкоры (pricing/matcher/feed/np_horoshop) grep-проверены — символы реальны, строки совпадают.
+- [ ] execute ядро 09-01 ← СЛЕДУЮЩИЙ (builder add_horoshop_file.py + price_unmatched + fallback resolver + пикер /feeds/add + тесты). **Пин MINOR-A:** `_query_unmatched` → возвращать пары `(sp, row_input)` (резолверы 09-02 видят живой SP).
+- [ ] execute 09-02 умная категория: feed_category(НП)+аналогия+fallback + AI-stub(off) + evidence-скрипт + CATEGORY-PROPOSAL. **Вшить FLAG-1+FLAG-2 в T4** (↓). T7=checkpoint Yana (СТОП).
+- [ ] verify (gsd-verifier) → 09-VERIFICATION.md + предложение по категории для Yana
+
+**Plan-check FLAGS (вшить при execute 09-02; НЕ блокеры 09-01):**
+- **FLAG-1:** T4 тянет из фида ТОЛЬКО категорию → НП-карточки уедут с пустым RU. Обогащать `row_input` полями `name_ru/description_ru` (+`description/name`) из распарсенного НП-фида по артикулу (D2 «RU из фида»). `SupplierProduct.description` = «(non-NP)», RU у НП только в фиде.
+- **FLAG-2:** эндпоинт `/feeds/add` НИКОГДА не передаёт `np_feed_path` (в шаблоне только аплоад экспорта). Добавить 2-е опц. поле `<input name="np_feed">` + temp-file + проброс в `build_add_file` (иначе feed-категория и RU через UI не сработают — только в audit-скрипте). Дополнить `files_modified` T4 вьюхой+шаблоном.
+- **MINOR-B:** проверить эмпирически — UA-описание НП в БД или только в фиде (executor смотрит реальную НП-строку local sqlite).
 
 **Поправки research к CONTEXT:** Alembic НЕТ (db.create_all + ручные `scripts/migrate_add_*.py`); НП-фид сам несёт `title_uk/ru`+`categories_uk/ru` (np_parser их не читает); цена непривязанного = `resolve_discount_percent(None,supplier,brand)`→`clamp_discount_for_min_margin`→`calculate_price_eur(price_cents,eff_d)`; канон-схема `horoshop-export 26.05.26.xlsx`; ключ create=`sp.article`; видимость `Отображать`="1".
 
