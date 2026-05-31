@@ -349,11 +349,14 @@ def add_file_generate():
 
     selected = request.form.getlist("brands")  # empty = all unmatched for supplier
 
-    # The Horoshop export is OPTIONAL in the CORE: without it the fallback
-    # resolver gives every card the holding category (still a valid file). The
-    # smart category corpus arrives in plan 09-02.
+    # The Horoshop export is OPTIONAL: without it the chain degrades to
+    # analogy→fallback (or fallback-only). With it, the «Раздел» corpus drives
+    # smart categories (09-02). The NP feed is a SECOND optional upload carrying
+    # UA/RU names + descriptions + the feed category for НП cards (FLAG-2).
     export_path = None
+    np_feed_path = None
     upload = request.files.get("export")
+    np_upload = request.files.get("np_feed")
     try:
         if upload and upload.filename:
             with tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False) as tmp:
@@ -366,10 +369,19 @@ def add_file_generate():
                 "info",
             )
 
-        xlsx_bytes, manifest = build_add_file(supplier.id, selected, export_path)
+        if np_upload and np_upload.filename:
+            with tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False) as tmp:
+                np_upload.save(tmp)
+                np_feed_path = tmp.name
+
+        xlsx_bytes, manifest = build_add_file(
+            supplier.id, selected, export_path, np_feed_path=np_feed_path
+        )
     finally:
         if export_path and os.path.exists(export_path):
             os.unlink(export_path)
+        if np_feed_path and os.path.exists(np_feed_path):
+            os.unlink(np_feed_path)
 
     log_action("add_file_generate", details={
         "supplier": supplier.slug,
@@ -379,6 +391,8 @@ def add_file_generate():
         "skipped_no_artikul": manifest.get("skipped_no_artikul"),
         "skipped_no_category": manifest.get("skipped_no_category"),
         "skipped_no_price": manifest.get("skipped_no_price"),
+        "by_source": manifest.get("by_source"),
+        "np_feed": bool(np_feed_path),
     })
     db.session.commit()
 

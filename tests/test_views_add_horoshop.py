@@ -16,7 +16,7 @@ from app.models.product_match import ProductMatch
 from app.models.supplier import Supplier
 from app.models.supplier_product import SupplierProduct
 from app.services.add_horoshop_file import (
-    HEADERS, H_ARTICLE, H_CATEGORY, H_VISIBLE,
+    HEADERS, H_ARTICLE, H_CATEGORY, H_DESC_RU, H_NAME_RU, H_NAME_UA, H_VISIBLE,
 )
 from app.services.category_resolver import DEFAULT_FALLBACK_CATEGORY
 
@@ -27,8 +27,39 @@ def _export_bytes():
     ws = wb.active
     ws.title = "Worksheet"
     ws.append(["Артикул", "Название (UA)", "Бренд", "Раздел"])
-    ws.append(["EX-1", "Існуюча картка", "HURAKAN", "Холодильне обладнання"])
-    ws.append(["EX-2", "Інша картка", "APACH", "Печі"])
+    # The HURAKAN card shares the «Льодогенератор» token with the unmatched SP
+    # ("Льодогенератор HKN") so the analogy tier can legitimately match it.
+    ws.append(["EX-1", "Льодогенератор HKN-450", "HURAKAN", "Холодильне обладнання"])
+    ws.append(["EX-2", "Піч конвекційна", "APACH", "Печі"])
+    buf = io.BytesIO()
+    wb.save(buf)
+    wb.close()
+    return buf.getvalue()
+
+
+def _np_feed_bytes(article, *, name_uk, name_ru, desc_uk, desc_ru, category):
+    """Tiny NP-feed xlsx: header with title_uk/title_ru/categories_uk labels at
+    their live indices (6/15/8) + one data row carrying RU text + category."""
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Worksheet"
+    header = [None] * 24
+    header[1] = "Артикул"
+    header[2] = "[КАТАЛОГ] Цена"
+    header[6] = "title_uk"
+    header[7] = "description_uk"
+    header[8] = "categories_uk"
+    header[15] = "title_ru"
+    header[16] = "description_ru"
+    ws.append(header)
+    row = [None] * 24
+    row[1] = article
+    row[6] = name_uk
+    row[7] = desc_uk
+    row[8] = category
+    row[15] = name_ru
+    row[16] = desc_ru
+    ws.append(row)
     buf = io.BytesIO()
     wb.save(buf)
     wb.close()
@@ -161,6 +192,81 @@ def test_generate_without_export_uses_fallback(client, session):
     assert len(rows) >= 2
     for r in rows[1:]:
         assert dict(zip(HEADERS, r))[H_CATEGORY] == DEFAULT_FALLBACK_CATEGORY
+
+
+def test_generate_with_export_assigns_analogy_category(client, session):
+    """With an export (HURAKAN card → «Холодильне обладнання») and NO feed, the
+    HURAKAN unmatched SP gets that same-brand analog category — NOT the fallback.
+    Proves the analogy tier overrides fallback when a corpus is present."""
+    supplier, *_ = _seed(session)
+    resp = client.post(
+        "/feeds/add/generate",
+        data={
+            "supplier_id": str(supplier.id),
+            "brands": ["HURAKAN"],
+            "export": (io.BytesIO(_export_bytes()), "export.xlsx"),
+        },
+        content_type="multipart/form-data",
+    )
+    assert resp.status_code == 200
+    rows = _load_rows(resp)
+    assert len(rows) == 2  # header + the single HURAKAN unmatched product
+    data = dict(zip(HEADERS, rows[1]))
+    # The only HURAKAN card in the export sits in «Холодильне обладнання»; the
+    # analog must adopt it rather than the holding fallback category.
+    assert data[H_CATEGORY] == "Холодильне обладнання"
+    assert data[H_CATEGORY] != DEFAULT_FALLBACK_CATEGORY
+
+
+def test_generate_np_feed_fills_ru_name_and_description(client, session):
+    """FLAG-1/MINOR-B: an NP SupplierProduct carries NO RU (and no description) in
+    the matcher DB. When an NP feed with title_ru/description_ru is uploaded, the
+    created card's H_NAME_RU and H_DESC_RU must come out NON-EMPTY (decision D2)."""
+    # Dedicated NP supplier: one unmatched SP with empty DB RU/description whose
+    # article matches the feed row below.
+    supplier = Supplier(
+        name="Нова Пошта Фід", slug="np-feed-supplier",
+        discount_percent=15.0, pricing_mode="flat", is_enabled=True,
+    )
+    session.add(supplier)
+    session.flush()
+    # NP SupplierProduct: the matcher DB has NO name_ru column at all and NP feeds
+    # leave `description` empty — RU name + description live ONLY in the NP feed (D2).
+    sp = SupplierProduct(
+        supplier_id=supplier.id, external_id="np-ext-1",
+        name="Шафа холодильна",          # UA name in DB; no RU, no description
+        description=None,
+        brand="POLAIR", article="NP-FRIDGE-1",
+        price_cents=120000, currency="UAH", available=True, needs_review=False,
+    )
+    session.add(sp)
+    session.commit()
+
+    feed = _np_feed_bytes(
+        "NP-FRIDGE-1",
+        name_uk="Шафа холодильна POLAIR",
+        name_ru="Шкаф холодильный POLAIR",
+        desc_uk="Опис українською для шафи.",
+        desc_ru="Описание по-русски для шкафа.",
+        category="Холодильне обладнання/Шафи холодильні",
+    )
+    resp = client.post(
+        "/feeds/add/generate",
+        data={
+            "supplier_id": str(supplier.id),
+            "brands": ["POLAIR"],
+            "np_feed": (io.BytesIO(feed), "np-feed.xlsx"),
+        },
+        content_type="multipart/form-data",
+    )
+    assert resp.status_code == 200
+    rows = _load_rows(resp)
+    assert len(rows) == 2  # header + the single NP product
+    data = dict(zip(HEADERS, rows[1]))
+    assert data[H_NAME_RU] == "Шкаф холодильный POLAIR"     # RU name from the feed
+    assert data[H_DESC_RU] == "Описание по-русски для шкафа."  # RU desc from the feed
+    # UA name keeps the DB value (DB has it); the feed only backfills what's blank.
+    assert data[H_NAME_UA]
 
 
 def test_generate_unknown_supplier_redirects(client, session):

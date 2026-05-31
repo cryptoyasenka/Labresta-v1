@@ -46,7 +46,9 @@ from app.extensions import db
 from app.models.product_match import ProductMatch
 from app.models.supplier import Supplier
 from app.models.supplier_product import SupplierProduct
+from app.services.category_export import read_category_corpus
 from app.services.category_resolver import build_resolver
+from app.services.np_parser import parse_np_feed
 from app.services.pricing import (
     calculate_auto_discount,
     calculate_price_eur,
@@ -315,6 +317,29 @@ def _query_unmatched(supplier_id: int, selected_brands=None) -> list[tuple]:
     return pairs
 
 
+def _enrich_from_feed(row_input: dict, feed_row: dict | None) -> None:
+    """Fill name/name_ru/category/description(_ru) on row_input from an NP feed.
+
+    The DB value is the fallback when the feed lacks a field — NP carries NO RU
+    in the matcher DB (and often no description either), so without this enrich
+    NP create-cards would import with blank RU name/description, violating
+    decision D2 (FLAG-1/MINOR-B). Brand and photos are left to the DB/existing
+    logic; this only backfills the create-card text the DB doesn't hold for NP.
+    """
+    if not feed_row:
+        return
+    for field in ("name", "name_ru", "description", "description_ru"):
+        # Feed wins when present; DB value (already in row_input) is the fallback.
+        feed_val = feed_row.get(field)
+        if feed_val and not (row_input.get(field) or "").strip():
+            row_input[field] = feed_val
+        elif feed_val and field in ("name_ru", "description_ru"):
+            # NP DB never holds RU → always prefer the feed RU when it exists.
+            row_input[field] = feed_val
+    # `category` is consumed by the resolver's feed getter, not written directly
+    # here (the resolver reconciles it to the store tree).
+
+
 def build_add_file(
     supplier_id: int,
     selected_brands,
@@ -325,42 +350,92 @@ def build_add_file(
 ) -> tuple[bytes, dict]:
     """Build the Horoshop create-file for a supplier's unmatched products.
 
+    When an export and/or NP feed is provided this constructs the SMART resolver
+    (feed → analogy → fallback, AI OFF — decision D3) instead of the fallback-
+    only chain, and enriches NP rows (name/RU/description) from the feed. The
+    output schema is unchanged — only category resolution and the create-card
+    text get smarter.
+
     Args:
         supplier_id: the supplier whose unmatched products to emit.
         selected_brands: brand labels to include (case-insensitive). Empty =
             every unmatched product for the supplier.
-        export_path: local path to a downloaded Horoshop export (used by 09-02's
-            smart category corpus; the CORE's fallback resolver ignores it).
-        resolver: optional CategoryResolver. Defaults to the fallback-only chain
-            so the file is valid on its own (plan 09-02 injects the smart chain).
-        np_feed_path: optional NP feed path for audit (used by 09-02 enrichment).
+        export_path: local path to a downloaded Horoshop export. When given, its
+            «Раздел» corpus drives the analogy tier + the store-category label set.
+        resolver: optional CategoryResolver override (mainly for tests). When
+            None, the smart chain is built from the export/feed (degrades to
+            analogy→fallback without a feed, fallback-only without an export).
+        np_feed_path: optional NP feed path. When given, its parsed content
+            supplies a per-article feed category (for the feed tier) AND enriches
+            each NP row's name/name_ru/description(_ru) (FLAG-1/MINOR-B).
 
     Returns:
-        (xlsx_bytes, manifest).
+        (xlsx_bytes, manifest). manifest carries by_source = {feed, analogy,
+        fallback, ai, none} counts so the operator/audit sees how each card's
+        category was assigned.
     """
     pairs = _query_unmatched(supplier_id, selected_brands)
 
-    if resolver is None:
-        # CORE default: fallback-only. 09-02 swaps in the smart chain.
-        resolver = build_resolver(export_rows=[], strategies=("fallback",))
+    # Category corpus from the uploaded export (the Раздел catalog_import drops).
+    corpus: list[dict] = []
+    if export_path:
+        corpus, corpus_errs = read_category_corpus(export_path)
+        if corpus_errs:
+            logger.warning("Category export issues: %s", corpus_errs)
 
+    # NP feed content → per-article enrichment map (name/RU/desc) + a category
+    # getter for the feed tier. Keyed by stripped article == sp.article.
+    feed_by_article: dict[str, dict] = {}
+    if np_feed_path:
+        feed_content, feed_errs = parse_np_feed(np_feed_path)
+        if feed_errs:
+            logger.info("NP feed parse warnings: %d", len(feed_errs))
+        feed_by_article = {
+            (art or "").strip(): row for art, row in feed_content.items()
+        }
+
+    def _feed_category_getter(sp):
+        fr = feed_by_article.get((getattr(sp, "article", None) or "").strip())
+        return fr.get("category") if fr else None
+
+    if resolver is None:
+        if corpus or feed_by_article:
+            # SMART chain. Feed tier only engages when a feed is present; AI off.
+            resolver = build_resolver(
+                corpus,
+                strategies=("feed", "analogy", "fallback"),
+                feed_category_getter=(
+                    _feed_category_getter if feed_by_article else None
+                ),
+                ai_enabled=False,
+            )
+        else:
+            # No export, no feed: fallback-only (still a valid importable file).
+            resolver = build_resolver(export_rows=[], strategies=("fallback",))
+
+    by_source = {"feed": 0, "analogy": 0, "fallback": 0, "ai": 0, "none": 0}
     row_inputs: list[dict] = []
     for sp, row_input in pairs:
-        row_input["category"] = resolver.resolve(
-            sp, brand=row_input["brand"]
-        ).category
+        # FLAG-1/MINOR-B: backfill the create-card text NP's DB lacks (name UA/RU,
+        # description UA/RU) from the feed BEFORE shaping the row.
+        _enrich_from_feed(row_input, feed_by_article.get(row_input.get("article", "")))
+        res = resolver.resolve(sp, brand=row_input["brand"])
+        row_input["category"] = res.category
+        by_source[res.source] = by_source.get(res.source, 0) + 1
         row_inputs.append(row_input)
 
     rows, manifest = _shape_rows(row_inputs, selected_brands)
     manifest["export_path"] = export_path
     manifest["np_feed_path"] = np_feed_path
     manifest["candidates"] = len(pairs)
+    manifest["by_source"] = by_source
 
     logger.info(
         "Add-file: %d rows (%d with photo, %d no-photo), %d skipped-no-artikul, "
-        "%d skipped-no-price, %d skipped-no-category, from %d unmatched candidates",
+        "%d skipped-no-price, %d skipped-no-category, from %d unmatched candidates; "
+        "by_source=%s",
         manifest["total"], manifest["with_photo"], manifest["no_photo"],
         manifest["skipped_no_artikul"], manifest["skipped_no_price"],
-        manifest["skipped_no_category"], len(pairs),
+        manifest["skipped_no_category"], len(pairs), by_source,
     )
     return _workbook_bytes(rows), manifest

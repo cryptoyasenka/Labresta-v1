@@ -79,6 +79,19 @@
           </div>
         </div>
 
+        <div class="mb-3">
+          <label for="add-np-feed" class="form-label fw-semibold">
+            НП-фід (.xlsx) — назви/опис/категорія RU для НП
+          </label>
+          <input class="form-control" type="file" name="np_feed" id="add-np-feed"
+                 accept=".xlsx">
+          <div class="form-text">
+            Необов'язково. Для товарів «Новий проект» додає назву UA/RU, опис UA/RU
+            та категорію з фіду (узгоджену з деревом магазину). Без нього картки НП
+            беруть лише дані з БД.
+          </div>
+        </div>
+
         <button type="submit" class="btn btn-primary">Згенерувати файл</button>
         <span class="text-muted small ms-2">
             Порожній вибір брендів = усі товари постачальника без матчу.
