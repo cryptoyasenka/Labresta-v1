@@ -17,7 +17,7 @@ import io
 import openpyxl
 
 from app.services.add_horoshop_file import (
-    HEADERS,
+    HEADERS, _PREFIX,
     H_ARTICLE, H_NAME_UA, H_NAME_RU, H_BRAND, H_CATEGORY,
     H_PRICE, H_OLDPRICE, H_CURRENCY, H_AVAIL, H_VISIBLE,
     H_GALLERY, H_DESC_UA, H_DESC_RU,
@@ -96,6 +96,36 @@ def test_headers_include_create_columns():
         assert h in HEADERS
     # Article first (the create key).
     assert HEADERS[0] == H_ARTICLE
+
+
+# Canonical Horoshop product-column names (bare leaf, i.e. WITHOUT the
+# "[КАТАЛОГ] " prefix) that the create-card file targets, transcribed
+# char-for-char from the live store's own export horoshop-export 26.05.26.xlsx
+# (row 1, 5632 cards; verified against the live import preview in
+# .planning/plans/np-feed/CANARY-IMPORT-GUIDE.md §7). Horoshop's import
+# auto-mapper resolves a "[КАТАЛОГ] <leaf>" header to one of its real columns;
+# a header whose leaf is NOT a real column is silently dropped on import. If
+# Horoshop changes its schema, re-derive this set from a fresh product export.
+_CANONICAL_HOROSHOP_LEAVES = frozenset({
+    "Артикул", "Название (UA)", "Название (RU)", "Бренд", "Раздел",
+    "Цена", "Старая цена", "Валюта", "Наличие", "Отображать",
+    "Галерея", "Описание товара (UA)", "Описание товара (RU)",
+})
+
+
+def test_every_generated_header_is_a_real_horoshop_column():
+    """Drift guard: every emitted column must resolve to a real Horoshop
+    column. Unlike test_headers_include_create_columns (which only checks the
+    NAMED constants are present), this constrains the WHOLE HEADERS list — a
+    newly added header that is not a real Horoshop column fails here even if no
+    one wrote a literal assertion for it. Catches typos and bogus columns that
+    Horoshop's import would silently drop on the live store."""
+    for h in HEADERS:
+        leaf = h[len(_PREFIX):] if h.startswith(_PREFIX) else h
+        assert leaf in _CANONICAL_HOROSHOP_LEAVES, (
+            f"generated header {h!r} -> leaf {leaf!r} is not a known Horoshop "
+            f"column (see horoshop-export 26.05.26.xlsx); import would drop it"
+        )
 
 
 def test_category_header_is_razdel_not_categories_uk():
