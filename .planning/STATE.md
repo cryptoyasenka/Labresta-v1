@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Tech Debt + Excel Suppliers + Multi-Supplier
 status: maintenance
-stopped_at: 2026-04-29 #9 closed; #10 stage B (color gate 4.88) done; stage A + #12/#14/#15 still open
-last_updated: "2026-04-29T18:30:00.000Z"
-last_activity: 2026-04-29
+stopped_at: "2026-05-31 Phase 9 (add-unmatched-to-horoshop) plan 09-02 T1-T6 done; T7 checkpoint:decision awaits Yana (category strategy + canary)"
+last_updated: "2026-05-31T04:30:00.000Z"
+last_activity: 2026-05-31
 progress:
   total_phases: 7
   completed_phases: 7
@@ -36,8 +36,10 @@ Last activity: 2026-04-29 (read-only audit + eur_rate fallback fix)
 - Matches: 1861 confirmed + 7 manual + 279 candidate, 0 rejected
 - Tests: 569 green @ commit `960fea3`
 
-## Recent landed work (2026-04-23 → 2026-04-29)
+## Recent landed work (2026-04-23 → 2026-05-31)
 
+- 2026-05-31 Phase 9 plan 09-02 (smart category) `1b4def4`→`2b07378` on `feat/horoshop-add-unmatched` — three-tier feed→analogy→fallback «Раздел» resolver behind the same interface (AI tier DISABLED, D3/REQ-06); NP feed name/RU/description enrichment (FLAG-1/D2) + optional np_feed upload on /feeds/add (FLAG-2); read-only prod-guarded audit script. Real audit over 320 unmatched NP: feed 40.6% / analogy 54.7% / fallback 4.7%. Full suite 835 passed, 2 skipped. **T7 checkpoint awaits Yana** (see Open issues). NOT merged to main; NO Horoshop import performed.
+- 2026-05-30 Phase 9 plan 09-01 (CORE create-file) `a90af42`→`b63a7fb` on `feat/horoshop-add-unmatched` — add_horoshop_file builder + price_unmatched + fallback resolver + /feeds/add picker.
 - 2026-04-29 `960fea3` — Step 4.88 asymmetric color-variant gate (#10 stage B)
 - 2026-04-29 `eb22fbf` — friendly "Фид ещё не собран" page replaces blank 404 on all 5 public feed routes (closes #9)
 - 2026-04-29 `c7175d2` — `resolve_eur_rate()` helper logs WARNING when supplier rate falls back to 51.15
@@ -52,6 +54,7 @@ Last activity: 2026-04-29 (read-only audit + eur_rate fallback fix)
 
 ## Open issues (await Yana decision)
 
+- **#16** (Phase 9 / 09-02 T7 — BLOCKING checkpoint) Category strategy for unmatched-product create-cards: **ship-no-ai** (feed→analogy→fallback, recommended first) / **enable-ai** (NVIDIA tier — not built; one-arg flip + implementation) / **mapping-table** (~50 unreconciled feed categories → store labels). Plus approve the 1–2 row `[КАТАЛОГ] Раздел` canary before any bulk import (invariant #13, Yana's hand + backup). Evidence + options: `.planning/phases/09-add-unmatched-to-horoshop/CATEGORY-PROPOSAL.md`. AI is OFF until Yana says otherwise (REQ-06).
 - **#9** ~~Per-supplier YML route returns 404~~ — closed 2026-04-29 by `eb22fbf` (option B: friendly HTML page with regen instructions, status stays 404 for bots).
 - **#10** SP color/voltage variant collisions: stage B done 2026-04-29 (`960fea3`, Step 4.88 asymmetric color gate — defends against future cross-language color discord and parens/display_article cases that 4.85/4.9 miss). Stage A (sibling-aware downgrade for SP without color when catalog has color siblings) still pending.
 - **#12** 279 candidates remain — manual triage required (CLAUDE.md invariant #3 forbids 100%-bulk-confirm).
@@ -64,5 +67,5 @@ None code-level. All blockers above are decision-level for Yana.
 
 ## Session Continuity
 
-Last session: 2026-04-29 audit (read-only + 1 fix landed)
-Resume file: pre-compact-prep snapshot in `~/.claude/snapshots/`
+Last session: 2026-05-31 (night run) — Phase 9 plan 09-02 T1–T6 executed + committed + pushed on `feat/horoshop-add-unmatched`; T7 checkpoint awaits Yana (#16)
+Resume file: pre-compact-prep snapshot in `~/.claude/snapshots/`; project memory `.planning/CURRENT.md`

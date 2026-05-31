@@ -87,7 +87,7 @@ Plans:
 
 Plans:
 - [x] 09-01-PLAN.md — CORE: unmatched-products picker (/feeds/add) + native create-file builder (add_horoshop_file.py) + fallback-only category_resolver + unit/endpoint tests; yields an importable file on its own ✅ 2026-05-31
-- [ ] 09-02-PLAN.md — SMART CATEGORY: extend np_parser (title/category), export Раздел corpus reader, feed→analogy→fallback resolvers + disabled AI stub, real-data evidence audit script, CATEGORY-PROPOSAL.md (ends at Yana decision checkpoint)
+- [~] 09-02-PLAN.md — SMART CATEGORY: np_parser (title/category) + export Раздел corpus reader + feed→analogy→fallback resolvers + disabled AI stub + NP feed enrichment/upload (FLAG-1/2) + real-data evidence audit + CATEGORY-PROPOSAL.md. Implementation T1–T6 ✅ 2026-05-31 (835 tests pass). **T7 = blocking Yana decision (#16: category strategy + canary) — NOT done.** AI OFF; not merged; no import performed.
 
 ## Progress
 
@@ -103,7 +103,7 @@ Phases execute in numeric order: 5 → 6 → 7 → 9
 | 5. Cleanup and UX Fixes | v1.1 | 2/2 | Complete | 2026-03-01 |
 | 6. Excel Supplier Support | v1.1 | 2/2 | Complete | 2026-03-01 |
 | 7. Matching and Pricing Enhancements | v1.1 | 2/2 | Complete | 2026-04-10 |
-| 9. Add Unmatched Products to Horoshop | v1.1 | 1/2 | In Progress | — |
+| 9. Add Unmatched Products to Horoshop | v1.1 | 1/2 (09-02 impl done, T7 awaits Yana) | In Progress | — |
 
 ---
 *Full v1.0 details: milestones/v1.0-ROADMAP.md*
