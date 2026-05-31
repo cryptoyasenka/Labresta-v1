@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}Додати товари без матчу в Horoshop — LabResta Sync{% endblock %}
+
+{% block content %}
+<div class="container py-4" style="max-width: 760px;">
+    <h1 class="h3 mb-3">Додати товари без матчу в Horoshop</h1>
+    <p class="text-muted">
+        Оберіть постачальника та бренди — згенерується нативний Excel-файл для
+        ручного імпорту в Horoshop («Нові товари: Імпорт»), який <strong>створює</strong>
+        картки для товарів без підтвердженого матчу: назва, ціна, стара ціна,
+        наявність, опис, фото, артикул, бренд, розділ і відображення. Імпорт у
+        Horoshop робиться вручну.
+    </p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, msg in messages %}
+        <div class="alert alert-{{ 'danger' if category == 'error' else category }}">{{ msg }}</div>
+      {% endfor %}
+    {% endwith %}
+
+    <form method="get" action="{{ url_for('feed.add_file_page') }}" class="mb-3">
+      <label for="supplier-select" class="form-label fw-semibold">Постачальник</label>
+      <select class="form-select" id="supplier-select" name="supplier_id"
+              onchange="this.form.submit()">
+        <option value="">— Оберіть постачальника —</option>
+        {% for s in suppliers %}
+        <option value="{{ s.id }}" {{ 'selected' if selected and s.id == selected.id else '' }}>
+          {{ s.name }}
+        </option>
+        {% endfor %}
+      </select>
+    </form>
+
+    {% if selected %}
+      <form method="post" action="{{ url_for('feed.add_file_generate') }}"
+            enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="supplier_id" value="{{ selected.id }}">
+
+        <div class="card mb-3">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <span class="fw-semibold">Бренди (без матчу)</span>
+            <div class="form-check mb-0">
+              <input class="form-check-input" type="checkbox" id="add-select-all">
+              <label class="form-check-label" for="add-select-all">Обрати всі</label>
+            </div>
+          </div>
+          {% if brands %}
+          <ul class="list-group list-group-flush">
+            {% for brand in brands %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div class="form-check mb-0">
+                <input class="form-check-input add-brand" type="checkbox"
+                       name="brands" value="{{ brand }}" id="add-brand-{{ loop.index }}">
+                <label class="form-check-label" for="add-brand-{{ loop.index }}">{{ brand }}</label>
+              </div>
+              <span class="badge bg-secondary rounded-pill"
+                    title="Товарів без підтвердженого матчу">{{ counts[brand] }}</span>
+            </li>
+            {% endfor %}
+          </ul>
+          {% else %}
+          <div class="card-body text-muted">
+            Немає товарів без матчу для цього постачальника.
+          </div>
+          {% endif %}
+        </div>
+
+        <div class="mb-3">
+          <label for="add-export" class="form-label fw-semibold">
+            Вивантаження Horoshop (.xlsx)
+          </label>
+          <input class="form-control" type="file" name="export" id="add-export"
+                 accept=".xlsx">
+          <div class="form-text">
+            Для визначення категорій; без нього всі картки отримають резервну
+            категорію «Новые товары / на разбор».
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Згенерувати файл</button>
+        <span class="text-muted small ms-2">
+            Порожній вибір брендів = усі товари постачальника без матчу.
+        </span>
+      </form>
+    {% endif %}
+</div>
+
+<script>
+  document.getElementById('add-select-all')?.addEventListener('change', function () {
+    document.querySelectorAll('.add-brand').forEach(function (cb) { cb.checked = this.checked; }, this);
+  });
+</script>
+{% endblock %}

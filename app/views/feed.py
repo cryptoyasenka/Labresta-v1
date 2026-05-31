@@ -31,13 +31,14 @@ from flask import (
     url_for,
 )
 from flask_login import login_required
-from sqlalchemy import func, select
+from sqlalchemy import distinct, exists, func, select
 
 from app.extensions import db
 from app.models.custom_feed import CustomFeed
 from app.models.product_match import ProductMatch
 from app.models.supplier import Supplier
 from app.models.supplier_product import SupplierProduct
+from app.services.add_horoshop_file import build_add_file
 from app.services.audit_service import log_action
 from app.services.feed_fetcher import fetch_feed_with_retry
 from app.services.np_horoshop_file import NP_SUPPLIER_SLUG, build_np_file
@@ -250,4 +251,141 @@ def np_file_generate():
         mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         as_attachment=True,
         download_name=f"np-horoshop-{stamp}.xlsx",
+    )
+
+
+# ========== Add unmatched products → native Horoshop CREATE file (Phase 9) ==========
+# The operator picks ANY supplier, ticks brands, optionally uploads a Horoshop
+# export (for smart categories — 09-02), and downloads a native-schema XLSX that
+# CREATES cards for products with no confirmed/manual match. Read-only over the
+# DB; the live import stays Yana's hand (invariant #13). Smart category
+# resolution is plan 09-02; the CORE falls back to one holding category.
+
+
+def _unmatched_exists_predicate():
+    """Correlated NOT-EXISTS against confirmed/manual matches — the same
+    predicate _query_unmatched uses (published deliberately excluded, Q7)."""
+    linked = (
+        select(ProductMatch.id)
+        .where(
+            ProductMatch.supplier_product_id == SupplierProduct.id,
+            ProductMatch.status.in_(("confirmed", "manual")),
+        )
+        .correlate(SupplierProduct)
+    )
+    return ~exists(linked)
+
+
+def _supplier_brands(supplier_id: int) -> list[str]:
+    """Distinct brand labels for a supplier (any match state) — derived from the
+    DB so the picker works for ANY supplier, not just the hardcoded NP brands."""
+    rows = db.session.execute(
+        select(distinct(SupplierProduct.brand))
+        .where(
+            SupplierProduct.supplier_id == supplier_id,
+            SupplierProduct.is_deleted.is_(False),
+            SupplierProduct.ignored.is_(False),
+        )
+        .order_by(SupplierProduct.brand)
+    ).scalars().all()
+    return [b for b in rows if b]
+
+
+def _unmatched_brand_counts(supplier_id: int) -> dict[str, int]:
+    """Per-brand count of UNMATCHED products for a supplier — DB only, instant
+    page load. Mirrors _np_brand_match_counts but inverts to NOT-EXISTS."""
+    rows = db.session.execute(
+        select(SupplierProduct.brand, func.count(SupplierProduct.id))
+        .where(
+            SupplierProduct.supplier_id == supplier_id,
+            SupplierProduct.is_deleted.is_(False),
+            SupplierProduct.ignored.is_(False),
+            _unmatched_exists_predicate(),
+        )
+        .group_by(SupplierProduct.brand)
+    ).all()
+    by_norm: dict[str, int] = {}
+    for brand, cnt in rows:
+        key = (brand or "").strip().lower()
+        by_norm[key] = by_norm.get(key, 0) + cnt
+    return {b: by_norm.get(b.strip().lower(), 0) for b in _supplier_brands(supplier_id)}
+
+
+@feed_bp.route("/feeds/add")
+@login_required
+def add_file_page():
+    """Supplier+brand picker for the Horoshop create-file of unmatched products."""
+    suppliers = db.session.execute(
+        select(Supplier).order_by(Supplier.name)
+    ).scalars().all()
+
+    selected_id = request.args.get("supplier_id", type=int)
+    selected = next((s for s in suppliers if s.id == selected_id), None)
+    counts = _unmatched_brand_counts(selected.id) if selected else {}
+    brands = list(counts.keys())
+
+    return render_template(
+        "feeds/add_unmatched.html",
+        suppliers=suppliers,
+        selected=selected,
+        brands=brands,
+        counts=counts,
+    )
+
+
+@feed_bp.route("/feeds/add/generate", methods=["POST"])
+@login_required
+def add_file_generate():
+    """Build the native Horoshop CREATE file for a supplier's unmatched
+    products (optionally using an uploaded export for categories) and return it
+    as a download. Read-only over the DB (only the audit log is committed)."""
+    supplier_id = request.form.get("supplier_id", type=int)
+    supplier = (
+        db.session.get(Supplier, supplier_id) if supplier_id is not None else None
+    )
+    if supplier is None:
+        flash("Оберіть постачальника.", "error")
+        return redirect(url_for("feed.add_file_page"))
+
+    selected = request.form.getlist("brands")  # empty = all unmatched for supplier
+
+    # The Horoshop export is OPTIONAL in the CORE: without it the fallback
+    # resolver gives every card the holding category (still a valid file). The
+    # smart category corpus arrives in plan 09-02.
+    export_path = None
+    upload = request.files.get("export")
+    try:
+        if upload and upload.filename:
+            with tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False) as tmp:
+                upload.save(tmp)
+                export_path = tmp.name
+        else:
+            flash(
+                "Вивантаження Horoshop не додано — усі картки отримають "
+                "резервну категорію «Новые товары / на разбор».",
+                "info",
+            )
+
+        xlsx_bytes, manifest = build_add_file(supplier.id, selected, export_path)
+    finally:
+        if export_path and os.path.exists(export_path):
+            os.unlink(export_path)
+
+    log_action("add_file_generate", details={
+        "supplier": supplier.slug,
+        "brands": selected,
+        "total": manifest.get("total"),
+        "candidates": manifest.get("candidates"),
+        "skipped_no_artikul": manifest.get("skipped_no_artikul"),
+        "skipped_no_category": manifest.get("skipped_no_category"),
+        "skipped_no_price": manifest.get("skipped_no_price"),
+    })
+    db.session.commit()
+
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M")
+    return send_file(
+        io.BytesIO(xlsx_bytes),
+        mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        as_attachment=True,
+        download_name=f"add-unmatched-{supplier.slug}-{stamp}.xlsx",
     )
