@@ -132,6 +132,8 @@ bucket for manual triage.
 
 ### Option B — Add a feed→store **mapping table** (highest precision for НП)
 
+> **Now reachable OPT-IN via the live UI (since 2026-05-31, no code change to activate):** upload `category-mapping-draft.json` on `/feeds/add` (optional «Мапінг категорій (.json)» field) — no upload = Option A default, unchanged. Draft map + UNSURE triage: `category-mapping-DRAFT.md`.
+
 Author a small dict mapping the 50 unreconciled feed categories → their store
 labels (one-time, ~50 lines; the leaf usually makes the target obvious). The
 feed tier then reconciles far more НП articles at confidence 100.
