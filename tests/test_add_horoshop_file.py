@@ -216,7 +216,9 @@ def test_workbook_bytes_roundtrip():
     data_row = dict(zip(HEADERS, all_rows[1]))
     assert data_row[H_ARTICLE] == "777"
     assert data_row[H_NAME_UA] == "Льодогенератор"
-    assert data_row[H_NAME_RU] == ""
+    # openpyxl reloads an empty-string cell as None — the blank name_ru
+    # round-trips to an empty cell either way (still no UA→RU corruption).
+    assert data_row[H_NAME_RU] in (None, "")
     assert data_row[H_CATEGORY] == "Холодильне/Льодогенератори"
     assert data_row[H_VISIBLE] == "1"
     assert data_row[H_PRICE] == "50.0"
@@ -280,9 +282,12 @@ def test_uah_rate_is_1():
     )
     sp_uah = _SP(sup_uah, price_cents=400000, currency="UAH", brand="HURAKAN")
     sell_uah, _ = price_unmatched(sp_uah)
-    # retail_uah = 4000; buy = 3000; at 20% sell = 3200, margin = 200 < 500 →
-    # clamp reduces discount until margin >= 500 → sell = 3500 (margin exactly 500).
-    assert sell_uah == 3500.0
+    # retail_uah = 4000; with rate=1 the clamp bites: d_max = 100*(0.25 - 500/4000)
+    # = 12.5 → floor 12% → sell = 4000*0.88 = 3520. (If rate were the EUR rate 51.15
+    # the min-margin would never bind and sell would be the full 20% = 3200.)
+    assert sell_uah == 3520.0
+    # Prove rate=1 was applied: the clamped result differs from the unclamped 20%.
+    assert sell_uah != 3200.0
 
 
 def test_clamp_applies_when_min_margin_positive():
