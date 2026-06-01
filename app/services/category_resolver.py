@@ -31,9 +31,12 @@ create missing categories on import.
 
 from __future__ import annotations
 
+import json
+import os
 from dataclasses import dataclass
 from typing import Callable, Protocol, runtime_checkable
 
+import requests
 from rapidfuzz import fuzz
 
 from app.services.matcher import (
@@ -52,6 +55,16 @@ DEFAULT_FALLBACK_CATEGORY = "Новые товары / на разбор"
 # is comparing whole product names so a lower bar still yields a real analog.
 DEFAULT_RECONCILE_CUTOFF = 80.0
 DEFAULT_ANALOGY_CUTOFF = 60.0
+
+# AI re-check tier (OPT-IN, gated). NVIDIA's OpenAI-compatible NIM endpoint —
+# base URL + path verified against build.nvidia.com (OpenAI schema, nvapi- key,
+# ~40 RPM free tier). The model is overridable via AICategoryResolver(model=...);
+# this default is a current free instruct model well-suited to "pick ONE label".
+NVIDIA_BASE_URL = "https://integrate.api.nvidia.com/v1"
+DEFAULT_AI_MODEL = "meta/llama-3.3-70b-instruct"
+# Confidence stamped on an AI label that exact-matches the allowed store set.
+AI_MATCH_CONFIDENCE = 0.9
+DEFAULT_AI_TIMEOUT = 30.0
 
 
 def _norm_brand(brand: str | None) -> str:
@@ -251,6 +264,40 @@ class AnalogyResolver:
         return CategoryResult(None, 0.0, "analogy")
 
 
+def _ai_complete(
+    *,
+    model: str,
+    messages: list[dict],
+    api_key: str,
+    base_url: str = NVIDIA_BASE_URL,
+    timeout: float = DEFAULT_AI_TIMEOUT,
+) -> str:
+    """ONE chat-completions POST to the NVIDIA (OpenAI-compatible) endpoint.
+
+    Returns the assistant message text. Module-level + keyword-only so tests can
+    monkeypatch ``cr._ai_complete`` and the enabled resolver path stays mockable
+    with ZERO real network. Uses the repo's existing ``requests`` (no new dep).
+    """
+    resp = requests.post(
+        f"{base_url.rstrip('/')}/chat/completions",
+        headers={
+            "Authorization": f"Bearer {api_key}",
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+        },
+        json={
+            "model": model,
+            "messages": messages,
+            "temperature": 0.0,  # deterministic classification
+            "max_tokens": 64,    # one short label, nothing else
+        },
+        timeout=timeout,
+    )
+    resp.raise_for_status()
+    data = resp.json()
+    return (data["choices"][0]["message"]["content"] or "").strip()
+
+
 class AICategoryResolver:
     """Tier 2: NVIDIA-backed classifier — DISABLED, gated stub (RESEARCH Q5c, D3).
 
@@ -258,16 +305,20 @@ class AICategoryResolver:
     no HTTP client is imported or constructed, zero network. This is the
     "config flip, not refactor" guarantee.
 
-    Enabled path (``enabled=True``): intentionally unimplemented until Yana
-    approves wiring (REQ-06). The intended shape (verify at wire time, do NOT
-    hardcode now):
+    Enabled path (``enabled=True``): an OPT-IN re-check (R2), NOT a live tier.
       * OpenAI-compatible NVIDIA endpoint (https://integrate.api.nvidia.com/v1),
         key from ``api_key_env`` (NVIDIA_API_KEY); ~40 RPM free tier.
-      * Give the model the FLAT deduped «Раздел» label set + the product
-        name/brand/short-description; constrain the output to exactly one label.
-      * Validate the returned label ∈ store_categories, else return None
-        (so the chain falls through to fallback). Non-determinism → carry a
-        needs-review flag for the audit.
+      * Gives the model the FLAT deduped «Раздел» label set + the product
+        name/brand/short-description; constrains the output to exactly one label.
+      * Validates the returned label ∈ store_categories, else returns None — so a
+        hallucinated/garbage label is treated as "no opinion" and never invents a
+        category. CONFIRM never overrides the auto-picked «Раздел»; it only
+        REPORTS disagreement (see scripts/ai_recheck_categories.py).
+
+    Enabled but the key env var is unset → ``RuntimeError`` (no network without a
+    key); the re-check script catches/translates it. CategoryResult has no
+    needs-review field by design — needs-review is surfaced in the script's
+    report layer, not stamped on the dataclass.
     """
 
     def __init__(
@@ -277,21 +328,73 @@ class AICategoryResolver:
         enabled: bool = False,
         model: str | None = None,
         api_key_env: str = "NVIDIA_API_KEY",
+        base_url: str = NVIDIA_BASE_URL,
+        timeout: float = DEFAULT_AI_TIMEOUT,
     ):
         self.store_categories = {c for c in (store_categories or set()) if c}
         self.enabled = enabled
-        self.model = model
+        self.model = model or DEFAULT_AI_MODEL
         self.api_key_env = api_key_env
+        self.base_url = base_url
+        self.timeout = timeout
+        # Stable, deterministic label list for the prompt (membership test uses
+        # the set; the prompt shows the same labels in sorted order).
+        self._label_list = sorted(self.store_categories)
+
+    def _build_messages(self, sp) -> list[dict]:
+        """Prompt: product facts + the FLAT allowed label set → exactly one label."""
+        name = (getattr(sp, "name", None) or "").strip()
+        brand = (getattr(sp, "brand", None) or "").strip()
+        desc = (getattr(sp, "description", None) or "").strip()
+        product_lines = [f"Название: {name}"]
+        if brand:
+            product_lines.append(f"Бренд: {brand}")
+        if desc:
+            product_lines.append(f"Описание: {desc[:500]}")
+        labels = "\n".join(self._label_list)
+        system = (
+            "Ты классификатор товаров для интернет-магазина оборудования. "
+            "Тебе дают товар и ЗАКРЫТЫЙ список разделов каталога. "
+            "Верни РОВНО ОДИН раздел из списка, скопированный дословно, "
+            "без кавычек, пояснений и любого другого текста. "
+            "Если ни один раздел не подходит — верни строку NONE."
+        )
+        user = (
+            "Товар:\n" + "\n".join(product_lines)
+            + "\n\nДопустимые разделы (выбери ровно один, дословно):\n" + labels
+        )
+        return [
+            {"role": "system", "content": system},
+            {"role": "user", "content": user},
+        ]
 
     def resolve(self, sp, *, brand: str | None = None) -> CategoryResult:
         if not self.enabled:
             # Default path: no network, no key read, no client construction.
             return CategoryResult(None, 0.0, "ai")
-        raise NotImplementedError(
-            "AI category tier not wired — pending Yana's go-ahead (REQ-06). "
-            "Enable is a config flip (strategies+ai_enabled), not a refactor; "
-            "verify the NVIDIA endpoint/model at wire time."
+
+        api_key = os.environ.get(self.api_key_env)
+        if not api_key:
+            raise RuntimeError(
+                f"AI re-check enabled but {self.api_key_env} is not set. "
+                f"Export the NVIDIA API key (nvapi-...) into {self.api_key_env} "
+                f"or leave the AI re-check off."
+            )
+
+        text = _ai_complete(
+            model=self.model,
+            messages=self._build_messages(sp),
+            api_key=api_key,
+            base_url=self.base_url,
+            timeout=self.timeout,
         )
+        # Light normalization only — strip wrapping quotes/whitespace. NO fuzzy
+        # matching: a label is accepted ONLY if it is verbatim in the store set.
+        label = (text or "").strip().strip('"').strip("'").strip()
+        if label in self.store_categories:
+            return CategoryResult(label, AI_MATCH_CONFIDENCE, "ai")
+        # Hallucinated / "NONE" / anything not in the set → no opinion.
+        return CategoryResult(None, 0.0, "ai")
 
 
 class ChainResolver:

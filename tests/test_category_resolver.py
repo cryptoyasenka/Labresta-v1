@@ -383,11 +383,91 @@ def test_ai_disabled_returns_none_no_network(monkeypatch):
     assert res.confidence == 0.0
 
 
-def test_ai_enabled_is_stub():
+def test_ai_enabled_returns_label_in_store_set(monkeypatch):
+    # Enabled path: the model returns a label that IS a store category verbatim →
+    # resolve returns that label, source "ai", positive confidence. No real HTTP:
+    # _ai_complete is monkeypatched.
+    import app.services.category_resolver as cr
+
+    label = "Печі/Конвекційні печі"
+    assert label in _STORE_CATS
+    monkeypatch.setenv("NVIDIA_API_KEY", "nvapi-test")
+    captured = {}
+
+    def _fake(*, model, messages, api_key, base_url, timeout):
+        captured["api_key"] = api_key
+        captured["model"] = model
+        return label
+
+    monkeypatch.setattr(cr, "_ai_complete", _fake, raising=False)
+    r = AICategoryResolver(_STORE_CATS, enabled=True)
+    res = r.resolve(_SP(), brand="HURAKAN")
+    assert res.category == label
+    assert res.source == "ai"
+    assert res.confidence > 0.0
+    assert captured["api_key"] == "nvapi-test"  # key read from env, passed through
+
+
+def test_ai_enabled_normalizes_wrapping_quotes(monkeypatch):
+    # ONE light normalization: strip wrapping quotes/whitespace before membership.
+    # NO fuzzy matching — only an exact (post-strip) store label is accepted.
+    import app.services.category_resolver as cr
+
+    label = "Печі/Конвекційні печі"
+    monkeypatch.setenv("NVIDIA_API_KEY", "nvapi-test")
+    monkeypatch.setattr(
+        cr, "_ai_complete",
+        lambda **kw: f'  "{label}"  ',  # quoted + padded
+        raising=False,
+    )
+    res = AICategoryResolver(_STORE_CATS, enabled=True).resolve(_SP())
+    assert res.category == label
+    assert res.source == "ai"
+
+
+def test_ai_enabled_junk_label_returns_none(monkeypatch):
+    # Model hallucinates a label NOT in the store set → category None (no opinion);
+    # the resolver NEVER invents a category.
+    import app.services.category_resolver as cr
+
+    monkeypatch.setenv("NVIDIA_API_KEY", "nvapi-test")
+    monkeypatch.setattr(
+        cr, "_ai_complete",
+        lambda **kw: "Совершенно выдуманная категория",
+        raising=False,
+    )
+    res = AICategoryResolver(_STORE_CATS, enabled=True).resolve(_SP(), brand="HURAKAN")
+    assert res.category is None
+    assert res.source == "ai"
+    assert res.confidence == 0.0
+
+
+def test_ai_enabled_none_sentinel_returns_none(monkeypatch):
+    # The prompt tells the model to answer "NONE" when nothing fits → no opinion.
+    import app.services.category_resolver as cr
+
+    monkeypatch.setenv("NVIDIA_API_KEY", "nvapi-test")
+    monkeypatch.setattr(cr, "_ai_complete", lambda **kw: "NONE", raising=False)
+    res = AICategoryResolver(_STORE_CATS, enabled=True).resolve(_SP())
+    assert res.category is None
+    assert res.source == "ai"
+
+
+def test_ai_enabled_missing_key_raises_and_skips_call(monkeypatch):
+    # Enabled but no API key in env → RuntimeError, and _ai_complete is NEVER
+    # called (no network attempt without a key).
     import pytest
 
+    import app.services.category_resolver as cr
+
+    monkeypatch.delenv("NVIDIA_API_KEY", raising=False)
+
+    def _boom(**kw):
+        raise AssertionError("must not call _ai_complete without an API key")
+
+    monkeypatch.setattr(cr, "_ai_complete", _boom, raising=False)
     r = AICategoryResolver(_STORE_CATS, enabled=True)
-    with pytest.raises(NotImplementedError):
+    with pytest.raises(RuntimeError):
         r.resolve(_SP(), brand="HURAKAN")
 
 
