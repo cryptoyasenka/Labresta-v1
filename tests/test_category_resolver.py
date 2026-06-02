@@ -471,6 +471,53 @@ def test_ai_enabled_missing_key_raises_and_skips_call(monkeypatch):
         r.resolve(_SP(), brand="HURAKAN")
 
 
+def test_ai_enabled_custom_base_url_and_key_env(monkeypatch):
+    # Provider-agnostic: a custom base_url + api_key_env are read and forwarded
+    # to _ai_complete verbatim (any OpenAI-compatible endpoint, not just NVIDIA).
+    import app.services.category_resolver as cr
+
+    label = "Печі/Конвекційні печі"
+    assert label in _STORE_CATS
+    monkeypatch.delenv("NVIDIA_API_KEY", raising=False)
+    monkeypatch.setenv("FOO_KEY", "sk-x")
+    captured = {}
+
+    def _fake(*, model, messages, api_key, base_url, timeout):
+        captured["api_key"] = api_key
+        captured["base_url"] = base_url
+        return label
+
+    monkeypatch.setattr(cr, "_ai_complete", _fake, raising=False)
+    r = AICategoryResolver(
+        _STORE_CATS,
+        enabled=True,
+        base_url="https://prov.example/v1",
+        api_key_env="FOO_KEY",
+    )
+    res = r.resolve(_SP())
+    assert res.category == label
+    assert captured["base_url"] == "https://prov.example/v1"  # custom endpoint
+    assert captured["api_key"] == "sk-x"  # key read from the custom env var
+
+
+def test_ai_enabled_custom_key_env_missing_raises(monkeypatch):
+    # The opt-in gate keys on the CUSTOM api_key_env: if that var is unset,
+    # resolve raises RuntimeError and never calls _ai_complete (no network).
+    import pytest
+
+    import app.services.category_resolver as cr
+
+    monkeypatch.delenv("FOO_KEY", raising=False)
+
+    def _boom(**kw):
+        raise AssertionError("must not call _ai_complete without the custom-env key")
+
+    monkeypatch.setattr(cr, "_ai_complete", _boom, raising=False)
+    r = AICategoryResolver(_STORE_CATS, enabled=True, api_key_env="FOO_KEY")
+    with pytest.raises(RuntimeError):
+        r.resolve(_SP())
+
+
 # =========================================================================== #
 # Task 3: build_resolver chain feed → analogy → fallback (AI gated off)
 # =========================================================================== #

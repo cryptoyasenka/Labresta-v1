@@ -3,24 +3,34 @@
 This is R2 (AI RE-CHECK), NOT an AI tier in the live generator. The generator's
 chain stays feed→analogy→fallback with AI OFF, and its auto-picked «Раздел» is
 authoritative. This script is a SEPARATE, on-demand audit Yana runs by hand: it
-asks an NVIDIA model to independently classify each card and REPORTS only the
-rows where the model DISAGREES with the auto category (or has no confident
-opinion). It NEVER writes/overrides a category and touches NO database.
+asks an LLM to independently classify each card and REPORTS only the rows where
+the model DISAGREES with the auto category (or has no confident opinion). It
+NEVER writes/overrides a category and touches NO database.
+
+Provider-agnostic: any OpenAI-compatible /chat/completions endpoint works. Pick
+it with --base-url + --model and point --api-key-env at the env var that holds
+the key. Defaults target NVIDIA NIM (integrate.api.nvidia.com/v1, NVIDIA_API_KEY)
+for back-compat, but nothing here is NVIDIA-specific.
 
 Default state of the whole feature is OFF: nothing happens unless you (a) run
-THIS script AND (b) have NVIDIA_API_KEY set. With no key it prints a notice and
-exits 0 — running it blind is harmless.
+THIS script AND (b) have the chosen key env var set (NVIDIA_API_KEY by default).
+With no key it prints a notice and exits 0 — running it blind is harmless.
 
 Usage:
-    # key in env (nvapi-...), default export = newest horoshop-export *.xlsx
+    # NVIDIA default: key in NVIDIA_API_KEY, newest horoshop-export*.xlsx as corpus
     python scripts/ai_recheck_categories.py instance/add-novyy-proekt.xlsx
     python scripts/ai_recheck_categories.py add.xlsx --limit 20         # smoke run
+
+    # any OpenAI-compatible provider (example values):
     python scripts/ai_recheck_categories.py add.xlsx \\
         --export "horoshop-export 26.05.26.xlsx" \\
-        --model meta/llama-3.3-70b-instruct \\
+        --base-url https://api.openai.com/v1 \\
+        --api-key-env OPENAI_API_KEY \\
+        --model gpt-4o-mini \\
         --out instance/ai-recheck.csv --throttle 1.6
 
-NVIDIA free tier is ~40 req/min, so calls are throttled (~1.6s apart by default).
+Calls are throttled (~1.6s apart by default) to respect provider rate limits such
+as NVIDIA's ~40 req/min free tier; tune with --throttle for your provider.
 """
 
 import argparse
@@ -45,6 +55,7 @@ from app.services.add_horoshop_file import (  # exact create-card headers, NOT r
 from app.services.category_export import read_category_corpus
 from app.services.category_resolver import (
     DEFAULT_AI_MODEL,
+    NVIDIA_BASE_URL,
     AICategoryResolver,
 )
 
@@ -90,7 +101,21 @@ def _parse_args(argv) -> argparse.Namespace:
         help="Horoshop export .xlsx for the allowed «Раздел» label set "
         "(default: newest horoshop-export*.xlsx in the repo root)",
     )
-    p.add_argument("--model", default=DEFAULT_AI_MODEL, help="NVIDIA model id")
+    p.add_argument(
+        "--model",
+        default=DEFAULT_AI_MODEL,
+        help=f"model id, OpenAI-compatible (default {DEFAULT_AI_MODEL})",
+    )
+    p.add_argument(
+        "--base-url",
+        default=NVIDIA_BASE_URL,
+        help=f"OpenAI-compatible API base URL (default {NVIDIA_BASE_URL})",
+    )
+    p.add_argument(
+        "--api-key-env",
+        default="NVIDIA_API_KEY",
+        help="env var holding the provider API key (default NVIDIA_API_KEY)",
+    )
     p.add_argument(
         "--limit", type=int, default=None, help="re-check only the first N rows (smoke run)"
     )
@@ -170,13 +195,15 @@ def main(argv=None) -> int:
     args = _parse_args(argv if argv is not None else sys.argv[1:])
 
     # OPT-IN gate: with no key, do NOTHING (zero network) and exit cleanly.
-    if not os.environ.get("NVIDIA_API_KEY"):
+    if not os.environ.get(args.api_key_env):
         print(
-            "AI-перепроверка категорий ВЫКЛЮЧЕНА: переменная окружения "
-            "NVIDIA_API_KEY не задана.\n"
+            f"AI-перепроверка категорий ВЫКЛЮЧЕНА: переменная окружения "
+            f"{args.api_key_env} не задана.\n"
             "Это опциональная функция (по умолчанию OFF). Чтобы включить — "
-            "экспортируй ключ NVIDIA (nvapi-...):\n"
-            "    setx NVIDIA_API_KEY \"nvapi-...\"   (Windows, новый терминал)\n"
+            f"экспортируй ключ провайдера в {args.api_key_env}:\n"
+            f"    setx {args.api_key_env} \"<api-key>\"   (Windows, новый терминал)\n"
+            "Для не-NVIDIA провайдера укажи также --base-url и --model "
+            "(и при необходимости --api-key-env).\n"
             "Сетевые запросы НЕ выполнялись. Файл не изменён."
         )
         return 0
@@ -214,11 +241,18 @@ def main(argv=None) -> int:
     print(
         f"Экспорт: {export_path}\n"
         f"Разделов в каталоге: {len(store_cats)}\n"
+        f"Провайдер: {args.base_url}  (ключ из ${args.api_key_env})\n"
         f"Строк к проверке: {len(rows)}  (модель: {args.model}, "
         f"пауза {args.throttle}s между запросами)\n"
     )
 
-    resolver = AICategoryResolver(store_cats, enabled=True, model=args.model)
+    resolver = AICategoryResolver(
+        store_cats,
+        enabled=True,
+        model=args.model,
+        base_url=args.base_url,
+        api_key_env=args.api_key_env,
+    )
 
     report_rows: list[dict] = []
     checked = 0
