@@ -1,7 +1,7 @@
 """OPT-IN AI re-check of an ALREADY-GENERATED Horoshop create-card XLSX.
 
 This is R2 (AI RE-CHECK), NOT an AI tier in the live generator. The generator's
-chain stays feed→analogy→fallback with AI OFF, and its auto-picked «Раздел» is
+chain stays feed->analogy->fallback with AI OFF, and its auto-picked «Раздел» is
 authoritative. This script is a SEPARATE, on-demand audit Yana runs by hand: it
 asks an LLM to independently classify each card and REPORTS only the rows where
 the model DISAGREES with the auto category (or has no confident opinion). It
