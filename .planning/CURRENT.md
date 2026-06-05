@@ -9,8 +9,10 @@
 - БД локальная (`sqlite:///instance/labresta.db`, `DATABASE_URL` пуст — не прод). Бэкап: `instance/backups/labresta.db.bak-2026-06-05-confirm46` (gitignored).
 - **Проверено фактами:** candidate 301→**255**, confirmed 2362→**2408** (+46), manual/rejected без изм.; инвариант 1:1 держится (**0** PP с >1 confirmed/manual); все 46 с тегом; тесты **850 passed, 2 skipped**.
 
+- **maresto NEEDS-EYEBALL (15) разобран** (`.planning/maresto-eyeball-2026-06-05.md`, read-only субагент): подтверждены **4** свободных PP (m3787 Cuppone PZF40DS, m3798 Unox XEBC04EUEPRMMP, m3786 Sirman Ektor 37, m3790 Sirman TOPAZ 195 Normale — все одобрены Yana глазами); 10 — PP занят другим поставщиком (#15 keep-vs-switch, отложено); m3791 суффикс-вариант (TF03MIDGN≠GNAL, оставлен кандидатом). candidate 255→**251**, confirmed 2408→**2412** (+4), инвариант 1:1 держится. Итого за сессию подтверждено **50** (46+4).
+
 ### Next step
-**237 NEEDS-EYEBALL** по PP-vs-SP доказательствам (досье `candidate-triage-2026-06-05.md`), начать с **maresto (15)**. NEEDS-YANA без изменений (Phase 9 item2/item3 импорт; #15 политика по 15 конфликтам; #10 Stage A решение — спека готова).
+Осталось **222 NEEDS-EYEBALL** (237 − 15 maresto). Тот же паттерн: read-only субагент на след. группу поставщика → digest → eyeball Yana → подтвердить одобренные через `scripts/confirm_safe_candidates.py --apply --ids=...` (dry-run по умолчанию). NEEDS-YANA без изм. (#15 политика по 10+ конфликтам; Phase 9 item2/item3 импорт; #10 Stage A решение — спека готова).
 
 ---
 

@@ -58,7 +58,13 @@ def main():
     from app.models import ProductMatch
     from app.views.matches import _pp_already_claimed, _cleanup_other_candidates
 
-    ids = confirm_ids_from_report(REPORT.read_text(encoding="utf-8"))
+    ids_arg = next((a for a in sys.argv[1:] if a.startswith("--ids=")), None)
+    if ids_arg:
+        ids = [int(x) for x in ids_arg.split("=", 1)[1].split(",") if x.strip()]
+        source = f"--ids ({len(ids)})"
+    else:
+        ids = confirm_ids_from_report(REPORT.read_text(encoding="utf-8"))
+        source = "report recommend-CONFIRM"
 
     app = create_app()
     with app.app_context():
