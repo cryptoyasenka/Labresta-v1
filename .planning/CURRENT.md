@@ -1,7 +1,7 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
-## ✅ ИНТЕРАКТИВНАЯ СЕССИЯ 2026-06-05 (вечер) — подтверждены 46 безопасных CONFIRM
-**Last touched:** 2026-06-05 ~19:05
+## ✅ ИНТЕРАКТИВНАЯ СЕССИЯ 2026-06-05 → 06-06 — подтверждены 52 (46 safe + 4 maresto + 2 НП)
+**Last touched:** 2026-06-06
 **Ветка:** `chore/night-maint-2026-06-05` (та же; НЕ main).
 **Сделано (с Yana, не ночной режим — инвариант #3 снят с её явным согласием):**
 - Подтверждены **46** из 61 recommend-CONFIRM: **44 guder** (витрины Gooder FC-*, word-order-identical, score 100) + **2 rp-ukrayina** (3722/3723, мармиты Airhot SB-5700/6000, отличие только гомоглиф А, score 97). 15 конфликтов #15 отсеяны live собственным guard приложения `_pp_already_claimed`; внутрипакетных коллизий PP = 0; сиблингов на удаление = 0. Рисковые (m3369 J80-vs-J80-**Ultra**@88, m3365@95) оказались в 15 конфликтах ⇒ авто-исключены.
@@ -9,10 +9,12 @@
 - БД локальная (`sqlite:///instance/labresta.db`, `DATABASE_URL` пуст — не прод). Бэкап: `instance/backups/labresta.db.bak-2026-06-05-confirm46` (gitignored).
 - **Проверено фактами:** candidate 301→**255**, confirmed 2362→**2408** (+46), manual/rejected без изм.; инвариант 1:1 держится (**0** PP с >1 confirmed/manual); все 46 с тегом; тесты **850 passed, 2 skipped**.
 
-- **maresto NEEDS-EYEBALL (15) разобран** (`.planning/maresto-eyeball-2026-06-05.md`, read-only субагент): подтверждены **4** свободных PP (m3787 Cuppone PZF40DS, m3798 Unox XEBC04EUEPRMMP, m3786 Sirman Ektor 37, m3790 Sirman TOPAZ 195 Normale — все одобрены Yana глазами); 10 — PP занят другим поставщиком (#15 keep-vs-switch, отложено); m3791 суффикс-вариант (TF03MIDGN≠GNAL, оставлен кандидатом). candidate 255→**251**, confirmed 2408→**2412** (+4), инвариант 1:1 держится. Итого за сессию подтверждено **50** (46+4).
+- **maresto NEEDS-EYEBALL (15) разобран** (`.planning/maresto-eyeball-2026-06-05.md`, read-only субагент): подтверждены **4** свободных PP (m3787 Cuppone PZF40DS, m3798 Unox XEBC04EUEPRMMP, m3786 Sirman Ektor 37, m3790 Sirman TOPAZ 195 Normale — все одобрены Yana глазами); 10 — PP занят другим поставщиком (#15 keep-vs-switch, отложено); m3791 суффикс-вариант (TF03MIDGN≠GNAL, оставлен кандидатом). candidate 255→**251**, confirmed 2408→**2412** (+4), инвариант 1:1 держится.
+
+- **НП (novyy-proekt) NEEDS-EYEBALL (22) разобран** (`.planning/np-eyeball-2026-06-05.md`, read-only субагент): чистых CONFIRM нет; подтверждены **2** свободных PP по eyeball Yana (m4378 Ceado M98/2 «двохпостовий»=«подвійний»; m3363 Apach APTE-77PLR/PL комбінована=гл+ребр); 17 — PP занят другим поставщиком (#15, отложено); m3362 суффикс-вариант (APTE-47PR гладка≠/PL ребр.) оставлен кандидатом; m3382/m3383 отклонены Yana (разные хвосты кода CC900/CE и размер S GN 2/3). candidate 251→**249**, confirmed 2412→**2414** (+2), инвариант 1:1 держится (0). **Итого за сессию подтверждено 52 (46+4+2).**
 
 ### Next step
-Осталось **222 NEEDS-EYEBALL** (237 − 15 maresto). Тот же паттерн: read-only субагент на след. группу поставщика → digest → eyeball Yana → подтвердить одобренные через `scripts/confirm_safe_candidates.py --apply --ids=...` (dry-run по умолчанию). NEEDS-YANA без изм. (#15 политика по 10+ конфликтам; Phase 9 item2/item3 импорт; #10 Stage A решение — спека готова).
+Осталось **200 NEEDS-EYEBALL** (237 − 15 maresto − 22 НП): группы **kodaki 104, rp-ukrayina 50, guder 36, astim 10**. Тот же паттерн: read-only субагент на след. группу → digest → eyeball Yana → `scripts/confirm_safe_candidates.py --apply --ids=...` (dry-run по умолчанию). Следующая логичная — astim 10 (мелкая, быстрый проход) либо по порядку kodaki 104. NEEDS-YANA без изм. (#15 политика по PP-taken конфликтам — теперь **27**: 10 maresto + 17 НП; Phase 9 item2/item3 импорт; #10 Stage A решение — спека готова).
 
 ---
 
