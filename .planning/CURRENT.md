@@ -12,12 +12,17 @@ read-only. (b) НЕ живой импорт в Хорошоп. (c) НЕ мерж
 (e) Тяжёлое → сабагенты, main тощий.
 
 ### Тасклист ночи (Status)
-- [ ] **T1 #12 триаж кандидатов (read-only):** досье `.planning/candidate-triage-2026-06-05.md` —
-  ВСЕ кандидаты (~279 по STATE.md, подтвердить точное число) в бакеты recommend-CONFIRM /
-  NEEDS-EYEBALL / recommend-REJECT, по строке доказательства (PP vs SP: артикул/имя/бренд/score/причина).
-  БД НЕ мутировать (счётчики статусов до=после). → сабагент строит read-only скрипт + отчёт.
-- [ ] **T2 doc-hygiene:** STATE.md + ROADMAP.md в реальность (#16/T7 уже РЕШЁН Yana 2026-06-02 = R2,
-  НЕ «blocking»; верный счётчик кандидатов; прогресс).
+- [x] **T1 #12 триаж кандидатов (read-only):** ✅ досье `.planning/candidate-triage-2026-06-05.md`
+  (399+ стр) + скрипты `scripts/triage_candidates_readonly.py` (бакетизатор) и
+  `scripts/triage_one_to_one_check.py` (инвариант #15). Точное число кандидатов = **301** (не 279):
+  recommend-CONFIRM **61** / NEEDS-EYEBALL **237** / recommend-REJECT **3** (61+237+3=301), каждая
+  строка с PP-vs-SP доказательством. **БД не мутирована** — снимок статусов до==после
+  (candidate 301, confirmed 2362, manual 7, rejected 71; identical:True). One-to-one кросс-чек:
+  97/301 кандидатов сидят на уже-сматченном PP; в бакете CONFIRM 15/61 — конфликты #15 ⇒ **46
+  безопасны к ручному подтверждению**. Авто-confirm НЕ делался (инвариант #3).
+- [x] **T2 doc-hygiene:** ✅ STATE.md (свежий DB-снимок 2026-06-05 + #12 счётчик 279→301 + #15
+  квантифицирован + #16 = R2 РЕШЕНО, не «blocking») + ROADMAP.md (Phase 9 `[x]` code complete,
+  09-02 `[x]` T7=R2, прогресс-таблица). Коммиты `af40b7d`, `b511fa2`.
 - [x] **T3 test health:** ✅ `850 passed, 2 skipped, 1 warning in 27.76s` (warning = предсущ. urllib3/chardet mismatch, не моё).
 - [ ] (стретч) **#10 Stage A** — сперва read-only spec по реальным sibling-кейсам; код только если 0
   регрессий и не роняет хорошие матчи, на ветке, БЕЗ merge. Иначе spec оставить Yana.
@@ -27,9 +32,10 @@ Phase 9 item2/item3 (ключ/IP/импорт) · #15 политика RP↔mare
 ручное подтверждение оттриаженных кандидатов.
 
 ### Next step
-T1: сабагент — read-only audit-скрипт поверх существующих (`scripts/audit_candidates.py`,
-`dump_candidates.py`, `audit_matching_gaps.py`), бакетировать все кандидаты с доказательствами,
-записать отчёт; вернуть в main ТОЛЬКО краткую сводку + счётчики.
+Ночной maintenance ЗАКРЫТ (T1+T2+T3 ✅). Остаток = рука Yana (см. NEEDS-YANA): ручное
+подтверждение из 46 безопасных CONFIRM (досье `candidate-triage-2026-06-05.md`) + 237 EYEBALL глазами;
+политика #15 по 15 конфликтам; Phase 9 item2/item3 (импорт). Стретч #10 Stage A НЕ начат
+(требует spec-first; оставлен Yana). Ветка `chore/night-maint-2026-06-05` запушена, НЕ в main.
 
 ---
 

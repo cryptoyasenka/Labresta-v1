@@ -28,6 +28,15 @@ See: .planning/PROJECT.md (updated 2026-03-01)
 Status: maintenance / audit-driven fixes. v1.0 + v1.1 plans complete; Phase 9 autonomous code complete (remaining = Yana's hand: import + optional AI re-check).
 Last activity: 2026-06-05 (night maintenance: read-only candidate triage + doc hygiene)
 
+## DB snapshot (2026-06-05, night maintenance — READ-ONLY)
+
+- Suppliers: 6 (all enabled) — `maresto` (flat), `novyy-proekt` (per_brand), `kodaki` (flat), `rp-ukrayina` (flat), `guder` (flat), `astim` (flat)
+- PromProducts: 5683
+- SupplierProducts: 12895 (all live, 0 deleted) — astim 5597, maresto 4523, kodaki 1354, novyy-proekt 690, rp-ukrayina 374, guder 357
+- Matches (table `product_matches`): 2362 confirmed + 7 manual + 301 candidate + 71 rejected
+- Tests: 850 passed, 2 skipped @ branch `chore/night-maint-2026-06-05`
+- Candidate triage → `.planning/candidate-triage-2026-06-05.md`: 301 candidates ⇒ recommend-CONFIRM 61 / NEEDS-EYEBALL 237 / recommend-REJECT 3. one-to-one cross-check (`scripts/triage_one_to_one_check.py`): 97/301 candidates sit on an already-matched PP; within CONFIRM, 15/61 are #15 conflicts ⇒ **46 safe-to-confirm**. No DB mutation (status snapshot identical before/after).
+
 ## DB snapshot (2026-04-29)
 
 - Suppliers: 4 — `maresto` (flat), `novyy-proekt` (per_brand), `kodaki` (flat), `rp-ukrayina` (flat)
@@ -57,9 +66,9 @@ Last activity: 2026-06-05 (night maintenance: read-only candidate triage + doc h
 - **#16** (Phase 9 / 09-02 T7) ✅ **DECIDED by Yana 2026-06-02 = R2**: the auto chain (feed→analogy→fallback, ship-no-ai) is the DEFAULT, and AI re-check is a SEPARATE opt-in audit that only flags auto↔AI category discrepancies in a CSV and never rewrites the live category. R1 (AI as a live-chain tier) rejected. The AI re-check is BUILT and provider-independent (any OpenAI-compatible endpoint; NVIDIA NIM default) — commits `2276041`/`83c54a5`. Optional mapping-table is also built + wired opt-in (45 non-null mappings → feed 97.5% conf-100). Remaining is Yana's hand only, NOT a decision: (item2) run the AI re-check with her own API key, (item3) approve a 1-2 row `[КАТАЛОГ] Раздел` canary then bulk-import by hand + backup (invariant #13) using a fresh NP feed from her IP. Docs: `.planning/phases/09-add-unmatched-to-horoshop/CATEGORY-PROPOSAL.md`.
 - **#9** ~~Per-supplier YML route returns 404~~ — closed 2026-04-29 by `eb22fbf` (option B: friendly HTML page with regen instructions, status stays 404 for bots).
 - **#10** SP color/voltage variant collisions: stage B done 2026-04-29 (`960fea3`, Step 4.88 asymmetric color gate — defends against future cross-language color discord and parens/display_article cases that 4.85/4.9 miss). Stage A (sibling-aware downgrade for SP without color when catalog has color siblings) still pending.
-- **#12** 279 candidates remain — manual triage required (CLAUDE.md invariant #3 forbids 100%-bulk-confirm).
+- **#12** 301 candidates remain — manual triage required (CLAUDE.md invariant #3 forbids 100%-bulk-confirm). Read-only triage dossier built 2026-06-05: `.planning/candidate-triage-2026-06-05.md` classifies all 301 (CONFIRM 61 / EYEBALL 237 / REJECT 3) with PP-vs-SP evidence. After the one-to-one cross-check, only **46** of the 61 CONFIRM rows are safe to hand-confirm (15 are #15 supplier conflicts); the 237 EYEBALL rows still need a human read. Nothing auto-confirmed.
 - **#14** Pure-letter SKU substring fast-path bypasses all text gates (deliberate compromise documented in code; voltage/paren/price gates still apply).
-- **#15** RP candidates `#3546` (SIRMAN TC-12) + `#3569` (UNOX XFT193) score=100 + identical names BUT both PPs already have confirmed maresto matches → 1pp↔1supplier conflict.
+- **#15** Text-perfect candidates whose PP already holds a confirmed supplier → 1pp↔1supplier conflict (can't confirm without first rejecting the incumbent = a policy call for Yana). Original instances: RP `#3546` (SIRMAN TC-12) + `#3569` (UNOX XFT193). Now quantified by the 2026-06-05 triage: across ALL candidates, 97/301 sit on an already-matched PP; within the recommend-CONFIRM bucket specifically, 15/61 are conflicts (match_ids 3352,3357,3365,3369,3729,3730,3735,3743,3748,3754,3760,3779,3784,3785,4376) — e.g. `m3730` (PP2966→held 840) and `m3760` (PP1037→held 228). Re-list any time: `scripts/triage_one_to_one_check.py`.
 
 ## Blockers/Concerns
 
