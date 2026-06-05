@@ -19,8 +19,10 @@
 
 - **(c) recommend-REJECT ВЫПОЛНЕНО** (тем же `reject_domain_mismatches.py --ids=`): из 3 строк (`## recommend-REJECT`, ~стр.386) отклонено **2** — m3355/m3356 (НП Robot Coupe «Комплект дисків для пюре 28189/28208» ≠ SP «Насадка 2мм/3мм»); 3-я (m4431 guder BF400V) **уже самоудалилась** каскадом при подтверждении m4430 (BF400VG, общий SP 7309). Бэкап `labresta.db.bak-2026-06-06-reject-recrej`. candidate 105→**103** (−2), rejected 87→**89** (+2), 1:1 держится (0).
 
+- **(d) суффикс-вариант reject ВЫПОЛНЕНО** (тем же `reject_domain_mismatches.py --ids=3791,3362`): 2 near-miss того же типа, что (a), но вне 28 — m3791 (maresto Tecnodom `TF03MIDGN`≠`TF03MIDGNAL NEW`, PP свободен), m3362 (НП Apach `APTE-47PR гладка`≠`APTE-47PR/PL ребр.` — хвост /PL + противоположная поверхность, PP свободен). Оба были `candidate` (0 missing/skip). Бэкап `labresta.db.bak-2026-06-06-reject-suffix`. dry-run→apply. candidate 103→**101** (−2), rejected 89→**91** (+2), 1:1 держится (**0**), оба с тегом `triage-reject-2026-06-06`.
+
 ### Next step
-NEEDS-EYEBALL разобран ПОЛНОСТЬЮ; за сессию **166 confirmed + 18 reject** (16 domain (a) + 2 recommend-REJECT (c)). Остаток кандидатов = **103**. Дальше — по выбору Yana: **(b)** #15 keep-vs-switch политика (~80 PP, кандидат на уже-подтверждённом другим поставщиком PP — построчно «оставить/переключить», отдельной сессией по группам); **(d)** 2 суффикс-вариант reject того же типа, что (a), но не в 28: m3791 (maresto TF03MIDGN≠GNAL), m3362 (НП APTE-47PR гладка≠/PL ребр.) — тем же скриптом по запросу; + 5 ambiguous (guder 4400-4402/4408 саладетта, rp 3728 C4VV) — нужен её eyeball. NEEDS-YANA без изм. (Phase 9 item2/item3 импорт; #10 Stage A — спека готова).
+NEEDS-EYEBALL разобран ПОЛНОСТЬЮ; за сессию **166 confirmed + 20 reject** (16 domain (a) + 2 recommend-REJECT (c) + 2 суффикс (d)). Остаток кандидатов = **101**. Дальше — по выбору Yana: **(b)** #15 keep-vs-switch политика (~80 PP, кандидат на уже-подтверждённом другим поставщиком PP — построчно «оставить/переключить», отдельной сессией по группам); + **5 ambiguous** (guder 4400-4402/4408 саладетта, rp 3728 C4VV vs C-TRONIC 4 VV) — нужен её eyeball. NEEDS-YANA без изм. (Phase 9 item2/item3 импорт; #10 Stage A — спека готова).
 
 ---
 
