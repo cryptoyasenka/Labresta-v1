@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Tech Debt + Excel Suppliers + Multi-Supplier
 status: maintenance
-stopped_at: "2026-05-31 Phase 9 (add-unmatched-to-horoshop) plan 09-02 T1-T6 done; T7 checkpoint:decision awaits Yana (category strategy + canary)"
-last_updated: "2026-05-31T04:30:00.000Z"
-last_activity: 2026-05-31
+stopped_at: "2026-06-02 Phase 9 autonomous code COMPLETE; T7/#16 DECIDED by Yana = R2 (auto chain default + AI re-check as opt-in audit, built + provider-independent). Remaining = Yana hand only (her API key / fresh NP feed from her IP / canary then bulk import + backup). MARESTO awaits Horoshop support reply."
+last_updated: "2026-06-05"
+last_activity: 2026-06-05
 progress:
   total_phases: 7
   completed_phases: 7
@@ -25,8 +25,8 @@ See: .planning/PROJECT.md (updated 2026-03-01)
 
 ## Current Position
 
-Status: maintenance / audit-driven fixes. v1.0 + v1.1 plans complete.
-Last activity: 2026-04-29 (read-only audit + eur_rate fallback fix)
+Status: maintenance / audit-driven fixes. v1.0 + v1.1 plans complete; Phase 9 autonomous code complete (remaining = Yana's hand: import + optional AI re-check).
+Last activity: 2026-06-05 (night maintenance: read-only candidate triage + doc hygiene)
 
 ## DB snapshot (2026-04-29)
 
@@ -54,7 +54,7 @@ Last activity: 2026-04-29 (read-only audit + eur_rate fallback fix)
 
 ## Open issues (await Yana decision)
 
-- **#16** (Phase 9 / 09-02 T7 — BLOCKING checkpoint) Category strategy for unmatched-product create-cards: **ship-no-ai** (feed→analogy→fallback, recommended first) / **enable-ai** (NVIDIA tier — not built; one-arg flip + implementation) / **mapping-table** (~50 unreconciled feed categories → store labels). Plus approve the 1–2 row `[КАТАЛОГ] Раздел` canary before any bulk import (invariant #13, Yana's hand + backup). Evidence + options: `.planning/phases/09-add-unmatched-to-horoshop/CATEGORY-PROPOSAL.md`. AI is OFF until Yana says otherwise (REQ-06).
+- **#16** (Phase 9 / 09-02 T7) ✅ **DECIDED by Yana 2026-06-02 = R2**: the auto chain (feed→analogy→fallback, ship-no-ai) is the DEFAULT, and AI re-check is a SEPARATE opt-in audit that only flags auto↔AI category discrepancies in a CSV and never rewrites the live category. R1 (AI as a live-chain tier) rejected. The AI re-check is BUILT and provider-independent (any OpenAI-compatible endpoint; NVIDIA NIM default) — commits `2276041`/`83c54a5`. Optional mapping-table is also built + wired opt-in (45 non-null mappings → feed 97.5% conf-100). Remaining is Yana's hand only, NOT a decision: (item2) run the AI re-check with her own API key, (item3) approve a 1-2 row `[КАТАЛОГ] Раздел` canary then bulk-import by hand + backup (invariant #13) using a fresh NP feed from her IP. Docs: `.planning/phases/09-add-unmatched-to-horoshop/CATEGORY-PROPOSAL.md`.
 - **#9** ~~Per-supplier YML route returns 404~~ — closed 2026-04-29 by `eb22fbf` (option B: friendly HTML page with regen instructions, status stays 404 for bots).
 - **#10** SP color/voltage variant collisions: stage B done 2026-04-29 (`960fea3`, Step 4.88 asymmetric color gate — defends against future cross-language color discord and parens/display_article cases that 4.85/4.9 miss). Stage A (sibling-aware downgrade for SP without color when catalog has color siblings) still pending.
 - **#12** 279 candidates remain — manual triage required (CLAUDE.md invariant #3 forbids 100%-bulk-confirm).
@@ -63,9 +63,9 @@ Last activity: 2026-04-29 (read-only audit + eur_rate fallback fix)
 
 ## Blockers/Concerns
 
-None code-level. All blockers above are decision-level for Yana.
+None code-level. #16 category strategy is DECIDED (2026-06-02 = R2). Remaining items are Yana's-hand (Phase 9 bulk import: her IP for a fresh NP feed + canary + backup; optional AI re-check with her key) or external (MARESTO blocked on a Horoshop support reply) — not autonomous, not code blockers.
 
 ## Session Continuity
 
-Last session: 2026-05-31 (night run) — Phase 9 plan 09-02 T1–T6 executed + committed + pushed on `feat/horoshop-add-unmatched`; T7 checkpoint awaits Yana (#16)
+Last session: 2026-06-05 (night maintenance, branch `chore/night-maint-2026-06-05`) — read-only candidate triage (#12) + doc hygiene (STATE/ROADMAP) + green test baseline (850 passed, 2 skipped). Prior: 2026-06-02 R2 confirmed + ai_recheck generalized to provider-independent on `feat/horoshop-add-unmatched`.
 Resume file: pre-compact-prep snapshot in `~/.claude/snapshots/`; project memory `.planning/CURRENT.md`

@@ -22,7 +22,7 @@
 - [x] **Phase 5: Cleanup and UX Fixes** - Remove dead code, fix notification bell for operators, load notifications.js globally
 - [x] **Phase 6: Excel Supplier Support** - Add Excel/Google Sheets as supplier feed type with parsing and sync pipeline integration
 - [x] **Phase 7: Matching and Pricing Enhancements** - Activate MatchRule auto-apply during sync, add per-product discount UI
-- [ ] **Phase 9: Add Unmatched Products to Horoshop** - Select supplier products with no live card and generate a native-Horoshop XLSX that creates them as new cards (content + price + category)
+- [x] **Phase 9: Add Unmatched Products to Horoshop** - Select supplier products with no live card and generate a native-Horoshop XLSX that creates them as new cards (content + price + category). Code complete 2026-06-02 (T7/#16 decided = R2); remaining = Yana's hand (canary + bulk import).
 
 ## Phase Details
 
@@ -87,7 +87,7 @@ Plans:
 
 Plans:
 - [x] 09-01-PLAN.md — CORE: unmatched-products picker (/feeds/add) + native create-file builder (add_horoshop_file.py) + fallback-only category_resolver + unit/endpoint tests; yields an importable file on its own ✅ 2026-05-31
-- [~] 09-02-PLAN.md — SMART CATEGORY: np_parser (title/category) + export Раздел corpus reader + feed→analogy→fallback resolvers + disabled AI stub + NP feed enrichment/upload (FLAG-1/2) + real-data evidence audit + CATEGORY-PROPOSAL.md. Implementation T1–T6 ✅ 2026-05-31 (835 tests pass). **T7 = blocking Yana decision (#16: category strategy + canary) — NOT done.** AI OFF; not merged; no import performed.
+- [x] 09-02-PLAN.md — SMART CATEGORY: np_parser (title/category) + export Раздел corpus reader + feed→analogy→fallback resolvers + AI re-check (opt-in, provider-independent) + NP feed enrichment/upload (FLAG-1/2) + real-data evidence audit + CATEGORY-PROPOSAL.md. Implementation T1–T6 ✅ 2026-05-31. **T7 ✅ DECIDED by Yana 2026-06-02 = R2** (auto chain default + AI re-check as separate opt-in audit; R1 rejected). Not merged to main; no import performed (= Yana's hand).
 
 ## Progress
 
@@ -103,7 +103,7 @@ Phases execute in numeric order: 5 → 6 → 7 → 9
 | 5. Cleanup and UX Fixes | v1.1 | 2/2 | Complete | 2026-03-01 |
 | 6. Excel Supplier Support | v1.1 | 2/2 | Complete | 2026-03-01 |
 | 7. Matching and Pricing Enhancements | v1.1 | 2/2 | Complete | 2026-04-10 |
-| 9. Add Unmatched Products to Horoshop | v1.1 | 1/2 (09-02 impl done, T7 awaits Yana) | In Progress | — |
+| 9. Add Unmatched Products to Horoshop | v1.1 | 2/2 (code complete; import = Yana's hand) | Code complete | 2026-06-02 |
 
 ---
 *Full v1.0 details: milestones/v1.0-ROADMAP.md*
