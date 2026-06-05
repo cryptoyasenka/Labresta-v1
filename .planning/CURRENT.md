@@ -24,18 +24,21 @@ read-only. (b) НЕ живой импорт в Хорошоп. (c) НЕ мерж
   квантифицирован + #16 = R2 РЕШЕНО, не «blocking») + ROADMAP.md (Phase 9 `[x]` code complete,
   09-02 `[x]` T7=R2, прогресс-таблица). Коммиты `af40b7d`, `b511fa2`.
 - [x] **T3 test health:** ✅ `850 passed, 2 skipped, 1 warning in 27.76s` (warning = предсущ. urllib3/chardet mismatch, не моё).
-- [ ] (стретч) **#10 Stage A** — сперва read-only spec по реальным sibling-кейсам; код только если 0
-  регрессий и не роняет хорошие матчи, на ветке, БЕЗ merge. Иначе spec оставить Yana.
+- [x] (стретч) **#10 Stage A** — ✅ read-only СПЕКА готова: `.planning/phases/10-color-sibling-downgrade/SPEC-10-stage-a.md`
+  (commit `093a459`). Грунт по БД: 57 purepaint-кластеров (26 с ≥2 семействами). Триггер Stage A
+  (бесцветный SP → покрасочный кластер) = **0 живых случаев сегодня** (cand/conf/manual=0) ⇒ нулевой
+  риск регрессии; 12 confirmed смотрят В кластеры, но все с ОКРАШЕННЫМ SP ⇒ триггер их не берёт.
+  Код matcher НЕ тронут — это защитная мера без текущего бага, решение внедрять/отложить за Yana.
 
 ### NEEDS-YANA (НЕ ночью, не блокируют DONE)
 Phase 9 item2/item3 (ключ/IP/импорт) · #15 политика RP↔maresto конфликта · #16 канарейка+bulk ·
 ручное подтверждение оттриаженных кандидатов.
 
 ### Next step
-Ночной maintenance ЗАКРЫТ (T1+T2+T3 ✅). Остаток = рука Yana (см. NEEDS-YANA): ручное
-подтверждение из 46 безопасных CONFIRM (досье `candidate-triage-2026-06-05.md`) + 237 EYEBALL глазами;
-политика #15 по 15 конфликтам; Phase 9 item2/item3 (импорт). Стретч #10 Stage A НЕ начат
-(требует spec-first; оставлен Yana). Ветка `chore/night-maint-2026-06-05` запушена, НЕ в main.
+Ночной maintenance ЗАКРЫТ (T1+T2+T3 ✅ + стретч #10 спека ✅). Остаток = рука Yana (см. NEEDS-YANA):
+ручное подтверждение из 46 безопасных CONFIRM (досье `candidate-triage-2026-06-05.md`) + 237 EYEBALL
+глазами; политика #15 по 15 конфликтам; Phase 9 item2/item3 (импорт); решение по #10 Stage A
+(внедрять/отложить — спека готова). Ветка `chore/night-maint-2026-06-05` запушена (HEAD `093a459`), НЕ в main.
 
 ---
 
