@@ -1,5 +1,19 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
+## ✅ ИНТЕРАКТИВНАЯ СЕССИЯ 2026-06-05 (вечер) — подтверждены 46 безопасных CONFIRM
+**Last touched:** 2026-06-05 ~19:05
+**Ветка:** `chore/night-maint-2026-06-05` (та же; НЕ main).
+**Сделано (с Yana, не ночной режим — инвариант #3 снят с её явным согласием):**
+- Подтверждены **46** из 61 recommend-CONFIRM: **44 guder** (витрины Gooder FC-*, word-order-identical, score 100) + **2 rp-ukrayina** (3722/3723, мармиты Airhot SB-5700/6000, отличие только гомоглиф А, score 97). 15 конфликтов #15 отсеяны live собственным guard приложения `_pp_already_claimed`; внутрипакетных коллизий PP = 0; сиблингов на удаление = 0. Рисковые (m3369 J80-vs-J80-**Ultra**@88, m3365@95) оказались в 15 конфликтах ⇒ авто-исключены.
+- Механизм: `scripts/confirm_safe_candidates.py` (app-context, повторяет семантику `confirm_match`: `status=confirmed` + `confirmed_at` + `confirmed_by="triage-batch-2026-06-05"`; **имена НЕ трогает**). По умолчанию dry-run, `--apply` коммитит. Прогон: dry-run → apply.
+- БД локальная (`sqlite:///instance/labresta.db`, `DATABASE_URL` пуст — не прод). Бэкап: `instance/backups/labresta.db.bak-2026-06-05-confirm46` (gitignored).
+- **Проверено фактами:** candidate 301→**255**, confirmed 2362→**2408** (+46), manual/rejected без изм.; инвариант 1:1 держится (**0** PP с >1 confirmed/manual); все 46 с тегом; тесты **850 passed, 2 skipped**.
+
+### Next step
+**237 NEEDS-EYEBALL** по PP-vs-SP доказательствам (досье `candidate-triage-2026-06-05.md`), начать с **maresto (15)**. NEEDS-YANA без изменений (Phase 9 item2/item3 импорт; #15 политика по 15 конфликтам; #10 Stage A решение — спека готова).
+
+---
+
 ## 🌙 НОЧНОЙ ПРОГОН 2026-06-05 (session 35e3f9f5) — maintenance, плоский оркестратор
 **Last touched:** 2026-06-05
 **Ветка:** `chore/night-maint-2026-06-05` (off Phase-9 branch; НЕ мержить в main).
