@@ -1,6 +1,6 @@
 # CURRENT — labresta-sync (Flask supplier sync app)
 
-## ✅ ИНТЕРАКТИВНАЯ СЕССИЯ 2026-06-05 → 06-06 — подтверждены 52 (46 safe + 4 maresto + 2 НП)
+## ✅ ИНТЕРАКТИВНАЯ СЕССИЯ 2026-06-05 → 06-06 — подтверждены 166; NEEDS-EYEBALL разобран ПОЛНОСТЬЮ
 **Last touched:** 2026-06-06
 **Ветка:** `chore/night-maint-2026-06-05` (та же; НЕ main).
 **Сделано (с Yana, не ночной режим — инвариант #3 снят с её явным согласием):**
@@ -11,10 +11,12 @@
 
 - **maresto NEEDS-EYEBALL (15) разобран** (`.planning/maresto-eyeball-2026-06-05.md`, read-only субагент): подтверждены **4** свободных PP (m3787 Cuppone PZF40DS, m3798 Unox XEBC04EUEPRMMP, m3786 Sirman Ektor 37, m3790 Sirman TOPAZ 195 Normale — все одобрены Yana глазами); 10 — PP занят другим поставщиком (#15 keep-vs-switch, отложено); m3791 суффикс-вариант (TF03MIDGN≠GNAL, оставлен кандидатом). candidate 255→**251**, confirmed 2408→**2412** (+4), инвариант 1:1 держится.
 
-- **НП (novyy-proekt) NEEDS-EYEBALL (22) разобран** (`.planning/np-eyeball-2026-06-05.md`, read-only субагент): чистых CONFIRM нет; подтверждены **2** свободных PP по eyeball Yana (m4378 Ceado M98/2 «двохпостовий»=«подвійний»; m3363 Apach APTE-77PLR/PL комбінована=гл+ребр); 17 — PP занят другим поставщиком (#15, отложено); m3362 суффикс-вариант (APTE-47PR гладка≠/PL ребр.) оставлен кандидатом; m3382/m3383 отклонены Yana (разные хвосты кода CC900/CE и размер S GN 2/3). candidate 251→**249**, confirmed 2412→**2414** (+2), инвариант 1:1 держится (0). **Итого за сессию подтверждено 52 (46+4+2).**
+- **НП (novyy-proekt) NEEDS-EYEBALL (22) разобран** (`.planning/np-eyeball-2026-06-05.md`, read-only субагент): чистых CONFIRM нет; подтверждены **2** свободных PP по eyeball Yana (m4378 Ceado M98/2 «двохпостовий»=«подвійний»; m3363 Apach APTE-77PLR/PL комбінована=гл+ребр); 17 — PP занят другим поставщиком (#15, отложено); m3362 суффикс-вариант (APTE-47PR гладка≠/PL ребр.) оставлен кандидатом; m3382/m3383 отклонены Yana (разные хвосты кода CC900/CE и размер S GN 2/3). candidate 251→**249**, confirmed 2412→**2414** (+2), инвариант 1:1 держится (0).
+
+- **Остальные 4 группы NEEDS-EYEBALL (astim 10 / guder 36 / rp-ukrayina 50 / kodaki 104 = 200) разобраны параллельно** (4 read-only субагента; полные таблицы в `.planning/{astim,guder,rp-ukrayina,kodaki}-eyeball-2026-06-05.md`). Подтверждено **114** одним батчем: **61 clean** (имена байт-в-байт, PP свободен — 6 guder + 55 kodaki) + **53 judgment** (код/артикул модели байт-в-байт, отличаются только слова-синонимы: kodaki убрано «HOME/ручна», guder «низькотемп.»=«морозильна» — kodaki 28 + guder 21 + rp 3 + astim 1). Оба бакета одобрены Yana. Бэкап `instance/backups/labresta.db.bak-2026-06-06-confirm-batch`. **81 reject оставлены кандидатами** (53 #15 PP-taken + 28 domain-mismatch); **5 ambiguous** не подтверждены (guder 4400-4402/4408, rp 3728). candidate 249→**121** (−114 conf −14 дублей-сиблингов), confirmed 2414→**2528** (+114); dry-run→apply, 1:1 инвариант держится (**0**), все 114 реально confirmed. **Итого за сессию подтверждено 166 (46+4+2+114). NEEDS-EYEBALL (237) разобран ПОЛНОСТЬЮ.**
 
 ### Next step
-Осталось **200 NEEDS-EYEBALL** (237 − 15 maresto − 22 НП): группы **kodaki 104, rp-ukrayina 50, guder 36, astim 10**. Тот же паттерн: read-only субагент на след. группу → digest → eyeball Yana → `scripts/confirm_safe_candidates.py --apply --ids=...` (dry-run по умолчанию). Следующая логичная — astim 10 (мелкая, быстрый проход) либо по порядку kodaki 104. NEEDS-YANA без изм. (#15 политика по PP-taken конфликтам — теперь **27**: 10 maresto + 17 НП; Phase 9 item2/item3 импорт; #10 Stage A решение — спека готова).
+**NEEDS-EYEBALL (237) разобран ПОЛНОСТЬЮ** — за сессию подтверждено **166**. Остаток кандидатов в БД = **121**: reject-бакеты (28 domain-mismatch — реально разные товары: матчер сработал на равенстве номера артикула; + ~80 #15 PP-taken — keep-vs-switch) + 3 recommend-REJECT + остатки maresto/НП reject. Списки reject лежат в `.planning/*-eyeball-2026-06-05.md` (по группам). Дальше — по выбору Yana: **(a)** пометить domain-mismatch как `rejected` (чистка кандидатов, чтобы не висели; список готов в eyeball-файлах); **(b)** #15 keep-vs-switch политика — крупное решение (~80 PP, где кандидат лезет на уже-подтверждённый другим поставщиком PP); **(c)** 3 recommend-REJECT отклонить. NEEDS-YANA без изм. (Phase 9 item2/item3 импорт; #10 Stage A решение — спека готова).
 
 ---
 
