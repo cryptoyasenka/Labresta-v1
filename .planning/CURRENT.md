@@ -23,8 +23,14 @@
 
 - **(e) 5 ambiguous РАЗОБРАНЫ глазами Yana** (полные названия из БД показаны кнопками AskUserQuestion): **4 confirm** — guder саладетты m4400 (`VRX2000/330`), m4401 (`VRX1500/380`), m4402 (`VRX1400/330`) (модель байт-в-байт, RU-имя PP само «саладетта» = SP) + guder m4408 (`XC-58L`, кондитерська vs настільна холодильна — Yana: одна модель); **1 reject** — rp m3728 (Sirman `C4VV`≠`C-TRONIC 4 VV` — Yana: разные линейки). Бэкап `labresta.db.bak-2026-06-07-ambiguous`. confirm dry-run→apply (PP свободны, 0 skip, 0 сиблингов) + reject dry-run→apply. candidate 101→97→**96**, confirmed 2528→**2532** (+4), rejected 91→**92** (+1), 1:1 держится (**0**); 4 с тегом `triage-batch-2026-06-05`, 3728 с `triage-reject-2026-06-06`.
 
+- **(f) #15 keep-vs-switch: политика Yana задана + 2 free-PP reject ВЫПОЛНЕНО** (сессия 2026-06-07).
+  - READ-ONLY досье `scripts/triage_15_keep_vs_switch.py` → `.planning/keep-vs-switch-2026-06-07.md`: **94 #15** (РП 53 / НП 22 / MARESTO 10 / Кодаки 9), сигнал цен 70 дешевле / 14 дороже / 10 равно.
+  - m3382/m3383 (free PP, НЕ #15, прежний reject Yana — хвост CC900/CE; SoftCooker XP без размера S GN 2/3) ОТКЛОНЕНЫ (`reject_domain_mismatches.py --ids=3382,3383 --apply`). Бэкап `labresta.db.bak-2026-06-07-free-reject`. candidate 96→**94**, rejected 92→**94**, 1:1 (0), оба с тегом.
+  - **Политика Yana** (AskUserQuestion): ничьи ~58 → построчно; нет-в-наличии 15 → SWITCH на кандидата; экономия 12 (Кодаки 9 + НП 3) → SWITCH на дешёвого; реверс 10 (cand=MARESTO) → построчно.
+  - **27 SWITCH** собраны в `.planning/switch-list-2026-06-07.md` (на подпись, НЕ применены). ⚠️ ФЛАГ-конфликты политик: **m3588** (Fimar SI320) + **m3584** (Ceado V90) — switch на дешёвого УБЕРЁТ наличие (кандидат НЕТ, текущий ЕСТЬ); **m3793** switch на MARESTO дороже +313 EUR (единств. в наличии). Жду решения по 3; остальные 24 авторизованы.
+
 ### Next step
-NEEDS-EYEBALL + 5 ambiguous разобраны ПОЛНОСТЬЮ; за сессию **170 confirmed + 21 reject** (16 domain (a) + 2 recommend-REJECT (c) + 2 суффикс (d) + 4 confirm/1 reject ambiguous (e)). Остаток кандидатов = **96** — это ВСЁ конфликты **(b) #15 keep-vs-switch** (кандидат на PP, уже занятом другим confirmed/manual поставщиком — построчно «оставить текущего / переключить на нового», политика Yana, отдельной сессией по группам). NEEDS-YANA без изм. (Phase 9 item2/item3 импорт; #10 Stage A — спека готова).
+**(b) #15 в работе.** candidate = **94** = 27 switch (авторизованы, `switch-list-2026-06-07.md`; 3 флага: m3588/m3584 теряют наличие, m3793 +313) + ~58 ничьих (построчно) + 9 реверс (построчно). NEXT: (1) Yana решает 3 флага; (2) выполнить switch = reject-incumbent → confirm-candidate (2 шага; гард `_pp_already_claimed` иначе блокнёт; проверить 1:1 после); (3) построчный разбор ничьих + реверс батчами кнопок. NEEDS-YANA без изм. (Phase 9 item2/item3 импорт; #10 Stage A — спека готова).
 
 ---
 
