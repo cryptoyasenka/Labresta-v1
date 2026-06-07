@@ -21,8 +21,10 @@
 
 - **(d) суффикс-вариант reject ВЫПОЛНЕНО** (тем же `reject_domain_mismatches.py --ids=3791,3362`): 2 near-miss того же типа, что (a), но вне 28 — m3791 (maresto Tecnodom `TF03MIDGN`≠`TF03MIDGNAL NEW`, PP свободен), m3362 (НП Apach `APTE-47PR гладка`≠`APTE-47PR/PL ребр.` — хвост /PL + противоположная поверхность, PP свободен). Оба были `candidate` (0 missing/skip). Бэкап `labresta.db.bak-2026-06-06-reject-suffix`. dry-run→apply. candidate 103→**101** (−2), rejected 89→**91** (+2), 1:1 держится (**0**), оба с тегом `triage-reject-2026-06-06`.
 
+- **(e) 5 ambiguous РАЗОБРАНЫ глазами Yana** (полные названия из БД показаны кнопками AskUserQuestion): **4 confirm** — guder саладетты m4400 (`VRX2000/330`), m4401 (`VRX1500/380`), m4402 (`VRX1400/330`) (модель байт-в-байт, RU-имя PP само «саладетта» = SP) + guder m4408 (`XC-58L`, кондитерська vs настільна холодильна — Yana: одна модель); **1 reject** — rp m3728 (Sirman `C4VV`≠`C-TRONIC 4 VV` — Yana: разные линейки). Бэкап `labresta.db.bak-2026-06-07-ambiguous`. confirm dry-run→apply (PP свободны, 0 skip, 0 сиблингов) + reject dry-run→apply. candidate 101→97→**96**, confirmed 2528→**2532** (+4), rejected 91→**92** (+1), 1:1 держится (**0**); 4 с тегом `triage-batch-2026-06-05`, 3728 с `triage-reject-2026-06-06`.
+
 ### Next step
-NEEDS-EYEBALL разобран ПОЛНОСТЬЮ; за сессию **166 confirmed + 20 reject** (16 domain (a) + 2 recommend-REJECT (c) + 2 суффикс (d)). Остаток кандидатов = **101**. Дальше — по выбору Yana: **(b)** #15 keep-vs-switch политика (~80 PP, кандидат на уже-подтверждённом другим поставщиком PP — построчно «оставить/переключить», отдельной сессией по группам); + **5 ambiguous** (guder 4400-4402/4408 саладетта, rp 3728 C4VV vs C-TRONIC 4 VV) — нужен её eyeball. NEEDS-YANA без изм. (Phase 9 item2/item3 импорт; #10 Stage A — спека готова).
+NEEDS-EYEBALL + 5 ambiguous разобраны ПОЛНОСТЬЮ; за сессию **170 confirmed + 21 reject** (16 domain (a) + 2 recommend-REJECT (c) + 2 суффикс (d) + 4 confirm/1 reject ambiguous (e)). Остаток кандидатов = **96** — это ВСЁ конфликты **(b) #15 keep-vs-switch** (кандидат на PP, уже занятом другим confirmed/manual поставщиком — построчно «оставить текущего / переключить на нового», политика Yana, отдельной сессией по группам). NEEDS-YANA без изм. (Phase 9 item2/item3 импорт; #10 Stage A — спека готова).
 
 ---
 
